@@ -19,7 +19,10 @@ import { focusElement } from '../Modal/overlay'
 import { returnFocusIfLost, useTriggerElement } from '../Popover/floating'
 import './ContextMenu.css'
 
-export interface ContextMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'content'> {
+export interface ContextMenuProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'children' | 'content'
+> {
   /**
    * Área que abre o menu com o botão direito (ou Shift+F10 / tecla Menu quando
    * ela ou algo dentro dela está focado). Um único elemento.
@@ -76,7 +79,8 @@ export const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(function
     if (!areaEl) return
     const rect = areaEl.getBoundingClientRect()
     const current = document.activeElement
-    restoreRef.current = current instanceof HTMLElement && current !== document.body ? current : null
+    restoreRef.current =
+      current instanceof HTMLElement && current !== document.body ? current : null
     setPoint({ dx: clientX - rect.left, dy: clientY - rect.top })
     focusOnOpen.current = target
     disclosure.open()
@@ -95,22 +99,35 @@ export const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(function
   }
 
   const childProps = children.props as HTMLAttributes<HTMLElement>
-  const area = cloneElement(children as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>, {
-    ref: areaRef,
-    onContextMenu: composeEventHandlers(childProps.onContextMenu, (event: ReactMouseEvent<HTMLElement>) => {
-      if (disabled) return
-      event.preventDefault()
-      openAt(event.clientX, event.clientY, 'menu')
-    }),
-    onKeyDown: composeEventHandlers(childProps.onKeyDown, (event: ReactKeyboardEvent<HTMLElement>) => {
-      if (disabled) return
-      if ((event.key === 'F10' && event.shiftKey) || event.key === 'ContextMenu') {
-        event.preventDefault()
-        const rect = (event.target as HTMLElement).getBoundingClientRect()
-        openAt(rect.left + Math.min(rect.width / 2, 24), rect.top + Math.min(rect.height / 2, 24), 'first')
-      }
-    }),
-  })
+  const area = cloneElement(
+    children as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>,
+    {
+      ref: areaRef,
+      onContextMenu: composeEventHandlers(
+        childProps.onContextMenu,
+        (event: ReactMouseEvent<HTMLElement>) => {
+          if (disabled) return
+          event.preventDefault()
+          openAt(event.clientX, event.clientY, 'menu')
+        },
+      ),
+      onKeyDown: composeEventHandlers(
+        childProps.onKeyDown,
+        (event: ReactKeyboardEvent<HTMLElement>) => {
+          if (disabled) return
+          if ((event.key === 'F10' && event.shiftKey) || event.key === 'ContextMenu') {
+            event.preventDefault()
+            const rect = (event.target as HTMLElement).getBoundingClientRect()
+            openAt(
+              rect.left + Math.min(rect.width / 2, 24),
+              rect.top + Math.min(rect.height / 2, 24),
+              'first',
+            )
+          }
+        },
+      ),
+    },
+  )
 
   return (
     <>

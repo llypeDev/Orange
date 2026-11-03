@@ -17,8 +17,8 @@ export default function Placements() {
           trigger={<Button variant="outline">{label}</Button>}
         >
           <p style={{ margin: 0 }}>
-            Laterais funcionam bem para navegação (esquerda) e detalhes ou edição (direita). O inferior é natural em telas
-            pequenas, como uma folha que sobe.
+            Laterais funcionam bem para navegação (esquerda) e detalhes ou edição (direita). O
+            inferior é natural em telas pequenas, como uma folha que sobe.
           </p>
         </Drawer>
       ))}

@@ -43,6 +43,8 @@ export const Default: Story = {
       }
     >
       <div
+        role="region"
+        aria-label="Área de trabalho"
         tabIndex={0}
         style={{
           display: 'grid',

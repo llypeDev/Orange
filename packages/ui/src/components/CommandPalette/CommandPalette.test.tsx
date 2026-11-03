@@ -10,7 +10,13 @@ function makeGroups(onRun: (id: string) => void = () => {}): CommandGroup[] {
     {
       label: 'Navegação',
       items: [
-        { id: 'inicio', label: 'Ir para o início', icon: 'home', shortcut: 'G I', onSelect: () => onRun('inicio') },
+        {
+          id: 'inicio',
+          label: 'Ir para o início',
+          icon: 'home',
+          shortcut: 'G I',
+          onSelect: () => onRun('inicio'),
+        },
         {
           id: 'config',
           label: 'Abrir configurações',
@@ -23,16 +29,37 @@ function makeGroups(onRun: (id: string) => void = () => {}): CommandGroup[] {
     {
       label: 'Ações',
       items: [
-        { id: 'projeto', label: 'Criar projeto', icon: 'plus', shortcut: ['⌘', 'N'], onSelect: () => onRun('projeto') },
-        { id: 'arquivar', label: 'Arquivar projeto', disabled: true, onSelect: () => onRun('arquivar') },
-        { id: 'convidar', label: 'Convidar pessoas', keywords: ['equipe', 'membros'], onSelect: () => onRun('convidar') },
+        {
+          id: 'projeto',
+          label: 'Criar projeto',
+          icon: 'plus',
+          shortcut: ['⌘', 'N'],
+          onSelect: () => onRun('projeto'),
+        },
+        {
+          id: 'arquivar',
+          label: 'Arquivar projeto',
+          disabled: true,
+          onSelect: () => onRun('arquivar'),
+        },
+        {
+          id: 'convidar',
+          label: 'Convidar pessoas',
+          keywords: ['equipe', 'membros'],
+          onSelect: () => onRun('convidar'),
+        },
       ],
     },
   ]
 }
 
-function Example({ onRun, ...props }: Partial<CommandPaletteProps> & { onRun?: (id: string) => void }) {
-  return <CommandPalette groups={makeGroups(onRun)} trigger={<Button>Comandos</Button>} {...props} />
+function Example({
+  onRun,
+  ...props
+}: Partial<CommandPaletteProps> & { onRun?: (id: string) => void }) {
+  return (
+    <CommandPalette groups={makeGroups(onRun)} trigger={<Button>Comandos</Button>} {...props} />
+  )
 }
 
 describe('CommandPalette', () => {
@@ -63,11 +90,20 @@ describe('CommandPalette', () => {
     await user.click(screen.getByRole('button', { name: 'Comandos' }))
     const input = screen.getByRole('combobox')
     await user.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}')
-    expect(input).toHaveAttribute('aria-activedescendant', screen.getByRole('option', { name: 'Convidar pessoas' }).id)
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      screen.getByRole('option', { name: 'Convidar pessoas' }).id,
+    )
     await user.keyboard('{ArrowDown}')
-    expect(input).toHaveAttribute('aria-activedescendant', screen.getByRole('option', { name: 'Ir para o início' }).id)
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      screen.getByRole('option', { name: 'Ir para o início' }).id,
+    )
     await user.keyboard('{ArrowUp}')
-    expect(input).toHaveAttribute('aria-activedescendant', screen.getByRole('option', { name: 'Convidar pessoas' }).id)
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      screen.getByRole('option', { name: 'Convidar pessoas' }).id,
+    )
   })
 
   it('filtra sem acentos, por descrição e por palavras-chave, anunciando o total', async () => {

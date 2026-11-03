@@ -63,9 +63,18 @@ export function useFloatingPanel({
         padding: 8,
         apply({ availableHeight, availableWidth, rects, elements }) {
           const style = elements.floating.style
-          style.setProperty('--or-floating-available-height', `${Math.max(0, Math.floor(availableHeight))}px`)
-          style.setProperty('--or-floating-available-width', `${Math.max(0, Math.floor(availableWidth))}px`)
-          style.setProperty('--or-floating-reference-width', `${Math.round(rects.reference.width)}px`)
+          style.setProperty(
+            '--or-floating-available-height',
+            `${Math.max(0, Math.floor(availableHeight))}px`,
+          )
+          style.setProperty(
+            '--or-floating-available-width',
+            `${Math.max(0, Math.floor(availableWidth))}px`,
+          )
+          style.setProperty(
+            '--or-floating-reference-width',
+            `${Math.round(rects.reference.width)}px`,
+          )
         },
       }),
       ...(arrow ? [arrowMiddleware({ element: arrowRef, padding: 6 })] : []),
@@ -96,7 +105,8 @@ export function useTriggerElement<T extends HTMLElement = HTMLElement>(child: Re
 export function returnFocusIfLost(target: HTMLElement | null | undefined) {
   window.setTimeout(() => {
     const current = document.activeElement
-    if ((!current || current === document.body) && target?.isConnected) target.focus({ preventScroll: true })
+    if ((!current || current === document.body) && target?.isConnected)
+      target.focus({ preventScroll: true })
   }, 0)
 }
 

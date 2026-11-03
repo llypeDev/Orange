@@ -143,8 +143,14 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
             />
           )}
         </div>
-        <div className="or-drawer__body">{typeof children === 'function' ? children(api) : children}</div>
-        {footer && <div className="or-drawer__footer">{typeof footer === 'function' ? footer(api) : footer}</div>}
+        <div className="or-drawer__body">
+          {typeof children === 'function' ? children(api) : children}
+        </div>
+        {footer && (
+          <div className="or-drawer__footer">
+            {typeof footer === 'function' ? footer(api) : footer}
+          </div>
+        )}
       </DialogShell>
     </>
   )

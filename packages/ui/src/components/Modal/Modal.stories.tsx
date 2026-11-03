@@ -44,7 +44,12 @@ export const Default: Story = {
             <label htmlFor="sb-modal-email" style={{ display: 'block', marginBottom: 6 }}>
               E-mail
             </label>
-            <input id="sb-modal-email" type="email" placeholder="nome@empresa.com" style={{ width: '100%', padding: 8 }} />
+            <input
+              id="sb-modal-email"
+              type="email"
+              placeholder="nome@empresa.com"
+              style={{ width: '100%', padding: 8 }}
+            />
           </ModalBody>
           <ModalFooter>
             <Button variant="outline" onClick={close}>
@@ -62,7 +67,13 @@ export const Sizes: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12 }}>
       {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
-        <Modal key={size} {...args} size={size} title={`Tamanho ${size}`} trigger={<Button variant="outline">{size}</Button>}>
+        <Modal
+          key={size}
+          {...args}
+          size={size}
+          title={`Tamanho ${size}`}
+          trigger={<Button variant="outline">{size}</Button>}
+        >
           <ModalBody>Conteúdo do diálogo no tamanho {size}.</ModalBody>
         </Modal>
       ))}
@@ -79,8 +90,8 @@ export const ScrollingBody: Story = {
           <ModalBody>
             {Array.from({ length: 14 }, (_, i) => (
               <p key={i}>
-                {i + 1}. O serviço é fornecido como está. Ao continuar, você concorda com as condições de uso,
-                privacidade e retenção de dados descritas nesta seção.
+                {i + 1}. O serviço é fornecido como está. Ao continuar, você concorda com as
+                condições de uso, privacidade e retenção de dados descritas nesta seção.
               </p>
             ))}
           </ModalBody>
@@ -103,7 +114,15 @@ export const Controlled: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Publicar alterações</Button>
-        <Modal {...args} title="Publicar alterações?" description="O site será atualizado para todos os visitantes." open={open} onOpenChange={setOpen} initialFocus={confirmRef} size="sm">
+        <Modal
+          {...args}
+          title="Publicar alterações?"
+          description="O site será atualizado para todos os visitantes."
+          open={open}
+          onOpenChange={setOpen}
+          initialFocus={confirmRef}
+          size="sm"
+        >
           <ModalFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
               Agora não

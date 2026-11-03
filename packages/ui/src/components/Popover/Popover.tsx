@@ -18,7 +18,12 @@ import { composeEventHandlers, cx, getFocusableElements, mergeRefs } from '../..
 import { Button } from '../Button'
 import { focusElement, getTabbableAfter, getThemeScope, useLayer } from '../Modal/overlay'
 import { Portal } from '../Portal'
-import { returnFocusIfLost, useFloatingPanel, useTriggerElement, type FloatingPlacement } from './floating'
+import {
+  returnFocusIfLost,
+  useFloatingPanel,
+  useTriggerElement,
+  type FloatingPlacement,
+} from './floating'
 import './Popover.css'
 
 export type PopoverPlacement = FloatingPlacement
@@ -95,7 +100,14 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
   const panelId = useId('or-popover')
   const titleId = useId('or-popover-title')
 
-  const floating = useFloatingPanel({ open: active, reference: triggerEl, floating: panelEl, placement, offset, arrow })
+  const floating = useFloatingPanel({
+    open: active,
+    reference: triggerEl,
+    floating: panelEl,
+    placement,
+    offset,
+    arrow,
+  })
 
   const closeAndFocusTrigger = () => {
     disclosure.close()
@@ -119,7 +131,6 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
     if (!active || !panelEl) return
     if (panelEl.contains(document.activeElement)) return
     focusElement(initialFocus?.current ?? getFocusableElements(panelEl)[0] ?? panelEl)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, panelEl])
 
   // Fechado com o foco dentro (ex.: estado controlado): devolve ao gatilho.
@@ -127,7 +138,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
     if (!active || !panelEl) return
     return () => {
       const current = document.activeElement
-      if (!current || current === document.body || panelEl.contains(current)) focusElement(triggerEl)
+      if (!current || current === document.body || panelEl.contains(current))
+        focusElement(triggerEl)
     }
   }, [active, panelEl, triggerEl])
 
@@ -158,26 +170,37 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
     }
   }
 
-  const panelRef = useMemo(() => mergeRefs<HTMLDivElement>(setPanelEl, setNode, ref), [setNode, ref])
+  const panelRef = useMemo(
+    () => mergeRefs<HTMLDivElement>(setPanelEl, setNode, ref),
+    [setNode, ref],
+  )
 
-  const triggerElement = cloneElement(trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>, {
-    ref: triggerRef,
-    id: triggerId,
-    'aria-haspopup': 'dialog',
-    'aria-expanded': active,
-    'aria-controls': active ? panelId : undefined,
-    onClick: composeEventHandlers(triggerProps.onClick, (_event: ReactMouseEvent<HTMLElement>) => disclosure.toggle()),
-    onKeyDown: composeEventHandlers(triggerProps.onKeyDown, handleTriggerKeyDown),
-  })
+  const triggerElement = cloneElement(
+    trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>,
+    {
+      ref: triggerRef,
+      id: triggerId,
+      'aria-haspopup': 'dialog',
+      'aria-expanded': active,
+      'aria-controls': active ? panelId : undefined,
+      onClick: composeEventHandlers(triggerProps.onClick, (_event: ReactMouseEvent<HTMLElement>) =>
+        disclosure.toggle(),
+      ),
+      onKeyDown: composeEventHandlers(triggerProps.onKeyDown, handleTriggerKeyDown),
+    },
+  )
 
   const labelled = rest['aria-label'] || rest['aria-labelledby']
-  const content = typeof children === 'function' ? children({ close: closeAndFocusTrigger }) : children
+  const content =
+    typeof children === 'function' ? children({ close: closeAndFocusTrigger }) : children
 
   return (
     <>
       {triggerElement}
       <Portal>
         {active && (
+          // onKeyDown só gerencia o Tab (ordem de foco); o diálogo em si não é um controle.
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
             ref={panelRef}
             id={panelId}

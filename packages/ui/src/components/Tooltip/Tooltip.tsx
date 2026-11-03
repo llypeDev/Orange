@@ -14,7 +14,12 @@ import {
 import { useControllableState, useId, useMounted } from '../../hooks'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import { getThemeScope, isFocusVisible, useLayer } from '../Modal/overlay'
-import { joinIds, useFloatingPanel, useTriggerElement, type FloatingPlacement } from '../Popover/floating'
+import {
+  joinIds,
+  useFloatingPanel,
+  useTriggerElement,
+  type FloatingPlacement,
+} from '../Popover/floating'
 import { Portal } from '../Portal'
 import './Tooltip.css'
 
@@ -75,7 +80,11 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   },
   ref,
 ) {
-  const [isOpen, setOpen] = useControllableState({ value: open, defaultValue: defaultOpen, onChange: onOpenChange })
+  const [isOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
   const mounted = useMounted()
   const visible = isOpen && mounted && !disabled
   const tooltipId = useId('or-tooltip')
@@ -85,7 +94,14 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   const closeTimer = useRef<number | undefined>(undefined)
   const pointerFocus = useRef(false)
 
-  const floating = useFloatingPanel({ open: visible, reference: triggerEl, floating: tooltipEl, placement, offset, arrow })
+  const floating = useFloatingPanel({
+    open: visible,
+    reference: triggerEl,
+    floating: tooltipEl,
+    placement,
+    offset,
+    arrow,
+  })
 
   const clearTimers = () => {
     window.clearTimeout(openTimer.current)
@@ -117,31 +133,43 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   // Escape fecha sem mover o foco nem o ponteiro (WCAG 1.4.13).
   const { setNode, layerProps } = useLayer(visible, { onEscape: () => hide(true) })
 
-  const tooltipRef = useMemo(() => mergeRefs<HTMLDivElement>(setTooltipEl, setNode, ref), [setNode, ref])
+  const tooltipRef = useMemo(
+    () => mergeRefs<HTMLDivElement>(setTooltipEl, setNode, ref),
+    [setNode, ref],
+  )
 
   if (disabled) return children
 
   const childProps = children.props as HTMLAttributes<HTMLElement>
-  const trigger = cloneElement(children as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>, {
-    ref: triggerRef,
-    'aria-describedby': joinIds(childProps['aria-describedby'], tooltipId),
-    onPointerEnter: composeEventHandlers(childProps.onPointerEnter, (event: ReactPointerEvent<HTMLElement>) => {
-      if (event.pointerType !== 'touch') show()
-    }),
-    onPointerLeave: composeEventHandlers(childProps.onPointerLeave, (event: ReactPointerEvent<HTMLElement>) => {
-      if (event.pointerType !== 'touch') hide()
-    }),
-    onPointerDown: composeEventHandlers(childProps.onPointerDown, () => {
-      // o foco que vem do clique não reabre o tooltip
-      pointerFocus.current = true
-      window.setTimeout(() => (pointerFocus.current = false), 0)
-      hide(true)
-    }),
-    onFocus: composeEventHandlers(childProps.onFocus, (event: ReactFocusEvent<HTMLElement>) => {
-      if (!pointerFocus.current && isFocusVisible(event.currentTarget)) show(true)
-    }),
-    onBlur: composeEventHandlers(childProps.onBlur, () => hide(true)),
-  })
+  const trigger = cloneElement(
+    children as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>,
+    {
+      ref: triggerRef,
+      'aria-describedby': joinIds(childProps['aria-describedby'], tooltipId),
+      onPointerEnter: composeEventHandlers(
+        childProps.onPointerEnter,
+        (event: ReactPointerEvent<HTMLElement>) => {
+          if (event.pointerType !== 'touch') show()
+        },
+      ),
+      onPointerLeave: composeEventHandlers(
+        childProps.onPointerLeave,
+        (event: ReactPointerEvent<HTMLElement>) => {
+          if (event.pointerType !== 'touch') hide()
+        },
+      ),
+      onPointerDown: composeEventHandlers(childProps.onPointerDown, () => {
+        // o foco que vem do clique não reabre o tooltip
+        pointerFocus.current = true
+        window.setTimeout(() => (pointerFocus.current = false), 0)
+        hide(true)
+      }),
+      onFocus: composeEventHandlers(childProps.onFocus, (event: ReactFocusEvent<HTMLElement>) => {
+        if (!pointerFocus.current && isFocusVisible(event.currentTarget)) show(true)
+      }),
+      onBlur: composeEventHandlers(childProps.onBlur, () => hide(true)),
+    },
+  )
 
   return (
     <>
@@ -156,7 +184,9 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
           data-theme={visible ? getThemeScope(triggerEl) : undefined}
           className={cx('or-floating', 'or-tooltip', className)}
           style={visible ? { ...floating.floatingStyles, ...style } : style}
-          onPointerEnter={composeEventHandlers(onPointerEnter, () => window.clearTimeout(closeTimer.current))}
+          onPointerEnter={composeEventHandlers(onPointerEnter, () =>
+            window.clearTimeout(closeTimer.current),
+          )}
           onPointerLeave={composeEventHandlers(onPointerLeave, () => hide())}
           {...rest}
           {...(visible ? layerProps : {})}

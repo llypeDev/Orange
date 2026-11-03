@@ -78,7 +78,9 @@ describe('Toggletip', () => {
   it('funciona controlado', async () => {
     const user = userEvent.setup()
     const onOpenChange = vi.fn()
-    render(<Toggletip label="Sobre a taxa" content={content} open={false} onOpenChange={onOpenChange} />)
+    render(
+      <Toggletip label="Sobre a taxa" content={content} open={false} onOpenChange={onOpenChange} />,
+    )
     await user.click(screen.getByRole('button', { name: 'Sobre a taxa' }))
     expect(onOpenChange).toHaveBeenCalledWith(true)
     expect(screen.getByRole('status')).toBeEmptyDOMElement()

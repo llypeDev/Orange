@@ -22,7 +22,14 @@ export default function Details() {
         </>
       )}
     >
-      <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', margin: '0 0 24px' }}>
+      <dl
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          gap: '8px 16px',
+          margin: '0 0 24px',
+        }}
+      >
         <dt style={{ color: 'var(--or-color-text-subtle)' }}>Cliente</dt>
         <dd style={{ margin: 0 }}>Marina Costa</dd>
         <dt style={{ color: 'var(--or-color-text-subtle)' }}>Status</dt>
@@ -34,7 +41,13 @@ export default function Details() {
         {itens.map((item) => (
           <li
             key={item.nome}
-            style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '12px 0', borderTop: '1px solid var(--or-color-border)' }}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 16,
+              padding: '12px 0',
+              borderTop: '1px solid var(--or-color-border)',
+            }}
           >
             <span>
               {item.qtd}× {item.nome}

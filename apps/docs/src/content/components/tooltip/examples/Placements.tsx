@@ -9,7 +9,16 @@ const posicoes: { placement: TooltipPlacement; label: string }[] = [
 
 export default function Placements() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', width: '100%', padding: '32px 0' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 12,
+        justifyContent: 'center',
+        width: '100%',
+        padding: '32px 0',
+      }}
+    >
       {posicoes.map(({ placement, label }) => (
         <Tooltip key={placement} placement={placement} content={`Tooltip ${label.toLowerCase()}`}>
           <Button variant="outline">{label}</Button>

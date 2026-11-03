@@ -19,7 +19,10 @@ import './Toggletip.css'
 export type ToggletipPlacement = FloatingPlacement
 export type ToggletipSize = 'sm' | 'md'
 
-export interface ToggletipProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'content' | 'children'> {
+export interface ToggletipProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'content' | 'children'
+> {
   /** Explicação exibida na bolha e anunciada por leitores de tela. Evite links e botões. */
   content: ReactNode
   /** Nome acessível do botão. Padrão: "Mais informações". Prefira algo específico: "Sobre a taxa de conversão". */
@@ -64,14 +67,25 @@ export const Toggletip = forwardRef<HTMLButtonElement, ToggletipProps>(function 
   ref,
 ) {
   const { t } = useLocale()
-  const [isOpen, setOpen] = useControllableState({ value: open, defaultValue: defaultOpen, onChange: onOpenChange })
+  const [isOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
   const mounted = useMounted()
   const visible = isOpen && mounted
   const bubbleId = useId('or-toggletip')
   const [buttonEl, setButtonEl] = useState<HTMLButtonElement | null>(null)
   const [bubbleEl, setBubbleEl] = useState<HTMLDivElement | null>(null)
 
-  const floating = useFloatingPanel({ open: visible, reference: buttonEl, floating: bubbleEl, placement, offset, arrow: true })
+  const floating = useFloatingPanel({
+    open: visible,
+    reference: buttonEl,
+    floating: bubbleEl,
+    placement,
+    offset,
+    arrow: true,
+  })
 
   const { setNode, layerProps } = useLayer(visible, {
     onEscape: () => setOpen(false),
@@ -90,7 +104,9 @@ export const Toggletip = forwardRef<HTMLButtonElement, ToggletipProps>(function 
         className={cx('or-toggletip-button', `or-toggletip-button--${size}`, className)}
         aria-label={label ?? t('moreInfo')}
         aria-expanded={visible}
-        onClick={composeEventHandlers(onClick, (_event: ReactMouseEvent<HTMLButtonElement>) => setOpen((v) => !v))}
+        onClick={composeEventHandlers(onClick, (_event: ReactMouseEvent<HTMLButtonElement>) =>
+          setOpen((v) => !v),
+        )}
         onBlur={composeEventHandlers(onBlur, (event: ReactFocusEvent<HTMLButtonElement>) => {
           // Fecha quando o foco vai para outro controle (Tab, clique em outro campo).
           const next = event.relatedTarget as Node | null

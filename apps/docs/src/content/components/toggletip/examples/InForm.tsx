@@ -12,8 +12,8 @@ export default function InForm() {
             placement="right"
             content={
               <>
-                Quantidade máxima de chamadas por minuto, por chave de API. Acima disso, a API responde com{' '}
-                <strong>429</strong>.
+                Quantidade máxima de chamadas por minuto, por chave de API. Acima disso, a API
+                responde com <strong>429</strong>.
               </>
             }
           />

@@ -15,7 +15,10 @@ import {
   DropdownSeparator,
 } from './Menu'
 
-function Example({ onSelect = () => {}, ...props }: Partial<DropdownProps> & { onSelect?: (id: string) => void }) {
+function Example({
+  onSelect = () => {},
+  ...props
+}: Partial<DropdownProps> & { onSelect?: (id: string) => void }) {
   return (
     <>
       <Dropdown trigger={<Button variant="outline">Ações</Button>} {...props}>
@@ -57,7 +60,10 @@ describe('Dropdown', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
     expect(trigger).toHaveAttribute('aria-controls', menu.id)
     expect(items()).toHaveLength(5)
-    expect(screen.getByRole('menuitem', { name: 'Exportar' })).toHaveAttribute('aria-disabled', 'true')
+    expect(screen.getByRole('menuitem', { name: 'Exportar' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    )
     // aberto com o mouse, o foco vai para o menu (nenhum item destacado)
     expect(menu).toHaveFocus()
   })
@@ -203,7 +209,10 @@ describe('Dropdown', () => {
     render(<Options />)
     await user.click(screen.getByRole('button', { name: 'Exibir' }))
     const archived = screen.getByRole('menuitemcheckbox', { name: 'Mostrar arquivadas' })
-    expect(screen.getByRole('menuitemcheckbox', { name: 'Mostrar concluídas' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('menuitemcheckbox', { name: 'Mostrar concluídas' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    )
     expect(archived).toHaveAttribute('aria-checked', 'false')
 
     await user.click(archived)
@@ -212,13 +221,19 @@ describe('Dropdown', () => {
     expect(screen.getByRole('menu')).toBeInTheDocument()
 
     expect(screen.getByRole('group', { name: 'Ordenar por' })).toBeInTheDocument()
-    expect(screen.getByRole('menuitemradio', { name: 'Mais recentes' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('menuitemradio', { name: 'Mais recentes' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    )
     await user.click(screen.getByRole('menuitemradio', { name: 'Nome' }))
     expect(onSort).toHaveBeenCalledWith('name')
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Exibir' }))
-    expect(screen.getByRole('menuitemradio', { name: 'Nome' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('menuitemradio', { name: 'Nome' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    )
   })
 
   it('dentro de um Modal, fica acima dele e Escape fecha só o menu', async () => {

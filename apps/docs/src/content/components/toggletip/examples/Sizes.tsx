@@ -5,7 +5,11 @@ export default function Sizes() {
     <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
         Pequeno (24px)
-        <Toggletip size="sm" label="Sobre o tamanho pequeno" content="Ideal ao lado de rótulos e textos de corpo." />
+        <Toggletip
+          size="sm"
+          label="Sobre o tamanho pequeno"
+          content="Ideal ao lado de rótulos e textos de corpo."
+        />
       </span>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
         Médio (32px)

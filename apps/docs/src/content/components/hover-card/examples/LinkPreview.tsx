@@ -16,7 +16,8 @@ export default function LinkPreview() {
             Acessibilidade em formulários
           </strong>
           <span style={{ color: 'var(--or-color-text-muted)' }}>
-            Rótulos, mensagens de erro e ordem de foco: o checklist que usamos em todo formulário do produto.
+            Rótulos, mensagens de erro e ordem de foco: o checklist que usamos em todo formulário do
+            produto.
           </span>
         </div>
       </HoverCard>{' '}

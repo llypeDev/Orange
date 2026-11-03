@@ -18,7 +18,16 @@ const meta = {
   argTypes: {
     placement: {
       control: 'select',
-      options: ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'right'],
+      options: [
+        'top',
+        'top-start',
+        'top-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'left',
+        'right',
+      ],
     },
     delay: { control: { type: 'number', min: 0, step: 100 } },
     closeDelay: { control: { type: 'number', min: 0, step: 50 } },
@@ -30,7 +39,14 @@ const meta = {
     delay: 400,
     closeDelay: 150,
     arrow: true,
-    children: <Button variant="outline" iconOnly aria-label="Copiar link" startIcon={<Icon name="link" />} />,
+    children: (
+      <Button
+        variant="outline"
+        iconOnly
+        aria-label="Copiar link"
+        startIcon={<Icon name="link" />}
+      />
+    ),
   },
 } satisfies Meta<typeof Tooltip>
 
@@ -68,7 +84,12 @@ export const Placements: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12, padding: '64px 0', justifyContent: 'center' }}>
       {(['top', 'right', 'bottom', 'left'] as const).map((placement) => (
-        <Tooltip {...args} key={placement} placement={placement} content={`Tooltip em ${placement}`}>
+        <Tooltip
+          {...args}
+          key={placement}
+          placement={placement}
+          content={`Tooltip em ${placement}`}
+        >
           <Button variant="outline">{placement}</Button>
         </Tooltip>
       ))}

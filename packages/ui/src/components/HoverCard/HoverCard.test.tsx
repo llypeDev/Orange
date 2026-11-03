@@ -8,7 +8,12 @@ function Example(props: Partial<HoverCardProps>) {
   return (
     <p>
       Revisado por{' '}
-      <HoverCard trigger={<a href="/pessoas/ana-souza">Ana Souza</a>} openDelay={0} closeDelay={0} {...props}>
+      <HoverCard
+        trigger={<a href="/pessoas/ana-souza">Ana Souza</a>}
+        openDelay={0}
+        closeDelay={0}
+        {...props}
+      >
         <strong>Ana Souza</strong>
         <span>Designer de produto · Time Pagamentos</span>
       </HoverCard>
@@ -25,7 +30,9 @@ describe('HoverCard', () => {
     expect(screen.queryByText('Designer de produto · Time Pagamentos')).not.toBeInTheDocument()
     expect(await screen.findByText('Designer de produto · Time Pagamentos')).toBeInTheDocument()
     await user.unhover(link)
-    await waitFor(() => expect(screen.queryByText('Designer de produto · Time Pagamentos')).not.toBeInTheDocument())
+    await waitFor(() =>
+      expect(screen.queryByText('Designer de produto · Time Pagamentos')).not.toBeInTheDocument(),
+    )
   })
 
   it('permanece aberto enquanto o ponteiro está sobre o cartão', async () => {
@@ -33,7 +40,9 @@ describe('HoverCard', () => {
     render(<Example closeDelay={60} />)
     const link = screen.getByRole('link', { name: 'Ana Souza' })
     await user.hover(link)
-    const card = (await screen.findByText('Designer de produto · Time Pagamentos')).closest('.or-hover-card')!
+    const card = (await screen.findByText('Designer de produto · Time Pagamentos')).closest(
+      '.or-hover-card',
+    )!
     await user.unhover(link)
     await user.hover(card)
     await new Promise((resolve) => setTimeout(resolve, 120))

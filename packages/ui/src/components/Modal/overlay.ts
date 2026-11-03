@@ -128,7 +128,8 @@ function raise(entry: LayerEntry) {
     return Number.isNaN(z) ? max : Math.max(max, z)
   }, Number.NEGATIVE_INFINITY)
   const own = zIndexOf(node)
-  if (Number.isFinite(below) && (Number.isNaN(own) || own <= below)) node.style.zIndex = String(below + 1)
+  if (Number.isFinite(below) && (Number.isNaN(own) || own <= below))
+    node.style.zIndex = String(below + 1)
 }
 
 /**
@@ -139,7 +140,8 @@ export function useLayer(active: boolean, options: LayerOptions) {
   const optionsRef = useRef(options)
   optionsRef.current = options
   const entryRef = useRef<LayerEntry | null>(null)
-  if (!entryRef.current) entryRef.current = { events: new WeakSet(), options: optionsRef, node: null }
+  if (!entryRef.current)
+    entryRef.current = { events: new WeakSet(), options: optionsRef, node: null }
 
   useIsomorphicLayoutEffect(() => {
     if (!active) return
@@ -193,7 +195,10 @@ export function usePresence(open: boolean) {
     const node = nodeRef.current
     const style = node ? getComputedStyle(node) : null
     const animated =
-      !!style && !!style.animationName && style.animationName !== 'none' && Number.parseFloat(style.animationDuration) > 0
+      !!style &&
+      !!style.animationName &&
+      style.animationName !== 'none' &&
+      Number.parseFloat(style.animationDuration) > 0
     if (!node || !animated) {
       setMounted(false)
       return
@@ -211,7 +216,11 @@ export function usePresence(open: boolean) {
     }
   }, [open, mounted])
 
-  return { present: open || mounted, state: open ? ('open' as const) : ('closed' as const), nodeRef }
+  return {
+    present: open || mounted,
+    state: open ? ('open' as const) : ('closed' as const),
+    nodeRef,
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -244,14 +253,19 @@ export function focusElement(el: HTMLElement | null | undefined) {
  * Elemento focável (via Tab) que vem logo depois de `anchor` na ordem do
  * documento, ignorando os que estão dentro de `exclude`.
  */
-export function getTabbableAfter(anchor: HTMLElement, exclude?: HTMLElement | null): HTMLElement | null {
+export function getTabbableAfter(
+  anchor: HTMLElement,
+  exclude?: HTMLElement | null,
+): HTMLElement | null {
   const all = getFocusableElements(document.body).filter(
     (el) => el.tabIndex >= 0 && !exclude?.contains(el) && !el.closest('[hidden]'),
   )
   const index = all.findIndex((el) => el === anchor || el.contains(anchor))
   if (index >= 0) return all[index + 1] ?? null
   // âncora não focável: primeiro elemento posterior a ela
-  return all.find((el) => anchor.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) ?? null
+  return (
+    all.find((el) => anchor.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) ?? null
+  )
 }
 
 /** `true` quando o foco atual veio do teclado (`:focus-visible`). */

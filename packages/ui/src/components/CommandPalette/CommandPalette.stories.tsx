@@ -9,7 +9,12 @@ const groups: CommandGroup[] = [
     items: [
       { id: 'inicio', label: 'Ir para o início', icon: 'home', shortcut: 'G I' },
       { id: 'projetos', label: 'Ir para projetos', icon: 'folder', shortcut: 'G P' },
-      { id: 'config', label: 'Abrir configurações', description: 'Conta, notificações e segurança', icon: 'sliders' },
+      {
+        id: 'config',
+        label: 'Abrir configurações',
+        description: 'Conta, notificações e segurança',
+        icon: 'sliders',
+      },
     ],
   },
   {
@@ -17,13 +22,24 @@ const groups: CommandGroup[] = [
     items: [
       { id: 'novo-projeto', label: 'Criar projeto', icon: 'plus', shortcut: '⌘ N' },
       { id: 'convidar', label: 'Convidar pessoas', icon: 'users', keywords: ['equipe', 'membros'] },
-      { id: 'importar', label: 'Importar dados', description: 'CSV ou planilha', icon: 'upload', disabled: true },
+      {
+        id: 'importar',
+        label: 'Importar dados',
+        description: 'CSV ou planilha',
+        icon: 'upload',
+        disabled: true,
+      },
     ],
   },
   {
     label: 'Preferências',
     items: [
-      { id: 'tema', label: 'Alternar tema claro/escuro', icon: 'moon', keywords: ['dark', 'light', 'aparência'] },
+      {
+        id: 'tema',
+        label: 'Alternar tema claro/escuro',
+        icon: 'moon',
+        keywords: ['dark', 'light', 'aparência'],
+      },
       { id: 'atalhos', label: 'Ver atalhos de teclado', icon: 'keyboard', shortcut: '?' },
     ],
   },
@@ -60,7 +76,10 @@ export const Default: Story = {
       {...args}
       trigger={
         <Button variant="outline" startIcon={<Icon name="search" />}>
-          Buscar comandos <kbd style={{ marginLeft: 8, fontFamily: 'var(--or-font-mono)', fontSize: 11 }}>Ctrl K</kbd>
+          Buscar comandos{' '}
+          <kbd style={{ marginLeft: 8, fontFamily: 'var(--or-font-mono)', fontSize: 11 }}>
+            Ctrl K
+          </kbd>
         </Button>
       }
     />
@@ -68,6 +87,15 @@ export const Default: Story = {
 }
 
 export const CustomEmptyMessage: Story = {
-  args: { emptyMessage: 'Nenhum comando com esse nome. Tente "projeto" ou "tema".', placeholder: 'O que você quer fazer?' },
-  render: (args) => <CommandPalette {...args} hotkey={undefined} trigger={<Button variant="outline">Abrir paleta</Button>} />,
+  args: {
+    emptyMessage: 'Nenhum comando com esse nome. Tente "projeto" ou "tema".',
+    placeholder: 'O que você quer fazer?',
+  },
+  render: (args) => (
+    <CommandPalette
+      {...args}
+      hotkey={undefined}
+      trigger={<Button variant="outline">Abrir paleta</Button>}
+    />
+  ),
 }

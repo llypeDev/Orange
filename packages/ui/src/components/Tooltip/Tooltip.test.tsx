@@ -9,7 +9,12 @@ import { Tooltip, type TooltipProps } from './Tooltip'
 function Example(props: Partial<TooltipProps>) {
   return (
     <Tooltip content="Copia o link público do projeto" delay={0} closeDelay={0} {...props}>
-      <Button variant="outline" iconOnly aria-label="Copiar link" startIcon={<Icon name="link" />} />
+      <Button
+        variant="outline"
+        iconOnly
+        aria-label="Copiar link"
+        startIcon={<Icon name="link" />}
+      />
     </Tooltip>
   )
 }

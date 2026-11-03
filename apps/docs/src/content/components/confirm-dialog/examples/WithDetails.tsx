@@ -1,6 +1,10 @@
 import { Button, ConfirmDialog } from '@orange/ui'
 
-const integracoes = ['Slack — canal #vendas', 'Google Agenda — 2 calendários', 'Webhook de faturamento']
+const integracoes = [
+  'Slack — canal #vendas',
+  'Google Agenda — 2 calendários',
+  'Webhook de faturamento',
+]
 
 export default function WithDetails() {
   return (

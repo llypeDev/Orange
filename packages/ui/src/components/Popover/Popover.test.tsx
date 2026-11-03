@@ -10,7 +10,12 @@ import { Popover, type PopoverProps } from './Popover'
 function Example(props: Partial<PopoverProps>) {
   return (
     <div>
-      <Popover trigger={<Button variant="outline">Filtros</Button>} title="Filtrar pedidos" showCloseButton {...props}>
+      <Popover
+        trigger={<Button variant="outline">Filtros</Button>}
+        title="Filtrar pedidos"
+        showCloseButton
+        {...props}
+      >
         <label>
           <input type="checkbox" /> Somente pendentes
         </label>
@@ -47,9 +52,7 @@ describe('Popover', () => {
   it('sem título, usa o gatilho como nome acessível e foca o painel se não houver focáveis', async () => {
     const user = userEvent.setup()
     render(
-      <Popover trigger={<Button>Sobre o plano</Button>}>
-        O plano Pro inclui 10 projetos.
-      </Popover>,
+      <Popover trigger={<Button>Sobre o plano</Button>}>O plano Pro inclui 10 projetos.</Popover>,
     )
     await user.click(screen.getByRole('button', { name: 'Sobre o plano' }))
     const dialog = screen.getByRole('dialog', { name: 'Sobre o plano' })

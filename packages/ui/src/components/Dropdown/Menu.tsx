@@ -100,7 +100,14 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
   const closeRef = useRef(onClose)
   closeRef.current = onClose
 
-  const floating = useFloatingPanel({ open, reference, floating: menuEl, placement, offset, strategy })
+  const floating = useFloatingPanel({
+    open,
+    reference,
+    floating: menuEl,
+    placement,
+    offset,
+    strategy,
+  })
 
   const { setNode, layerProps } = useLayer(open, {
     onEscape: () => closeRef.current('escape'),
@@ -113,8 +120,13 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
     if (!open || !menuEl) return
     const items = getItems(menuEl)
     const target = focusOnOpen.current
-    focusElement(target === 'first' ? (items[0] ?? menuEl) : target === 'last' ? (items[items.length - 1] ?? menuEl) : menuEl)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    focusElement(
+      target === 'first'
+        ? (items[0] ?? menuEl)
+        : target === 'last'
+          ? (items[items.length - 1] ?? menuEl)
+          : menuEl,
+    )
   }, [open, menuEl])
 
   const context = useMemo<MenuContextValue>(
@@ -207,7 +219,20 @@ interface BaseItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' 
 }
 
 const MenuItemBase = forwardRef<HTMLDivElement, BaseItemProps>(function MenuItemBase(
-  { role, disabled, closeOnSelect, textValue, onActivate, className, onClick, onKeyDown, onKeyUp, onPointerMove, onPointerLeave, ...rest },
+  {
+    role,
+    disabled,
+    closeOnSelect,
+    textValue,
+    onActivate,
+    className,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+    onPointerMove,
+    onPointerLeave,
+    ...rest
+  },
   ref,
 ) {
   const context = useContext(MenuContext)
@@ -246,14 +271,20 @@ const MenuItemBase = forwardRef<HTMLDivElement, BaseItemProps>(function MenuItem
           activate(event)
         }
       })}
-      onPointerMove={composeEventHandlers(onPointerMove, (event: ReactPointerEvent<HTMLDivElement>) => {
-        if (event.pointerType === 'touch') return
-        if (document.activeElement !== event.currentTarget) focusElement(event.currentTarget)
-      })}
-      onPointerLeave={composeEventHandlers(onPointerLeave, (event: ReactPointerEvent<HTMLDivElement>) => {
-        if (event.pointerType === 'touch') return
-        if (document.activeElement === event.currentTarget) context?.focusMenu()
-      })}
+      onPointerMove={composeEventHandlers(
+        onPointerMove,
+        (event: ReactPointerEvent<HTMLDivElement>) => {
+          if (event.pointerType === 'touch') return
+          if (document.activeElement !== event.currentTarget) focusElement(event.currentTarget)
+        },
+      )}
+      onPointerLeave={composeEventHandlers(
+        onPointerLeave,
+        (event: ReactPointerEvent<HTMLDivElement>) => {
+          if (event.pointerType === 'touch') return
+          if (document.activeElement === event.currentTarget) context?.focusMenu()
+        },
+      )}
       {...rest}
     />
   )
@@ -268,7 +299,10 @@ function renderIcon(icon: IconName | ReactElement | undefined) {
   )
 }
 
-export interface DropdownItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'role'> {
+export interface DropdownItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'role'
+> {
   /** Ícone à esquerda: nome da biblioteca do Orange ou um elemento. */
   icon?: IconName | ReactElement
   /** Atalho de teclado exibido à direita (apenas visual — implemente o atalho à parte). */
@@ -287,7 +321,18 @@ export interface DropdownItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 
 
 /** Item de ação do menu (`role="menuitem"`). */
 export const DropdownItem = forwardRef<HTMLDivElement, DropdownItemProps>(function DropdownItem(
-  { icon, shortcut, tone = 'neutral', disabled, onSelect, closeOnSelect = true, textValue, className, children, ...rest },
+  {
+    icon,
+    shortcut,
+    tone = 'neutral',
+    disabled,
+    onSelect,
+    closeOnSelect = true,
+    textValue,
+    className,
+    children,
+    ...rest
+  },
   ref,
 ) {
   return (
@@ -312,7 +357,10 @@ export const DropdownItem = forwardRef<HTMLDivElement, DropdownItemProps>(functi
   )
 })
 
-export interface DropdownCheckboxItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'role'> {
+export interface DropdownCheckboxItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'role'
+> {
   /** Marcado (controlado). */
   checked?: boolean
   /** Marcado inicialmente (não controlado). */
@@ -328,35 +376,52 @@ export interface DropdownCheckboxItemProps extends Omit<HTMLAttributes<HTMLDivEl
 }
 
 /** Opção liga/desliga do menu (`role="menuitemcheckbox"`). */
-export const DropdownCheckboxItem = forwardRef<HTMLDivElement, DropdownCheckboxItemProps>(function DropdownCheckboxItem(
-  { checked, defaultChecked = false, onCheckedChange, disabled, shortcut, closeOnSelect = false, textValue, className, children, ...rest },
-  ref,
-) {
-  const [isChecked, setChecked] = useControllableState({ value: checked, defaultValue: defaultChecked, onChange: onCheckedChange })
-  return (
-    <MenuItemBase
-      ref={ref}
-      role="menuitemcheckbox"
-      aria-checked={isChecked}
-      disabled={disabled}
-      closeOnSelect={closeOnSelect}
-      textValue={textValue}
-      onActivate={() => setChecked((v) => !v)}
-      className={cx('or-menu__item--checkable', className)}
-      {...rest}
-    >
-      <span className="or-menu__indicator" aria-hidden="true">
-        {isChecked && <Icon name="check" size="sm" strokeWidth={2.25} />}
-      </span>
-      <span className="or-menu__text">{children}</span>
-      {shortcut && (
-        <span className="or-menu__shortcut" aria-hidden="true">
-          {shortcut}
+export const DropdownCheckboxItem = forwardRef<HTMLDivElement, DropdownCheckboxItemProps>(
+  function DropdownCheckboxItem(
+    {
+      checked,
+      defaultChecked = false,
+      onCheckedChange,
+      disabled,
+      shortcut,
+      closeOnSelect = false,
+      textValue,
+      className,
+      children,
+      ...rest
+    },
+    ref,
+  ) {
+    const [isChecked, setChecked] = useControllableState({
+      value: checked,
+      defaultValue: defaultChecked,
+      onChange: onCheckedChange,
+    })
+    return (
+      <MenuItemBase
+        ref={ref}
+        role="menuitemcheckbox"
+        aria-checked={isChecked}
+        disabled={disabled}
+        closeOnSelect={closeOnSelect}
+        textValue={textValue}
+        onActivate={() => setChecked((v) => !v)}
+        className={cx('or-menu__item--checkable', className)}
+        {...rest}
+      >
+        <span className="or-menu__indicator" aria-hidden="true">
+          {isChecked && <Icon name="check" size="sm" strokeWidth={2.25} />}
         </span>
-      )}
-    </MenuItemBase>
-  )
-})
+        <span className="or-menu__text">{children}</span>
+        {shortcut && (
+          <span className="or-menu__shortcut" aria-hidden="true">
+            {shortcut}
+          </span>
+        )}
+      </MenuItemBase>
+    )
+  },
+)
 
 interface RadioGroupContextValue {
   value: string | undefined
@@ -377,38 +442,46 @@ export interface DropdownRadioGroupProps extends HTMLAttributes<HTMLDivElement> 
 }
 
 /** Grupo de opções exclusivas (`role="group"` com `menuitemradio`). */
-export const DropdownRadioGroup = forwardRef<HTMLDivElement, DropdownRadioGroupProps>(function DropdownRadioGroup(
-  { value, defaultValue, onValueChange, label, className, children, ...rest },
-  ref,
-) {
-  const [current, setCurrent] = useControllableState<string | undefined>({
-    value,
-    defaultValue,
-    onChange: onValueChange as ((value: string | undefined) => void) | undefined,
-  })
-  const labelId = useId('or-menu-group')
-  const context = useMemo<RadioGroupContextValue>(() => ({ value: current, setValue: setCurrent }), [current, setCurrent])
-  return (
-    <RadioGroupContext.Provider value={context}>
-      <div
-        ref={ref}
-        role="group"
-        aria-labelledby={label && !rest['aria-label'] ? labelId : undefined}
-        className={cx('or-menu__group', className)}
-        {...rest}
-      >
-        {label && (
-          <div id={labelId} role="presentation" className="or-menu__group-label">
-            {label}
-          </div>
-        )}
-        {children}
-      </div>
-    </RadioGroupContext.Provider>
-  )
-})
+export const DropdownRadioGroup = forwardRef<HTMLDivElement, DropdownRadioGroupProps>(
+  function DropdownRadioGroup(
+    { value, defaultValue, onValueChange, label, className, children, ...rest },
+    ref,
+  ) {
+    const [current, setCurrent] = useControllableState<string | undefined>({
+      value,
+      defaultValue,
+      onChange: onValueChange as ((value: string | undefined) => void) | undefined,
+    })
+    const labelId = useId('or-menu-group')
+    const context = useMemo<RadioGroupContextValue>(
+      () => ({ value: current, setValue: setCurrent }),
+      [current, setCurrent],
+    )
+    return (
+      <RadioGroupContext.Provider value={context}>
+        <div
+          ref={ref}
+          role="group"
+          aria-labelledby={label && !rest['aria-label'] ? labelId : undefined}
+          className={cx('or-menu__group', className)}
+          {...rest}
+        >
+          {label && (
+            <div id={labelId} role="presentation" className="or-menu__group-label">
+              {label}
+            </div>
+          )}
+          {children}
+        </div>
+      </RadioGroupContext.Provider>
+    )
+  },
+)
 
-export interface DropdownRadioItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'role'> {
+export interface DropdownRadioItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'role'
+> {
   /** Valor desta opção dentro do `DropdownRadioGroup`. */
   value: string
   disabled?: boolean
@@ -418,49 +491,58 @@ export interface DropdownRadioItemProps extends Omit<HTMLAttributes<HTMLDivEleme
 }
 
 /** Opção exclusiva dentro de `DropdownRadioGroup` (`role="menuitemradio"`). */
-export const DropdownRadioItem = forwardRef<HTMLDivElement, DropdownRadioItemProps>(function DropdownRadioItem(
-  { value, disabled, closeOnSelect = true, textValue, className, children, ...rest },
-  ref,
-) {
-  const group = useContext(RadioGroupContext)
-  const checked = group?.value === value
-  return (
-    <MenuItemBase
-      ref={ref}
-      role="menuitemradio"
-      aria-checked={checked}
-      disabled={disabled}
-      closeOnSelect={closeOnSelect}
-      textValue={textValue}
-      onActivate={() => group?.setValue(value)}
-      className={cx('or-menu__item--checkable', className)}
-      {...rest}
-    >
-      <span className="or-menu__indicator or-menu__indicator--radio" aria-hidden="true">
-        {checked && <span className="or-menu__dot" />}
-      </span>
-      <span className="or-menu__text">{children}</span>
-    </MenuItemBase>
-  )
-})
+export const DropdownRadioItem = forwardRef<HTMLDivElement, DropdownRadioItemProps>(
+  function DropdownRadioItem(
+    { value, disabled, closeOnSelect = true, textValue, className, children, ...rest },
+    ref,
+  ) {
+    const group = useContext(RadioGroupContext)
+    const checked = group?.value === value
+    return (
+      <MenuItemBase
+        ref={ref}
+        role="menuitemradio"
+        aria-checked={checked}
+        disabled={disabled}
+        closeOnSelect={closeOnSelect}
+        textValue={textValue}
+        onActivate={() => group?.setValue(value)}
+        className={cx('or-menu__item--checkable', className)}
+        {...rest}
+      >
+        <span className="or-menu__indicator or-menu__indicator--radio" aria-hidden="true">
+          {checked && <span className="or-menu__dot" />}
+        </span>
+        <span className="or-menu__text">{children}</span>
+      </MenuItemBase>
+    )
+  },
+)
 
-export interface DropdownSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+export type DropdownSeparatorProps = HTMLAttributes<HTMLDivElement>
 
 /** Linha divisória entre grupos de itens (`role="separator"`). */
-export const DropdownSeparator = forwardRef<HTMLDivElement, DropdownSeparatorProps>(function DropdownSeparator(
-  { className, ...rest },
-  ref,
-) {
-  return <div ref={ref} role="separator" className={cx('or-menu__separator', className)} {...rest} />
-})
+export const DropdownSeparator = forwardRef<HTMLDivElement, DropdownSeparatorProps>(
+  function DropdownSeparator({ className, ...rest }, ref) {
+    return (
+      <div ref={ref} role="separator" className={cx('or-menu__separator', className)} {...rest} />
+    )
+  },
+)
 
-export interface DropdownLabelProps extends HTMLAttributes<HTMLDivElement> {}
+export type DropdownLabelProps = HTMLAttributes<HTMLDivElement>
 
 /** Título não interativo de uma seção do menu. */
 export const DropdownLabel = forwardRef<HTMLDivElement, DropdownLabelProps>(function DropdownLabel(
   { className, ...rest },
   ref,
 ) {
-  return <div ref={ref} role="presentation" className={cx('or-menu__group-label', className)} {...rest} />
+  return (
+    <div
+      ref={ref}
+      role="presentation"
+      className={cx('or-menu__group-label', className)}
+      {...rest}
+    />
+  )
 })
-

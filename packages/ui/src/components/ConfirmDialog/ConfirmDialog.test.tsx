@@ -37,7 +37,9 @@ describe('ConfirmDialog', () => {
     await user.click(screen.getByRole('button', { name: 'Excluir' }))
     const dialog = screen.getByRole('alertdialog', { name: 'Excluir projeto?' })
     expect(dialog).toHaveAttribute('aria-modal', 'true')
-    expect(dialog).toHaveAccessibleDescription('O projeto Site 2025 e seus 12 arquivos serão removidos para sempre.')
+    expect(dialog).toHaveAccessibleDescription(
+      'O projeto Site 2025 e seus 12 arquivos serão removidos para sempre.',
+    )
   })
 
   it('tone="danger" usa botão danger e foca Cancelar', async () => {

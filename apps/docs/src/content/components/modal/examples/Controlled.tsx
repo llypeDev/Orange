@@ -20,7 +20,13 @@ export default function Controlled() {
       <Button variant="outline" onClick={abrir}>
         Renomear
       </Button>
-      <Modal title="Renomear projeto" size="sm" open={open} onOpenChange={setOpen} initialFocus={inputRef}>
+      <Modal
+        title="Renomear projeto"
+        size="sm"
+        open={open}
+        onOpenChange={setOpen}
+        initialFocus={inputRef}
+      >
         <form
           onSubmit={(event) => {
             event.preventDefault()

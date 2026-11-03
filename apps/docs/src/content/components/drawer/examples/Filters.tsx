@@ -8,7 +8,9 @@ export default function Filters() {
   const [aplicados, setAplicados] = useState<string[]>(['Pendente'])
 
   const alternar = (status: string) =>
-    setSelecionados((atual) => (atual.includes(status) ? atual.filter((s) => s !== status) : [...atual, status]))
+    setSelecionados((atual) =>
+      atual.includes(status) ? atual.filter((s) => s !== status) : [...atual, status],
+    )
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
@@ -38,7 +40,12 @@ export default function Filters() {
             <legend style={{ fontWeight: 600, marginBottom: 8 }}>Status</legend>
             {statusOpcoes.map((status) => (
               <label key={status} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <input type="checkbox" checked={selecionados.includes(status)} onChange={() => alternar(status)} />
+                <input
+                  type="checkbox"
+                  style={{ accentColor: 'var(--or-color-accent)' }}
+                  checked={selecionados.includes(status)}
+                  onChange={() => alternar(status)}
+                />
                 {status}
               </label>
             ))}
@@ -52,7 +59,9 @@ export default function Filters() {
           </Field>
         </div>
       </Drawer>
-      <span>{aplicados.length ? `Mostrando: ${aplicados.join(', ')}` : 'Mostrando todos os pedidos'}</span>
+      <span>
+        {aplicados.length ? `Mostrando: ${aplicados.join(', ')}` : 'Mostrando todos os pedidos'}
+      </span>
     </div>
   )
 }

@@ -41,7 +41,16 @@ export interface DropdownProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
  * setas navegam, letras buscam, Enter/Espaço ativam, Escape fecha.
  */
 export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(function Dropdown(
-  { trigger, children, open, defaultOpen, onOpenChange, placement = 'bottom-start', offset = 4, ...rest },
+  {
+    trigger,
+    children,
+    open,
+    defaultOpen,
+    onOpenChange,
+    placement = 'bottom-start',
+    offset = 4,
+    ...rest
+  },
   ref,
 ) {
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange })
@@ -81,15 +90,18 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(function Dropd
     }
   }
 
-  const triggerElement = cloneElement(trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>, {
-    ref: triggerRef,
-    id: triggerId,
-    'aria-haspopup': 'menu',
-    'aria-expanded': active,
-    'aria-controls': active ? menuId : undefined,
-    onClick: composeEventHandlers(triggerProps.onClick, handleClick),
-    onKeyDown: composeEventHandlers(triggerProps.onKeyDown, handleKeyDown),
-  })
+  const triggerElement = cloneElement(
+    trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>,
+    {
+      ref: triggerRef,
+      id: triggerId,
+      'aria-haspopup': 'menu',
+      'aria-expanded': active,
+      'aria-controls': active ? menuId : undefined,
+      onClick: composeEventHandlers(triggerProps.onClick, handleClick),
+      onKeyDown: composeEventHandlers(triggerProps.onKeyDown, handleKeyDown),
+    },
+  )
 
   return (
     <>

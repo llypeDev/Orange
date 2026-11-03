@@ -27,7 +27,12 @@ export default function WithConfirm() {
           Editar URL
         </DropdownItem>
         <DropdownSeparator />
-        <DropdownItem icon="trash" tone="danger" disabled={!ativo} onSelect={() => setConfirmar(true)}>
+        <DropdownItem
+          icon="trash"
+          tone="danger"
+          disabled={!ativo}
+          onSelect={() => setConfirmar(true)}
+        >
           Remover webhook…
         </DropdownItem>
       </Dropdown>

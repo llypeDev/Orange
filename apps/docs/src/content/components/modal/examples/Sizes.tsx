@@ -22,8 +22,9 @@ export default function Sizes() {
             <>
               <ModalBody>
                 <p>
-                  Use <strong>sm</strong> para confirmações curtas, <strong>md</strong> para formulários simples,{' '}
-                  <strong>lg</strong> para tabelas e prévias e <strong>full</strong> para editores e fluxos longos.
+                  Use <strong>sm</strong> para confirmações curtas, <strong>md</strong> para
+                  formulários simples, <strong>lg</strong> para tabelas e prévias e{' '}
+                  <strong>full</strong> para editores e fluxos longos.
                 </p>
               </ModalBody>
               <ModalFooter>

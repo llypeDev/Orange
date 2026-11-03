@@ -31,7 +31,15 @@ export default function InlineEdit() {
             }}
           >
             <Field label="Vendas por mês" controlId="meta-mensal">
-              <input ref={inputRef} id="meta-mensal" name="meta" type="number" min={1} defaultValue={meta} className="or-control" />
+              <input
+                ref={inputRef}
+                id="meta-mensal"
+                name="meta"
+                type="number"
+                min={1}
+                defaultValue={meta}
+                className="or-control"
+              />
             </Field>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
               <Button size="sm" variant="outline" onClick={close}>

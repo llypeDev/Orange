@@ -1,4 +1,4 @@
-import { Button, Icon, type IconName } from '@orange/ui'
+import { Button, Icon, useTheme, type IconName } from '@orange/ui'
 import { primitives, themes, type ThemeName } from '@orange/tokens'
 import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -287,7 +287,8 @@ const matrixBg = ['bg', 'bg-subtle', 'surface-raised', 'surface-hover']
 
 function ContrastMatrix() {
   const { t } = useLang()
-  const [theme, setTheme] = useState<ThemeName>('dark')
+  const { resolvedTheme } = useTheme()
+  const [theme, setTheme] = useState<ThemeName>(resolvedTheme)
   return (
     <>
       <div className="guide-toolbar">

@@ -144,14 +144,17 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
   )
 })
 
-export interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {}
+export type ModalBodyProps = HTMLAttributes<HTMLDivElement>
 
 /** Corpo do Modal. Rola internamente quando o conteúdo passa da altura disponível. */
-export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(function ModalBody({ className, ...rest }, ref) {
+export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(function ModalBody(
+  { className, ...rest },
+  ref,
+) {
   return <div ref={ref} className={cx('or-modal__body', className)} {...rest} />
 })
 
-export interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {}
+export type ModalFooterProps = HTMLAttributes<HTMLDivElement>
 
 /** Rodapé do Modal com as ações, alinhadas à direita (a principal por último). */
 export const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>(function ModalFooter(

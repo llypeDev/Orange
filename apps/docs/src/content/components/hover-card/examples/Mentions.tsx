@@ -19,7 +19,9 @@ export default function Mentions() {
             <div style={{ display: 'grid', gap: 4 }}>
               <strong style={{ fontFamily: 'var(--or-font-display)' }}>{pessoa.nome}</strong>
               <span style={{ color: 'var(--or-color-text-muted)' }}>{pessoa.cargo}</span>
-              <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>{pessoa.status}</span>
+              <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
+                {pessoa.status}
+              </span>
             </div>
           </HoverCard>
         </span>

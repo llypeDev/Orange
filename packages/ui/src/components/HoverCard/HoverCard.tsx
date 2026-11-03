@@ -68,7 +68,11 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
   },
   ref,
 ) {
-  const [isOpen, setOpen] = useControllableState({ value: open, defaultValue: defaultOpen, onChange: onOpenChange })
+  const [isOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  })
   const mounted = useMounted()
   const visible = isOpen && mounted
   const cardId = useId('or-hover-card')
@@ -78,7 +82,14 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
   const closeTimer = useRef<number | undefined>(undefined)
   const pointerFocus = useRef(false)
 
-  const floating = useFloatingPanel({ open: visible, reference: triggerEl, floating: cardEl, placement, offset, arrow })
+  const floating = useFloatingPanel({
+    open: visible,
+    reference: triggerEl,
+    floating: cardEl,
+    placement,
+    offset,
+    arrow,
+  })
 
   const scheduleOpen = () => {
     window.clearTimeout(closeTimer.current)
@@ -111,27 +122,36 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
   const cardRef = useMemo(() => mergeRefs<HTMLDivElement>(setCardEl, setNode, ref), [setNode, ref])
 
   const triggerProps = trigger.props as HTMLAttributes<HTMLElement>
-  const triggerElement = cloneElement(trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>, {
-    ref: triggerRef,
-    onPointerEnter: composeEventHandlers(triggerProps.onPointerEnter, (event: ReactPointerEvent<HTMLElement>) => {
-      if (event.pointerType !== 'touch') scheduleOpen()
-    }),
-    onPointerLeave: composeEventHandlers(triggerProps.onPointerLeave, (event: ReactPointerEvent<HTMLElement>) => {
-      if (event.pointerType !== 'touch') scheduleClose()
-    }),
-    onPointerDown: composeEventHandlers(triggerProps.onPointerDown, () => {
-      // o foco que vem do clique não abre o cartão
-      pointerFocus.current = true
-      window.setTimeout(() => (pointerFocus.current = false), 0)
-    }),
-    onFocus: composeEventHandlers(triggerProps.onFocus, (event: ReactFocusEvent<HTMLElement>) => {
-      if (!pointerFocus.current && isFocusVisible(event.currentTarget)) scheduleOpen()
-    }),
-    onBlur: composeEventHandlers(triggerProps.onBlur, (event: ReactFocusEvent<HTMLElement>) => {
-      const next = event.relatedTarget as Node | null
-      if (!next || !cardEl?.contains(next)) scheduleClose(true)
-    }),
-  })
+  const triggerElement = cloneElement(
+    trigger as ReactElement<HTMLAttributes<HTMLElement> & { ref?: unknown }>,
+    {
+      ref: triggerRef,
+      onPointerEnter: composeEventHandlers(
+        triggerProps.onPointerEnter,
+        (event: ReactPointerEvent<HTMLElement>) => {
+          if (event.pointerType !== 'touch') scheduleOpen()
+        },
+      ),
+      onPointerLeave: composeEventHandlers(
+        triggerProps.onPointerLeave,
+        (event: ReactPointerEvent<HTMLElement>) => {
+          if (event.pointerType !== 'touch') scheduleClose()
+        },
+      ),
+      onPointerDown: composeEventHandlers(triggerProps.onPointerDown, () => {
+        // o foco que vem do clique não abre o cartão
+        pointerFocus.current = true
+        window.setTimeout(() => (pointerFocus.current = false), 0)
+      }),
+      onFocus: composeEventHandlers(triggerProps.onFocus, (event: ReactFocusEvent<HTMLElement>) => {
+        if (!pointerFocus.current && isFocusVisible(event.currentTarget)) scheduleOpen()
+      }),
+      onBlur: composeEventHandlers(triggerProps.onBlur, (event: ReactFocusEvent<HTMLElement>) => {
+        const next = event.relatedTarget as Node | null
+        if (!next || !cardEl?.contains(next)) scheduleClose(true)
+      }),
+    },
+  )
 
   return (
     <>
@@ -145,10 +165,15 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
             data-theme={getThemeScope(triggerEl)}
             className={cx('or-floating', 'or-hover-card', className)}
             style={{ ...floating.floatingStyles, ...style }}
-            onPointerEnter={composeEventHandlers(onPointerEnter, () => window.clearTimeout(closeTimer.current))}
-            onPointerLeave={composeEventHandlers(onPointerLeave, (event: ReactPointerEvent<HTMLDivElement>) => {
-              if (event.pointerType !== 'touch') scheduleClose()
-            })}
+            onPointerEnter={composeEventHandlers(onPointerEnter, () =>
+              window.clearTimeout(closeTimer.current),
+            )}
+            onPointerLeave={composeEventHandlers(
+              onPointerLeave,
+              (event: ReactPointerEvent<HTMLDivElement>) => {
+                if (event.pointerType !== 'touch') scheduleClose()
+              },
+            )}
             {...rest}
             {...layerProps}
           >

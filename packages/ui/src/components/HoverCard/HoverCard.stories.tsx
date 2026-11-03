@@ -38,7 +38,9 @@ export const Default: Story = {
       Revisão solicitada por{' '}
       <HoverCard {...args}>
         <div style={{ display: 'grid', gap: 4 }}>
-          <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 'var(--or-text-md)' }}>Ana Souza</strong>
+          <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 'var(--or-text-md)' }}>
+            Ana Souza
+          </strong>
           <span>Designer de produto · Time Pagamentos</span>
           <span style={{ color: 'var(--or-color-text-subtle)' }}>São Paulo · 14 projetos</span>
         </div>

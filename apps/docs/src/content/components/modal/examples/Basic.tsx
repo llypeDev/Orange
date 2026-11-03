@@ -11,8 +11,17 @@ export default function Basic() {
         <>
           <ModalBody>
             <div style={{ display: 'grid', gap: 16 }}>
-              <Field label="E-mail" controlId="convite-email" description="Separe vários endereços com vírgula.">
-                <input id="convite-email" className="or-control" type="email" placeholder="nome@empresa.com" />
+              <Field
+                label="E-mail"
+                controlId="convite-email"
+                description="Separe vários endereços com vírgula."
+              >
+                <input
+                  id="convite-email"
+                  className="or-control"
+                  type="email"
+                  placeholder="nome@empresa.com"
+                />
               </Field>
               <Field label="Permissão" controlId="convite-permissao">
                 <select id="convite-permissao" className="or-control" defaultValue="editar">

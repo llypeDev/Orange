@@ -29,7 +29,11 @@ export default function Share() {
         >
           {link}
         </code>
-        <Button size="sm" startIcon={<Icon name={copied ? 'check' : 'copy'} />} onClick={() => copy(link)}>
+        <Button
+          size="sm"
+          startIcon={<Icon name={copied ? 'check' : 'copy'} />}
+          onClick={() => copy(link)}
+        >
           {copied ? 'Link copiado' : 'Copiar link'}
         </Button>
       </div>

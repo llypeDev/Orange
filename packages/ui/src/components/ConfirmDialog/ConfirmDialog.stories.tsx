@@ -44,7 +44,9 @@ export const Danger: Story = {
     description: 'O projeto "Site 2026" e seus 12 arquivos serão removidos para sempre.',
     confirmLabel: 'Excluir projeto',
   },
-  render: (args) => <ConfirmDialog {...args} trigger={<Button variant="danger">Excluir projeto</Button>} />,
+  render: (args) => (
+    <ConfirmDialog {...args} trigger={<Button variant="danger">Excluir projeto</Button>} />
+  ),
 }
 
 export const AsyncConfirm: Story = {
@@ -56,7 +58,11 @@ export const AsyncConfirm: Story = {
     loadingText: 'Encerrando sessões',
   },
   render: (args) => (
-    <ConfirmDialog {...args} onConfirm={() => wait(1500)} trigger={<Button variant="outline">Encerrar sessões</Button>} />
+    <ConfirmDialog
+      {...args}
+      onConfirm={() => wait(1500)}
+      trigger={<Button variant="outline">Encerrar sessões</Button>}
+    />
   ),
 }
 

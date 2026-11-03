@@ -11,8 +11,15 @@ export default function Sizes() {
   return (
     <>
       {tamanhos.map(({ size, label }) => (
-        <Drawer key={size} size={size} title={`Tamanho ${label}`} trigger={<Button variant="outline">{label}</Button>}>
-          <p style={{ margin: 0 }}>Em telas estreitas, todos os tamanhos ocupam a largura disponível.</p>
+        <Drawer
+          key={size}
+          size={size}
+          title={`Tamanho ${label}`}
+          trigger={<Button variant="outline">{label}</Button>}
+        >
+          <p style={{ margin: 0 }}>
+            Em telas estreitas, todos os tamanhos ocupam a largura disponível.
+          </p>
         </Drawer>
       ))}
     </>

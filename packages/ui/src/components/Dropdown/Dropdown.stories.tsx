@@ -25,7 +25,10 @@ const meta = {
     },
   },
   argTypes: {
-    placement: { control: 'select', options: ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'right-start'] },
+    placement: {
+      control: 'select',
+      options: ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'right-start'],
+    },
     onOpenChange: { action: 'openChange' },
   },
   args: {
@@ -71,7 +74,14 @@ export const CheckboxAndRadio: Story = {
     const [done, setDone] = useState(true)
     return (
       <div style={{ paddingBottom: 280 }}>
-        <Dropdown {...args} trigger={<Button variant="outline" startIcon={<Icon name="sliders" />}>Exibir</Button>}>
+        <Dropdown
+          {...args}
+          trigger={
+            <Button variant="outline" startIcon={<Icon name="sliders" />}>
+              Exibir
+            </Button>
+          }
+        >
           <DropdownCheckboxItem checked={done} onCheckedChange={setDone}>
             Mostrar concluídas
           </DropdownCheckboxItem>
@@ -94,7 +104,14 @@ export const IconTrigger: Story = {
       <Dropdown
         {...args}
         placement="bottom-end"
-        trigger={<Button variant="ghost" iconOnly aria-label="Mais ações" startIcon={<Icon name="more-horizontal" />} />}
+        trigger={
+          <Button
+            variant="ghost"
+            iconOnly
+            aria-label="Mais ações"
+            startIcon={<Icon name="more-horizontal" />}
+          />
+        }
       >
         <DropdownItem icon="external-link">Abrir em nova aba</DropdownItem>
         <DropdownItem icon="link">Copiar link</DropdownItem>

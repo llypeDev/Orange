@@ -10,8 +10,20 @@ export default function Basic() {
     {
       label: 'Navegação',
       items: [
-        { id: 'inicio', label: 'Ir para o painel', icon: 'home', shortcut: 'G P', onSelect: executar('Ir para o painel') },
-        { id: 'projetos', label: 'Ir para projetos', icon: 'folder', shortcut: 'G R', onSelect: executar('Ir para projetos') },
+        {
+          id: 'inicio',
+          label: 'Ir para o painel',
+          icon: 'home',
+          shortcut: 'G P',
+          onSelect: executar('Ir para o painel'),
+        },
+        {
+          id: 'projetos',
+          label: 'Ir para projetos',
+          icon: 'folder',
+          shortcut: 'G R',
+          onSelect: executar('Ir para projetos'),
+        },
         {
           id: 'configuracoes',
           label: 'Abrir configurações',
@@ -24,7 +36,13 @@ export default function Basic() {
     {
       label: 'Criar',
       items: [
-        { id: 'projeto', label: 'Criar projeto', icon: 'plus', shortcut: 'C', onSelect: executar('Criar projeto') },
+        {
+          id: 'projeto',
+          label: 'Criar projeto',
+          icon: 'plus',
+          shortcut: 'C',
+          onSelect: executar('Criar projeto'),
+        },
         {
           id: 'convidar',
           label: 'Convidar pessoas',
@@ -44,8 +62,19 @@ export default function Basic() {
     {
       label: 'Ajuda',
       items: [
-        { id: 'atalhos', label: 'Ver atalhos de teclado', icon: 'keyboard', shortcut: '?', onSelect: executar('Ver atalhos') },
-        { id: 'suporte', label: 'Falar com o suporte', icon: 'mail', onSelect: executar('Falar com o suporte') },
+        {
+          id: 'atalhos',
+          label: 'Ver atalhos de teclado',
+          icon: 'keyboard',
+          shortcut: '?',
+          onSelect: executar('Ver atalhos'),
+        },
+        {
+          id: 'suporte',
+          label: 'Falar com o suporte',
+          icon: 'mail',
+          onSelect: executar('Falar com o suporte'),
+        },
       ],
     },
   ]
@@ -58,7 +87,16 @@ export default function Basic() {
         trigger={
           <Button variant="outline" startIcon={<Icon name="search" />}>
             Buscar comandos
-            <kbd style={{ marginLeft: 12, fontFamily: 'var(--or-font-mono)', fontSize: 11, opacity: 0.7 }}>Ctrl K</kbd>
+            <kbd
+              style={{
+                marginLeft: 12,
+                fontFamily: 'var(--or-font-mono)',
+                fontSize: 11,
+                opacity: 0.7,
+              }}
+            >
+              Ctrl K
+            </kbd>
           </Button>
         }
       />

@@ -39,8 +39,9 @@ export default function Options() {
         </DropdownRadioGroup>
       </Dropdown>
       <span>
-        {[concluidas && 'concluídas', arquivadas && 'arquivadas'].filter(Boolean).join(' e ') || 'só abertas'}, por{' '}
-        {rotulos[ordem]}
+        {[concluidas && 'concluídas', arquivadas && 'arquivadas'].filter(Boolean).join(' e ') ||
+          'só abertas'}
+        , por {rotulos[ordem]}
       </span>
     </div>
   )

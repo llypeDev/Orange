@@ -65,7 +65,8 @@ export function DialogShell({
   // qualquer `autoFocus` do conteúdo mova o foco.
   if (active && !wasActiveRef.current && canUseDOM) {
     const current = document.activeElement
-    restoreRef.current = current instanceof HTMLElement && current !== document.body ? current : null
+    restoreRef.current =
+      current instanceof HTMLElement && current !== document.body ? current : null
     themeRef.current = getThemeScope(restoreRef.current ?? document.documentElement)
   }
   wasActiveRef.current = active
@@ -97,7 +98,6 @@ export function DialogShell({
       focusables[0] ??
       panel
     focusElement(target)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
   // Foco de retorno: no cleanup passivo, depois que o React terminou o commit
@@ -105,9 +105,11 @@ export function DialogShell({
   useEffect(() => {
     if (!active) return
     const panel = panelRef.current
+    // lido no fechamento: o alvo pode ter mudado enquanto o diálogo estava aberto
+    const getFinalFocus = () => finalFocus?.current
     return () => {
       release()
-      const target = finalFocus?.current ?? restoreRef.current
+      const target = getFinalFocus() ?? restoreRef.current
       const current = document.activeElement
       const focusLost = !current || current === document.body || !!panel?.contains(current)
       if (target?.isConnected && focusLost) focusElement(target)
@@ -128,7 +130,9 @@ export function DialogShell({
     const current = document.activeElement as HTMLElement | null
     // foco em um portal aninhado (ex.: Popover dentro do Modal): deixa com ele
     if (current && !panel.contains(current)) return
-    const items = getFocusableElements(panel).filter((el) => el.tabIndex >= 0 && !el.closest('[hidden]'))
+    const items = getFocusableElements(panel).filter(
+      (el) => el.tabIndex >= 0 && !el.closest('[hidden]'),
+    )
     if (items.length === 0) {
       event.preventDefault()
       return
@@ -146,7 +150,8 @@ export function DialogShell({
 
   const handleFocus = (event: ReactFocusEvent<HTMLDivElement>) => {
     onFocus?.(event)
-    if (panelRef.current?.contains(event.target)) lastFocusedRef.current = event.target as HTMLElement
+    if (panelRef.current?.contains(event.target))
+      lastFocusedRef.current = event.target as HTMLElement
   }
 
   return (
@@ -168,7 +173,8 @@ export function DialogShell({
               pointerDownOnOverlayRef.current = event.button === 0 && isTop()
             }}
             onClick={() => {
-              if (pointerDownOnOverlayRef.current && closeOnOverlayClick && active) dismissRef.current()
+              if (pointerDownOnOverlayRef.current && closeOnOverlayClick && active)
+                dismissRef.current()
               pointerDownOnOverlayRef.current = false
             }}
           />

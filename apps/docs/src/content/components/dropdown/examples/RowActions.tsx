@@ -22,7 +22,9 @@ export default function RowActions() {
           <Icon name="file" />
           <span style={{ flex: 1, display: 'grid' }}>
             <span>{arquivo.nome}</span>
-            <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>{arquivo.detalhe}</span>
+            <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
+              {arquivo.detalhe}
+            </span>
           </span>
           <Dropdown
             placement="bottom-end"

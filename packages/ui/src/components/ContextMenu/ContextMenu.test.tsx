@@ -6,7 +6,10 @@ import { expectNoA11yViolations } from '../../test/axe'
 import { DropdownItem, DropdownSeparator } from '../Dropdown/Menu'
 import { ContextMenu, type ContextMenuProps } from './ContextMenu'
 
-function Example({ onSelect = () => {}, ...props }: Partial<ContextMenuProps> & { onSelect?: (id: string) => void }) {
+function Example({
+  onSelect = () => {},
+  ...props
+}: Partial<ContextMenuProps> & { onSelect?: (id: string) => void }) {
   return (
     <ContextMenu
       content={
@@ -25,7 +28,7 @@ function Example({ onSelect = () => {}, ...props }: Partial<ContextMenuProps> & 
       }
       {...props}
     >
-      <div tabIndex={0} data-testid="area">
+      <div role="region" aria-label="Arquivo" tabIndex={0} data-testid="area">
         relatorio-trimestral.pdf
       </div>
     </ContextMenu>

@@ -53,7 +53,13 @@ export const Placements: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12 }}>
       {(['left', 'right', 'bottom'] as const).map((placement) => (
-        <Drawer key={placement} {...args} placement={placement} title={`Painel ${placement}`} trigger={<Button variant="outline">{placement}</Button>}>
+        <Drawer
+          key={placement}
+          {...args}
+          placement={placement}
+          title={`Painel ${placement}`}
+          trigger={<Button variant="outline">{placement}</Button>}
+        >
           <p>Conteúdo do painel.</p>
         </Drawer>
       ))}
@@ -65,7 +71,13 @@ export const Sizes: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12 }}>
       {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
-        <Drawer key={size} {...args} size={size} title={`Tamanho ${size}`} trigger={<Button variant="outline">{size}</Button>}>
+        <Drawer
+          key={size}
+          {...args}
+          size={size}
+          title={`Tamanho ${size}`}
+          trigger={<Button variant="outline">{size}</Button>}
+        >
           <p>Conteúdo do painel.</p>
         </Drawer>
       ))}

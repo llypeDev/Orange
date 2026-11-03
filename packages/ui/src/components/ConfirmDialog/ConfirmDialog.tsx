@@ -20,7 +20,10 @@ import './ConfirmDialog.css'
 
 export type ConfirmDialogTone = 'neutral' | 'danger'
 
-export interface ConfirmDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'children'> {
+export interface ConfirmDialogProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'title' | 'children'
+> {
   /** Aberto (controlado). Use com `onOpenChange`. */
   open?: boolean
   /** Aberto inicialmente (não controlado). */
@@ -190,7 +193,14 @@ export const ConfirmDialog = forwardRef<HTMLDivElement, ConfirmDialogProps>(func
 /** Opções aceitas por `confirm()` do hook `useConfirm`. */
 export type ConfirmOptions = Pick<
   ConfirmDialogProps,
-  'title' | 'description' | 'children' | 'confirmLabel' | 'cancelLabel' | 'tone' | 'onConfirm' | 'loadingText'
+  | 'title'
+  | 'description'
+  | 'children'
+  | 'confirmLabel'
+  | 'cancelLabel'
+  | 'tone'
+  | 'onConfirm'
+  | 'loadingText'
 >
 
 /**

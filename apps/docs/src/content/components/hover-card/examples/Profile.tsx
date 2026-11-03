@@ -28,7 +28,9 @@ function Perfil() {
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Designer de produto no time de Pagamentos. Cuida do checkout e do app do lojista.
       </p>
-      <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>São Paulo · 14 projetos · desde 2021</span>
+      <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
+        São Paulo · 14 projetos · desde 2021
+      </span>
     </div>
   )
 }

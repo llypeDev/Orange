@@ -18,7 +18,16 @@ const meta = {
   argTypes: {
     placement: {
       control: 'select',
-      options: ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'right'],
+      options: [
+        'top',
+        'top-start',
+        'top-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'left',
+        'right',
+      ],
     },
     arrow: { control: 'boolean' },
     offset: { control: { type: 'number', min: 0, max: 24 } },
@@ -58,7 +67,14 @@ export const Placements: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: 12, padding: '96px 0', justifyContent: 'center' }}>
       {(['top', 'right', 'bottom', 'left'] as const).map((placement) => (
-        <Popover {...args} key={placement} placement={placement} title={undefined} showCloseButton={false} trigger={<Button variant="outline">{placement}</Button>}>
+        <Popover
+          {...args}
+          key={placement}
+          placement={placement}
+          title={undefined}
+          showCloseButton={false}
+          trigger={<Button variant="outline">{placement}</Button>}
+        >
           Abre em <strong>{placement}</strong>.
         </Popover>
       ))}
@@ -70,9 +86,18 @@ export const WithoutTitle: Story = {
   args: {
     title: undefined,
     showCloseButton: false,
-    trigger: <Button variant="ghost" iconOnly aria-label="Sobre o plano Pro" startIcon={<Icon name="help-circle" />} />,
+    trigger: (
+      <Button
+        variant="ghost"
+        iconOnly
+        aria-label="Sobre o plano Pro"
+        startIcon={<Icon name="help-circle" />}
+      />
+    ),
   },
   render: (args) => (
-    <Popover {...args}>O plano Pro inclui 10 projetos, domínios próprios e suporte prioritário.</Popover>
+    <Popover {...args}>
+      O plano Pro inclui 10 projetos, domínios próprios e suporte prioritário.
+    </Popover>
   ),
 }

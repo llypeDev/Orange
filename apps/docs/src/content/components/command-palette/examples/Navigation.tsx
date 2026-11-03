@@ -1,7 +1,13 @@
 import { Button, CommandPalette, type CommandGroup } from '@orange/ui'
 import { useState } from 'react'
 
-const clientes = ['Açaí da Praça', 'Café Santa Mônica', 'Padaria São João', 'Mercearia Três Irmãos', 'Ótica Visão Clara']
+const clientes = [
+  'Açaí da Praça',
+  'Café Santa Mônica',
+  'Padaria São João',
+  'Mercearia Três Irmãos',
+  'Ótica Visão Clara',
+]
 
 export default function Navigation() {
   const [cliente, setCliente] = useState<string>()
@@ -27,7 +33,9 @@ export default function Navigation() {
         emptyMessage="Nenhum cliente com esse nome. Tente sem acentos: “otica”, “sao joao”."
         trigger={<Button variant="outline">Ir para cliente</Button>}
       />
-      <span>{cliente ? `Abrindo ${cliente}` : 'Busque "sao joao" ou "acai": acentos são ignorados.'}</span>
+      <span>
+        {cliente ? `Abrindo ${cliente}` : 'Busque "sao joao" ou "acai": acentos são ignorados.'}
+      </span>
     </div>
   )
 }

@@ -507,7 +507,7 @@ function DonutChart({ theme }: { theme: ThemeName }) {
           </path>
         ))}
         <text x={cx} y={cy - 6} textAnchor="middle" className="guide-viz-total">
-          3.214
+          {(3214).toLocaleString(uiLocale)}
         </text>
         <text x={cx} y={cy + 16} textAnchor="middle" className="guide-viz-tick">
           {t({ pt: 'pedidos', en: 'orders' })}
