@@ -35,7 +35,11 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 export const Empty: Story = {
-  args: { defaultValue: null, label: 'Valor da proposta', description: 'Use vírgula para os centavos.' },
+  args: {
+    defaultValue: null,
+    label: 'Valor da proposta',
+    description: 'Use vírgula para os centavos.',
+  },
 }
 
 export const OtherCurrencies: Story = {

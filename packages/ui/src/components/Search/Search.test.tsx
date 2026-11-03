@@ -13,12 +13,16 @@ describe('Search', () => {
     expect(form.tagName).toBe('FORM')
     expect(input).toHaveAttribute('type', 'search')
     expect(input).toHaveAttribute('placeholder', 'Buscar…')
-    expect(screen.getByText('Buscar produtos').closest('.or-field__label-row')).toHaveClass('or-visually-hidden')
+    expect(screen.getByText('Buscar produtos').closest('.or-field__label-row')).toHaveClass(
+      'or-visually-hidden',
+    )
   })
 
   it('pode mostrar o rótulo', () => {
     render(<Search label="Buscar pedidos" hideLabel={false} description="Número ou cliente" />)
-    expect(screen.getByText('Buscar pedidos').closest('.or-field__label-row')).not.toHaveClass('or-visually-hidden')
+    expect(screen.getByText('Buscar pedidos').closest('.or-field__label-row')).not.toHaveClass(
+      'or-visually-hidden',
+    )
     expect(screen.getByRole('searchbox')).toHaveAccessibleDescription('Número ou cliente')
   })
 

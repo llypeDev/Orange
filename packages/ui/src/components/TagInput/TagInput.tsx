@@ -19,8 +19,10 @@ import './TagInput.css'
 export type TagInputSize = 'sm' | 'md' | 'lg'
 export type TagInputSeparator = 'Enter' | ',' | 'Tab' | ';' | ' '
 
-export interface TagInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange' | 'size'> {
+export interface TagInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size'
+> {
   /** Tags (controlado). */
   value?: string[]
   /** Tags iniciais (não controlado). */
@@ -54,7 +56,17 @@ export interface TagInputProps
 
 type ControlProps = Omit<
   TagInputProps,
-  'label' | 'hideLabel' | 'description' | 'error' | 'className' | 'value' | 'defaultValue' | 'onChange' | 'validate' | 'maxTags' | 'allowDuplicates'
+  | 'label'
+  | 'hideLabel'
+  | 'description'
+  | 'error'
+  | 'className'
+  | 'value'
+  | 'defaultValue'
+  | 'onChange'
+  | 'validate'
+  | 'maxTags'
+  | 'allowDuplicates'
 > & {
   inputRef: React.Ref<HTMLInputElement>
   tags: string[]
@@ -135,6 +147,8 @@ function TagInputControl({
   }
 
   return (
+    // O mousedown só amplia a área de clique do input (que já é focável por teclado).
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-tag-input')}
       data-invalid={controlProps['aria-invalid'] || undefined}
@@ -147,6 +161,8 @@ function TagInputControl({
       }}
     >
       {tags.length > 0 && (
+        // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
+        // eslint-disable-next-line jsx-a11y/no-redundant-roles
         <ul role="list" className="or-tag-input__tags">
           {tags.map((tag, index) => (
             <li key={`${tag}-${index}`} className="or-tag-input__tag">
@@ -198,7 +214,16 @@ function TagInputControl({
         {...controlProps}
         required={controlProps.required && tags.length === 0}
       />
-      {name && tags.map((tag, index) => <input key={`${tag}-${index}`} type="hidden" name={name} value={tag} disabled={isDisabled} />)}
+      {name &&
+        tags.map((tag, index) => (
+          <input
+            key={`${tag}-${index}`}
+            type="hidden"
+            name={name}
+            value={tag}
+            disabled={isDisabled}
+          />
+        ))}
       <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
         {message}
       </VisuallyHidden>
@@ -240,7 +265,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
   const tagButtons = useRef<(HTMLButtonElement | null)[]>([])
   const pendingFocus = useRef<number | 'input' | null>(null)
 
-  const announce = (msg: string) => setMessage((prev) => (prev === msg ? `${msg} ` : msg))
+  const announce = (msg: string) => setMessage((prev) => (prev === msg ? `${msg}\u00a0` : msg))
 
   useEffect(() => {
     const target = pendingFocus.current
@@ -258,8 +283,12 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     let firstError: string | null = null
     for (const candidate of raw.map((r) => r.trim()).filter(Boolean)) {
       let problem: string | null = null
-      if (maxTags !== undefined && next.length >= maxTags) problem = t('maxItemsReached', { max: maxTags })
-      else if (!allowDuplicates && next.some((tag) => tag.toLowerCase() === candidate.toLowerCase()))
+      if (maxTags !== undefined && next.length >= maxTags)
+        problem = t('maxItemsReached', { max: maxTags })
+      else if (
+        !allowDuplicates &&
+        next.some((tag) => tag.toLowerCase() === candidate.toLowerCase())
+      )
         problem = t('duplicateItem', { label: candidate })
       else {
         const result = validate?.(candidate, next)
@@ -278,7 +307,10 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     // Mantém no campo o que foi recusado, para o usuário corrigir.
     setText(rejected.join(', '))
     setInternalError(firstError)
-    const parts = [added.length ? t('itemAdded', { label: added.join(', ') }) : '', firstError ?? ''].filter(Boolean)
+    const parts = [
+      added.length ? t('itemAdded', { label: added.join(', ') }) : '',
+      firstError ?? '',
+    ].filter(Boolean)
     if (parts.length) announce(parts.join('. '))
     return rejected.length === 0
   }

@@ -6,7 +6,7 @@ import { useLang } from '../i18n'
 const orangePrism: PrismTheme = {
   plain: { color: '#d4cdb5', backgroundColor: 'transparent' },
   styles: [
-    { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#75757f', fontStyle: 'italic' } },
+    { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#8a8a94', fontStyle: 'italic' } },
     { types: ['punctuation', 'operator'], style: { color: '#9c9588' } },
     { types: ['keyword', 'boolean', 'important', 'atrule'], style: { color: '#f58549' } },
     { types: ['string', 'char', 'attr-value', 'inserted', 'url'], style: { color: '#a6d16a' } },

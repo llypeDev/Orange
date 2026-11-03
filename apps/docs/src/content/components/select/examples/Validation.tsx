@@ -12,7 +12,11 @@ export default function Validation() {
   }
 
   return (
-    <form noValidate onSubmit={enviar} style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 360 }}>
+    <form
+      noValidate
+      onSubmit={enviar}
+      style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 360 }}
+    >
       <Select
         label="Motivo do cancelamento"
         placeholder="Selecione"
@@ -27,7 +31,11 @@ export default function Validation() {
           { value: 'outro', label: 'Outro motivo' },
         ]}
       />
-      <Select label="Conta" options={[{ value: 'pj', label: 'Empresa — CNPJ final 0001' }]} disabled />
+      <Select
+        label="Conta"
+        options={[{ value: 'pj', label: 'Empresa — CNPJ final 0001' }]}
+        disabled
+      />
       <div>
         <Button type="submit">Continuar</Button>
       </div>

@@ -16,7 +16,9 @@ const skills: MultiSelectOption[] = [
 function setup(props: Partial<React.ComponentProps<typeof MultiSelect>> = {}) {
   const user = userEvent.setup()
   const onChange = vi.fn()
-  const utils = render(<MultiSelect label="Habilidades" options={skills} onChange={onChange} {...props} />)
+  const utils = render(
+    <MultiSelect label="Habilidades" options={skills} onChange={onChange} {...props} />,
+  )
   const input = screen.getByRole('combobox', { name: 'Habilidades' })
   return { user, onChange, input, ...utils }
 }
@@ -30,7 +32,10 @@ describe('MultiSelect', () => {
     const listbox = screen.getByRole('listbox', { name: 'Habilidades' })
     expect(listbox).toHaveAttribute('aria-multiselectable', 'true')
     expect(within(listbox).getAllByRole('option')).toHaveLength(5)
-    expect(input).toHaveAttribute('aria-activedescendant', within(listbox).getAllByRole('option')[0].id)
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      within(listbox).getAllByRole('option')[0].id,
+    )
   })
 
   it('alterna opções com Enter mantendo a lista aberta', async () => {
@@ -61,7 +66,9 @@ describe('MultiSelect', () => {
     const { user, input } = setup({ defaultValue: ['react', 'ts', 'node'] })
     const remove = screen.getByRole('button', { name: 'Remover TypeScript' })
     await user.click(remove)
-    expect(screen.queryByText('TypeScript', { selector: '.or-multi-select__chip-label' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('TypeScript', { selector: '.or-multi-select__chip-label' }),
+    ).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Remover Node.js' })).toHaveFocus()
     await user.click(screen.getByRole('button', { name: 'Mostrar opções' }))
     expect(input).toHaveFocus()
@@ -119,7 +126,13 @@ describe('MultiSelect', () => {
       const [value, setValue] = useState<string[]>(['node'])
       return (
         <form aria-label="Perfil">
-          <MultiSelect label="Habilidades" name="skills" options={skills} value={value} onChange={setValue} />
+          <MultiSelect
+            label="Habilidades"
+            name="skills"
+            options={skills}
+            value={value}
+            onChange={setValue}
+          />
           <output>{value.join(',')}</output>
         </form>
       )
@@ -146,7 +159,13 @@ describe('MultiSelect', () => {
     const user = userEvent.setup()
     const { container } = render(
       <div>
-        <MultiSelect label="Habilidades" description="Escolha até 3" options={skills} defaultValue={['react', 'a11y']} maxSelected={3} />
+        <MultiSelect
+          label="Habilidades"
+          description="Escolha até 3"
+          options={skills}
+          defaultValue={['react', 'a11y']}
+          maxSelected={3}
+        />
         <MultiSelect label="Idiomas" options={skills} error="Escolha ao menos um" required />
       </div>,
     )

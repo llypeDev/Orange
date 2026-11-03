@@ -15,12 +15,21 @@ export default function Controlled() {
 
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 380 }}>
-      <Combobox label="Fuso horário" options={fusos} value={fuso} onChange={(value) => setFuso(value)} />
+      <Combobox
+        label="Fuso horário"
+        options={fusos}
+        value={fuso}
+        onChange={(value) => setFuso(value)}
+      />
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         Valor salvo: <code>{fuso ?? 'nenhum'}</code>
       </p>
       <div>
-        <Button size="sm" variant="outline" onClick={() => setFuso(Intl.DateTimeFormat().resolvedOptions().timeZone)}>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setFuso(Intl.DateTimeFormat().resolvedOptions().timeZone)}
+        >
           Usar fuso do navegador
         </Button>
       </div>

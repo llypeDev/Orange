@@ -85,7 +85,11 @@ describe('PinInput', () => {
     render(<PinInput label="Código" onComplete={onComplete} />)
     await user.click(digits()[0])
     await user.paste('482 913')
-    expect(digits().map((d) => d.value).join('')).toBe('482913')
+    expect(
+      digits()
+        .map((d) => d.value)
+        .join(''),
+    ).toBe('482913')
     expect(onComplete).toHaveBeenCalledWith('482913')
     expect(digits()[5]).toHaveFocus()
   })
@@ -118,7 +122,14 @@ describe('PinInput', () => {
       const [code, setCode] = useState('')
       return (
         <>
-          <PinInput ref={ref} label="Código" length={4} value={code} onChange={setCode} name="otp" />
+          <PinInput
+            ref={ref}
+            label="Código"
+            length={4}
+            value={code}
+            onChange={setCode}
+            name="otp"
+          />
           <button type="button" onClick={() => setCode('')}>
             Reenviar
           </button>

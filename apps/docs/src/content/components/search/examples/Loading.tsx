@@ -17,7 +17,13 @@ export default function Loading() {
 
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
-      <Search label="Buscar clientes" placeholder="Nome, e-mail ou CNPJ" loading={buscando} onSearch={buscar} onClear={() => setMensagem('')} />
+      <Search
+        label="Buscar clientes"
+        placeholder="Nome, e-mail ou CNPJ"
+        loading={buscando}
+        onSearch={buscar}
+        onClear={() => setMensagem('')}
+      />
       <p role="status" style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         {buscando ? 'Buscando…' : mensagem}
       </p>

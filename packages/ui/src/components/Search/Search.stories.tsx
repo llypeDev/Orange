@@ -36,7 +36,11 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 export const VisibleLabel: Story = {
-  args: { hideLabel: false, label: 'Buscar pedidos', description: 'Número do pedido, e-mail ou CPF do cliente.' },
+  args: {
+    hideLabel: false,
+    label: 'Buscar pedidos',
+    description: 'Número do pedido, e-mail ou CPF do cliente.',
+  },
 }
 
 export const Sizes: Story = {

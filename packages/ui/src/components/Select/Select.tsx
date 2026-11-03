@@ -29,7 +29,10 @@ export interface SelectOptionGroup {
   disabled?: boolean
 }
 
-export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size' | 'multiple'> {
+export interface SelectProps extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  'size' | 'multiple'
+> {
   /** Rótulo visível do campo. */
   label?: ReactNode
   /** Oculta o rótulo visualmente (continua acessível). */
@@ -57,7 +60,10 @@ function isGroup(item: SelectOption | SelectOptionGroup): item is SelectOptionGr
   return Array.isArray((item as SelectOptionGroup).options)
 }
 
-interface SelectControlProps extends Omit<SelectProps, 'label' | 'hideLabel' | 'description' | 'error' | 'className'> {
+interface SelectControlProps extends Omit<
+  SelectProps,
+  'label' | 'hideLabel' | 'description' | 'error' | 'className'
+> {
   selectRef: React.Ref<HTMLSelectElement>
 }
 
@@ -95,10 +101,15 @@ function SelectControl({
   useIsomorphicLayoutEffect(syncPlaceholder)
 
   const resolvedDefault =
-    value === undefined && defaultValue === undefined && placeholder !== undefined ? '' : defaultValue
+    value === undefined && defaultValue === undefined && placeholder !== undefined
+      ? ''
+      : defaultValue
 
   return (
-    <div className={cx('or-select', `or-select--${size}`)} data-disabled={controlProps.disabled || undefined}>
+    <div
+      className={cx('or-select', `or-select--${size}`)}
+      data-disabled={controlProps.disabled || undefined}
+    >
       <select
         ref={mergeRefs(innerRef, selectRef)}
         className={cx('or-control', `or-control--${size}`, 'or-select__control')}
@@ -112,7 +123,11 @@ function SelectControl({
         {...controlProps}
       >
         {placeholder !== undefined && (
-          <option value="" disabled={Boolean(controlProps.required)} className="or-select__placeholder">
+          <option
+            value=""
+            disabled={Boolean(controlProps.required)}
+            className="or-select__placeholder"
+          >
             {placeholder}
           </option>
         )}

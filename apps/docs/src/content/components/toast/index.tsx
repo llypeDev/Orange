@@ -25,7 +25,8 @@ import WithAction from './examples/WithAction'
 import WithActionCode from './examples/WithAction?raw'
 import { meta } from './meta'
 
-const setupCode = `import { OrangeProvider, ToastProvider } from '@orange/ui'
+const setupCode = `// App.tsx
+import { OrangeProvider, ToastProvider } from '@orange/ui'
 
 export function App() {
   return (
@@ -37,9 +38,13 @@ export function App() {
   )
 }
 
-// em qualquer componente
-const { toast, dismiss } = useToast()
-const id = toast({ title: 'Alterações salvas', tone: 'success' })`
+// SaveButton.tsx — qualquer componente dentro do provider
+import { Button, useToast } from '@orange/ui'
+
+export function SaveButton() {
+  const { toast } = useToast()
+  return <Button onClick={() => toast({ title: 'Alterações salvas', tone: 'success' })}>Salvar</Button>
+}`
 
 export default function ToastPage() {
   return (

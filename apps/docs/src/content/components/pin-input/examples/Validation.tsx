@@ -15,7 +15,11 @@ export default function Validation() {
     }
     const restantes = tentativas - 1
     setTentativas(restantes)
-    setErro(restantes > 0 ? `Código incorreto. ${restantes === 1 ? 'Resta 1 tentativa' : `Restam ${restantes} tentativas`}.` : 'Código bloqueado. Peça um novo código.')
+    setErro(
+      restantes > 0
+        ? `Código incorreto. ${restantes === 1 ? 'Resta 1 tentativa' : `Restam ${restantes} tentativas`}.`
+        : 'Código bloqueado. Peça um novo código.',
+    )
   }
 
   return (

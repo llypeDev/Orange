@@ -1,16 +1,51 @@
 import { Button, Icon, iconNames, useClipboard, useDebouncedValue, type IconName } from '@orange/ui'
 import { useId, useMemo, useState } from 'react'
 import { T, useLang } from '../../../i18n'
-import { Bullets, Callout, Code, CodeBlock, DocPage, DoDont, Example, PropsTable, Prose, Section } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  CodeBlock,
+  DocPage,
+  DoDont,
+  Example,
+  PropsTable,
+  Prose,
+  Section,
+} from '../../../kit'
 import { REPO_URL } from '../../registry'
 import { Steps } from '../_shared/Blocks'
 
-const sizes: { name: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; px: number; usage: { pt: string; en: string } }[] = [
-  { name: 'xs', px: 12, usage: { pt: 'Setas ao lado de links pequenos', en: 'Arrows next to small links' } },
-  { name: 'sm', px: 16, usage: { pt: 'Botões sm, campos, texto 13–15px', en: 'sm buttons, fields, 13–15px text' } },
-  { name: 'md', px: 20, usage: { pt: 'Padrão: botões md, navegação', en: 'Default: md buttons, navigation' } },
-  { name: 'lg', px: 24, usage: { pt: 'Botões lg, ícones isolados', en: 'lg buttons, standalone icons' } },
-  { name: 'xl', px: 32, usage: { pt: 'Estados vazios, destaques', en: 'Empty states, highlights' } },
+const sizes: {
+  name: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  px: number
+  usage: { pt: string; en: string }
+}[] = [
+  {
+    name: 'xs',
+    px: 12,
+    usage: { pt: 'Setas ao lado de links pequenos', en: 'Arrows next to small links' },
+  },
+  {
+    name: 'sm',
+    px: 16,
+    usage: { pt: 'Botões sm, campos, texto 13–15px', en: 'sm buttons, fields, 13–15px text' },
+  },
+  {
+    name: 'md',
+    px: 20,
+    usage: { pt: 'Padrão: botões md, navegação', en: 'Default: md buttons, navigation' },
+  },
+  {
+    name: 'lg',
+    px: 24,
+    usage: { pt: 'Botões lg, ícones isolados', en: 'lg buttons, standalone icons' },
+  },
+  {
+    name: 'xl',
+    px: 32,
+    usage: { pt: 'Estados vazios, destaques', en: 'Empty states, highlights' },
+  },
 ]
 
 function normalize(text: string) {
@@ -42,7 +77,10 @@ function IconGallery() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t({ pt: `Buscar entre ${iconNames.length} ícones…`, en: `Search ${iconNames.length} icons…` })}
+            placeholder={t({
+              pt: `Buscar entre ${iconNames.length} ícones…`,
+              en: `Search ${iconNames.length} icons…`,
+            })}
             autoComplete="off"
           />
         </div>
@@ -53,7 +91,10 @@ function IconGallery() {
       <p className="or-visually-hidden" role="status">
         {copied && last
           ? t({ pt: `Código do ícone ${last} copiado`, en: `${last} icon code copied` })
-          : t({ pt: `${filtered.length} ícones encontrados`, en: `${filtered.length} icons found` })}
+          : t({
+              pt: `${filtered.length} ícones encontrados`,
+              en: `${filtered.length} icons found`,
+            })}
       </p>
       {filtered.length > 0 ? (
         <ul className="guide-icons__grid">
@@ -69,7 +110,9 @@ function IconGallery() {
                 aria-label={t({ pt: `${name} — copiar código`, en: `${name} — copy code` })}
               >
                 <Icon name={copied && last === name ? 'check' : name} size="lg" />
-                <span className="guide-icons__name">{copied && last === name ? t({ pt: 'copiado', en: 'copied' }) : name}</span>
+                <span className="guide-icons__name">
+                  {copied && last === name ? t({ pt: 'copiado', en: 'copied' }) : name}
+                </span>
               </button>
             </li>
           ))}
@@ -77,7 +120,12 @@ function IconGallery() {
       ) : (
         <p className="guide-icons__empty">
           {t({ pt: `Nenhum ícone para “${query}”.`, en: `No icons for “${query}”.` })}{' '}
-          <a href={`${REPO_URL}/issues/new?title=${encodeURIComponent(`Ícone: ${query}`)}`} target="_blank" rel="noreferrer" className="guide-link">
+          <a
+            href={`${REPO_URL}/issues/new?title=${encodeURIComponent(`Ícone: ${query}`)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="guide-link"
+          >
             {t({ pt: 'Sugerir um ícone', en: 'Suggest an icon' })}
           </a>
         </p>
@@ -106,11 +154,21 @@ export default function IconographyPage() {
           <ul className="guide-icon-anatomy__list">
             <li>
               <strong>{t({ pt: 'Grade de 24×24', en: '24×24 grid' })}</strong>
-              <span>{t({ pt: 'Desenho dentro de uma área viva de 20×20, com 2px de respiro em cada lado.', en: 'Drawn inside a 20×20 live area, with 2px of breathing room on each side.' })}</span>
+              <span>
+                {t({
+                  pt: 'Desenho dentro de uma área viva de 20×20, com 2px de respiro em cada lado.',
+                  en: 'Drawn inside a 20×20 live area, with 2px of breathing room on each side.',
+                })}
+              </span>
             </li>
             <li>
               <strong>{t({ pt: 'Traço de 1.75', en: '1.75 stroke' })}</strong>
-              <span>{t({ pt: 'Contorno, nunca preenchimento. Escala junto com o tamanho do ícone.', en: 'Outline, never fill. Scales with the icon size.' })}</span>
+              <span>
+                {t({
+                  pt: 'Contorno, nunca preenchimento. Escala junto com o tamanho do ícone.',
+                  en: 'Outline, never fill. Scales with the icon size.',
+                })}
+              </span>
             </li>
             <li>
               <strong>{t({ pt: 'Terminações quadradas', en: 'Square caps' })}</strong>
@@ -120,11 +178,21 @@ export default function IconographyPage() {
             </li>
             <li>
               <strong>{t({ pt: 'Cantos vivos', en: 'Sharp corners' })}</strong>
-              <span>{t({ pt: 'Curvas só onde a forma pede (círculos, relógio). Nada de cantos arredondados decorativos.', en: 'Curves only where the shape needs them (circles, clock). No decorative rounded corners.' })}</span>
+              <span>
+                {t({
+                  pt: 'Curvas só onde a forma pede (círculos, relógio). Nada de cantos arredondados decorativos.',
+                  en: 'Curves only where the shape needs them (circles, clock). No decorative rounded corners.',
+                })}
+              </span>
             </li>
             <li>
               <strong>currentColor</strong>
-              <span>{t({ pt: 'O ícone herda a cor do texto ao redor e acompanha o tema.', en: 'The icon inherits the surrounding text color and follows the theme.' })}</span>
+              <span>
+                {t({
+                  pt: 'O ícone herda a cor do texto ao redor e acompanha o tema.',
+                  en: 'The icon inherits the surrounding text color and follows the theme.',
+                })}
+              </span>
             </li>
           </ul>
         </div>
@@ -134,8 +202,19 @@ export default function IconographyPage() {
         <Prose>
           <p>
             <T
-              pt={<>Use os tamanhos nomeados da prop <Code>size</Code>; um número em pixels também é aceito para casos especiais. Acompanhe a altura do texto ou do controle onde o ícone está.</>}
-              en={<>Use the named sizes of the <Code>size</Code> prop; a pixel number is also accepted for special cases. Match the height of the text or control the icon sits in.</>}
+              pt={
+                <>
+                  Use os tamanhos nomeados da prop <Code>size</Code>; um número em pixels também é
+                  aceito para casos especiais. Acompanhe a altura do texto ou do controle onde o
+                  ícone está.
+                </>
+              }
+              en={
+                <>
+                  Use the named sizes of the <Code>size</Code> prop; a pixel number is also accepted
+                  for special cases. Match the height of the text or control the icon sits in.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -158,8 +237,24 @@ export default function IconographyPage() {
         <Prose>
           <p>
             <T
-              pt={<>Por padrão o <Code>Icon</Code> é <strong>decorativo</strong>: recebe <Code>aria-hidden</Code> e o leitor de tela o ignora. Isso é o certo quando há texto ao lado. Quando o ícone é a única forma de transmitir a informação, ele é <strong>informativo</strong>: passe <Code>label</Code> e ele ganha <Code>role="img"</Code> e <Code>aria-label</Code>.</>}
-              en={<>By default <Code>Icon</Code> is <strong>decorative</strong>: it gets <Code>aria-hidden</Code> and screen readers skip it. That’s right when there is text next to it. When the icon is the only way to convey the information, it is <strong>informative</strong>: pass <Code>label</Code> and it gets <Code>role="img"</Code> and <Code>aria-label</Code>.</>}
+              pt={
+                <>
+                  Por padrão o <Code>Icon</Code> é <strong>decorativo</strong>: recebe{' '}
+                  <Code>aria-hidden</Code> e o leitor de tela o ignora. Isso é o certo quando há
+                  texto ao lado. Quando o ícone é a única forma de transmitir a informação, ele é{' '}
+                  <strong>informativo</strong>: passe <Code>label</Code> e ele ganha{' '}
+                  <Code>role="img"</Code> e <Code>aria-label</Code>.
+                </>
+              }
+              en={
+                <>
+                  By default <Code>Icon</Code> is <strong>decorative</strong>: it gets{' '}
+                  <Code>aria-hidden</Code> and screen readers skip it. That’s right when there is
+                  text next to it. When the icon is the only way to convey the information, it is{' '}
+                  <strong>informative</strong>: pass <Code>label</Code> and it gets{' '}
+                  <Code>role="img"</Code> and <Code>aria-label</Code>.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -178,20 +273,64 @@ export default function IconographyPage() {
 </Button>`}
           align="center"
         >
-          <Button startIcon={<Icon name="download" />}>{t({ pt: 'Exportar CSV', en: 'Export CSV' })}</Button>
+          <Button startIcon={<Icon name="download" />}>
+            {t({ pt: 'Exportar CSV', en: 'Export CSV' })}
+          </Button>
           <Icon name="lock" label={t({ pt: 'Arquivo protegido', en: 'Protected file' })} />
-          <Button iconOnly variant="outline" aria-label={t({ pt: 'Excluir relatório', en: 'Delete report' })}>
+          <Button
+            iconOnly
+            variant="outline"
+            aria-label={t({ pt: 'Excluir relatório', en: 'Delete report' })}
+          >
             <Icon name="trash" />
           </Button>
         </Example>
         <PropsTable
           caption={{ pt: 'Props do Icon', en: 'Icon props' }}
           rows={[
-            { name: 'name', type: 'IconName', required: true, description: { pt: 'Nome do ícone (veja a galeria).', en: 'Icon name (see the gallery).' } },
-            { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number", default: "'md'", description: { pt: '12, 16, 20, 24 ou 32px — ou um número em pixels.', en: '12, 16, 20, 24 or 32px — or a pixel number.' } },
-            { name: 'label', type: 'string', description: { pt: 'Torna o ícone informativo (role="img" + aria-label).', en: 'Makes the icon informative (role="img" + aria-label).' } },
-            { name: 'strokeWidth', type: 'number', default: '1.75', description: { pt: 'Espessura do traço. Mude só com motivo.', en: 'Stroke width. Change it only with a reason.' } },
-            { name: '...rest', type: 'SVGProps<SVGSVGElement>', description: { pt: 'Atributos nativos de <svg> (className, style…).', en: 'Native <svg> attributes (className, style…).' } },
+            {
+              name: 'name',
+              type: 'IconName',
+              required: true,
+              description: {
+                pt: 'Nome do ícone (veja a galeria).',
+                en: 'Icon name (see the gallery).',
+              },
+            },
+            {
+              name: 'size',
+              type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number",
+              default: "'md'",
+              description: {
+                pt: '12, 16, 20, 24 ou 32px — ou um número em pixels.',
+                en: '12, 16, 20, 24 or 32px — or a pixel number.',
+              },
+            },
+            {
+              name: 'label',
+              type: 'string',
+              description: {
+                pt: 'Torna o ícone informativo (role="img" + aria-label).',
+                en: 'Makes the icon informative (role="img" + aria-label).',
+              },
+            },
+            {
+              name: 'strokeWidth',
+              type: 'number',
+              default: '1.75',
+              description: {
+                pt: 'Espessura do traço. Mude só com motivo.',
+                en: 'Stroke width. Change it only with a reason.',
+              },
+            },
+            {
+              name: '...rest',
+              type: 'SVGProps<SVGSVGElement>',
+              description: {
+                pt: 'Atributos nativos de <svg> (className, style…).',
+                en: 'Native <svg> attributes (className, style…).',
+              },
+            },
           ]}
         />
       </Section>
@@ -200,8 +339,18 @@ export default function IconographyPage() {
         <Prose>
           <p>
             <T
-              pt={<>Clique em um ícone para copiar <Code>{'<Icon name="…" />'}</Code>. A busca filtra pelo nome em inglês, em kebab-case.</>}
-              en={<>Click an icon to copy <Code>{'<Icon name="…" />'}</Code>. Search filters by the English, kebab-case name.</>}
+              pt={
+                <>
+                  Clique em um ícone para copiar <Code>{'<Icon name="…" />'}</Code>. A busca filtra
+                  pelo nome em inglês, em kebab-case.
+                </>
+              }
+              en={
+                <>
+                  Click an icon to copy <Code>{'<Icon name="…" />'}</Code>. Search filters by the
+                  English, kebab-case name.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -222,28 +371,68 @@ export default function IconographyPage() {
           }
           dontExample={
             <>
-              <Button variant="outline" startIcon={<Icon name="filter" size="lg" style={{ color: 'var(--or-color-accent)' }} />}>
+              <Button
+                variant="outline"
+                startIcon={
+                  <Icon name="filter" size="lg" style={{ color: 'var(--or-color-accent)' }} />
+                }
+              >
                 {t({ pt: 'Filtrar', en: 'Filter' })}
               </Button>
-              <Button variant="ghost" startIcon={<Icon name="star" size="sm" />} endIcon={<Icon name="arrow-right" size="sm" />}>
+              <Button
+                variant="ghost"
+                startIcon={<Icon name="star" size="sm" />}
+                endIcon={<Icon name="arrow-right" size="sm" />}
+              >
                 {t({ pt: 'Ver pedidos', en: 'View orders' })}
               </Button>
             </>
           }
           doItems={[
-            { pt: 'Ícone do mesmo tamanho da fonte e na cor do texto.', en: 'Icon matching the font size and the text color.' },
-            { pt: 'Um ícone por botão, reforçando o rótulo.', en: 'One icon per button, reinforcing the label.' },
+            {
+              pt: 'Ícone do mesmo tamanho da fonte e na cor do texto.',
+              en: 'Icon matching the font size and the text color.',
+            },
+            {
+              pt: 'Um ícone por botão, reforçando o rótulo.',
+              en: 'One icon per button, reinforcing the label.',
+            },
           ]}
           dontItems={[
-            { pt: 'Ícone maior que o texto e pintado de laranja só para enfeitar.', en: 'Icon larger than the text and painted orange just for decoration.' },
-            { pt: 'Dois ícones disputando o mesmo rótulo.', en: 'Two icons competing for the same label.' },
+            {
+              pt: 'Ícone maior que o texto e pintado de laranja só para enfeitar.',
+              en: 'Icon larger than the text and painted orange just for decoration.',
+            },
+            {
+              pt: 'Dois ícones disputando o mesmo rótulo.',
+              en: 'Two icons competing for the same label.',
+            },
           ]}
         />
         <Bullets
           items={[
-            { pt: 'Um conceito, um ícone: “excluir” é sempre trash, “fechar” é sempre close.', en: 'One concept, one icon: “delete” is always trash, “close” is always close.' },
-            { pt: <>Ícones direcionais (<Code>arrow-right</Code>, <Code>chevron-right</Code>) indicam movimento ou navegação; <Code>arrow-up-right</Code> sinaliza link externo.</>, en: <>Directional icons (<Code>arrow-right</Code>, <Code>chevron-right</Code>) indicate movement or navigation; <Code>arrow-up-right</Code> marks an external link.</> },
-            { pt: 'Ícones informativos isolados precisam de ≥ 3:1 de contraste com o fundo (1.4.11) — currentColor sobre text e text-muted já garante.', en: 'Standalone informative icons need ≥ 3:1 contrast with the background (1.4.11) — currentColor on text and text-muted already ensures it.' },
+            {
+              pt: 'Um conceito, um ícone: “excluir” é sempre trash, “fechar” é sempre close.',
+              en: 'One concept, one icon: “delete” is always trash, “close” is always close.',
+            },
+            {
+              pt: (
+                <>
+                  Ícones direcionais (<Code>arrow-right</Code>, <Code>chevron-right</Code>) indicam
+                  movimento ou navegação; <Code>arrow-up-right</Code> sinaliza link externo.
+                </>
+              ),
+              en: (
+                <>
+                  Directional icons (<Code>arrow-right</Code>, <Code>chevron-right</Code>) indicate
+                  movement or navigation; <Code>arrow-up-right</Code> marks an external link.
+                </>
+              ),
+            },
+            {
+              pt: 'Ícones informativos isolados precisam de ≥ 3:1 de contraste com o fundo (1.4.11) — currentColor sobre text e text-muted já garante.',
+              en: 'Standalone informative icons need ≥ 3:1 contrast with the background (1.4.11) — currentColor on text and text-muted already ensures it.',
+            },
           ]}
         />
       </Section>
@@ -267,8 +456,22 @@ export default function IconographyPage() {
               content: (
                 <p>
                   <T
-                    pt={<>Use apenas <Code>&lt;path&gt;</Code>, <Code>&lt;circle&gt;</Code>, <Code>&lt;rect&gt;</Code> ou <Code>&lt;line&gt;</Code>, sem <Code>fill</Code>, <Code>stroke</Code> ou <Code>style</Code> — o componente define tudo isso.</>}
-                    en={<>Use only <Code>&lt;path&gt;</Code>, <Code>&lt;circle&gt;</Code>, <Code>&lt;rect&gt;</Code> or <Code>&lt;line&gt;</Code>, with no <Code>fill</Code>, <Code>stroke</Code> or <Code>style</Code> — the component sets all of that.</>}
+                    pt={
+                      <>
+                        Use apenas <Code>&lt;path&gt;</Code>, <Code>&lt;circle&gt;</Code>,{' '}
+                        <Code>&lt;rect&gt;</Code> ou <Code>&lt;line&gt;</Code>, sem{' '}
+                        <Code>fill</Code>, <Code>stroke</Code> ou <Code>style</Code> — o componente
+                        define tudo isso.
+                      </>
+                    }
+                    en={
+                      <>
+                        Use only <Code>&lt;path&gt;</Code>, <Code>&lt;circle&gt;</Code>,{' '}
+                        <Code>&lt;rect&gt;</Code> or <Code>&lt;line&gt;</Code>, with no{' '}
+                        <Code>fill</Code>, <Code>stroke</Code> or <Code>style</Code> — the component
+                        sets all of that.
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -279,8 +482,20 @@ export default function IconographyPage() {
                 <>
                   <p>
                     <T
-                      pt={<>Adicione uma chave em <Code>packages/ui/src/icons/paths.tsx</Code>, em ordem alfabética e kebab-case. O tipo <Code>IconName</Code> e a lista <Code>iconNames</Code> se atualizam sozinhos.</>}
-                      en={<>Add a key to <Code>packages/ui/src/icons/paths.tsx</Code>, in alphabetical order and kebab-case. The <Code>IconName</Code> type and the <Code>iconNames</Code> list update themselves.</>}
+                      pt={
+                        <>
+                          Adicione uma chave em <Code>packages/ui/src/icons/paths.tsx</Code>, em
+                          ordem alfabética e kebab-case. O tipo <Code>IconName</Code> e a lista{' '}
+                          <Code>iconNames</Code> se atualizam sozinhos.
+                        </>
+                      }
+                      en={
+                        <>
+                          Add a key to <Code>packages/ui/src/icons/paths.tsx</Code>, in alphabetical
+                          order and kebab-case. The <Code>IconName</Code> type and the{' '}
+                          <Code>iconNames</Code> list update themselves.
+                        </>
+                      }
                     />
                   </p>
                   <CodeBlock
@@ -308,7 +523,10 @@ export default function IconographyPage() {
             },
           ]}
         />
-        <Callout tone="info" title={{ pt: 'Por que não uma biblioteca externa?', en: 'Why not an external library?' }}>
+        <Callout
+          tone="info"
+          title={{ pt: 'Por que não uma biblioteca externa?', en: 'Why not an external library?' }}
+        >
           <p>
             <T
               pt="Ícones próprios garantem o mesmo traço e as mesmas terminações em todo o sistema, sem dependência extra. Se precisar de muitos ícones de domínio, mantenha as regras de desenho acima ao misturar fontes."

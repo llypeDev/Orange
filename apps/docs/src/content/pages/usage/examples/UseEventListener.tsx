@@ -6,7 +6,9 @@ export default function Janela() {
   const [rolagem, setRolagem] = useState(() => Math.round(window.scrollY))
 
   useEventListener('resize', () => setLargura(window.innerWidth))
-  useEventListener('scroll', () => setRolagem(Math.round(window.scrollY)), undefined, { passive: true })
+  useEventListener('scroll', () => setRolagem(Math.round(window.scrollY)), undefined, {
+    passive: true,
+  })
 
   return (
     <dl className="guide-kv">

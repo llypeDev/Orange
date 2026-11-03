@@ -10,5 +10,13 @@ const path = [
 ]
 
 export default function Collapsed() {
-  return <Breadcrumb items={path} maxItems={4} itemsBeforeCollapse={1} itemsAfterCollapse={2} />
+  return (
+    <Breadcrumb
+      aria-label="Trilha do produto"
+      items={path}
+      maxItems={4}
+      itemsBeforeCollapse={1}
+      itemsAfterCollapse={2}
+    />
+  )
 }

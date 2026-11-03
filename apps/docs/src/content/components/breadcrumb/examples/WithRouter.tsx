@@ -10,6 +10,7 @@ function RouterLink({ to, ...props }: AnchorHTMLAttributes<HTMLAnchorElement> & 
 export default function WithRouter() {
   return (
     <Breadcrumb
+      aria-label="Trilha do cliente"
       items={[
         { label: 'Clientes', href: '/clientes' },
         { label: 'Mercado Bom Preço', href: '/clientes/482' },

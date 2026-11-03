@@ -1,10 +1,7 @@
 .or-paginator {
   --_size: var(--or-control-md);
 
-  /* Responde à largura disponível (container query); por isso ocupa a linha toda. */
-  container-type: inline-size;
   display: flex;
-  width: 100%;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
@@ -158,8 +155,8 @@
   white-space: nowrap;
 }
 
-/* Contêiner estreito: botões de 32px, sem primeira/última (anterior/próximo continuam). */
-@container (max-width: 30rem) {
+/* Telas estreitas: botões de 32px, sem primeira/última (anterior/próximo continuam). */
+@media (max-width: 30rem) {
   .or-paginator__list {
     --_size: var(--or-control-sm);
     gap: 0;

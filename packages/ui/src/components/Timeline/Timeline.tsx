@@ -43,9 +43,10 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(function Tim
   const value = useMemo(() => ({ dateFormat }), [dateFormat])
   return (
     <TimelineContext.Provider value={value}>
+      {/* `list-style: none` remove a semântica de lista no Safari/VoiceOver; o papel explícito a restaura. */}
+      {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
       <ol
         ref={ref}
-        // `list-style: none` remove a semântica de lista no Safari/VoiceOver.
         role="list"
         className={cx('or-timeline', `or-timeline--${variant}`, className)}
         {...rest}

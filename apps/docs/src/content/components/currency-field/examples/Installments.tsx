@@ -15,9 +15,15 @@ export default function Installments() {
         label="Parcelas"
         value={parcelas}
         onChange={(event) => setParcelas(event.target.value)}
-        options={[1, 2, 3, 6, 10, 12].map((n) => ({ value: String(n), label: n === 1 ? 'À vista' : `${n}x sem juros` }))}
+        options={[1, 2, 3, 6, 10, 12].map((n) => ({
+          value: String(n),
+          label: n === 1 ? 'À vista' : `${n}x sem juros`,
+        }))}
       />
-      <p role="status" style={{ margin: 0, fontFamily: 'var(--or-font-display)', fontSize: 18, fontWeight: 600 }}>
+      <p
+        role="status"
+        style={{ margin: 0, fontFamily: 'var(--or-font-display)', fontSize: 18, fontWeight: 600 }}
+      >
         {total ? `${parcelas}x de ${brl.format(valorParcela)}` : 'Informe o valor total'}
       </p>
     </div>

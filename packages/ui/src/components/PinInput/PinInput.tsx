@@ -18,7 +18,10 @@ import './PinInput.css'
 export type PinInputSize = 'sm' | 'md' | 'lg'
 export type PinInputType = 'numeric' | 'alphanumeric'
 
-export interface PinInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface PinInputProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Quantidade de caracteres. Padrão: 6. */
   length?: number
   /** Caracteres aceitos. `numeric` abre o teclado numérico no celular. */
@@ -64,7 +67,19 @@ const PATTERNS: Record<PinInputType, RegExp> = {
 const toChars = (value: string, length: number) => Array.from({ length }, (_, i) => value[i] ?? '')
 
 type ControlProps = Required<Pick<PinInputProps, 'length' | 'type' | 'size'>> &
-  Pick<PinInputProps, 'value' | 'defaultValue' | 'onChange' | 'onComplete' | 'mask' | 'groupSize' | 'placeholder' | 'invalid' | 'autoFocus' | 'name'> & {
+  Pick<
+    PinInputProps,
+    | 'value'
+    | 'defaultValue'
+    | 'onChange'
+    | 'onComplete'
+    | 'mask'
+    | 'groupSize'
+    | 'placeholder'
+    | 'invalid'
+    | 'autoFocus'
+    | 'name'
+  > & {
     hasLabel: boolean
     groupRef: React.Ref<HTMLDivElement>
     rest: HTMLAttributes<HTMLDivElement>
@@ -210,7 +225,12 @@ function PinInputControl({
         break
       default:
         // Mesma tecla do caractere atual: apenas avança (o onChange não dispara).
-        if (event.key.length === 1 && event.key === chars[index] && !event.ctrlKey && !event.metaKey) {
+        if (
+          event.key.length === 1 &&
+          event.key === chars[index] &&
+          !event.ctrlKey &&
+          !event.metaKey
+        ) {
           event.preventDefault()
           if (index < length - 1) focusAt(index + 1)
         }
@@ -239,7 +259,9 @@ function PinInputControl({
     >
       {chars.map((char, index) => (
         <Fragment key={index}>
-          {groupSize && index > 0 && index % groupSize === 0 && <span className="or-pin-input__separator" aria-hidden="true" />}
+          {groupSize && index > 0 && index % groupSize === 0 && (
+            <span className="or-pin-input__separator" aria-hidden="true" />
+          )}
           <input
             ref={(el) => {
               inputs.current[index] = el
@@ -258,7 +280,10 @@ function PinInputControl({
             disabled={disabled}
             required={required}
             aria-invalid={isInvalid || undefined}
-            aria-label={t(type === 'numeric' ? 'pinDigit' : 'pinCharacter', { index: index + 1, total: length })}
+            aria-label={t(type === 'numeric' ? 'pinDigit' : 'pinCharacter', {
+              index: index + 1,
+              total: length,
+            })}
             data-filled={char ? '' : undefined}
             onChange={(event) => handleInput(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}

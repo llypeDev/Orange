@@ -13,7 +13,13 @@ export default function AlternarVisualizacao() {
   const onKeyDown = useRovingFocus(grupo, { orientation: 'horizontal' })
   const [ativo, setAtivo] = useState('lista')
   return (
-    <div ref={grupo} role="toolbar" aria-label="Visualização" onKeyDown={onKeyDown} className="guide-toolbar-demo">
+    <div
+      ref={grupo}
+      role="toolbar"
+      aria-label="Visualização"
+      onKeyDown={onKeyDown}
+      className="guide-toolbar-demo"
+    >
       {ferramentas.map((f, i) => (
         <button
           key={f.id}

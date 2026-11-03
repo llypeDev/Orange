@@ -42,12 +42,14 @@ export default function PaginatorPage() {
             {
               pt: (
                 <>
-                  Em espaços estreitos (cards, mobile), use <Code>variant="compact"</Code>.
+                  Em espaços estreitos (cards, mobile), use <Code>variant="compact"</Code> ou <Code>siblingCount={'{0}'}</Code>.
+                  Abaixo de 480px, os botões encolhem para 32px e primeira/última somem.
                 </>
               ),
               en: (
                 <>
-                  In narrow spaces (cards, mobile), use <Code>variant="compact"</Code>.
+                  In narrow spaces (cards, mobile), use <Code>variant="compact"</Code> or <Code>siblingCount={'{0}'}</Code>.
+                  Below 480px, buttons shrink to 32px and first/last are hidden.
                 </>
               ),
             },

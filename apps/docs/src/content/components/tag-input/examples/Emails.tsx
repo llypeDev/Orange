@@ -20,7 +20,9 @@ export default function Emails() {
       />
       <div>
         <Button disabled={convidados.length === 0}>
-          {convidados.length === 0 ? 'Enviar convites' : `Enviar ${convidados.length} ${convidados.length === 1 ? 'convite' : 'convites'}`}
+          {convidados.length === 0
+            ? 'Enviar convites'
+            : `Enviar ${convidados.length} ${convidados.length === 1 ? 'convite' : 'convites'}`}
         </Button>
       </div>
     </div>

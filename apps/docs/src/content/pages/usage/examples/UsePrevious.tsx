@@ -17,7 +17,8 @@ export default function Cotacao() {
         USD → BRL <strong>{preco.toFixed(2)}</strong>{' '}
         {anterior !== undefined && (
           <span className={variacao >= 0 ? 'guide-up' : 'guide-down'}>
-            {variacao >= 0 ? '▲ subiu' : '▼ caiu'} {Math.abs(variacao).toFixed(2)} (antes {anterior.toFixed(2)})
+            {variacao >= 0 ? '▲ subiu' : '▼ caiu'} {Math.abs(variacao).toFixed(2)} (antes{' '}
+            {anterior.toFixed(2)})
           </span>
         )}
       </p>

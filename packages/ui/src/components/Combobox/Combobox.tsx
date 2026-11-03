@@ -39,8 +39,10 @@ export interface ComboboxOption {
   disabled?: boolean
 }
 
-export interface ComboboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'children'> {
+export interface ComboboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'children'
+> {
   /** Opções disponíveis. */
   options: ComboboxOption[]
   /** Valor selecionado (controlado). `null` = nenhum. */
@@ -82,7 +84,10 @@ export interface ComboboxProps
   className?: string
 }
 
-type ControlProps = Omit<ComboboxProps, 'label' | 'hideLabel' | 'description' | 'error' | 'className'> & {
+type ControlProps = Omit<
+  ComboboxProps,
+  'label' | 'hideLabel' | 'description' | 'error' | 'className'
+> & {
   inputRef: React.Ref<HTMLInputElement>
   hasLabel: boolean
 }
@@ -137,7 +142,8 @@ function ComboboxControl({
   // Guarda a última opção escolhida: com busca assíncrona, ela pode sumir de `options`.
   const lastSelected = useRef<ComboboxOption | null>(null)
   const selectedOption =
-    options.find((o) => o.value === value) ?? (lastSelected.current?.value === value ? lastSelected.current : null)
+    options.find((o) => o.value === value) ??
+    (lastSelected.current?.value === value ? lastSelected.current : null)
   if (selectedOption) lastSelected.current = selectedOption
   const selectedLabel = selectedOption?.label ?? ''
 
@@ -168,7 +174,11 @@ function ComboboxControl({
     if (!isOpen || loading) return
     const count = visible.length
     announce(
-      count === 0 ? t('noResults') : count === 1 ? t('resultsCountOne') : t('resultsCount', { count }),
+      count === 0
+        ? t('noResults')
+        : count === 1
+          ? t('resultsCountOne')
+          : t('resultsCount', { count }),
       400,
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +186,8 @@ function ComboboxControl({
 
   // Ao terminar uma busca assíncrona, destaca o primeiro resultado do texto digitado.
   useEffect(() => {
-    if (!loading && isOpen && query.trim() && activeIndex < 0) setActiveIndex(firstEnabledIndex(visible))
+    if (!loading && isOpen && query.trim() && activeIndex < 0)
+      setActiveIndex(firstEnabledIndex(visible))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
 
@@ -253,7 +264,9 @@ function ComboboxControl({
         // Com uma opção ativa, Home/End navegam na lista; sem ela, movem o cursor no texto.
         if (!isOpen || activeIndex < 0) break
         event.preventDefault()
-        setActiveIndex(event.key === 'Home' ? firstEnabledIndex(visible) : lastEnabledIndex(visible))
+        setActiveIndex(
+          event.key === 'Home' ? firstEnabledIndex(visible) : lastEnabledIndex(visible),
+        )
         break
       }
       case 'ArrowLeft':
@@ -399,6 +412,8 @@ function ComboboxControl({
       {region}
       {isOpen && (
         <Portal>
+          {/* O mousedown só impede que o clique na lista tire o foco do campo (o teclado age no campo). */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             ref={mergeRefs(popupEl, refs.setFloating)}
             className="or-combobox-popup"
@@ -463,7 +478,13 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
       controlId={id}
       className={cx('or-combobox-field', className)}
     >
-      <ComboboxControl inputRef={ref} hasLabel={Boolean(label)} required={required} disabled={disabled} {...rest} />
+      <ComboboxControl
+        inputRef={ref}
+        hasLabel={Boolean(label)}
+        required={required}
+        disabled={disabled}
+        {...rest}
+      />
     </Field>
   )
 })

@@ -49,7 +49,8 @@ export const EmailValidation: Story = {
     description: 'Cole uma lista de e-mails separados por vírgula.',
     placeholder: 'nome@empresa.com',
     separators: ['Enter', ',', 'Tab', ' '],
-    validate: (tag: string) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tag) ? true : `"${tag}" não é um e-mail válido`),
+    validate: (tag: string) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tag) ? true : `"${tag}" não é um e-mail válido`,
   },
 }
 

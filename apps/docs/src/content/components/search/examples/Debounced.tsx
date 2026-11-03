@@ -16,7 +16,10 @@ const normalizar = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g,
 
 export default function Debounced() {
   const [termo, setTermo] = useState('')
-  const resultados = useMemo(() => artigos.filter((a) => normalizar(a).includes(normalizar(termo))), [termo])
+  const resultados = useMemo(
+    () => artigos.filter((a) => normalizar(a).includes(normalizar(termo))),
+    [termo],
+  )
 
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>

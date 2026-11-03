@@ -17,8 +17,10 @@ import './Search.css'
 
 export type SearchSize = 'sm' | 'md' | 'lg'
 
-export interface SearchProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'type'> {
+export interface SearchProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'type'
+> {
   /** Rótulo do campo (obrigatório — fica oculto por padrão, mas é lido por leitores de tela). */
   label: ReactNode
   /** Oculta o rótulo visualmente. Padrão: `true`. */
@@ -52,7 +54,17 @@ export interface SearchProps
 
 type ControlProps = Omit<
   SearchProps,
-  'label' | 'hideLabel' | 'description' | 'formProps' | 'className' | 'value' | 'defaultValue' | 'onChange' | 'onSearch' | 'onClear' | 'debounce'
+  | 'label'
+  | 'hideLabel'
+  | 'description'
+  | 'formProps'
+  | 'className'
+  | 'value'
+  | 'defaultValue'
+  | 'onChange'
+  | 'onSearch'
+  | 'onClear'
+  | 'debounce'
 > & {
   inputRef: React.Ref<HTMLInputElement>
   text: string
@@ -74,15 +86,25 @@ function SearchControl({
   ...rest
 }: ControlProps) {
   const { t } = useLocale()
-  const controlProps = useFieldControlProps({ disabled, 'aria-describedby': rest['aria-describedby'] })
+  const controlProps = useFieldControlProps({
+    disabled,
+    'aria-describedby': rest['aria-describedby'],
+  })
   const isDisabled = Boolean(controlProps.disabled)
   return (
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-search__frame')}
       data-disabled={isDisabled || undefined}
     >
-      <span className="or-control-frame__addon or-control-frame__addon--start or-search__icon" aria-hidden="true">
-        {loading ? <span className="or-search__spinner" /> : <Icon name="search" size={size === 'lg' ? 'md' : 'sm'} />}
+      <span
+        className="or-control-frame__addon or-control-frame__addon--start or-search__icon"
+        aria-hidden="true"
+      >
+        {loading ? (
+          <span className="or-search__spinner" />
+        ) : (
+          <Icon name="search" size={size === 'lg' ? 'md' : 'sm'} />
+        )}
       </span>
       <input
         ref={inputRef}
@@ -200,7 +222,13 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(function Search(
       aria-label={formProps?.['aria-label'] ?? (typeof label === 'string' ? label : undefined)}
       onSubmit={handleSubmit}
     >
-      <Field label={label} hideLabel={hideLabel} description={description} disabled={disabled} controlId={id}>
+      <Field
+        label={label}
+        hideLabel={hideLabel}
+        description={description}
+        disabled={disabled}
+        controlId={id}
+      >
         <SearchControl
           inputRef={mergeRefs(inputEl, ref)}
           text={text}

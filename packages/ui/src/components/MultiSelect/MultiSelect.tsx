@@ -38,8 +38,10 @@ export interface MultiSelectOption {
   disabled?: boolean
 }
 
-export interface MultiSelectProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'children'> {
+export interface MultiSelectProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'children'
+> {
   options: MultiSelectOption[]
   /** Valores selecionados (controlado). */
   value?: string[]
@@ -77,7 +79,10 @@ export interface MultiSelectProps
   className?: string
 }
 
-type ControlProps = Omit<MultiSelectProps, 'label' | 'hideLabel' | 'description' | 'error' | 'className'> & {
+type ControlProps = Omit<
+  MultiSelectProps,
+  'label' | 'hideLabel' | 'description' | 'error' | 'className'
+> & {
   inputRef: React.Ref<HTMLInputElement>
   hasLabel: boolean
 }
@@ -148,7 +153,8 @@ function MultiSelectControl({
     return options.filter((o) => fn(o, query))
   }, [options, query, filter])
   const visible = loading ? [] : filtered
-  const isUnavailable = (o: MultiSelectOption) => Boolean(o.disabled) || (limitReached && !values.includes(o.value))
+  const isUnavailable = (o: MultiSelectOption) =>
+    Boolean(o.disabled) || (limitReached && !values.includes(o.value))
   const navigable = visible.map((o) => ({ disabled: isUnavailable(o) }))
 
   const optionId = (option: MultiSelectOption) => `${listboxId}-${options.indexOf(option)}`
@@ -162,7 +168,14 @@ function MultiSelectControl({
   useEffect(() => {
     if (!isOpen || loading) return
     const count = visible.length
-    announce(count === 0 ? t('noResults') : count === 1 ? t('resultsCountOne') : t('resultsCount', { count }), 400)
+    announce(
+      count === 0
+        ? t('noResults')
+        : count === 1
+          ? t('resultsCountOne')
+          : t('resultsCount', { count }),
+      400,
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, loading, visible.length, query])
 
@@ -172,7 +185,8 @@ function MultiSelectControl({
     if (target === null) return
     pendingFocus.current = null
     if (target === 'input') inputEl.current?.focus()
-    else (chipButtons.current[target] ?? chipButtons.current[target - 1] ?? inputEl.current)?.focus()
+    else
+      (chipButtons.current[target] ?? chipButtons.current[target - 1] ?? inputEl.current)?.focus()
   }, [values])
 
   const emit = (next: string[]) => {
@@ -220,7 +234,15 @@ function MultiSelectControl({
   const openList = (focus: 'first' | 'last' | 'none') => {
     if (!interactive) return
     const all = options.map((o) => ({ disabled: isUnavailable(o) }))
-    setActiveIndex(loading || query ? -1 : focus === 'first' ? firstEnabledIndex(all) : focus === 'last' ? lastEnabledIndex(all) : -1)
+    setActiveIndex(
+      loading || query
+        ? -1
+        : focus === 'first'
+          ? firstEnabledIndex(all)
+          : focus === 'last'
+            ? lastEnabledIndex(all)
+            : -1,
+    )
     setOpen(true)
   }
 
@@ -248,7 +270,9 @@ function MultiSelectControl({
       case 'End':
         if (!isOpen || activeIndex < 0) break
         event.preventDefault()
-        setActiveIndex(event.key === 'Home' ? firstEnabledIndex(navigable) : lastEnabledIndex(navigable))
+        setActiveIndex(
+          event.key === 'Home' ? firstEnabledIndex(navigable) : lastEnabledIndex(navigable),
+        )
         break
       case 'ArrowLeft':
       case 'ArrowRight':
@@ -286,6 +310,8 @@ function MultiSelectControl({
   const hasValues = values.length > 0
 
   return (
+    // O mousedown só amplia a área de clique do input (que já é focável por teclado).
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       ref={mergeRefs(frameEl, refs.setReference)}
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-multi-select')}
@@ -294,7 +320,10 @@ function MultiSelectControl({
       data-open={isOpen || undefined}
       onMouseDown={(event) => {
         // Clique na área vazia do campo foca o texto.
-        if (event.target === event.currentTarget || (event.target as HTMLElement).classList.contains('or-multi-select__values')) {
+        if (
+          event.target === event.currentTarget ||
+          (event.target as HTMLElement).classList.contains('or-multi-select__values')
+        ) {
           event.preventDefault()
           inputEl.current?.focus()
           if (!isOpen) openList('none')
@@ -303,6 +332,8 @@ function MultiSelectControl({
     >
       <div className="or-multi-select__values">
         {hasValues && (
+          // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
+          // eslint-disable-next-line jsx-a11y/no-redundant-roles
           <ul role="list" className="or-multi-select__chips" aria-label={t('selectedItems')}>
             {selectedOptions.map((option, index) => (
               <li key={option.value} className="or-multi-select__chip">
@@ -345,7 +376,9 @@ function MultiSelectControl({
             if (!isOpen) setOpen(true)
             if (text.trim()) {
               const fn = filter === false ? () => true : (filter ?? defaultOptionFilter)
-              const matches = options.filter((o) => fn(o, text)).map((o) => ({ disabled: isUnavailable(o) }))
+              const matches = options
+                .filter((o) => fn(o, text))
+                .map((o) => ({ disabled: isUnavailable(o) }))
               setActiveIndex(loading ? -1 : firstEnabledIndex(matches))
             } else setActiveIndex(-1)
           }}
@@ -363,10 +396,18 @@ function MultiSelectControl({
           required={controlProps.required && !hasValues}
         />
       </div>
-      {name && values.map((v) => <input key={v} type="hidden" name={name} value={v} disabled={isDisabled} />)}
+      {name &&
+        values.map((v) => (
+          <input key={v} type="hidden" name={name} value={v} disabled={isDisabled} />
+        ))}
       {loading && <span className="or-multi-select__spinner" aria-hidden="true" />}
       {clearable && interactive && hasValues && (
-        <button type="button" className="or-multi-select__clear" aria-label={t('clearAll')} onClick={clearAll}>
+        <button
+          type="button"
+          className="or-multi-select__clear"
+          aria-label={t('clearAll')}
+          onClick={clearAll}
+        >
           <Icon name="close" size="sm" />
         </button>
       )}
@@ -390,6 +431,8 @@ function MultiSelectControl({
       {region}
       {isOpen && (
         <Portal>
+          {/* O mousedown só impede que o clique na lista tire o foco do campo (o teclado age no campo). */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             ref={mergeRefs(popupEl, refs.setFloating)}
             className="or-combobox-popup"
@@ -461,7 +504,13 @@ export const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(functi
       controlId={id}
       className={cx('or-multi-select-field', className)}
     >
-      <MultiSelectControl inputRef={ref} hasLabel={Boolean(label)} required={required} disabled={disabled} {...rest} />
+      <MultiSelectControl
+        inputRef={ref}
+        hasLabel={Boolean(label)}
+        required={required}
+        disabled={disabled}
+        {...rest}
+      />
     </Field>
   )
 })

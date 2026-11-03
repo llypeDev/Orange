@@ -15,7 +15,15 @@ const normalizar = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g,
 /** Simula uma chamada à API com 700 ms de latência. */
 function buscarClientes(termo: string): Promise<ComboboxOption[]> {
   return new Promise((resolve) =>
-    setTimeout(() => resolve(clientes.filter((c) => normalizar(`${c.label} ${c.description}`).includes(normalizar(termo)))), 700),
+    setTimeout(
+      () =>
+        resolve(
+          clientes.filter((c) =>
+            normalizar(`${c.label} ${c.description}`).includes(normalizar(termo)),
+          ),
+        ),
+      700,
+    ),
   )
 }
 

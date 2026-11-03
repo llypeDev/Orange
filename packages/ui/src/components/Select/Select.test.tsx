@@ -53,7 +53,12 @@ describe('Select', () => {
       const [value, setValue] = useState('sp')
       return (
         <>
-          <Select label="Estado" options={states} value={value} onChange={(e) => setValue(e.target.value)} />
+          <Select
+            label="Estado"
+            options={states}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
           <output>{value}</output>
         </>
       )
@@ -113,7 +118,12 @@ describe('Select', () => {
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>
-        <Select label="Estado" description="Usado no endereço" placeholder="Selecione" options={states} />
+        <Select
+          label="Estado"
+          description="Usado no endereço"
+          placeholder="Selecione"
+          options={states}
+        />
         <Select label="Cidade" error="Obrigatório" required options={states} />
         <Select label="Oculto" hideLabel options={states} disabled />
       </div>,

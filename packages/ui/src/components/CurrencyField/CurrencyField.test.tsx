@@ -6,7 +6,7 @@ import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { CurrencyField } from './CurrencyField'
 
-const norm = (text: string) => text.replace(/[  ]/g, ' ')
+const norm = (text: string) => text.replace(/[\u00a0\u202f]/g, ' ')
 
 function setup(props: Partial<React.ComponentProps<typeof CurrencyField>> = {}) {
   const user = userEvent.setup()
@@ -93,7 +93,9 @@ describe('CurrencyField', () => {
 
   it('posiciona o símbolo depois do número quando o locale pede (EUR em de-DE)', () => {
     const { container, input } = setup({ currency: 'EUR', locale: 'de-DE', defaultValue: 10 })
-    expect(container.querySelector('.or-currency-field__symbol')).toHaveClass('or-control-frame__addon--end')
+    expect(container.querySelector('.or-currency-field__symbol')).toHaveClass(
+      'or-control-frame__addon--end',
+    )
     expect(norm(input.value)).toBe('10,00')
   })
 

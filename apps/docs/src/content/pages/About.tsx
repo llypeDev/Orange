@@ -5,42 +5,82 @@ import { Bullets, Callout, Code, DefinitionTable, DocPage, Prose, Section } from
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import { Cards, Stats, Steps, TableWrap } from './_shared/Blocks'
 
-const paletteCount = Object.values(primitives).reduce((sum, family) => sum + Object.keys(family).length, 0)
+const paletteCount = Object.values(primitives).reduce(
+  (sum, family) => sum + Object.keys(family).length,
+  0,
+)
 
-const roadmap: { version: string; status: 'done' | 'now' | 'next' | 'later'; items: { pt: string; en: string }[] }[] = [
+const roadmap: {
+  version: string
+  status: 'done' | 'now' | 'next' | 'later'
+  items: { pt: string; en: string }[]
+}[] = [
   {
     version: '0.1',
     status: 'done',
     items: [
-      { pt: 'Tokens com temas claro e escuro e testes de contraste', en: 'Tokens with light and dark themes and contrast tests' },
-      { pt: 'Componentes base, hooks, ícones e OrangeProvider', en: 'Base components, hooks, icons and OrangeProvider' },
-      { pt: 'Documentação bilíngue e Storybook com painel a11y', en: 'Bilingual docs and Storybook with a11y panel' },
+      {
+        pt: 'Tokens com temas claro e escuro e testes de contraste',
+        en: 'Tokens with light and dark themes and contrast tests',
+      },
+      {
+        pt: 'Componentes base, hooks, ícones e OrangeProvider',
+        en: 'Base components, hooks, icons and OrangeProvider',
+      },
+      {
+        pt: 'Documentação bilíngue e Storybook com painel a11y',
+        en: 'Bilingual docs and Storybook with a11y panel',
+      },
     ],
   },
   {
     version: '0.2',
     status: 'now',
     items: [
-      { pt: 'Biblioteca completa de formulários, sobreposições e navegação', en: 'Full set of form, overlay and navigation components' },
-      { pt: 'Exemplos de páginas inteiras (login, painel, configurações)', en: 'Full-page examples (sign-in, dashboard, settings)' },
-      { pt: 'Publicação dos pacotes no npm com changelog automatizado', en: 'npm publishing with an automated changelog' },
+      {
+        pt: 'Biblioteca completa de formulários, sobreposições e navegação',
+        en: 'Full set of form, overlay and navigation components',
+      },
+      {
+        pt: 'Exemplos de páginas inteiras (login, painel, configurações)',
+        en: 'Full-page examples (sign-in, dashboard, settings)',
+      },
+      {
+        pt: 'Publicação dos pacotes no npm com changelog automatizado',
+        en: 'npm publishing with an automated changelog',
+      },
     ],
   },
   {
     version: '0.3',
     status: 'next',
     items: [
-      { pt: 'Tema de alto contraste e suporte a forced-colors', en: 'High-contrast theme and forced-colors support' },
-      { pt: 'Sincronização dos tokens com variáveis do Figma', en: 'Token sync with Figma variables' },
-      { pt: 'Testes de regressão visual dos dois temas', en: 'Visual regression tests for both themes' },
+      {
+        pt: 'Tema de alto contraste e suporte a forced-colors',
+        en: 'High-contrast theme and forced-colors support',
+      },
+      {
+        pt: 'Sincronização dos tokens com variáveis do Figma',
+        en: 'Token sync with Figma variables',
+      },
+      {
+        pt: 'Testes de regressão visual dos dois temas',
+        en: 'Visual regression tests for both themes',
+      },
     ],
   },
   {
     version: '1.0',
     status: 'later',
     items: [
-      { pt: 'API estável com política formal de depreciação', en: 'Stable API with a formal deprecation policy' },
-      { pt: 'Auditoria externa de acessibilidade (WCAG 2.2 AA)', en: 'External accessibility audit (WCAG 2.2 AA)' },
+      {
+        pt: 'API estável com política formal de depreciação',
+        en: 'Stable API with a formal deprecation policy',
+      },
+      {
+        pt: 'Auditoria externa de acessibilidade (WCAG 2.2 AA)',
+        en: 'External accessibility audit (WCAG 2.2 AA)',
+      },
       { pt: 'Kit de design espelhando os tokens', en: 'Design kit mirroring the tokens' },
     ],
   },
@@ -68,8 +108,26 @@ export default function About() {
         <Prose>
           <p>
             <T
-              pt={<>O Orange reúne em um único repositório tudo o que uma equipe precisa para entregar telas consistentes: os <strong>tokens</strong> (<Code>@orange/tokens</Code>) que definem cor, tipografia, espaço e movimento; os <strong>componentes React</strong> (<Code>@orange/ui</Code>) que consomem esses tokens; os <strong>hooks</strong> de acessibilidade usados para construí-los; e esta documentação, que é escrita com os próprios componentes.</>}
-              en={<>Orange brings into a single repository everything a team needs to ship consistent screens: the <strong>tokens</strong> (<Code>@orange/tokens</Code>) defining color, type, space and motion; the <strong>React components</strong> (<Code>@orange/ui</Code>) that consume them; the accessibility <strong>hooks</strong> used to build them; and this documentation, written with the components themselves.</>}
+              pt={
+                <>
+                  O Orange reúne em um único repositório tudo o que uma equipe precisa para entregar
+                  telas consistentes: os <strong>tokens</strong> (<Code>@orange/tokens</Code>) que
+                  definem cor, tipografia, espaço e movimento; os <strong>componentes React</strong>{' '}
+                  (<Code>@orange/ui</Code>) que consomem esses tokens; os <strong>hooks</strong> de
+                  acessibilidade usados para construí-los; e esta documentação, que é escrita com os
+                  próprios componentes.
+                </>
+              }
+              en={
+                <>
+                  Orange brings into a single repository everything a team needs to ship consistent
+                  screens: the <strong>tokens</strong> (<Code>@orange/tokens</Code>) defining color,
+                  type, space and motion; the <strong>React components</strong> (
+                  <Code>@orange/ui</Code>) that consume them; the accessibility{' '}
+                  <strong>hooks</strong> used to build them; and this documentation, written with
+                  the components themselves.
+                </>
+              }
             />
           </p>
           <p>
@@ -81,11 +139,29 @@ export default function About() {
         </Prose>
         <Stats
           items={[
-            { value: componentMetas.length, label: { pt: 'componentes documentados', en: 'documented components' } },
-            { value: Object.keys(themes.dark).length, label: { pt: 'tokens semânticos de cor por tema', en: 'semantic color tokens per theme' } },
-            { value: paletteCount, label: { pt: 'cores primitivas em 7 paletas', en: 'primitive colors in 7 palettes' } },
-            { value: iconNames.length, label: { pt: 'ícones na grade de 24px', en: 'icons on the 24px grid' } },
-            { value: Object.keys(ptBR).length, label: { pt: 'mensagens internas em PT e EN', en: 'internal messages in PT and EN' } },
+            {
+              value: componentMetas.length,
+              label: { pt: 'componentes documentados', en: 'documented components' },
+            },
+            {
+              value: Object.keys(themes.dark).length,
+              label: {
+                pt: 'tokens semânticos de cor por tema',
+                en: 'semantic color tokens per theme',
+              },
+            },
+            {
+              value: paletteCount,
+              label: { pt: 'cores primitivas em 7 paletas', en: 'primitive colors in 7 palettes' },
+            },
+            {
+              value: iconNames.length,
+              label: { pt: 'ícones na grade de 24px', en: 'icons on the 24px grid' },
+            },
+            {
+              value: Object.keys(ptBR).length,
+              label: { pt: 'mensagens internas em PT e EN', en: 'internal messages in PT and EN' },
+            },
           ]}
         />
       </Section>
@@ -117,8 +193,20 @@ export default function About() {
               eyebrow: { pt: 'Princípio 03', en: 'Principle 03' },
               title: { pt: 'Tokens como contrato', en: 'Tokens as a contract' },
               text: {
-                pt: <>Nenhum componente usa cor, medida ou duração soltas: tudo vem de <code>var(--or-*)</code>. Trocar um token muda o sistema inteiro — e os testes de contraste protegem a troca.</>,
-                en: <>No component uses a raw color, size or duration: everything comes from <code>var(--or-*)</code>. Changing a token changes the whole system — and the contrast tests guard the change.</>,
+                pt: (
+                  <>
+                    Nenhum componente usa cor, medida ou duração soltas: tudo vem de{' '}
+                    <code>var(--or-*)</code>. Trocar um token muda o sistema inteiro — e os testes
+                    de contraste protegem a troca.
+                  </>
+                ),
+                en: (
+                  <>
+                    No component uses a raw color, size or duration: everything comes from{' '}
+                    <code>var(--or-*)</code>. Changing a token changes the whole system — and the
+                    contrast tests guard the change.
+                  </>
+                ),
               },
             },
             {
@@ -144,8 +232,20 @@ export default function About() {
               eyebrow: { pt: 'Na prática', en: 'In practice' },
               title: { pt: 'Previsível', en: 'Predictable' },
               text: {
-                pt: <>As mesmas props significam a mesma coisa em todo lugar: <code>size</code> (32/40/48px), <code>variant</code>, <code>tone</code>, <code>value</code>/<code>defaultValue</code>/<code>onChange</code>.</>,
-                en: <>The same props mean the same thing everywhere: <code>size</code> (32/40/48px), <code>variant</code>, <code>tone</code>, <code>value</code>/<code>defaultValue</code>/<code>onChange</code>.</>,
+                pt: (
+                  <>
+                    As mesmas props significam a mesma coisa em todo lugar: <code>size</code>{' '}
+                    (32/40/48px), <code>variant</code>, <code>tone</code>, <code>value</code>/
+                    <code>defaultValue</code>/<code>onChange</code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    The same props mean the same thing everywhere: <code>size</code> (32/40/48px),{' '}
+                    <code>variant</code>, <code>tone</code>, <code>value</code>/
+                    <code>defaultValue</code>/<code>onChange</code>.
+                  </>
+                ),
               },
             },
           ]}
@@ -156,8 +256,32 @@ export default function About() {
         <Prose>
           <p>
             <T
-              pt={<>Todo componente segue o mesmo roteiro, descrito no <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">CONTRIBUTING.md</a>. O <Code>Button</Code> é a implementação de referência.</>}
-              en={<>Every component follows the same path, described in <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">CONTRIBUTING.md</a>. <Code>Button</Code> is the reference implementation.</>}
+              pt={
+                <>
+                  Todo componente segue o mesmo roteiro, descrito no{' '}
+                  <a
+                    href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    CONTRIBUTING.md
+                  </a>
+                  . O <Code>Button</Code> é a implementação de referência.
+                </>
+              }
+              en={
+                <>
+                  Every component follows the same path, described in{' '}
+                  <a
+                    href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    CONTRIBUTING.md
+                  </a>
+                  . <Code>Button</Code> is the reference implementation.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -179,8 +303,20 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<>Um arquivo por componente, prefixo <Code>or-</Code> e BEM. Estados via atributos (<Code>[aria-expanded='true']</Code>, <Code>[data-state]</Code>), nunca classes de estado soltas.</>}
-                    en={<>One file per component, <Code>or-</Code> prefix and BEM. States through attributes (<Code>[aria-expanded='true']</Code>, <Code>[data-state]</Code>), never loose state classes.</>}
+                    pt={
+                      <>
+                        Um arquivo por componente, prefixo <Code>or-</Code> e BEM. Estados via
+                        atributos (<Code>[aria-expanded='true']</Code>, <Code>[data-state]</Code>),
+                        nunca classes de estado soltas.
+                      </>
+                    }
+                    en={
+                      <>
+                        One file per component, <Code>or-</Code> prefix and BEM. States through
+                        attributes (<Code>[aria-expanded='true']</Code>, <Code>[data-state]</Code>),
+                        never loose state classes.
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -190,8 +326,22 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<><Code>forwardRef</Code> no elemento interativo, <Code>...rest</Code> repassado, estado controlado e não controlado com <Code>useControllableState</Code>, textos internos via <Code>useLocale().t()</Code>.</>}
-                    en={<><Code>forwardRef</Code> on the interactive element, <Code>...rest</Code> forwarded, controlled and uncontrolled state with <Code>useControllableState</Code>, internal text via <Code>useLocale().t()</Code>.</>}
+                    pt={
+                      <>
+                        <Code>forwardRef</Code> no elemento interativo, <Code>...rest</Code>{' '}
+                        repassado, estado controlado e não controlado com{' '}
+                        <Code>useControllableState</Code>, textos internos via{' '}
+                        <Code>useLocale().t()</Code>.
+                      </>
+                    }
+                    en={
+                      <>
+                        <Code>forwardRef</Code> on the interactive element, <Code>...rest</Code>{' '}
+                        forwarded, controlled and uncontrolled state with{' '}
+                        <Code>useControllableState</Code>, internal text via{' '}
+                        <Code>useLocale().t()</Code>.
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -217,36 +367,93 @@ export default function About() {
             {
               term: { pt: 'Testing Library', en: 'Testing Library' },
               description: {
-                pt: <>Vitest + <Code>@testing-library/react</Code> + <Code>user-event</Code>. Os testes consultam pela função acessível (<Code>getByRole</Code>) e exercitam mouse e teclado — se o leitor de tela não encontra, o teste também não.</>,
-                en: <>Vitest + <Code>@testing-library/react</Code> + <Code>user-event</Code>. Tests query by accessible role (<Code>getByRole</Code>) and exercise mouse and keyboard — if a screen reader can't find it, neither can the test.</>,
+                pt: (
+                  <>
+                    Vitest + <Code>@testing-library/react</Code> + <Code>user-event</Code>. Os
+                    testes consultam pela função acessível (<Code>getByRole</Code>) e exercitam
+                    mouse e teclado — se o leitor de tela não encontra, o teste também não.
+                  </>
+                ),
+                en: (
+                  <>
+                    Vitest + <Code>@testing-library/react</Code> + <Code>user-event</Code>. Tests
+                    query by accessible role (<Code>getByRole</Code>) and exercise mouse and
+                    keyboard — if a screen reader can't find it, neither can the test.
+                  </>
+                ),
               },
             },
             {
               term: { pt: 'axe-core', en: 'axe-core' },
               description: {
-                pt: <>Cada componente roda <Code>expectNoA11yViolations(container)</Code>, que falha com a lista de violações. A regra de contraste fica desligada no jsdom (sem layout real) e é coberta pelos testes de tokens.</>,
-                en: <>Every component runs <Code>expectNoA11yViolations(container)</Code>, which fails with the list of violations. The contrast rule is off in jsdom (no real layout) and is covered by the token tests.</>,
+                pt: (
+                  <>
+                    Cada componente roda <Code>expectNoA11yViolations(container)</Code>, que falha
+                    com a lista de violações. A regra de contraste fica desligada no jsdom (sem
+                    layout real) e é coberta pelos testes de tokens.
+                  </>
+                ),
+                en: (
+                  <>
+                    Every component runs <Code>expectNoA11yViolations(container)</Code>, which fails
+                    with the list of violations. The contrast rule is off in jsdom (no real layout)
+                    and is covered by the token tests.
+                  </>
+                ),
               },
             },
             {
               term: { pt: 'Contraste dos tokens', en: 'Token contrast' },
               description: {
-                pt: <><Code>contrast.test.ts</Code> verifica, nos dois temas, 15 pares de texto (≥ 4.5:1) e 4 pares de elementos de interface (≥ 3:1). Mudar um token que quebre o contraste quebra o build.</>,
-                en: <><Code>contrast.test.ts</Code> checks, in both themes, 15 text pairs (≥ 4.5:1) and 4 UI pairs (≥ 3:1). Changing a token in a way that breaks contrast breaks the build.</>,
+                pt: (
+                  <>
+                    <Code>contrast.test.ts</Code> verifica, nos dois temas, 15 pares de texto (≥
+                    4.5:1) e 4 pares de elementos de interface (≥ 3:1). Mudar um token que quebre o
+                    contraste quebra o build.
+                  </>
+                ),
+                en: (
+                  <>
+                    <Code>contrast.test.ts</Code> checks, in both themes, 15 text pairs (≥ 4.5:1)
+                    and 4 UI pairs (≥ 3:1). Changing a token in a way that breaks contrast breaks
+                    the build.
+                  </>
+                ),
               },
             },
             {
               term: { pt: 'Storybook a11y', en: 'Storybook a11y' },
               description: {
-                pt: <>O addon de acessibilidade roda o axe com layout real em cada story, com as tags WCAG 2.0, 2.1 e 2.2 A/AA, e está configurado com <Code>test: 'error'</Code>.</>,
-                en: <>The accessibility addon runs axe with real layout on every story, with the WCAG 2.0, 2.1 and 2.2 A/AA tags, configured with <Code>test: 'error'</Code>.</>,
+                pt: (
+                  <>
+                    O addon de acessibilidade roda o axe com layout real em cada story, com as tags
+                    WCAG 2.0, 2.1 e 2.2 A/AA, e está configurado com <Code>test: 'error'</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    The accessibility addon runs axe with real layout on every story, with the WCAG
+                    2.0, 2.1 and 2.2 A/AA tags, configured with <Code>test: 'error'</Code>.
+                  </>
+                ),
               },
             },
             {
               term: { pt: 'Tipos e lint', en: 'Types and lint' },
               description: {
-                pt: <>TypeScript strict e ESLint com <Code>jsx-a11y</Code> e <Code>react-hooks</Code>. O CI do GitHub Actions roda gen → typecheck → lint → test → build a cada push.</>,
-                en: <>Strict TypeScript and ESLint with <Code>jsx-a11y</Code> and <Code>react-hooks</Code>. GitHub Actions CI runs gen → typecheck → lint → test → build on every push.</>,
+                pt: (
+                  <>
+                    TypeScript strict e ESLint com <Code>jsx-a11y</Code> e <Code>react-hooks</Code>.
+                    O CI do GitHub Actions roda gen → typecheck → lint → test → build a cada push.
+                  </>
+                ),
+                en: (
+                  <>
+                    Strict TypeScript and ESLint with <Code>jsx-a11y</Code> and{' '}
+                    <Code>react-hooks</Code>. GitHub Actions CI runs gen → typecheck → lint → test →
+                    build on every push.
+                  </>
+                ),
               },
             },
             {
@@ -264,28 +471,88 @@ export default function About() {
         <Prose>
           <p>
             <T
-              pt={<>Os pacotes seguem o <a href="https://semver.org/lang/pt-BR/" target="_blank" rel="noreferrer">Versionamento Semântico</a> e são versionados juntos. Versão atual: <strong>0.1.0</strong>. Enquanto estivermos em <Code>0.x</Code>, versões minor podem trazer mudanças incompatíveis — sempre listadas no changelog com o caminho de migração.</>}
-              en={<>Packages follow <a href="https://semver.org/" target="_blank" rel="noreferrer">Semantic Versioning</a> and are versioned together. Current version: <strong>0.1.0</strong>. While on <Code>0.x</Code>, minor versions may include breaking changes — always listed in the changelog with a migration path.</>}
+              pt={
+                <>
+                  Os pacotes seguem o{' '}
+                  <a href="https://semver.org/lang/pt-BR/" target="_blank" rel="noreferrer">
+                    Versionamento Semântico
+                  </a>{' '}
+                  e são versionados juntos. Versão atual: <strong>0.1.0</strong>. Enquanto
+                  estivermos em <Code>0.x</Code>, versões minor podem trazer mudanças incompatíveis
+                  — sempre listadas no changelog com o caminho de migração.
+                </>
+              }
+              en={
+                <>
+                  Packages follow{' '}
+                  <a href="https://semver.org/" target="_blank" rel="noreferrer">
+                    Semantic Versioning
+                  </a>{' '}
+                  and are versioned together. Current version: <strong>0.1.0</strong>. While on{' '}
+                  <Code>0.x</Code>, minor versions may include breaking changes — always listed in
+                  the changelog with a migration path.
+                </>
+              }
             />
           </p>
         </Prose>
         <Bullets
           items={[
             {
-              pt: <><strong>Incompatível (major):</strong> remover ou renomear um componente, prop, token <Code>--or-*</Code>, classe <Code>.or-*</Code> pública ou chave de mensagem.</>,
-              en: <><strong>Breaking (major):</strong> removing or renaming a component, prop, <Code>--or-*</Code> token, public <Code>.or-*</Code> class or message key.</>,
+              pt: (
+                <>
+                  <strong>Incompatível (major):</strong> remover ou renomear um componente, prop,
+                  token <Code>--or-*</Code>, classe <Code>.or-*</Code> pública ou chave de mensagem.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Breaking (major):</strong> removing or renaming a component, prop,{' '}
+                  <Code>--or-*</Code> token, public <Code>.or-*</Code> class or message key.
+                </>
+              ),
             },
             {
-              pt: <><strong>Nova funcionalidade (minor):</strong> novos componentes, props opcionais, tokens ou mensagens.</>,
-              en: <><strong>Feature (minor):</strong> new components, optional props, tokens or messages.</>,
+              pt: (
+                <>
+                  <strong>Nova funcionalidade (minor):</strong> novos componentes, props opcionais,
+                  tokens ou mensagens.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Feature (minor):</strong> new components, optional props, tokens or
+                  messages.
+                </>
+              ),
             },
             {
-              pt: <><strong>Correção (patch):</strong> bugs, ajustes de valores de token que mantêm o contraste, melhorias de acessibilidade sem mudança de API.</>,
-              en: <><strong>Fix (patch):</strong> bugs, token value tweaks that keep contrast, accessibility improvements without API changes.</>,
+              pt: (
+                <>
+                  <strong>Correção (patch):</strong> bugs, ajustes de valores de token que mantêm o
+                  contraste, melhorias de acessibilidade sem mudança de API.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Fix (patch):</strong> bugs, token value tweaks that keep contrast,
+                  accessibility improvements without API changes.
+                </>
+              ),
             },
             {
-              pt: <>Antes de remover algo, marcamos com <Code>@deprecated</Code> e um aviso no console em desenvolvimento por pelo menos uma versão minor.</>,
-              en: <>Before removing anything we mark it <Code>@deprecated</Code> with a development console warning for at least one minor version.</>,
+              pt: (
+                <>
+                  Antes de remover algo, marcamos com <Code>@deprecated</Code> e um aviso no console
+                  em desenvolvimento por pelo menos uma versão minor.
+                </>
+              ),
+              en: (
+                <>
+                  Before removing anything we mark it <Code>@deprecated</Code> with a development
+                  console warning for at least one minor version.
+                </>
+              ),
             },
           ]}
         />
@@ -307,8 +574,24 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<>Descreva o problema ou a proposta em <a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer">github.com/llypeDev/Orange/issues</a>. Para componentes novos, inclua o padrão APG de referência.</>}
-                    en={<>Describe the problem or proposal at <a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer">github.com/llypeDev/Orange/issues</a>. For new components, include the reference APG pattern.</>}
+                    pt={
+                      <>
+                        Descreva o problema ou a proposta em{' '}
+                        <a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer">
+                          github.com/llypeDev/Orange/issues
+                        </a>
+                        . Para componentes novos, inclua o padrão APG de referência.
+                      </>
+                    }
+                    en={
+                      <>
+                        Describe the problem or proposal at{' '}
+                        <a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer">
+                          github.com/llypeDev/Orange/issues
+                        </a>
+                        . For new components, include the reference APG pattern.
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -318,8 +601,18 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<>Faça um fork, rode <Code>pnpm install</Code> e <Code>pnpm dev</Code>. A documentação recarrega a cada mudança nos pacotes.</>}
-                    en={<>Fork the repo, run <Code>pnpm install</Code> and <Code>pnpm dev</Code>. The docs reload on every package change.</>}
+                    pt={
+                      <>
+                        Faça um fork, rode <Code>pnpm install</Code> e <Code>pnpm dev</Code>. A
+                        documentação recarrega a cada mudança nos pacotes.
+                      </>
+                    }
+                    en={
+                      <>
+                        Fork the repo, run <Code>pnpm install</Code> and <Code>pnpm dev</Code>. The
+                        docs reload on every package change.
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -329,8 +622,33 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<>Componente, CSS, testes, stories e página de documentação — a lista completa está no <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">CONTRIBUTING.md</a>.</>}
-                    en={<>Component, CSS, tests, stories and docs page — the full list is in <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">CONTRIBUTING.md</a>.</>}
+                    pt={
+                      <>
+                        Componente, CSS, testes, stories e página de documentação — a lista completa
+                        está no{' '}
+                        <a
+                          href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          CONTRIBUTING.md
+                        </a>
+                        .
+                      </>
+                    }
+                    en={
+                      <>
+                        Component, CSS, tests, stories and docs page — the full list is in{' '}
+                        <a
+                          href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          CONTRIBUTING.md
+                        </a>
+                        .
+                      </>
+                    }
                   />
                 </p>
               ),
@@ -340,19 +658,48 @@ export default function About() {
               content: (
                 <p>
                   <T
-                    pt={<>Com <Code>pnpm typecheck</Code>, <Code>pnpm lint</Code> e <Code>pnpm test</Code> passando. Mensagens de commit no imperativo, em português: “Adiciona componente Tabs”.</>}
-                    en={<>With <Code>pnpm typecheck</Code>, <Code>pnpm lint</Code> and <Code>pnpm test</Code> passing. Commit messages in the imperative, in Portuguese: “Adiciona componente Tabs”.</>}
+                    pt={
+                      <>
+                        Com <Code>pnpm typecheck</Code>, <Code>pnpm lint</Code> e{' '}
+                        <Code>pnpm test</Code> passando. Mensagens de commit no imperativo, em
+                        português: “Adiciona componente Tabs”.
+                      </>
+                    }
+                    en={
+                      <>
+                        With <Code>pnpm typecheck</Code>, <Code>pnpm lint</Code> and{' '}
+                        <Code>pnpm test</Code> passing. Commit messages in the imperative, in
+                        Portuguese: “Adiciona componente Tabs”.
+                      </>
+                    }
                   />
                 </p>
               ),
             },
           ]}
         />
-        <Callout tone="success" title={{ pt: 'Encontrou uma barreira de acessibilidade?', en: 'Found an accessibility barrier?' }}>
+        <Callout
+          tone="success"
+          title={{
+            pt: 'Encontrou uma barreira de acessibilidade?',
+            en: 'Found an accessibility barrier?',
+          }}
+        >
           <p>
             <T
-              pt={<>Abra uma issue com o rótulo <Code>a11y</Code> informando navegador, tecnologia assistiva e passos para reproduzir. Problemas de acessibilidade têm prioridade sobre novas funcionalidades.</>}
-              en={<>Open an issue labeled <Code>a11y</Code> with browser, assistive technology and reproduction steps. Accessibility issues take priority over new features.</>}
+              pt={
+                <>
+                  Abra uma issue com o rótulo <Code>a11y</Code> informando navegador, tecnologia
+                  assistiva e passos para reproduzir. Problemas de acessibilidade têm prioridade
+                  sobre novas funcionalidades.
+                </>
+              }
+              en={
+                <>
+                  Open an issue labeled <Code>a11y</Code> with browser, assistive technology and
+                  reproduction steps. Accessibility issues take priority over new features.
+                </>
+              }
             />
           </p>
         </Callout>
@@ -395,8 +742,32 @@ export default function About() {
         <Prose>
           <p>
             <T
-              pt={<>Prioridades mudam com o uso real. Acompanhe e vote nas issues do <a href={REPO_URL} target="_blank" rel="noreferrer">repositório</a> ou explore o estado atual no <a href={STORYBOOK_URL} target="_blank" rel="noreferrer">Storybook</a>.</>}
-              en={<>Priorities shift with real usage. Follow and vote on issues in the <a href={REPO_URL} target="_blank" rel="noreferrer">repository</a> or explore the current state in <a href={STORYBOOK_URL} target="_blank" rel="noreferrer">Storybook</a>.</>}
+              pt={
+                <>
+                  Prioridades mudam com o uso real. Acompanhe e vote nas issues do{' '}
+                  <a href={REPO_URL} target="_blank" rel="noreferrer">
+                    repositório
+                  </a>{' '}
+                  ou explore o estado atual no{' '}
+                  <a href={STORYBOOK_URL} target="_blank" rel="noreferrer">
+                    Storybook
+                  </a>
+                  .
+                </>
+              }
+              en={
+                <>
+                  Priorities shift with real usage. Follow and vote on issues in the{' '}
+                  <a href={REPO_URL} target="_blank" rel="noreferrer">
+                    repository
+                  </a>{' '}
+                  or explore the current state in{' '}
+                  <a href={STORYBOOK_URL} target="_blank" rel="noreferrer">
+                    Storybook
+                  </a>
+                  .
+                </>
+              }
             />
           </p>
         </Prose>
@@ -406,8 +777,20 @@ export default function About() {
         <Prose>
           <p>
             <T
-              pt={<>MIT. Use, modifique e distribua — inclusive comercialmente — mantendo o aviso de copyright. As fontes Space Grotesk, Inter e JetBrains Mono são distribuídas sob a SIL Open Font License.</>}
-              en={<>MIT. Use, modify and distribute — commercially too — keeping the copyright notice. The Space Grotesk, Inter and JetBrains Mono fonts are distributed under the SIL Open Font License.</>}
+              pt={
+                <>
+                  MIT. Use, modifique e distribua — inclusive comercialmente — mantendo o aviso de
+                  copyright. As fontes Space Grotesk, Inter e JetBrains Mono são distribuídas sob a
+                  SIL Open Font License.
+                </>
+              }
+              en={
+                <>
+                  MIT. Use, modify and distribute — commercially too — keeping the copyright notice.
+                  The Space Grotesk, Inter and JetBrains Mono fonts are distributed under the SIL
+                  Open Font License.
+                </>
+              }
             />
           </p>
         </Prose>

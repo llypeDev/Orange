@@ -26,6 +26,7 @@ export default function Basic() {
   return (
     <AppHeader
       collapseBelow="sm"
+      navLabel="Navegação do Analytics"
       brand={
         <a href="#inicio" aria-label="Orange Analytics — início">
           <Icon name="chart-bar" /> Analytics

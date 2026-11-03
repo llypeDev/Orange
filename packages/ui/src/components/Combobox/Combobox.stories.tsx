@@ -68,7 +68,11 @@ export const Sizes: Story = {
 
 export const DisabledOptions: Story = {
   args: {
-    options: cidades.map((c) => (['mao', 'bel'].includes(c.value) ? { ...c, description: 'Sem entrega no momento', disabled: true } : c)),
+    options: cidades.map((c) =>
+      ['mao', 'bel'].includes(c.value)
+        ? { ...c, description: 'Sem entrega no momento', disabled: true }
+        : c,
+    ),
   },
 }
 
@@ -85,7 +89,11 @@ export const Async: Story = {
       setLoading(true)
       const timer = setTimeout(() => {
         const q = query.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-        setOptions(cidades.filter((c) => c.label.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().includes(q)))
+        setOptions(
+          cidades.filter((c) =>
+            c.label.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().includes(q),
+          ),
+        )
         setLoading(false)
       }, 600)
       return () => clearTimeout(timer)

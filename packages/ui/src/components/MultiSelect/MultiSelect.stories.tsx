@@ -50,7 +50,11 @@ export const WithValues: Story = {
 }
 
 export const MaxSelected: Story = {
-  args: { maxSelected: 3, description: 'Escolha até 3 habilidades principais.', defaultValue: ['react', 'css'] },
+  args: {
+    maxSelected: 3,
+    description: 'Escolha até 3 habilidades principais.',
+    defaultValue: ['react', 'css'],
+  },
 }
 
 export const Sizes: Story = {

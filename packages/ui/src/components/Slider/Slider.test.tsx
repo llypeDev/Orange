@@ -6,11 +6,14 @@ import { expectNoA11yViolations } from '../../test/axe'
 import { Slider } from './Slider'
 
 const norm = (text: string) => text.replace(/\s+/g, ' ')
-const brl = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+const brl = (v: number) =>
+  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 
 describe('Slider', () => {
   it('renderiza um input range nativo com rótulo e saída visível', () => {
-    render(<Slider label="Volume" defaultValue={40} description="Ajuste o volume das notificações" />)
+    render(
+      <Slider label="Volume" defaultValue={40} description="Ajuste o volume das notificações" />,
+    )
     const slider = screen.getByRole('slider', { name: 'Volume' })
     expect(slider).toHaveAttribute('type', 'range')
     expect(slider).toHaveAttribute('min', '0')
@@ -23,7 +26,16 @@ describe('Slider', () => {
   })
 
   it('usa formatValue em aria-valuetext e na saída', () => {
-    render(<Slider label="Orçamento" min={0} max={5000} step={100} defaultValue={1500} formatValue={brl} />)
+    render(
+      <Slider
+        label="Orçamento"
+        min={0}
+        max={5000}
+        step={100}
+        defaultValue={1500}
+        formatValue={brl}
+      />,
+    )
     const slider = screen.getByRole('slider')
     expect(slider).toHaveAttribute('aria-valuetext', brl(1500))
     expect(screen.getByRole('status')).toHaveTextContent(norm(brl(1500)))
@@ -33,7 +45,15 @@ describe('Slider', () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
     const onChangeEnd = vi.fn()
-    render(<Slider label="Brilho" defaultValue={50} step={5} onChange={onChange} onChangeEnd={onChangeEnd} />)
+    render(
+      <Slider
+        label="Brilho"
+        defaultValue={50}
+        step={5}
+        onChange={onChange}
+        onChangeEnd={onChangeEnd}
+      />,
+    )
     const slider = screen.getByRole('slider')
     fireEvent.change(slider, { target: { value: '63' } })
     // arredonda para o passo
@@ -66,7 +86,18 @@ describe('Slider', () => {
 
   it('modo range: dois polegares em um grupo, com rótulos mínimo e máximo', () => {
     const onChange = vi.fn()
-    render(<Slider range label="Faixa de preço" min={0} max={1000} step={50} defaultValue={[200, 600]} onChange={onChange} formatValue={brl} />)
+    render(
+      <Slider
+        range
+        label="Faixa de preço"
+        min={0}
+        max={1000}
+        step={50}
+        defaultValue={[200, 600]}
+        onChange={onChange}
+        formatValue={brl}
+      />,
+    )
     expect(screen.getByRole('group', { name: 'Faixa de preço' })).toBeInTheDocument()
     const lower = screen.getByRole('slider', { name: 'Faixa de preço mínimo' })
     const upper = screen.getByRole('slider', { name: 'Faixa de preço máximo' })
@@ -79,7 +110,17 @@ describe('Slider', () => {
 
   it('modo range: os polegares não se cruzam e respeitam minDistance', () => {
     const onChange = vi.fn()
-    render(<Slider range label="Horário" min={0} max={24} defaultValue={[8, 18]} minDistance={2} onChange={onChange} />)
+    render(
+      <Slider
+        range
+        label="Horário"
+        min={0}
+        max={24}
+        defaultValue={[8, 18]}
+        minDistance={2}
+        onChange={onChange}
+      />,
+    )
     const [lower, upper] = screen.getAllByRole('slider')
     fireEvent.change(lower, { target: { value: '20' } })
     expect(onChange).toHaveBeenLastCalledWith([16, 18])

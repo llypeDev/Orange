@@ -6,7 +6,12 @@ export default function Sizes() {
       <Slider size="sm" label="Brilho (sm)" defaultValue={30} />
       <Slider size="md" label="Brilho (md)" defaultValue={55} />
       <Slider size="lg" label="Brilho (lg)" defaultValue={80} />
-      <Slider label="Qualidade do vídeo" description="Disponível no plano Pro." defaultValue={50} disabled />
+      <Slider
+        label="Qualidade do vídeo"
+        description="Disponível no plano Pro."
+        defaultValue={50}
+        disabled
+      />
     </div>
   )
 }

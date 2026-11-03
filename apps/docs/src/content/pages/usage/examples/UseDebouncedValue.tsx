@@ -2,10 +2,33 @@ import { Icon, useDebouncedValue } from '@orange/ui'
 import { useMemo, useState } from 'react'
 
 const cidades = [
-  'Aracaju', 'Belém', 'Belo Horizonte', 'Boa Vista', 'Brasília', 'Campo Grande', 'Cuiabá',
-  'Curitiba', 'Florianópolis', 'Fortaleza', 'Goiânia', 'João Pessoa', 'Macapá', 'Maceió',
-  'Manaus', 'Natal', 'Palmas', 'Porto Alegre', 'Porto Velho', 'Recife', 'Rio Branco',
-  'Rio de Janeiro', 'Salvador', 'São Luís', 'São Paulo', 'Teresina', 'Vitória',
+  'Aracaju',
+  'Belém',
+  'Belo Horizonte',
+  'Boa Vista',
+  'Brasília',
+  'Campo Grande',
+  'Cuiabá',
+  'Curitiba',
+  'Florianópolis',
+  'Fortaleza',
+  'Goiânia',
+  'João Pessoa',
+  'Macapá',
+  'Maceió',
+  'Manaus',
+  'Natal',
+  'Palmas',
+  'Porto Alegre',
+  'Porto Velho',
+  'Recife',
+  'Rio Branco',
+  'Rio de Janeiro',
+  'Salvador',
+  'São Luís',
+  'São Paulo',
+  'Teresina',
+  'Vitória',
 ]
 
 const sem = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
@@ -33,10 +56,12 @@ export default function BuscaDeCidades() {
         />
       </div>
       <p className="guide-live">
-        digitado: <strong>“{busca}”</strong> · aplicado após 400ms: <strong>“{buscaAtrasada}”</strong>
+        digitado: <strong>“{busca}”</strong> · aplicado após 400ms:{' '}
+        <strong>“{buscaAtrasada}”</strong>
       </p>
       <p className="guide-live" role="status">
-        {resultado.length} {resultado.length === 1 ? 'capital' : 'capitais'}: {resultado.slice(0, 6).join(', ')}
+        {resultado.length} {resultado.length === 1 ? 'capital' : 'capitais'}:{' '}
+        {resultado.slice(0, 6).join(', ')}
         {resultado.length > 6 ? '…' : ''}
       </p>
     </div>

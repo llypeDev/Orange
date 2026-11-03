@@ -13,7 +13,11 @@ export default function ConfirmarExclusao() {
   return (
     <div className="guide-stack">
       <div>
-        <Button variant="danger" startIcon={<Icon name="trash" size="sm" />} onClick={() => setAberto(true)}>
+        <Button
+          variant="danger"
+          startIcon={<Icon name="trash" size="sm" />}
+          onClick={() => setAberto(true)}
+        >
           Excluir projeto
         </Button>
       </div>

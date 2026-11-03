@@ -348,7 +348,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
   /*
    * Estrutura do exemplo "Navigation Treeview" do APG: o <li> é apresentacional,
    * a linha é o `treeitem` e o grupo de filhos (irmão da linha) é associado por
-   * `aria-owns`. Assim o nome do item vem só da sua linha, sem o texto dos filhos.
+   * `aria-owns`. O nome vem de `aria-labelledby` (só o rótulo, sem os filhos).
    */
   const renderItems = (list: TreeViewItem[], level: number): ReactNode =>
     list.map((item, index) => {
@@ -358,9 +358,12 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
       const isSelected = selectedSet.has(item.id)
       const icon = renderIcon(item, open)
       const groupId = `${info.domId}-group`
+      const labelId = `${info.domId}-label`
       const showGroup = open && item.children !== undefined && item.children.length > 0
       return (
         <li key={item.id} role="none" className="or-tree__node">
+          {/* O teclado é tratado no onKeyDown da árvore (roving tabindex). */}
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
           <div
             id={info.domId}
             role="treeitem"
@@ -375,6 +378,8 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
               selectionMode === 'multiple' ? isSelected : selectionMode === 'single' && isSelected ? true : undefined
             }
             aria-disabled={item.disabled || undefined}
+            // nome só da própria linha (o conteúdo de aria-owns entraria no cálculo)
+            aria-labelledby={labelId}
             tabIndex={item.id === tabbableId ? 0 : -1}
             data-tree-id={item.id}
             onClick={(event) => handleRowClick(event, item)}
@@ -392,7 +397,9 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
                 {icon}
               </span>
             )}
-            <span className="or-tree__label">{item.label}</span>
+            <span className="or-tree__label" id={labelId}>
+              {item.label}
+            </span>
           </div>
           {showGroup && (
             <ul id={groupId} role="group" className="or-tree__group">

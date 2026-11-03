@@ -44,7 +44,13 @@ export const Masked: Story = {
 }
 
 export const Alphanumeric: Story = {
-  args: { label: 'Código do cupom', description: undefined, type: 'alphanumeric', length: 8, groupSize: 4 },
+  args: {
+    label: 'Código do cupom',
+    description: undefined,
+    type: 'alphanumeric',
+    length: 8,
+    groupSize: 4,
+  },
 }
 
 export const Sizes: Story = {

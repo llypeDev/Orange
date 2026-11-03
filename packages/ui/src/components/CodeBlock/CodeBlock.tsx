@@ -82,9 +82,17 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
     >
       {hasHeader && (
         <div className="or-code-block__header">
-          <span className="or-code-block__meta" id={name ? labelId : undefined}>
-            {title && <span className="or-code-block__title">{title}</span>}
-            {language && <span className="or-code-block__language">{language}</span>}
+          <span className="or-code-block__meta">
+            {title && (
+              <span className="or-code-block__title" id={labelId}>
+                {title}
+              </span>
+            )}
+            {language && (
+              <span className="or-code-block__language" id={title ? undefined : labelId}>
+                {language}
+              </span>
+            )}
           </span>
           {copyable && (
             <button

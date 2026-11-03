@@ -25,8 +25,17 @@ export default function Controlled() {
 
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
-      <MultiSelect label="Status do pedido" placeholder="Todos os status" options={status} value={filtro} onChange={setFiltro} />
-      <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }} aria-live="polite">
+      <MultiSelect
+        label="Status do pedido"
+        placeholder="Todos os status"
+        options={status}
+        value={filtro}
+        onChange={setFiltro}
+      />
+      <p
+        style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}
+        aria-live="polite"
+      >
         {visiveis.length} de {pedidos.length} pedidos: {visiveis.map((p) => p.id).join(', ')}
       </p>
       <div style={{ display: 'flex', gap: 8 }}>

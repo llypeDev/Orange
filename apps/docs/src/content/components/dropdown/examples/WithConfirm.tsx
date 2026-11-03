@@ -8,6 +8,11 @@ export default function WithConfirm() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
       <span>Webhook de pedidos: {ativo ? 'ativo' : 'removido'}</span>
+      {!ativo && (
+        <Button variant="ghost" size="sm" onClick={() => setAtivo(true)}>
+          Recriar
+        </Button>
+      )}
       <Dropdown
         trigger={
           <Button variant="outline" size="sm" endIcon={<Icon name="chevron-down" />}>

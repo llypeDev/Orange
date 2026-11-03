@@ -16,6 +16,7 @@ describe('CodeBlock', () => {
   it('renderiza o código em uma área rolável focável com nome acessível', () => {
     render(<CodeBlock code={sample} title="Salvar.tsx" language="tsx" />)
     const region = screen.getByRole('group', { name: 'Código: Salvar.tsx' })
+    expect(screen.getByRole('button', { name: 'Copiar' })).toHaveAccessibleDescription('Salvar.tsx')
     expect(region.tagName).toBe('PRE')
     expect(region).toHaveAttribute('tabindex', '0')
     expect(region).toHaveTextContent("import { Button } from '@orange/ui'")

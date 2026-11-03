@@ -135,7 +135,9 @@ describe('Combobox', () => {
     const { user, input } = setup()
     await user.type(input, 'xyz')
     expect(screen.getByText('Nenhum resultado encontrado')).toBeInTheDocument()
-    expect(await screen.findByText('Nenhum resultado encontrado', { selector: '[role="status"]' })).toBeInTheDocument()
+    expect(
+      await screen.findByText('Nenhum resultado encontrado', { selector: '[role="status"]' }),
+    ).toBeInTheDocument()
     await user.clear(input)
     await user.type(input, 'ri')
     expect(await screen.findByText('2 resultados disponíveis')).toBeInTheDocument()
@@ -173,7 +175,13 @@ describe('Combobox', () => {
       const [value, setValue] = useState<string | null>('bh')
       return (
         <>
-          <Combobox label="Cidade" options={cities} value={value} onChange={setValue} onInputChange={onInputChange} />
+          <Combobox
+            label="Cidade"
+            options={cities}
+            value={value}
+            onChange={setValue}
+            onInputChange={onInputChange}
+          />
           <button type="button" onClick={() => setValue('rj')}>
             Definir Rio
           </button>
@@ -205,7 +213,9 @@ describe('Combobox', () => {
   })
 
   it('envia o valor em um input oculto com name', async () => {
-    const { container } = render(<Combobox label="Cidade" options={cities} defaultValue="rj" name="cidade" />)
+    const { container } = render(
+      <Combobox label="Cidade" options={cities} defaultValue="rj" name="cidade" />,
+    )
     expect(container.querySelector('input[type="hidden"][name="cidade"]')).toHaveValue('rj')
   })
 
@@ -235,7 +245,12 @@ describe('Combobox', () => {
     const user = userEvent.setup()
     const { container } = render(
       <div>
-        <Combobox label="Cidade" description="Comece a digitar" options={cities} defaultValue="sp" />
+        <Combobox
+          label="Cidade"
+          description="Comece a digitar"
+          options={cities}
+          defaultValue="sp"
+        />
         <Combobox label="Estado" options={cities} error="Campo obrigatório" required />
         <Combobox aria-label="Busca de cidade" options={cities} disabled />
       </div>,

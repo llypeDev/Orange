@@ -17,7 +17,9 @@ export default function Ambiente() {
         <div key={consulta} className="guide-kv__row">
           <dt>{consulta}</dt>
           <dd>
-            <span className={valor ? 'guide-bool guide-bool--true' : 'guide-bool'}>{String(valor)}</span>
+            <span className={valor ? 'guide-bool guide-bool--true' : 'guide-bool'}>
+              {String(valor)}
+            </span>
           </dd>
         </div>
       ))}

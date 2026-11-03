@@ -15,13 +15,67 @@ const spans: { label: string; cols: number[] }[] = [
   { label: '3 + 9', cols: [3, 9] },
 ]
 
-const breakpointRows: { name: string; min: string; columns: number; gutter: string; usage: Localized<string> }[] = [
-  { name: 'base', min: '0', columns: 4, gutter: '16px', usage: { pt: 'Celulares em retrato. Uma coluna de conteúdo, navegação em gaveta.', en: 'Phones in portrait. One content column, drawer navigation.' } },
-  { name: 'sm', min: breakpoints.sm, columns: 4, gutter: '16px', usage: { pt: 'Celulares grandes e em paisagem.', en: 'Large phones and landscape.' } },
-  { name: 'md', min: breakpoints.md, columns: 8, gutter: '24px', usage: { pt: 'Tablets. Cartões em duas colunas.', en: 'Tablets. Cards in two columns.' } },
-  { name: 'lg', min: breakpoints.lg, columns: 12, gutter: '32px', usage: { pt: 'Notebooks. A sidebar fixa aparece (esta documentação).', en: 'Laptops. The fixed sidebar appears (these docs).' } },
-  { name: 'xl', min: breakpoints.xl, columns: 12, gutter: '32px', usage: { pt: 'Desktops. Índice “Nesta página” ao lado do conteúdo.', en: 'Desktops. “On this page” index next to the content.' } },
-  { name: '2xl', min: breakpoints['2xl'], columns: 12, gutter: '32px', usage: { pt: 'Telas largas. O conteúdo para em 1200px e centraliza.', en: 'Wide screens. Content stops at 1200px and centers.' } },
+const breakpointRows: {
+  name: string
+  min: string
+  columns: number
+  gutter: string
+  usage: Localized<string>
+}[] = [
+  {
+    name: 'base',
+    min: '0',
+    columns: 4,
+    gutter: '16px',
+    usage: {
+      pt: 'Celulares em retrato. Uma coluna de conteúdo, navegação em gaveta.',
+      en: 'Phones in portrait. One content column, drawer navigation.',
+    },
+  },
+  {
+    name: 'sm',
+    min: breakpoints.sm,
+    columns: 4,
+    gutter: '16px',
+    usage: { pt: 'Celulares grandes e em paisagem.', en: 'Large phones and landscape.' },
+  },
+  {
+    name: 'md',
+    min: breakpoints.md,
+    columns: 8,
+    gutter: '24px',
+    usage: { pt: 'Tablets. Cartões em duas colunas.', en: 'Tablets. Cards in two columns.' },
+  },
+  {
+    name: 'lg',
+    min: breakpoints.lg,
+    columns: 12,
+    gutter: '32px',
+    usage: {
+      pt: 'Notebooks. A sidebar fixa aparece (esta documentação).',
+      en: 'Laptops. The fixed sidebar appears (these docs).',
+    },
+  },
+  {
+    name: 'xl',
+    min: breakpoints.xl,
+    columns: 12,
+    gutter: '32px',
+    usage: {
+      pt: 'Desktops. Índice “Nesta página” ao lado do conteúdo.',
+      en: 'Desktops. “On this page” index next to the content.',
+    },
+  },
+  {
+    name: '2xl',
+    min: breakpoints['2xl'],
+    columns: 12,
+    gutter: '32px',
+    usage: {
+      pt: 'Telas largas. O conteúdo para em 1200px e centraliza.',
+      en: 'Wide screens. Content stops at 1200px and centers.',
+    },
+  },
 ]
 
 function CurrentBreakpoint() {
@@ -63,7 +117,14 @@ export default function GridPage() {
             />
           </p>
         </Prose>
-        <div className="guide-grid-demo" role="img" aria-label={t({ pt: 'Grade de 12 colunas com exemplos de divisão: 12, 6+6, 4+4+4, 3×4, 8+4 e 3+9', en: '12-column grid with split examples: 12, 6+6, 4+4+4, 3×4, 8+4 and 3+9' })}>
+        <div
+          className="guide-grid-demo"
+          role="img"
+          aria-label={t({
+            pt: 'Grade de 12 colunas com exemplos de divisão: 12, 6+6, 4+4+4, 3×4, 8+4 e 3+9',
+            en: '12-column grid with split examples: 12, 6+6, 4+4+4, 3×4, 8+4 and 3+9',
+          })}
+        >
           <div className="guide-grid-demo__lines" aria-hidden="true">
             {Array.from({ length: 12 }, (_, i) => (
               <span key={i}>{i + 1}</span>
@@ -72,7 +133,11 @@ export default function GridPage() {
           {spans.map((row) => (
             <div key={row.label} className="guide-grid-demo__row">
               {row.cols.map((cols, i) => (
-                <span key={i} className="guide-grid-demo__cell" style={{ gridColumn: `span ${cols}` }}>
+                <span
+                  key={i}
+                  className="guide-grid-demo__cell"
+                  style={{ gridColumn: `span ${cols}` }}
+                >
                   {cols}
                 </span>
               ))}
@@ -122,10 +187,34 @@ export default function GridPage() {
             <tbody>
               {(
                 [
-                  ['max-width', { pt: 'Largura máxima do conteúdo; acima disso, margens automáticas.', en: 'Maximum content width; beyond it, automatic margins.' }],
-                  ['gutter', { pt: 'Espaço entre colunas e margem lateral do contêiner.', en: 'Space between columns and the container side margin.' }],
-                  ['header-height', { pt: 'Altura do cabeçalho fixo; também usada no scroll-padding-top.', en: 'Sticky header height; also used for scroll-padding-top.' }],
-                  ['sidebar-width', { pt: 'Largura da navegação lateral a partir de lg.', en: 'Side navigation width from lg up.' }],
+                  [
+                    'max-width',
+                    {
+                      pt: 'Largura máxima do conteúdo; acima disso, margens automáticas.',
+                      en: 'Maximum content width; beyond it, automatic margins.',
+                    },
+                  ],
+                  [
+                    'gutter',
+                    {
+                      pt: 'Espaço entre colunas e margem lateral do contêiner.',
+                      en: 'Space between columns and the container side margin.',
+                    },
+                  ],
+                  [
+                    'header-height',
+                    {
+                      pt: 'Altura do cabeçalho fixo; também usada no scroll-padding-top.',
+                      en: 'Sticky header height; also used for scroll-padding-top.',
+                    },
+                  ],
+                  [
+                    'sidebar-width',
+                    {
+                      pt: 'Largura da navegação lateral a partir de lg.',
+                      en: 'Side navigation width from lg up.',
+                    },
+                  ],
                 ] as [keyof typeof layout, Localized<string>][]
               ).map(([name, usage]) => (
                 <tr key={name}>
@@ -150,8 +239,22 @@ export default function GridPage() {
         <Prose>
           <p>
             <T
-              pt={<>Os breakpoints são <em>min-width</em> (mobile first). Custom properties não funcionam dentro de <Code>@media</Code>, então em CSS os valores são repetidos; em JavaScript, importe <Code>breakpoints</Code> de <Code>@orange/tokens</Code> e use <Code>useMediaQuery</Code>.</>}
-              en={<>Breakpoints are <em>min-width</em> (mobile first). Custom properties don’t work inside <Code>@media</Code>, so CSS repeats the values; in JavaScript, import <Code>breakpoints</Code> from <Code>@orange/tokens</Code> and use <Code>useMediaQuery</Code>.</>}
+              pt={
+                <>
+                  Os breakpoints são <em>min-width</em> (mobile first). Custom properties não
+                  funcionam dentro de <Code>@media</Code>, então em CSS os valores são repetidos; em
+                  JavaScript, importe <Code>breakpoints</Code> de <Code>@orange/tokens</Code> e use{' '}
+                  <Code>useMediaQuery</Code>.
+                </>
+              }
+              en={
+                <>
+                  Breakpoints are <em>min-width</em> (mobile first). Custom properties don’t work
+                  inside <Code>@media</Code>, so CSS repeats the values; in JavaScript, import{' '}
+                  <Code>breakpoints</Code> from <Code>@orange/tokens</Code> and use{' '}
+                  <Code>useMediaQuery</Code>.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -210,8 +313,20 @@ return desktop ? <TabelaCompleta /> : <ListaDeCartoes />`}
         <Prose>
           <p>
             <T
-              pt={<>Todo espaçamento — padding, margin, gap — vem de <Code>--or-space-*</Code>. A unidade base é 4px (<Code>--or-space-1</Code>); o número do token multiplicado por 4 dá o valor em pixels.</>}
-              en={<>Every spacing value — padding, margin, gap — comes from <Code>--or-space-*</Code>. The base unit is 4px (<Code>--or-space-1</Code>); the token number times 4 gives the pixel value.</>}
+              pt={
+                <>
+                  Todo espaçamento — padding, margin, gap — vem de <Code>--or-space-*</Code>. A
+                  unidade base é 4px (<Code>--or-space-1</Code>); o número do token multiplicado por
+                  4 dá o valor em pixels.
+                </>
+              }
+              en={
+                <>
+                  Every spacing value — padding, margin, gap — comes from <Code>--or-space-*</Code>.
+                  The base unit is 4px (<Code>--or-space-1</Code>); the token number times 4 gives
+                  the pixel value.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -225,17 +340,68 @@ return desktop ? <TabelaCompleta /> : <ListaDeCartoes />`}
                   {value} · {px(value)}px
                 </span>
                 <span className="guide-space__track" aria-hidden="true">
-                  <span className="guide-space__bar" style={{ width: `${(px(value) / maxSpace) * 100}%` }} />
+                  <span
+                    className="guide-space__bar"
+                    style={{ width: `${(px(value) / maxSpace) * 100}%` }}
+                  />
                 </span>
               </li>
             ))}
         </ul>
         <Bullets
           items={[
-            { pt: <><strong>1–3 (4–12px):</strong> dentro de componentes — ícone e rótulo, itens de uma lista compacta.</>, en: <><strong>1–3 (4–12px):</strong> inside components — icon and label, compact list items.</> },
-            { pt: <><strong>4–6 (16–24px):</strong> entre elementos relacionados — campos de um formulário, padding de cartões.</>, en: <><strong>4–6 (16–24px):</strong> between related elements — form fields, card padding.</> },
-            { pt: <><strong>8–12 (32–48px):</strong> entre grupos — blocos de uma página, colunas.</>, en: <><strong>8–12 (32–48px):</strong> between groups — page blocks, columns.</> },
-            { pt: <><strong>14–24 (56–96px):</strong> entre seções e em páginas de marketing.</>, en: <><strong>14–24 (56–96px):</strong> between sections and on marketing pages.</> },
+            {
+              pt: (
+                <>
+                  <strong>1–3 (4–12px):</strong> dentro de componentes — ícone e rótulo, itens de
+                  uma lista compacta.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>1–3 (4–12px):</strong> inside components — icon and label, compact list
+                  items.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>4–6 (16–24px):</strong> entre elementos relacionados — campos de um
+                  formulário, padding de cartões.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>4–6 (16–24px):</strong> between related elements — form fields, card
+                  padding.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>8–12 (32–48px):</strong> entre grupos — blocos de uma página, colunas.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>8–12 (32–48px):</strong> between groups — page blocks, columns.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>14–24 (56–96px):</strong> entre seções e em páginas de marketing.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>14–24 (56–96px):</strong> between sections and on marketing pages.
+                </>
+              ),
+            },
           ]}
         />
       </Section>
@@ -244,15 +410,34 @@ return desktop ? <TabelaCompleta /> : <ListaDeCartoes />`}
         <Prose>
           <p>
             <T
-              pt={<>O layout de aplicação do Orange — o mesmo desta documentação — tem cabeçalho fixo de 64px (<Code>--or-layout-header-height</Code>), navegação lateral de 280px (<Code>--or-layout-sidebar-width</Code>) e conteúdo com largura de leitura limitada. Abaixo de <Code>lg</Code>, a lateral vira uma gaveta.</>}
-              en={<>Orange’s application layout — the same as these docs — has a 64px sticky header (<Code>--or-layout-header-height</Code>), a 280px side navigation (<Code>--or-layout-sidebar-width</Code>) and content with a limited reading width. Below <Code>lg</Code>, the side panel becomes a drawer.</>}
+              pt={
+                <>
+                  O layout de aplicação do Orange — o mesmo desta documentação — tem cabeçalho fixo
+                  de 64px (<Code>--or-layout-header-height</Code>), navegação lateral de 280px (
+                  <Code>--or-layout-sidebar-width</Code>) e conteúdo com largura de leitura
+                  limitada. Abaixo de <Code>lg</Code>, a lateral vira uma gaveta.
+                </>
+              }
+              en={
+                <>
+                  Orange’s application layout — the same as these docs — has a 64px sticky header (
+                  <Code>--or-layout-header-height</Code>), a 280px side navigation (
+                  <Code>--or-layout-sidebar-width</Code>) and content with a limited reading width.
+                  Below <Code>lg</Code>, the side panel becomes a drawer.
+                </>
+              }
             />
           </p>
         </Prose>
-        <div className="guide-shell-demo" role="img" aria-label={t({ pt: 'Esquema do layout: cabeçalho de 64px no topo, navegação lateral de 280px à esquerda, conteúdo e índice à direita', en: 'Layout diagram: 64px header on top, 280px side navigation on the left, content and index on the right' })}>
-          <span className="guide-shell-demo__header">
-            header · {px(layout['header-height'])}px
-          </span>
+        <div
+          className="guide-shell-demo"
+          role="img"
+          aria-label={t({
+            pt: 'Esquema do layout: cabeçalho de 64px no topo, navegação lateral de 280px à esquerda, conteúdo e índice à direita',
+            en: 'Layout diagram: 64px header on top, 280px side navigation on the left, content and index on the right',
+          })}
+        >
+          <span className="guide-shell-demo__header">header · {px(layout['header-height'])}px</span>
           <span className="guide-shell-demo__sidebar">
             sidebar · {px(layout['sidebar-width'])}px
           </span>
@@ -293,16 +478,40 @@ return desktop ? <TabelaCompleta /> : <ListaDeCartoes />`}
       <Section title={{ pt: 'Boas práticas', en: 'Best practices' }}>
         <DoDont
           doItems={[
-            { pt: 'Alinhe blocos às colunas e use o mesmo gutter em toda a página.', en: 'Align blocks to columns and use the same gutter across the page.' },
-            { pt: 'Separe áreas com bordas de 1px e espaço, não com sombras.', en: 'Separate areas with 1px borders and space, not shadows.' },
-            { pt: 'Use minmax(0, 1fr) nas colunas para que conteúdo longo não estoure a grade.', en: 'Use minmax(0, 1fr) for columns so long content doesn’t break the grid.' },
-            { pt: 'Teste em 320px de largura: nada de rolagem horizontal (1.4.10).', en: 'Test at 320px width: no horizontal scrolling (1.4.10).' },
+            {
+              pt: 'Alinhe blocos às colunas e use o mesmo gutter em toda a página.',
+              en: 'Align blocks to columns and use the same gutter across the page.',
+            },
+            {
+              pt: 'Separe áreas com bordas de 1px e espaço, não com sombras.',
+              en: 'Separate areas with 1px borders and space, not shadows.',
+            },
+            {
+              pt: 'Use minmax(0, 1fr) nas colunas para que conteúdo longo não estoure a grade.',
+              en: 'Use minmax(0, 1fr) for columns so long content doesn’t break the grid.',
+            },
+            {
+              pt: 'Teste em 320px de largura: nada de rolagem horizontal (1.4.10).',
+              en: 'Test at 320px width: no horizontal scrolling (1.4.10).',
+            },
           ]}
           dontItems={[
-            { pt: 'Valores mágicos como 13px ou 27px fora da escala.', en: 'Magic values like 13px or 27px outside the scale.' },
-            { pt: 'Larguras fixas em pixels para colunas de conteúdo.', en: 'Fixed pixel widths for content columns.' },
-            { pt: 'Texto corrido ocupando 1200px inteiros — limite a 72ch.', en: 'Running text spanning the full 1200px — cap it at 72ch.' },
-            { pt: 'Esconder conteúdo no mobile em vez de reorganizá-lo.', en: 'Hiding content on mobile instead of reflowing it.' },
+            {
+              pt: 'Valores mágicos como 13px ou 27px fora da escala.',
+              en: 'Magic values like 13px or 27px outside the scale.',
+            },
+            {
+              pt: 'Larguras fixas em pixels para colunas de conteúdo.',
+              en: 'Fixed pixel widths for content columns.',
+            },
+            {
+              pt: 'Texto corrido ocupando 1200px inteiros — limite a 72ch.',
+              en: 'Running text spanning the full 1200px — cap it at 72ch.',
+            },
+            {
+              pt: 'Esconder conteúdo no mobile em vez de reorganizá-lo.',
+              en: 'Hiding content on mobile instead of reflowing it.',
+            },
           ]}
         />
       </Section>

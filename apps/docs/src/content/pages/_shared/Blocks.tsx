@@ -34,7 +34,9 @@ export function ContrastBadge({ ratio, kind = 'text' }: { ratio: number; kind?: 
         ? t({ pt: 'Falha', en: 'Fail' })
         : level
   return (
-    <span className={`guide-badge ${pass ? (level === 'AAA' && kind === 'text' ? 'guide-badge--aaa' : 'guide-badge--pass') : 'guide-badge--fail'}`}>
+    <span
+      className={`guide-badge ${pass ? (level === 'AAA' && kind === 'text' ? 'guide-badge--aaa' : 'guide-badge--pass') : 'guide-badge--fail'}`}
+    >
       <span className="guide-badge__ratio">{formatRatio(ratio)}</span>
       <span className="guide-badge__level">{label}</span>
     </span>
@@ -47,12 +49,15 @@ export function ColorChip({
   label,
   value,
   ink,
+  group,
   size = 'md',
 }: {
   color: string
   label: string
   value: string
   ink: string
+  /** Nome do grupo (ex.: família da paleta) usado no nome acessível. */
+  group?: string
   size?: 'sm' | 'md'
 }) {
   const { copy, copied } = useClipboard(1600)
@@ -63,10 +68,15 @@ export function ColorChip({
       className={`guide-chip guide-chip--${size}`}
       style={{ background: color, color: ink }}
       onClick={() => copy(value)}
-      aria-label={t({ pt: `${label}: ${value}. Copiar valor`, en: `${label}: ${value}. Copy value` })}
+      aria-label={t({
+        pt: `${group ? `${group} ` : ''}${label} ${value} — copiar valor`,
+        en: `${group ? `${group} ` : ''}${label} ${value} — copy value`,
+      })}
     >
       <span className="guide-chip__label">{label}</span>
-      <span className="guide-chip__value">{copied ? t({ pt: 'copiado', en: 'copied' }) : value}</span>
+      <span className="guide-chip__value">
+        {copied ? t({ pt: 'copiado', en: 'copied' }) : value}
+      </span>
     </button>
   )
 }
@@ -113,9 +123,16 @@ export function Cards({ items, columns = 3 }: { items: CardItem[]; columns?: 2 |
         return (
           <li key={i}>
             {item.href ? (
-              <a className="guide-card guide-card--link" href={item.href} target="_blank" rel="noreferrer">
+              <a
+                className="guide-card guide-card--link"
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {body}
-                <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
+                <span className="or-visually-hidden">
+                  {t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}
+                </span>
               </a>
             ) : item.to ? (
               <Link className="guide-card guide-card--link" to={to(item.to)}>
@@ -152,7 +169,13 @@ export function Steps({ items }: { items: { title: Localized<string>; content: R
 }
 
 /** Lista de verificação interativa com progresso anunciado. */
-export function Checklist({ items, label }: { items: Localized<ReactNode>[]; label: Localized<string> }) {
+export function Checklist({
+  items,
+  label,
+}: {
+  items: Localized<ReactNode>[]
+  label: Localized<string>
+}) {
   const { t } = useLang()
   const [done, setDone] = useState<boolean[]>(() => items.map(() => false))
   const baseId = useId()
@@ -177,7 +200,9 @@ export function Checklist({ items, label }: { items: Localized<ReactNode>[]; lab
               id={`${baseId}-${i}`}
               type="checkbox"
               checked={done[i]}
-              onChange={(e) => setDone((prev) => prev.map((v, j) => (j === i ? e.target.checked : v)))}
+              onChange={(e) =>
+                setDone((prev) => prev.map((v, j) => (j === i ? e.target.checked : v)))
+              }
             />
             <label htmlFor={`${baseId}-${i}`}>{t(item)}</label>
           </li>
@@ -203,7 +228,12 @@ export function Segmented<V extends string>({
   return (
     <div className="guide-segmented" role="group" aria-label={t(label)}>
       {options.map((option) => (
-        <button key={option.value} type="button" aria-pressed={value === option.value} onClick={() => onChange(option.value)}>
+        <button
+          key={option.value}
+          type="button"
+          aria-pressed={value === option.value}
+          onClick={() => onChange(option.value)}
+        >
           {typeof option.label === 'string' ? option.label : t(option.label)}
         </button>
       ))}
@@ -216,7 +246,13 @@ export function CodeTabs({
   tabs,
   label,
 }: {
-  tabs: { id: string; label: string; code: string; language?: CodeBlockProps['language']; title?: string }[]
+  tabs: {
+    id: string
+    label: string
+    code: string
+    language?: CodeBlockProps['language']
+    title?: string
+  }[]
   label: Localized<string>
 }) {
   const { t } = useLang()
@@ -257,8 +293,17 @@ export function CodeTabs({
           </button>
         ))}
       </div>
-      <div role="tabpanel" id={`${baseId}-panel`} aria-labelledby={`${baseId}-tab-${current.id}`} className="guide-tabs__panel">
-        <CodeBlock code={current.code} language={current.language ?? 'bash'} title={current.title} />
+      <div
+        role="tabpanel"
+        id={`${baseId}-panel`}
+        aria-labelledby={`${baseId}-tab-${current.id}`}
+        className="guide-tabs__panel"
+      >
+        <CodeBlock
+          code={current.code}
+          language={current.language ?? 'bash'}
+          title={current.title}
+        />
       </div>
     </div>
   )

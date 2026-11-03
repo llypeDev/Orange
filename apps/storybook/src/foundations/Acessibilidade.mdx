@@ -1,0 +1,116 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { themes } from '@orange/tokens'
+import { contrastRatio, wcagLevel } from '@orange/tokens/contrast'
+import { Eyebrow, Text } from '@orange/ui'
+
+<Meta title="Fundamentos/Acessibilidade" />
+
+export const pairs = [
+  ['text', 'bg', 4.5],
+  ['text-muted', 'bg', 4.5],
+  ['text-subtle', 'bg', 4.5],
+  ['text-on-accent', 'accent', 4.5],
+  ['text-on-neutral', 'neutral', 4.5],
+  ['text-on-danger', 'danger', 4.5],
+  ['accent-text', 'bg', 4.5],
+  ['success-text', 'bg', 4.5],
+  ['warning-text', 'bg', 4.5],
+  ['danger-text', 'bg', 4.5],
+  ['info-text', 'bg', 4.5],
+  ['code-text', 'code-bg', 4.5],
+  ['border-control', 'bg', 3],
+  ['focus', 'bg', 3],
+  ['accent', 'bg', 3],
+]
+
+export const Cell = ({ theme, fg, bg, min }) => {
+  const t = themes[theme]
+  const ratio = contrastRatio(t[fg], t[bg])
+  const pass = ratio >= min
+  return (
+    <td style={{ padding: 8 }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ display: 'inline-grid', placeItems: 'center', width: 36, height: 26, background: t[bg], color: t[fg], border: '1px solid var(--or-color-border)', fontFamily: 'var(--or-font-display)', fontWeight: 600 }}>
+          Aa
+        </span>
+        <span style={{ fontFamily: 'var(--or-font-mono)', fontSize: 12, color: pass ? 'var(--or-color-success-text)' : 'var(--or-color-danger-text)' }}>
+          {ratio.toFixed(2)}:1 · {min === 3 ? (pass ? 'passa 3:1' : 'falha') : wcagLevel(ratio)}
+        </span>
+      </span>
+    </td>
+  )
+}
+
+export const ContrastTable = () => (
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <thead>
+      <tr>
+        <th style={{ textAlign: 'left', padding: 8 }}>Par</th>
+        <th style={{ textAlign: 'left', padding: 8 }}>Mínimo</th>
+        <th style={{ textAlign: 'left', padding: 8 }}>Escuro</th>
+        <th style={{ textAlign: 'left', padding: 8 }}>Claro</th>
+      </tr>
+    </thead>
+    <tbody>
+      {pairs.map(([fg, bg, min]) => (
+        <tr key={fg + bg} style={{ borderTop: '1px solid var(--or-color-border)' }}>
+          <td style={{ padding: 8, fontFamily: 'var(--or-font-mono)' }}>
+            {fg} / {bg}
+          </td>
+          <td style={{ padding: 8, fontFamily: 'var(--or-font-mono)' }}>{min}:1</td>
+          <Cell theme="dark" fg={fg} bg={bg} min={min} />
+          <Cell theme="light" fg={fg} bg={bg} min={min} />
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)
+
+<div className="sb-unstyled">
+  <Eyebrow marker>Fundamentos</Eyebrow>
+</div>
+
+# Acessibilidade
+
+O Orange é construído para atender à **WCAG 2.2 nível AA**. Nenhum componente é publicado sem navegação
+completa por teclado, nome acessível, foco visível, testes com axe-core e contraste validado nos dois temas.
+
+## Neste Storybook
+
+- O painel **Accessibility** roda o axe-core em cada story com as tags WCAG 2.0, 2.1 e 2.2 (A e AA).
+  Violações aparecem como erro.
+- Use a barra superior para alternar **tema** (claro/escuro) e **idioma** (pt-BR/en-US) e confira contraste
+  e textos internos em cada combinação.
+- Navegue pelas stories só com o teclado: `Tab`, `Shift+Tab`, `Enter`, `Space`, `Esc`, setas, `Home` e `End`.
+
+## Contraste dos tokens
+
+Calculado ao vivo com `contrastRatio()` de `@orange/tokens/contrast` — os mesmos pares verificados em
+`packages/tokens/src/contrast.test.ts`. Texto exige 4.5:1 (1.4.3); bordas de campos, foco e o acento como
+elemento gráfico exigem 3:1 (1.4.11).
+
+<div className="sb-unstyled">
+  <ContrastTable />
+</div>
+
+## Foco, movimento e alvos
+
+- **Foco visível:** contorno de 2px em `--or-color-focus`, com 2px de afastamento, em `:focus-visible`.
+- **Movimento reduzido:** com `prefers-reduced-motion`, todas as durações `--or-duration-*` viram `0ms`;
+  use `useReducedMotion()` para lógica em JavaScript.
+- **Tamanho de alvo:** controles a partir de 32px (`--or-control-sm`), acima dos 24×24px da WCAG 2.5.8.
+
+## Checklist de quem constrói telas
+
+- Um único `h1` por página e títulos sem pular níveis.
+- Landmarks (`header`, `nav`, `main`, `footer`) e link “Pular para o conteúdo”.
+- Rótulo visível em todo campo; erros que dizem como corrigir.
+- Botões só com ícone com `aria-label`; imagens informativas com `alt`.
+- Nada comunicado só por cor; mensagens dinâmicas em `role="status"` ou `role="alert"`.
+- Teste com zoom de 200%, largura de 320px e pelo menos um leitor de tela.
+
+<div className="sb-unstyled">
+  <Text size="sm" tone="subtle">
+    Guia completo, com exemplos ao vivo: documentação → Design guidelines → Acessibilidade.
+  </Text>
+</div>

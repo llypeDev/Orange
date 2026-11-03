@@ -1,15 +1,35 @@
 import { Button, Eyebrow, Heading, Text } from '@orange/ui'
 import { typography } from '@orange/tokens'
 import { T, useLang, type Localized } from '../../../i18n'
-import { Bullets, Callout, Code, DocPage, DoDont, Example, PropsTable, Prose, Section } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  DocPage,
+  DoDont,
+  Example,
+  PropsTable,
+  Prose,
+  Section,
+} from '../../../kit'
 import { TableWrap } from '../_shared/Blocks'
 
-const families: { token: string; name: string; stack: string; role: Localized<string>; weights: string; sample: Localized<string> }[] = [
+const families: {
+  token: string
+  name: string
+  stack: string
+  role: Localized<string>
+  weights: string
+  sample: Localized<string>
+}[] = [
   {
     token: '--or-font-display',
     name: 'Space Grotesk',
     stack: typography.fontFamily.display,
-    role: { pt: 'Títulos, rótulos de botões, eyebrows, números em destaque e navegação.', en: 'Headings, button labels, eyebrows, highlighted numbers and navigation.' },
+    role: {
+      pt: 'Títulos, rótulos de botões, eyebrows, números em destaque e navegação.',
+      en: 'Headings, button labels, eyebrows, highlighted numbers and navigation.',
+    },
     weights: '500 · 600 · 700',
     sample: { pt: 'Interfaces acessíveis, sem ruído.', en: 'Accessible interfaces, no noise.' },
   },
@@ -17,24 +37,36 @@ const families: { token: string; name: string; stack: string; role: Localized<st
     token: '--or-font-body',
     name: 'Inter',
     stack: typography.fontFamily.body,
-    role: { pt: 'Texto corrido, descrições, campos de formulário, tabelas.', en: 'Running text, descriptions, form fields, tables.' },
+    role: {
+      pt: 'Texto corrido, descrições, campos de formulário, tabelas.',
+      en: 'Running text, descriptions, form fields, tables.',
+    },
     weights: '400 · 500 · 600',
-    sample: { pt: 'O pedido 4821 foi enviado em 3 de março.', en: 'Order 4821 shipped on March 3rd.' },
+    sample: {
+      pt: 'O pedido 4821 foi enviado em 3 de março.',
+      en: 'Order 4821 shipped on March 3rd.',
+    },
   },
   {
     token: '--or-font-mono',
     name: 'JetBrains Mono',
     stack: typography.fontFamily.mono,
-    role: { pt: 'Código, nomes de tokens, valores técnicos e atalhos de teclado.', en: 'Code, token names, technical values and keyboard shortcuts.' },
+    role: {
+      pt: 'Código, nomes de tokens, valores técnicos e atalhos de teclado.',
+      en: 'Code, token names, technical values and keyboard shortcuts.',
+    },
     weights: '400 · 500',
-    sample: { pt: "var(--or-color-accent) // 0O 1lI", en: "var(--or-color-accent) // 0O 1lI" },
+    sample: { pt: 'var(--or-color-accent) // 0O 1lI', en: 'var(--or-color-accent) // 0O 1lI' },
   },
 ]
 
 const sizeUsage: Record<string, Localized<string>> = {
   '2xs': { pt: 'Eyebrows, rótulos de tabela, metadados', en: 'Eyebrows, table labels, metadata' },
   xs: { pt: 'Legendas, badges, contadores', en: 'Captions, badges, counters' },
-  sm: { pt: 'Botões, rótulos de campo, texto secundário', en: 'Buttons, field labels, secondary text' },
+  sm: {
+    pt: 'Botões, rótulos de campo, texto secundário',
+    en: 'Buttons, field labels, secondary text',
+  },
   md: { pt: 'Texto padrão do corpo (15px)', en: 'Default body text (15px)' },
   lg: { pt: 'Lead de página, texto de destaque', en: 'Page lead, emphasized text' },
   xl: { pt: 'Títulos de cartões, h4', en: 'Card titles, h4' },
@@ -48,7 +80,10 @@ const sizeUsage: Record<string, Localized<string>> = {
 const leading: Record<string, Localized<string>> = {
   display: { pt: 'Display e hero: linhas coladas', en: 'Display and hero: tight lines' },
   heading: { pt: 'Títulos de h1 a h3', en: 'Headings h1 to h3' },
-  tight: { pt: 'Títulos pequenos, rótulos de várias linhas', en: 'Small headings, multi-line labels' },
+  tight: {
+    pt: 'Títulos pequenos, rótulos de várias linhas',
+    en: 'Small headings, multi-line labels',
+  },
   body: { pt: 'Texto de interface (padrão do body)', en: 'Interface text (body default)' },
   loose: { pt: 'Leitura longa, como esta documentação', en: 'Long reading, like these docs' },
 }
@@ -57,7 +92,10 @@ const tracking: Record<string, Localized<string>> = {
   display: { pt: 'Display: aperta letras grandes', en: 'Display: tightens large letters' },
   heading: { pt: 'Títulos em Space Grotesk', en: 'Space Grotesk headings' },
   body: { pt: 'Corpo: ajuste quase imperceptível', en: 'Body: barely noticeable' },
-  meta: { pt: 'Eyebrows em caixa alta: abre o espaçamento', en: 'Uppercase eyebrows: opens spacing' },
+  meta: {
+    pt: 'Eyebrows em caixa alta: abre o espaçamento',
+    en: 'Uppercase eyebrows: opens spacing',
+  },
 }
 
 const headingCode = `import { Heading } from '@orange/ui'
@@ -137,8 +175,20 @@ export default function TypographyPage() {
         <Callout tone="info" title={{ pt: 'Fallbacks', en: 'Fallbacks' }}>
           <p>
             <T
-              pt={<>Cada família termina em fontes do sistema (<Code>system-ui</Code>, <Code>Segoe UI</Code>, <Code>ui-monospace</Code>…). Se as fontes web não carregarem, a interface continua legível e com a mesma hierarquia.</>}
-              en={<>Each family ends in system fonts (<Code>system-ui</Code>, <Code>Segoe UI</Code>, <Code>ui-monospace</Code>…). If web fonts fail to load, the interface stays readable with the same hierarchy.</>}
+              pt={
+                <>
+                  Cada família termina em fontes do sistema (<Code>system-ui</Code>,{' '}
+                  <Code>Segoe UI</Code>, <Code>ui-monospace</Code>…). Se as fontes web não
+                  carregarem, a interface continua legível e com a mesma hierarquia.
+                </>
+              }
+              en={
+                <>
+                  Each family ends in system fonts (<Code>system-ui</Code>, <Code>Segoe UI</Code>,{' '}
+                  <Code>ui-monospace</Code>…). If web fonts fail to load, the interface stays
+                  readable with the same hierarchy.
+                </>
+              }
             />
           </p>
         </Callout>
@@ -148,8 +198,19 @@ export default function TypographyPage() {
         <Prose>
           <p>
             <T
-              pt={<>Os tamanhos vivem em <Code>--or-text-*</Code> e estão em rem: respeitam o tamanho de fonte que a pessoa configurou no navegador (1.4.4). Os valores em px abaixo consideram a base de 16px.</>}
-              en={<>Sizes live in <Code>--or-text-*</Code> and use rem: they respect the font size the person set in their browser (1.4.4). The px values below assume a 16px base.</>}
+              pt={
+                <>
+                  Os tamanhos vivem em <Code>--or-text-*</Code> e estão em rem: respeitam o tamanho
+                  de fonte que a pessoa configurou no navegador (1.4.4). Os valores em px abaixo
+                  consideram a base de 16px.
+                </>
+              }
+              en={
+                <>
+                  Sizes live in <Code>--or-text-*</Code> and use rem: they respect the font size the
+                  person set in their browser (1.4.4). The px values below assume a 16px base.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -173,7 +234,14 @@ export default function TypographyPage() {
                     className={`guide-type-scale__sample ${display ? 'guide-type-scale__sample--display' : ''}`}
                     style={{ fontSize: `var(--or-text-${name})` }}
                   >
-                    {px >= 60 ? 'Orange' : px >= 24 ? t({ pt: 'Interfaces acessíveis', en: 'Accessible interfaces' }) : t({ pt: 'O jeito mais direto de construir interfaces acessíveis.', en: 'The most direct way to build accessible interfaces.' })}
+                    {px >= 60
+                      ? 'Orange'
+                      : px >= 24
+                        ? t({ pt: 'Interfaces acessíveis', en: 'Accessible interfaces' })
+                        : t({
+                            pt: 'O jeito mais direto de construir interfaces acessíveis.',
+                            en: 'The most direct way to build accessible interfaces.',
+                          })}
                   </p>
                 </li>
               )
@@ -185,7 +253,11 @@ export default function TypographyPage() {
         <div className="guide-weights">
           {Object.entries(typography.fontWeight).map(([name, weight]) => (
             <div key={name} className="guide-weights__item">
-              <span className="guide-weights__sample" style={{ fontWeight: Number(weight) }} aria-hidden="true">
+              <span
+                className="guide-weights__sample"
+                style={{ fontWeight: Number(weight) }}
+                aria-hidden="true"
+              >
                 Ag
               </span>
               <span className="guide-weights__name">
@@ -197,10 +269,58 @@ export default function TypographyPage() {
         </div>
         <Bullets
           items={[
-            { pt: <><strong>Regular (400):</strong> texto corrido. É o padrão do <Code>body</Code>.</>, en: <><strong>Regular (400):</strong> running text. The <Code>body</Code> default.</> },
-            { pt: <><strong>Medium (500):</strong> eyebrows, navegação, ênfase leve.</>, en: <><strong>Medium (500):</strong> eyebrows, navigation, light emphasis.</> },
-            { pt: <><strong>Semibold (600):</strong> títulos grandes (h1, display) e <Code>&lt;strong&gt;</Code>.</>, en: <><strong>Semibold (600):</strong> large headings (h1, display) and <Code>&lt;strong&gt;</Code>.</> },
-            { pt: <><strong>Bold (700):</strong> títulos de h2 para baixo e rótulos de botão — compensa o tamanho menor.</>, en: <><strong>Bold (700):</strong> headings from h2 down and button labels — compensates for smaller size.</> },
+            {
+              pt: (
+                <>
+                  <strong>Regular (400):</strong> texto corrido. É o padrão do <Code>body</Code>.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Regular (400):</strong> running text. The <Code>body</Code> default.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Medium (500):</strong> eyebrows, navegação, ênfase leve.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Medium (500):</strong> eyebrows, navigation, light emphasis.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Semibold (600):</strong> títulos grandes (h1, display) e{' '}
+                  <Code>&lt;strong&gt;</Code>.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Semibold (600):</strong> large headings (h1, display) and{' '}
+                  <Code>&lt;strong&gt;</Code>.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Bold (700):</strong> títulos de h2 para baixo e rótulos de botão —
+                  compensa o tamanho menor.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Bold (700):</strong> headings from h2 down and button labels — compensates
+                  for smaller size.
+                </>
+              ),
+            },
           ]}
         />
       </Section>
@@ -264,8 +384,20 @@ export default function TypographyPage() {
         <Prose>
           <p>
             <T
-              pt={<>O conteúdo precisa sobreviver quando a pessoa aumenta o espaçamento (1.4.12): altura de linha 1.5×, parágrafos 2×, letras +0.12em e palavras +0.16em. Não fixe alturas em contêineres de texto.</>}
-              en={<>Content must survive when people increase spacing (1.4.12): line height 1.5×, paragraphs 2×, letters +0.12em and words +0.16em. Don't fix heights on text containers.</>}
+              pt={
+                <>
+                  O conteúdo precisa sobreviver quando a pessoa aumenta o espaçamento (1.4.12):
+                  altura de linha 1.5×, parágrafos 2×, letras +0.12em e palavras +0.16em. Não fixe
+                  alturas em contêineres de texto.
+                </>
+              }
+              en={
+                <>
+                  Content must survive when people increase spacing (1.4.12): line height 1.5×,
+                  paragraphs 2×, letters +0.12em and words +0.16em. Don't fix heights on text
+                  containers.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -275,8 +407,20 @@ export default function TypographyPage() {
         <Prose>
           <p>
             <T
-              pt={<><Code>Heading</Code>, <Code>Text</Code> e <Code>Eyebrow</Code> aplicam a escala, as famílias e as cores de texto. Use-os em vez de estilizar <Code>h1</Code>–<Code>p</Code> à mão.</>}
-              en={<><Code>Heading</Code>, <Code>Text</Code> and <Code>Eyebrow</Code> apply the scale, families and text colors. Use them instead of styling <Code>h1</Code>–<Code>p</Code> by hand.</>}
+              pt={
+                <>
+                  <Code>Heading</Code>, <Code>Text</Code> e <Code>Eyebrow</Code> aplicam a escala,
+                  as famílias e as cores de texto. Use-os em vez de estilizar <Code>h1</Code>–
+                  <Code>p</Code> à mão.
+                </>
+              }
+              en={
+                <>
+                  <Code>Heading</Code>, <Code>Text</Code> and <Code>Eyebrow</Code> apply the scale,
+                  families and text colors. Use them instead of styling <Code>h1</Code>–
+                  <Code>p</Code> by hand.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -307,21 +451,44 @@ export default function TypographyPage() {
         <PropsTable
           caption={{ pt: 'Heading', en: 'Heading' }}
           rows={[
-            { name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', default: '2', description: { pt: 'Nível semântico (h1–h6).', en: 'Semantic level (h1–h6).' } },
-            { name: 'size', type: "'display' | '5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md'", description: { pt: 'Tamanho visual. Padrão: 4xl para h1, 3xl para h2, 2xl para h3, xl para h4…', en: 'Visual size. Default: 4xl for h1, 3xl for h2, 2xl for h3, xl for h4…' } },
+            {
+              name: 'level',
+              type: '1 | 2 | 3 | 4 | 5 | 6',
+              default: '2',
+              description: { pt: 'Nível semântico (h1–h6).', en: 'Semantic level (h1–h6).' },
+            },
+            {
+              name: 'size',
+              type: "'display' | '5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md'",
+              description: {
+                pt: 'Tamanho visual. Padrão: 4xl para h1, 3xl para h2, 2xl para h3, xl para h4…',
+                en: 'Visual size. Default: 4xl for h1, 3xl for h2, 2xl for h3, xl for h4…',
+              },
+            },
           ]}
         />
         <Example
           title={{ pt: 'Text', en: 'Text' }}
-          description={{ pt: 'Tamanho, tom, peso, família e truncamento. O elemento padrão é <p>; troque com as.', en: 'Size, tone, weight, family and truncation. The default element is <p>; change it with as.' }}
+          description={{
+            pt: 'Tamanho, tom, peso, família e truncamento. O elemento padrão é <p>; troque com as.',
+            en: 'Size, tone, weight, family and truncation. The default element is <p>; change it with as.',
+          }}
           code={textCode}
           align="stretch"
         >
           <div className="guide-stack">
             <Text size="lg" tone="muted">
-              {t({ pt: 'Lead: resumo do que a página entrega.', en: 'Lead: a summary of what the page delivers.' })}
+              {t({
+                pt: 'Lead: resumo do que a página entrega.',
+                en: 'Lead: a summary of what the page delivers.',
+              })}
             </Text>
-            <Text>{t({ pt: 'Texto padrão: 15px, Inter, cor text.', en: 'Default text: 15px, Inter, text color.' })}</Text>
+            <Text>
+              {t({
+                pt: 'Texto padrão: 15px, Inter, cor text.',
+                en: 'Default text: 15px, Inter, text color.',
+              })}
+            </Text>
             <Text size="sm" tone="subtle">
               {t({ pt: 'Atualizado há 5 minutos', en: 'Updated 5 minutes ago' })}
             </Text>
@@ -332,22 +499,70 @@ export default function TypographyPage() {
               PED-2026-04821
             </Text>
             <Text truncate style={{ maxWidth: 260 }}>
-              {t({ pt: 'Endereço: Rua Doutor Arnaldo de Carvalho, 1500 — São Paulo', en: 'Address: 1500 Doctor Arnaldo de Carvalho St — São Paulo' })}
+              {t({
+                pt: 'Endereço: Rua Doutor Arnaldo de Carvalho, 1500 — São Paulo',
+                en: 'Address: 1500 Doctor Arnaldo de Carvalho St — São Paulo',
+              })}
             </Text>
           </div>
         </Example>
         <PropsTable
           caption={{ pt: 'Text', en: 'Text' }}
           rows={[
-            { name: 'as', type: 'ElementType', default: "'p'", description: { pt: 'Elemento renderizado (span, li, label…).', en: 'Rendered element (span, li, label…).' } },
-            { name: 'size', type: "'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: { pt: 'Tamanho da escala.', en: 'Scale size.' } },
-            { name: 'tone', type: "'default' | 'muted' | 'subtle' | 'accent' | 'success' | 'warning' | 'danger' | 'info' | 'inherit'", default: "'default'", description: { pt: 'Cor semântica; todas com ≥ 4.5:1 sobre bg.', en: 'Semantic color; all ≥ 4.5:1 on bg.' } },
-            { name: 'weight', type: "'regular' | 'medium' | 'semibold' | 'bold'", description: { pt: 'Peso da fonte.', en: 'Font weight.' } },
-            { name: 'font', type: "'body' | 'display' | 'mono'", default: "'body'", description: { pt: 'Família tipográfica.', en: 'Type family.' } },
-            { name: 'truncate', type: 'boolean', default: 'false', description: { pt: 'Corta em uma linha com reticências. Garanta o texto completo em outro lugar (title não basta).', en: 'Cuts to one line with an ellipsis. Make the full text available elsewhere (title is not enough).' } },
+            {
+              name: 'as',
+              type: 'ElementType',
+              default: "'p'",
+              description: {
+                pt: 'Elemento renderizado (span, li, label…).',
+                en: 'Rendered element (span, li, label…).',
+              },
+            },
+            {
+              name: 'size',
+              type: "'2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+              default: "'md'",
+              description: { pt: 'Tamanho da escala.', en: 'Scale size.' },
+            },
+            {
+              name: 'tone',
+              type: "'default' | 'muted' | 'subtle' | 'accent' | 'success' | 'warning' | 'danger' | 'info' | 'inherit'",
+              default: "'default'",
+              description: {
+                pt: 'Cor semântica; todas com ≥ 4.5:1 sobre bg.',
+                en: 'Semantic color; all ≥ 4.5:1 on bg.',
+              },
+            },
+            {
+              name: 'weight',
+              type: "'regular' | 'medium' | 'semibold' | 'bold'",
+              description: { pt: 'Peso da fonte.', en: 'Font weight.' },
+            },
+            {
+              name: 'font',
+              type: "'body' | 'display' | 'mono'",
+              default: "'body'",
+              description: { pt: 'Família tipográfica.', en: 'Type family.' },
+            },
+            {
+              name: 'truncate',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Corta em uma linha com reticências. Garanta o texto completo em outro lugar (title não basta).',
+                en: 'Cuts to one line with an ellipsis. Make the full text available elsewhere (title is not enough).',
+              },
+            },
           ]}
         />
-        <Example title={{ pt: 'Eyebrow', en: 'Eyebrow' }} description={{ pt: 'Rótulo curto em caixa alta acima de títulos. O marcador quadrado é decorativo.', en: 'Short uppercase label above headings. The square marker is decorative.' }} code={eyebrowCode}>
+        <Example
+          title={{ pt: 'Eyebrow', en: 'Eyebrow' }}
+          description={{
+            pt: 'Rótulo curto em caixa alta acima de títulos. O marcador quadrado é decorativo.',
+            en: 'Short uppercase label above headings. The square marker is decorative.',
+          }}
+          code={eyebrowCode}
+        >
           <div className="guide-stack">
             <Eyebrow>{t({ pt: 'Configurações', en: 'Settings' })}</Eyebrow>
             <Eyebrow marker>{t({ pt: 'Novo', en: 'New' })}</Eyebrow>
@@ -383,14 +598,22 @@ export default function TypographyPage() {
                 {t({ pt: 'Pedidos em aberto', en: 'Open orders' })}
               </Heading>
               <Text size="lg" tone="muted">
-                {t({ pt: '32 pedidos aguardam separação. Os mais antigos aparecem primeiro.', en: '32 orders are waiting to be picked. The oldest come first.' })}
+                {t({
+                  pt: '32 pedidos aguardam separação. Os mais antigos aparecem primeiro.',
+                  en: '32 orders are waiting to be picked. The oldest come first.',
+                })}
               </Text>
             </header>
             <section>
               <Heading level={4} size="xl">
                 {t({ pt: 'Prioridade alta', en: 'High priority' })}
               </Heading>
-              <Text tone="muted">{t({ pt: 'Pedidos com entrega expressa e prazo vencendo hoje.', en: 'Express orders due today.' })}</Text>
+              <Text tone="muted">
+                {t({
+                  pt: 'Pedidos com entrega expressa e prazo vencendo hoje.',
+                  en: 'Express orders due today.',
+                })}
+              </Text>
               <div>
                 <Button size="sm" variant="outline">
                   {t({ pt: 'Ver 6 pedidos', en: 'View 6 orders' })}
@@ -404,12 +627,90 @@ export default function TypographyPage() {
       <Section title={{ pt: 'Escrita', en: 'Writing' }}>
         <Bullets
           items={[
-            { pt: <><strong>Caixa de sentença</strong> em títulos, botões e rótulos: “Criar projeto”, não “Criar Projeto”. Só a primeira palavra e nomes próprios em maiúscula.</>, en: <><strong>Sentence case</strong> for headings, buttons and labels: “Create project”, not “Create Project”. Capitalize only the first word and proper nouns.</> },
-            { pt: <><strong>60 a 75 caracteres por linha</strong> em texto corrido. A documentação usa <Code>max-width: 72ch</Code>; o lead usa 68ch.</>, en: <><strong>60 to 75 characters per line</strong> in running text. These docs use <Code>max-width: 72ch</Code>; the lead uses 68ch.</> },
-            { pt: <><strong>Caixa alta só em eyebrows</strong>, com <Code>text-transform</Code> — nunca digitada em maiúsculas (leitores de tela podem soletrar).</>, en: <><strong>Uppercase only for eyebrows</strong>, via <Code>text-transform</Code> — never typed in caps (screen readers may spell it out).</> },
-            { pt: <><strong>Alinhado à esquerda.</strong> Texto justificado cria rios de espaço; centralizado só em blocos curtos, como o hero.</>, en: <><strong>Left aligned.</strong> Justified text creates rivers of space; center only short blocks such as the hero.</> },
-            { pt: <><strong>Números tabulares</strong> em tabelas e métricas: <Code>font-variant-numeric: tabular-nums</Code>.</>, en: <><strong>Tabular figures</strong> in tables and metrics: <Code>font-variant-numeric: tabular-nums</Code>.</> },
-            { pt: <><strong>Direto ao ponto.</strong> Verbos no começo dos botões, frases curtas, sem jargão interno.</>, en: <><strong>Straight to the point.</strong> Verbs first on buttons, short sentences, no internal jargon.</> },
+            {
+              pt: (
+                <>
+                  <strong>Caixa de sentença</strong> em títulos, botões e rótulos: “Criar projeto”,
+                  não “Criar Projeto”. Só a primeira palavra e nomes próprios em maiúscula.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Sentence case</strong> for headings, buttons and labels: “Create project”,
+                  not “Create Project”. Capitalize only the first word and proper nouns.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>60 a 75 caracteres por linha</strong> em texto corrido. A documentação usa{' '}
+                  <Code>max-width: 72ch</Code>; o lead usa 68ch.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>60 to 75 characters per line</strong> in running text. These docs use{' '}
+                  <Code>max-width: 72ch</Code>; the lead uses 68ch.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Caixa alta só em eyebrows</strong>, com <Code>text-transform</Code> —
+                  nunca digitada em maiúsculas (leitores de tela podem soletrar).
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Uppercase only for eyebrows</strong>, via <Code>text-transform</Code> —
+                  never typed in caps (screen readers may spell it out).
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Alinhado à esquerda.</strong> Texto justificado cria rios de espaço;
+                  centralizado só em blocos curtos, como o hero.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Left aligned.</strong> Justified text creates rivers of space; center only
+                  short blocks such as the hero.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Números tabulares</strong> em tabelas e métricas:{' '}
+                  <Code>font-variant-numeric: tabular-nums</Code>.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Tabular figures</strong> in tables and metrics:{' '}
+                  <Code>font-variant-numeric: tabular-nums</Code>.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Direto ao ponto.</strong> Verbos no começo dos botões, frases curtas, sem
+                  jargão interno.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Straight to the point.</strong> Verbs first on buttons, short sentences,
+                  no internal jargon.
+                </>
+              ),
+            },
           ]}
         />
         <DoDont
@@ -439,8 +740,18 @@ export default function TypographyPage() {
               </Text>
             </div>
           }
-          doItems={[{ pt: 'Caixa de sentença, texto alinhado à esquerda e linhas de tamanho confortável.', en: 'Sentence case, left-aligned text and comfortable line lengths.' }]}
-          dontItems={[{ pt: 'Título digitado em maiúsculas e parágrafo justificado.', en: 'Heading typed in capitals and a justified paragraph.' }]}
+          doItems={[
+            {
+              pt: 'Caixa de sentença, texto alinhado à esquerda e linhas de tamanho confortável.',
+              en: 'Sentence case, left-aligned text and comfortable line lengths.',
+            },
+          ]}
+          dontItems={[
+            {
+              pt: 'Título digitado em maiúsculas e parágrafo justificado.',
+              en: 'Heading typed in capitals and a justified paragraph.',
+            },
+          ]}
         />
       </Section>
     </DocPage>

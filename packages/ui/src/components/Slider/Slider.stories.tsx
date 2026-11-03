@@ -3,7 +3,10 @@ import type { ComponentType } from 'react'
 import { Slider, type SliderProps, type SliderSingleProps } from './Slider'
 
 /** Args "achatados": o Storybook não lida bem com a união single | range das props. */
-type SliderStoryArgs = Omit<SliderSingleProps, 'range' | 'value' | 'defaultValue' | 'onChange' | 'onChangeEnd'> & {
+type SliderStoryArgs = Omit<
+  SliderSingleProps,
+  'range' | 'value' | 'defaultValue' | 'onChange' | 'onChangeEnd'
+> & {
   range?: boolean
   defaultValue?: number | [number, number]
   onChange?: (value: number | [number, number]) => void
@@ -13,7 +16,8 @@ type SliderStoryArgs = Omit<SliderSingleProps, 'range' | 'value' | 'defaultValue
 const StorySlider = Slider as unknown as ComponentType<SliderStoryArgs>
 const renderSlider = (args: SliderStoryArgs) => <Slider {...(args as SliderProps)} />
 
-const brl = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+const brl = (v: number) =>
+  v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 
 const meta = {
   title: 'Componentes/Slider',

@@ -1,6 +1,11 @@
 import { Slider } from '@orange/ui'
 
-const planos: Record<number, string> = { 1: 'Individual', 10: 'Equipe', 50: 'Empresa', 100: 'Corporativo' }
+const planos: Record<number, string> = {
+  1: 'Individual',
+  10: 'Equipe',
+  50: 'Empresa',
+  100: 'Corporativo',
+}
 
 export default function Marks() {
   return (
@@ -17,11 +22,23 @@ export default function Marks() {
           { value: 100, label: '100' },
         ]}
         formatValue={(v) => {
-          const faixa = Object.keys(planos).map(Number).filter((n) => n <= v).pop() ?? 1
+          const faixa =
+            Object.keys(planos)
+              .map(Number)
+              .filter((n) => n <= v)
+              .pop() ?? 1
           return `${v} ${v === 1 ? 'pessoa' : 'pessoas'} · plano ${planos[faixa]}`
         }}
       />
-      <Slider label="Intensidade do filtro" min={0} max={100} step={10} defaultValue={40} marks formatValue={(v) => `${v}%`} />
+      <Slider
+        label="Intensidade do filtro"
+        min={0}
+        max={100}
+        step={10}
+        defaultValue={40}
+        marks
+        formatValue={(v) => `${v}%`}
+      />
     </div>
   )
 }

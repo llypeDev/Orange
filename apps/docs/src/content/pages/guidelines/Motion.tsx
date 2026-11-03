@@ -2,22 +2,49 @@ import { Button, Icon, useReducedMotion } from '@orange/ui'
 import { motion } from '@orange/tokens'
 import { useState } from 'react'
 import { T, useLang, type Localized } from '../../../i18n'
-import { Bullets, Callout, Code, CodeBlock, DefinitionTable, DocPage, Prose, Section } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  CodeBlock,
+  DefinitionTable,
+  DocPage,
+  Prose,
+  Section,
+} from '../../../kit'
 import { Cards, TableWrap } from '../_shared/Blocks'
 
 const durationUsage: Record<string, Localized<string>> = {
-  instant: { pt: 'Mudança de cor ao pressionar, troca de ícone', en: 'Press color change, icon swap' },
+  instant: {
+    pt: 'Mudança de cor ao pressionar, troca de ícone',
+    en: 'Press color change, icon swap',
+  },
   fast: { pt: 'Hover, foco, tooltips, fechar menus', en: 'Hover, focus, tooltips, closing menus' },
   medium: { pt: 'Abrir popovers, menus, acordeões', en: 'Opening popovers, menus, accordions' },
   slow: { pt: 'Modais, drawers, mudanças de layout', en: 'Modals, drawers, layout changes' },
-  slower: { pt: 'Entradas de página e ilustrações — raramente', en: 'Page entrances and illustrations — rarely' },
+  slower: {
+    pt: 'Entradas de página e ilustrações — raramente',
+    en: 'Page entrances and illustrations — rarely',
+  },
 }
 
 const easingUsage: Record<string, Localized<string>> = {
-  out: { pt: 'Padrão. Começa rápido e desacelera: elementos que entram.', en: 'Default. Starts fast and slows down: entering elements.' },
-  'in-out': { pt: 'Acelera e desacelera: movimentos de A para B na tela.', en: 'Speeds up and slows down: moving from A to B on screen.' },
-  spring: { pt: 'Passa um pouco do ponto e volta: micro-feedback, como a seta do botão.', en: 'Overshoots slightly and settles: micro-feedback, like the button arrow.' },
-  snap: { pt: 'Desaceleração forte: encaixes, indicadores de aba, sliders.', en: 'Strong deceleration: snapping, tab indicators, sliders.' },
+  out: {
+    pt: 'Padrão. Começa rápido e desacelera: elementos que entram.',
+    en: 'Default. Starts fast and slows down: entering elements.',
+  },
+  'in-out': {
+    pt: 'Acelera e desacelera: movimentos de A para B na tela.',
+    en: 'Speeds up and slows down: moving from A to B on screen.',
+  },
+  spring: {
+    pt: 'Passa um pouco do ponto e volta: micro-feedback, como a seta do botão.',
+    en: 'Overshoots slightly and settles: micro-feedback, like the button arrow.',
+  },
+  snap: {
+    pt: 'Desaceleração forte: encaixes, indicadores de aba, sliders.',
+    en: 'Strong deceleration: snapping, tab indicators, sliders.',
+  },
 }
 
 const parseBezier = (value: string) =>
@@ -34,11 +61,18 @@ function CurvePlot({ value }: { value: string }) {
   const px = (x: number) => pad + x * size
   const py = (y: number) => pad + (1 - y) * size
   return (
-    <svg className="guide-curve" viewBox={`0 0 ${size + pad * 2} ${size + pad * 2}`} aria-hidden="true">
+    <svg
+      className="guide-curve"
+      viewBox={`0 0 ${size + pad * 2} ${size + pad * 2}`}
+      aria-hidden="true"
+    >
       <rect x={pad} y={pad} width={size} height={size} className="guide-curve__frame" />
       <line x1={px(0)} y1={py(0)} x2={px(x1)} y2={py(y1)} className="guide-curve__handle" />
       <line x1={px(1)} y1={py(1)} x2={px(x2)} y2={py(y2)} className="guide-curve__handle" />
-      <path d={`M${px(0)} ${py(0)} C${px(x1)} ${py(y1)} ${px(x2)} ${py(y2)} ${px(1)} ${py(1)}`} className="guide-curve__path" />
+      <path
+        d={`M${px(0)} ${py(0)} C${px(x1)} ${py(y1)} ${px(x2)} ${py(y2)} ${px(1)} ${py(1)}`}
+        className="guide-curve__path"
+      />
       <rect x={px(x1) - 3} y={py(y1) - 3} width={6} height={6} className="guide-curve__point" />
       <rect x={px(x2) - 3} y={py(y2) - 3} width={6} height={6} className="guide-curve__point" />
     </svg>
@@ -55,10 +89,19 @@ function Track({ duration, easing, label }: { duration: string; easing: string; 
         <span
           className="guide-track__dot"
           data-on={on || undefined}
-          style={{ transitionDuration: `var(--or-duration-${duration})`, transitionTimingFunction: `var(--or-ease-${easing})` }}
+          style={{
+            transitionDuration: `var(--or-duration-${duration})`,
+            transitionTimingFunction: `var(--or-ease-${easing})`,
+          }}
         />
       </div>
-      <Button size="sm" variant="outline" iconOnly onClick={() => setOn((v) => !v)} aria-label={t({ pt: `Reproduzir ${label}`, en: `Play ${label}` })}>
+      <Button
+        size="sm"
+        variant="outline"
+        iconOnly
+        onClick={() => setOn((v) => !v)}
+        aria-label={t({ pt: `Reproduzir ${label}`, en: `Play ${label}` })}
+      >
         <Icon name="play" size="sm" />
       </Button>
     </div>
@@ -66,11 +109,34 @@ function Track({ duration, easing, label }: { duration: string; easing: string; 
 }
 
 const keyframes: { name: string; usage: Localized<string>; duration: string }[] = [
-  { name: 'or-fade-in', usage: { pt: 'Véus e conteúdo que aparece no lugar', en: 'Scrims and content appearing in place' }, duration: 'fast' },
-  { name: 'or-pop-in', usage: { pt: 'Popovers, menus e tooltips', en: 'Popovers, menus and tooltips' }, duration: 'medium' },
-  { name: 'or-slide-up', usage: { pt: 'Toasts e modais', en: 'Toasts and modals' }, duration: 'slow' },
-  { name: 'or-slide-in-right', usage: { pt: 'Drawer pela direita', en: 'Drawer from the right' }, duration: 'slow' },
-  { name: 'or-slide-in-left', usage: { pt: 'Drawer pela esquerda (menu mobile)', en: 'Drawer from the left (mobile menu)' }, duration: 'slow' },
+  {
+    name: 'or-fade-in',
+    usage: {
+      pt: 'Véus e conteúdo que aparece no lugar',
+      en: 'Scrims and content appearing in place',
+    },
+    duration: 'fast',
+  },
+  {
+    name: 'or-pop-in',
+    usage: { pt: 'Popovers, menus e tooltips', en: 'Popovers, menus and tooltips' },
+    duration: 'medium',
+  },
+  {
+    name: 'or-slide-up',
+    usage: { pt: 'Toasts e modais', en: 'Toasts and modals' },
+    duration: 'slow',
+  },
+  {
+    name: 'or-slide-in-right',
+    usage: { pt: 'Drawer pela direita', en: 'Drawer from the right' },
+    duration: 'slow',
+  },
+  {
+    name: 'or-slide-in-left',
+    usage: { pt: 'Drawer pela esquerda (menu mobile)', en: 'Drawer from the left (mobile menu)' },
+    duration: 'slow',
+  },
 ]
 
 function KeyframeDemo({ name, duration }: { name: string; duration: string }) {
@@ -82,10 +148,19 @@ function KeyframeDemo({ name, duration }: { name: string; duration: string }) {
         <span
           key={run}
           className="guide-keyframe__box"
-          style={{ animation: run ? `${name} var(--or-duration-${duration}) var(--or-ease-out) both` : 'none' }}
+          style={{
+            animation: run
+              ? `${name} var(--or-duration-${duration}) var(--or-ease-out) both`
+              : 'none',
+          }}
         />
       </div>
-      <Button size="sm" variant="ghost" startIcon={<Icon name="refresh" size="sm" />} onClick={() => setRun((n) => n + 1)}>
+      <Button
+        size="sm"
+        variant="ghost"
+        startIcon={<Icon name="refresh" size="sm" />}
+        onClick={() => setRun((n) => n + 1)}
+      >
         {t({ pt: 'Reproduzir', en: 'Play' })}
         <span className="or-visually-hidden"> {name}</span>
       </Button>
@@ -98,8 +173,16 @@ function DismissDemo() {
   const [open, setOpen] = useState(true)
   return (
     <div className="guide-dismiss">
-      <Button size="sm" variant="outline" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls="guide-dismiss-panel">
-        {open ? t({ pt: 'Fechar painel', en: 'Close panel' }) : t({ pt: 'Abrir painel', en: 'Open panel' })}
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="guide-dismiss-panel"
+      >
+        {open
+          ? t({ pt: 'Fechar painel', en: 'Close panel' })
+          : t({ pt: 'Abrir painel', en: 'Open panel' })}
       </Button>
       <div id="guide-dismiss-panel" className="guide-dismiss__panel" data-open={open || undefined}>
         <Icon name="bell" size="sm" />
@@ -169,8 +252,20 @@ export default function MotionPage() {
         <Prose>
           <p>
             <T
-              pt={<>Clique em ▶ para ver cada duração com a curva <Code>--or-ease-out</Code>. Quanto maior a distância percorrida ou a área que muda, maior a duração — mas quase nunca acima de 400ms.</>}
-              en={<>Click ▶ to see each duration with the <Code>--or-ease-out</Code> curve. The larger the distance or the area that changes, the longer the duration — but almost never above 400ms.</>}
+              pt={
+                <>
+                  Clique em ▶ para ver cada duração com a curva <Code>--or-ease-out</Code>. Quanto
+                  maior a distância percorrida ou a área que muda, maior a duração — mas quase nunca
+                  acima de 400ms.
+                </>
+              }
+              en={
+                <>
+                  Click ▶ to see each duration with the <Code>--or-ease-out</Code> curve. The larger
+                  the distance or the area that changes, the longer the duration — but almost never
+                  above 400ms.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -208,8 +303,18 @@ export default function MotionPage() {
         <Prose>
           <p>
             <T
-              pt={<>As curvas usam <Code>--or-duration-slow</Code> nas demonstrações para a diferença ficar visível. Os quadrados laranja são os pontos de controle da curva de Bézier.</>}
-              en={<>The demos use <Code>--or-duration-slow</Code> so the difference is visible. The orange squares are the Bézier curve control points.</>}
+              pt={
+                <>
+                  As curvas usam <Code>--or-duration-slow</Code> nas demonstrações para a diferença
+                  ficar visível. Os quadrados laranja são os pontos de controle da curva de Bézier.
+                </>
+              }
+              en={
+                <>
+                  The demos use <Code>--or-duration-slow</Code> so the difference is visible. The
+                  orange squares are the Bézier curve control points.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -231,23 +336,118 @@ export default function MotionPage() {
       <Section title={{ pt: 'Quando animar', en: 'When to animate' }}>
         <DefinitionTable
           rows={[
-            { term: { pt: 'Feedback', en: 'Feedback' }, description: { pt: <>Hover, foco e pressionar: só cor, borda e sombra, em <Code>fast</Code> ou <Code>instant</Code>. Nunca mexa no tamanho do elemento.</>, en: <>Hover, focus and press: color, border and shadow only, at <Code>fast</Code> or <Code>instant</Code>. Never change the element size.</> } },
-            { term: { pt: 'Entrar', en: 'Entering' }, description: { pt: <>Overlays entram com <Code>or-pop-in</Code> ou <Code>or-slide-up</Code> em <Code>medium</Code>/<Code>slow</Code> e <Code>ease-out</Code>, a partir de onde foram acionados.</>, en: <>Overlays enter with <Code>or-pop-in</Code> or <Code>or-slide-up</Code> at <Code>medium</Code>/<Code>slow</Code> with <Code>ease-out</Code>, from where they were triggered.</> } },
-            { term: { pt: 'Sair', en: 'Leaving' }, description: { pt: <>Saídas são mais rápidas que entradas (<Code>fast</Code>): a pessoa já decidiu, não faça esperar.</>, en: <>Exits are faster than entrances (<Code>fast</Code>): the person already decided, don’t make them wait.</> } },
-            { term: { pt: 'Mover', en: 'Moving' }, description: { pt: <>Indicadores de aba e reordenação usam <Code>ease-in-out</Code> ou <Code>snap</Code> e animam <Code>transform</Code>, nunca <Code>top</Code>/<Code>left</Code>.</>, en: <>Tab indicators and reordering use <Code>ease-in-out</Code> or <Code>snap</Code> and animate <Code>transform</Code>, never <Code>top</Code>/<Code>left</Code>.</> } },
-            { term: { pt: 'Carregar', en: 'Loading' }, description: { pt: <>Spinners (<Code>or-spin</Code>) e skeletons (<Code>or-shimmer</Code>) são os únicos loops permitidos — e somem quando o conteúdo chega.</>, en: <>Spinners (<Code>or-spin</Code>) and skeletons (<Code>or-shimmer</Code>) are the only loops allowed — and they disappear when content arrives.</> } },
-            { term: { pt: 'Não animar', en: 'Do not animate' }, description: { pt: 'Texto que a pessoa está lendo, tabelas que atualizam, mudanças de rota inteiras e qualquer coisa que dispare sozinha em loop.', en: 'Text being read, updating tables, entire route changes and anything that loops on its own.' } },
+            {
+              term: { pt: 'Feedback', en: 'Feedback' },
+              description: {
+                pt: (
+                  <>
+                    Hover, foco e pressionar: só cor, borda e sombra, em <Code>fast</Code> ou{' '}
+                    <Code>instant</Code>. Nunca mexa no tamanho do elemento.
+                  </>
+                ),
+                en: (
+                  <>
+                    Hover, focus and press: color, border and shadow only, at <Code>fast</Code> or{' '}
+                    <Code>instant</Code>. Never change the element size.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Entrar', en: 'Entering' },
+              description: {
+                pt: (
+                  <>
+                    Overlays entram com <Code>or-pop-in</Code> ou <Code>or-slide-up</Code> em{' '}
+                    <Code>medium</Code>/<Code>slow</Code> e <Code>ease-out</Code>, a partir de onde
+                    foram acionados.
+                  </>
+                ),
+                en: (
+                  <>
+                    Overlays enter with <Code>or-pop-in</Code> or <Code>or-slide-up</Code> at{' '}
+                    <Code>medium</Code>/<Code>slow</Code> with <Code>ease-out</Code>, from where
+                    they were triggered.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Sair', en: 'Leaving' },
+              description: {
+                pt: (
+                  <>
+                    Saídas são mais rápidas que entradas (<Code>fast</Code>): a pessoa já decidiu,
+                    não faça esperar.
+                  </>
+                ),
+                en: (
+                  <>
+                    Exits are faster than entrances (<Code>fast</Code>): the person already decided,
+                    don’t make them wait.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mover', en: 'Moving' },
+              description: {
+                pt: (
+                  <>
+                    Indicadores de aba e reordenação usam <Code>ease-in-out</Code> ou{' '}
+                    <Code>snap</Code> e animam <Code>transform</Code>, nunca <Code>top</Code>/
+                    <Code>left</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    Tab indicators and reordering use <Code>ease-in-out</Code> or <Code>snap</Code>{' '}
+                    and animate <Code>transform</Code>, never <Code>top</Code>/<Code>left</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Carregar', en: 'Loading' },
+              description: {
+                pt: (
+                  <>
+                    Spinners (<Code>or-spin</Code>) e skeletons (<Code>or-shimmer</Code>) são os
+                    únicos loops permitidos — e somem quando o conteúdo chega.
+                  </>
+                ),
+                en: (
+                  <>
+                    Spinners (<Code>or-spin</Code>) and skeletons (<Code>or-shimmer</Code>) are the
+                    only loops allowed — and they disappear when content arrives.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Não animar', en: 'Do not animate' },
+              description: {
+                pt: 'Texto que a pessoa está lendo, tabelas que atualizam, mudanças de rota inteiras e qualquer coisa que dispare sozinha em loop.',
+                en: 'Text being read, updating tables, entire route changes and anything that loops on its own.',
+              },
+            },
           ]}
         />
         <div className="guide-split">
           <div className="guide-panel">
-            <p className="or-eyebrow">{t({ pt: 'Entra devagar, sai rápido', en: 'Enter slow, leave fast' })}</p>
+            <p className="or-eyebrow">
+              {t({ pt: 'Entra devagar, sai rápido', en: 'Enter slow, leave fast' })}
+            </p>
             <DismissDemo />
           </div>
           <div className="guide-panel">
-            <p className="or-eyebrow">{t({ pt: 'Micro-feedback com spring', en: 'Micro-feedback with spring' })}</p>
+            <p className="or-eyebrow">
+              {t({ pt: 'Micro-feedback com spring', en: 'Micro-feedback with spring' })}
+            </p>
             <div className="guide-row">
-              <Button endIcon={<Icon name="arrow-right" />}>{t({ pt: 'Passe o mouse', en: 'Hover me' })}</Button>
+              <Button endIcon={<Icon name="arrow-right" />}>
+                {t({ pt: 'Passe o mouse', en: 'Hover me' })}
+              </Button>
             </div>
           </div>
         </div>
@@ -257,8 +457,18 @@ export default function MotionPage() {
         <Prose>
           <p>
             <T
-              pt={<>O <Code>base.css</Code> define keyframes compartilhados, usados pelos componentes de sobreposição. Combine-os com os tokens de duração e curva.</>}
-              en={<><Code>base.css</Code> defines shared keyframes used by the overlay components. Pair them with the duration and easing tokens.</>}
+              pt={
+                <>
+                  O <Code>base.css</Code> define keyframes compartilhados, usados pelos componentes
+                  de sobreposição. Combine-os com os tokens de duração e curva.
+                </>
+              }
+              en={
+                <>
+                  <Code>base.css</Code> defines shared keyframes used by the overlay components.
+                  Pair them with the duration and easing tokens.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -288,8 +498,23 @@ export default function MotionPage() {
         <Prose>
           <p>
             <T
-              pt={<>Pessoas com distúrbios vestibulares, enxaqueca ou dificuldade de atenção podem pedir menos movimento no sistema operacional. O Orange respeita isso em três camadas: os tokens de duração viram <Code>0ms</Code>, o <Code>base.css</Code> encurta qualquer animação restante e <Code>useReducedMotion()</Code> expõe a preferência para JavaScript.</>}
-              en={<>People with vestibular disorders, migraines or attention difficulties may ask their OS for less motion. Orange respects it in three layers: duration tokens become <Code>0ms</Code>, <Code>base.css</Code> shortens any remaining animation and <Code>useReducedMotion()</Code> exposes the preference to JavaScript.</>}
+              pt={
+                <>
+                  Pessoas com distúrbios vestibulares, enxaqueca ou dificuldade de atenção podem
+                  pedir menos movimento no sistema operacional. O Orange respeita isso em três
+                  camadas: os tokens de duração viram <Code>0ms</Code>, o <Code>base.css</Code>{' '}
+                  encurta qualquer animação restante e <Code>useReducedMotion()</Code> expõe a
+                  preferência para JavaScript.
+                </>
+              }
+              en={
+                <>
+                  People with vestibular disorders, migraines or attention difficulties may ask
+                  their OS for less motion. Orange respects it in three layers: duration tokens
+                  become <Code>0ms</Code>, <Code>base.css</Code> shortens any remaining animation
+                  and <Code>useReducedMotion()</Code> exposes the preference to JavaScript.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -307,10 +532,32 @@ export function Contador({ valor }: { valor: number }) {
         />
         <Bullets
           items={[
-            { pt: <>Sempre use <Code>var(--or-duration-*)</Code> em transições; uma duração escrita à mão (<Code>300ms</Code>) não é zerada pelos tokens.</>, en: <>Always use <Code>var(--or-duration-*)</Code> in transitions; a hand-written duration (<Code>300ms</Code>) is not zeroed by the tokens.</> },
-            { pt: 'Com movimento reduzido, troque deslizamentos e zoom por fade ou corte seco. O estado final precisa ser o mesmo.', en: 'With reduced motion, swap slides and zooms for a fade or a hard cut. The end state must be the same.' },
-            { pt: 'Nada de parallax, rolagem automática ou vídeo em autoplay sem controle de pausa (2.2.2).', en: 'No parallax, auto-scrolling or autoplay video without a pause control (2.2.2).' },
-            { pt: 'Teste ativando a preferência: macOS (Acessibilidade → Tela → Reduzir movimento), Windows (Efeitos de animação) ou DevTools (Rendering → prefers-reduced-motion).', en: 'Test by turning the preference on: macOS (Accessibility → Display → Reduce motion), Windows (Animation effects) or DevTools (Rendering → prefers-reduced-motion).' },
+            {
+              pt: (
+                <>
+                  Sempre use <Code>var(--or-duration-*)</Code> em transições; uma duração escrita à
+                  mão (<Code>300ms</Code>) não é zerada pelos tokens.
+                </>
+              ),
+              en: (
+                <>
+                  Always use <Code>var(--or-duration-*)</Code> in transitions; a hand-written
+                  duration (<Code>300ms</Code>) is not zeroed by the tokens.
+                </>
+              ),
+            },
+            {
+              pt: 'Com movimento reduzido, troque deslizamentos e zoom por fade ou corte seco. O estado final precisa ser o mesmo.',
+              en: 'With reduced motion, swap slides and zooms for a fade or a hard cut. The end state must be the same.',
+            },
+            {
+              pt: 'Nada de parallax, rolagem automática ou vídeo em autoplay sem controle de pausa (2.2.2).',
+              en: 'No parallax, auto-scrolling or autoplay video without a pause control (2.2.2).',
+            },
+            {
+              pt: 'Teste ativando a preferência: macOS (Acessibilidade → Tela → Reduzir movimento), Windows (Efeitos de animação) ou DevTools (Rendering → prefers-reduced-motion).',
+              en: 'Test by turning the preference on: macOS (Accessibility → Display → Reduce motion), Windows (Animation effects) or DevTools (Rendering → prefers-reduced-motion).',
+            },
           ]}
         />
       </Section>

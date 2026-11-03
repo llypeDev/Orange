@@ -2,7 +2,16 @@ import { useTheme } from '@orange/ui'
 import { primitives, themes, type ThemeName } from '@orange/tokens'
 import { useId, useState, type ReactNode } from 'react'
 import { T, useLang, type Localized } from '../../../i18n'
-import { Bullets, Callout, Code, DefinitionTable, DocPage, DoDont, Prose, Section } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  DefinitionTable,
+  DocPage,
+  DoDont,
+  Prose,
+  Section,
+} from '../../../kit'
 import { ContrastBadge, Segmented, TableWrap } from '../_shared/Blocks'
 import { contrastRatio, inkOn } from '../_shared/color'
 
@@ -27,7 +36,15 @@ const categorical: Record<ThemeName, { colors: string[]; other: string; names: s
 }
 
 const sequential: Record<ThemeName, string[]> = {
-  light: [orange[100], orange[200], orange[300], orange[500], orange[600], orange[800], orange[900]],
+  light: [
+    orange[100],
+    orange[200],
+    orange[300],
+    orange[500],
+    orange[600],
+    orange[800],
+    orange[900],
+  ],
   dark: [orange[900], orange[800], orange[700], orange[600], orange[500], orange[300], orange[100]],
 }
 
@@ -77,8 +94,15 @@ function Figure({
         {subtitle && <span className="guide-figure__subtitle">{subtitle}</span>}
       </figcaption>
       {legend}
-      <div className={aside ? 'guide-figure__body guide-figure__body--aside' : 'guide-figure__body'}>
-        <svg className="guide-figure__svg" viewBox={viewBox} role="img" aria-labelledby={`${id}-t ${id}-d`}>
+      <div
+        className={aside ? 'guide-figure__body guide-figure__body--aside' : 'guide-figure__body'}
+      >
+        <svg
+          className="guide-figure__svg"
+          viewBox={viewBox}
+          role="img"
+          aria-labelledby={`${id}-t ${id}-d`}
+        >
           <title id={`${id}-t`}>{title}</title>
           <desc id={`${id}-d`}>{description}</desc>
           {children}
@@ -121,7 +145,11 @@ function Figure({
   )
 }
 
-function Legend({ items }: { items: { label: string; color: string; shape?: 'circle' | 'square' | 'triangle' }[] }) {
+function Legend({
+  items,
+}: {
+  items: { label: string; color: string; shape?: 'circle' | 'square' | 'triangle' }[]
+}) {
   return (
     <ul className="guide-legend">
       {items.map((item) => (
@@ -162,12 +190,18 @@ function BarChart({ theme }: { theme: ThemeName }) {
   return (
     <Figure
       title={t({ pt: 'Pedidos por mês', en: 'Orders per month' })}
-      subtitle={t({ pt: '1º semestre de 2026 · junho em destaque', en: 'H1 2026 · June highlighted' })}
+      subtitle={t({
+        pt: '1º semestre de 2026 · junho em destaque',
+        en: 'H1 2026 · June highlighted',
+      })}
       description={t({
         pt: 'Gráfico de barras. Pedidos crescem de 312 em janeiro para 518 em junho, o maior valor do semestre, com uma queda leve em abril.',
         en: 'Bar chart. Orders grow from 312 in January to 518 in June, the highest of the half, with a slight dip in April.',
       })}
-      source={t({ pt: 'Fonte: painel de vendas (dados fictícios).', en: 'Source: sales dashboard (fictional data).' })}
+      source={t({
+        pt: 'Fonte: painel de vendas (dados fictícios).',
+        en: 'Source: sales dashboard (fictional data).',
+      })}
       viewBox={`0 0 ${W} ${H}`}
       table={{
         head: [t({ pt: 'Mês', en: 'Month' }), t({ pt: 'Pedidos', en: 'Orders' })],
@@ -176,8 +210,20 @@ function BarChart({ theme }: { theme: ThemeName }) {
     >
       {[0, 150, 300, 450, 600].map((tick) => (
         <g key={tick}>
-          <line x1={m.l} x2={W - m.r} y1={y(tick)} y2={y(tick)} className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'} />
-          <text x={m.l - 8} y={y(tick)} className="guide-viz-tick" textAnchor="end" dominantBaseline="middle">
+          <line
+            x1={m.l}
+            x2={W - m.r}
+            y1={y(tick)}
+            y2={y(tick)}
+            className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'}
+          />
+          <text
+            x={m.l - 8}
+            y={y(tick)}
+            className="guide-viz-tick"
+            textAnchor="end"
+            dominantBaseline="middle"
+          >
             {fmt(tick)}
           </text>
         </g>
@@ -211,7 +257,11 @@ function LineChart({ theme }: { theme: ThemeName }) {
   const { t, uiLocale } = useLang()
   const colors = categorical[theme].colors
   const series = [
-    { name: t({ pt: 'Site', en: 'Website' }), values: [180, 192, 205, 199, 221, 240], shape: 'circle' as const },
+    {
+      name: t({ pt: 'Site', en: 'Website' }),
+      values: [180, 192, 205, 199, 221, 240],
+      shape: 'circle' as const,
+    },
     { name: 'App', values: [95, 110, 128, 141, 156, 175], shape: 'square' as const },
     { name: 'Marketplace', values: [120, 118, 112, 125, 119, 130], shape: 'triangle' as const },
   ]
@@ -225,26 +275,52 @@ function LineChart({ theme }: { theme: ThemeName }) {
   const y = (v: number) => m.t + ph - (v / max) * ph
   const fmt = (n: number) => n.toLocaleString(uiLocale)
 
-  const marker = (shape: 'circle' | 'square' | 'triangle', cx: number, cy: number, color: string) =>
+  const marker = (
+    shape: 'circle' | 'square' | 'triangle',
+    cx: number,
+    cy: number,
+    color: string,
+  ) =>
     shape === 'circle' ? (
       <circle cx={cx} cy={cy} r={4.5} fill={color} className="guide-viz-ring" />
     ) : shape === 'square' ? (
-      <rect x={cx - 4.5} y={cy - 4.5} width={9} height={9} fill={color} className="guide-viz-ring" />
+      <rect
+        x={cx - 4.5}
+        y={cy - 4.5}
+        width={9}
+        height={9}
+        fill={color}
+        className="guide-viz-ring"
+      />
     ) : (
-      <path d={`M${cx} ${cy - 5.5} L${cx + 5.5} ${cy + 4.5} L${cx - 5.5} ${cy + 4.5} Z`} fill={color} className="guide-viz-ring" />
+      <path
+        d={`M${cx} ${cy - 5.5} L${cx + 5.5} ${cy + 4.5} L${cx - 5.5} ${cy + 4.5} Z`}
+        fill={color}
+        className="guide-viz-ring"
+      />
     )
 
   return (
     <Figure
       title={t({ pt: 'Receita por canal', en: 'Revenue by channel' })}
-      subtitle={t({ pt: 'R$ mil por mês · 1º semestre de 2026', en: 'BRL thousand per month · H1 2026' })}
+      subtitle={t({
+        pt: 'R$ mil por mês · 1º semestre de 2026',
+        en: 'BRL thousand per month · H1 2026',
+      })}
       description={t({
         pt: 'Gráfico de linhas com três canais. Site sobe de 180 para 240, App cresce todo mês de 95 para 175, e Marketplace oscila entre 112 e 130.',
         en: 'Line chart with three channels. Website rises from 180 to 240, App grows every month from 95 to 175, and Marketplace hovers between 112 and 130.',
       })}
-      source={t({ pt: 'Fonte: financeiro (dados fictícios).', en: 'Source: finance (fictional data).' })}
+      source={t({
+        pt: 'Fonte: financeiro (dados fictícios).',
+        en: 'Source: finance (fictional data).',
+      })}
       viewBox={`0 0 ${W} ${H}`}
-      legend={<Legend items={series.map((s, i) => ({ label: s.name, color: colors[i], shape: s.shape }))} />}
+      legend={
+        <Legend
+          items={series.map((s, i) => ({ label: s.name, color: colors[i], shape: s.shape }))}
+        />
+      }
       table={{
         head: [t({ pt: 'Mês', en: 'Month' }), ...series.map((s) => s.name)],
         rows: months.map((mo, i) => [t(mo), ...series.map((s) => fmt(s.values[i]))]),
@@ -252,8 +328,20 @@ function LineChart({ theme }: { theme: ThemeName }) {
     >
       {[0, 50, 100, 150, 200, 250].map((tick) => (
         <g key={tick}>
-          <line x1={m.l} x2={m.l + pw} y1={y(tick)} y2={y(tick)} className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'} />
-          <text x={m.l - 8} y={y(tick)} className="guide-viz-tick" textAnchor="end" dominantBaseline="middle">
+          <line
+            x1={m.l}
+            x2={m.l + pw}
+            y1={y(tick)}
+            y2={y(tick)}
+            className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'}
+          />
+          <text
+            x={m.l - 8}
+            y={y(tick)}
+            className="guide-viz-tick"
+            textAnchor="end"
+            dominantBaseline="middle"
+          >
             {tick}
           </text>
         </g>
@@ -265,14 +353,24 @@ function LineChart({ theme }: { theme: ThemeName }) {
       ))}
       {series.map((s, si) => (
         <g key={s.name}>
-          <polyline points={s.values.map((v, i) => `${x(i)},${y(v)}`).join(' ')} fill="none" stroke={colors[si]} strokeWidth={2} />
+          <polyline
+            points={s.values.map((v, i) => `${x(i)},${y(v)}`).join(' ')}
+            fill="none"
+            stroke={colors[si]}
+            strokeWidth={2}
+          />
           {s.values.map((v, i) => (
             <g key={i}>
               {marker(s.shape, x(i), y(v), colors[si])}
               <title>{`${s.name} · ${t(months[i])}: ${fmt(v)}`}</title>
             </g>
           ))}
-          <text x={x(5) + 12} y={y(s.values[5])} className="guide-viz-label" dominantBaseline="middle">
+          <text
+            x={x(5) + 12}
+            y={y(s.values[5])}
+            className="guide-viz-label"
+            dominantBaseline="middle"
+          >
             {s.name} <tspan className="guide-viz-tick">{fmt(s.values[5])}</tspan>
           </text>
         </g>
@@ -300,7 +398,10 @@ function DonutChart({ theme }: { theme: ThemeName }) {
   const cy = 120
   const R = 104
   const r = 66
-  const point = (radius: number, a: number) => [cx + radius * Math.cos(a), cy + radius * Math.sin(a)]
+  const point = (radius: number, a: number) => [
+    cx + radius * Math.cos(a),
+    cy + radius * Math.sin(a),
+  ]
   let acc = 0
   const arcs = data.map((d) => {
     const a0 = (acc / 100) * Math.PI * 2 - Math.PI / 2
@@ -311,7 +412,10 @@ function DonutChart({ theme }: { theme: ThemeName }) {
     const [x1, y1] = point(R, a1)
     const [x2, y2] = point(r, a1)
     const [x3, y3] = point(r, a0)
-    return { ...d, path: `M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 ${large} 0 ${x3} ${y3} Z` }
+    return {
+      ...d,
+      path: `M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 ${large} 0 ${x3} ${y3} Z`,
+    }
   })
   const patterns = [
     <line key="a" x1="0" y1="0" x2="0" y2="6" />,
@@ -326,7 +430,9 @@ function DonutChart({ theme }: { theme: ThemeName }) {
   return (
     <>
       <div className="guide-toolbar">
-        <span className="or-eyebrow">{t({ pt: 'Codificação secundária', en: 'Secondary encoding' })}</span>
+        <span className="or-eyebrow">
+          {t({ pt: 'Codificação secundária', en: 'Secondary encoding' })}
+        </span>
         <Segmented
           label={{ pt: 'Preenchimento da rosca', en: 'Donut fill' }}
           value={textures ? 'on' : 'off'}
@@ -344,15 +450,27 @@ function DonutChart({ theme }: { theme: ThemeName }) {
           pt: 'Gráfico de rosca. Pix 46%, cartão de crédito 31%, boleto 12%, cartão de débito 7% e outros 4%.',
           en: 'Donut chart. Pix 46%, credit card 31%, boleto 12%, debit card 7% and other 4%.',
         })}
-        source={t({ pt: 'Fonte: gateway de pagamentos (dados fictícios).', en: 'Source: payment gateway (fictional data).' })}
+        source={t({
+          pt: 'Fonte: gateway de pagamentos (dados fictícios).',
+          en: 'Source: payment gateway (fictional data).',
+        })}
         viewBox="0 0 240 240"
-        table={{ head: [t({ pt: 'Forma', en: 'Method' }), t({ pt: 'Participação', en: 'Share' })], rows: data.map((d) => [d.label, fmtPct(d.value)]) }}
+        table={{
+          head: [t({ pt: 'Forma', en: 'Method' }), t({ pt: 'Participação', en: 'Share' })],
+          rows: data.map((d) => [d.label, fmtPct(d.value)]),
+        }}
         aside={
           <ul className="guide-donut-legend">
             {data.map((d, i) => (
               <li key={d.label}>
                 <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-                  <rect x="0.5" y="0.5" width="13" height="13" fill={textures ? `url(#${pid}-p${i})` : d.color} />
+                  <rect
+                    x="0.5"
+                    y="0.5"
+                    width="13"
+                    height="13"
+                    fill={textures ? `url(#${pid}-p${i})` : d.color}
+                  />
                 </svg>
                 <span>{d.label}</span>
                 <strong>{fmtPct(d.value)}</strong>
@@ -363,7 +481,14 @@ function DonutChart({ theme }: { theme: ThemeName }) {
       >
         <defs>
           {data.map((d, i) => (
-            <pattern key={i} id={`${pid}-p${i}`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform={`rotate(${rotation[i]})`}>
+            <pattern
+              key={i}
+              id={`${pid}-p${i}`}
+              width="6"
+              height="6"
+              patternUnits="userSpaceOnUse"
+              patternTransform={`rotate(${rotation[i]})`}
+            >
               <rect width="6" height="6" fill={d.color} />
               <g stroke={bg} fill={bg} strokeWidth="1.5" opacity="0.7">
                 {patterns[i]}
@@ -372,7 +497,12 @@ function DonutChart({ theme }: { theme: ThemeName }) {
           ))}
         </defs>
         {arcs.map((a, i) => (
-          <path key={a.label} d={a.path} fill={textures ? `url(#${pid}-p${i})` : a.color} className="guide-viz-gap">
+          <path
+            key={a.label}
+            d={a.path}
+            fill={textures ? `url(#${pid}-p${i})` : a.color}
+            className="guide-viz-gap"
+          >
             <title>{`${a.label}: ${fmtPct(a.value)}`}</title>
           </path>
         ))}
@@ -411,7 +541,8 @@ function DivergingChart({ theme }: { theme: ThemeName }) {
     const step = mag >= 10 ? 3 : mag >= 5 ? 2 : 1
     return scale[3 + Math.sign(v) * step]
   }
-  const fmt = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toLocaleString(uiLocale)}%`
+  const fmt = (v: number) =>
+    `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toLocaleString(uiLocale)}%`
   return (
     <Figure
       title={t({ pt: 'Variação de pedidos por região', en: 'Order change by region' })}
@@ -420,15 +551,27 @@ function DivergingChart({ theme }: { theme: ThemeName }) {
         pt: 'Barras divergentes a partir de zero. Sul +15%, Nordeste +8%, Centro-Oeste +3%, Sudeste −4% e Norte −12%.',
         en: 'Diverging bars from zero. South +15%, Northeast +8%, Center-West +3%, Southeast −4% and North −12%.',
       })}
-      source={t({ pt: 'Fonte: logística (dados fictícios).', en: 'Source: logistics (fictional data).' })}
+      source={t({
+        pt: 'Fonte: logística (dados fictícios).',
+        en: 'Source: logistics (fictional data).',
+      })}
       viewBox={`0 0 ${W} ${H}`}
-      table={{ head: [t({ pt: 'Região', en: 'Region' }), t({ pt: 'Variação', en: 'Change' })], rows: rows.map((r) => [r.name, fmt(r.v)]) }}
+      table={{
+        head: [t({ pt: 'Região', en: 'Region' }), t({ pt: 'Variação', en: 'Change' })],
+        rows: rows.map((r) => [r.name, fmt(r.v)]),
+      }}
     >
       {[-20, -10, 0, 10, 20].map((tick) => {
         const x = center + (tick / max) * half
         return (
           <g key={tick}>
-            <line x1={x} x2={x} y1={top - 4} y2={H - 24} className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'} />
+            <line
+              x1={x}
+              x2={x}
+              y1={top - 4}
+              y2={H - 24}
+              className={tick === 0 ? 'guide-viz-axis' : 'guide-viz-grid'}
+            />
             <text x={x} y={H - 8} className="guide-viz-tick" textAnchor="middle">
               {tick === 0 ? '0' : fmt(tick)}
             </text>
@@ -495,12 +638,18 @@ function Heatmap({ theme }: { theme: ThemeName }) {
   const flat = values.flat()
   const min = Math.min(...flat)
   const max = Math.max(...flat)
-  const step = (v: number) => Math.min(scale.length - 1, Math.floor(((v - min) / (max - min)) * scale.length))
+  const step = (v: number) =>
+    Math.min(scale.length - 1, Math.floor(((v - min) / (max - min)) * scale.length))
   return (
-    <TableWrap label={{ pt: 'Pedidos por dia e faixa de horário', en: 'Orders by day and time band' }}>
+    <TableWrap
+      label={{ pt: 'Pedidos por dia e faixa de horário', en: 'Orders by day and time band' }}
+    >
       <table className="doc-table guide-heatmap">
         <caption className="doc-table__caption">
-          {t({ pt: 'Pedidos por dia e faixa de horário — média de março de 2026', en: 'Orders by day and time band — March 2026 average' })}
+          {t({
+            pt: 'Pedidos por dia e faixa de horário — média de março de 2026',
+            en: 'Orders by day and time band — March 2026 average',
+          })}
         </caption>
         <thead>
           <tr>
@@ -570,12 +719,48 @@ export default function DataVisualizationPage() {
       <Section title={{ pt: 'Escolha a forma antes da cor', en: 'Pick the form before the color' }}>
         <DefinitionTable
           rows={[
-            { term: { pt: 'Um número', en: 'One number' }, description: { pt: 'Não é gráfico: mostre o valor grande, com a variação em texto ao lado.', en: 'Not a chart: show the big number with the change as text next to it.' } },
-            { term: { pt: 'Comparar categorias', en: 'Compare categories' }, description: { pt: 'Barras, com eixo começando em zero. Horizontais quando os rótulos são longos.', en: 'Bars, with the axis starting at zero. Horizontal when labels are long.' } },
-            { term: { pt: 'Evolução no tempo', en: 'Change over time' }, description: { pt: 'Linhas para séries contínuas; barras para poucos períodos discretos.', en: 'Lines for continuous series; bars for a few discrete periods.' } },
-            { term: { pt: 'Parte de um todo', en: 'Part of a whole' }, description: { pt: 'Rosca ou barra empilhada com até 5 fatias; o resto vira “Outros”.', en: 'Donut or stacked bar with up to 5 slices; the rest becomes “Other”.' } },
-            { term: { pt: 'Acima ou abaixo de uma referência', en: 'Above or below a baseline' }, description: { pt: 'Barras divergentes com a paleta divergente.', en: 'Diverging bars with the diverging palette.' } },
-            { term: { pt: 'Intensidade em duas dimensões', en: 'Intensity across two dimensions' }, description: { pt: 'Mapa de calor com a paleta sequencial e o valor escrito em cada célula.', en: 'Heatmap with the sequential palette and the value written in each cell.' } },
+            {
+              term: { pt: 'Um número', en: 'One number' },
+              description: {
+                pt: 'Não é gráfico: mostre o valor grande, com a variação em texto ao lado.',
+                en: 'Not a chart: show the big number with the change as text next to it.',
+              },
+            },
+            {
+              term: { pt: 'Comparar categorias', en: 'Compare categories' },
+              description: {
+                pt: 'Barras, com eixo começando em zero. Horizontais quando os rótulos são longos.',
+                en: 'Bars, with the axis starting at zero. Horizontal when labels are long.',
+              },
+            },
+            {
+              term: { pt: 'Evolução no tempo', en: 'Change over time' },
+              description: {
+                pt: 'Linhas para séries contínuas; barras para poucos períodos discretos.',
+                en: 'Lines for continuous series; bars for a few discrete periods.',
+              },
+            },
+            {
+              term: { pt: 'Parte de um todo', en: 'Part of a whole' },
+              description: {
+                pt: 'Rosca ou barra empilhada com até 5 fatias; o resto vira “Outros”.',
+                en: 'Donut or stacked bar with up to 5 slices; the rest becomes “Other”.',
+              },
+            },
+            {
+              term: { pt: 'Acima ou abaixo de uma referência', en: 'Above or below a baseline' },
+              description: {
+                pt: 'Barras divergentes com a paleta divergente.',
+                en: 'Diverging bars with the diverging palette.',
+              },
+            },
+            {
+              term: { pt: 'Intensidade em duas dimensões', en: 'Intensity across two dimensions' },
+              description: {
+                pt: 'Mapa de calor com a paleta sequencial e o valor escrito em cada célula.',
+                en: 'Heatmap with the sequential palette and the value written in each cell.',
+              },
+            },
           ]}
         />
       </Section>
@@ -584,8 +769,30 @@ export default function DataVisualizationPage() {
         <Prose>
           <p>
             <T
-              pt={<>Para identificar séries: cinco matizes em ordem fixa, mais um neutro para “Outros”. A ordem não é estética — verde, âmbar e vermelho ficam quase iguais para quem tem protanopia ou deuteranopia, então nunca são vizinhos. Cada tema tem seus próprios tons, validados contra o próprio fundo (a tabela abaixo mostra o tema atual: <strong>{theme === 'dark' ? t({ pt: 'escuro', en: 'dark' }) : t({ pt: 'claro', en: 'light' })}</strong>).</>}
-              en={<>To identify series: five hues in a fixed order, plus a neutral for “Other”. The order isn’t aesthetic — green, amber and red look almost the same to people with protanopia or deuteranopia, so they are never neighbors. Each theme has its own steps, validated against its own background (the table below shows the current theme: <strong>{theme}</strong>).</>}
+              pt={
+                <>
+                  Para identificar séries: cinco matizes em ordem fixa, mais um neutro para
+                  “Outros”. A ordem não é estética — verde, âmbar e vermelho ficam quase iguais para
+                  quem tem protanopia ou deuteranopia, então nunca são vizinhos. Cada tema tem seus
+                  próprios tons, validados contra o próprio fundo (a tabela abaixo mostra o tema
+                  atual:{' '}
+                  <strong>
+                    {theme === 'dark'
+                      ? t({ pt: 'escuro', en: 'dark' })
+                      : t({ pt: 'claro', en: 'light' })}
+                  </strong>
+                  ).
+                </>
+              }
+              en={
+                <>
+                  To identify series: five hues in a fixed order, plus a neutral for “Other”. The
+                  order isn’t aesthetic — green, amber and red look almost the same to people with
+                  protanopia or deuteranopia, so they are never neighbors. Each theme has its own
+                  steps, validated against its own background (the table below shows the current
+                  theme: <strong>{theme}</strong>).
+                </>
+              }
             />
           </p>
         </Prose>
@@ -596,7 +803,9 @@ export default function DataVisualizationPage() {
                 <th scope="col">{t({ pt: 'Ordem', en: 'Order' })}</th>
                 <th scope="col">{t({ pt: 'Cor', en: 'Color' })}</th>
                 <th scope="col">{t({ pt: 'Primitiva', en: 'Primitive' })}</th>
-                <th scope="col">{t({ pt: 'Contraste com o fundo', en: 'Contrast with background' })}</th>
+                <th scope="col">
+                  {t({ pt: 'Contraste com o fundo', en: 'Contrast with background' })}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -605,7 +814,11 @@ export default function DataVisualizationPage() {
                   <th scope="row">{i + 1}</th>
                   <td>
                     <span className="guide-token-cell">
-                      <span className="guide-swatch-inline guide-swatch-inline--lg" style={{ background: c }} aria-hidden="true" />
+                      <span
+                        className="guide-swatch-inline guide-swatch-inline--lg"
+                        style={{ background: c }}
+                        aria-hidden="true"
+                      />
                       {c}
                     </span>
                   </td>
@@ -621,7 +834,11 @@ export default function DataVisualizationPage() {
                 <th scope="row">{t({ pt: 'Outros', en: 'Other' })}</th>
                 <td>
                   <span className="guide-token-cell">
-                    <span className="guide-swatch-inline guide-swatch-inline--lg" style={{ background: cat.other }} aria-hidden="true" />
+                    <span
+                      className="guide-swatch-inline guide-swatch-inline--lg"
+                      style={{ background: cat.other }}
+                      aria-hidden="true"
+                    />
                     {cat.other}
                   </span>
                 </td>
@@ -637,15 +854,51 @@ export default function DataVisualizationPage() {
         </TableWrap>
         <Bullets
           items={[
-            { pt: 'Atribua as cores na ordem, sem pular. A sexta série não ganha uma cor nova: vira “Outros” ou um gráfico separado.', en: 'Assign colors in order, without skipping. A sixth series doesn’t get a new color: it becomes “Other” or a separate chart.' },
-            { pt: 'A cor segue a entidade, não a posição: se um filtro remove uma série, as outras mantêm suas cores.', en: 'Color follows the entity, not the position: if a filter removes a series, the others keep their colors.' },
-            { pt: <>Quando a série significa bom ou ruim (erros, metas), use os tokens de status (<Code>success</Code>, <Code>danger</Code>) com ícone e rótulo — nunca misture as duas lógicas no mesmo gráfico.</>, en: <>When a series means good or bad (errors, goals), use the status tokens (<Code>success</Code>, <Code>danger</Code>) with icon and label — never mix both logics in one chart.</> },
-            { pt: <>O acento continua único: para destacar uma barra ou série, pinte-a com <Code>--or-color-accent</Code> e deixe o resto no neutro.</>, en: <>The accent stays single: to highlight a bar or series, paint it with <Code>--or-color-accent</Code> and leave the rest neutral.</> },
+            {
+              pt: 'Atribua as cores na ordem, sem pular. A sexta série não ganha uma cor nova: vira “Outros” ou um gráfico separado.',
+              en: 'Assign colors in order, without skipping. A sixth series doesn’t get a new color: it becomes “Other” or a separate chart.',
+            },
+            {
+              pt: 'A cor segue a entidade, não a posição: se um filtro remove uma série, as outras mantêm suas cores.',
+              en: 'Color follows the entity, not the position: if a filter removes a series, the others keep their colors.',
+            },
+            {
+              pt: (
+                <>
+                  Quando a série significa bom ou ruim (erros, metas), use os tokens de status (
+                  <Code>success</Code>, <Code>danger</Code>) com ícone e rótulo — nunca misture as
+                  duas lógicas no mesmo gráfico.
+                </>
+              ),
+              en: (
+                <>
+                  When a series means good or bad (errors, goals), use the status tokens (
+                  <Code>success</Code>, <Code>danger</Code>) with icon and label — never mix both
+                  logics in one chart.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  O acento continua único: para destacar uma barra ou série, pinte-a com{' '}
+                  <Code>--or-color-accent</Code> e deixe o resto no neutro.
+                </>
+              ),
+              en: (
+                <>
+                  The accent stays single: to highlight a bar or series, paint it with{' '}
+                  <Code>--or-color-accent</Code> and leave the rest neutral.
+                </>
+              ),
+            },
           ]}
         />
       </Section>
 
-      <Section title={{ pt: 'Paletas sequencial e divergente', en: 'Sequential and diverging palettes' }}>
+      <Section
+        title={{ pt: 'Paletas sequencial e divergente', en: 'Sequential and diverging palettes' }}
+      >
         <Prose>
           <p>
             <T
@@ -655,9 +908,19 @@ export default function DataVisualizationPage() {
           </p>
         </Prose>
         <p className="guide-ramp__title">{t({ pt: 'Sequencial', en: 'Sequential' })}</p>
-        <Ramp colors={sequential[theme]} labels={[t({ pt: 'menos', en: 'less' }), t({ pt: 'mais', en: 'more' })]} />
+        <Ramp
+          colors={sequential[theme]}
+          labels={[t({ pt: 'menos', en: 'less' }), t({ pt: 'mais', en: 'more' })]}
+        />
         <p className="guide-ramp__title">{t({ pt: 'Divergente', en: 'Diverging' })}</p>
-        <Ramp colors={diverging[theme]} labels={[t({ pt: 'abaixo', en: 'below' }), t({ pt: 'acima', en: 'above' }), t({ pt: 'referência', en: 'baseline' })]} />
+        <Ramp
+          colors={diverging[theme]}
+          labels={[
+            t({ pt: 'abaixo', en: 'below' }),
+            t({ pt: 'acima', en: 'above' }),
+            t({ pt: 'referência', en: 'baseline' }),
+          ]}
+        />
         <Heatmap theme={theme} />
         <p className="guide-muted guide-note">
           {t({
@@ -670,18 +933,48 @@ export default function DataVisualizationPage() {
       <Section title={{ pt: 'Regras', en: 'Rules' }}>
         <DoDont
           doItems={[
-            { pt: 'Rótulos diretos nas linhas e na barra em destaque, além da legenda.', en: 'Direct labels on lines and on the highlighted bar, plus the legend.' },
-            { pt: 'Forma, textura ou posição reforçando a cor (marcadores diferentes por série).', en: 'Shape, texture or position reinforcing color (different markers per series).' },
-            { pt: 'Eixo de barras começando em zero e um único eixo vertical.', en: 'Bar axis starting at zero and a single vertical axis.' },
-            { pt: 'Linhas de grade discretas (--or-color-border) e texto nos tokens de texto.', en: 'Subtle gridlines (--or-color-border) and text in the text tokens.' },
-            { pt: 'Título que diz o quê, subtítulo que diz quando e em que unidade, e a fonte dos dados.', en: 'A title that says what, a subtitle that says when and in which unit, and the data source.' },
+            {
+              pt: 'Rótulos diretos nas linhas e na barra em destaque, além da legenda.',
+              en: 'Direct labels on lines and on the highlighted bar, plus the legend.',
+            },
+            {
+              pt: 'Forma, textura ou posição reforçando a cor (marcadores diferentes por série).',
+              en: 'Shape, texture or position reinforcing color (different markers per series).',
+            },
+            {
+              pt: 'Eixo de barras começando em zero e um único eixo vertical.',
+              en: 'Bar axis starting at zero and a single vertical axis.',
+            },
+            {
+              pt: 'Linhas de grade discretas (--or-color-border) e texto nos tokens de texto.',
+              en: 'Subtle gridlines (--or-color-border) and text in the text tokens.',
+            },
+            {
+              pt: 'Título que diz o quê, subtítulo que diz quando e em que unidade, e a fonte dos dados.',
+              en: 'A title that says what, a subtitle that says when and in which unit, and the data source.',
+            },
           ]}
           dontItems={[
-            { pt: 'Legenda como única forma de saber qual cor é qual série.', en: 'A legend as the only way to tell which color is which series.' },
-            { pt: 'Gráficos 3D, pizza com mais de 5 fatias ou dois eixos Y.', en: '3D charts, pies with more than 5 slices or two Y axes.' },
-            { pt: 'Arco-íris para quantidades — use um só matiz.', en: 'Rainbow scales for quantities — use a single hue.' },
-            { pt: 'Texto colorido com a cor da série: o rótulo fica em text e um marcador colorido identifica.', en: 'Text in the series color: labels stay in text and a colored marker identifies.' },
-            { pt: 'Um número em cada ponto do gráfico.', en: 'A number on every point of the chart.' },
+            {
+              pt: 'Legenda como única forma de saber qual cor é qual série.',
+              en: 'A legend as the only way to tell which color is which series.',
+            },
+            {
+              pt: 'Gráficos 3D, pizza com mais de 5 fatias ou dois eixos Y.',
+              en: '3D charts, pies with more than 5 slices or two Y axes.',
+            },
+            {
+              pt: 'Arco-íris para quantidades — use um só matiz.',
+              en: 'Rainbow scales for quantities — use a single hue.',
+            },
+            {
+              pt: 'Texto colorido com a cor da série: o rótulo fica em text e um marcador colorido identifica.',
+              en: 'Text in the series color: labels stay in text and a colored marker identifies.',
+            },
+            {
+              pt: 'Um número em cada ponto do gráfico.',
+              en: 'A number on every point of the chart.',
+            },
           ]}
         />
       </Section>
@@ -690,8 +983,23 @@ export default function DataVisualizationPage() {
         <Prose>
           <p>
             <T
-              pt={<>Os gráficos abaixo são SVG desenhado à mão, sem biblioteca. Cada um é um <Code>&lt;figure&gt;</Code> com o SVG em <Code>role="img"</Code>, <Code>&lt;title&gt;</Code> e <Code>&lt;desc&gt;</Code> resumindo a conclusão, e a tabela com os dados completos logo abaixo. Passe o mouse sobre as marcas para ver os valores.</>}
-              en={<>The charts below are hand-drawn SVG, no library. Each is a <Code>&lt;figure&gt;</Code> with the SVG as <Code>role="img"</Code>, a <Code>&lt;title&gt;</Code> and <Code>&lt;desc&gt;</Code> summarizing the takeaway, and the full data table right below. Hover the marks to see the values.</>}
+              pt={
+                <>
+                  Os gráficos abaixo são SVG desenhado à mão, sem biblioteca. Cada um é um{' '}
+                  <Code>&lt;figure&gt;</Code> com o SVG em <Code>role="img"</Code>,{' '}
+                  <Code>&lt;title&gt;</Code> e <Code>&lt;desc&gt;</Code> resumindo a conclusão, e a
+                  tabela com os dados completos logo abaixo. Passe o mouse sobre as marcas para ver
+                  os valores.
+                </>
+              }
+              en={
+                <>
+                  The charts below are hand-drawn SVG, no library. Each is a{' '}
+                  <Code>&lt;figure&gt;</Code> with the SVG as <Code>role="img"</Code>, a{' '}
+                  <Code>&lt;title&gt;</Code> and <Code>&lt;desc&gt;</Code> summarizing the takeaway,
+                  and the full data table right below. Hover the marks to see the values.
+                </>
+              }
             />
           </p>
         </Prose>
@@ -714,11 +1022,15 @@ export default function DataVisualizationPage() {
           <div className="guide-anatomy__mock" aria-hidden="true">
             <span className="guide-anatomy__row">
               <span className="guide-anatomy__n">1</span>
-              <span className="guide-anatomy__title">{t({ pt: 'Pedidos por mês', en: 'Orders per month' })}</span>
+              <span className="guide-anatomy__title">
+                {t({ pt: 'Pedidos por mês', en: 'Orders per month' })}
+              </span>
             </span>
             <span className="guide-anatomy__row">
               <span className="guide-anatomy__n">2</span>
-              <span className="guide-anatomy__sub">{t({ pt: '1º semestre · unidades', en: 'H1 · units' })}</span>
+              <span className="guide-anatomy__sub">
+                {t({ pt: '1º semestre · unidades', en: 'H1 · units' })}
+              </span>
             </span>
             <span className="guide-anatomy__row">
               <span className="guide-anatomy__n">3</span>
@@ -729,20 +1041,51 @@ export default function DataVisualizationPage() {
             </span>
             <svg viewBox="0 0 320 150" className="guide-anatomy__svg">
               {[0, 1, 2, 3].map((i) => (
-                <line key={i} x1="50" x2="316" y1={20 + i * 36} y2={20 + i * 36} className={i === 3 ? 'guide-viz-axis' : 'guide-viz-grid'} />
+                <line
+                  key={i}
+                  x1="50"
+                  x2="316"
+                  y1={20 + i * 36}
+                  y2={20 + i * 36}
+                  className={i === 3 ? 'guide-viz-axis' : 'guide-viz-grid'}
+                />
               ))}
               {['600', '400', '200', '0'].map((v, i) => (
-                <text key={v} x="44" y={20 + i * 36} textAnchor="end" dominantBaseline="middle" className="guide-viz-tick">
+                <text
+                  key={v}
+                  x="44"
+                  y={20 + i * 36}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className="guide-viz-tick"
+                >
                   {v}
                 </text>
               ))}
               {[70, 84, 96, 90, 104, 116].map((h, i) => (
                 <g key={i}>
-                  <rect x={62 + i * 42} y={128 - h * 0.9} width="14" height={h * 0.9} fill={cat.other} />
-                  <rect x={78 + i * 42} y={128 - h} width="14" height={h} fill={themes[theme].accent} />
+                  <rect
+                    x={62 + i * 42}
+                    y={128 - h * 0.9}
+                    width="14"
+                    height={h * 0.9}
+                    fill={cat.other}
+                  />
+                  <rect
+                    x={78 + i * 42}
+                    y={128 - h}
+                    width="14"
+                    height={h}
+                    fill={themes[theme].accent}
+                  />
                 </g>
               ))}
-              <text x={85 + 5 * 42} y={128 - 116 - 5} textAnchor="middle" className="guide-viz-label">
+              <text
+                x={85 + 5 * 42}
+                y={128 - 116 - 5}
+                textAnchor="middle"
+                className="guide-viz-label"
+              >
                 518
               </text>
               {[
@@ -760,30 +1103,63 @@ export default function DataVisualizationPage() {
             </svg>
             <span className="guide-anatomy__row">
               <span className="guide-anatomy__n">7</span>
-              <span className="guide-anatomy__source">{t({ pt: 'Fonte: painel de vendas · ver dados em tabela', en: 'Source: sales dashboard · view data as a table' })}</span>
+              <span className="guide-anatomy__source">
+                {t({
+                  pt: 'Fonte: painel de vendas · ver dados em tabela',
+                  en: 'Source: sales dashboard · view data as a table',
+                })}
+              </span>
             </span>
           </div>
           <ol className="guide-anatomy__list">
             <li>
-              <strong>{t({ pt: 'Título', en: 'Title' })}</strong> — {t({ pt: 'o que o gráfico mostra, em display semibold.', en: 'what the chart shows, in display semibold.' })}
+              <strong>{t({ pt: 'Título', en: 'Title' })}</strong> —{' '}
+              {t({
+                pt: 'o que o gráfico mostra, em display semibold.',
+                en: 'what the chart shows, in display semibold.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Subtítulo', en: 'Subtitle' })}</strong> — {t({ pt: 'período e unidade, em text-subtle.', en: 'period and unit, in text-subtle.' })}
+              <strong>{t({ pt: 'Subtítulo', en: 'Subtitle' })}</strong> —{' '}
+              {t({
+                pt: 'período e unidade, em text-subtle.',
+                en: 'period and unit, in text-subtle.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Legenda', en: 'Legend' })}</strong> — {t({ pt: 'acima do gráfico, na ordem das séries, sempre que houver 2 ou mais.', en: 'above the chart, in series order, whenever there are 2 or more.' })}
+              <strong>{t({ pt: 'Legenda', en: 'Legend' })}</strong> —{' '}
+              {t({
+                pt: 'acima do gráfico, na ordem das séries, sempre que houver 2 ou mais.',
+                en: 'above the chart, in series order, whenever there are 2 or more.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Eixo e grade', en: 'Axis and grid' })}</strong> — {t({ pt: 'linhas de 1px em border; base em border-strong; números em text-subtle.', en: '1px lines in border; baseline in border-strong; numbers in text-subtle.' })}
+              <strong>{t({ pt: 'Eixo e grade', en: 'Axis and grid' })}</strong> —{' '}
+              {t({
+                pt: 'linhas de 1px em border; base em border-strong; números em text-subtle.',
+                en: '1px lines in border; baseline in border-strong; numbers in text-subtle.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Marcas', en: 'Marks' })}</strong> — {t({ pt: 'barras retas, linhas de 2px e marcadores de ≥ 8px, separados por 2px de fundo.', en: 'square bars, 2px lines and ≥ 8px markers, separated by 2px of background.' })}
+              <strong>{t({ pt: 'Marcas', en: 'Marks' })}</strong> —{' '}
+              {t({
+                pt: 'barras retas, linhas de 2px e marcadores de ≥ 8px, separados por 2px de fundo.',
+                en: 'square bars, 2px lines and ≥ 8px markers, separated by 2px of background.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Rótulo direto', en: 'Direct label' })}</strong> — {t({ pt: 'só no que importa (o destaque, o fim da linha), na cor de texto.', en: 'only on what matters (the highlight, the line end), in text color.' })}
+              <strong>{t({ pt: 'Rótulo direto', en: 'Direct label' })}</strong> —{' '}
+              {t({
+                pt: 'só no que importa (o destaque, o fim da linha), na cor de texto.',
+                en: 'only on what matters (the highlight, the line end), in text color.',
+              })}
             </li>
             <li>
-              <strong>{t({ pt: 'Fonte e dados', en: 'Source and data' })}</strong> — {t({ pt: 'origem dos números e a tabela alternativa para leitores de tela.', en: 'where the numbers come from, plus the alternative table for screen readers.' })}
+              <strong>{t({ pt: 'Fonte e dados', en: 'Source and data' })}</strong> —{' '}
+              {t({
+                pt: 'origem dos números e a tabela alternativa para leitores de tela.',
+                en: 'where the numbers come from, plus the alternative table for screen readers.',
+              })}
             </li>
           </ol>
         </div>

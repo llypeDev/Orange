@@ -27,7 +27,10 @@ export function normalizeText(text: string): string {
 export function defaultOptionFilter(option: ListboxOptionData, query: string): boolean {
   const q = normalizeText(query.trim())
   if (!q) return true
-  return normalizeText(option.label).includes(q) || (option.description ? normalizeText(option.description).includes(q) : false)
+  return (
+    normalizeText(option.label).includes(q) ||
+    (option.description ? normalizeText(option.description).includes(q) : false)
+  )
 }
 
 /** Localiza `query` em `text` ignorando acentos e devolve [início, fim] no texto original. */
@@ -137,7 +140,7 @@ export function useAnnouncer() {
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const announce = useCallback((text: string, delay = 0) => {
     clearTimeout(timer.current)
-    const run = () => setMessage((prev) => (prev === text ? `${text} ` : text))
+    const run = () => setMessage((prev) => (prev === text ? `${text}\u00a0` : text))
     if (delay > 0) timer.current = setTimeout(run, delay)
     else run()
   }, [])
@@ -184,6 +187,8 @@ export function ListboxOptionItem({
   onHover,
 }: ListboxOptionItemProps) {
   return (
+    // A opção é operada pelo teclado a partir do campo (aria-activedescendant); o clique é o atalho do mouse.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <li
       id={id}
       role="option"
@@ -217,7 +222,9 @@ export function ListboxOptionItem({
           </span>
         )}
       </span>
-      {!multiple && selected && <Icon name="check" size="sm" className="or-combobox-option__check" />}
+      {!multiple && selected && (
+        <Icon name="check" size="sm" className="or-combobox-option__check" />
+      )}
     </li>
   )
 }

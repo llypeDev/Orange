@@ -22,11 +22,10 @@ export interface SliderMark {
   label?: ReactNode
 }
 
-interface SliderBaseProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step'
-  > {
+interface SliderBaseProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step'
+> {
   /** Rótulo visível do campo. */
   label?: ReactNode
   hideLabel?: boolean
@@ -110,7 +109,10 @@ interface ControlProps {
   invalid?: boolean
   disabled?: boolean
   required?: boolean
-  rest: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step'>
+  rest: Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step'
+  >
 }
 
 function SliderControl({
@@ -151,15 +153,20 @@ function SliderControl({
   const end = isRange ? pct(values[1]) : pct(values[0])
 
   // Com os polegares sobrepostos, o de cima é o que consegue se mover para dentro do trilho.
-  const topIndex = isRange && values[0] === values[1] ? (values[0] > (min + max) / 2 ? 0 : 1) : lastActive
+  const topIndex =
+    isRange && values[0] === values[1] ? (values[0] > (min + max) / 2 ? 0 : 1) : lastActive
 
   const markList: SliderMark[] =
     marks === true
       ? (max - min) / step <= 100
-        ? Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => ({ value: min + i * step }))
+        ? Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => ({
+            value: min + i * step,
+          }))
         : []
       : Array.isArray(marks)
-        ? marks.map((m) => (typeof m === 'number' ? { value: m } : m)).filter((m) => m.value >= min && m.value <= max)
+        ? marks
+            .map((m) => (typeof m === 'number' ? { value: m } : m))
+            .filter((m) => m.value >= min && m.value <= max)
         : []
   const labeledMarks = markList.filter((m) => m.label !== undefined && m.label !== null)
 
@@ -205,7 +212,12 @@ function SliderControl({
 
   return (
     <div
-      className={cx('or-slider', `or-slider--${size}`, isRange && 'or-slider--range', labeledMarks.length > 0 && 'or-slider--labeled')}
+      className={cx(
+        'or-slider',
+        `or-slider--${size}`,
+        isRange && 'or-slider--range',
+        labeledMarks.length > 0 && 'or-slider--labeled',
+      )}
       data-disabled={isDisabled || undefined}
       data-invalid={controlProps['aria-invalid'] || undefined}
       style={style}
@@ -246,9 +258,15 @@ function SliderControl({
               value={v}
               data-top={(isRange && topIndex === index) || undefined}
               aria-valuetext={formatValue ? formatValue(v) : undefined}
-              aria-labelledby={isRange && labelId ? `${labelId} ${thumbLabelId}-${index}` : undefined}
+              aria-labelledby={
+                isRange && labelId ? `${labelId} ${thumbLabelId}-${index}` : undefined
+              }
               aria-label={
-                isRange && !labelId ? `${ariaLabel ?? ''} ${thumbLabels[index]}`.trim() : !isRange ? ariaLabel : undefined
+                isRange && !labelId
+                  ? `${ariaLabel ?? ''} ${thumbLabels[index]}`.trim()
+                  : !isRange
+                    ? ariaLabel
+                    : undefined
               }
               onChange={(event) => {
                 setLastActive(index)
@@ -256,7 +274,18 @@ function SliderControl({
               }}
               onPointerUp={onCommit}
               onKeyUp={(event) => {
-                if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key))
+                if (
+                  [
+                    'ArrowLeft',
+                    'ArrowRight',
+                    'ArrowUp',
+                    'ArrowDown',
+                    'Home',
+                    'End',
+                    'PageUp',
+                    'PageDown',
+                  ].includes(event.key)
+                )
                   onCommit()
               }}
               {...inputRest}
@@ -277,6 +306,8 @@ function SliderControl({
           {labeledMarks.map((mark) => {
             const p = pct(mark.value)
             return (
+              // Atalho só para mouse (aria-hidden): pelo teclado, as setas fazem o mesmo.
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
               <span
                 key={mark.value}
                 className="or-slider__mark-label"
@@ -356,7 +387,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     const current = valuesRef.current
     let v = snap(raw, min, max, step)
     if (isRange) {
-      v = index === 0 ? Math.min(v, current[1] - minDistance) : Math.max(v, current[0] + minDistance)
+      v =
+        index === 0 ? Math.min(v, current[1] - minDistance) : Math.max(v, current[0] + minDistance)
     }
     if (v === current[index]) return
     const next = [...current]
@@ -367,7 +399,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   }
 
   const handleCommit = () => {
-    ;(onChangeEnd as ((value: number | [number, number]) => void) | undefined)?.(emit(valuesRef.current))
+    ;(onChangeEnd as ((value: number | [number, number]) => void) | undefined)?.(
+      emit(valuesRef.current),
+    )
   }
 
   const format = (v: number) => (formatValue ? formatValue(v) : String(v))
@@ -386,7 +420,11 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
       className={cx('or-slider-field', className)}
       labelAside={
         showValue && label ? (
-          <output className="or-slider__output" htmlFor={isRange ? `${fieldId} ${fieldId}-max` : fieldId} aria-live="off">
+          <output
+            className="or-slider__output"
+            htmlFor={isRange ? `${fieldId} ${fieldId}-max` : fieldId}
+            aria-live="off"
+          >
             {outputText}
           </output>
         ) : undefined

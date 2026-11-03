@@ -1302,7 +1302,11 @@
   display: grid;
   place-items: center;
   padding: var(--or-space-6) 0;
-  background-image: repeating-linear-gradient(135deg, var(--or-color-border-subtle) 0 1px, transparent 1px 8px);
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--or-color-border-subtle) 0 1px,
+    transparent 1px 8px
+  );
 }
 
 .guide-container-demo__box {

@@ -13,8 +13,20 @@ export default function States() {
   return (
     <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 380 }}>
       <Combobox size="sm" label="Banco (sm)" options={bancos} placeholder="Código ou nome" />
-      <Combobox label="Banco" options={bancos} required error="Escolha um banco da lista." placeholder="Código ou nome" />
-      <Combobox size="lg" label="Banco (lg, desabilitado)" options={bancos} defaultValue="341" disabled />
+      <Combobox
+        label="Banco"
+        options={bancos}
+        required
+        error="Escolha um banco da lista."
+        placeholder="Código ou nome"
+      />
+      <Combobox
+        size="lg"
+        label="Banco (lg, desabilitado)"
+        options={bancos}
+        defaultValue="341"
+        disabled
+      />
     </div>
   )
 }

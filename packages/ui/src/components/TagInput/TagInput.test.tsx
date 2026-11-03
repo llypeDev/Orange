@@ -98,7 +98,9 @@ describe('TagInput', () => {
     // a duplicada fica no campo com o erro
     expect(input).toHaveValue('vue')
     expect(input).toHaveAccessibleDescription('"vue" já está na lista')
-    expect(screen.getByRole('status')).toHaveTextContent('Adicionado: react, angular, svelte. "vue" já está na lista')
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Adicionado: react, angular, svelte. "vue" já está na lista',
+    )
   })
 
   it('addOnBlur adiciona o texto pendente ao sair', async () => {
@@ -134,7 +136,12 @@ describe('TagInput', () => {
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>
-        <TagInput label="Palavras-chave" description="Pressione Enter para adicionar" defaultValue={['design', 'ux']} maxTags={5} />
+        <TagInput
+          label="Palavras-chave"
+          description="Pressione Enter para adicionar"
+          defaultValue={['design', 'ux']}
+          maxTags={5}
+        />
         <TagInput label="E-mails" error="Informe ao menos um e-mail" required />
         <TagInput label="Desabilitado" defaultValue={['fixo']} disabled />
       </div>,

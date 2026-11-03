@@ -16,11 +16,10 @@ import './CurrencyField.css'
 
 export type CurrencyFieldSize = 'sm' | 'md' | 'lg'
 
-export interface CurrencyFieldProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step' | 'inputMode'
-  > {
+export interface CurrencyFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'type' | 'min' | 'max' | 'step' | 'inputMode'
+> {
   /** Valor numérico (controlado). `null` = vazio. */
   value?: number | null
   /** Valor inicial (não controlado). */
@@ -58,8 +57,16 @@ interface CurrencyFormat {
   display: Intl.NumberFormat
 }
 
-function getCurrencyFormat(locale: string, currency: string, currencyDisplay: CurrencyFieldProps['currencyDisplay']): CurrencyFormat {
-  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency, currencyDisplay })
+function getCurrencyFormat(
+  locale: string,
+  currency: string,
+  currencyDisplay: CurrencyFieldProps['currencyDisplay'],
+): CurrencyFormat {
+  const currencyFormatter = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    currencyDisplay,
+  })
   const parts = currencyFormatter.formatToParts(1234.5)
   const symbolIndex = parts.findIndex((p) => p.type === 'currency')
   const integerIndex = parts.findIndex((p) => p.type === 'integer')
@@ -91,7 +98,7 @@ function getCurrencyFormat(locale: string, currency: string, currencyDisplay: Cu
  * milhar (`1.500` → 1500 em pt-BR).
  */
 function parseAmount(text: string, decimal: string): number | null {
-  let s = text.replace(/[\s  ']/g, '')
+  let s = text.replace(/[\s\u00a0\u202f']/g, '')
   const negative = s.includes('-')
   s = s.replace(/-/g, '')
   if (!/[0-9]/.test(s)) return null
@@ -123,27 +130,32 @@ const round = (n: number, digits: number) => {
  * moeda no campo e formatação com `Intl.NumberFormat` ao sair. Entrega um
  * `number` (ou `null`) — nunca uma string formatada.
  */
-export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(function CurrencyField(
-  { label, hideLabel, description, error, required, disabled, id, className, ...rest },
-  ref,
-) {
-  return (
-    <Field
-      label={label}
-      hideLabel={hideLabel}
-      description={description}
-      error={error}
-      required={required}
-      disabled={disabled}
-      controlId={id}
-      className={cx('or-currency-field', className)}
-    >
-      <CurrencyFieldControl inputRef={ref} required={required} disabled={disabled} {...rest} />
-    </Field>
-  )
-})
+export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
+  function CurrencyField(
+    { label, hideLabel, description, error, required, disabled, id, className, ...rest },
+    ref,
+  ) {
+    return (
+      <Field
+        label={label}
+        hideLabel={hideLabel}
+        description={description}
+        error={error}
+        required={required}
+        disabled={disabled}
+        controlId={id}
+        className={cx('or-currency-field', className)}
+      >
+        <CurrencyFieldControl inputRef={ref} required={required} disabled={disabled} {...rest} />
+      </Field>
+    )
+  },
+)
 
-type ControlProps = Omit<CurrencyFieldProps, 'label' | 'hideLabel' | 'description' | 'error' | 'className' | 'id'> & {
+type ControlProps = Omit<
+  CurrencyFieldProps,
+  'label' | 'hideLabel' | 'description' | 'error' | 'className' | 'id'
+> & {
   inputRef: React.Ref<HTMLInputElement>
 }
 
@@ -170,7 +182,10 @@ function CurrencyFieldControl({
 }: ControlProps) {
   const { locale: providerLocale, t } = useLocale()
   const locale = localeProp ?? providerLocale
-  const format = useMemo(() => getCurrencyFormat(locale, currency, currencyDisplay), [locale, currency, currencyDisplay])
+  const format = useMemo(
+    () => getCurrencyFormat(locale, currency, currencyDisplay),
+    [locale, currency, currencyDisplay],
+  )
   const hintId = useId('or-currency-hint')
   const controlProps = useFieldControlProps({
     required,
@@ -205,7 +220,7 @@ function CurrencyFieldControl({
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const raw = event.target.value
-    const allowed = allowNegative ? /[^0-9.,\-\s  ]/g : /[^0-9.,\s  ]/g
+    const allowed = allowNegative ? /[^0-9.,\-\s\u00a0\u202f]/g : /[^0-9.,\s\u00a0\u202f]/g
     const position = event.target.selectionStart ?? raw.length
     const removedBefore = (raw.slice(0, position).match(allowed) ?? []).length
     let next = raw.replace(allowed, '')
@@ -226,14 +241,19 @@ function CurrencyFieldControl({
       return
     }
     let next = round(parsed, format.fractionDigits)
-    if (min !== undefined || max !== undefined) next = clamp(next, min ?? -Infinity, max ?? Infinity)
+    if (min !== undefined || max !== undefined)
+      next = clamp(next, min ?? -Infinity, max ?? Infinity)
     if (!allowNegative && next < 0) next = Math.abs(next)
     emit(next)
   }
 
   const addon = (
     <span
-      className={cx('or-control-frame__addon', format.symbolAfter ? 'or-control-frame__addon--end' : 'or-control-frame__addon--start', 'or-currency-field__symbol')}
+      className={cx(
+        'or-control-frame__addon',
+        format.symbolAfter ? 'or-control-frame__addon--end' : 'or-control-frame__addon--start',
+        'or-currency-field__symbol',
+      )}
       aria-hidden="true"
     >
       {format.symbol}
@@ -241,6 +261,8 @@ function CurrencyFieldControl({
   )
 
   return (
+    // O mousedown só amplia a área de clique do input (que já é focável por teclado).
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-currency-field__frame')}
       data-invalid={controlProps['aria-invalid'] || undefined}
@@ -273,7 +295,9 @@ function CurrencyFieldControl({
         {...controlProps}
       />
       {format.symbolAfter && addon}
-      <VisuallyHidden id={hintId}>{t('currencyLabel', { currency: format.currencyName })}</VisuallyHidden>
+      <VisuallyHidden id={hintId}>
+        {t('currencyLabel', { currency: format.currencyName })}
+      </VisuallyHidden>
       {name && <input type="hidden" name={name} value={value ?? ''} disabled={isDisabled} />}
     </div>
   )
