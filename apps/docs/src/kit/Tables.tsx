@@ -14,7 +14,7 @@ export interface PropRow {
 export function PropsTable({ rows, caption }: { rows: PropRow[]; caption?: Localized<string> }) {
   const { t } = useLang()
   return (
-    <div className="doc-table-wrap" role="region" aria-label={caption ? t(caption) : 'Props'} tabIndex={0}>
+    <div className="doc-table-wrap" role="region" aria-label={caption ? t(caption) : t({ pt: 'Tabela de propriedades', en: 'Properties table' })} tabIndex={0}>
       <table className="doc-table doc-table--props">
         {caption && <caption className="doc-table__caption">{t(caption)}</caption>}
         <thead>

@@ -60,8 +60,9 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
         >
           <Icon name={menuOpen ? 'close' : 'menu'} size="md" />
         </button>
-        <Link to={to('/')} className="doc-header__brand" aria-label={t({ pt: 'Orange Design System — início', en: 'Orange Design System — home' })}>
+        <Link to={to('/')} className="doc-header__brand">
           <Logo />
+          <span className="or-visually-hidden">{t({ pt: '— início', en: '— home' })}</span>
         </Link>
       </div>
       <nav className="doc-header__nav" aria-label={t({ pt: 'Atalhos', en: 'Shortcuts' })}>
