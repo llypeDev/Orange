@@ -1,0 +1,38 @@
+{
+  "name": "orange-design-system",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Orange — design system open source, acessível e customizável.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @orange/docs dev",
+    "storybook": "pnpm --filter @orange/storybook dev",
+    "gen": "node scripts/gen-index.mjs",
+    "build:tokens": "pnpm --filter @orange/tokens build",
+    "build:lib": "pnpm build:tokens && pnpm --filter @orange/ui build",
+    "build:storybook": "pnpm --filter @orange/storybook build",
+    "build:docs": "pnpm --filter @orange/docs build",
+    "build": "pnpm gen && pnpm build:lib && pnpm build:storybook && pnpm build:docs && node scripts/merge-storybook.mjs",
+    "preview": "pnpm --filter @orange/docs preview",
+    "test": "pnpm gen && pnpm -r --if-present test",
+    "typecheck": "pnpm gen && pnpm -r --if-present typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.20.0",
+    "eslint": "^9.39.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.5.0",
+    "prettier": "^3.9.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0"
+  }
+}

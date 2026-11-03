@@ -1,0 +1,8 @@
+/*
+ * Ponto de entrada global do Orange.
+ * Importe uma vez na raiz da aplicação: `import '@orange/ui/styles.css'`.
+ * Os estilos de cada componente são incluídos quando o componente é importado
+ * (ou estão todos no `dist/styles.css` do pacote publicado).
+ */
+@import '@orange/tokens/tokens.css';
+@import './base.css';

@@ -1,0 +1,325 @@
+import {
+  useCallback,
+  useEffect,
+  useId as useReactId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react'
+import { canUseDOM, getFocusableElements } from '../utils'
+
+/** `useLayoutEffect` no navegador, `useEffect` no servidor (SSR seguro). */
+export const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect
+
+/**
+ * Gera um id estável e único. Se `providedId` for informado, ele é usado.
+ * @example const id = useId('or-field')
+ */
+export function useId(prefix = 'or', providedId?: string): string {
+  const reactId = useReactId()
+  return providedId ?? `${prefix}-${reactId.replace(/[:«»]/g, '')}`
+}
+
+/**
+ * Estado que pode ser controlado (via props) ou não controlado (interno).
+ * Segue o padrão `value` / `defaultValue` / `onChange`.
+ */
+export function useControllableState<T>({
+  value,
+  defaultValue,
+  onChange,
+}: {
+  value?: T
+  defaultValue: T
+  onChange?: (value: T) => void
+}): [T, (next: T | ((prev: T) => T)) => void] {
+  const [internal, setInternal] = useState<T>(defaultValue)
+  const isControlled = value !== undefined
+  const current = isControlled ? (value as T) : internal
+  const currentRef = useRef(current)
+  currentRef.current = current
+  const onChangeRef = useRef(onChange)
+  onChangeRef.current = onChange
+
+  const setValue = useCallback(
+    (next: T | ((prev: T) => T)) => {
+      const resolved =
+        typeof next === 'function' ? (next as (prev: T) => T)(currentRef.current) : next
+      if (Object.is(resolved, currentRef.current)) return
+      if (!isControlled) setInternal(resolved)
+      currentRef.current = resolved
+      onChangeRef.current?.(resolved)
+    },
+    [isControlled],
+  )
+
+  return [current, setValue]
+}
+
+export interface UseDisclosureReturn {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
+  setOpen: (open: boolean) => void
+}
+
+/** Controla estados abre/fecha (modais, menus, drawers). */
+export function useDisclosure(
+  options: { open?: boolean; defaultOpen?: boolean; onOpenChange?: (open: boolean) => void } = {},
+): UseDisclosureReturn {
+  const [isOpen, setOpen] = useControllableState({
+    value: options.open,
+    defaultValue: options.defaultOpen ?? false,
+    onChange: options.onOpenChange,
+  })
+  const open = useCallback(() => setOpen(true), [setOpen])
+  const close = useCallback(() => setOpen(false), [setOpen])
+  const toggle = useCallback(() => setOpen((v) => !v), [setOpen])
+  return useMemo(() => ({ isOpen, open, close, toggle, setOpen }), [isOpen, open, close, toggle, setOpen])
+}
+
+/** Adiciona um listener tipado a `window`, `document` ou um elemento. */
+export function useEventListener<K extends keyof WindowEventMap>(
+  type: K,
+  handler: (event: WindowEventMap[K]) => void,
+  target?: Window | Document | HTMLElement | null,
+  options?: AddEventListenerOptions,
+) {
+  const handlerRef = useRef(handler)
+  handlerRef.current = handler
+  useEffect(() => {
+    const el = target === undefined ? (canUseDOM ? window : null) : target
+    if (!el) return
+    const listener = (e: Event) => handlerRef.current(e as WindowEventMap[K])
+    el.addEventListener(type, listener, options)
+    return () => el.removeEventListener(type, listener, options)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type, target, options?.capture, options?.passive])
+}
+
+/** Chama `handler` quando ocorre clique/toque fora dos elementos informados. */
+export function useClickOutside(
+  refs: RefObject<HTMLElement | null> | RefObject<HTMLElement | null>[],
+  handler: (event: PointerEvent) => void,
+  enabled = true,
+) {
+  const handlerRef = useRef(handler)
+  handlerRef.current = handler
+  useEffect(() => {
+    if (!enabled) return
+    const list = Array.isArray(refs) ? refs : [refs]
+    const listener = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (list.some((r) => r.current?.contains(target))) return
+      handlerRef.current(event)
+    }
+    document.addEventListener('pointerdown', listener)
+    return () => document.removeEventListener('pointerdown', listener)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled])
+}
+
+/** Chama `handler` quando a tecla Escape é pressionada. */
+export function useEscapeKey(handler: (event: KeyboardEvent) => void, enabled = true) {
+  const handlerRef = useRef(handler)
+  handlerRef.current = handler
+  useEffect(() => {
+    if (!enabled) return
+    const listener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') handlerRef.current(event)
+    }
+    document.addEventListener('keydown', listener)
+    return () => document.removeEventListener('keydown', listener)
+  }, [enabled])
+}
+
+/** Retorna `true` enquanto a media query corresponder. */
+export function useMediaQuery(query: string, defaultValue = false): boolean {
+  const [matches, setMatches] = useState(() =>
+    canUseDOM && window.matchMedia ? window.matchMedia(query).matches : defaultValue,
+  )
+  useEffect(() => {
+    if (!canUseDOM || !window.matchMedia) return
+    const mql = window.matchMedia(query)
+    const update = () => setMatches(mql.matches)
+    update()
+    mql.addEventListener?.('change', update)
+    return () => mql.removeEventListener?.('change', update)
+  }, [query])
+  return matches
+}
+
+/** `true` quando o usuário pediu menos movimento no sistema operacional. */
+export function useReducedMotion(): boolean {
+  return useMediaQuery('(prefers-reduced-motion: reduce)')
+}
+
+/** Bloqueia o scroll do `body` enquanto `locked` for verdadeiro. */
+export function useLockBodyScroll(locked: boolean) {
+  useIsomorphicLayoutEffect(() => {
+    if (!locked || !canUseDOM) return
+    const { body, documentElement } = document
+    const prevOverflow = body.style.overflow
+    const prevPadding = body.style.paddingRight
+    const scrollbar = window.innerWidth - documentElement.clientWidth
+    body.style.overflow = 'hidden'
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`
+    return () => {
+      body.style.overflow = prevOverflow
+      body.style.paddingRight = prevPadding
+    }
+  }, [locked])
+}
+
+/**
+ * Prende o foco do teclado dentro de `ref` enquanto `active` for verdadeiro.
+ * Ao desativar, devolve o foco para o elemento que estava focado antes.
+ */
+export function useFocusTrap(
+  ref: RefObject<HTMLElement | null>,
+  active: boolean,
+  options: { initialFocus?: RefObject<HTMLElement | null>; restoreFocus?: boolean } = {},
+) {
+  const { initialFocus, restoreFocus = true } = options
+  useEffect(() => {
+    if (!active) return
+    const root = ref.current
+    if (!root) return
+    const previouslyFocused = document.activeElement as HTMLElement | null
+
+    const focusFirst = () => {
+      const target = initialFocus?.current ?? getFocusableElements(root)[0] ?? root
+      if (target === root && !root.hasAttribute('tabindex')) root.setAttribute('tabindex', '-1')
+      target.focus({ preventScroll: true })
+    }
+    // aguarda o próximo frame para garantir que o conteúdo foi renderizado
+    const raf = requestAnimationFrame(focusFirst)
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return
+      const focusables = getFocusableElements(root)
+      if (focusables.length === 0) {
+        event.preventDefault()
+        return
+      }
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      const activeEl = document.activeElement
+      if (event.shiftKey && (activeEl === first || activeEl === root)) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && activeEl === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    root.addEventListener('keydown', onKeyDown)
+    return () => {
+      cancelAnimationFrame(raf)
+      root.removeEventListener('keydown', onKeyDown)
+      if (restoreFocus && previouslyFocused && document.contains(previouslyFocused)) {
+        previouslyFocused.focus({ preventScroll: true })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active])
+}
+
+export type RovingOrientation = 'horizontal' | 'vertical' | 'both'
+
+/**
+ * Navegação por setas entre itens (padrão "roving tabindex" do WAI-ARIA).
+ * Retorna um handler de `onKeyDown` para o contêiner. Os itens devem ter o
+ * atributo `data-roving-item` e não estar desabilitados.
+ */
+export function useRovingFocus(
+  containerRef: RefObject<HTMLElement | null>,
+  options: { orientation?: RovingOrientation; loop?: boolean; selector?: string } = {},
+) {
+  const { orientation = 'horizontal', loop = true, selector = '[data-roving-item]:not([disabled])' } = options
+  return useCallback(
+    (event: React.KeyboardEvent) => {
+      const container = containerRef.current
+      if (!container) return
+      const items = Array.from(container.querySelectorAll<HTMLElement>(selector))
+      if (items.length === 0) return
+      const index = items.indexOf(document.activeElement as HTMLElement)
+      const prevKeys = orientation === 'vertical' ? ['ArrowUp'] : orientation === 'horizontal' ? ['ArrowLeft'] : ['ArrowUp', 'ArrowLeft']
+      const nextKeys = orientation === 'vertical' ? ['ArrowDown'] : orientation === 'horizontal' ? ['ArrowRight'] : ['ArrowDown', 'ArrowRight']
+      let next = -1
+      if (nextKeys.includes(event.key)) next = index + 1 >= items.length ? (loop ? 0 : index) : index + 1
+      else if (prevKeys.includes(event.key)) next = index - 1 < 0 ? (loop ? items.length - 1 : 0) : index - 1
+      else if (event.key === 'Home') next = 0
+      else if (event.key === 'End') next = items.length - 1
+      else return
+      event.preventDefault()
+      items.forEach((el, i) => el.setAttribute('tabindex', i === next ? '0' : '-1'))
+      items[next]?.focus()
+    },
+    [containerRef, orientation, loop, selector],
+  )
+}
+
+/** Copia texto para a área de transferência e expõe o estado `copied`. */
+export function useClipboard(timeout = 2000) {
+  const [copied, setCopied] = useState(false)
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const copy = useCallback(
+    async (text: string) => {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text)
+        } else {
+          const el = document.createElement('textarea')
+          el.value = text
+          el.setAttribute('readonly', '')
+          el.style.position = 'absolute'
+          el.style.left = '-9999px'
+          document.body.appendChild(el)
+          el.select()
+          document.execCommand('copy')
+          document.body.removeChild(el)
+        }
+        setCopied(true)
+        clearTimeout(timer.current)
+        timer.current = setTimeout(() => setCopied(false), timeout)
+        return true
+      } catch {
+        setCopied(false)
+        return false
+      }
+    },
+    [timeout],
+  )
+  useEffect(() => () => clearTimeout(timer.current), [])
+  return { copy, copied }
+}
+
+/** Retorna `value` somente após `delay` ms sem alterações. */
+export function useDebouncedValue<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(t)
+  }, [value, delay])
+  return debounced
+}
+
+/** Guarda o valor da renderização anterior. */
+export function usePrevious<T>(value: T): T | undefined {
+  const ref = useRef<T | undefined>(undefined)
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+  return ref.current
+}
+
+/** `true` depois que o componente montou no cliente (útil para portais/SSR). */
+export function useMounted(): boolean {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted
+}

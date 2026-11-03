@@ -1,0 +1,176 @@
+.or-button {
+  --_bg: transparent;
+  --_fg: var(--or-color-text);
+  --_border: transparent;
+  --_bg-hover: var(--or-color-surface-hover);
+  --_fg-hover: var(--_fg);
+  --_border-hover: var(--_border);
+  --_bg-active: var(--or-color-surface-active);
+  --_height: var(--or-control-md);
+  --_pad-x: 1.125rem;
+  --_font-size: var(--or-text-sm);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--or-space-2);
+  min-height: var(--_height);
+  padding: 0 var(--_pad-x);
+  border: var(--or-border-thin) solid var(--_border);
+  border-radius: var(--or-radius-none);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--or-font-display);
+  font-size: var(--_font-size);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-button:hover:not(:disabled, [aria-disabled='true']) {
+  background: var(--_bg-hover);
+  border-color: var(--_border-hover);
+  color: var(--_fg-hover);
+}
+
+.or-button:active:not(:disabled, [aria-disabled='true']) {
+  background: var(--_bg-active);
+}
+
+.or-button:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Variantes ---------------------------------------------------------------- */
+
+.or-button--primary {
+  --_bg: var(--or-color-accent);
+  --_fg: var(--or-color-text-on-accent);
+  --_border: var(--or-color-accent);
+  --_bg-hover: var(--or-color-accent-hover);
+  --_border-hover: var(--or-color-accent-hover);
+  --_bg-active: var(--or-color-accent-active);
+}
+
+.or-button--secondary {
+  --_bg: var(--or-color-neutral);
+  --_fg: var(--or-color-text-on-neutral);
+  --_border: var(--or-color-neutral);
+  --_bg-hover: var(--or-color-neutral-hover);
+  --_border-hover: var(--or-color-neutral-hover);
+  --_bg-active: var(--or-color-neutral);
+}
+
+.or-button--outline {
+  --_border: var(--or-color-border-strong);
+  --_bg-hover: var(--or-color-surface-hover);
+  --_border-hover: var(--or-color-text-subtle);
+}
+
+.or-button--ghost {
+  --_fg: var(--or-color-text-muted);
+  --_fg-hover: var(--or-color-text);
+}
+
+.or-button--danger {
+  --_bg: var(--or-color-danger);
+  --_fg: var(--or-color-text-on-danger);
+  --_border: var(--or-color-danger);
+  --_bg-hover: var(--or-color-danger-hover);
+  --_border-hover: var(--or-color-danger-hover);
+  --_bg-active: var(--or-color-danger);
+}
+
+/* Tamanhos ----------------------------------------------------------------- */
+
+.or-button--sm {
+  --_height: var(--or-control-sm);
+  --_pad-x: 0.75rem;
+  --_font-size: var(--or-text-xs);
+}
+
+.or-button--lg {
+  --_height: var(--or-control-lg);
+  --_pad-x: 1.375rem;
+  --_font-size: var(--or-text-md);
+}
+
+.or-button--block {
+  display: flex;
+  width: 100%;
+}
+
+.or-button--icon-only {
+  width: var(--_height);
+  padding: 0;
+}
+
+/* Ícones ------------------------------------------------------------------- */
+
+.or-button__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.or-button__icon svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.or-button--icon-only .or-button__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-button__icon--end {
+  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-button:hover:not(:disabled) .or-button__icon--end {
+  transform: translateX(3px);
+}
+
+/* Estados ------------------------------------------------------------------ */
+
+.or-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.or-button--loading {
+  cursor: progress;
+}
+
+.or-button--loading > .or-button__label,
+.or-button--loading > .or-button__icon {
+  visibility: hidden;
+}
+
+.or-button__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+  animation: or-spin 0.7s linear infinite;
+}
+
+@media (forced-colors: active) {
+  .or-button {
+    border-color: ButtonText;
+  }
+}

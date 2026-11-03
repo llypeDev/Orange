@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introdução" />
+
+<div className="sb-unstyled">
+  <p className="or-eyebrow">Orange Design System · v0.1.0</p>
+</div>
+
+# Orange
+
+Design system open source, **acessível** (WCAG 2.2 AA), **customizável** (temas claro e escuro via tokens)
+e escrito em **React + TypeScript**.
+
+Este Storybook é o laboratório dos componentes: cada story pode ser inspecionada no painel
+**Accessibility** (axe-core), ter as props alteradas em **Controls** e alternar tema e idioma na barra
+superior.
+
+## Instalação
+
+```bash
+pnpm add @orange/ui
+```
+
+```tsx
+import '@orange/ui/styles.css'
+import { OrangeProvider, Button } from '@orange/ui'
+
+export function App() {
+  return (
+    <OrangeProvider defaultTheme="dark" locale="pt-BR">
+      <Button endIcon={<Icon name="arrow-right" />}>Começar</Button>
+    </OrangeProvider>
+  )
+}
+```
+
+## Princípios
+
+- **Acessível por padrão** — semântica nativa primeiro, ARIA quando necessário, foco sempre visível e navegação completa por teclado.
+- **Geométrico** — cantos retos, bordas de 1px, grade explícita. O laranja é o único acento.
+- **Tokens como contrato** — toda cor, espaçamento e duração vem de `@orange/tokens`.
+- **Bilíngue** — mensagens internas em pt-BR e en-US através do `OrangeProvider`.
