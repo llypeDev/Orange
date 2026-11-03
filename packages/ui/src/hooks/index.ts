@@ -164,9 +164,10 @@ export function useLockBodyScroll(locked: boolean) {
     const { body, documentElement } = document
     const prevOverflow = body.style.overflow
     const prevPadding = body.style.paddingRight
-    const scrollbar = window.innerWidth - documentElement.clientWidth
+    // clientWidth é 0 em ambientes sem layout (jsdom, SSR hidratado); ignore nesses casos.
+    const scrollbar = documentElement.clientWidth > 0 ? window.innerWidth - documentElement.clientWidth : 0
     body.style.overflow = 'hidden'
-    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`
+    if (scrollbar > 0 && scrollbar < 64) body.style.paddingRight = `${scrollbar}px`
     return () => {
       body.style.overflow = prevOverflow
       body.style.paddingRight = prevPadding

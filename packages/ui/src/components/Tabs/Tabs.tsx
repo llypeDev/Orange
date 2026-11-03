@@ -3,6 +3,7 @@ import {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -25,6 +26,9 @@ interface TabsContextValue {
   select: (value: string) => void
   initialize: (value: string) => void
   baseId: string
+  /** Valores com `TabPanel` montado: só eles recebem `aria-controls`. */
+  panels: ReadonlySet<string>
+  registerPanel: (value: string) => () => void
   orientation: TabsOrientation
   activation: TabsActivation
   variant: TabsVariant
@@ -110,9 +114,21 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     [isControlled],
   )
 
+  const [panels, setPanels] = useState<ReadonlySet<string>>(() => new Set())
+  const registerPanel = useCallback((panelValue: string) => {
+    setPanels((prev) => (prev.has(panelValue) ? prev : new Set(prev).add(panelValue)))
+    return () =>
+      setPanels((prev) => {
+        if (!prev.has(panelValue)) return prev
+        const next = new Set(prev)
+        next.delete(panelValue)
+        return next
+      })
+  }, [])
+
   const ctx = useMemo<TabsContextValue>(
-    () => ({ value, select, initialize, baseId, orientation, activation, variant }),
-    [value, select, initialize, baseId, orientation, activation, variant],
+    () => ({ value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant }),
+    [value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant],
   )
 
   return (
@@ -225,7 +241,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
       role="tab"
       id={id}
       aria-selected={selected}
-      aria-controls={panelId}
+      aria-controls={ctx.panels.has(value) ? panelId : undefined}
       tabIndex={selected ? 0 : -1}
       disabled={disabled}
       data-value={value}
@@ -260,6 +276,8 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPa
 ) {
   const ctx = useTabsContext('TabPanel')
   const selected = ctx.value === value
+  const { registerPanel } = ctx
+  useEffect(() => registerPanel(value), [registerPanel, value])
   return (
     <div
       ref={ref}

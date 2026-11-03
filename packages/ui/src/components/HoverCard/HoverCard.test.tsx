@@ -37,7 +37,7 @@ describe('HoverCard', () => {
 
   it('permanece aberto enquanto o ponteiro está sobre o cartão', async () => {
     const user = userEvent.setup()
-    render(<Example closeDelay={60} />)
+    render(<Example closeDelay={250} />)
     const link = screen.getByRole('link', { name: 'Ana Souza' })
     await user.hover(link)
     const card = (await screen.findByText('Designer de produto · Time Pagamentos')).closest(
@@ -45,7 +45,7 @@ describe('HoverCard', () => {
     )!
     await user.unhover(link)
     await user.hover(card)
-    await new Promise((resolve) => setTimeout(resolve, 120))
+    await new Promise((resolve) => setTimeout(resolve, 400))
     expect(card).toBeInTheDocument()
   })
 

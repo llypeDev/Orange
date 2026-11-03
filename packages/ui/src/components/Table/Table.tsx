@@ -421,6 +421,9 @@ function TableInner<T>(
  * Tabela de dados semântica: legenda, cabeçalhos com `scope`, ordenação por
  * coluna (`aria-sort`), seleção de linhas, cabeçalho fixo e estado vazio.
  */
-export const Table = forwardRef(TableInner) as <T>(
+const ForwardedTable = forwardRef(TableInner)
+ForwardedTable.displayName = 'Table'
+
+export const Table = ForwardedTable as <T>(
   props: TableProps<T> & { ref?: Ref<HTMLTableElement> },
 ) => ReactElement | null

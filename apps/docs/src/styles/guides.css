@@ -2684,3 +2684,22 @@
 .guide-down {
   color: var(--or-color-danger-text);
 }
+
+.guide-toolbar-demo {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .guide-kv {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--or-space-1);
+  }
+  .guide-kv dd {
+    margin-bottom: var(--or-space-2);
+  }
+  .guide-readout dt {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

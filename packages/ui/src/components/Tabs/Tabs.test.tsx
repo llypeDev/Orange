@@ -141,6 +141,20 @@ describe('Tabs', () => {
     expect(screen.getByRole('status')).toHaveTextContent('notificacoes')
   })
 
+  it('só aponta aria-controls para painéis que existem', () => {
+    render(
+      <Tabs defaultValue="a">
+        <TabList aria-label="Filtros">
+          <Tab value="a">Todos</Tab>
+          <Tab value="b">Favoritos</Tab>
+        </TabList>
+        <TabPanel value="a">Lista</TabPanel>
+      </Tabs>,
+    )
+    expect(screen.getByRole('tab', { name: 'Todos' })).toHaveAttribute('aria-controls')
+    expect(screen.getByRole('tab', { name: 'Favoritos' })).not.toHaveAttribute('aria-controls')
+  })
+
   it('aplica variante, tamanho e fitted', () => {
     const { container } = render(<Example variant="enclosed" size="lg" fitted />)
     expect(container.firstChild).toHaveClass('or-tabs--enclosed', 'or-tabs--lg', 'or-tabs--fitted')
@@ -168,6 +182,12 @@ describe('Tabs', () => {
       <div>
         <Example />
         <Example variant="enclosed" orientation="vertical" />
+        <Tabs defaultValue="x">
+          <TabList aria-label="Somente abas">
+            <Tab value="x">Dia</Tab>
+            <Tab value="y">Semana</Tab>
+          </TabList>
+        </Tabs>
       </div>,
     )
     await expectNoA11yViolations(container)

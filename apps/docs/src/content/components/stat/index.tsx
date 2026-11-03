@@ -113,8 +113,8 @@ export default function StatPage() {
         <Example
           title={{ pt: 'Dentro de cartões', en: 'Inside cards' }}
           description={{
-            pt: 'size="lg" para o número principal de um cartão. Stat sozinho renderiza seu próprio <dl>.',
-            en: 'size="lg" for a card headline number. A standalone Stat renders its own <dl>.',
+            pt: 'Fora de um StatGroup, cada Stat renderiza seu próprio <dl> e pode ser combinado com Card.',
+            en: 'Outside a StatGroup, each Stat renders its own <dl> and can be combined with Card.',
           }}
           code={InCardsCode}
           align="stretch"

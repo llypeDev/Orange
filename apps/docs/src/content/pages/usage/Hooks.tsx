@@ -493,13 +493,13 @@ export default function HooksPage() {
           description={{
             pt: (
               <>
-                Atalho para <Code>useMediaQuery('(prefers-reduced-motion: reduce)')</Code>. Use para
+                Atalho para <Code>useMediaQuery</Code> com <Code>(prefers-reduced-motion: reduce)</Code>. Use para
                 desligar animações feitas em JavaScript; as de CSS já são zeradas pelos tokens.
               </>
             ),
             en: (
               <>
-                Shortcut for <Code>useMediaQuery('(prefers-reduced-motion: reduce)')</Code>. Use it
+                Shortcut for <Code>useMediaQuery</Code> with <Code>(prefers-reduced-motion: reduce)</Code>. Use it
                 to turn off JavaScript-driven animations; CSS ones are already zeroed by the tokens.
               </>
             ),

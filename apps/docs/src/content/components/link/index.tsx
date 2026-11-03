@@ -78,7 +78,7 @@ export default function LinkPage() {
         />
       </Section>
 
-      <Section title={{ pt: 'Variantes', en: 'Variants' }}>
+      <Section title={{ pt: 'Tipos de link', en: 'Link types' }}>
         <DefinitionTable
           rows={[
             {

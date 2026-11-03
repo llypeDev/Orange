@@ -103,6 +103,16 @@
   padding: var(--or-space-5);
 }
 
+/* Cada célula é um contêiner: o número encolhe em colunas estreitas para não
+   quebrar ("R$ 48,2 mil"), sem passar do tamanho definido por `size`. */
+.or-stat-group__list > .or-stat {
+  container-type: inline-size;
+}
+
+.or-stat-group__list > .or-stat .or-stat__value {
+  font-size: clamp(1.375rem, 20cqi, var(--_value));
+}
+
 @container (max-width: 44rem) {
   .or-stat-group__list {
     grid-template-columns: repeat(var(--_cols-md, 2), minmax(0, 1fr));

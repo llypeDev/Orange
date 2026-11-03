@@ -1,19 +1,19 @@
 import { Button, Drawer, type DrawerPlacement } from '@orange/ui'
 
-const posicoes: { placement: DrawerPlacement; label: string }[] = [
-  { placement: 'left', label: 'Esquerda' },
-  { placement: 'right', label: 'Direita' },
-  { placement: 'bottom', label: 'Inferior' },
+const posicoes: { placement: DrawerPlacement; label: string; title: string }[] = [
+  { placement: 'left', label: 'Esquerda', title: 'Painel à esquerda' },
+  { placement: 'right', label: 'Direita', title: 'Painel à direita' },
+  { placement: 'bottom', label: 'Inferior', title: 'Painel inferior' },
 ]
 
 export default function Placements() {
   return (
     <>
-      {posicoes.map(({ placement, label }) => (
+      {posicoes.map(({ placement, label, title }) => (
         <Drawer
           key={placement}
           placement={placement}
-          title={`Painel à ${label.toLowerCase()}`}
+          title={title}
           trigger={<Button variant="outline">{label}</Button>}
         >
           <p style={{ margin: 0 }}>

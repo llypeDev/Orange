@@ -6,26 +6,19 @@ export default function InCards() {
       <Card variant="accent">
         <CardHeader eyebrow="Loja virtual" title="Hoje" headingLevel={4} />
         <CardBody>
-          <Stat size="lg" label="Vendas até 14h" value="R$ 9.870" delta="23%" trend="increase" help="vs. ontem" />
+          <Stat label="Vendas até 14h" value="R$ 9.870" delta="23%" trend="increase" help="vs. ontem" />
         </CardBody>
       </Card>
       <Card>
         <CardHeader eyebrow="Atendimento" title="Esta semana" headingLevel={4} />
         <CardBody>
-          <Stat
-            size="lg"
-            label="Satisfação (CSAT)"
-            value="94%"
-            delta="1 p.p."
-            trend="decrease"
-            help="meta: 92%"
-          />
+          <Stat label="Satisfação (CSAT)" value="94%" delta="1 p.p." trend="decrease" help="meta: 92%" />
         </CardBody>
       </Card>
       <Card>
         <CardHeader eyebrow="Estoque" title="Agora" headingLevel={4} />
         <CardBody>
-          <Stat size="lg" label="Produtos sem estoque" value="7" help="de 412 ativos" />
+          <Stat label="Produtos sem estoque" value="7" help="de 412 ativos" />
         </CardBody>
       </Card>
     </div>

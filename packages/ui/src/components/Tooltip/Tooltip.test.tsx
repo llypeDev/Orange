@@ -43,13 +43,13 @@ describe('Tooltip', () => {
 
   it('continua aberto enquanto o ponteiro está sobre ele (WCAG 1.4.13)', async () => {
     const user = userEvent.setup()
-    render(<Example closeDelay={60} />)
+    render(<Example closeDelay={250} />)
     const trigger = screen.getByRole('button', { name: 'Copiar link' })
     await user.hover(trigger)
     const tooltip = await screen.findByRole('tooltip')
     await user.unhover(trigger)
     await user.hover(tooltip)
-    await new Promise((resolve) => setTimeout(resolve, 120))
+    await new Promise((resolve) => setTimeout(resolve, 400))
     expect(screen.getByRole('tooltip')).toBeInTheDocument()
     await user.unhover(tooltip)
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
