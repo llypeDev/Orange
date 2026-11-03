@@ -1,0 +1,90 @@
+.or-spinner {
+  --_size: 1.5rem;
+  --_stroke: 2px;
+  --_color: var(--or-color-accent);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--_size);
+  height: var(--_size);
+  vertical-align: middle;
+  color: var(--_color);
+}
+
+.or-spinner__ring,
+.or-spinner__ring::before {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--or-radius-full);
+}
+
+/* Trilho: círculo completo em baixa opacidade da cor do arco. */
+.or-spinner__ring::before {
+  content: '';
+  border: var(--_stroke) solid currentColor;
+  opacity: 0.2;
+}
+
+/* Arco: um quarto de círculo girando. */
+.or-spinner__ring {
+  border: var(--_stroke) solid transparent;
+  border-top-color: currentColor;
+  animation: or-spin 0.75s linear infinite;
+}
+
+.or-spinner__ring::before {
+  inset: calc(var(--_stroke) * -1);
+}
+
+/* Tamanhos ----------------------------------------------------------------- */
+
+.or-spinner--sm {
+  --_size: 1rem;
+  --_stroke: 2px;
+}
+
+.or-spinner--lg {
+  --_size: 2.5rem;
+  --_stroke: 3px;
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-spinner--neutral {
+  --_color: var(--or-color-text);
+}
+
+.or-spinner--current {
+  --_color: currentColor;
+}
+
+/*
+ * Movimento reduzido: em vez de girar, o arco completo pulsa devagar — ainda
+ * comunica atividade, sem rotação contínua.
+ */
+@keyframes or-spinner-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-spinner__ring {
+    border-color: currentColor;
+    animation-name: or-spinner-pulse !important;
+    animation-duration: 2s !important;
+    animation-timing-function: ease-in-out !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-spinner {
+    --_color: CanvasText;
+  }
+}

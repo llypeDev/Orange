@@ -1,0 +1,72 @@
+/* ---------------------------------------------------------------------------
+ * Select — <select> nativo com a aparência dos controles do Orange
+ * ------------------------------------------------------------------------- */
+
+.or-select {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.or-select__control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: calc(var(--or-space-3) + 1.5rem);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.or-select__control:disabled {
+  cursor: not-allowed;
+}
+
+/* Texto do placeholder em tom secundário enquanto nada foi escolhido. */
+.or-select__control[data-placeholder-shown] {
+  color: var(--or-color-text-subtle);
+}
+
+.or-select__control[data-placeholder-shown]:disabled {
+  color: var(--or-color-text-disabled);
+}
+
+/* As opções do menu nativo usam as cores do tema. */
+.or-select__control option,
+.or-select__control optgroup {
+  background-color: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+}
+
+.or-select__control option:disabled {
+  color: var(--or-color-text-disabled);
+}
+
+.or-select__chevron {
+  position: absolute;
+  top: 0;
+  right: var(--or-space-3);
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  color: var(--or-color-text-muted);
+  pointer-events: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-select:hover:not([data-disabled]) .or-select__chevron,
+.or-select__control:focus + .or-select__chevron {
+  color: var(--or-color-text);
+}
+
+.or-select[data-disabled] .or-select__chevron {
+  color: var(--or-color-text-disabled);
+}
+
+.or-select--lg .or-select__control {
+  padding-right: calc(var(--or-space-3) + 1.75rem);
+}
+
+@media (forced-colors: active) {
+  .or-select__chevron {
+    color: ButtonText;
+  }
+}

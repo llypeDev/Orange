@@ -1,0 +1,78 @@
+/* Base compartilhada das sobreposições ancoradas. */
+
+.or-floating {
+  --_floating-from: translateY(-4px);
+
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--or-floating-available-width, calc(100vw - 16px));
+  font-family: var(--or-font-body);
+  letter-spacing: var(--or-tracking-body);
+  animation: or-floating-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-floating[hidden] {
+  display: none !important;
+}
+
+.or-floating[data-side='top'] {
+  --_floating-from: translateY(4px);
+}
+
+.or-floating[data-side='left'] {
+  --_floating-from: translateX(4px);
+}
+
+.or-floating[data-side='right'] {
+  --_floating-from: translateX(-4px);
+}
+
+@keyframes or-floating-in {
+  from {
+    opacity: 0;
+    transform: var(--_floating-from);
+  }
+}
+
+/* Seta: quadrado girado com borda nos dois lados externos. */
+.or-floating-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--_arrow-bg, var(--or-color-surface-raised));
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.or-floating-arrow[data-side='bottom'] {
+  top: -5px;
+  border-top: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-left: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='top'] {
+  bottom: -5px;
+  border-right: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-bottom: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='right'] {
+  left: -5px;
+  border-bottom: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-left: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='left'] {
+  right: -5px;
+  border-top: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-right: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+@media (forced-colors: active) {
+  .or-floating {
+    border: 1px solid CanvasText;
+  }
+  .or-floating-arrow {
+    display: none;
+  }
+}

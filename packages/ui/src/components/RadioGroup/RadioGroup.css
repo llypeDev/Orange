@@ -1,0 +1,205 @@
+/* ---------------------------------------------------------------------------
+ * RadioGroup / Radio — radios nativos invisíveis sobre um indicador desenhado.
+ * Variantes: default (lista) e card (cartões com borda).
+ * ------------------------------------------------------------------------- */
+
+.or-radio {
+  --_control: 1.5rem;
+  --_ring: 1.125rem;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-3);
+  min-width: 0;
+  cursor: pointer;
+}
+
+.or-radio__control {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--_control);
+  height: var(--_control);
+}
+
+.or-radio__input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.or-radio__indicator {
+  position: relative;
+  display: inline-block;
+  width: var(--_ring);
+  height: var(--_ring);
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-full);
+  background: var(--or-color-surface);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-radio__indicator::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--or-radius-full);
+  background: var(--or-color-accent);
+  opacity: 0;
+  transform: scale(0.2);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-radio:hover .or-radio__input:not(:disabled) + .or-radio__indicator {
+  border-color: var(--or-color-text-subtle);
+  box-shadow: 0 0 0 3px var(--or-color-accent-subtle);
+}
+
+.or-radio__input:checked + .or-radio__indicator {
+  border-color: var(--or-color-accent);
+}
+
+.or-radio__input:checked + .or-radio__indicator::after {
+  opacity: 1;
+  transform: none;
+}
+
+.or-radio__input:focus-visible + .or-radio__indicator {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-fieldset[data-invalid] .or-radio__input:not(:checked) + .or-radio__indicator {
+  border-color: var(--or-color-danger);
+}
+
+.or-radio__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+  padding-top: calc((var(--_control) - 1lh) / 2);
+}
+
+.or-radio__label {
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text);
+}
+
+.or-radio__description {
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text-subtle);
+}
+
+/* Desabilitado (prop ou fieldset desabilitado) */
+.or-radio[data-disabled],
+.or-radio:has(.or-radio__input:disabled),
+.or-radio__input:disabled {
+  cursor: not-allowed;
+}
+
+.or-radio__input:disabled + .or-radio__indicator {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+}
+
+.or-radio__input:disabled + .or-radio__indicator::after {
+  background: var(--or-color-text-disabled);
+}
+
+.or-radio[data-disabled] .or-radio__label,
+.or-radio[data-disabled] .or-radio__description,
+.or-radio:has(.or-radio__input:disabled) .or-radio__label,
+.or-radio:has(.or-radio__input:disabled) .or-radio__description {
+  color: var(--or-color-text-disabled);
+}
+
+/* Variante card --------------------------------------------------------------- */
+
+.or-radio-group--card > .or-radio-group__options {
+  gap: var(--or-space-3);
+}
+
+.or-radio-group--card > .or-radio-group__options[data-orientation='horizontal'] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.or-radio--card {
+  padding: var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-radio--card .or-radio__label {
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.or-radio--card:hover:not([data-disabled]) {
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-radio--card:hover .or-radio__input:not(:disabled) + .or-radio__indicator {
+  box-shadow: none;
+}
+
+.or-radio--card[data-checked] {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+  box-shadow: inset 0 0 0 1px var(--or-color-accent);
+}
+
+.or-radio--card:has(.or-radio__input:focus-visible) {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-radio--card .or-radio__input:focus-visible + .or-radio__indicator {
+  outline: none;
+}
+
+.or-fieldset[data-invalid] .or-radio--card:not([data-checked]) {
+  border-color: var(--or-color-danger);
+}
+
+.or-radio--card[data-disabled],
+.or-radio--card:has(.or-radio__input:disabled) {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  box-shadow: none;
+}
+
+@media (forced-colors: active) {
+  .or-radio__indicator {
+    border-color: CanvasText;
+  }
+  .or-radio__indicator::after {
+    background: Highlight;
+  }
+  .or-radio--card[data-checked] {
+    outline: 2px solid Highlight;
+  }
+}

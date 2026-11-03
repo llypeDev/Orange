@@ -1,0 +1,104 @@
+/* ---------------------------------------------------------------------------
+ * ErrorSummary — painel com borda esquerda no tom danger e links para os campos.
+ * ------------------------------------------------------------------------- */
+
+.or-error-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+  padding: var(--or-space-5) var(--or-space-6);
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-left: var(--or-border-accent) solid var(--or-color-danger);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-danger-subtle);
+  color: var(--or-color-text);
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-error-summary:focus {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-error-summary__title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-lg);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: var(--or-tracking-heading);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text);
+}
+
+.or-error-summary__icon {
+  margin-top: 0.05em;
+  color: var(--or-color-danger-text);
+}
+
+.or-error-summary__description {
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.or-error-summary__description > :first-child {
+  margin-top: 0;
+}
+
+.or-error-summary__description > :last-child {
+  margin-bottom: 0;
+}
+
+.or-error-summary__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-2);
+  margin: 0;
+  padding: 0 0 0 calc(1.25rem + var(--or-space-2));
+  list-style: none;
+}
+
+.or-error-summary__list li {
+  position: relative;
+}
+
+/* Marcador quadrado — assinatura visual do Orange. */
+.or-error-summary__list li::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: calc((1.25rem + var(--or-space-2)) * -1 + 0.4rem);
+  width: 0.375rem;
+  height: 0.375rem;
+  background: var(--or-color-danger);
+}
+
+.or-error-summary__link {
+  font-size: var(--or-text-md);
+  font-weight: var(--or-weight-medium);
+  color: var(--or-color-danger-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-error-summary__link:hover {
+  color: var(--or-color-text);
+  text-decoration-thickness: 2px;
+}
+
+.or-error-summary__link:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .or-error-summary {
+    border-left-color: CanvasText;
+  }
+}

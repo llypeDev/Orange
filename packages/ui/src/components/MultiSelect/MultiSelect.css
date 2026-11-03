@@ -1,0 +1,177 @@
+/* ---------------------------------------------------------------------------
+ * MultiSelect — combobox de seleção múltipla com chips
+ * (popup e opções em Combobox/ListboxPopup.css)
+ * ------------------------------------------------------------------------- */
+
+.or-multi-select {
+  --_chip-h: 1.75rem;
+  --_pad-y: 5px;
+  height: auto;
+  cursor: text;
+}
+
+.or-control-frame--sm.or-multi-select {
+  --_chip-h: 1.5rem;
+  --_pad-y: 3px;
+}
+
+.or-control-frame--lg.or-multi-select {
+  --_chip-h: 2.125rem;
+  --_pad-y: 6px;
+}
+
+.or-multi-select[data-disabled] {
+  cursor: not-allowed;
+}
+
+.or-multi-select__values {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1);
+  min-width: 0;
+  padding: var(--_pad-y) var(--or-space-1);
+}
+
+.or-multi-select__chips {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  gap: var(--or-space-1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-multi-select__chip {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  height: var(--_chip-h);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  line-height: 1;
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-control-frame--sm .or-multi-select__chip {
+  font-size: var(--or-text-xs);
+}
+
+.or-multi-select__chip-label {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 var(--or-space-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.or-multi-select[data-disabled] .or-multi-select__chip {
+  border-color: var(--or-color-border);
+  color: var(--or-color-text-disabled);
+}
+
+.or-multi-select__chip-remove {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: max(1.5rem, calc(var(--_chip-h) - 2px));
+  padding: 0;
+  border: 0;
+  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-multi-select__chip-remove:hover {
+  background: var(--or-color-danger-subtle);
+  color: var(--or-color-danger-text);
+}
+
+.or-multi-select__chip-remove:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-multi-select__input {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  height: var(--_chip-h);
+  padding: 0 var(--or-space-2);
+}
+
+.or-multi-select__spinner {
+  flex-shrink: 0;
+  align-self: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: var(--or-space-2);
+  border: 2px solid var(--or-color-text-subtle);
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+  animation: or-spin 0.7s linear infinite;
+}
+
+.or-multi-select__clear {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: var(--or-space-1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-multi-select__clear:hover {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-multi-select__clear:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-multi-select__toggle {
+  align-self: stretch;
+  width: calc(var(--_height) - 2px);
+  min-height: calc(var(--_height) - 2px);
+}
+
+.or-multi-select__chevron {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-multi-select[data-open] .or-multi-select__chevron {
+  transform: rotate(180deg);
+}
+
+@media (forced-colors: active) {
+  .or-multi-select__chip {
+    border-color: CanvasText;
+  }
+}

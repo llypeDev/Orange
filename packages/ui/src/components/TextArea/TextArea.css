@@ -1,0 +1,26 @@
+/* ---------------------------------------------------------------------------
+ * TextArea — usa `.or-control` (Field.css) com ajustes para várias linhas.
+ * ------------------------------------------------------------------------- */
+
+.or-text-area__control {
+  display: block;
+  scrollbar-width: thin;
+  scrollbar-color: var(--or-color-border-strong) transparent;
+}
+
+textarea.or-control--sm.or-text-area__control {
+  padding: var(--or-space-1) var(--or-space-2);
+}
+
+textarea.or-control--lg.or-text-area__control {
+  padding: var(--or-space-3) var(--or-space-4);
+}
+
+textarea.or-text-area__control--auto {
+  resize: none;
+  overflow-y: hidden;
+}
+
+.or-text-area__control:disabled {
+  resize: none;
+}

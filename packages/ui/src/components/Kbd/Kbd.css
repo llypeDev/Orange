@@ -1,0 +1,67 @@
+/* ---------------------------------------------------------------------------
+ * Kbd — teclas e atalhos
+ * ------------------------------------------------------------------------- */
+
+.or-kbd {
+  --_h: 1.5rem;
+  --_font: var(--or-text-xs);
+
+  font-family: var(--or-font-mono);
+  font-size: var(--_font);
+  vertical-align: baseline;
+}
+
+.or-kbd--sm {
+  --_h: 1.25rem;
+  --_font: var(--or-text-2xs);
+}
+
+.or-kbd--combo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.or-kbd__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--_h);
+  height: var(--_h);
+  padding: 0 0.375rem;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-bottom-width: var(--or-border-thick);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text);
+  font-family: var(--or-font-mono);
+  font-size: var(--_font);
+  font-weight: var(--or-weight-medium);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.or-kbd--sm .or-kbd__key,
+.or-kbd--sm.or-kbd__key {
+  padding: 0 0.3125rem;
+}
+
+.or-kbd__key--symbol {
+  font-family: var(--or-font-body);
+  font-size: calc(var(--_font) * 1.1);
+}
+
+.or-kbd__separator {
+  color: var(--or-color-text-subtle);
+  font-family: var(--or-font-mono);
+  font-size: var(--_font);
+}
+
+@media (forced-colors: active) {
+  .or-kbd__key {
+    border-color: CanvasText;
+  }
+}

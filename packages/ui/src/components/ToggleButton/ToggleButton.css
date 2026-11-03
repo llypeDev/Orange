@@ -1,0 +1,67 @@
+/* ---------------------------------------------------------------------------
+ * ToggleButton — botão de alternância (aria-pressed)
+ * ------------------------------------------------------------------------- */
+
+/* Pressionado: fundo, borda e barra inferior — o estado não depende só da cor. */
+.or-toggle-button.or-button[aria-pressed='true'] {
+  --_bg: var(--or-color-accent-subtle);
+  --_bg-hover: color-mix(in srgb, var(--or-color-accent) 20%, transparent);
+  --_bg-active: color-mix(in srgb, var(--or-color-accent) 28%, transparent);
+  --_fg: var(--or-color-text);
+  --_fg-hover: var(--or-color-text);
+  --_border: var(--or-color-accent);
+  --_border-hover: var(--or-color-accent-hover);
+
+  box-shadow: inset 0 calc(var(--or-border-thick) * -1) 0 var(--or-color-accent);
+}
+
+/* Ícones (startIcon e somente ícone) ganham a cor de acento quando pressionados. */
+.or-toggle-button[aria-pressed='true'] > .or-button__icon {
+  color: var(--or-color-accent-text);
+}
+
+/* Ícone de check que entra ao pressionar (sem saltos bruscos de largura). */
+.or-toggle-button--with-check .or-button__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.or-toggle-button__check {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 0;
+  margin-inline-end: 0;
+  overflow: hidden;
+  opacity: 0;
+  color: var(--or-color-accent-text);
+  transition:
+    width var(--or-duration-fast) var(--or-ease-out),
+    margin var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-toggle-button__check svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.or-toggle-button[aria-pressed='true'] .or-toggle-button__check {
+  width: 1.15em;
+  margin-inline-end: var(--or-space-2);
+  opacity: 1;
+}
+
+/* Em grupos colados, o botão pressionado fica por cima para mostrar a borda inteira. */
+.or-button-group--attached > .or-toggle-button[aria-pressed='true'] {
+  z-index: 1;
+}
+
+@media (forced-colors: active) {
+  .or-toggle-button[aria-pressed='true'] {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}

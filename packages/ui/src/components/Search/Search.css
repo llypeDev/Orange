@@ -1,0 +1,62 @@
+/* ---------------------------------------------------------------------------
+ * Search — campo de busca com lupa e botão de limpar
+ * ------------------------------------------------------------------------- */
+
+.or-search {
+  width: 100%;
+  margin: 0;
+}
+
+.or-search__frame {
+  cursor: text;
+}
+
+.or-search__icon {
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-search__frame:focus-within .or-search__icon {
+  color: var(--or-color-accent-text);
+}
+
+.or-search__frame[data-disabled] .or-search__icon {
+  color: var(--or-color-text-disabled);
+}
+
+.or-search__input {
+  appearance: none;
+  -webkit-appearance: none;
+  text-overflow: ellipsis;
+}
+
+/* Remove os adornos nativos — o Orange tem o próprio botão de limpar. */
+.or-search__input::-webkit-search-cancel-button,
+.or-search__input::-webkit-search-decoration,
+.or-search__input::-webkit-search-results-button,
+.or-search__input::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.or-search__input::-ms-clear {
+  display: none;
+}
+
+.or-search__clear {
+  border-left-color: transparent;
+}
+
+.or-search__frame:focus-within .or-search__clear {
+  border-left-color: var(--or-color-border);
+}
+
+.or-search__spinner {
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+  animation: or-spin 0.7s linear infinite;
+}

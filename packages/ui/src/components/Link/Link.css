@@ -1,0 +1,104 @@
+/*
+ * `.or-link[class]` eleva a especificidade (0,2,0) para que estilos globais de
+ * conteúdo (`.prose a`, `article p a`) não sobrescrevam cor e sublinhado.
+ */
+.or-link {
+  --_fg: var(--or-color-text);
+  --_fg-hover: var(--or-color-accent-text);
+  --_line: var(--or-color-accent);
+  --_line-hover: var(--or-color-accent);
+}
+
+.or-link[class] {
+  color: var(--_fg);
+  text-decoration-line: underline;
+  text-decoration-color: var(--_line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+  cursor: pointer;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-link[class]:hover {
+  color: var(--_fg-hover);
+  text-decoration-color: var(--_line-hover);
+  text-decoration-thickness: 2px;
+}
+
+.or-link[class]:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+  text-decoration-color: var(--_line-hover);
+}
+
+.or-link[class]:active {
+  color: var(--or-color-accent-active);
+}
+
+.or-link__icon {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.15em;
+  vertical-align: -0.1em;
+  flex-shrink: 0;
+  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-link:hover .or-link__icon--external {
+  transform: translate(1px, -1px);
+}
+
+/* Variantes ---------------------------------------------------------------- */
+
+.or-link--subtle {
+  --_fg: var(--or-color-text-muted);
+  --_fg-hover: var(--or-color-text);
+  --_line: var(--or-color-border-strong);
+  --_line-hover: var(--or-color-text-subtle);
+}
+
+.or-link--standalone[class] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  text-decoration-line: none;
+}
+
+.or-link--standalone[class]:hover,
+.or-link--standalone[class]:focus-visible {
+  text-decoration-line: none;
+}
+
+.or-link--standalone .or-link__label {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-link--standalone:hover .or-link__label {
+  text-decoration-color: var(--or-color-accent);
+}
+
+.or-link--standalone .or-link__icon {
+  margin-left: 0;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.or-link--standalone:hover .or-link__icon--arrow {
+  transform: translateX(4px);
+}
+
+@media (forced-colors: active) {
+  .or-link {
+    text-decoration-color: LinkText;
+  }
+}

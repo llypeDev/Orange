@@ -1,0 +1,182 @@
+/* ---------------------------------------------------------------------------
+ * SegmentedControl — escolha exclusiva entre 2 a 5 opções (radiogroup)
+ * ------------------------------------------------------------------------- */
+
+.or-segmented-control {
+  --_height: var(--or-control-md);
+  --_pad-x: 1rem;
+  --_font-size: var(--or-text-sm);
+
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--or-space-2);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.or-segmented-control--sm {
+  --_height: var(--or-control-sm);
+  --_pad-x: 0.75rem;
+  --_font-size: var(--or-text-xs);
+}
+
+.or-segmented-control--lg {
+  --_height: var(--or-control-lg);
+  --_pad-x: 1.25rem;
+  --_font-size: var(--or-text-md);
+}
+
+.or-segmented-control--full-width {
+  display: flex;
+  width: 100%;
+}
+
+.or-segmented-control__label {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.005em;
+  color: var(--or-color-text);
+}
+
+.or-segmented-control__description {
+  margin: calc(var(--or-space-1) * -1) 0 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+}
+
+/* Trilho -------------------------------------------------------------------- */
+
+.or-segmented-control__track {
+  position: relative;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-self: flex-start;
+  max-width: 100%;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+}
+
+.or-segmented-control--full-width .or-segmented-control__track {
+  display: grid;
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Indicador que desliza até a opção selecionada: fundo + barra laranja. */
+.or-segmented-control__indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--or-color-surface-active);
+  box-shadow: inset 0 calc(var(--or-border-thick) * -1) 0 var(--or-color-accent);
+  pointer-events: none;
+}
+
+.or-segmented-control__track[data-animate] .or-segmented-control__indicator {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-snap),
+    width var(--or-duration-medium) var(--or-ease-snap);
+}
+
+/* Opções -------------------------------------------------------------------- */
+
+.or-segmented-control__option {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: calc(var(--_height) - var(--or-border-thin) * 2);
+  padding: 0 var(--_pad-x);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--_font-size);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-segmented-control__option:not([data-checked], [data-disabled]):hover {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-segmented-control__option[data-checked] {
+  color: var(--or-color-text);
+}
+
+/* Antes da primeira medição (ou sem JS de layout), a própria opção mostra a seleção. */
+.or-segmented-control__track:not([data-ready]) .or-segmented-control__option[data-checked] {
+  background: var(--or-color-surface-active);
+  box-shadow: inset 0 calc(var(--or-border-thick) * -1) 0 var(--or-color-accent);
+}
+
+.or-segmented-control__option:has(.or-segmented-control__input:focus-visible) {
+  z-index: 2;
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-segmented-control__option[data-disabled] {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.or-segmented-control--disabled .or-segmented-control__track {
+  opacity: 0.42;
+}
+
+.or-segmented-control__content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-width: 0;
+}
+
+.or-segmented-control__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.or-segmented-control__icon {
+  flex-shrink: 0;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.or-segmented-control--icon-only .or-segmented-control__option {
+  min-width: calc(var(--_height) - var(--or-border-thin) * 2);
+  padding: 0 var(--or-space-2);
+}
+
+.or-segmented-control--icon-only .or-segmented-control__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (forced-colors: active) {
+  .or-segmented-control__track {
+    border-color: ButtonText;
+  }
+
+  .or-segmented-control__indicator {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .or-segmented-control__option[data-checked] {
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}

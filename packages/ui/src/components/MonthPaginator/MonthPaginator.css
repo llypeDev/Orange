@@ -1,0 +1,93 @@
+/* ---------------------------------------------------------------------------
+ * MonthPaginator — navegação entre meses
+ * ------------------------------------------------------------------------- */
+
+.or-month-paginator {
+  --_height: var(--or-control-md);
+  --_font-size: var(--or-text-md);
+  display: inline-flex;
+  align-items: stretch;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+}
+
+.or-month-paginator--sm {
+  --_height: var(--or-control-sm);
+  --_font-size: var(--or-text-sm);
+}
+
+.or-month-paginator--lg {
+  --_height: var(--or-control-lg);
+  --_font-size: var(--or-text-lg);
+}
+
+.or-month-paginator__label {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 11em;
+  padding: 0 var(--or-space-4);
+  border-inline: var(--or-border-thin) solid var(--or-color-border);
+  font-family: var(--or-font-display);
+  font-size: var(--_font-size);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text);
+}
+
+.or-month-paginator__button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--_height);
+  height: var(--_height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-month-paginator__button:hover:not([aria-disabled='true']) {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-accent-text);
+}
+
+.or-month-paginator__button:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+}
+
+.or-month-paginator__button:focus-visible {
+  position: relative;
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-month-paginator__button[aria-disabled='true'] {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.or-month-paginator[data-disabled] {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+}
+
+.or-month-paginator[data-disabled] .or-month-paginator__label {
+  color: var(--or-color-text-disabled);
+}
+
+@media (forced-colors: active) {
+  .or-month-paginator__button[aria-disabled='true'] {
+    color: GrayText;
+  }
+}

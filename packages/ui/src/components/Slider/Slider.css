@@ -1,0 +1,287 @@
+/* ---------------------------------------------------------------------------
+ * Slider — <input type="range"> nativo com trilho reto e polegar quadrado
+ * ------------------------------------------------------------------------- */
+
+.or-slider {
+  --_thumb: 1.125rem;
+  --_track: 4px;
+  --_h: 1.75rem;
+  --_start: 0%;
+  --_end: 0%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  width: 100%;
+  min-width: 8rem;
+}
+
+.or-slider--sm {
+  --_thumb: 0.875rem;
+  --_track: 2px;
+  --_h: 1.5rem;
+}
+
+.or-slider--lg {
+  --_thumb: 1.375rem;
+  --_track: 6px;
+  --_h: 2rem;
+}
+
+.or-slider__control {
+  position: relative;
+  height: var(--_h);
+}
+
+/* Trilho recuado meio polegar de cada lado: as porcentagens batem com o centro do polegar. */
+.or-slider__rail {
+  position: absolute;
+  top: 0;
+  right: calc(var(--_thumb) / 2);
+  bottom: 0;
+  left: calc(var(--_thumb) / 2);
+}
+
+.or-slider--range .or-slider__rail {
+  cursor: pointer;
+  touch-action: none;
+}
+
+.or-slider__track,
+.or-slider__fill {
+  position: absolute;
+  top: 50%;
+  height: var(--_track);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.or-slider__track {
+  left: calc(var(--_thumb) / -2);
+  right: calc(var(--_thumb) / -2);
+  background: var(--or-color-border-strong);
+}
+
+.or-slider__fill {
+  left: var(--_start);
+  width: calc(var(--_end) - var(--_start));
+  background: var(--or-color-accent);
+}
+
+.or-slider__tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: calc(var(--_track) + 6px);
+  background: var(--or-color-border-strong);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.or-slider__tick[data-active] {
+  background: var(--or-color-bg);
+}
+
+/* Input nativo ------------------------------------------------------------- */
+
+.or-slider__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.or-slider__input:focus-visible {
+  outline: none;
+}
+
+.or-slider--range .or-slider__input {
+  pointer-events: none;
+}
+
+.or-slider__input[data-top] {
+  z-index: 1;
+}
+
+.or-slider__input::-webkit-slider-runnable-track {
+  height: var(--_h);
+  border: 0;
+  background: transparent;
+}
+
+.or-slider__input::-moz-range-track {
+  height: var(--_h);
+  border: 0;
+  background: transparent;
+}
+
+.or-slider__input::-webkit-slider-thumb {
+  width: var(--_thumb);
+  height: var(--_thumb);
+  margin-top: calc((var(--_h) - var(--_thumb)) / 2);
+  border: 2px solid var(--or-color-accent);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  box-shadow: 0 0 0 0 transparent;
+  cursor: grab;
+  pointer-events: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  border: 2px solid var(--or-color-accent);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  cursor: grab;
+  pointer-events: auto;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__input:hover::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--or-color-accent-subtle);
+}
+
+.or-slider__input:hover::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--or-color-accent-subtle);
+}
+
+.or-slider__input:active::-webkit-slider-thumb {
+  background: var(--or-color-accent);
+  cursor: grabbing;
+}
+
+.or-slider__input:active::-moz-range-thumb {
+  background: var(--or-color-accent);
+  cursor: grabbing;
+}
+
+/* Foco visível desenhado no polegar (o input inteiro é invisível). */
+.or-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 2px var(--or-color-bg),
+    0 0 0 4px var(--or-color-focus);
+}
+
+.or-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 2px var(--or-color-bg),
+    0 0 0 4px var(--or-color-focus);
+}
+
+/* Estados ------------------------------------------------------------------ */
+
+.or-slider[data-invalid] .or-slider__fill {
+  background: var(--or-color-danger);
+}
+
+.or-slider[data-invalid] .or-slider__input::-webkit-slider-thumb {
+  border-color: var(--or-color-danger);
+}
+
+.or-slider[data-invalid] .or-slider__input::-moz-range-thumb {
+  border-color: var(--or-color-danger);
+}
+
+.or-slider[data-disabled] .or-slider__fill {
+  background: var(--or-color-text-disabled);
+}
+
+.or-slider[data-disabled] .or-slider__track {
+  background: var(--or-color-border);
+}
+
+.or-slider[data-disabled] .or-slider__rail,
+.or-slider__input:disabled {
+  cursor: not-allowed;
+}
+
+.or-slider__input:disabled::-webkit-slider-thumb {
+  border-color: var(--or-color-text-disabled);
+  background: var(--or-color-bg-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.or-slider__input:disabled::-moz-range-thumb {
+  border-color: var(--or-color-text-disabled);
+  background: var(--or-color-bg-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Rótulos das marcas -------------------------------------------------------- */
+
+.or-slider__marks {
+  position: relative;
+  height: 1.25rem;
+  margin: 0 calc(var(--_thumb) / 2);
+  font-size: var(--or-text-xs);
+  color: var(--or-color-text-subtle);
+}
+
+.or-slider__mark-label {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__mark-label:hover {
+  color: var(--or-color-text);
+}
+
+.or-slider__mark-label[data-edge='start'] {
+  transform: translateX(calc(var(--_thumb) / -2));
+}
+
+.or-slider__mark-label[data-edge='end'] {
+  transform: translateX(calc(-100% + var(--_thumb) / 2));
+}
+
+.or-slider[data-disabled] .or-slider__mark-label {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Valor exibido ao lado do rótulo. */
+.or-slider__output {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text);
+}
+
+.or-field[data-disabled] .or-slider__output {
+  color: var(--or-color-text-disabled);
+}
+
+@media (forced-colors: active) {
+  .or-slider__track {
+    background: GrayText;
+  }
+  .or-slider__fill {
+    background: Highlight;
+  }
+  .or-slider__input::-webkit-slider-thumb {
+    border-color: ButtonText;
+    background: ButtonFace;
+  }
+}

@@ -1,0 +1,119 @@
+/* ---------------------------------------------------------------------------
+ * Stat / StatGroup — métricas
+ * ------------------------------------------------------------------------- */
+
+.or-stat {
+  --_value: var(--or-text-3xl);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+}
+
+.or-stat--sm {
+  --_value: var(--or-text-2xl);
+}
+
+.or-stat--lg {
+  --_value: clamp(2.5rem, 4.5vw, 3.25rem);
+}
+
+.or-stat__label {
+  max-width: 28ch;
+  font-size: var(--or-text-sm);
+  line-height: 1.45;
+  color: var(--or-color-text-muted);
+}
+
+.or-stat__value {
+  margin: var(--or-space-3) 0 0;
+  font-family: var(--or-font-display);
+  font-size: var(--_value);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--or-color-text);
+  overflow-wrap: anywhere;
+}
+
+.or-stat--sm .or-stat__value {
+  margin-top: var(--or-space-2);
+  letter-spacing: -0.03em;
+}
+
+.or-stat__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1) var(--or-space-2);
+  margin: var(--or-space-3) 0 0;
+  font-size: var(--or-text-sm);
+}
+
+.or-stat__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--or-color-text-subtle);
+}
+
+.or-stat__delta--positive {
+  color: var(--or-color-success-text);
+}
+
+.or-stat__delta--negative {
+  color: var(--or-color-danger-text);
+}
+
+.or-stat__help {
+  color: var(--or-color-text-subtle);
+}
+
+/* Grupo em grade com divisórias de 1px ------------------------------------- */
+
+.or-stat-group {
+  container-type: inline-size;
+}
+
+.or-stat-group__list {
+  display: grid;
+  grid-template-columns: repeat(var(--_cols, 4), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Cada célula desenha as bordas superior e esquerda e se desloca 1px; o
+   overflow do contêiner esconde as que coincidem com a borda externa. */
+.or-stat-group__list > .or-stat {
+  margin: -1px 0 0 -1px;
+  padding: var(--or-space-7) var(--or-space-6);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  border-left: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-stat-group__list > .or-stat--sm {
+  padding: var(--or-space-5);
+}
+
+@container (max-width: 44rem) {
+  .or-stat-group__list {
+    grid-template-columns: repeat(var(--_cols-md, 2), minmax(0, 1fr));
+  }
+}
+
+@container (max-width: 26rem) {
+  .or-stat-group__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .or-stat-group__list > .or-stat {
+    padding: var(--or-space-5);
+  }
+}

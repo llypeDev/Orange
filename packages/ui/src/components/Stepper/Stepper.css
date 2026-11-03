@@ -1,0 +1,238 @@
+.or-stepper {
+  --_marker: 2rem;
+  --_gap: var(--or-space-3);
+  --_line: var(--or-color-border-strong);
+
+  /* inline-size containment ignora a largura do conteúdo: ocupa a linha toda. */
+  container-type: inline-size;
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--or-font-body);
+}
+
+.or-stepper__step {
+  position: relative;
+  min-width: 0;
+}
+
+/* Gatilho (div ou botão) ------------------------------------------------ */
+
+.or-stepper__trigger {
+  display: flex;
+  gap: var(--_gap);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+button.or-stepper__trigger {
+  cursor: pointer;
+}
+
+button.or-stepper__trigger:hover .or-stepper__label {
+  text-decoration: underline;
+  text-decoration-color: var(--or-color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
+button.or-stepper__trigger:hover .or-stepper__marker {
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+}
+
+button.or-stepper__trigger:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 4px;
+}
+
+/* Marcador quadrado ------------------------------------------------------ */
+
+.or-stepper__marker {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--_marker);
+  height: var(--_marker);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text-subtle);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-stepper__step[data-status='current'] .or-stepper__marker {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+}
+
+.or-stepper__step[data-status='complete'] .or-stepper__marker {
+  border-color: var(--or-color-accent-border);
+  background: var(--or-color-accent-subtle);
+  color: var(--or-color-accent-text);
+}
+
+.or-stepper__step[data-status='error'] .or-stepper__marker {
+  border-color: var(--or-color-danger);
+  background: var(--or-color-danger-subtle);
+  color: var(--or-color-danger-text);
+}
+
+/* Texto -------------------------------------------------------------------- */
+
+.or-stepper__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  padding-top: 0.3rem;
+}
+
+.or-stepper__label {
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: var(--or-leading-tight);
+}
+
+.or-stepper__step[data-status='current'] .or-stepper__label,
+.or-stepper__step[data-status='complete'] .or-stepper__label {
+  color: var(--or-color-text);
+}
+
+.or-stepper__step[data-status='current'] .or-stepper__label {
+  font-weight: var(--or-weight-bold);
+}
+
+.or-stepper__step[data-status='error'] .or-stepper__label {
+  color: var(--or-color-danger-text);
+}
+
+.or-stepper__description {
+  color: var(--or-color-text-subtle);
+  font-size: var(--or-text-xs);
+  line-height: var(--or-leading-tight);
+}
+
+/* Conectores --------------------------------------------------------------- */
+
+.or-stepper__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  background: var(--_line);
+}
+
+.or-stepper__step[data-status='complete']:not(:last-child)::after {
+  background: var(--or-color-accent);
+}
+
+/* Horizontal --------------------------------------------------------------- */
+
+.or-stepper--horizontal {
+  align-items: flex-start;
+}
+
+.or-stepper--horizontal > .or-stepper__step {
+  flex: 1 1 0;
+  padding-right: var(--or-space-3);
+}
+
+.or-stepper--horizontal > .or-stepper__step:last-child {
+  flex: 0 1 auto;
+  padding-right: 0;
+}
+
+.or-stepper--horizontal .or-stepper__trigger {
+  flex-direction: column;
+  gap: var(--or-space-2);
+}
+
+.or-stepper--horizontal .or-stepper__step:not(:last-child)::after {
+  top: calc(var(--_marker) / 2 - 1px);
+  right: var(--or-space-3);
+  left: calc(var(--_marker) + var(--or-space-3));
+  height: 2px;
+}
+
+.or-stepper--horizontal .or-stepper__text {
+  padding-top: 0;
+  padding-right: var(--or-space-2);
+}
+
+/* Contêiner estreito: só o rótulo da etapa atual fica visível. */
+@container (max-width: 34rem) {
+  .or-stepper--horizontal .or-stepper__description {
+    display: none;
+  }
+
+  .or-stepper--horizontal .or-stepper__step:not([aria-current='step']) .or-stepper__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .or-stepper--horizontal > .or-stepper__step[aria-current='step'] {
+    flex-grow: 2;
+  }
+}
+
+/* Vertical ----------------------------------------------------------------- */
+
+.or-stepper--vertical {
+  flex-direction: column;
+}
+
+.or-stepper--vertical > .or-stepper__step {
+  padding-bottom: var(--or-space-6);
+}
+
+.or-stepper--vertical > .or-stepper__step:last-child {
+  padding-bottom: 0;
+}
+
+.or-stepper--vertical .or-stepper__step:not(:last-child)::after {
+  top: calc(var(--_marker) + var(--or-space-1));
+  bottom: var(--or-space-1);
+  left: calc(var(--_marker) / 2 - 1px);
+  width: 2px;
+}
+
+.or-stepper__content {
+  margin-top: var(--or-space-3);
+  padding-left: calc(var(--_marker) + var(--_gap));
+}
+
+@media (forced-colors: active) {
+  .or-stepper__marker {
+    border-color: CanvasText;
+  }
+
+  .or-stepper__step[data-status='current'] .or-stepper__marker {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

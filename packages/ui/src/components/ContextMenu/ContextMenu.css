@@ -1,0 +1,7 @@
+/* O painel usa os estilos de `.or-menu` (Dropdown). Menus de contexto surgem no
+   ponteiro, então a entrada é mais curta e sem deslocamento. */
+.or-context-menu[data-side] {
+  --_floating-from: none;
+
+  animation-duration: var(--or-duration-instant);
+}

@@ -1,0 +1,53 @@
+/* ---------------------------------------------------------------------------
+ * TimeField — campo de horário nativo
+ * ------------------------------------------------------------------------- */
+
+.or-time-field__frame {
+  max-width: 12rem;
+}
+
+.or-time-field__icon {
+  cursor: pointer;
+}
+
+.or-time-field__frame[data-disabled] .or-time-field__icon,
+.or-time-field__frame[data-readonly] .or-time-field__icon {
+  cursor: default;
+}
+
+.or-time-field__frame:focus-within .or-time-field__icon {
+  color: var(--or-color-accent-text);
+}
+
+.or-time-field__frame[data-readonly] {
+  background: var(--or-color-bg-subtle);
+}
+
+.or-time-field__input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  cursor: text;
+}
+
+/* O ícone de relógio à esquerda substitui o indicador nativo (WebKit/Blink). */
+.or-time-field__input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.or-time-field__input::-webkit-datetime-edit {
+  padding: 0;
+}
+
+/* Segmento em edição (hora, minuto, AM/PM) destacado em laranja. */
+.or-time-field__input::-webkit-datetime-edit-hour-field:focus,
+.or-time-field__input::-webkit-datetime-edit-minute-field:focus,
+.or-time-field__input::-webkit-datetime-edit-second-field:focus,
+.or-time-field__input::-webkit-datetime-edit-ampm-field:focus {
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+  outline: none;
+}
+
+.or-time-field__input:disabled::-webkit-datetime-edit {
+  color: var(--or-color-text-disabled);
+}

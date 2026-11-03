@@ -1,0 +1,208 @@
+/* ---------------------------------------------------------------------------
+ * Card
+ * ------------------------------------------------------------------------- */
+
+.or-card {
+  --_pad: var(--or-space-6);
+  --_gap: var(--or-space-4);
+  --_title: var(--or-text-xl);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+  min-width: 0;
+  margin: 0;
+  padding-block: var(--_pad);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text);
+  transition:
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-card--sm {
+  --_pad: var(--or-space-4);
+  --_gap: var(--or-space-3);
+  --_title: var(--or-text-lg);
+}
+
+.or-card--lg {
+  --_pad: var(--or-space-8);
+  --_gap: var(--or-space-5);
+  --_title: var(--or-text-2xl);
+}
+
+/* Variantes ---------------------------------------------------------------- */
+
+.or-card--raised {
+  border-color: var(--or-color-border);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-raised);
+}
+
+.or-card--accent {
+  border-top: var(--or-border-thick) solid var(--or-color-accent);
+}
+
+/* Partes ------------------------------------------------------------------- */
+
+.or-card__header,
+.or-card__body,
+.or-card__footer {
+  padding-inline: var(--_pad);
+}
+
+.or-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--or-space-4);
+}
+
+.or-card__heading {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.or-card__eyebrow {
+  margin: 0 0 var(--or-space-2);
+}
+
+.or-card__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--_title);
+  font-weight: var(--or-weight-semibold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: -0.025em;
+  color: var(--or-color-text);
+  text-wrap: balance;
+}
+
+.or-card__description {
+  margin: var(--or-space-2) 0 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+}
+
+.or-card__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-1);
+  margin: calc(var(--or-space-2) * -1) calc(var(--or-space-2) * -1) 0 0;
+}
+
+.or-card__body {
+  flex: 1;
+  color: var(--or-color-text-muted);
+  line-height: 1.6;
+}
+
+.or-card__body > :first-child {
+  margin-top: 0;
+}
+
+.or-card__body > :last-child {
+  margin-bottom: 0;
+}
+
+.or-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-3);
+  margin-top: auto;
+}
+
+.or-card__footer--divider {
+  padding-top: var(--_pad);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-card__media {
+  position: relative;
+  overflow: hidden;
+  background: var(--or-color-bg-subtle);
+}
+
+.or-card__media:first-child {
+  margin-top: calc(var(--_pad) * -1);
+}
+
+.or-card__media:last-child {
+  margin-bottom: calc(var(--_pad) * -1);
+}
+
+.or-card__media > img,
+.or-card__media > video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* Link do título ----------------------------------------------------------- */
+
+.or-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.or-card__link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--or-color-accent);
+  text-underline-offset: 0.2em;
+}
+
+/* Cartão interativo (link esticado) ---------------------------------------- */
+
+.or-card--interactive:hover {
+  border-color: var(--or-color-text-subtle);
+  box-shadow: var(--or-shadow-hover-accent);
+}
+
+.or-card--interactive.or-card--accent:hover {
+  border-top-color: var(--or-color-accent);
+}
+
+.or-card--interactive .or-card__link::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+}
+
+.or-card--interactive:hover .or-card__link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--or-color-accent);
+  text-underline-offset: 0.2em;
+}
+
+.or-card--interactive .or-card__link:focus-visible {
+  outline: none;
+}
+
+.or-card--interactive .or-card__link:focus-visible::after {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Outros elementos interativos ficam acima do link esticado. */
+.or-card--interactive :is(a, button, input, select, textarea, label, summary, [tabindex]):not(.or-card__link) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (forced-colors: active) {
+  .or-card {
+    border-color: CanvasText;
+  }
+}

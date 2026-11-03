@@ -1,0 +1,137 @@
+/* ---------------------------------------------------------------------------
+ * Fieldset — agrupamento nativo. Aparências:
+ *   --section  seções de formulário (legenda de título, espaço entre campos)
+ *   --group    grupos de opções (CheckboxGroup, RadioGroup; legenda = rótulo)
+ * ------------------------------------------------------------------------- */
+
+.or-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.or-fieldset__legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  color: var(--or-color-text);
+}
+
+.or-fieldset__required {
+  margin-left: 0.2em;
+  color: var(--or-color-accent-text);
+}
+
+.or-fieldset__optional {
+  margin-left: 0.4em;
+  font-family: var(--or-font-body);
+  font-weight: var(--or-weight-regular);
+  letter-spacing: 0;
+  color: var(--or-color-text-subtle);
+}
+
+.or-fieldset__description {
+  margin: 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+}
+
+.or-fieldset__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  margin: var(--or-space-3) 0 0;
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  color: var(--or-color-danger-text);
+}
+
+.or-fieldset__error .or-icon {
+  margin-top: 0.15em;
+}
+
+/* Seção ---------------------------------------------------------------------- */
+
+.or-fieldset--section > .or-fieldset__legend {
+  margin-bottom: var(--or-space-1);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-lg);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: var(--or-tracking-heading);
+  line-height: var(--or-leading-tight);
+}
+
+.or-fieldset--section > .or-fieldset__content {
+  --_gap: var(--or-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+}
+
+.or-fieldset--section
+  > :is(.or-fieldset__legend:not(.or-visually-hidden), .or-fieldset__description)
+  ~ .or-fieldset__content {
+  margin-top: var(--or-space-5);
+}
+
+.or-fieldset--gap-sm > .or-fieldset__content {
+  --_gap: var(--or-space-3);
+}
+
+.or-fieldset--gap-lg > .or-fieldset__content {
+  --_gap: var(--or-space-8);
+}
+
+.or-fieldset--section[data-invalid] > .or-fieldset__content {
+  padding-left: var(--or-space-4);
+  border-left: var(--or-border-accent) solid var(--or-color-danger);
+}
+
+/* Grupo de opções -------------------------------------------------------------- */
+
+.or-fieldset--group > .or-fieldset__legend {
+  margin-bottom: var(--or-space-2);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.005em;
+}
+
+.or-fieldset--group > .or-fieldset__description {
+  margin-top: calc(var(--or-space-1) * -1);
+}
+
+.or-fieldset--group > .or-fieldset__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+}
+
+.or-fieldset--group
+  > :is(.or-fieldset__legend:not(.or-visually-hidden), .or-fieldset__description)
+  ~ .or-fieldset__content {
+  margin-top: var(--or-space-3);
+}
+
+.or-fieldset--group > .or-fieldset__content[data-orientation='horizontal'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--or-space-3) var(--or-space-6);
+}
+
+/* Desabilitado (nativo: `fieldset:disabled` desabilita os descendentes) ------- */
+
+.or-fieldset:disabled .or-fieldset__legend,
+.or-fieldset:disabled .or-fieldset__description,
+.or-fieldset:disabled .or-field__label,
+.or-fieldset:disabled .or-field__description {
+  color: var(--or-color-text-disabled);
+}
+
+.or-fieldset:disabled .or-control-frame {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}

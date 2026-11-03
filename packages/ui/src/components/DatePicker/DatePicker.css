@@ -1,0 +1,36 @@
+/* ---------------------------------------------------------------------------
+ * DatePicker — campo de data com calendário em diálogo
+ * ------------------------------------------------------------------------- */
+
+.or-date-picker {
+  max-width: 100%;
+}
+
+.or-date-picker__frame {
+  max-width: 16rem;
+}
+
+.or-date-picker__input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.or-date-picker__button[aria-expanded='true'] {
+  background: var(--or-color-surface-active);
+  color: var(--or-color-accent-text);
+}
+
+.or-date-picker__dialog {
+  z-index: var(--or-z-popover);
+  padding: var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-top: var(--or-border-thick) solid var(--or-color-accent);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-overlay);
+  animation: or-pop-in var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-date-picker__dialog:focus {
+  outline: none;
+}

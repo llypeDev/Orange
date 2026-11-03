@@ -1,0 +1,182 @@
+/* ---------------------------------------------------------------------------
+ * Checkbox — input nativo invisível sobre uma caixa quadrada desenhada.
+ * ------------------------------------------------------------------------- */
+
+.or-checkbox {
+  --_control: 1.5rem;
+  --_box: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+}
+
+.or-checkbox__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-3);
+}
+
+.or-checkbox__control {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--_control);
+  height: var(--_control);
+}
+
+/* O input real cobre a área de 24×24px e recebe cliques e foco. */
+.or-checkbox__input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.or-checkbox__box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_box);
+  height: var(--_box);
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text-on-accent);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-instant) var(--or-ease-out);
+}
+
+.or-checkbox__box .or-icon {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-checkbox:hover .or-checkbox__input:not(:disabled) + .or-checkbox__box {
+  border-color: var(--or-color-text-subtle);
+  box-shadow: 0 0 0 3px var(--or-color-accent-subtle);
+}
+
+.or-checkbox__input:checked + .or-checkbox__box,
+.or-checkbox__input:indeterminate + .or-checkbox__box {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+}
+
+.or-checkbox:hover .or-checkbox__input:checked:not(:disabled) + .or-checkbox__box,
+.or-checkbox:hover .or-checkbox__input:indeterminate:not(:disabled) + .or-checkbox__box {
+  border-color: var(--or-color-accent-hover);
+  background: var(--or-color-accent-hover);
+}
+
+.or-checkbox__input:checked:not(:indeterminate) + .or-checkbox__box .or-checkbox__check,
+.or-checkbox__input:indeterminate + .or-checkbox__box .or-checkbox__dash {
+  opacity: 1;
+  transform: none;
+}
+
+.or-checkbox__input:focus-visible + .or-checkbox__box {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-checkbox__input:active:not(:disabled) + .or-checkbox__box {
+  transform: scale(0.94);
+}
+
+/* Inválido */
+.or-checkbox[data-invalid] .or-checkbox__box,
+.or-fieldset[data-invalid] .or-checkbox__box {
+  border-color: var(--or-color-danger);
+}
+
+/* Rótulo, descrição e erro --------------------------------------------------- */
+
+.or-checkbox__label {
+  min-width: 0;
+  padding-top: calc((var(--_control) - 1lh) / 2);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text);
+  cursor: pointer;
+}
+
+.or-checkbox__required {
+  margin-left: 0.2em;
+  color: var(--or-color-accent-text);
+}
+
+.or-checkbox__description,
+.or-checkbox__error {
+  margin: 0;
+  padding-left: calc(var(--_control) + var(--or-space-3));
+  font-size: var(--or-text-sm);
+}
+
+.or-checkbox__description {
+  margin-top: calc(var(--or-space-1) * -1);
+  color: var(--or-color-text-subtle);
+}
+
+.or-checkbox__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  font-weight: var(--or-weight-medium);
+  color: var(--or-color-danger-text);
+}
+
+.or-checkbox__error .or-icon {
+  margin-top: 0.15em;
+}
+
+/* Desabilitado (prop ou fieldset desabilitado) -------------------------------- */
+
+.or-checkbox__input:disabled {
+  cursor: not-allowed;
+}
+
+.or-checkbox__input:disabled + .or-checkbox__box {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-disabled);
+}
+
+.or-checkbox__input:disabled:checked + .or-checkbox__box,
+.or-checkbox__input:disabled:indeterminate + .or-checkbox__box {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-border-strong);
+}
+
+.or-checkbox[data-disabled] .or-checkbox__label,
+.or-checkbox:has(.or-checkbox__input:disabled) .or-checkbox__label,
+.or-checkbox[data-disabled] .or-checkbox__description,
+.or-checkbox:has(.or-checkbox__input:disabled) .or-checkbox__description {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .or-checkbox__box {
+    border-color: CanvasText;
+  }
+  .or-checkbox__input:checked + .or-checkbox__box,
+  .or-checkbox__input:indeterminate + .or-checkbox__box {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

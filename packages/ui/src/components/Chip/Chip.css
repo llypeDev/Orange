@@ -1,0 +1,132 @@
+/* ---------------------------------------------------------------------------
+ * Chip — filtro selecionável
+ * ------------------------------------------------------------------------- */
+
+.or-chip {
+  --_h: 2rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: var(--_h);
+  margin: 0;
+  padding: 0 0.75rem;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  line-height: 1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-chip--sm {
+  --_h: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: var(--or-text-xs);
+}
+
+.or-chip:hover:not(:disabled) {
+  border-color: var(--or-color-text-subtle);
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-chip:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-chip[aria-pressed='true'] {
+  border-color: var(--or-color-accent-border);
+  background: var(--or-color-accent-subtle);
+  color: var(--or-color-text);
+}
+
+.or-chip[aria-pressed='true']:hover:not(:disabled) {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+}
+
+.or-chip:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.or-chip__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-inline-start: -0.125rem;
+}
+
+.or-chip__icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.or-chip__icon--check {
+  color: var(--or-color-accent-text);
+  animation: or-chip-check var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-chip__count {
+  margin-inline-start: 0.125rem;
+  padding-inline-start: 0.5rem;
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
+  color: var(--or-color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.or-chip[aria-pressed='true'] .or-chip__count {
+  border-inline-start-color: var(--or-color-accent-border);
+  color: var(--or-color-text-muted);
+}
+
+@keyframes or-chip-check {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Grupo -------------------------------------------------------------------- */
+
+.or-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2);
+}
+
+.or-chip-group__label {
+  margin-inline-end: var(--or-space-2);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
+@media (forced-colors: active) {
+  .or-chip {
+    border-color: ButtonText;
+  }
+  .or-chip[aria-pressed='true'] {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+  }
+}

@@ -1,0 +1,111 @@
+.or-meter {
+  --_fill: var(--or-color-accent);
+  --_height: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-2);
+  width: 100%;
+  min-width: 0;
+  font-family: var(--or-font-body);
+}
+
+.or-meter__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--or-space-3);
+}
+
+.or-meter__label {
+  min-width: 0;
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text);
+}
+
+.or-meter__value {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text);
+}
+
+.or-meter__track {
+  position: relative;
+  width: 100%;
+  height: var(--_height);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-border);
+}
+
+.or-meter__fill {
+  height: 100%;
+  background: var(--_fill);
+  transition:
+    width var(--or-duration-medium) var(--or-ease-out),
+    background-color var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Marcas dos limites low/high: traço que ultrapassa a barra. */
+.or-meter__threshold {
+  position: absolute;
+  top: -0.1875rem;
+  bottom: -0.1875rem;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--or-color-text-subtle);
+}
+
+.or-meter__description {
+  font-size: var(--or-text-xs);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text-subtle);
+}
+
+/* Tamanhos ----------------------------------------------------------------- */
+
+.or-meter--sm {
+  --_height: 0.25rem;
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-meter--neutral {
+  --_fill: var(--or-color-text);
+}
+
+.or-meter--info {
+  --_fill: var(--or-color-info);
+}
+
+.or-meter--success {
+  --_fill: var(--or-color-success);
+}
+
+.or-meter--warning {
+  --_fill: var(--or-color-warning);
+}
+
+.or-meter--danger {
+  --_fill: var(--or-color-danger);
+}
+
+@media (forced-colors: active) {
+  .or-meter__track {
+    outline: 1px solid CanvasText;
+  }
+
+  .or-meter__fill {
+    background: Highlight;
+  }
+
+  .or-meter__threshold {
+    background: CanvasText;
+  }
+}

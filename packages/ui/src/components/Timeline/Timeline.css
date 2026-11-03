@@ -1,0 +1,216 @@
+.or-timeline {
+  --_marker-col: 1.5rem;
+  --_first-line: 1.25rem;
+  --_line-gap: 0.25rem;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--or-color-text);
+}
+
+/* Item: grade [marcador | data / corpo] ------------------------------------ */
+
+.or-timeline__item {
+  --_tone: var(--or-color-border-control);
+  --_size: 0.625rem;
+  --_next-size: 0.625rem;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--_marker-col) minmax(0, 1fr);
+  grid-template-areas:
+    'marker date'
+    'marker body';
+  column-gap: var(--or-space-4);
+  padding-bottom: var(--or-space-6);
+}
+
+.or-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+/* Linha vertical de 1px entre os marcadores (com respiro ao redor deles). */
+.or-timeline__item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--_first-line) / 2 + var(--_size) / 2 + var(--_line-gap));
+  bottom: calc(var(--_first-line) / -2 + var(--_next-size) / 2 + var(--_line-gap));
+  left: calc(var(--_marker-col) / 2 - 0.5px);
+  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+}
+
+.or-timeline__item:has(+ .or-timeline__item--current) {
+  --_next-size: 0.875rem;
+}
+
+.or-timeline__item:has(+ .or-timeline__item--with-icon) {
+  --_next-size: 1.5rem;
+}
+
+/* Marcador quadrado -------------------------------------------------------- */
+
+.or-timeline__marker {
+  grid-area: marker;
+  justify-self: center;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--_size);
+  height: var(--_size);
+  margin-top: calc((var(--_first-line) - var(--_size)) / 2);
+  border: var(--or-border-thin) solid var(--_tone);
+  background: var(--_tone);
+  color: var(--or-color-text);
+}
+
+.or-timeline__item--neutral .or-timeline__marker {
+  background: transparent;
+}
+
+.or-timeline__item--accent { --_tone: var(--or-color-accent); }
+.or-timeline__item--success { --_tone: var(--or-color-success); }
+.or-timeline__item--warning { --_tone: var(--or-color-warning); }
+.or-timeline__item--danger { --_tone: var(--or-color-danger); }
+.or-timeline__item--info { --_tone: var(--or-color-info); }
+
+/* Item atual: marcador maior, preenchido e com anel */
+.or-timeline__item--current {
+  --_size: 0.875rem;
+}
+
+.or-timeline__item--current.or-timeline__item--neutral {
+  --_tone: var(--or-color-accent);
+}
+
+.or-timeline__item--current .or-timeline__marker {
+  background: var(--_tone);
+  outline: var(--or-border-thin) solid var(--_tone);
+  outline-offset: 2px;
+}
+
+.or-timeline__item--current .or-timeline__title {
+  font-weight: var(--or-weight-bold);
+}
+
+/* Com ícone: marcador de 24px com o ícone no tom */
+.or-timeline__item--with-icon {
+  --_size: 1.5rem;
+}
+
+.or-timeline__item--with-icon .or-timeline__marker,
+.or-timeline__item--with-icon.or-timeline__item--neutral .or-timeline__marker {
+  background: var(--or-color-surface);
+  color: var(--_tone);
+}
+
+.or-timeline__item--with-icon.or-timeline__item--neutral .or-timeline__marker {
+  color: var(--or-color-text-muted);
+}
+
+.or-timeline__item--with-icon.or-timeline__item--current .or-timeline__marker {
+  background: var(--_tone);
+  color: var(--or-color-text-on-accent);
+}
+
+.or-timeline__marker svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Texto -------------------------------------------------------------------- */
+
+.or-timeline__date {
+  grid-area: date;
+  display: block;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--_first-line);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
+.or-timeline__body {
+  grid-area: body;
+  min-width: 0;
+}
+
+.or-timeline__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-md);
+  font-weight: var(--or-weight-semibold);
+  line-height: var(--_first-line);
+  letter-spacing: -0.01em;
+  color: var(--or-color-text);
+}
+
+.or-timeline__description {
+  margin-top: var(--or-space-1);
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text-muted);
+}
+
+.or-timeline__description > :first-child {
+  margin-top: 0;
+}
+
+.or-timeline__description > :last-child {
+  margin-bottom: 0;
+}
+
+/* Alternada: [data | marcador | corpo], invertendo nos itens pares --------- */
+
+/* O contêiner de consulta precisa de largura definida (a contenção de tamanho
+   zera a largura intrínseca dentro de contêineres flex). */
+.or-timeline--alternate {
+  container-type: inline-size;
+  width: 100%;
+}
+
+@container (min-width: 36rem) {
+  .or-timeline--alternate > .or-timeline__item {
+    grid-template-columns: minmax(0, 1fr) var(--_marker-col) minmax(0, 1fr);
+    grid-template-areas: 'date marker body';
+  }
+
+  .or-timeline--alternate > .or-timeline__item::before {
+    left: calc(50% - 0.5px);
+  }
+
+  .or-timeline--alternate > .or-timeline__item > .or-timeline__date {
+    text-align: right;
+  }
+
+  .or-timeline--alternate > .or-timeline__item:nth-child(even) {
+    grid-template-areas: 'body marker date';
+  }
+
+  .or-timeline--alternate > .or-timeline__item:nth-child(even) > .or-timeline__date {
+    text-align: left;
+  }
+
+  .or-timeline--alternate > .or-timeline__item:nth-child(even) > .or-timeline__body {
+    text-align: right;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-timeline__marker {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: CanvasText;
+  }
+  .or-timeline__item--neutral .or-timeline__marker {
+    background: Canvas;
+  }
+  .or-timeline__item:not(:last-child)::before {
+    border-color: CanvasText;
+  }
+}

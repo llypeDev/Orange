@@ -1,0 +1,52 @@
+/* ---------------------------------------------------------------------------
+ * CopyButton — copia um valor para a área de transferência
+ * ------------------------------------------------------------------------- */
+
+/* Os dois ícones ocupam a mesma célula e trocam com um leve giro. */
+.or-copy-button__icons {
+  display: inline-grid;
+}
+
+.or-copy-button__icons > .or-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-copy-button__icon--check {
+  opacity: 0;
+  transform: scale(0.6) rotate(-45deg);
+  color: var(--or-color-success-text);
+}
+
+.or-copy-button[data-copied] .or-copy-button__icon--copy {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.or-copy-button[data-copied] .or-copy-button__icon--check {
+  opacity: 1;
+  transform: none;
+}
+
+/* Filled variants: o check usa a cor do texto do botão para manter o contraste. */
+.or-copy-button:is(.or-button--primary, .or-button--secondary, .or-button--danger)
+  .or-copy-button__icon--check {
+  color: currentColor;
+}
+
+/* Os dois rótulos ocupam a mesma célula: a largura não muda ao copiar. */
+.or-copy-button__labels {
+  display: inline-grid;
+}
+
+.or-copy-button__text {
+  grid-area: 1 / 1;
+  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-copy-button__text[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+}

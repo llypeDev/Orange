@@ -21,6 +21,9 @@ export const iconPaths = {
     </>
   ),
   'alert-triangle': <path d="M12 3.5l9.5 17h-19zM12 10v4.5M12 17.25v.5" />,
+  'align-center': <path d="M4 6h16M7 10h10M4 14h16M7 18h10" />,
+  'align-left': <path d="M4 6h16M4 10h10M4 14h16M4 18h10" />,
+  'align-right': <path d="M4 6h16M10 10h10M4 14h16M10 18h10" />,
   'arrow-down': <path d="M12 4.5v15M5.5 13l6.5 6.5 6.5-6.5" />,
   'arrow-left': <path d="M19.5 12h-15M11 5.5L4.5 12l6.5 6.5" />,
   'arrow-right': <path d="M4.5 12h15M13 5.5l6.5 6.5-6.5 6.5" />,
@@ -28,6 +31,7 @@ export const iconPaths = {
   'arrow-up-right': <path d="M6.5 17.5l11-11M8 6.5h9.5V16" />,
   'arrows-up-down': <path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4" />,
   bell: <path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15zM10 20.5h4" />,
+  bold: <path d="M7 4.5h6a3.75 3.75 0 0 1 0 7.5H7zM7 12h7a3.75 3.75 0 0 1 0 7.5H7z" />,
   book: <path d="M5 4.5h10.5a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17.5a3 3 0 0 1 3-3h10.5" />,
   calendar: <path d="M3.5 5.5h17v15h-17zM3.5 10h17M8 3v4.5M16 3v4.5" />,
   'chart-bar': <path d="M4 20.5h16M6.5 20.5V12M11 20.5V5M15.5 20.5v-6M20 20.5V9" />,
@@ -72,6 +76,7 @@ export const iconPaths = {
   file: <path d="M6 3h8.5L19 7.5V21H6zM14 3v5h5" />,
   filter: <path d="M3.5 5h17l-6.5 8v6.5l-4-2V13z" />,
   folder: <path d="M3.5 5.5h6l2 2.5h9v11.5h-17z" />,
+  'folder-open': <path d="M3.5 19.5v-14h6l2 2.5h7.5v3M3.5 19.5l3-8.5h15l-3 8.5z" />,
   globe: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -104,6 +109,7 @@ export const iconPaths = {
       <path d="M12 11v5.5M12 7.25v.5" />
     </>
   ),
+  italic: <path d="M10 4.5h8M6 19.5h8M14 4.5l-4 15" />,
   keyboard: <path d="M2.5 6h19v12h-19zM6 9.5h.01M10 9.5h.01M14 9.5h.01M18 9.5h.01M7.5 14.5h9" />,
   layers: <path d="M12 3.5l9 4.5-9 4.5L3 8zM3 12l9 4.5 9-4.5M3 16l9 4.5 9-4.5" />,
   layout: <path d="M3.5 4h17v16h-17zM3.5 9h17M9.5 9v11" />,
@@ -116,12 +122,14 @@ export const iconPaths = {
   mail: <path d="M3 5.5h18v13H3zM3 6l9 7 9-7" />,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   minus: <path d="M5 12h14" />,
+  monitor: <path d="M3 4h18v12.5H3zM8 20.5h8M12 16.5v4" />,
   moon: <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />,
   'more-horizontal': <path d="M5.5 12h.01M12 12h.01M18.5 12h.01" strokeWidth="3" />,
   'more-vertical': <path d="M12 5.5v.01M12 12v.01M12 18.5v.01" strokeWidth="3" />,
   pause: <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />,
   play: <path d="M7 4.5l12 7.5-12 7.5z" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  redo: <path d="M19.5 9.5h-10a5 5 0 0 0 0 10H15M15.5 5.5l4 4-4 4" />,
   refresh: <path d="M20 4.5v5h-5M4 19.5v-5h5M19.1 9.5A7.5 7.5 0 0 0 5.6 7.6M4.9 14.5a7.5 7.5 0 0 0 13.5 1.9" />,
   rocket: (
     <path d="M12.5 15.5l-4-4c1.5-4.5 4.5-7.5 11-8-.5 6.5-3.5 9.5-7 12zM8.5 11.5L5 11l3-3.5h4M12.5 15.5l.5 3.5 3.5-3v-4M7.5 16.5c-1.5.5-2.5 2-3 4 2-.5 3.5-1.5 4-3" />
@@ -152,6 +160,8 @@ export const iconPaths = {
   terminal: <path d="M3.5 4.5h17v15h-17zM7 9l3 3-3 3M12.5 15H17" />,
   trash: <path d="M4 6.5h16M9 6.5V3.5h6v3M6 6.5l1 14h10l1-14M10 10.5v6M14 10.5v6" />,
   type: <path d="M5 7V4.5h14V7M12 4.5v15M9 19.5h6" />,
+  underline: <path d="M7 4v7a5 5 0 0 0 10 0V4M5 20.5h14" />,
+  undo: <path d="M4.5 9.5h10a5 5 0 0 1 0 10H9M8.5 5.5l-4 4 4 4" />,
   upload: <path d="M12 15V4M7 9l5-5 5 5M4 15.5V20h16v-4.5" />,
   user: (
     <>

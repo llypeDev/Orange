@@ -1,0 +1,24 @@
+import { Fieldset, RadioGroup, Switch, TextField } from '@orange/ui'
+
+export default function Sections() {
+  return (
+    <div style={{ display: 'grid', gap: 40, width: '100%', maxWidth: 520 }}>
+      <Fieldset legend="Dados da equipe" gap="sm">
+        <TextField label="Nome da equipe" defaultValue="Design de produto" />
+        <TextField label="Identificador" prefix="orange.app/" defaultValue="design" />
+      </Fieldset>
+      <Fieldset legend="Privacidade" gap="lg">
+        <RadioGroup
+          label="Quem pode ver os projetos?"
+          defaultValue="equipe"
+          options={[
+            { value: 'equipe', label: 'Somente a equipe' },
+            { value: 'org', label: 'Toda a organização' },
+            { value: 'publico', label: 'Qualquer pessoa com o link' },
+          ]}
+        />
+        <Switch label="Permitir convites de pessoas de fora" />
+      </Fieldset>
+    </div>
+  )
+}
