@@ -65,7 +65,7 @@ describe('Search', () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
     const onSearch = vi.fn()
-    render(<Search label="Buscar" debounce={150} onChange={onChange} onSearch={onSearch} />)
+    render(<Search label="Buscar" debounce={300} onChange={onChange} onSearch={onSearch} />)
     const input = screen.getByRole('searchbox')
     await user.type(input, 'lam')
     expect(onChange).not.toHaveBeenCalled()

@@ -211,7 +211,11 @@ export function ListboxOptionItem({
         <span className="or-combobox-option__label">
           <HighlightMatch text={option.label} query={query} />
         </span>
-        {option.description && <span className="or-combobox-option__description">{option.description}</span>}
+        {option.description && (
+          <span className="or-combobox-option__description">
+            <HighlightMatch text={option.description} query={query} />
+          </span>
+        )}
       </span>
       {!multiple && selected && <Icon name="check" size="sm" className="or-combobox-option__check" />}
     </li>

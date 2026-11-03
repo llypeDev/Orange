@@ -21,23 +21,14 @@
   list-style: none;
 }
 
+.or-tree__node {
+  margin: 0;
+  padding: 0;
+}
+
+/* Item (a linha é o próprio treeitem) -------------------------------------- */
+
 .or-tree__item {
-  outline: none;
-}
-
-/* O foco é desenhado na linha, não no <li> inteiro (que inclui os filhos). */
-.or-tree__item:focus-visible {
-  outline: none;
-}
-
-.or-tree__item:focus-visible > .or-tree__row {
-  outline: 2px solid var(--or-color-focus);
-  outline-offset: -2px;
-}
-
-/* Linha -------------------------------------------------------------------- */
-
-.or-tree__row {
   position: relative;
   display: flex;
   align-items: center;
@@ -50,8 +41,17 @@
   transition: background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
+.or-tree__item:focus {
+  outline: none;
+}
+
+.or-tree__item:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
 /* Guias de indentação: uma linha de 1px alinhada ao chevron de cada ancestral. */
-.or-tree__row::before {
+.or-tree__item::before {
   content: '';
   position: absolute;
   top: 0;
@@ -70,7 +70,7 @@
   pointer-events: none;
 }
 
-.or-tree__row:hover {
+.or-tree__item:hover {
   background: var(--or-color-surface-hover);
 }
 
@@ -88,11 +88,11 @@
   transition: transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-tree__item[aria-expanded='true'] > .or-tree__row .or-tree__toggle svg {
+.or-tree__item[aria-expanded='true'] .or-tree__toggle svg {
   transform: rotate(90deg);
 }
 
-.or-tree__row:hover .or-tree__toggle {
+.or-tree__item:hover .or-tree__toggle {
   color: var(--or-color-text);
 }
 
@@ -113,21 +113,21 @@
 
 /* Seleção ------------------------------------------------------------------ */
 
-.or-tree__item[aria-selected='true'] > .or-tree__row {
+.or-tree__item[aria-selected='true'] {
   background: var(--or-color-accent-subtle);
   box-shadow: inset var(--or-border-thick) 0 0 var(--or-color-accent);
 }
 
-.or-tree__item[aria-selected='true'] > .or-tree__row .or-tree__label {
+.or-tree__item[aria-selected='true'] .or-tree__label {
   font-weight: var(--or-weight-medium);
 }
 
-.or-tree__item[aria-selected='true'] > .or-tree__row .or-tree__icon {
+.or-tree__item[aria-selected='true'] .or-tree__icon {
   color: var(--or-color-accent-text);
 }
 
 /* Na seleção múltipla, a caixa de marcação reforça o estado (além da cor). */
-.or-tree--select-multiple .or-tree__item[aria-selected='true'] > .or-tree__row {
+.or-tree--select-multiple .or-tree__item[aria-selected='true'] {
   box-shadow: none;
 }
 
@@ -142,29 +142,32 @@
   color: var(--or-color-text-on-accent);
 }
 
-.or-tree__item[aria-selected='true'] > .or-tree__row .or-tree__checkbox {
+.or-tree__item[aria-selected='true'] .or-tree__checkbox {
   border-color: var(--or-color-accent);
   background: var(--or-color-accent);
 }
 
 /* Desabilitado ------------------------------------------------------------- */
 
-.or-tree__item--disabled > .or-tree__row {
+.or-tree__item--disabled {
   cursor: not-allowed;
+}
+
+.or-tree__item--disabled > * {
   opacity: 0.45;
 }
 
-.or-tree__item--disabled > .or-tree__row:hover {
+.or-tree__item--disabled:hover {
   background: transparent;
 }
 
 @media (forced-colors: active) {
-  .or-tree__item[aria-selected='true'] > .or-tree__row {
+  .or-tree__item[aria-selected='true'] {
     forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
   }
-  .or-tree__item[aria-selected='true'] > .or-tree__row * {
+  .or-tree__item[aria-selected='true'] * {
     color: HighlightText;
   }
 }

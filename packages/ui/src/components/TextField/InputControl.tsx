@@ -85,6 +85,8 @@ export const InputControl = forwardRef<HTMLInputElement, InputControlProps>(func
 
   return (
     <>
+      {/* O mousedown só amplia a área de clique do input (que já é focável por teclado). */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className={cx('or-control-frame', `or-control-frame--${size}`, 'or-input-frame', frameClassName)}
         data-invalid={isInvalid || undefined}

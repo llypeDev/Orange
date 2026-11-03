@@ -157,6 +157,15 @@ describe('Combobox', () => {
     expect(onChange).toHaveBeenLastCalledWith('sal', cities[4])
   })
 
+  it('apagar todo o texto e sair do campo limpa o valor', async () => {
+    const { user, input, onChange } = setup({ defaultValue: 'rj' })
+    await user.clear(input)
+    expect(onChange).not.toHaveBeenCalled()
+    await user.tab()
+    expect(onChange).toHaveBeenCalledWith(null, null)
+    expect(input).toHaveValue('')
+  })
+
   it('funciona controlado e avisa a digitação com onInputChange', async () => {
     const user = userEvent.setup()
     const onInputChange = vi.fn()

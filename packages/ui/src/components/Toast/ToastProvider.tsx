@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
-  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react'
 import { useReducedMotion } from '../../hooks'
@@ -421,13 +420,25 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
 
   const close = () => onClose(id, itemRef.current)
 
-  const onKeyDown = (event: ReactKeyboardEvent<HTMLLIElement>) => {
-    if (event.key !== 'Escape' || state === 'closed') return
-    // impede que diálogos abertos por baixo também fechem
-    event.preventDefault()
-    event.stopPropagation()
-    close()
+  // Escape fecha o toast que contém o foco. Listener nativo no item: o
+  // stopPropagation impede que diálogos abertos por baixo (que escutam no
+  // document) também fechem.
+  const escapeRef = useRef<() => void>(() => {})
+  escapeRef.current = () => {
+    if (state !== 'closed') close()
   }
+  useEffect(() => {
+    const item = itemRef.current
+    if (!item) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      event.preventDefault()
+      event.stopPropagation()
+      escapeRef.current()
+    }
+    item.addEventListener('keydown', onKeyDown)
+    return () => item.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   return (
     <li
@@ -436,7 +447,6 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
       data-toast-id={id}
       data-state={state}
       aria-hidden={state === 'closed' || undefined}
-      onKeyDown={onKeyDown}
     >
       <Toast
         tone={tone}

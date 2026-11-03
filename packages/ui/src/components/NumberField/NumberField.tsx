@@ -81,9 +81,9 @@ function createParser(locale: string, percent: boolean) {
     /* locale inválido: usa o padrão en */
   }
   return (text: string): number | null => {
-    let s = text.replace(/[\s  ]/g, '').replace(/[−‒–]/g, '-')
+    let s = text.replace(/[\s\u00a0\u202f]/g, '').replace(/[\u2212\u2012\u2013]/g, '-')
     if (s === '') return null
-    const isSpaceGroup = /\s/.test(group) || group === ' ' || group === ' '
+    const isSpaceGroup = /\s/.test(group) || group === '\u00a0' || group === '\u202f'
     if (!isSpaceGroup && !s.includes(decimal)) {
       // "1.5" em pt-BR: um único separador de milhar sem 3 dígitos depois → decimal.
       const pieces = s.split(group)

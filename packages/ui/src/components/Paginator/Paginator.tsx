@@ -161,8 +161,9 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
     disabled?: boolean
     current?: boolean
     className: string
+    edge?: boolean
   }) => {
-    const { key, target, label, icon, text, disabled, current, className: itemClass } = opts
+    const { key, target, label, icon, text, disabled, current, className: itemClass, edge } = opts
     // Páginas: o número é visível e o nome completo ("Página 3") vem de texto
     // oculto. Botões só com ícone usam aria-label.
     const content =
@@ -202,7 +203,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
       )
     }
     return (
-      <li key={key} className="or-paginator__item">
+      <li key={key} className={cx('or-paginator__item', edge && 'or-paginator__item--edge')}>
         {control}
       </li>
     )
@@ -220,6 +221,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
           icon: 'chevrons-left',
           disabled: isFirst,
           className: 'or-paginator__button--nav',
+          edge: true,
         })
       : null,
     prev: renderControl({
@@ -246,6 +248,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
           icon: 'chevrons-right',
           disabled: isLast,
           className: 'or-paginator__button--nav',
+          edge: true,
         })
       : null,
   }

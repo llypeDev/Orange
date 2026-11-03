@@ -6,6 +6,7 @@ const artigos = [
   'Alterar a forma de pagamento',
   'Cancelar a assinatura',
   'Trocar o e-mail de acesso',
+  'Redefinir a senha',
   'Configurar a autenticação em dois fatores',
   'Exportar notas fiscais',
   'Adicionar pessoas à equipe',

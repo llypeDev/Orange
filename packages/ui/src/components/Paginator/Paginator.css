@@ -1,7 +1,10 @@
 .or-paginator {
   --_size: var(--or-control-md);
 
+  /* Responde à largura disponível (container query); por isso ocupa a linha toda. */
+  container-type: inline-size;
   display: flex;
+  width: 100%;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
@@ -153,6 +156,26 @@
   font-weight: var(--or-weight-medium);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+/* Contêiner estreito: botões de 32px, sem primeira/última (anterior/próximo continuam). */
+@container (max-width: 30rem) {
+  .or-paginator__list {
+    --_size: var(--or-control-sm);
+    gap: 0;
+  }
+
+  .or-paginator__item--edge {
+    display: none;
+  }
+
+  .or-paginator__ellipsis {
+    min-width: 1.25rem;
+  }
+
+  .or-paginator__info {
+    gap: var(--or-space-2) var(--or-space-4);
+  }
 }
 
 @media (forced-colors: active) {

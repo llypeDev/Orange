@@ -170,7 +170,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
       if (!el) return
       setFocusedId(id)
       el.focus({ preventScroll: true })
-      el.querySelector(':scope > .or-tree__row')?.scrollIntoView({ block: 'nearest' })
+      el.scrollIntoView({ block: 'nearest' })
     },
     [nodes],
   )
@@ -345,6 +345,11 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
     return <Icon name={isParent(item) ? (open ? 'folder-open' : 'folder') : 'file'} size="sm" />
   }
 
+  /*
+   * Estrutura do exemplo "Navigation Treeview" do APG: o <li> é apresentacional,
+   * a linha é o `treeitem` e o grupo de filhos (irmão da linha) é associado por
+   * `aria-owns`. Assim o nome do item vem só da sua linha, sem o texto dos filhos.
+   */
   const renderItems = (list: TreeViewItem[], level: number): ReactNode =>
     list.map((item, index) => {
       const info = nodes.get(item.id)!
@@ -352,28 +357,26 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
       const open = parent && expandedSet.has(item.id)
       const isSelected = selectedSet.has(item.id)
       const icon = renderIcon(item, open)
-      const labelId = `${info.domId}-label`
+      const groupId = `${info.domId}-group`
+      const showGroup = open && item.children !== undefined && item.children.length > 0
       return (
-        <li
-          key={item.id}
-          id={info.domId}
-          role="treeitem"
-          className={cx('or-tree__item', item.disabled && 'or-tree__item--disabled')}
-          aria-level={level}
-          aria-setsize={list.length}
-          aria-posinset={index + 1}
-          aria-expanded={parent ? open : undefined}
-          aria-selected={
-            selectionMode === 'multiple' ? isSelected : selectionMode === 'single' && isSelected ? true : undefined
-          }
-          aria-disabled={item.disabled || undefined}
-          aria-labelledby={labelId}
-          tabIndex={item.id === tabbableId ? 0 : -1}
-          data-tree-id={item.id}
-        >
+        <li key={item.id} role="none" className="or-tree__node">
           <div
-            className="or-tree__row"
+            id={info.domId}
+            role="treeitem"
+            className={cx('or-tree__item', item.disabled && 'or-tree__item--disabled')}
             style={{ '--_level': level } as CSSProperties}
+            aria-level={level}
+            aria-setsize={list.length}
+            aria-posinset={index + 1}
+            aria-expanded={parent ? open : undefined}
+            aria-owns={showGroup ? groupId : undefined}
+            aria-selected={
+              selectionMode === 'multiple' ? isSelected : selectionMode === 'single' && isSelected ? true : undefined
+            }
+            aria-disabled={item.disabled || undefined}
+            tabIndex={item.id === tabbableId ? 0 : -1}
+            data-tree-id={item.id}
             onClick={(event) => handleRowClick(event, item)}
           >
             <span className="or-tree__toggle" aria-hidden="true">
@@ -389,13 +392,11 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
                 {icon}
               </span>
             )}
-            <span className="or-tree__label" id={labelId}>
-              {item.label}
-            </span>
+            <span className="or-tree__label">{item.label}</span>
           </div>
-          {open && item.children && item.children.length > 0 && (
-            <ul role="group" className="or-tree__group">
-              {renderItems(item.children, level + 1)}
+          {showGroup && (
+            <ul id={groupId} role="group" className="or-tree__group">
+              {renderItems(item.children!, level + 1)}
             </ul>
           )}
         </li>

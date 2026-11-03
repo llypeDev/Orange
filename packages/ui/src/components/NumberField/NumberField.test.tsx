@@ -6,7 +6,7 @@ import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { NumberField } from './NumberField'
 
-const nbsp = ' '
+const nbsp = '\u00a0'
 
 describe('NumberField', () => {
   it('renderiza um spinbutton com rótulo e atributos aria-value*', () => {

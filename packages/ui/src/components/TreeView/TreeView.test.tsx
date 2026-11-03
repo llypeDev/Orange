@@ -46,7 +46,11 @@ describe('TreeView', () => {
     const components = item('components')
     expect(components).toHaveAttribute('aria-level', '2')
     expect(components).toHaveAttribute('aria-expanded', 'false')
-    expect(components.parentElement).toHaveAttribute('role', 'group')
+    // o grupo de filhos é associado ao item pai por aria-owns (padrão APG)
+    const group = components.closest('[role="group"]')!
+    expect(group).not.toBeNull()
+    expect(src).toHaveAttribute('aria-owns', group.id)
+    expect(components.parentElement).toHaveAttribute('role', 'none')
     // folha não tem aria-expanded
     expect(item('index.ts')).not.toHaveAttribute('aria-expanded')
     // filhos de itens recolhidos não são renderizados
