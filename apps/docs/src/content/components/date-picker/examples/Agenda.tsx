@@ -1,4 +1,4 @@
-import { Calendar, Text } from '@orange/ui'
+import { Calendar, Text, useLocale } from '@orange/ui'
 import { useState } from 'react'
 
 const hoje = new Date()
@@ -15,6 +15,7 @@ const eventos: Record<string, string[]> = {
 }
 
 export default function Agenda() {
+  const { locale } = useLocale()
   const [dia, setDia] = useState<Date | null>(new Date(ano, mes, 12))
   const doDia = dia ? (eventos[dia.toDateString()] ?? []) : []
 
@@ -23,7 +24,7 @@ export default function Agenda() {
       <Calendar value={dia} onChange={setDia} weekStartsOn={1} showTodayButton />
       <div style={{ minWidth: 220 }}>
         <p className="or-eyebrow">
-          {dia?.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+          {dia?.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' })}
         </p>
         {doDia.length > 0 ? (
           <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>

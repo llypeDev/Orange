@@ -108,8 +108,8 @@
 }
 
 .or-multi-select__input {
-  flex: 1 1 6rem;
-  min-width: 6rem;
+  flex: 1 1 3rem;
+  min-width: 3rem;
   height: var(--_chip-h);
   padding: 0 var(--or-space-2);
 }

@@ -1,12 +1,4 @@
-import {
-  Bullets,
-  Code,
-  ComponentPage,
-  Example,
-  PropsTable,
-  Section,
-  WcagList,
-} from '../../../kit'
+import { Bullets, Code, ComponentPage, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import Goals from './examples/Goals'
 import GoalsCode from './examples/Goals?raw'
@@ -35,12 +27,14 @@ export default function ProgressCirclePage() {
             {
               pt: (
                 <>
-                  Dê um <Code>label</Code> específico ("Enviando contrato.pdf"). Sem ele, o nome acessível é o genérico "Carregando…".
+                  Dê um <Code>label</Code> específico ("Enviando contrato.pdf"). Sem ele, o nome
+                  acessível é o genérico "Carregando…".
                 </>
               ),
               en: (
                 <>
-                  Give it a specific <Code>label</Code> ("Uploading contract.pdf"). Without it, the accessible name is the generic "Loading…".
+                  Give it a specific <Code>label</Code> ("Uploading contract.pdf"). Without it, the
+                  accessible name is the generic "Loading…".
                 </>
               ),
             },
@@ -93,15 +87,88 @@ export default function ProgressCirclePage() {
       <Section title="Props" id="props">
         <PropsTable
           rows={[
-            { name: 'value', type: 'number | null', description: { pt: 'Valor atual. Sem valor, fica indeterminado.', en: 'Current value. Without it, it is indeterminate.' } },
-            { name: 'min', type: 'number', default: '0', description: { pt: 'Valor mínimo.', en: 'Minimum value.' } },
-            { name: 'max', type: 'number', default: '100', description: { pt: 'Valor máximo.', en: 'Maximum value.' } },
-            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Diâmetro: 24, 48 ou 80px.', en: 'Diameter: 24, 48 or 80px.' } },
-            { name: 'tone', type: "'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'danger'", default: "'accent'", description: { pt: 'Cor do arco.', en: 'Arc color.' } },
-            { name: 'showValue', type: 'boolean', default: 'false', description: { pt: 'Valor no centro (md e lg).', en: 'Value in the center (md and lg).' } },
-            { name: 'formatValue', type: '(value, { min, max, percent }) => string', description: { pt: 'Formata o valor exibido e o aria-valuetext.', en: 'Formats the shown value and aria-valuetext.' } },
-            { name: 'label', type: 'string', default: "t('loading')", description: { pt: <>Nome acessível (<Code>aria-label</Code>).</>, en: <>Accessible name (<Code>aria-label</Code>).</> } },
-            { name: '...rest', type: 'HTMLAttributes<HTMLDivElement>', description: { pt: <>Atributos nativos; <Code>aria-labelledby</Code> substitui o label.</>, en: <>Native attributes; <Code>aria-labelledby</Code> replaces the label.</> } },
+            {
+              name: 'value',
+              type: 'number | null',
+              description: {
+                pt: 'Valor atual. Sem valor, fica indeterminado.',
+                en: 'Current value. Without it, it is indeterminate.',
+              },
+            },
+            {
+              name: 'min',
+              type: 'number',
+              default: '0',
+              description: { pt: 'Valor mínimo.', en: 'Minimum value.' },
+            },
+            {
+              name: 'max',
+              type: 'number',
+              default: '100',
+              description: { pt: 'Valor máximo.', en: 'Maximum value.' },
+            },
+            {
+              name: 'size',
+              type: "'sm' | 'md' | 'lg'",
+              default: "'md'",
+              description: { pt: 'Diâmetro: 24, 48 ou 80px.', en: 'Diameter: 24, 48 or 80px.' },
+            },
+            {
+              name: 'tone',
+              type: "'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'danger'",
+              default: "'accent'",
+              description: { pt: 'Cor do arco.', en: 'Arc color.' },
+            },
+            {
+              name: 'showValue',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Valor no centro (md e lg).',
+                en: 'Value in the center (md and lg).',
+              },
+            },
+            {
+              name: 'formatValue',
+              type: '(value, { min, max, percent }) => string',
+              description: {
+                pt: 'Formata o valor exibido e o aria-valuetext.',
+                en: 'Formats the shown value and aria-valuetext.',
+              },
+            },
+            {
+              name: 'label',
+              type: 'string',
+              default: "t('loading')",
+              description: {
+                pt: (
+                  <>
+                    Nome acessível (<Code>aria-label</Code>).
+                  </>
+                ),
+                en: (
+                  <>
+                    Accessible name (<Code>aria-label</Code>).
+                  </>
+                ),
+              },
+            },
+            {
+              name: '...rest',
+              type: 'HTMLAttributes<HTMLDivElement>',
+              description: {
+                pt: (
+                  <>
+                    Atributos nativos; <Code>aria-labelledby</Code> substitui o label.
+                  </>
+                ),
+                en: (
+                  <>
+                    Native attributes; <Code>aria-labelledby</Code> replaces the label.
+                  </>
+                ),
+              },
+            },
           ]}
         />
       </Section>
@@ -111,21 +178,46 @@ export default function ProgressCirclePage() {
           <T
             pt={
               <>
-                A raiz é um <Code>role="progressbar"</Code> com nome, <Code>aria-valuenow</Code>/<Code>min</Code>/<Code>max</Code> e <Code>aria-valuetext</Code>. O SVG e o valor central são <Code>aria-hidden</Code>. Não recebe foco. Para anunciar a conclusão, use um Toast ou uma região <Code>role="status"</Code>.
+                A raiz é um <Code>role="progressbar"</Code> com nome, <Code>aria-valuenow</Code>/
+                <Code>min</Code>/<Code>max</Code> e <Code>aria-valuetext</Code>. O SVG e o valor
+                central são <Code>aria-hidden</Code>. Não recebe foco. Para anunciar a conclusão,
+                use um Toast ou uma região <Code>role="status"</Code>.
               </>
             }
             en={
               <>
-                The root is a <Code>role="progressbar"</Code> with a name, <Code>aria-valuenow</Code>/<Code>min</Code>/<Code>max</Code> and <Code>aria-valuetext</Code>. The SVG and central value are <Code>aria-hidden</Code>. It is not focusable. To announce completion, use a Toast or a <Code>role="status"</Code> region.
+                The root is a <Code>role="progressbar"</Code> with a name,{' '}
+                <Code>aria-valuenow</Code>/<Code>min</Code>/<Code>max</Code> and{' '}
+                <Code>aria-valuetext</Code>. The SVG and central value are <Code>aria-hidden</Code>.
+                It is not focusable. To announce completion, use a Toast or a{' '}
+                <Code>role="status"</Code> region.
               </>
             }
           />
         </p>
         <WcagList
           items={[
-            { criterion: '1.4.11', description: { pt: 'Arco com contraste mínimo de 3:1 sobre a trilha.', en: 'Arc with at least 3:1 contrast against the track.' } },
-            { criterion: '2.3.3', description: { pt: 'Rotação substituída por pulsação com movimento reduzido.', en: 'Rotation replaced by a pulse with reduced motion.' } },
-            { criterion: '4.1.2', description: { pt: 'Papel, nome e valores expostos via ARIA.', en: 'Role, name and values exposed via ARIA.' } },
+            {
+              criterion: '1.4.11',
+              description: {
+                pt: 'Arco com contraste mínimo de 3:1 sobre a trilha.',
+                en: 'Arc with at least 3:1 contrast against the track.',
+              },
+            },
+            {
+              criterion: '2.3.3',
+              description: {
+                pt: 'Rotação substituída por pulsação com movimento reduzido.',
+                en: 'Rotation replaced by a pulse with reduced motion.',
+              },
+            },
+            {
+              criterion: '4.1.2',
+              description: {
+                pt: 'Papel, nome e valores expostos via ARIA.',
+                en: 'Role, name and values exposed via ARIA.',
+              },
+            },
           ]}
         />
       </Section>

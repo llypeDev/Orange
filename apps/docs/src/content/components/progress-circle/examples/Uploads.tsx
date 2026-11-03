@@ -22,7 +22,13 @@ export default function Uploads() {
       {files.map((file, i) => (
         <li
           key={file.name}
-          style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderTop: '1px solid var(--or-color-border)' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            padding: '12px 0',
+            borderTop: '1px solid var(--or-color-border)',
+          }}
         >
           <Icon name="file" />
           <span style={{ flex: 1, minWidth: 0 }}>

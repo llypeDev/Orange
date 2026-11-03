@@ -1,6 +1,7 @@
 /* Arquivo gerado por scripts/gen-index.mjs — não edite manualmente. */
 export * from './Accordion'
 export * from './Alert'
+export * from './AppHeader'
 export * from './Avatar'
 export * from './AvatarGroup'
 export * from './BackToTop'

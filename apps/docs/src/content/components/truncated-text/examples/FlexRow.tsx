@@ -1,7 +1,7 @@
 import { TruncatedText } from '@orange/ui'
 
 const conversas = [
-  { nome: 'Equipe financeira', mensagem: 'Ana: O fechamento de outubro está pronto para revisão, falta só a conciliação do cartão corporativo.', hora: '14:05' },
+  { nome: 'Equipe financeira', mensagem: 'Ana: O fechamento de outubro está pronto para revisão, falta só a conciliação bancária.', hora: '14:05' },
   { nome: 'Bruno Lima', mensagem: 'Combinado, envio o relatório amanhã cedo.', hora: '11:32' },
 ]
 

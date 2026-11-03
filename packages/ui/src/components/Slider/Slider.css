@@ -67,6 +67,12 @@
   background: var(--or-color-accent);
 }
 
+/* Valor único: o preenchimento começa na ponta do trilho. */
+.or-slider:not(.or-slider--range) .or-slider__fill {
+  left: calc(var(--_thumb) / -2);
+  width: calc(var(--_end) + var(--_thumb) / 2);
+}
+
 .or-slider__tick {
   position: absolute;
   top: 50%;

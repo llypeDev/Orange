@@ -27,9 +27,11 @@ interface SideNavContextValue {
   currentHref?: string
   renderLink?: RenderLink
   level: number
+  /** Itens dentro de uma lista renderizam `<li>`; em `header`/`footer`, não. */
+  inList: boolean
 }
 
-const SideNavContext = createContext<SideNavContextValue>({ collapsed: false, level: 0 })
+const SideNavContext = createContext<SideNavContextValue>({ collapsed: false, level: 0, inList: false })
 
 /* -------------------------------------------------------------------------- */
 /* SideNav                                                                    */
@@ -88,9 +90,10 @@ export const SideNav = forwardRef<HTMLElement, SideNavProps>(function SideNav(
     onChange: onCollapsedChange,
   })
   const ctx = useMemo<SideNavContextValue>(
-    () => ({ collapsed, currentHref, renderLink, level: 0 }),
+    () => ({ collapsed, currentHref, renderLink, level: 0, inList: false }),
     [collapsed, currentHref, renderLink],
   )
+  const listCtx = useMemo(() => ({ ...ctx, inList: true }), [ctx])
   const toggleLabel = collapsed ? t('expandSidebar') : t('collapseSidebar')
 
   return (
@@ -104,7 +107,9 @@ export const SideNav = forwardRef<HTMLElement, SideNavProps>(function SideNav(
       >
         {header && <div className="or-side-nav__header">{renderSlot(header, collapsed)}</div>}
         <div className="or-side-nav__body">
-          <ul className="or-side-nav__list">{children}</ul>
+          <SideNavContext.Provider value={listCtx}>
+            <ul className="or-side-nav__list">{children}</ul>
+          </SideNavContext.Provider>
         </div>
         {(footer || collapsible) && (
           <div className="or-side-nav__footer">
@@ -157,7 +162,7 @@ export const SideNavItem = forwardRef<HTMLElement, SideNavItemProps>(function Si
   { href, icon, badge, active, disabled = false, onClick, className, children, ...rest },
   ref,
 ) {
-  const { collapsed, currentHref, renderLink, level } = useContext(SideNavContext)
+  const { collapsed, currentHref, renderLink, level, inList } = useContext(SideNavContext)
   const isActive = isItemActive({ active, href }, currentHref)
   const initial = typeof children === 'string' ? children.trim().charAt(0).toUpperCase() : undefined
   const showRail = collapsed && level === 0
@@ -209,7 +214,7 @@ export const SideNavItem = forwardRef<HTMLElement, SideNavItemProps>(function Si
     )
   }
 
-  return <li className="or-side-nav__entry">{control}</li>
+  return inList ? <li className="or-side-nav__entry">{control}</li> : <>{control}</>
 })
 
 /* -------------------------------------------------------------------------- */
@@ -270,7 +275,7 @@ export const SideNavGroup = forwardRef<HTMLLIElement, SideNavGroupProps>(functio
   useEffect(() => setFlyoutOpen(false), [collapsed])
   useClickOutside(groupRef, () => setFlyoutOpen(false), isFlyout && flyoutOpen)
 
-  const childCtx = useMemo(() => ({ ...parent, level: level + 1 }), [parent, level])
+  const childCtx = useMemo(() => ({ ...parent, level: level + 1, inList: true }), [parent, level])
 
   const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>) => {
     onKeyDown?.(event)

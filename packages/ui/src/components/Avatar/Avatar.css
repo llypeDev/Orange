@@ -26,9 +26,12 @@
   overflow: hidden;
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface-hover);
-  background: color-mix(in srgb, var(--_tone) 28%, var(--or-color-surface));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_tone) 36%, transparent);
+  /* fundo suave + texto no tom (mesma lógica de accent-subtle/accent-text):
+     a mistura com a superfície e com a cor de texto se adapta ao tema. */
+  background: color-mix(in srgb, var(--_tone) 20%, var(--or-color-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_tone) 40%, transparent);
   color: var(--or-color-text);
+  color: color-mix(in srgb, var(--_tone) 50%, var(--or-color-text));
   user-select: none;
 }
 

@@ -66,6 +66,14 @@
 
 /* Corpo e rodapé ----------------------------------------------------------- */
 
+/* Um <form> envolvendo ModalBody + ModalFooter mantém o corpo rolável. */
+.or-modal > form {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .or-modal__body {
   flex: 1 1 auto;
   min-height: 0;

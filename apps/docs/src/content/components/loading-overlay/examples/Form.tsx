@@ -19,8 +19,20 @@ export default function Form() {
   }
 
   return (
-    <LoadingOverlay visible={saving} message="Salvando endereço…" style={{ width: '100%', maxWidth: 400 }}>
-      <form onSubmit={submit} style={{ display: 'grid', gap: 12, padding: 20, border: '1px solid var(--or-color-border)' }}>
+    <LoadingOverlay
+      visible={saving}
+      message="Salvando endereço…"
+      style={{ width: '100%', maxWidth: 400 }}
+    >
+      <form
+        onSubmit={submit}
+        style={{
+          display: 'grid',
+          gap: 12,
+          padding: 20,
+          border: '1px solid var(--or-color-border)',
+        }}
+      >
         <label style={{ display: 'grid', gap: 6, fontSize: 13 }}>
           CEP
           <input style={field} defaultValue="01310-100" inputMode="numeric" />

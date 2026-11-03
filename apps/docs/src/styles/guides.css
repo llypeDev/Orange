@@ -2477,3 +2477,46 @@
 .guide-builder__label {
   margin: var(--or-space-5) 0 var(--or-space-3);
 }
+
+/* --- Internacionalização -------------------------------------------------- */
+
+.guide-var {
+  padding: 0 0.25em;
+  background: var(--or-color-accent-subtle);
+  font-family: var(--or-font-mono);
+  font-size: 0.9em;
+  color: var(--or-color-accent-text);
+}
+
+.guide-search {
+  flex: 1;
+  max-width: 24rem;
+}
+
+.guide-messages td {
+  min-width: 12rem;
+}
+
+.guide-readout {
+  font-size: var(--or-text-sm);
+}
+
+.guide-readout dt {
+  white-space: nowrap;
+}
+
+.guide-number {
+  width: 5.5rem;
+  min-height: var(--or-control-sm);
+}
+
+.guide-scroll > .doc-table-wrap {
+  max-height: 34rem;
+  overflow: auto;
+}
+
+.guide-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

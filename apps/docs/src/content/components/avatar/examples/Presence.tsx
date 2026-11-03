@@ -1,13 +1,21 @@
-import { Avatar } from '@orange/ui'
+import { Avatar, type AvatarStatus } from '@orange/ui'
 import beatriz from './photos/beatriz.svg'
 import mariana from './photos/mariana.svg'
 
-const team = [
-  { name: 'Mariana Lopes', role: 'Product designer', src: mariana, status: 'online' },
-  { name: 'Rafael Costa', role: 'Engenheiro front-end', status: 'busy', statusLabel: 'Ocupado — em reunião até 15h' },
-  { name: 'Beatriz Nunes', role: 'Pesquisadora UX', src: beatriz, status: 'away' },
+interface Member {
+  name: string
+  role: string
+  photo?: string
+  status: AvatarStatus
+  statusLabel?: string
+}
+
+const team: Member[] = [
+  { name: 'Mariana Lopes', role: 'Product designer', photo: mariana, status: 'online' },
+  { name: 'Rafael Costa', role: 'Engenheiro front-end', status: 'busy', statusLabel: 'Ocupado, em reunião até 15h' },
+  { name: 'Beatriz Nunes', role: 'Pesquisadora UX', photo: beatriz, status: 'away' },
   { name: 'Thiago Rocha', role: 'Gerente de produto', status: 'offline' },
-] as const
+]
 
 export default function Presence() {
   return (
@@ -18,9 +26,9 @@ export default function Presence() {
           <Avatar
             alt=""
             name={person.name}
-            src={'src' in person ? person.src : undefined}
+            src={person.photo}
             status={person.status}
-            statusLabel={'statusLabel' in person ? person.statusLabel : undefined}
+            statusLabel={person.statusLabel}
           />
           <span style={{ display: 'grid' }}>
             <strong style={{ fontWeight: 600 }}>{person.name}</strong>

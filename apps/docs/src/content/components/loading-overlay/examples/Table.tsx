@@ -8,7 +8,11 @@ const regions = [
   ['Centro-Oeste', 'R$ 301.750', '−3%'],
 ]
 
-const cell = { padding: '10px 16px', borderTop: '1px solid var(--or-color-border)', textAlign: 'left' } as const
+const cell = {
+  padding: '10px 16px',
+  borderTop: '1px solid var(--or-color-border)',
+  textAlign: 'left',
+} as const
 
 export default function Table() {
   const [loading, setLoading] = useState(false)
@@ -22,12 +26,20 @@ export default function Table() {
     <div style={{ width: '100%', maxWidth: 560, border: '1px solid var(--or-color-border)' }}>
       <LoadingOverlay visible={loading} message="Atualizando relatório…">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-          <caption style={{ ...cell, borderTop: 0, fontWeight: 700 }}>Vendas por região — outubro</caption>
+          <caption style={{ ...cell, borderTop: 0, fontWeight: 700 }}>
+            Vendas por região — outubro
+          </caption>
           <thead>
             <tr>
-              <th scope="col" style={cell}>Região</th>
-              <th scope="col" style={cell}>Receita</th>
-              <th scope="col" style={cell}>Variação</th>
+              <th scope="col" style={cell}>
+                Região
+              </th>
+              <th scope="col" style={cell}>
+                Receita
+              </th>
+              <th scope="col" style={cell}>
+                Variação
+              </th>
             </tr>
           </thead>
           <tbody>

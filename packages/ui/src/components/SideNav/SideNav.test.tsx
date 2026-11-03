@@ -168,7 +168,15 @@ describe('SideNav', () => {
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>
-        <Example collapsible header={<strong>Orange</strong>} />
+        <Example
+          collapsible
+          header={<strong>Orange</strong>}
+          footer={
+            <SideNavItem href="/perfil" icon={<Icon name="user" />}>
+              Ana Ribeiro
+            </SideNavItem>
+          }
+        />
         <Example aria-label="Navegação recolhida" collapsed />
       </div>,
     )
