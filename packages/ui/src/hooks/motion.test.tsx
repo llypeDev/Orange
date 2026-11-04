@@ -89,3 +89,20 @@ describe('useScrollDirection', () => {
     raf.mockRestore()
   })
 })
+
+describe('usePresence com movimento reduzido', () => {
+  it('desmonta na hora mesmo com durações residuais (0.01ms do base.css)', () => {
+    const mm = window.matchMedia
+    window.matchMedia = ((q: string) => ({ ...mm(q), matches: q.includes('reduce') })) as typeof window.matchMedia
+    const spy = vi.spyOn(window, 'getComputedStyle').mockReturnValue({
+      animationName: 'or-pop-out',
+      animationDuration: '0.00001s',
+      transitionDuration: '0.00001s',
+    } as CSSStyleDeclaration)
+    const { rerender } = render(<Presence open />)
+    rerender(<Presence open={false} />)
+    expect(screen.queryByTestId('panel')).toBeNull()
+    spy.mockRestore()
+    window.matchMedia = mm
+  })
+})

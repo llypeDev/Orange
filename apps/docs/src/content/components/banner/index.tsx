@@ -244,6 +244,26 @@ export default function BannerPage() {
               },
             },
             {
+              term: { pt: 'Para a saída animar', en: 'For the exit to animate' },
+              description: {
+                pt: (
+                  <>
+                    O Banner precisa continuar montado: use <Code>open</Code> (ou deixe não
+                    controlado) em vez de <Code>{'{cond && <Banner />}'}</Code>. Espaçamento em
+                    margem no próprio Banner recolhe junto; <Code>gap</Code> no pai só some no fim.
+                  </>
+                ),
+                en: (
+                  <>
+                    The Banner must stay mounted: use <Code>open</Code> (or leave it uncontrolled)
+                    instead of <Code>{'{cond && <Banner />}'}</Code>. Spacing as a margin on the
+                    Banner itself collapses with it; a parent <Code>gap</Code> only goes away at the
+                    end.
+                  </>
+                ),
+              },
+            },
+            {
               term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
               description: {
                 pt: <>Sem deslocamento e sem pulso.</>,

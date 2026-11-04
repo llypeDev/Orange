@@ -361,11 +361,14 @@ export function usePresence<T extends HTMLElement = HTMLElement>(open: boolean, 
     const style = node && canUseDOM ? getComputedStyle(node) : null
     const seconds = (value: string | undefined) =>
       Math.max(0, ...(value ?? '0s').split(',').map((v) => (v.trim().endsWith('ms') ? parseFloat(v) / 1000 : parseFloat(v) || 0)))
-    const animated =
-      !!style &&
-      ((!!style.animationName && style.animationName !== 'none' && seconds(style.animationDuration) > 0) ||
-        seconds(style.transitionDuration) > 0)
-    if (!node || !animated) {
+    // Movimento reduzido: o base.css força durações de 0.01ms em tudo — trate como sem animação
+    // (senão o hook esperaria um animationend/transitionend que nunca vem até o fallback).
+    const reduced = canUseDOM && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    const MIN = 0.002 // segundos; abaixo disso não há animação perceptível
+    const hasAnimation =
+      !!style && !!style.animationName && style.animationName !== 'none' && seconds(style.animationDuration) > MIN
+    const hasTransition = !!style && seconds(style.transitionDuration) > MIN
+    if (!node || reduced || (!hasAnimation && !hasTransition)) {
       setMounted(false)
       return
     }
@@ -375,11 +378,23 @@ export function usePresence<T extends HTMLElement = HTMLElement>(open: boolean, 
     node.addEventListener('animationend', done)
     node.addEventListener('animationcancel', done)
     node.addEventListener('transitionend', done)
+    node.addEventListener('transitioncancel', done)
+    // Só transição (sem keyframe de saída): se nenhuma propriedade começar a
+    // transicionar logo, não há o que esperar — desmonta sem aguardar o fallback.
+    let started = hasAnimation
+    const onRun = (event: Event) => {
+      if (event.target === node) started = true
+    }
+    node.addEventListener('transitionrun', onRun)
+    const noTransition = hasAnimation ? 0 : window.setTimeout(() => !started && setMounted(false), 50)
     const fallback = window.setTimeout(() => setMounted(false), timeout)
     return () => {
       node.removeEventListener('animationend', done)
       node.removeEventListener('animationcancel', done)
       node.removeEventListener('transitionend', done)
+      node.removeEventListener('transitioncancel', done)
+      node.removeEventListener('transitionrun', onRun)
+      window.clearTimeout(noTransition)
       window.clearTimeout(fallback)
     }
   }, [open, mounted, timeout])

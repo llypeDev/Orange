@@ -11,20 +11,28 @@ export default function LiveRegion() {
   }
 
   return (
-    <form onSubmit={submit} style={{ display: 'grid', gap: 12, width: '100%' }}>
-      {status === 'error' && (
-        <Alert live tone="danger" title="Não foi possível salvar o cliente">
-          O CNPJ informado já está cadastrado em outra conta.
-        </Alert>
-      )}
-      {status === 'success' && (
-        <Alert live tone="success" title="Cliente salvo">
-          Os dados de Padaria Pão Dourado foram atualizados.
-        </Alert>
-      )}
-      <div>
-        <Button type="submit">Salvar cliente</Button>
-      </div>
+    <form onSubmit={submit} style={{ width: '100%' }}>
+      {/* open em vez de {cond && <Alert />}: um sai recolhendo enquanto o outro entra.
+          A margem fica no próprio Alert para recolher junto com ele. */}
+      <Alert
+        live
+        open={status === 'error'}
+        tone="danger"
+        title="Não foi possível salvar o cliente"
+        style={{ marginBottom: 12 }}
+      >
+        O CNPJ informado já está cadastrado em outra conta.
+      </Alert>
+      <Alert
+        live
+        open={status === 'success'}
+        tone="success"
+        title="Cliente salvo"
+        style={{ marginBottom: 12 }}
+      >
+        Os dados de Padaria Pão Dourado foram atualizados.
+      </Alert>
+      <Button type="submit">Salvar cliente</Button>
     </form>
   )
 }

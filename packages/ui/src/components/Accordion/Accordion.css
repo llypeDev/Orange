@@ -54,8 +54,9 @@
   padding-inline: 0;
 }
 
+/* Hover: leve e visível nos dois temas (surface-raised = surface no claro). */
 .or-accordion__trigger:hover:not(:disabled, [aria-disabled='true']) {
-  background: var(--or-color-surface-raised);
+  background: color-mix(in srgb, var(--or-color-surface-hover) 55%, var(--or-color-surface));
 }
 
 .or-accordion--flush .or-accordion__trigger:hover:not(:disabled, [aria-disabled='true']) {
