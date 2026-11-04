@@ -168,6 +168,91 @@ export default function BannerPage() {
           <Live />
         </Example>
       </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Entrada (live ou reaberto)', en: 'Enter (live or reopened)' },
+              description: {
+                pt: (
+                  <>
+                    Desce 8px a partir do topo com fade — <Code>{'--or-duration-medium'}</Code>,{' '}
+                    <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    Slides down 8px from the top with a fade — <Code>{'--or-duration-medium'}</Code>
+                    , <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Dispensar', en: 'Dismiss' },
+              description: {
+                pt: (
+                  <>
+                    Esmaece e sobe 4px (<Code>{'--or-duration-fast'}</Code>) enquanto a faixa
+                    recolhe a altura (grid <Code>{'1fr → 0fr'}</Code>,{' '}
+                    <Code>{'--or-duration-medium'}</Code>): a página sobe sem pular.
+                  </>
+                ),
+                en: (
+                  <>
+                    Fades and rises 4px (<Code>{'--or-duration-fast'}</Code>) while the strip
+                    collapses (grid <Code>{'1fr → 0fr'}</Code>,{' '}
+                    <Code>{'--or-duration-medium'}</Code>): the page moves up without jumping.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Ao vivo (pulse)', en: 'Live (pulse)' },
+              description: {
+                pt: (
+                  <>
+                    Anel quadrado pulsando em volta do ícone, na cor do tom —{' '}
+                    <Code>{'or-pulse'}</Code>, <Code>{'--or-duration-loop'}</Code> (2.4s). É só
+                    reforço: o texto precisa dizer que é ao vivo.
+                  </>
+                ),
+                en: (
+                  <>
+                    Square ring pulsing around the icon, in the tone color —{' '}
+                    <Code>{'or-pulse'}</Code>, <Code>{'--or-duration-loop'}</Code> (2.4s). It is
+                    only reinforcement: the text must say it is live.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Links e botões', en: 'Links and buttons' },
+              description: {
+                pt: (
+                  <>
+                    O sublinhado engrossa no hover e no foco (<Code>{'--or-duration-fast'}</Code>);
+                    botões afundam 1px (<Code>{'--or-duration-press'}</Code>).
+                  </>
+                ),
+                en: (
+                  <>
+                    The underline thickens on hover and focus (<Code>{'--or-duration-fast'}</Code>);
+                    buttons sink 1px (<Code>{'--or-duration-press'}</Code>).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Sem deslocamento e sem pulso.</>,
+                en: <>No movement and no pulse.</>,
+              },
+            },
+          ]}
+        />
+      </Section>
 
       <Section title="Props" id="props">
         <PropsTable

@@ -139,6 +139,70 @@ export default function MeterPage() {
           <Interactive />
         </Example>
       </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Ao montar', en: 'On mount' },
+              description: {
+                pt: (
+                  <>
+                    O preenchimento cresce do zero (<Code>{'scaleX'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code>) e as marcas de low/high aparecem em seguida
+                    (<Code>{'or-scale-in'}</Code>, <Code>{'--or-ease-bounce'}</Code>).
+                  </>
+                ),
+                en: (
+                  <>
+                    The fill grows from zero (<Code>{'scaleX'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code>) and the low/high marks appear right after (
+                    <Code>{'or-scale-in'}</Code>, <Code>{'--or-ease-bounce'}</Code>).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mudança de valor', en: 'Value change' },
+              description: {
+                pt: (
+                  <>
+                    Transição de <Code>{'scaleX'}</Code> em <Code>{'--or-duration-slow'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    <Code>{'scaleX'}</Code> transition in <Code>{'--or-duration-slow'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Troca de faixa', en: 'Range change' },
+              description: {
+                pt: (
+                  <>
+                    Ao cruzar low/high, a cor muda com transição (success → warning → danger) em{' '}
+                    <Code>{'--or-duration-medium'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    When crossing low/high, the color changes with a transition (success → warning →
+                    danger) in <Code>{'--or-duration-medium'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Mudanças instantâneas.</>,
+                en: <>Instant changes.</>,
+              },
+            },
+          ]}
+        />
+      </Section>
 
       <Section title="Props" id="props">
         <PropsTable

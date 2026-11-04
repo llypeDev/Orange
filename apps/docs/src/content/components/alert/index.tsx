@@ -189,6 +189,91 @@ export default function AlertPage() {
           <WithoutTitle />
         </Example>
       </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Entrada (live ou reaberto)', en: 'Enter (live or reopened)' },
+              description: {
+                pt: (
+                  <>
+                    Fade e sobe 8px — <Code>{'--or-duration-medium'}</Code> (250ms),{' '}
+                    <Code>{'--or-ease-out'}</Code>. Mensagens estáticas não animam.
+                  </>
+                ),
+                en: (
+                  <>
+                    Fades in and rises 8px — <Code>{'--or-duration-medium'}</Code> (250ms),{' '}
+                    <Code>{'--or-ease-out'}</Code>. Static messages do not animate.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Ícone', en: 'Icon' },
+              description: {
+                pt: (
+                  <>
+                    "Assenta" com escala (<Code>{'or-scale-in'}</Code>) logo depois da mensagem —{' '}
+                    <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-bounce'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    Settles with a scale (<Code>{'or-scale-in'}</Code>) right after the message —{' '}
+                    <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-bounce'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Dispensar', en: 'Dismiss' },
+              description: {
+                pt: (
+                  <>
+                    Esmaece e sobe 4px em <Code>{'--or-duration-fast'}</Code> (160ms) enquanto a
+                    altura recolhe (grid <Code>{'1fr → 0fr'}</Code>) em{' '}
+                    <Code>{'--or-duration-medium'}</Code>: o conteúdo abaixo sobe suave. Fica{' '}
+                    <Code>{'inert'}</Code> até desmontar (<Code>{'usePresence'}</Code>); o foco já
+                    foi movido.
+                  </>
+                ),
+                en: (
+                  <>
+                    Fades and rises 4px in <Code>{'--or-duration-fast'}</Code> (160ms) while the
+                    height collapses (grid <Code>{'1fr → 0fr'}</Code>) in{' '}
+                    <Code>{'--or-duration-medium'}</Code>: content below slides up smoothly. Stays{' '}
+                    <Code>{'inert'}</Code> until it unmounts (<Code>{'usePresence'}</Code>); focus
+                    has already moved.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Pressionar ações e fechar', en: 'Pressing actions and close' },
+              description: {
+                pt: (
+                  <>
+                    Os botões afundam 1px — <Code>{'--or-duration-press'}</Code> (90ms).
+                  </>
+                ),
+                en: (
+                  <>
+                    Buttons sink 1px — <Code>{'--or-duration-press'}</Code> (90ms).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Sem deslocamento: entrada e saída são instantâneas (os tokens zeram).</>,
+                en: <>No movement: enter and exit are instant (tokens are zeroed).</>,
+              },
+            },
+          ]}
+        />
+      </Section>
 
       <Section title="Props" id="props">
         <PropsTable

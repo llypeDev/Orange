@@ -129,6 +129,51 @@ export default function SpinnerPage() {
           <Panel />
         </Example>
       </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Rotação', en: 'Rotation' },
+              description: {
+                pt: (
+                  <>
+                    Uma volta a cada 800ms (<Code>{'--or-duration-loop'}</Code> / 3), linear e
+                    contínua.
+                  </>
+                ),
+                en: (
+                  <>
+                    One turn every 800ms (<Code>{'--or-duration-loop'}</Code> / 3), linear and
+                    continuous.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Entrada', en: 'Enter' },
+              description: {
+                pt: (
+                  <>
+                    Fade curto (<Code>{'--or-duration-fast'}</Code>): esperas breves não "piscam".
+                  </>
+                ),
+                en: (
+                  <>
+                    Short fade (<Code>{'--or-duration-fast'}</Code>): brief waits do not "blink".
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>A rotação vira uma pulsação lenta de opacidade (2s), sem deslocamento.</>,
+                en: <>The rotation becomes a slow opacity pulse (2s), with no movement.</>,
+              },
+            },
+          ]}
+        />
+      </Section>
 
       <Section title="Props" id="props">
         <PropsTable

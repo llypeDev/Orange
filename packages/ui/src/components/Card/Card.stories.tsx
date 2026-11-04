@@ -69,6 +69,7 @@ export const Interactive: Story = {
         eyebrow="Relatório"
         title="Vendas do 3º trimestre"
         href="#vendas"
+        linkProps={{ arrow: true }}
         actions={
           <Button variant="ghost" size="sm" iconOnly aria-label="Mais ações" startIcon={<Icon name="more-horizontal" />} />
         }

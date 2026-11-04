@@ -1,4 +1,13 @@
-import { Bullets, Code, ComponentPage, Example, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Goals from './examples/Goals'
 import GoalsCode from './examples/Goals?raw'
@@ -82,6 +91,87 @@ export default function ProgressCirclePage() {
         >
           <Goals />
         </Example>
+      </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Ao montar', en: 'On mount' },
+              description: {
+                pt: (
+                  <>
+                    O arco é desenhado a partir do topo (<Code>{'stroke-dashoffset'}</Code>) em{' '}
+                    <Code>{'--or-duration-slow'}</Code>, <Code>{'--or-ease-out'}</Code>; o valor
+                    central entra com fade.
+                  </>
+                ),
+                en: (
+                  <>
+                    The arc is drawn from the top (<Code>{'stroke-dashoffset'}</Code>) in{' '}
+                    <Code>{'--or-duration-slow'}</Code>, <Code>{'--or-ease-out'}</Code>; the central
+                    value fades in.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mudança de valor', en: 'Value change' },
+              description: {
+                pt: (
+                  <>
+                    Transição de <Code>{'stroke-dashoffset'}</Code> em{' '}
+                    <Code>{'--or-duration-slow'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    <Code>{'stroke-dashoffset'}</Code> transition in{' '}
+                    <Code>{'--or-duration-slow'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mudança de tom', en: 'Tone change' },
+              description: {
+                pt: (
+                  <>
+                    A cor do traço transiciona em <Code>{'--or-duration-medium'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    The stroke color transitions in <Code>{'--or-duration-medium'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Indeterminado', en: 'Indeterminate' },
+              description: {
+                pt: (
+                  <>
+                    O arco gira uma volta a cada 900ms (<Code>{'--or-duration-loop'}</Code> ×
+                    0.375), linear.
+                  </>
+                ),
+                en: (
+                  <>
+                    The arc spins one turn every 900ms (<Code>{'--or-duration-loop'}</Code> ×
+                    0.375), linear.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Mudanças instantâneas; o indeterminado pulsa em vez de girar.</>,
+                en: <>Instant changes; indeterminate pulses instead of spinning.</>,
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

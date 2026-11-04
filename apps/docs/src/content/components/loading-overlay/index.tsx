@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -84,6 +85,64 @@ export default function LoadingOverlayPage() {
         >
           <Card />
         </Example>
+      </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Mostrar', en: 'Show' },
+              description: {
+                pt: (
+                  <>
+                    O fundo aparece com fade em <Code>{'--or-duration-medium'}</Code> e o painel
+                    sobe 4px (<Code>{'--or-distance-sm'}</Code>), <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    The backdrop fades in over <Code>{'--or-duration-medium'}</Code> and the panel
+                    rises 4px (<Code>{'--or-distance-sm'}</Code>), <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Esconder', en: 'Hide' },
+              description: {
+                pt: (
+                  <>
+                    Saída mais curta: fade em <Code>{'--or-duration-fast'}</Code>,{' '}
+                    <Code>{'--or-ease-in-out'}</Code>. Spinner e mensagem ficam no painel até o fim
+                    (<Code>{'usePresence'}</Code>) — nada encolhe no meio do fade. O conteúdo é
+                    liberado logo no início.
+                  </>
+                ),
+                en: (
+                  <>
+                    Shorter exit: fade in <Code>{'--or-duration-fast'}</Code>,{' '}
+                    <Code>{'--or-ease-in-out'}</Code>. Spinner and message stay in the panel until
+                    the end (<Code>{'usePresence'}</Code>) — nothing shrinks mid-fade. The content
+                    is released right at the start.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Spinner', en: 'Spinner' },
+              description: {
+                pt: <>Gira em loop (veja Spinner).</>,
+                en: <>Spins in a loop (see Spinner).</>,
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Aparece e some na hora; o spinner pulsa em vez de girar.</>,
+                en: <>Appears and disappears instantly; the spinner pulses instead of spinning.</>,
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

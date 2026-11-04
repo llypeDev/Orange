@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { Icon } from '../../icons'
 import { Button } from '../Button'
 import { Badge } from './Badge'
@@ -68,4 +69,27 @@ export const DotOnIcon: Story = {
       <Button variant="ghost" iconOnly aria-label="Mensagens" startIcon={<Icon name="mail" />} />
     </Badge>
   ),
+}
+
+export const LiveCount: Story = {
+  render: (args) => {
+    const [count, setCount] = useState(3)
+    return (
+      <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+        <Badge {...args} count={count} label={`${count} notificações não lidas`}>
+          <Button variant="outline" iconOnly aria-label="Notificações" startIcon={<Icon name="bell" />} />
+        </Badge>
+        <Button size="sm" variant="ghost" onClick={() => setCount((c) => c + 1)}>
+          + 1
+        </Button>
+        <Button size="sm" variant="ghost" onClick={() => setCount(0)}>
+          Marcar como lidas
+        </Button>
+      </div>
+    )
+  },
+}
+
+export const PulseDot: Story = {
+  args: { dot: true, pulse: true, tone: 'success', label: 'Ao vivo' },
 }

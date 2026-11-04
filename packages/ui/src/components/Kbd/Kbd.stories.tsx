@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { Kbd } from './Kbd'
 
 const meta = {
@@ -57,4 +58,27 @@ export const Sizes: Story = {
       <Kbd {...args} size="md" />
     </div>
   ),
+}
+
+export const Pressed: Story = {
+  args: { keys: ['Ctrl', 'Shift', 'K'], pressed: ['Ctrl', 'Shift'] },
+}
+
+export const LivePractice: Story = {
+  render: (args) => {
+    const [down, setDown] = useState<string[]>([])
+    return (
+      <div
+        tabIndex={0}
+        role="group"
+        aria-label="Área de teste: pressione Shift + K"
+        style={{ padding: 16, border: '1px dashed var(--or-color-border-strong)' }}
+        onKeyDown={(e) => setDown((d) => Array.from(new Set([...d, e.key.toLowerCase()])))}
+        onKeyUp={(e) => setDown((d) => d.filter((k) => k !== e.key.toLowerCase()))}
+        onBlur={() => setDown([])}
+      >
+        <Kbd {...args} keys={['Shift', 'K']} pressed={down} />
+      </div>
+    )
+  },
 }

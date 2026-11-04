@@ -4,6 +4,7 @@ import {
   Code,
   CodeBlock,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -180,6 +181,95 @@ export default function ToastPage() {
           >
             <Visual />
           </Example>
+        </Section>
+        <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+          <DefinitionTable
+            rows={[
+              {
+                term: { pt: 'Entrada', en: 'Enter' },
+                description: {
+                  pt: (
+                    <>
+                      Desliza a partir da borda da <Code>{'position'}</Code> (direita → vem da
+                      direita; esquerda → da esquerda; <Code>{'bottom-center'}</Code> → sobe;{' '}
+                      <Code>{'top-center'}</Code> → desce) com fade —{' '}
+                      <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-out'}</Code>.
+                    </>
+                  ),
+                  en: (
+                    <>
+                      Slides in from the edge of the <Code>{'position'}</Code> (right → from the
+                      right; left → from the left; <Code>{'bottom-center'}</Code> → rises;{' '}
+                      <Code>{'top-center'}</Code> → drops) with a fade —{' '}
+                      <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-out'}</Code>.
+                    </>
+                  ),
+                },
+              },
+              {
+                term: { pt: 'Pilha', en: 'Stack' },
+                description: {
+                  pt: (
+                    <>
+                      A linha do novo toast cresce (grid <Code>{'0fr → 1fr'}</Code>) e os demais se
+                      reacomodam suavemente — <Code>{'--or-duration-medium'}</Code>.
+                    </>
+                  ),
+                  en: (
+                    <>
+                      The new toast row grows (grid <Code>{'0fr → 1fr'}</Code>) and the others
+                      settle smoothly — <Code>{'--or-duration-medium'}</Code>.
+                    </>
+                  ),
+                },
+              },
+              {
+                term: { pt: 'Saída', en: 'Exit' },
+                description: {
+                  pt: (
+                    <>
+                      Mais curta: volta para a borda e esmaece em{' '}
+                      <Code>{'--or-duration-fast'}</Code> enquanto a linha recolhe (
+                      <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-in-out'}</Code>); o{' '}
+                      <Code>{'usePresence'}</Code> desmonta no fim.
+                    </>
+                  ),
+                  en: (
+                    <>
+                      Shorter: moves back to the edge and fades in{' '}
+                      <Code>{'--or-duration-fast'}</Code> while the row collapses (
+                      <Code>{'--or-duration-medium'}</Code>, <Code>{'--or-ease-in-out'}</Code>);{' '}
+                      <Code>{'usePresence'}</Code> unmounts at the end.
+                    </>
+                  ),
+                },
+              },
+              {
+                term: { pt: 'Barra de tempo (showProgress)', en: 'Time bar (showProgress)' },
+                description: {
+                  pt: (
+                    <>
+                      <Code>{'or-fill-x'}</Code> ao contrário (cheia → vazia), linear, na duração do
+                      toast. Pausa junto com o timer: hover, foco e aba oculta.
+                    </>
+                  ),
+                  en: (
+                    <>
+                      <Code>{'or-fill-x'}</Code> reversed (full → empty), linear, over the toast
+                      duration. It pauses with the timer: hover, focus and hidden tab.
+                    </>
+                  ),
+                },
+              },
+              {
+                term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+                description: {
+                  pt: <>Sem deslocamento (só aparece e some) e sem barra de tempo.</>,
+                  en: <>No movement (it just appears and disappears) and no time bar.</>,
+                },
+              },
+            ]}
+          />
         </Section>
 
         <Section title="Props" id="props">

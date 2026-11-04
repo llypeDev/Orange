@@ -12,6 +12,8 @@ import {
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
+import HideOnScroll from './examples/HideOnScroll'
+import HideOnScrollCode from './examples/HideOnScroll?raw'
 import Mobile from './examples/Mobile'
 import MobileCode from './examples/Mobile?raw'
 import Sticky from './examples/Sticky'
@@ -111,6 +113,16 @@ export default function AppHeaderPage() {
           <Sticky />
         </Example>
         <Example
+          title={{ pt: 'Esconder ao rolar', en: 'Hide on scroll' }}
+          description={{
+            pt: 'hideOnScroll esconde o cabeçalho ao rolar para baixo (translateY, 250ms) e o traz de volta ao rolar para cima — nunca com foco dentro dele ou com o menu aberto.',
+            en: 'hideOnScroll hides the header when scrolling down (translateY, 250ms) and brings it back when scrolling up — never with focus inside it or the menu open.',
+          }}
+          code={HideOnScrollCode}
+        >
+          <HideOnScroll />
+        </Example>
+        <Example
           title={{ pt: 'Com roteador', en: 'With a router' }}
           description={{
             pt: 'renderLink usa o link do roteador; currentHref vem da rota atual.',
@@ -149,6 +161,7 @@ export default function AppHeaderPage() {
             { name: 'menuFooter', type: 'ReactNode', description: { pt: 'Conteúdo no fim do painel em telas pequenas.', en: 'Content at the end of the panel on small screens.' } },
             { name: 'navLabel', type: 'string', default: "t('mainNavigation')", description: { pt: 'Nome da navegação.', en: 'Navigation name.' } },
             { name: 'sticky', type: 'boolean', default: 'false', description: { pt: 'Fixa no topo durante a rolagem.', en: 'Sticks to the top while scrolling.' } },
+            { name: 'hideOnScroll', type: 'boolean', default: 'false', description: { pt: 'Esconde ao rolar para baixo e mostra ao subir (implica sticky). Nunca esconde com foco dentro ou com o menu aberto.', en: 'Hides when scrolling down and shows when scrolling up (implies sticky). Never hides with focus inside or the menu open.' } },
             { name: 'collapseBelow', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Largura (40/48/64rem) abaixo da qual a navegação vai para o menu.', en: 'Width (40/48/64rem) below which navigation moves to the menu.' } },
             { name: 'menuOpen', type: 'boolean', description: { pt: 'Menu aberto (controlado).', en: 'Menu open (controlled).' } },
             { name: 'defaultMenuOpen', type: 'boolean', default: 'false', description: { pt: 'Menu aberto inicialmente.', en: 'Menu initially open.' } },

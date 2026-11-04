@@ -4,6 +4,7 @@ import {
   Code,
   CodeBlock,
   ComponentPage,
+  DefinitionTable,
   Example,
   PropsTable,
   Section,
@@ -113,6 +114,57 @@ export default function SkeletonPage() {
         >
           <Loading />
         </Example>
+      </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Brilho', en: 'Shimmer' },
+              description: {
+                pt: (
+                  <>
+                    Uma faixa clara atravessa a forma a cada 1.6s (
+                    <Code>{'--or-duration-loop'}</Code> × 2/3), <Code>{'--or-ease-in-out'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    A light band sweeps across the shape every 1.6s (
+                    <Code>{'--or-duration-loop'}</Code> × 2/3), <Code>{'--or-ease-in-out'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Troca (loaded)', en: 'Swap (loaded)' },
+              description: {
+                pt: (
+                  <>
+                    Crossfade: o conteúdo aparece em <Code>{'--or-duration-medium'}</Code> sobre o
+                    placeholder, que esmaece em <Code>{'--or-duration-fast'}</Code> e só então sai
+                    do DOM (<Code>{'usePresence'}</Code>). Conteúdo que já chega carregado não
+                    anima.
+                  </>
+                ),
+                en: (
+                  <>
+                    Crossfade: the content appears in <Code>{'--or-duration-medium'}</Code> over the
+                    placeholder, which fades in <Code>{'--or-duration-fast'}</Code> and only then
+                    leaves the DOM (<Code>{'usePresence'}</Code>). Content that arrives already
+                    loaded does not animate.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Forma estática, sem brilho; a troca é instantânea.</>,
+                en: <>Static shape, no shimmer; the swap is instant.</>,
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

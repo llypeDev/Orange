@@ -17,6 +17,7 @@ const meta = {
     trend: { control: 'inline-radio', options: ['increase', 'decrease', 'neutral'] },
     deltaTone: { control: 'inline-radio', options: [undefined, 'positive', 'negative', 'neutral'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    animate: { control: 'boolean' },
   },
   args: {
     label: 'Receita recorrente mensal',
@@ -68,6 +69,16 @@ export const GroupLarge: Story = {
       <Stat label="Componentes acessíveis" value="60+" />
       <Stat label="Critérios WCAG 2.2 atendidos" value="AA" />
       <Stat label="Dependências de runtime" value="1" />
+    </StatGroup>
+  ),
+}
+
+export const Animated: Story = {
+  render: () => (
+    <StatGroup>
+      <Stat animate label="Receita" value="R$ 48,2 mil" delta="12%" trend="increase" help="vs. setembro" />
+      <Stat animate label="Pedidos" value={1284} delta="4,3%" trend="increase" />
+      <Stat animate label="Tempo de resposta" value="1h 12min" delta="18%" trend="decrease" deltaTone="positive" />
     </StatGroup>
   ),
 }

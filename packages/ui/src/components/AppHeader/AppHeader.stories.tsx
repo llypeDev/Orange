@@ -18,6 +18,7 @@ const meta = {
   },
   argTypes: {
     sticky: { control: 'boolean' },
+    hideOnScroll: { control: 'boolean' },
     collapseBelow: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     onMenuOpenChange: { action: 'menuOpenChange' },
   },
@@ -67,6 +68,30 @@ export const Sticky: Story = {
     <div>
       <AppHeader {...args} />
       <div style={{ height: 1600, padding: 24 }}>Role a página: o cabeçalho continua no topo.</div>
+    </div>
+  ),
+}
+
+export const HideOnScroll: Story = {
+  args: { hideOnScroll: true },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Role para baixo: depois de 120px o cabeçalho sobe (translateY(-110%), 250ms, ease-in-out); ao rolar para cima ele volta. Com foco dentro dele (Tab) ou com o menu aberto, não some.',
+      },
+    },
+  },
+  render: (args) => (
+    <div>
+      <AppHeader {...args} />
+      <div style={{ height: 2400, padding: 24, display: 'grid', alignContent: 'start', gap: 16 }}>
+        {Array.from({ length: 12 }, (_, i) => (
+          <p key={i} style={{ margin: 0 }}>
+            Seção {i + 1}: role para baixo para esconder o cabeçalho e para cima para trazê-lo de volta.
+          </p>
+        ))}
+      </div>
     </div>
   ),
 }

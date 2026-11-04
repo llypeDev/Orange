@@ -3,6 +3,7 @@ import {
   Callout,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   PropsTable,
   Section,
@@ -89,6 +90,89 @@ export default function ProgressBarPage() {
         <Example title={{ pt: 'Valor formatado', en: 'Formatted value' }} code={CustomFormatCode}>
           <CustomFormat />
         </Example>
+      </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Ao montar', en: 'On mount' },
+              description: {
+                pt: (
+                  <>
+                    O preenchimento cresce do zero até o valor — <Code>{'transform: scaleX'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code> (400ms), <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    The fill grows from zero to the value — <Code>{'transform: scaleX'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code> (400ms), <Code>{'--or-ease-out'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mudança de valor', en: 'Value change' },
+              description: {
+                pt: (
+                  <>
+                    Transição de <Code>{'scaleX'}</Code> em <Code>{'--or-duration-slow'}</Code> —
+                    sem animar <Code>{'width'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    <Code>{'scaleX'}</Code> transition in <Code>{'--or-duration-slow'}</Code> —
+                    without animating <Code>{'width'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Mudança de tom', en: 'Tone change' },
+              description: {
+                pt: (
+                  <>
+                    A cor transiciona em <Code>{'--or-duration-medium'}</Code> (ex.: accent →
+                    success ao concluir).
+                  </>
+                ),
+                en: (
+                  <>
+                    The color transitions in <Code>{'--or-duration-medium'}</Code> (e.g. accent →
+                    success when done).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Indeterminado', en: 'Indeterminate' },
+              description: {
+                pt: (
+                  <>
+                    Um segmento desliza em loop a cada 1.44s (<Code>{'--or-duration-loop'}</Code> ×
+                    0.6), <Code>{'--or-ease-in-out'}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    A segment slides in a loop every 1.44s (<Code>{'--or-duration-loop'}</Code> ×
+                    0.6), <Code>{'--or-ease-in-out'}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: (
+                  <>Valores mudam na hora; o indeterminado vira uma pulsação lenta de opacidade.</>
+                ),
+                en: <>Values change instantly; indeterminate becomes a slow opacity pulse.</>,
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

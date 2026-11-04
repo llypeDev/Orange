@@ -151,6 +151,104 @@ export default function EmptyStatePage() {
           <Compact />
         </Example>
       </Section>
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Ao montar', en: 'On mount' },
+              description: {
+                pt: (
+                  <>
+                    Os quadrados caem no lugar em sequência (<Code>{'or-piece-drop'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code>, <Code>{'--or-ease-spring'}</Code>), com{' '}
+                    <Code>{'--or-stagger'}</Code> (80ms) entre eles.
+                  </>
+                ),
+                en: (
+                  <>
+                    The squares drop into place in sequence (<Code>{'or-piece-drop'}</Code>,{' '}
+                    <Code>{'--or-duration-slow'}</Code>, <Code>{'--or-ease-spring'}</Code>),{' '}
+                    <Code>{'--or-stagger'}</Code> (80ms) apart.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Marcador', en: 'Marker' },
+              description: {
+                pt: (
+                  <>
+                    O quadrado laranja "estala" por último (<Code>{'or-scale-in'}</Code>,{' '}
+                    <Code>{'--or-ease-bounce'}</Code>).
+                  </>
+                ),
+                en: (
+                  <>
+                    The orange square "pops" last (<Code>{'or-scale-in'}</Code>,{' '}
+                    <Code>{'--or-ease-bounce'}</Code>).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Texto', en: 'Text' },
+              description: {
+                pt: (
+                  <>
+                    Sobe 8px com fade (<Code>{'--or-duration-medium'}</Code>) junto com a
+                    ilustração.
+                  </>
+                ),
+                en: (
+                  <>
+                    Rises 8px with a fade (<Code>{'--or-duration-medium'}</Code>) along with the
+                    illustration.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Ações', en: 'Actions' },
+              description: {
+                pt: (
+                  <>
+                    Botões afundam 1px ao pressionar (<Code>{'--or-duration-press'}</Code>).
+                  </>
+                ),
+                en: (
+                  <>
+                    Buttons sink 1px when pressed (<Code>{'--or-duration-press'}</Code>).
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Desligar', en: 'Turn off' },
+              description: {
+                pt: (
+                  <>
+                    <Code>{'animated={false}'}</Code> — por exemplo, quando o estado vazio já é o
+                    conteúdo inicial da página.
+                  </>
+                ),
+                en: (
+                  <>
+                    <Code>{'animated={false}'}</Code> — for instance, when the empty state is
+                    already the initial page content.
+                  </>
+                ),
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: <>Tudo aparece de uma vez.</>,
+                en: <>Everything appears at once.</>,
+              },
+            },
+          ]}
+        />
+      </Section>
 
       <Section title="Props" id="props">
         <PropsTable

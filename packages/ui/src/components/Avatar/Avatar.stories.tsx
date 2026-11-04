@@ -23,6 +23,7 @@ const meta = {
     size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     shape: { control: 'inline-radio', options: ['square', 'circle'] },
     status: { control: 'select', options: [undefined, 'online', 'away', 'busy', 'offline'] },
+    pulse: { control: 'boolean' },
   },
   args: {
     name: 'Mariana Lopes',
@@ -83,4 +84,8 @@ export const Fallbacks: Story = {
       <Avatar alt="Convidado" />
     </div>
   ),
+}
+
+export const Pulse: Story = {
+  args: { status: 'online', pulse: true, shape: 'circle', size: 'lg' },
 }
