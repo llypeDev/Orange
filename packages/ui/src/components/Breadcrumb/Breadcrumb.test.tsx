@@ -64,6 +64,16 @@ describe('Breadcrumb', () => {
     expect(screen.getByRole('link', { name: 'Loja' })).toHaveFocus()
   })
 
+  it('níveis revelados pelo "…" recebem a classe de entrada em cascata', async () => {
+    const user = userEvent.setup()
+    render(<Breadcrumb items={items} maxItems={3} />)
+    await user.click(screen.getByRole('button', { name: 'Mostrar caminho completo' }))
+    const revealed = screen.getAllByRole('listitem').filter((li) => li.classList.contains('or-breadcrumb__item--revealed'))
+    expect(revealed.map((li) => li.textContent?.replace('/', '').trim())).toEqual(['Loja', 'Eletrônicos', 'Notebooks'])
+    expect(revealed.map((li) => li.style.getPropertyValue('--_i'))).toEqual(['0', '1', '2'])
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('or-breadcrumb__item--revealed')
+  })
+
   it('expande pelo teclado e respeita itemsBeforeCollapse/itemsAfterCollapse', async () => {
     const user = userEvent.setup()
     render(<Breadcrumb items={items} maxItems={4} itemsBeforeCollapse={2} itemsAfterCollapse={1} />)

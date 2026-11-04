@@ -112,6 +112,17 @@ export default function PopoverPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Opacidade + 4px vindo do lado do gatilho (acompanha o placement, inclusive após o flip). 250ms, --or-ease-out.', en: 'Opacity + 4px coming from the trigger side (follows the placement, even after a flip). 250ms, --or-ease-out.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Recua 4px em direção ao gatilho e some. 160ms, --or-ease-in-out. Inerte e sem cliques durante a saída.', en: 'Retreats 4px toward the trigger and fades. 160ms, --or-ease-in-out. Inert and unclickable while leaving.' } },
+            { term: { pt: 'Gatilho e ações', en: 'Trigger and actions' }, description: { pt: 'Botões afundam 1px ao pressionar. 90ms.', en: 'Buttons sink 1px when pressed. 90ms.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

@@ -1,4 +1,15 @@
-import { Bullets, Code, ComponentPage, DoDont, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  DoDont,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import { Checkbox, Switch } from '@orange/ui'
 import Basic from './examples/Basic'
@@ -118,6 +129,25 @@ export default function CheckboxPage() {
             { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: { pt: 'Disposição das opções.', en: 'Options layout.' } },
             { name: 'name', type: 'string', description: { pt: 'name aplicado a todas as caixas.', en: 'name applied to every checkbox.' } },
             { name: 'disabled', type: 'boolean', default: 'false', description: { pt: 'Desabilita todas as opções (fieldset nativo).', en: 'Disables every option (native fieldset).' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda mais forte e anel laranja suave — 160ms, --or-ease-out.', en: 'Stronger border and a soft orange ring — 160ms, --or-ease-out.' } },
+            { term: { pt: 'Marcar', en: 'Check' }, description: { pt: 'A caixa fica laranja em 160ms e o check entra desenhando o traço (or-draw, 250ms, --or-ease-bounce).', en: 'The box turns orange in 160ms and the check draws its stroke (or-draw, 250ms, --or-ease-bounce).' } },
+            { term: { pt: 'Indeterminado', en: 'Indeterminate' }, description: { pt: 'O traço cresce do centro em scaleX (250ms, --or-ease-bounce).', en: 'The dash grows from the center with scaleX (250ms, --or-ease-bounce).' } },
+            { term: { pt: 'Desmarcar', en: 'Uncheck' }, description: { pt: 'O ícone some em 160ms (--or-ease-in-out) — saída mais curta que a entrada.', en: 'The icon fades out in 160ms (--or-ease-in-out) — shorter than the entrance.' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'Na caixa ou no rótulo, a caixa afunda 1px e encolhe (scale 0.92) em 90ms.', en: 'On the box or label, the box sinks 1px and shrinks (scale 0.92) in 90ms.' } },
+            { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'A caixa (ou as opções do CheckboxGroup) treme uma vez e a mensagem desliza 4px com fade.', en: 'The box (or the CheckboxGroup options) shakes once and the message slides 4px with a fade.' } },
           ]}
         />
       </Section>

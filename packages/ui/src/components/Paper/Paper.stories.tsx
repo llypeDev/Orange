@@ -19,6 +19,7 @@ const meta = {
     border: { control: 'inline-radio', options: ['none', 'default', 'strong', 'accent-top', 'accent-left'] },
     elevation: { control: 'inline-radio', options: ['flat', 'raised', 'overlay'] },
     tone: { control: 'inline-radio', options: ['default', 'subtle', 'inverse'] },
+    interactive: { control: 'boolean' },
   },
   args: {
     padding: 6,
@@ -84,4 +85,20 @@ export const AsSection: Story = {
     border: 'accent-top',
     children: 'Total de março: R$ 1.240,00',
   },
+}
+
+/** Superfície clicável: eleva 4px com sombra laranja no hover/foco e afunda ao pressionar. */
+export const Interactive: Story = {
+  render: (args) => (
+    <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', padding: 16 }}>
+      {['Essencial', 'Pro', 'Empresa'].map((plano) => (
+        <Paper key={plano} {...args} as="a" href={`#${plano.toLowerCase()}`} interactive padding={5}>
+          <p className="or-eyebrow" style={{ margin: 0 }}>
+            Plano
+          </p>
+          <strong style={{ display: 'block', marginTop: 6 }}>{plano}</strong>
+        </Paper>
+      ))}
+    </div>
+  ),
 }

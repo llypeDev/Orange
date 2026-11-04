@@ -19,33 +19,38 @@
   letter-spacing: -0.01em;
   cursor: pointer;
   box-shadow: var(--or-shadow-raised);
-  /* Escondido: invisível, fora da ordem de foco e da árvore de acessibilidade. */
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(8px);
   transition:
-    opacity var(--or-duration-medium) var(--or-ease-out),
-    transform var(--or-duration-medium) var(--or-ease-out),
-    visibility 0s linear var(--or-duration-medium),
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-back-to-top[data-visible] {
-  visibility: visible;
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--or-duration-medium) var(--or-ease-out),
-    transform var(--or-duration-medium) var(--or-ease-out),
-    visibility 0s,
-    background-color var(--or-duration-fast) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
+/* Presença (usePresence): entra com fade + 8px; sai mais rápido, sem cliques. */
+.or-back-to-top[data-state='open'] {
+  animation: or-back-to-top-in var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-back-to-top:hover {
+.or-back-to-top[data-state='closed'] {
+  animation: or-back-to-top-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-back-to-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md));
+  }
+}
+
+@keyframes or-back-to-top-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md));
+  }
+}
+
+.or-back-to-top:is(:hover, :focus-visible) {
   border-color: var(--or-color-accent);
   background: var(--or-color-surface-hover);
   box-shadow: var(--or-shadow-hover-accent);
@@ -53,6 +58,8 @@
 
 .or-back-to-top:active {
   background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-back-to-top:focus-visible {
@@ -63,11 +70,12 @@
 .or-back-to-top__icon {
   width: 1.25rem;
   height: 1.25rem;
-  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-back-to-top:hover .or-back-to-top__icon {
-  transform: translateY(-2px);
+/* A seta empurra 4px para cima no hover/foco. */
+.or-back-to-top:is(:hover, :focus-visible) .or-back-to-top__icon {
+  transform: translateY(calc(var(--or-distance-sm) * -1));
 }
 
 .or-back-to-top--labeled {

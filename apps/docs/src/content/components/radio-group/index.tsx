@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
@@ -110,6 +120,24 @@ export default function RadioGroupPage() {
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto de apoio da opção.', en: 'Option supporting text.' } },
             { name: 'disabled', type: 'boolean', default: 'false', description: { pt: 'Desabilita a opção.', en: 'Disables the option.' } },
             { name: '...rest', type: 'InputHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;input type="radio"&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;input type="radio"&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda mais forte e anel laranja suave — 160ms, --or-ease-out.', en: 'Stronger border and a soft orange ring — 160ms, --or-ease-out.' } },
+            { term: { pt: 'Selecionar', en: 'Select' }, description: { pt: 'O ponto entra com or-scale-in (250ms, --or-ease-bounce); o ponto anterior sai em 160ms (--or-ease-in-out).', en: 'The dot enters with or-scale-in (250ms, --or-ease-bounce); the previous dot leaves in 160ms (--or-ease-in-out).' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'O indicador afunda 1px (scale 0.92) em 90ms.', en: 'The indicator sinks 1px (scale 0.92) in 90ms.' } },
+            { term: { pt: 'Cartões (variant="card")', en: 'Cards (variant="card")' }, description: { pt: 'Borda em 160ms; fundo e anel laranja em 250ms; o cartão afunda translateY(1px) scale(0.985) em 90ms ao clicar.', en: 'Border in 160ms; orange background and ring in 250ms; the card sinks translateY(1px) scale(0.985) in 90ms on click.' } },
+            { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'As opções tremem uma vez e a mensagem do grupo desliza 4px com fade.', en: 'The options shake once and the group message slides 4px with a fade.' } },
           ]}
         />
       </Section>

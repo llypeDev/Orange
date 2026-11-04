@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import AutoResize from './examples/AutoResize'
 import AutoResizeCode from './examples/AutoResize?raw'
@@ -108,6 +118,23 @@ export default function TextAreaPage() {
             { name: 'onChange', type: '(event: ChangeEvent) => void', description: { pt: 'Evento nativo de alteração.', en: 'Native change event.' } },
             { name: 'onValueChange', type: '(value: string) => void', description: { pt: 'Atalho que recebe o texto atual.', en: 'Shortcut that receives the current text.' } },
             { name: '...rest', type: 'TextareaHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;textarea&gt;</Code>; <Code>className</Code> e <Code>style</Code>, para o contêiner.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;textarea&gt;</Code>; <Code>className</Code> and <Code>style</Code> go to the wrapper.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda e anel de foco mudam de cor juntos — 160ms (--or-duration-fast), --or-ease-out.', en: 'Border and focus ring change color together — 160ms (--or-duration-fast), --or-ease-out.' } },
+            { term: { pt: 'Contador', en: 'Counter' }, description: { pt: 'A cor muda suavemente perto do limite (250ms); ao atingir o limite, um toque de escala com --or-ease-bounce.', en: 'Color changes smoothly near the limit (250ms); on reaching the limit, a single scale bump with --or-ease-bounce.' } },
+            { term: { pt: 'Crescimento automático', en: 'Auto-resize' }, description: { pt: 'A altura acompanha o texto sem animação, para não atrasar a digitação.', en: 'Height follows the text without animation, so typing never lags.' } },
+            { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'A mensagem entra com fade e desliza 4px (250ms, --or-ease-out); o controle treme uma vez (or-shake, 400ms) só na passagem de válido para inválido.', en: 'The message fades in and slides 4px (250ms, --or-ease-out); the control shakes once (or-shake, 400ms) only when going from valid to invalid.' } },
           ]}
         />
       </Section>

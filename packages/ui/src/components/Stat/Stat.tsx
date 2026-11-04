@@ -4,14 +4,16 @@ import {
   forwardRef,
   isValidElement,
   useContext,
+  useMemo,
   type CSSProperties,
   type ElementType,
   type HTMLAttributes,
   type ReactNode,
 } from 'react'
+import { useCountUp, useInView, useReducedMotion } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Stat.css'
 
@@ -39,6 +41,14 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLElement>, 'children'>
   help?: ReactNode
   /** Tamanho do número. Padrão: `md` (ou o do `StatGroup`). */
   size?: StatSize
+  /**
+   * Conta de zero até o valor quando o Stat entra na tela. Funciona com
+   * números e com textos já formatados ("R$ 48,2 mil", "1h 12min"). Leitores
+   * de tela ouvem só o valor final. Sem efeito em movimento reduzido.
+   */
+  animate?: boolean
+  /** Formata `value` quando ele é um número. Padrão: `Intl.NumberFormat` do idioma. */
+  format?: (value: number) => string
 }
 
 function nodeText(node: ReactNode): string {
@@ -47,6 +57,69 @@ function nodeText(node: ReactNode): string {
   if (Array.isArray(node)) return node.map(nodeText).join('')
   if (isValidElement<{ children?: ReactNode }>(node)) return nodeText(node.props.children)
   return ''
+}
+
+const COUNT_DURATION = 1200
+
+interface NumberToken {
+  start: number
+  end: number
+  value: number
+  decimals: number
+  grouped: boolean
+}
+
+function separators(locale: string) {
+  try {
+    const parts = new Intl.NumberFormat(locale).formatToParts(12345.6)
+    return {
+      group: parts.find((p) => p.type === 'group')?.value ?? ',',
+      decimal: parts.find((p) => p.type === 'decimal')?.value ?? '.',
+    }
+  } catch {
+    return { group: ',', decimal: '.' }
+  }
+}
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/** Encontra os números de um texto formatado, respeitando os separadores do idioma. */
+function tokenize(text: string, locale: string): NumberToken[] {
+  const { group, decimal } = separators(locale)
+  const pattern = new RegExp(`\\d+(?:[${escapeRegExp(group)}${escapeRegExp(decimal)}]\\d+)*`, 'g')
+  const tokens: NumberToken[] = []
+  for (const match of text.matchAll(pattern)) {
+    const raw = match[0]
+    const decimalAt = raw.lastIndexOf(decimal)
+    const integer = decimalAt >= 0 ? raw.slice(0, decimalAt) : raw
+    const fraction = decimalAt >= 0 ? raw.slice(decimalAt + 1) : ''
+    const value = Number(`${integer.split(group).join('')}${fraction ? `.${fraction}` : ''}`)
+    if (Number.isNaN(value)) continue
+    tokens.push({
+      start: match.index ?? 0,
+      end: (match.index ?? 0) + raw.length,
+      value,
+      decimals: fraction.length,
+      grouped: integer.includes(group),
+    })
+  }
+  return tokens
+}
+
+/** Reescreve o texto com cada número multiplicado por `progress` (0 → 1). */
+function interpolateText(text: string, tokens: NumberToken[], progress: number, locale: string) {
+  let out = ''
+  let cursor = 0
+  for (const token of tokens) {
+    const formatter = new Intl.NumberFormat(locale, {
+      minimumFractionDigits: token.decimals,
+      maximumFractionDigits: token.decimals,
+      useGrouping: token.grouped,
+    })
+    out += text.slice(cursor, token.start) + formatter.format(token.value * progress)
+    cursor = token.end
+  }
+  return out + text.slice(cursor)
 }
 
 const TREND_ICON = { increase: 'arrow-up', decrease: 'arrow-down', neutral: 'minus' } as const
@@ -58,24 +131,72 @@ const DEFAULT_TONE: Record<StatTrend, StatDeltaTone> = { increase: 'positive', d
  * semântica de lista de definição (`dt`/`dd`).
  */
 export const Stat = forwardRef<HTMLElement, StatProps>(function Stat(
-  { label, value, delta, trend = 'neutral', deltaTone, help, size: sizeProp, className, ...rest },
+  {
+    label,
+    value,
+    delta,
+    trend = 'neutral',
+    deltaTone,
+    help,
+    size: sizeProp,
+    animate = false,
+    format,
+    className,
+    ...rest
+  },
   ref,
 ) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const group = useContext(StatGroupContext)
   const size = sizeProp ?? group?.size ?? 'md'
   const tone = deltaTone ?? DEFAULT_TONE[trend]
   const Root = (group ? 'div' : 'dl') as ElementType
   const hasDelta = delta !== undefined && delta !== null && delta !== ''
 
+  // Texto final da métrica (números são formatados no idioma atual).
+  const finalText = useMemo(() => {
+    if (typeof value === 'number') return format ? format(value) : new Intl.NumberFormat(locale).format(value)
+    return typeof value === 'string' ? value : null
+  }, [value, format, locale])
+  const tokens = useMemo(
+    () => (animate && finalText ? tokenize(finalText, locale) : []),
+    [animate, finalText, locale],
+  )
+
+  // Contagem: começa quando o Stat entra na tela.
+  const reducedMotion = useReducedMotion()
+  const [inViewRef, inView] = useInView<HTMLElement>()
+  const canCount = animate && !reducedMotion && tokens.length > 0
+  const progress = useCountUp(inView ? 1 : 0, { from: 0, duration: COUNT_DURATION, enabled: canCount })
+  const counting = canCount && progress < 1
+  const composedRef = useMemo(() => mergeRefs(ref, inViewRef), [ref, inViewRef])
+
   return (
-    <Root ref={ref} className={cx('or-stat', `or-stat--${size}`, className)} {...rest}>
+    <Root
+      ref={animate ? composedRef : ref}
+      className={cx('or-stat', `or-stat--${size}`, className)}
+      data-animate={animate || undefined}
+      data-inview={animate && (inView || reducedMotion) ? '' : undefined}
+      {...rest}
+    >
       <dt className="or-stat__label">{label}</dt>
-      <dd className="or-stat__value">{value}</dd>
+      <dd className="or-stat__value" data-counting={counting || undefined}>
+        {counting && finalText ? (
+          <>
+            {/* O valor final fica no lugar (transparente) para o leitor de tela e para reservar a largura. */}
+            <span className="or-stat__value-final">{finalText}</span>
+            <span className="or-stat__value-count" aria-hidden="true">
+              {interpolateText(finalText, tokens, progress, locale)}
+            </span>
+          </>
+        ) : (
+          (finalText ?? value)
+        )}
+      </dd>
       {(hasDelta || help) && (
         <dd className="or-stat__meta">
           {hasDelta && (
-            <span className={cx('or-stat__delta', `or-stat__delta--${tone}`)}>
+            <span className={cx('or-stat__delta', `or-stat__delta--${tone}`, `or-stat__delta--${trend}`)}>
               <Icon name={TREND_ICON[trend]} size={14} strokeWidth={2.25} />
               <span aria-hidden="true">{delta}</span>
               <VisuallyHidden>{t(TREND_MESSAGE[trend], { value: nodeText(delta) })}</VisuallyHidden>

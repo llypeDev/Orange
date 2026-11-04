@@ -48,7 +48,8 @@
   cursor: text;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out);
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-inline-edit__display:hover:not(:disabled) {
@@ -76,13 +77,24 @@
   flex-shrink: 0;
   color: var(--or-color-text-subtle);
   opacity: 0;
-  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+  transform: translateX(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-inline-edit__display:hover .or-inline-edit__icon,
 .or-inline-edit__display:focus-visible .or-inline-edit__icon {
   opacity: 1;
   color: var(--or-color-accent-text);
+  transform: none;
+}
+
+.or-inline-edit__display:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-inline-edit__display:disabled {
@@ -124,9 +136,72 @@
   border: 2px solid var(--or-color-accent);
   border-right-color: transparent;
   border-radius: var(--or-radius-full);
-  animation: or-spin 0.7s linear infinite;
+  animation: or-spin calc(var(--or-duration-loop) / 3) linear infinite;
 }
 
 .or-inline-edit__error {
   margin-top: var(--or-space-1);
+  animation: or-slide-down-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+/* Motion ------------------------------------------------------------------
+ * Depois da primeira interação, a troca leitura ↔ edição faz fade + slide
+ * curto; salvar acende um flash verde sutil; erro faz o campo tremer.
+ * ------------------------------------------------------------------------- */
+
+.or-inline-edit--animated .or-inline-edit__editor {
+  animation: or-inline-edit-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-inline-edit--animated .or-inline-edit__display {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-inline-edit--animated .or-inline-edit__display--saved {
+  animation:
+    or-fade-in var(--or-duration-fast) var(--or-ease-out) both,
+    or-inline-edit-saved var(--or-duration-reveal) var(--or-ease-out);
+}
+
+.or-inline-edit__frame[data-shake='a'] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-inline-edit__frame[data-shake='b'] {
+  animation: or-inline-edit-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+@keyframes or-inline-edit-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -0.5));
+  }
+}
+
+@keyframes or-inline-edit-saved {
+  from {
+    border-color: var(--or-color-success);
+    background-color: var(--or-color-success-subtle);
+  }
+}
+
+/* Cópia local de or-shake: alternar o nome reinicia a animação. */
+@keyframes or-inline-edit-shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-3px);
+  }
+  40%,
+  60% {
+    transform: translateX(3px);
+  }
 }

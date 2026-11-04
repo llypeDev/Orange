@@ -1,5 +1,16 @@
 import { Button, Icon, Tooltip } from '@orange/ui'
-import { Bullets, Code, ComponentPage, DoDont, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  DoDont,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Placements from './examples/Placements'
 import PlacementsCode from './examples/Placements?raw'
@@ -98,6 +109,16 @@ export default function TooltipPage() {
         >
           <Shortcut />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Entrada', en: 'Enter' }, description: { pt: 'Depois do delay (400ms no hover, imediato no foco): fade + 4px vindo do gatilho. 160ms, --or-ease-out. Dentro de 300ms após outro tooltip, abre sem atraso.', en: 'After the delay (400ms on hover, immediate on focus): fade + 4px from the trigger. 160ms, --or-ease-out. Within 300ms of another tooltip, it opens without delay.' } },
+            { term: { pt: 'Saída', en: 'Exit' }, description: { pt: 'Recua 4px e some. 80ms (--or-duration-instant), --or-ease-in-out — mais curta que a entrada.', en: 'Retreats 4px and fades. 80ms (--or-duration-instant), --or-ease-in-out — shorter than the entrance.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

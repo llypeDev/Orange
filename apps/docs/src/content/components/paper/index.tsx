@@ -112,6 +112,7 @@ export default function PaperPage() {
             { name: 'border', type: "'none' | 'default' | 'strong' | 'accent-top' | 'accent-left'", default: "'default'", description: { pt: 'Estilo da borda.', en: 'Border style.' } },
             { name: 'elevation', type: "'flat' | 'raised' | 'overlay'", default: "'flat'", description: { pt: 'Sombra.', en: 'Shadow.' } },
             { name: 'tone', type: "'default' | 'subtle' | 'inverse'", default: "'default'", description: { pt: 'Cor de fundo; inverse inverte o tema.', en: 'Background color; inverse flips the theme.' } },
+            { name: 'interactive', type: 'boolean', default: 'false', description: { pt: <>Superfície clicável: eleva no hover/foco e afunda ao pressionar. Use com <Code>as="a"</Code>/<Code>as="button"</Code> ou com um link interno.</>, en: <>Clickable surface: lifts on hover/focus and sinks on press. Use with <Code>as="a"</Code>/<Code>as="button"</Code> or an inner link.</> } },
             { name: '...rest', type: 'HTMLAttributes<HTMLElement>', description: { pt: 'Atributos do elemento.', en: 'Element attributes.' } },
           ]}
         />

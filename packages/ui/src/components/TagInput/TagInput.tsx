@@ -196,7 +196,11 @@ function TagInputControl({
                 )}
               </li>
             ) : (
-              <li key={key} className="or-tag-input__tag" data-enter={!initialKeys.current.has(key) || undefined}>
+              <li
+                key={key}
+                className="or-tag-input__tag"
+                data-enter={!initialKeys.current.has(key) || undefined}
+              >
                 <span className="or-tag-input__tag-label">{item.tag}</span>
                 {interactive && (
                   <button
@@ -356,7 +360,8 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     if (removed === undefined) return
     const next = tags.filter((_, i) => i !== index)
     const nextKeys = tagKeys(next)
-    pendingFocus.current = focus === 'neighbor' ? (nextKeys[index] ?? nextKeys[index - 1] ?? 'input') : 'input'
+    pendingFocus.current =
+      focus === 'neighbor' ? (nextKeys[index] ?? nextKeys[index - 1] ?? 'input') : 'input'
     initialKeys.current.delete(tagKeys(tags)[index])
     setTags(next)
     setInternalError(null)
@@ -366,7 +371,11 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
   const shownError = error ?? internalError ?? undefined
   // Tremor curto quando um erro surge (cada recusa conta, mesmo com a mesma mensagem).
   const frameMotion = useShake(
-    internalError ? `${internalError}#${rejections.current}` : typeof error === 'string' ? error : Boolean(error),
+    internalError
+      ? `${internalError}#${rejections.current}`
+      : typeof error === 'string'
+        ? error
+        : Boolean(error),
   )
 
   return (

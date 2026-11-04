@@ -60,7 +60,12 @@ export const Card: Story = {
       <section
         aria-busy="true"
         aria-label="Perfil do cliente"
-        style={{ display: 'grid', gap: 16, padding: 24, border: '1px solid var(--or-color-border)' }}
+        style={{
+          display: 'grid',
+          gap: 16,
+          padding: 24,
+          border: '1px solid var(--or-color-border)',
+        }}
       >
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <Skeleton {...args} variant="circle" width={48} />

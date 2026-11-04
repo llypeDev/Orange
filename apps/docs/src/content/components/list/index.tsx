@@ -115,6 +115,7 @@ export default function ListPage() {
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Tamanho do texto e espaçamento.', en: 'Text size and spacing.' } },
             { name: 'start', type: 'number', default: '1', description: { pt: 'Número inicial (numbered).', en: 'Starting number (numbered).' } },
             { name: 'icon', type: 'ReactNode', description: { pt: 'Ícone padrão da variante icon.', en: 'Default icon for the icon variant.' } },
+            { name: 'animated', type: 'boolean', default: 'false', description: { pt: 'Itens entram escalonados ao aparecer na tela.', en: 'Items enter staggered when scrolled into view.' } },
           ]}
         />
         <PropsTable

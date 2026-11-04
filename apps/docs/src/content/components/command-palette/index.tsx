@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
@@ -82,6 +92,19 @@ export default function CommandPalettePage() {
         >
           <Navigation />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Desce 8px com escala 0,98 → 1 em ~200ms (média entre --or-duration-fast e --or-duration-medium), --or-ease-out; fundo em fade.', en: 'Drops 8px with 0.98 → 1 scale in ~200ms (between --or-duration-fast and --or-duration-medium), --or-ease-out; overlay fades in.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Sobe 4px e some. 160ms, --or-ease-in-out.', en: 'Rises 4px and fades. 160ms, --or-ease-in-out.' } },
+            { term: { pt: 'Item ativo', en: 'Active item' }, description: { pt: 'Um único destaque desliza até a opção ativa (setas ou ponteiro). 160ms, --or-ease-out. Na abertura ele já aparece no lugar.', en: 'A single highlight slides to the active option (arrows or pointer). 160ms, --or-ease-out. On open it appears in place.' } },
+            { term: { pt: 'Filtrar', en: 'Filtering' }, description: { pt: 'Só as opções que reaparecem entram com fade de 160ms; as que continuam na lista não reanimam a cada tecla.', en: 'Only options that reappear fade in over 160ms; those that stay in the list do not re-animate on every keystroke.' } },
+            { term: { pt: 'Campo de busca', en: 'Search field' }, description: { pt: 'Sublinhado laranja surge no foco em 160ms.', en: 'Orange underline appears on focus in 160ms.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

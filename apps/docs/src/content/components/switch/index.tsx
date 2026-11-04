@@ -1,4 +1,15 @@
-import { Bullets, Code, ComponentPage, DoDont, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  DoDont,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import { Switch } from '@orange/ui'
 import Basic from './examples/Basic'
@@ -83,6 +94,22 @@ export default function SwitchPage() {
             { name: 'name / value', type: 'string', default: "value: 'on'", description: { pt: 'Envia name=value no formulário quando ligado.', en: 'Submits name=value with the form when on.' } },
             { name: 'disabled', type: 'boolean', default: 'false', description: { pt: 'Desabilita o switch.', en: 'Disables the switch.' } },
             { name: '...rest', type: 'ButtonHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;button&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;button&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Alternar', en: 'Toggle' }, description: { pt: 'O polegar desliza com --or-ease-spring (250ms) e o trilho troca de cor em 250ms (--or-duration-medium).', en: 'The thumb slides with --or-ease-spring (250ms) and the track changes color in 250ms (--or-duration-medium).' } },
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda mais forte, anel laranja suave e polegar mais claro — 160ms.', en: 'Stronger border, soft orange ring and lighter thumb — 160ms.' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'No switch ou no rótulo, o polegar encolhe levemente (scale 0.82) em 90ms.', en: 'On the switch or label, the thumb shrinks slightly (scale 0.82) in 90ms.' } },
           ]}
         />
       </Section>

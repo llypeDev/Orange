@@ -1,5 +1,9 @@
 /* ---------------------------------------------------------------------------
  * TimeField — campo de horário nativo
+ *
+ * Movimento: borda/foco do frame vêm do Field (--or-duration-fast); o relógio
+ * acende no hover, gira um "tique" ao receber foco e afunda no clique; o
+ * segmento em edição troca de cor com transição.
  * ------------------------------------------------------------------------- */
 
 .or-time-field__frame {
@@ -10,9 +14,33 @@
   cursor: pointer;
 }
 
+.or-time-field__icon .or-icon {
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-time-field__frame:hover:not([data-disabled], [data-readonly]) .or-time-field__icon {
+  color: var(--or-color-text);
+}
+
+/* Foco: o relógio fica laranja e avança um "tique" (30°). */
+.or-time-field__frame:focus-within:not([data-readonly]) .or-time-field__icon .or-icon {
+  transform: rotate(30deg);
+}
+
+.or-time-field__frame:not([data-disabled], [data-readonly]) .or-time-field__icon:active .or-icon {
+  transform: rotate(30deg) translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
 .or-time-field__frame[data-disabled] .or-time-field__icon,
 .or-time-field__frame[data-readonly] .or-time-field__icon {
   cursor: default;
+}
+
+.or-time-field__icon {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-time-field__frame:focus-within .or-time-field__icon {
@@ -39,6 +67,15 @@
 }
 
 /* Segmento em edição (hora, minuto, AM/PM) destacado em laranja. */
+.or-time-field__input::-webkit-datetime-edit-hour-field,
+.or-time-field__input::-webkit-datetime-edit-minute-field,
+.or-time-field__input::-webkit-datetime-edit-second-field,
+.or-time-field__input::-webkit-datetime-edit-ampm-field {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-time-field__input::-webkit-datetime-edit-hour-field:focus,
 .or-time-field__input::-webkit-datetime-edit-minute-field:focus,
 .or-time-field__input::-webkit-datetime-edit-second-field:focus,

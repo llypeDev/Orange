@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { Icon } from '../../icons'
@@ -94,6 +94,74 @@ describe('AppHeader', () => {
     expect(header).toHaveClass('or-app-header--sticky')
     expect(header).toHaveAttribute('data-collapse', 'lg')
     expect(screen.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('painel do menu continua montado durante a animação de saída (usePresence)', async () => {
+    const user = userEvent.setup()
+    render(<Example />)
+    const header = screen.getByRole('banner')
+    const nav = screen.getByRole('navigation')
+    const menu = screen.getByRole('button', { name: 'Menu' })
+    await user.click(menu)
+    expect(header).toHaveAttribute('data-menu-present')
+    expect(nav).toHaveAttribute('data-state', 'open')
+    // Simula a animação de saída aplicada pelo CSS em telas estreitas.
+    const original = window.getComputedStyle
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((el: Element) => {
+      const style = original(el)
+      if (el !== nav) return style
+      return { ...style, animationName: 'or-app-header-panel-out', animationDuration: '0.16s', transitionDuration: '0s' } as CSSStyleDeclaration
+    })
+    await user.click(menu)
+    expect(menu).toHaveAttribute('aria-expanded', 'false')
+    expect(nav).toHaveAttribute('data-state', 'closed')
+    expect(header).toHaveAttribute('data-menu-present')
+    act(() => {
+      nav.dispatchEvent(new Event('animationend', { bubbles: true }))
+    })
+    expect(header).not.toHaveAttribute('data-menu-present')
+    spy.mockRestore()
+  })
+
+  describe('hideOnScroll', () => {
+    const scrollTo = async (y: number) => {
+      Object.defineProperty(window, 'scrollY', { value: y, configurable: true, writable: true })
+      await act(async () => {
+        window.dispatchEvent(new Event('scroll'))
+        await new Promise((resolve) => requestAnimationFrame(() => resolve(null)))
+      })
+    }
+
+    it('esconde ao rolar para baixo e mostra ao rolar para cima', async () => {
+      Object.defineProperty(window, 'scrollY', { value: 0, configurable: true, writable: true })
+      render(<Example hideOnScroll />)
+      const header = screen.getByRole('banner')
+      expect(header).toHaveClass('or-app-header--sticky', 'or-app-header--hide-on-scroll')
+      expect(header).not.toHaveAttribute('data-scroll-hidden')
+      await scrollTo(400)
+      expect(header).toHaveAttribute('data-scroll-hidden')
+      await scrollTo(300)
+      expect(header).not.toHaveAttribute('data-scroll-hidden')
+    })
+
+    it('nunca esconde com foco dentro do cabeçalho ou com o menu aberto', async () => {
+      const user = userEvent.setup()
+      Object.defineProperty(window, 'scrollY', { value: 0, configurable: true, writable: true })
+      render(<Example hideOnScroll />)
+      const header = screen.getByRole('banner')
+      await user.tab()
+      await scrollTo(500)
+      expect(header).not.toHaveAttribute('data-scroll-hidden')
+      await user.click(screen.getByRole('button', { name: 'Menu' }))
+      act(() => (document.activeElement as HTMLElement).blur())
+      await scrollTo(900)
+      expect(header).not.toHaveAttribute('data-scroll-hidden')
+      await user.click(screen.getByRole('button', { name: 'Menu' }))
+      expect(screen.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false')
+      act(() => (document.activeElement as HTMLElement).blur())
+      await scrollTo(1300)
+      expect(header).toHaveAttribute('data-scroll-hidden')
+    })
   })
 
   it('sem itens não mostra navegação nem botão de menu', () => {

@@ -17,6 +17,7 @@ const meta = {
   },
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'alternate'] },
+    animated: { control: 'boolean' },
   },
   args: {
     variant: 'default',
@@ -72,4 +73,9 @@ export const WithIcons: Story = {
       <TimelineItem date={new Date(2026, 9, 27, 9, 12)} title="Revisão solicitada" icon={<Icon name="users" />} />
     </Timeline>
   ),
+}
+
+/** Eventos entram escalonados (80ms) ao aparecer na tela; a linha é desenhada e o evento atual pulsa. */
+export const Animated: Story = {
+  args: { animated: true },
 }

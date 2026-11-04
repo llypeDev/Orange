@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  Fragment,
   useRef,
   useState,
   type CSSProperties,
@@ -147,6 +148,8 @@ function SliderControl({
   const railRef = useRef<HTMLDivElement>(null)
   const inputs = useRef<(HTMLInputElement | null)[]>([])
   const [lastActive, setLastActive] = useState(0)
+  // Saltos (clique no trilho/marca, teclado) animam o preenchimento e o polegar; o arraste não.
+  const [animate, setAnimate] = useState(false)
 
   const pct = (v: number) => (max === min ? 0 : ((v - min) / (max - min)) * 100)
   const start = isRange ? pct(values[0]) : 0
@@ -189,12 +192,16 @@ function SliderControl({
     event.preventDefault()
     const v = valueAt(event.clientX)
     const index = nearestIndex(v)
+    setAnimate(true)
     setLastActive(index)
     onValueChange(index, v)
     inputs.current[index]?.focus()
     const target = event.currentTarget
     target.setPointerCapture?.(event.pointerId)
-    const move = (e: PointerEvent) => onValueChange(index, valueAt(e.clientX))
+    const move = (e: PointerEvent) => {
+      setAnimate(false)
+      onValueChange(index, valueAt(e.clientX))
+    }
     const up = () => {
       target.removeEventListener('pointermove', move)
       target.removeEventListener('pointerup', up)
@@ -206,7 +213,13 @@ function SliderControl({
     target.addEventListener('pointercancel', up)
   }
 
-  const style = { '--_start': `${start}%`, '--_end': `${end}%` } as CSSProperties
+  const style = {
+    '--_start': `${start}%`,
+    '--_end': `${end}%`,
+    // Preenchimento por transform (anima sem mexer em left/width): posição e tamanho em fração.
+    '--_fill-start': start / 100,
+    '--_fill-size': (end - start) / 100,
+  } as CSSProperties
   const labelId = hasLabel && field ? field.labelId : undefined
   const { 'aria-label': ariaLabel, ...inputRest } = rest
 
@@ -220,6 +233,7 @@ function SliderControl({
       )}
       data-disabled={isDisabled || undefined}
       data-invalid={controlProps['aria-invalid'] || undefined}
+      data-animate={animate || undefined}
       style={style}
       role={isRange ? 'group' : undefined}
       aria-labelledby={isRange ? labelId : undefined}
@@ -228,6 +242,7 @@ function SliderControl({
       <div className="or-slider__control">
         <div ref={railRef} className="or-slider__rail" onPointerDown={handleRailPointerDown}>
           <div className="or-slider__track" />
+          {!isRange && <div className="or-slider__cap" />}
           <div className="or-slider__fill" />
           {markList.map((mark) => {
             const p = pct(mark.value)
@@ -245,8 +260,8 @@ function SliderControl({
         {values.map((v, index) => {
           const thumbId = index === 0 ? baseId : `${baseId}-max`
           return (
+            <Fragment key={index}>
             <input
-              key={index}
               ref={mergeRefs(index === 0 ? inputRef : undefined, (el: HTMLInputElement | null) => {
                 inputs.current[index] = el
               })}
@@ -272,6 +287,11 @@ function SliderControl({
                 setLastActive(index)
                 onValueChange(index, Number(event.target.value))
               }}
+              onPointerDown={() => setAnimate(true)}
+              onPointerMove={(event) => {
+                if (event.buttons & 1) setAnimate(false)
+              }}
+              onKeyDown={() => setAnimate(true)}
               onPointerUp={onCommit}
               onKeyUp={(event) => {
                 if (
@@ -292,6 +312,16 @@ function SliderControl({
               {...controlProps}
               id={thumbId}
             />
+            {/* Polegar visual: o nativo fica transparente (continua sendo o alvo do ponteiro). */}
+            <span
+              className="or-slider__thumb-pos"
+              data-top={(isRange && topIndex === index) || undefined}
+              style={{ '--_p': `${pct(v)}%` } as CSSProperties}
+              aria-hidden="true"
+            >
+              <span className="or-slider__thumb" />
+            </span>
+            </Fragment>
           )
         })}
         {isRange &&
@@ -316,6 +346,7 @@ function SliderControl({
                 onClick={() => {
                   if (isDisabled) return
                   const index = nearestIndex(mark.value)
+                  setAnimate(true)
                   onValueChange(index, mark.value)
                   onCommit()
                   inputs.current[index]?.focus()

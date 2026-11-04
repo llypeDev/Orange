@@ -87,7 +87,10 @@ describe('Banner', () => {
     expect(container.querySelector('.or-banner')).not.toHaveClass('or-banner--enter')
     rerender(<Banner live tone="danger" title="Incidente em andamento" pulse />)
     expect(container.querySelector('.or-banner')).toHaveClass('or-banner--enter')
-    expect(container.querySelector('.or-banner__icon')).toHaveClass('or-pulse', 'or-banner__icon--pulse')
+    expect(container.querySelector('.or-banner__icon')).toHaveClass(
+      'or-pulse',
+      'or-banner__icon--pulse',
+    )
   })
 
   it('na saída fica montado e inert até a transição terminar', async () => {

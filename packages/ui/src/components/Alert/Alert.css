@@ -75,7 +75,8 @@
 
 /* O ícone "assenta" logo depois da mensagem entrar. */
 .or-alert--enter .or-alert__icon {
-  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-press) both;
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-press)
+    both;
 }
 
 .or-alert__icon > svg {

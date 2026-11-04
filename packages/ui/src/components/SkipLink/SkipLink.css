@@ -21,18 +21,30 @@
   box-shadow: var(--or-shadow-hover-ink);
   /* Fora da tela até receber foco: continua acessível e focável. */
   transform: translateY(calc(-100% - var(--or-space-6)));
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+  /* Saída (ao perder o foco): curta, ida e volta. */
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-in-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
+/* Entrada: "cai" no lugar com a curva spring (leve passada e acomodação). */
 .or-skip-link:focus,
 .or-skip-link:focus-visible {
   transform: none;
   outline: 2px solid var(--or-color-focus);
   outline-offset: 2px;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-skip-link:hover {
+.or-skip-link:is(:hover, :focus-visible) {
   background: var(--or-color-accent-hover);
+}
+
+.or-skip-link:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 @media (forced-colors: active) {

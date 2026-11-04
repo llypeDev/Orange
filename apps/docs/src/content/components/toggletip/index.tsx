@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import InForm from './examples/InForm'
 import InFormCode from './examples/InForm?raw'
@@ -77,6 +87,17 @@ export default function ToggletipPage() {
         >
           <Sizes />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Botão', en: 'Button' }, description: { pt: 'Afunda ao pressionar (90ms); fundo e cor mudam em 160ms; o ícone cresce levemente quando aberto (250ms, --or-ease-spring).', en: 'Sinks when pressed (90ms); background and color change in 160ms; the icon grows slightly when open (250ms, --or-ease-spring).' } },
+            { term: { pt: 'Bolha', en: 'Bubble' }, description: { pt: 'Entra com opacidade + 4px em 250ms e sai em 160ms, voltando para o botão.', en: 'Enters with opacity + 4px in 250ms and leaves in 160ms, retreating toward the button.' } },
+            { term: { pt: 'Reabrir', en: 'Reopen' }, description: { pt: 'Reabrir durante a saída monta uma bolha nova, que é anunciada de novo.', en: 'Reopening during the exit mounts a fresh bubble, which is announced again.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

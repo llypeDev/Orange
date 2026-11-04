@@ -7,10 +7,10 @@ import {
   type MouseEvent,
   type RefObject,
 } from 'react'
-import { useReducedMotion } from '../../hooks'
+import { usePresence, useReducedMotion } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { canUseDOM, cx } from '../../utils'
+import { canUseDOM, cx, mergeRefs } from '../../utils'
 import './BackToTop.css'
 
 type ElementTarget = HTMLElement | null | RefObject<HTMLElement | null> | (() => HTMLElement | null)
@@ -114,9 +114,13 @@ export const BackToTop = forwardRef<HTMLButtonElement, BackToTopProps>(function 
     focusElement(target)
   }
 
+  // Entra e sai com animação: continua montado até a saída terminar.
+  const presence = usePresence<HTMLButtonElement>(visible)
+  if (!presence.present) return null
+
   return (
     <button
-      ref={ref}
+      ref={mergeRefs(ref, presence.nodeRef)}
       type="button"
       className={cx(
         'or-back-to-top',
@@ -124,7 +128,7 @@ export const BackToTop = forwardRef<HTMLButtonElement, BackToTopProps>(function 
         showLabel && 'or-back-to-top--labeled',
         className,
       )}
-      data-visible={visible || undefined}
+      data-state={presence.state}
       aria-label={showLabel ? undefined : text}
       onClick={handleClick}
       {...rest}

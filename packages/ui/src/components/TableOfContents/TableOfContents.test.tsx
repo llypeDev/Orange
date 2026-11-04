@@ -99,6 +99,18 @@ describe('TableOfContents', () => {
     expect(screen.getByRole('link', { name: 'Uso' })).toHaveAttribute('aria-current', 'location')
   })
 
+  it('tem um marcador único e decorativo fora da lista', () => {
+    const { container } = render(
+      <>
+        <TableOfContents items={items} />
+        <Article />
+      </>,
+    )
+    const marker = container.querySelector('.or-toc__marker')
+    expect(marker).toHaveAttribute('aria-hidden', 'true')
+    expect(marker?.closest('ul')).toBeNull()
+  })
+
   it('passa rootMargin ao IntersectionObserver', () => {
     render(
       <>

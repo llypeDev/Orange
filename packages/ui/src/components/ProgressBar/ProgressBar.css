@@ -106,7 +106,8 @@
 .or-progress-bar--indeterminate .or-progress-bar__fill {
   width: 40%;
   transform: none;
-  animation: or-progress-bar-slide calc(var(--or-duration-loop) * 0.6) var(--or-ease-in-out) infinite;
+  animation: or-progress-bar-slide calc(var(--or-duration-loop) * 0.6) var(--or-ease-in-out)
+    infinite;
 }
 
 /*

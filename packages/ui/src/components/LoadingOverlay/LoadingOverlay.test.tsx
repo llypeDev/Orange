@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { LoadingOverlay } from './LoadingOverlay'
@@ -82,6 +82,28 @@ describe('LoadingOverlay', () => {
       </>,
     )
     expect(outside).toHaveFocus()
+  })
+
+  it('na saída, spinner e mensagem ficam no painel até o fade terminar; o conteúdo é liberado na hora', () => {
+    const real = window.getComputedStyle.bind(window)
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+      const style = real(el, pseudo)
+      if (!(el as Element).matches?.('.or-loading-overlay__backdrop')) return style
+      return Object.assign(Object.create(style), {
+        animationName: 'none',
+        animationDuration: '0s',
+        transitionDuration: '0.16s',
+      }) as CSSStyleDeclaration
+    })
+    const { container, rerender } = render(<Report visible message="Salvando…" />)
+    rerender(<Report visible={false} message="Salvando…" />)
+    expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'hidden')
+    expect(content()).not.toHaveAttribute('inert')
+    expect(screen.getByRole('status')).toHaveTextContent('Salvando…')
+    expect(container.querySelector('.or-spinner')).toBeInTheDocument()
+    fireEvent.transitionEnd(container.querySelector('.or-loading-overlay__backdrop')!)
+    expect(screen.getByRole('status')).toBeEmptyDOMElement()
+    expect(container.querySelector('.or-spinner')).not.toBeInTheDocument()
   })
 
   it('traduz a mensagem padrão', () => {

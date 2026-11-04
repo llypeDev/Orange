@@ -91,6 +91,13 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
   const [draft, setDraft] = useState(value)
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  // Motion: só anima a troca leitura ↔ edição depois da primeira interação
+  // (nada se move no carregamento da página).
+  const [interacted, setInteracted] = useState(false)
+  // Flash de sucesso no valor recém-salvo.
+  const [flash, setFlash] = useState(false)
+  // Cada tentativa de salvar com erro faz o campo tremer de novo.
+  const [errorCount, setErrorCount] = useState(0)
 
   const rootRef = useRef<HTMLDivElement | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -122,6 +129,9 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
     if (disabled) return
     setDraft(value)
     setError(null)
+    setErrorCount(0)
+    setFlash(false)
+    setInteracted(true)
     setEditing(true)
   }
 
@@ -137,6 +147,7 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
     setDraft(value)
     editingRef.current = false
     focusDisplayRef.current = true
+    setFlash(false)
     setEditing(false)
     setError(null)
     onCancel?.()
@@ -148,6 +159,7 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
     const validationError = validate?.(next)
     if (validationError) {
       setError(validationError)
+      setErrorCount((count) => count + 1)
       if (source !== 'blur') inputRef.current?.focus()
       return
     }
@@ -164,10 +176,12 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
       }
       if (!mountedRef.current) return
       setValue(next)
+      setFlash(true)
       finish(source)
     } catch (reason) {
       if (!mountedRef.current) return
       setError(reason instanceof Error && reason.message ? reason.message : t('saveFailed'))
+      setErrorCount((count) => count + 1)
       if (source !== 'blur') requestAnimationFrame(() => inputRef.current?.focus())
     } finally {
       savingRef.current = false
@@ -201,7 +215,12 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
   return (
     <div
       ref={mergeRefs(rootRef, ref)}
-      className={cx('or-inline-edit', `or-inline-edit--${size}`, className)}
+      className={cx(
+        'or-inline-edit',
+        `or-inline-edit--${size}`,
+        interacted && 'or-inline-edit--animated',
+        className,
+      )}
       data-state={editing ? 'editing' : 'display'}
       data-disabled={disabled || undefined}
       {...rest}
@@ -222,6 +241,8 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
           <div
             className={cx('or-control-frame', `or-control-frame--${size}`, 'or-inline-edit__frame')}
             data-invalid={error ? true : undefined}
+            // Alterna entre duas animações idênticas para repetir o tremor.
+            data-shake={errorCount > 0 ? (errorCount % 2 ? 'a' : 'b') : undefined}
           >
             <input
               {...inputProps}
@@ -278,7 +299,7 @@ export const InlineEdit = forwardRef<HTMLDivElement, InlineEditProps>(function I
         <button
           ref={displayRef}
           type="button"
-          className="or-inline-edit__display"
+          className={cx('or-inline-edit__display', flash && 'or-inline-edit__display--saved')}
           aria-label={accessibleName}
           disabled={disabled}
           onClick={startEditing}

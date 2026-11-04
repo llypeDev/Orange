@@ -132,6 +132,18 @@ describe('SideNav', () => {
     expect(screen.getByRole('button', { name: 'Expandir menu lateral' })).toBeInTheDocument()
   })
 
+  it('anima a troca de modo só depois da primeira troca (data-motion)', async () => {
+    const user = userEvent.setup()
+    render(<Example collapsible />)
+    const nav = screen.getByRole('navigation')
+    expect(nav).not.toHaveAttribute('data-motion')
+    await user.click(screen.getByRole('button', { name: 'Recolher menu lateral' }))
+    expect(nav).toHaveAttribute('data-motion')
+    // Painéis de grupo usam um wrapper único para animar a altura (grid 0fr → 1fr).
+    const panel = document.getElementById(screen.getByRole('button', { name: 'Projetos' }).getAttribute('aria-controls')!)
+    expect(panel?.parentElement).toHaveClass('or-side-nav__panel-inner')
+  })
+
   it('usa renderLink e rótulo padrão traduzido', () => {
     render(
       <OrangeProvider locale="en-US" themeTarget="scoped">

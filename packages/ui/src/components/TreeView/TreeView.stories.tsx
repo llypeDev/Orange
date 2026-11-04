@@ -104,3 +104,8 @@ export const CustomIcons: Story = {
     ],
   },
 }
+
+/** Comece recolhido e expanda as pastas para ver a animação de altura e o giro do chevron. */
+export const ExpandCollapse: Story = {
+  args: { defaultExpanded: [], defaultSelected: [] },
+}

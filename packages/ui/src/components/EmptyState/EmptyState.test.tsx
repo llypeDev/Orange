@@ -59,6 +59,13 @@ describe('EmptyState', () => {
     expect(onCreate).toHaveBeenCalledTimes(2)
   })
 
+  it('anima a entrada por padrão e permite desligar', () => {
+    const { container, rerender } = render(<EmptyState title="Sem pedidos" />)
+    expect(container.firstElementChild).toHaveClass('or-empty-state--animated')
+    rerender(<EmptyState title="Sem pedidos" animated={false} />)
+    expect(container.firstElementChild).not.toHaveClass('or-empty-state--animated')
+  })
+
   it('variante compacta', () => {
     const { container } = render(<EmptyState variant="compact" title="Sem comentários" />)
     expect(container.firstElementChild).toHaveClass('or-empty-state--compact')

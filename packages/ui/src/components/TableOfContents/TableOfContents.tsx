@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useEffect,
+  useRef,
   useState,
   type HTMLAttributes,
   type MouseEvent,
@@ -10,6 +11,7 @@ import {
 import { useId } from '../../hooks'
 import { useLocale } from '../../providers'
 import { canUseDOM, cx } from '../../utils'
+import { useSlidingIndicator } from '../Tabs/useSlidingIndicator'
 import './TableOfContents.css'
 
 export interface TableOfContentsItem {
@@ -84,111 +86,141 @@ function collectHeadings(root: HTMLElement, selector: string): TableOfContentsIt
  * Índice "Nesta página": lista as seções da página e destaca a que está
  * visível enquanto a pessoa rola.
  */
-export const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(function TableOfContents(
-  {
-    items: itemsProp,
-    container,
-    headingSelector = 'h2, h3',
-    title,
-    rootMargin = '-80px 0px -65% 0px',
-    root,
-    onItemClick,
-    className,
-    'aria-label': ariaLabel,
-    ...rest
-  },
-  ref,
-) {
-  const { t } = useLocale()
-  const titleId = useId('or-toc-title')
-  const [collected, setCollected] = useState<TableOfContentsItem[]>([])
-  const [activeId, setActiveId] = useState<string>()
-  const items = itemsProp ?? collected
+export const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
+  function TableOfContents(
+    {
+      items: itemsProp,
+      container,
+      headingSelector = 'h2, h3',
+      title,
+      rootMargin = '-80px 0px -65% 0px',
+      root,
+      onItemClick,
+      className,
+      'aria-label': ariaLabel,
+      ...rest
+    },
+    ref,
+  ) {
+    const { t } = useLocale()
+    const titleId = useId('or-toc-title')
+    const [collected, setCollected] = useState<TableOfContentsItem[]>([])
+    const [activeId, setActiveId] = useState<string>()
+    const items = itemsProp ?? collected
 
-  // Coleta automática dos títulos do contêiner (e atualiza se o conteúdo mudar).
-  useEffect(() => {
-    if (itemsProp) return
-    const root = resolveContainer(container)
-    if (!root) return
-    const signature = (list: TableOfContentsItem[]) => list.map((i) => `${i.id}:${i.level}:${i.label}`).join('|')
-    const update = () => {
-      const next = collectHeadings(root, headingSelector)
-      // Evita re-render (e laços com o MutationObserver) quando nada mudou.
-      setCollected((prev) => (signature(prev) === signature(next) ? prev : next))
+    // Coleta automática dos títulos do contêiner (e atualiza se o conteúdo mudar).
+    useEffect(() => {
+      if (itemsProp) return
+      const root = resolveContainer(container)
+      if (!root) return
+      const signature = (list: TableOfContentsItem[]) =>
+        list.map((i) => `${i.id}:${i.level}:${i.label}`).join('|')
+      const update = () => {
+        const next = collectHeadings(root, headingSelector)
+        // Evita re-render (e laços com o MutationObserver) quando nada mudou.
+        setCollected((prev) => (signature(prev) === signature(next) ? prev : next))
+      }
+      update()
+      if (typeof MutationObserver === 'undefined') return
+      const mo = new MutationObserver(update)
+      mo.observe(root, { childList: true, subtree: true })
+      return () => mo.disconnect()
+    }, [itemsProp, container, headingSelector])
+
+    const idsKey = items.map((item) => item.id).join('|')
+
+    // Destaca a seção visível.
+    useEffect(() => {
+      if (!canUseDOM || typeof IntersectionObserver === 'undefined') return
+      const ids = idsKey ? idsKey.split('|') : []
+      const elements = ids
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => !!el)
+      if (elements.length === 0) return
+      const visible = new Set<string>()
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) visible.add(entry.target.id)
+            else visible.delete(entry.target.id)
+          }
+          // A primeira seção (na ordem do documento) dentro da faixa vence.
+          const first = ids.find((id) => visible.has(id))
+          if (first) setActiveId(first)
+        },
+        { rootMargin, root: resolveContainer(root) },
+      )
+      elements.forEach((el) => io.observe(el))
+      return () => io.disconnect()
+    }, [idsKey, rootMargin, root])
+
+    const handleClick = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+      onItemClick?.(id, event)
+      if (!event.defaultPrevented) setActiveId(id)
     }
-    update()
-    if (typeof MutationObserver === 'undefined') return
-    const mo = new MutationObserver(update)
-    mo.observe(root, { childList: true, subtree: true })
-    return () => mo.disconnect()
-  }, [itemsProp, container, headingSelector])
 
-  const idsKey = items.map((item) => item.id).join('|')
+    const minLevel = items.reduce((min, item) => Math.min(min, item.level ?? 2), Infinity)
+    const showTitle = title !== null
+    const labelled = showTitle && !ariaLabel
 
-  // Destaca a seção visível.
-  useEffect(() => {
-    if (!canUseDOM || typeof IntersectionObserver === 'undefined') return
-    const ids = idsKey ? idsKey.split('|') : []
-    const elements = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el)
-    if (elements.length === 0) return
-    const visible = new Set<string>()
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.add(entry.target.id)
-          else visible.delete(entry.target.id)
-        }
-        // A primeira seção (na ordem do documento) dentro da faixa vence.
-        const first = ids.find((id) => visible.has(id))
-        if (first) setActiveId(first)
-      },
-      { rootMargin, root: resolveContainer(root) },
+    // Marcador único que desliza até a seção visível.
+    const trackRef = useRef<HTMLDivElement>(null)
+    const marker = useSlidingIndicator(
+      trackRef,
+      '[aria-current="location"]',
+      'y',
+      `${activeId}|${idsKey}`,
     )
-    elements.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [idsKey, rootMargin, root])
 
-  const handleClick = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
-    onItemClick?.(id, event)
-    if (!event.defaultPrevented) setActiveId(id)
-  }
+    if (items.length === 0) return null
 
-  const minLevel = items.reduce((min, item) => Math.min(min, item.level ?? 2), Infinity)
-  const showTitle = title !== null
-  const labelled = showTitle && !ariaLabel
-
-  if (items.length === 0) return null
-
-  return (
-    <nav
-      ref={ref}
-      className={cx('or-toc', className)}
-      aria-label={labelled ? undefined : (ariaLabel ?? t('tableOfContents'))}
-      aria-labelledby={labelled ? titleId : undefined}
-      {...rest}
-    >
-      {showTitle && (
-        <p id={titleId} className="or-toc__title">
-          {title ?? t('tableOfContents')}
-        </p>
-      )}
-      <ul className="or-toc__list">
-        {items.map((item) => {
-          const depth = Math.max(0, (item.level ?? 2) - (Number.isFinite(minLevel) ? minLevel : 2))
-          return (
-            <li key={item.id} className="or-toc__item" data-depth={depth}>
-              <a
-                href={`#${item.id}`}
-                className="or-toc__link"
-                aria-current={activeId === item.id ? 'location' : undefined}
-                onClick={handleClick(item.id)}
-              >
-                {item.label}
-              </a>
-            </li>
-          )
-        })}
-      </ul>
-    </nav>
-  )
-})
+    return (
+      <nav
+        ref={ref}
+        className={cx('or-toc', className)}
+        aria-label={labelled ? undefined : (ariaLabel ?? t('tableOfContents'))}
+        aria-labelledby={labelled ? titleId : undefined}
+        {...rest}
+      >
+        {showTitle && (
+          <p id={titleId} className="or-toc__title">
+            {title ?? t('tableOfContents')}
+          </p>
+        )}
+        <div
+          ref={trackRef}
+          className="or-toc__track"
+          data-marker={marker.ready ? 'ready' : undefined}
+        >
+          <span
+            className="or-toc__marker"
+            aria-hidden="true"
+            data-visible={marker.visible || undefined}
+            data-ready={marker.ready || undefined}
+            style={marker.style}
+          />
+          <ul className="or-toc__list">
+            {items.map((item) => {
+              const depth = Math.max(
+                0,
+                (item.level ?? 2) - (Number.isFinite(minLevel) ? minLevel : 2),
+              )
+              return (
+                <li key={item.id} className="or-toc__item" data-depth={depth}>
+                  <a
+                    href={`#${item.id}`}
+                    className="or-toc__link"
+                    aria-current={activeId === item.id ? 'location' : undefined}
+                    onClick={handleClick(item.id)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </nav>
+    )
+  },
+)

@@ -22,6 +22,12 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
   secondaryAction?: ReactNode
   /** `compact`: horizontal e menor, para painéis, listas e células. */
   variant?: EmptyStateVariant
+  /**
+   * Entrada ao montar: os quadrados da ilustração "caem" no lugar, um depois
+   * do outro, e o texto sobe 8px. Desligado automaticamente com movimento
+   * reduzido.
+   */
+  animated?: boolean
 }
 
 /**
@@ -38,6 +44,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     action,
     secondaryAction,
     variant = 'default',
+    animated = true,
     className,
     ...rest
   },
@@ -54,7 +61,12 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
   return (
     <div
       ref={ref}
-      className={cx('or-empty-state', `or-empty-state--${variant}`, className)}
+      className={cx(
+        'or-empty-state',
+        `or-empty-state--${variant}`,
+        animated && 'or-empty-state--animated',
+        className,
+      )}
       {...rest}
     >
       {illustration !== false &&

@@ -20,6 +20,7 @@ const meta = {
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     as: { control: 'inline-radio', options: ['ul', 'ol'] },
     start: { control: 'number' },
+    animated: { control: 'boolean' },
   },
   args: {
     variant: 'bullet',
@@ -95,4 +96,9 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
+}
+
+/** Itens entram escalonados (subindo 24px, 80ms entre eles) quando a lista aparece na tela. */
+export const Animated: Story = {
+  args: { variant: 'numbered', animated: true, size: 'lg' },
 }

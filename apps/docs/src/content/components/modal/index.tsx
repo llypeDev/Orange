@@ -193,6 +193,17 @@ export default function ModalPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Painel sobe 8px com escala 0,98 → 1 e opacidade; o fundo faz fade. 250ms (--or-duration-medium), --or-ease-out.', en: 'Panel rises 8px with 0.98 → 1 scale and opacity; the overlay fades in. 250ms (--or-duration-medium), --or-ease-out.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Painel desce 4px e some; fundo em fade. 160ms (--or-duration-fast), --or-ease-in-out. O conteúdo fica inerte durante a saída.', en: 'Panel drops 4px and fades; overlay fades out. 160ms (--or-duration-fast), --or-ease-in-out. Content is inert while leaving.' } },
+            { term: { pt: 'Botões', en: 'Buttons' }, description: { pt: 'Afundam 1px ao pressionar. 90ms (--or-duration-press).', en: 'Sink 1px when pressed. 90ms (--or-duration-press).' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Modal', en: 'Modal' }}

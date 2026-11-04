@@ -81,6 +81,45 @@
   cursor: not-allowed;
 }
 
+/* Movimento ----------------------------------------------------------------
+ * - cada caractere digitado faz um pop (escala com bounce); ao colar, os
+ *   campos entram em onda (atraso por posição);
+ * - ao completar, a borda passa a success em onda;
+ * - ao surgir um erro, o grupo treme uma vez.
+ * ------------------------------------------------------------------------- */
+
+.or-pin-input__field[data-pop='a'] {
+  animation: or-pin-input-pop-a var(--or-duration-medium) var(--or-ease-bounce) backwards;
+  animation-delay: calc(var(--_pop-order, 0) * var(--or-stagger) / 2);
+}
+
+.or-pin-input__field[data-pop='b'] {
+  animation: or-pin-input-pop-b var(--or-duration-medium) var(--or-ease-bounce) backwards;
+  animation-delay: calc(var(--_pop-order, 0) * var(--or-stagger) / 2);
+}
+
+/* Duas keyframes idênticas: alternar o nome reinicia o pop ao substituir um caractere. */
+@keyframes or-pin-input-pop-a {
+  from {
+    transform: scale(0.86);
+  }
+}
+
+@keyframes or-pin-input-pop-b {
+  from {
+    transform: scale(0.86);
+  }
+}
+
+.or-pin-input[data-complete] .or-pin-input__field:not(:focus) {
+  border-color: var(--or-color-success);
+  transition-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+.or-pin-input[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
 /* Separador visual entre grupos (ex.: 123 — 456). */
 .or-pin-input__separator {
   width: 0.625rem;

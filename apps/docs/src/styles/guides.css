@@ -3236,3 +3236,75 @@
   color: var(--or-color-text);
   font-variant-numeric: tabular-nums;
 }
+
+/* --- Página do Reveal ----------------------------------------------------- */
+
+.guide-reveal-grid--flush {
+  padding: 0;
+}
+
+.guide-reveal-list {
+  margin: 0;
+  list-style: none;
+}
+
+.guide-reveal-card .or-icon {
+  display: block;
+  margin-bottom: var(--or-space-4);
+  color: var(--or-color-accent-text);
+}
+
+.guide-reveal-card strong {
+  display: block;
+  font-size: var(--or-text-lg);
+}
+
+.guide-reveal-card span {
+  display: block;
+  margin-top: var(--or-space-1);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-regular);
+  color: var(--or-color-text-muted);
+}
+
+.guide-reveal-title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-3xl);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: var(--or-tracking-heading);
+  line-height: var(--or-leading-heading);
+  color: var(--or-color-text);
+}
+
+.guide-reveal-text {
+  margin: 0;
+  color: var(--or-color-text-muted);
+}
+
+.guide-reveal-orders {
+  display: grid;
+  gap: var(--or-space-3);
+  margin: 0;
+  padding: var(--or-space-4) var(--or-space-4) var(--or-space-8);
+  list-style: none;
+}
+
+.guide-reveal-order {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--or-space-3);
+  padding: var(--or-space-4);
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.guide-reveal-order strong {
+  font-family: var(--or-font-display);
+  color: var(--or-color-text);
+  font-variant-numeric: tabular-nums;
+}

@@ -69,7 +69,8 @@
 }
 
 .or-multi-select__chip[data-state='closed'] {
-  animation: or-multi-select-chip-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  animation: or-multi-select-chip-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out)
+    both;
   pointer-events: none;
 }
 
@@ -185,7 +186,8 @@
 }
 
 .or-multi-select__clear[data-state='closed'] {
-  animation: or-multi-select-clear-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  animation: or-multi-select-clear-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out)
+    both;
   pointer-events: none;
 }
 

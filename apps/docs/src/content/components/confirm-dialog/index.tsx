@@ -3,6 +3,7 @@ import {
   Callout,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -138,6 +139,18 @@ export default function ConfirmDialogPage() {
         >
           <UseConfirm />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Sobe 8px com escala 0,96 → 1 (mais marcada que o Modal, é um alerta); fundo em fade. 250ms, --or-ease-out.', en: 'Rises 8px with 0.96 → 1 scale (stronger than Modal, it is an alert); overlay fades in. 250ms, --or-ease-out.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Desce 4px e some. 160ms, --or-ease-in-out.', en: 'Drops 4px and fades. 160ms, --or-ease-in-out.' } },
+            { term: { pt: 'Confirmar com Promise', en: 'Confirm with a Promise' }, description: { pt: 'O rótulo dá lugar ao spinner do Button enquanto a ação roda.', en: 'The label gives way to the Button spinner while the action runs.' } },
+            { term: { pt: 'Botões', en: 'Buttons' }, description: { pt: 'Afundam 1px ao pressionar. 90ms (--or-duration-press).', en: 'Sink 1px when pressed. 90ms (--or-duration-press).' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

@@ -1,4 +1,15 @@
-import { Bullets, Callout, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T, useLang } from '../../../i18n'
 import LinkPreview from './examples/LinkPreview'
 import LinkPreviewCode from './examples/LinkPreview?raw'
@@ -71,6 +82,16 @@ export default function HoverCardPage() {
         >
           <Mentions />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Entrada', en: 'Enter' }, description: { pt: 'Depois do openDelay (600ms): opacidade + 4px vindo do link. 250ms, --or-ease-out.', en: 'After openDelay (600ms): opacity + 4px from the link. 250ms, --or-ease-out.' } },
+            { term: { pt: 'Saída', en: 'Exit' }, description: { pt: 'Depois do closeDelay (300ms): recua 4px e some em 160ms; inerte durante a saída.', en: 'After closeDelay (300ms): retreats 4px and fades in 160ms; inert while leaving.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

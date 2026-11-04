@@ -47,6 +47,23 @@ describe('BottomNavigation', () => {
     expect(screen.getByRole('button', { name: 'Buscar' })).not.toHaveAttribute('aria-current')
   })
 
+  it('indicador único desliza para o destino ativo (índice em variável CSS)', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<BottomNavigation items={items.map(({ href: _h, ...i }) => i)} defaultValue="inicio" />)
+    const indicator = container.querySelector<HTMLElement>('.or-bottom-nav__indicator')!
+    expect(indicator).toHaveAttribute('aria-hidden', 'true')
+    expect(indicator).toHaveAttribute('data-visible')
+    expect(indicator.style.getPropertyValue('--_count')).toBe('4')
+    expect(indicator.style.getPropertyValue('--_index')).toBe('0')
+    await user.click(screen.getByRole('button', { name: /Pedidos/ }))
+    expect(indicator.style.getPropertyValue('--_index')).toBe('2')
+  })
+
+  it('sem destino ativo o indicador fica escondido', () => {
+    const { container } = render(<BottomNavigation items={items} />)
+    expect(container.querySelector('.or-bottom-nav__indicator')).not.toHaveAttribute('data-visible')
+  })
+
   it('funciona controlado', async () => {
     const user = userEvent.setup()
     function Controlled() {

@@ -92,7 +92,9 @@ function SearchControl({
     'aria-describedby': rest['aria-describedby'],
   })
   const isDisabled = Boolean(controlProps.disabled)
-  const clearPresence = useInlinePresence<HTMLButtonElement>(Boolean(text) && !isDisabled && !readOnly)
+  const clearPresence = useInlinePresence<HTMLButtonElement>(
+    Boolean(text) && !isDisabled && !readOnly,
+  )
   return (
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-search__frame')}

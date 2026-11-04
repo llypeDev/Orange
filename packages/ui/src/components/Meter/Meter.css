@@ -80,7 +80,8 @@
   margin-left: -1px;
   background: var(--or-color-text-subtle);
   /* as marcas aparecem depois que o preenchimento cresce */
-  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-slow) both;
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-slow)
+    both;
 }
 
 .or-meter__description {

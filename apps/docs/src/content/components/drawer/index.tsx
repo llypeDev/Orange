@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Details from './examples/Details'
 import DetailsCode from './examples/Details?raw'
@@ -92,6 +102,17 @@ export default function DrawerPage() {
         >
           <Details />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Desliza a partir da borda escolhida (or-slide-in-right / -left / -up). 250ms, --or-ease-out. Fundo em fade junto.', en: 'Slides in from the chosen edge (or-slide-in-right / -left / -up). 250ms, --or-ease-out. Overlay fades in with it.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Volta para a mesma borda (or-slide-out-right / -left / -down). 160ms, --or-ease-in-out. Conteúdo inerte durante a saída.', en: 'Slides back to the same edge (or-slide-out-right / -left / -down). 160ms, --or-ease-in-out. Content is inert while leaving.' } },
+            { term: { pt: 'Botões', en: 'Buttons' }, description: { pt: 'Afundam 1px ao pressionar. 90ms.', en: 'Sink 1px when pressed. 90ms.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

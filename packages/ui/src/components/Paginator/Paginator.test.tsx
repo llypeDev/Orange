@@ -81,9 +81,13 @@ describe('Paginator', () => {
     const user = userEvent.setup()
     render(<Paginator variant="compact" totalPages={12} defaultPage={3} />)
     expect(screen.getByText('Página 3 de 12')).toBeInTheDocument()
+    expect(screen.getByText('Página 3 de 12')).not.toHaveClass('or-paginator__status-text--enter')
     expect(screen.queryByRole('button', { name: 'Página 4' })).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Próxima página' }))
     expect(screen.getByText('Página 4 de 12')).toBeInTheDocument()
+    // O texto remonta e entra com um deslize curto depois da troca.
+    expect(screen.getByText('Página 4 de 12')).toHaveClass('or-paginator__status-text--enter')
+    expect(screen.getByRole('button', { name: 'Próxima página' })).toHaveClass('or-paginator__button--next')
   })
 
   it('mostra o intervalo de itens e troca itens por página mantendo o primeiro item visível', async () => {

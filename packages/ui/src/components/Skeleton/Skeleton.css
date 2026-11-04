@@ -55,3 +55,24 @@
     border: 1px solid GrayText;
   }
 }
+
+/* Troca placeholder → conteúdo (prop `loaded`) ---------------------------- */
+
+.or-skeleton-swap {
+  display: grid;
+}
+
+/* as duas camadas ocupam a mesma célula: o conteúdo surge sobre o placeholder */
+.or-skeleton-swap__layer {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.or-skeleton-swap[data-changed] > .or-skeleton-swap__layer[data-state='open'] {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-skeleton-swap > .or-skeleton-swap__layer[data-state='closed'] {
+  pointer-events: none;
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}

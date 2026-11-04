@@ -47,7 +47,7 @@
   font-size: var(--or-text-xs);
 }
 
-.or-toc__link:hover {
+.or-toc__link:is(:hover, :focus-visible) {
   color: var(--or-color-text);
 }
 
@@ -56,7 +56,38 @@
   outline-offset: -2px;
 }
 
-/* Seção visível: barra laranja de 2px sobre a linha da lista. */
+/*
+ * Seção visível: um único marcador laranja de 2px desliza (translateY + scaleY)
+ * até o link atual, com a curva "spring". Antes de medir (SSR, 1º quadro), o
+ * próprio link desenha a barra.
+ */
+.or-toc__track {
+  position: relative;
+}
+
+.or-toc__marker {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 1px;
+  background: var(--or-color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.or-toc__marker[data-visible] {
+  opacity: 1;
+}
+
+.or-toc__marker[data-ready] {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-toc__link::before {
   content: '';
   position: absolute;
@@ -66,7 +97,10 @@
   width: 2px;
   background: var(--or-color-accent);
   transform: scaleY(0);
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-toc__track:not([data-marker]) .or-toc__link[aria-current='location']::before {
+  transform: none;
 }
 
 .or-toc__link[aria-current='location'] {
@@ -74,12 +108,8 @@
   font-weight: var(--or-weight-medium);
 }
 
-.or-toc__link[aria-current='location']::before {
-  transform: none;
-}
-
 @media (forced-colors: active) {
-  .or-toc__link[aria-current='location']::before {
+  .or-toc__marker {
     background: Highlight;
   }
 }

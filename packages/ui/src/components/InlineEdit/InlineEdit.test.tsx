@@ -166,6 +166,39 @@ describe('InlineEdit', () => {
     expect(screen.getByRole('button', { name: 'Editar Responsável: Bruno' })).toBeInTheDocument()
   })
 
+  it('motion: troca animada só após interagir, flash ao salvar e tremor a cada erro', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <InlineEdit
+        label="Nome"
+        defaultValue="Orange"
+        validate={(v) => (v.trim() ? null : 'Informe um nome')}
+      />,
+    )
+    const root = container.querySelector('.or-inline-edit') as HTMLElement
+    expect(root).not.toHaveClass('or-inline-edit--animated')
+    await user.click(screen.getByRole('button', { name: /Editar Nome/ }))
+    expect(root).toHaveClass('or-inline-edit--animated')
+
+    const frame = () => container.querySelector('.or-inline-edit__frame') as HTMLElement
+    expect(frame()).not.toHaveAttribute('data-shake')
+    await user.clear(screen.getByRole('textbox', { name: 'Nome' }))
+    await user.keyboard('{Enter}')
+    expect(frame()).toHaveAttribute('data-shake', 'a')
+    await user.keyboard('{Enter}')
+    expect(frame()).toHaveAttribute('data-shake', 'b')
+
+    await user.keyboard('Orange Pay{Enter}')
+    expect(screen.getByRole('button', { name: 'Editar Nome: Orange Pay' })).toHaveClass(
+      'or-inline-edit__display--saved',
+    )
+    // cancelar não acende o flash
+    await user.keyboard('{Enter}{Escape}')
+    expect(screen.getByRole('button', { name: 'Editar Nome: Orange Pay' })).not.toHaveClass(
+      'or-inline-edit__display--saved',
+    )
+  })
+
   it('desabilitado não entra em edição', () => {
     render(<InlineEdit label="Nome" defaultValue="A" disabled />)
     expect(screen.getByRole('button', { name: /Editar Nome/ })).toBeDisabled()

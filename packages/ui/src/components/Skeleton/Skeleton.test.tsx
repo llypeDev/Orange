@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { VisuallyHidden } from '../VisuallyHidden'
 import { Skeleton, SkeletonText } from './Skeleton'
@@ -65,6 +65,88 @@ describe('SkeletonText', () => {
     const lines = container.querySelectorAll<HTMLElement>('.or-skeleton')
     expect(lines).toHaveLength(1)
     expect(lines[0].style.width).toBe('')
+  })
+})
+
+/** Simula as animações de troca (o jsdom não aplica CSS). */
+function simulateLayerAnimation() {
+  const real = window.getComputedStyle.bind(window)
+  vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+    const style = real(el, pseudo)
+    if (!(el as Element).matches?.('.or-skeleton-swap__layer')) return style
+    return Object.assign(Object.create(style), {
+      animationName: 'or-fade-out',
+      animationDuration: '0.16s',
+      transitionDuration: '0s',
+    }) as CSSStyleDeclaration
+  })
+}
+
+describe('loaded (troca com crossfade)', () => {
+  it('carregando: contêiner aria-busy com placeholder oculto e sem o conteúdo', () => {
+    const { container } = render(
+      <Skeleton variant="circle" width={40} loaded={false}>
+        <img src="/ana.jpg" alt="Ana Souza" />
+      </Skeleton>,
+    )
+    const swap = container.firstElementChild!
+    expect(swap).toHaveClass('or-skeleton-swap')
+    expect(swap).toHaveAttribute('aria-busy', 'true')
+    expect(swap.querySelector('.or-skeleton--circle')).toBeInTheDocument()
+    expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  })
+
+  it('ao carregar, mostra o conteúdo e esmaece o placeholder até a animação terminar', () => {
+    simulateLayerAnimation()
+    const { container, rerender } = render(
+      <Skeleton variant="rect" height={120} loaded={false}>
+        <p>Receita de outubro: R$ 48.210,90</p>
+      </Skeleton>,
+    )
+    rerender(
+      <Skeleton variant="rect" height={120} loaded>
+        <p>Receita de outubro: R$ 48.210,90</p>
+      </Skeleton>,
+    )
+    const swap = container.firstElementChild!
+    expect(swap).not.toHaveAttribute('aria-busy')
+    expect(swap).toHaveAttribute('data-changed', 'true')
+    expect(screen.getByText('Receita de outubro: R$ 48.210,90')).toBeInTheDocument()
+    const [placeholder, content] = swap.querySelectorAll('.or-skeleton-swap__layer')
+    expect(placeholder).toHaveAttribute('data-state', 'closed')
+    expect(placeholder).toHaveAttribute('aria-hidden', 'true')
+    expect(content).toHaveAttribute('data-state', 'open')
+    fireEvent.animationEnd(placeholder)
+    expect(swap.querySelector('.or-skeleton')).not.toBeInTheDocument()
+  })
+
+  it('conteúdo que já chega carregado não anima nem mostra placeholder', () => {
+    const { container } = render(
+      <SkeletonText lines={2} loaded>
+        <p>Pedido entregue em 12/10.</p>
+      </SkeletonText>,
+    )
+    const swap = container.firstElementChild!
+    expect(swap).not.toHaveAttribute('data-changed')
+    expect(swap.querySelector('.or-skeleton')).not.toBeInTheDocument()
+    expect(screen.getByText('Pedido entregue em 12/10.')).toBeInTheDocument()
+  })
+
+  it('SkeletonText também troca e não tem violações de acessibilidade', async () => {
+    const { container, rerender } = render(
+      <SkeletonText lines={3} loaded={false}>
+        <p>Resumo pronto.</p>
+      </SkeletonText>,
+    )
+    expect(container.querySelectorAll('.or-skeleton')).toHaveLength(3)
+    await expectNoA11yViolations(container)
+    rerender(
+      <SkeletonText lines={3} loaded>
+        <p>Resumo pronto.</p>
+      </SkeletonText>,
+    )
+    expect(screen.getByText('Resumo pronto.')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
   })
 })
 

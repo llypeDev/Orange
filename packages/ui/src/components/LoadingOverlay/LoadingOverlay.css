@@ -17,13 +17,27 @@
      continuar na árvore de acessibilidade para anunciar a mensagem */
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--or-duration-medium) var(--or-ease-out);
+  /* saída: mais curta (--or-duration-fast); o usePresence espera o fim dela */
+  transition: opacity var(--or-duration-fast) var(--or-ease-in-out);
 }
 
 .or-loading-overlay[data-state='visible'] > .or-loading-overlay__backdrop {
   opacity: 1;
   pointer-events: auto;
   cursor: progress;
+  /* entrada: --or-duration-medium */
+  transition: opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* o painel sobe 4px ao entrar e desce ao sair, junto com o fade do fundo */
+.or-loading-overlay__panel {
+  transform: translateY(var(--or-distance-sm)) scale(0.98);
+  transition: transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-loading-overlay[data-state='visible'] .or-loading-overlay__panel {
+  transform: none;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-loading-overlay__panel {

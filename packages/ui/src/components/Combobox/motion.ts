@@ -44,13 +44,17 @@ export function useExitingItems<T>(items: T[], keyOf: (item: T) => string) {
       .filter((entry) => !nextKeys.has(entry.key))
     setPrev({ items, signature })
     setLeaving((current) => [
-      ...current.filter((entry) => !nextKeys.has(entry.key) && !removed.some((r) => r.key === entry.key)),
+      ...current.filter(
+        (entry) => !nextKeys.has(entry.key) && !removed.some((r) => r.key === entry.key),
+      ),
       ...removed,
     ])
   }
 
   const release = useCallback((key: string) => {
-    setLeaving((current) => (current.some((e) => e.key === key) ? current.filter((e) => e.key !== key) : current))
+    setLeaving((current) =>
+      current.some((e) => e.key === key) ? current.filter((e) => e.key !== key) : current,
+    )
   }, [])
 
   // Rede de segurança: libera tudo depois de 1s mesmo sem animationend.
@@ -60,9 +64,17 @@ export function useExitingItems<T>(items: T[], keyOf: (item: T) => string) {
     return () => clearTimeout(timer)
   }, [leaving])
 
-  const entries: ExitingEntry<T>[] = items.map((item) => ({ item, key: keyOf(item), leaving: false }))
+  const entries: ExitingEntry<T>[] = items.map((item) => ({
+    item,
+    key: keyOf(item),
+    leaving: false,
+  }))
   for (const entry of [...leaving].sort((a, b) => a.index - b.index)) {
-    entries.splice(Math.min(entry.index, entries.length), 0, { item: entry.item, key: entry.key, leaving: true })
+    entries.splice(Math.min(entry.index, entries.length), 0, {
+      item: entry.item,
+      key: entry.key,
+      leaving: true,
+    })
   }
 
   /** Props para o elemento de um item que está saindo. */

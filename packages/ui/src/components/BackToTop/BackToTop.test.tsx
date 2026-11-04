@@ -24,16 +24,38 @@ describe('BackToTop', () => {
     scrollTo.mockRestore()
   })
 
-  it('fica escondido até a página rolar além do threshold', () => {
+  it('só monta depois que a página rola além do threshold e desmonta ao voltar', () => {
     render(<BackToTop threshold={300} />)
-    const button = screen.getByRole('button', { name: 'Voltar ao topo', hidden: true })
-    expect(button).not.toHaveAttribute('data-visible')
+    expect(screen.queryByRole('button', { name: 'Voltar ao topo' })).not.toBeInTheDocument()
     scrollWindowTo(299)
-    expect(button).not.toHaveAttribute('data-visible')
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
     scrollWindowTo(301)
-    expect(button).toHaveAttribute('data-visible')
+    const button = screen.getByRole('button', { name: 'Voltar ao topo' })
+    expect(button).toHaveAttribute('data-state', 'open')
+    // Sem animação no jsdom, a saída (usePresence) desmonta na hora.
     scrollWindowTo(10)
-    expect(button).not.toHaveAttribute('data-visible')
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('mantém o botão montado com data-state="closed" enquanto a animação de saída roda', () => {
+    render(<BackToTop threshold={100} />)
+    scrollWindowTo(500)
+    const button = screen.getByRole('button', { name: 'Voltar ao topo' })
+    // Simula a animação de saída que o CSS aplica em [data-state='closed'].
+    const original = window.getComputedStyle
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((el: Element) => {
+      const style = original(el)
+      if (el !== button) return style
+      return { ...style, animationName: 'or-back-to-top-out', animationDuration: '0.16s', transitionDuration: '0s' } as CSSStyleDeclaration
+    })
+    scrollWindowTo(0)
+    expect(button).toBeInTheDocument()
+    expect(button).toHaveAttribute('data-state', 'closed')
+    act(() => {
+      button.dispatchEvent(new Event('animationend', { bubbles: true }))
+    })
+    expect(button).not.toBeInTheDocument()
+    spy.mockRestore()
   })
 
   it('rola suavemente ao topo e move o foco para o <main>', async () => {
@@ -101,7 +123,7 @@ describe('BackToTop', () => {
       fireEvent.scroll(panel)
     })
     const button = screen.getByRole('button', { name: 'Voltar ao topo' })
-    expect(button).toHaveAttribute('data-visible')
+    expect(button).toHaveAttribute('data-state', 'open')
     expect(button).toHaveClass('or-back-to-top--sticky', 'or-back-to-top--labeled')
     await user.click(button)
     expect(panelScrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })

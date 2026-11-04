@@ -1,5 +1,5 @@
 import { forwardRef, useRef, type HTMLAttributes, type ReactNode } from 'react'
-import { useIsomorphicLayoutEffect } from '../../hooks'
+import { useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { useLocale } from '../../providers'
 import { cx } from '../../utils'
 import { Spinner, type SpinnerSize } from '../Spinner'
@@ -30,6 +30,8 @@ export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
     const contentRef = useRef<HTMLDivElement>(null)
     const panelRef = useRef<HTMLDivElement>(null)
     const restoreFocus = useRef<HTMLElement | null>(null)
+    // Saída animada: spinner e mensagem continuam no painel enquanto ele esmaece.
+    const { present, nodeRef: backdropRef } = usePresence<HTMLDivElement>(visible)
 
     // `inert` via DOM (compatível com React 18 e 19). Se o foco estava no conteúdo,
     // ele é "estacionado" no painel e devolvido quando o carregamento termina.
@@ -69,12 +71,12 @@ export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
         >
           {children}
         </div>
-        <div className="or-loading-overlay__backdrop">
+        <div ref={backdropRef} className="or-loading-overlay__backdrop">
           <div ref={panelRef} className="or-loading-overlay__panel" tabIndex={-1}>
-            {visible && <Spinner size={spinnerSize} decorative />}
+            {present && <Spinner size={spinnerSize} decorative />}
             {/* sempre montada para que a troca de texto seja anunciada */}
             <p className="or-loading-overlay__message" role="status">
-              {visible ? (message ?? t('loading')) : null}
+              {present ? (message ?? t('loading')) : null}
             </p>
           </div>
         </div>

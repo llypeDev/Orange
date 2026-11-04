@@ -38,6 +38,22 @@
   overflow-wrap: anywhere;
 }
 
+/* Contagem (animate): o valor final fica transparente por baixo — reserva a
+   largura e é o que o leitor de tela lê — e o número animado passa por cima. */
+.or-stat__value[data-counting] {
+  position: relative;
+}
+
+.or-stat__value[data-counting] .or-stat__value-final {
+  color: transparent;
+}
+
+.or-stat__value-count {
+  position: absolute;
+  inset: 0;
+  user-select: none;
+}
+
 .or-stat--sm .or-stat__value {
   margin-top: var(--or-space-2);
   letter-spacing: -0.03em;
@@ -73,6 +89,39 @@
 
 .or-stat__help {
   color: var(--or-color-text-subtle);
+}
+
+/* Variação que entra (animate): a seta chega da direção da tendência com
+   --or-ease-spring depois que a contagem começa. */
+.or-stat__delta--increase {
+  --_arrow-from: var(--or-distance-sm);
+}
+
+.or-stat__delta--decrease {
+  --_arrow-from: calc(var(--or-distance-sm) * -1);
+}
+
+.or-stat__delta--neutral {
+  --_arrow-from: 0px;
+}
+
+.or-stat[data-animate] .or-stat__delta {
+  opacity: 0;
+  transition: opacity var(--or-duration-medium) var(--or-ease-out) var(--or-duration-slow);
+}
+
+.or-stat[data-animate] .or-stat__delta svg {
+  opacity: 0;
+  transform: translateY(var(--_arrow-from)) scale(0.6);
+  transition:
+    opacity var(--or-duration-medium) var(--or-ease-out) var(--or-duration-slow),
+    transform var(--or-duration-slow) var(--or-ease-spring) var(--or-duration-slow);
+}
+
+.or-stat[data-animate][data-inview] .or-stat__delta,
+.or-stat[data-animate][data-inview] .or-stat__delta svg {
+  opacity: 1;
+  transform: none;
 }
 
 /* Grupo em grade com divisórias de 1px ------------------------------------- */

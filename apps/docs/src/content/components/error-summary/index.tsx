@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
@@ -83,6 +93,22 @@ export default function ErrorSummaryPage() {
             { name: 'headingLevel', type: '2 | 3 | 4 | 5 | 6', default: '2', description: { pt: 'Nível do título.', en: 'Heading level.' } },
             { name: 'onItemClick', type: '(item, event) => void', description: { pt: <>Chamado ao clicar em um erro; <Code>preventDefault()</Code> cancela o foco automático.</>, en: <>Called when an error is clicked; <Code>preventDefault()</Code> cancels the automatic focus.</> } },
             { name: '...rest', type: 'HTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;section&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;section&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Aparecer', en: 'Appear' }, description: { pt: 'O painel desce deslizando (or-slide-down-in, 250ms, --or-ease-out) e os erros entram em sequência, 40ms entre itens (metade de --or-stagger).', en: 'The panel slides down (or-slide-down-in, 250ms, --or-ease-out) and errors enter in sequence, 40ms apart (half of --or-stagger).' } },
+            { term: { pt: 'Sumir', en: 'Disappear' }, description: { pt: 'Quando a lista fica vazia, fade de 160ms (--or-ease-in-out) via usePresence — mais curto que a entrada.', en: 'When the list empties, a 160ms fade (--or-ease-in-out) via usePresence — shorter than the entrance.' } },
+            { term: { pt: 'Links', en: 'Links' }, description: { pt: 'Cor e espessura do sublinhado mudam em 160ms no hover e no foco.', en: 'Color and underline thickness change in 160ms on hover and focus.' } },
           ]}
         />
       </Section>

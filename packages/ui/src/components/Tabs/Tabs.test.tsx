@@ -155,6 +155,24 @@ describe('Tabs', () => {
     expect(screen.getByRole('tab', { name: 'Favoritos' })).not.toHaveAttribute('aria-controls')
   })
 
+  it('line tem um indicador único (decorativo) que acompanha a aba ativa; enclosed não', () => {
+    const { container, unmount } = render(<Example />)
+    const indicator = container.querySelector('.or-tabs__indicator')
+    expect(indicator).toHaveAttribute('aria-hidden', 'true')
+    expect(screen.getByRole('tablist')).toContainElement(indicator as HTMLElement)
+    unmount()
+    const enclosed = render(<Example variant="enclosed" />)
+    expect(enclosed.container.querySelector('.or-tabs__indicator')).toBeNull()
+  })
+
+  it('painéis só entram animados depois da primeira troca de aba', async () => {
+    const user = userEvent.setup()
+    render(<Example />)
+    expect(screen.getByRole('tabpanel')).not.toHaveAttribute('data-motion')
+    await user.click(screen.getByRole('tab', { name: 'Segurança' }))
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('data-motion')
+  })
+
   it('aplica variante, tamanho e fitted', () => {
     const { container } = render(<Example variant="enclosed" size="lg" fitted />)
     expect(container.firstChild).toHaveClass('or-tabs--enclosed', 'or-tabs--lg', 'or-tabs--fitted')

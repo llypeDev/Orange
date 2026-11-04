@@ -430,36 +430,36 @@ function ComboboxControl({
             onMouseDown={(event) => event.preventDefault()}
           >
             <Freeze frozen={!isOpen}>
-            {loading ? (
-              <div className="or-combobox-popup__message">
-                <span className="or-combobox-popup__spinner" aria-hidden="true" />
-                {t('loading')}
-              </div>
-            ) : visible.length === 0 ? (
-              <div className="or-combobox-popup__message">{emptyMessage ?? t('noResults')}</div>
-            ) : null}
-            <ul
-              id={listboxId}
-              role="listbox"
-              className="or-combobox-listbox"
-              aria-labelledby={labelledBy}
-              aria-label={labelledBy ? undefined : rest['aria-label']}
-              aria-busy={loading || undefined}
-            >
-              {visible.map((option, index) => (
-                <ListboxOptionItem
-                  key={option.value}
-                  id={optionId(option)}
-                  option={option}
-                  query={query}
-                  active={index === activeIndex}
-                  selected={option.value === value}
-                  disabled={option.disabled}
-                  onHover={() => setActiveIndex(index)}
-                  onSelect={() => selectOption(option)}
-                />
-              ))}
-            </ul>
+              {loading ? (
+                <div className="or-combobox-popup__message">
+                  <span className="or-combobox-popup__spinner" aria-hidden="true" />
+                  {t('loading')}
+                </div>
+              ) : visible.length === 0 ? (
+                <div className="or-combobox-popup__message">{emptyMessage ?? t('noResults')}</div>
+              ) : null}
+              <ul
+                id={listboxId}
+                role="listbox"
+                className="or-combobox-listbox"
+                aria-labelledby={labelledBy}
+                aria-label={labelledBy ? undefined : rest['aria-label']}
+                aria-busy={loading || undefined}
+              >
+                {visible.map((option, index) => (
+                  <ListboxOptionItem
+                    key={option.value}
+                    id={optionId(option)}
+                    option={option}
+                    query={query}
+                    active={index === activeIndex}
+                    selected={option.value === value}
+                    disabled={option.disabled}
+                    onHover={() => setActiveIndex(index)}
+                    onSelect={() => selectOption(option)}
+                  />
+                ))}
+              </ul>
             </Freeze>
           </div>
         </Portal>

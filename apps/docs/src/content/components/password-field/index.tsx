@@ -1,4 +1,15 @@
-import { Bullets, Code, ComponentPage, DoDont, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  DoDont,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import { PasswordField } from '@orange/ui'
 import Confirm from './examples/Confirm'
@@ -99,6 +110,24 @@ export default function PasswordFieldPage() {
             { name: 'onValueChange', type: '(value: string) => void', description: { pt: 'Atalho que recebe o texto atual.', en: 'Shortcut that receives the current text.' } },
             { name: 'autoComplete', type: 'string', default: "'current-password' | 'new-password'", description: { pt: <>Padrão <Code>new-password</Code> quando há <Code>requirements</Code>.</>, en: <>Defaults to <Code>new-password</Code> when <Code>requirements</Code> is set.</> } },
             { name: '...rest', type: 'InputHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;input&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;input&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda e anel de foco mudam de cor juntos — 160ms (--or-duration-fast), --or-ease-out.', en: 'Border and focus ring change color together — 160ms (--or-duration-fast), --or-ease-out.' } },
+            { term: { pt: 'Mostrar/ocultar', en: 'Show/hide' }, description: { pt: 'Olho e olho cortado trocam com crossfade e escala: o ícone que entra usa 250ms e --or-ease-bounce; o que sai, 160ms e --or-ease-in-out.', en: 'Eye and eye-off crossfade and scale: the incoming icon uses 250ms and --or-ease-bounce; the outgoing one 160ms and --or-ease-in-out.' } },
+            { term: { pt: 'Pressionar o botão', en: 'Pressing the button' }, description: { pt: 'O ícone afunda 1px e encolhe (scale 0.9) em 90ms (--or-duration-press).', en: 'The icon sinks 1px and shrinks (scale 0.9) in 90ms (--or-duration-press).' } },
+            { term: { pt: 'Requisito atendido', en: 'Requirement met' }, description: { pt: 'O check faz um "pop" (250ms, --or-ease-bounce) enquanto o traço é desenhado (or-draw); o quadrado sai em 160ms.', en: 'The check pops (250ms, --or-ease-bounce) while its stroke is drawn (or-draw); the square leaves in 160ms.' } },
+            { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'A mensagem entra com fade e desliza 4px (250ms, --or-ease-out); o controle treme uma vez (or-shake, 400ms) só na passagem de válido para inválido.', en: 'The message fades in and slides 4px (250ms, --or-ease-out); the control shakes once (or-shake, 400ms) only when going from valid to invalid.' } },
           ]}
         />
       </Section>

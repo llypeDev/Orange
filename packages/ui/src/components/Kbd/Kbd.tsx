@@ -20,6 +20,11 @@ export interface KbdProps extends HTMLAttributes<HTMLElement> {
   symbols?: boolean
   /** Tamanho: `sm` (20px) ou `md` (24px, padrão). */
   size?: KbdSize
+  /**
+   * Mostra teclas pressionadas (a tecla "afunda"): `true` para todas ou uma
+   * lista de nomes (`['Ctrl']`). Útil para demonstrar atalhos.
+   */
+  pressed?: boolean | string[]
 }
 
 interface KeyInfo {
@@ -68,9 +73,13 @@ const ALIASES: Record<string, string> = {
   spacebar: 'space',
 }
 
+function normalizeKey(name: string): string {
+  const lower = name.toLowerCase()
+  return ALIASES[lower] ?? lower
+}
+
 function resolveKey(name: string, symbols: boolean, t: (key: MessageKey) => string): KeyInfo {
-  const normalized = name.toLowerCase()
-  const resolver = KEYS[ALIASES[normalized] ?? normalized]
+  const resolver = KEYS[normalizeKey(name)]
   if (resolver) return resolver(symbols, t)
   return { text: name.length === 1 ? name.toUpperCase() : name }
 }
@@ -80,14 +89,22 @@ function resolveKey(name: string, symbols: boolean, t: (key: MessageKey) => stri
  * combinações; símbolos do macOS ganham nomes acessíveis.
  */
 export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
-  { keys, separator = '+', symbols = false, size = 'md', className, children, ...rest },
+  { keys, separator = '+', symbols = false, size = 'md', pressed = false, className, children, ...rest },
   ref,
 ) {
   const { t } = useLocale()
+  const pressedKeys = Array.isArray(pressed) ? new Set(pressed.map(normalizeKey)) : null
+  const isPressed = (name: string) => pressed === true || (pressedKeys?.has(normalizeKey(name)) ?? false)
 
   if (!keys) {
+    const single = typeof children === 'string' ? children : ''
     return (
-      <kbd ref={ref} className={cx('or-kbd', 'or-kbd__key', `or-kbd--${size}`, className)} {...rest}>
+      <kbd
+        ref={ref}
+        className={cx('or-kbd', 'or-kbd__key', `or-kbd--${size}`, className)}
+        data-pressed={isPressed(single) || undefined}
+        {...rest}
+      >
         {children}
       </kbd>
     )
@@ -103,12 +120,18 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
               <span className="or-kbd__separator">{separator}</span>
             )}
             {label ? (
-              <kbd className="or-kbd__key or-kbd__key--symbol" title={label}>
+              <kbd
+                className="or-kbd__key or-kbd__key--symbol"
+                title={label}
+                data-pressed={isPressed(name) || undefined}
+              >
                 <span aria-hidden="true">{text}</span>
                 <VisuallyHidden>{label}</VisuallyHidden>
               </kbd>
             ) : (
-              <kbd className="or-kbd__key">{text}</kbd>
+              <kbd className="or-kbd__key" data-pressed={isPressed(name) || undefined}>
+                {text}
+              </kbd>
             )}
           </Fragment>
         )

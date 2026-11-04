@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { Icon } from '../../icons'
+import { Button } from '../Button'
 import { TextField } from './TextField'
 
 const meta = {
@@ -81,4 +83,38 @@ export const States: Story = {
       <TextField label="Desabilitado" disabled defaultValue="Plano gratuito" />
     </div>
   ),
+}
+
+function ErrorMotionDemo() {
+  const [value, setValue] = useState('')
+  const [error, setError] = useState<string>()
+  return (
+    <form
+      noValidate
+      style={{ display: 'grid', gap: 16 }}
+      onSubmit={(event) => {
+        event.preventDefault()
+        setError(/^\S+@\S+\.\S+$/.test(value) ? undefined : 'Informe um e-mail no formato nome@empresa.com.')
+      }}
+    >
+      <TextField
+        label="E-mail"
+        type="email"
+        value={value}
+        onValueChange={(next) => {
+          setValue(next)
+          setError(undefined)
+        }}
+        error={error}
+      />
+      <div>
+        <Button type="submit">Validar</Button>
+      </div>
+    </form>
+  )
+}
+
+/** Motion: o erro entra deslizando 4px e a moldura treme uma vez (só de válido → inválido). */
+export const ErrorMotion: Story = {
+  render: () => <ErrorMotionDemo />,
 }

@@ -153,6 +153,29 @@
   margin-top: var(--or-space-3);
 }
 
+/* Movimento ---------------------------------------------------------------
+ * Ao montar, as peças geométricas caem no lugar (or-piece-drop) em sequência —
+ * quadrado de trás, quadrado da frente — e o marcador laranja "estala"
+ * (or-scale-in + --or-ease-bounce). O texto sobe 8px junto. Intervalo entre
+ * peças: --or-stagger (80ms).
+ */
+.or-empty-state--animated .or-empty-state__shape--back {
+  animation: or-piece-drop var(--or-duration-slow) var(--or-ease-spring) both;
+}
+
+.or-empty-state--animated .or-empty-state__shape--front {
+  animation: or-piece-drop var(--or-duration-slow) var(--or-ease-spring) var(--or-stagger) both;
+}
+
+.or-empty-state--animated .or-empty-state__shape--dot {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) calc(var(--or-stagger) * 3)
+    both;
+}
+
+.or-empty-state--animated .or-empty-state__body {
+  animation: or-page-enter var(--or-duration-medium) var(--or-ease-out) var(--or-stagger) both;
+}
+
 @media (forced-colors: active) {
   .or-empty-state__shape--back,
   .or-empty-state__shape--front {

@@ -66,7 +66,9 @@ describe('CodeBlock', () => {
   })
 
   it('volta ao rótulo original depois do tempo de confirmação', async () => {
-    vi.useFakeTimers({ shouldAdvanceTime: true })
+    // Só os timers do componente são falsos (sem avançar com o relógio real, que
+    // deixaria o teste instável sob carga).
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
     vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
     render(<CodeBlock code="npm test" />)

@@ -104,6 +104,7 @@ export default function TimelinePage() {
           rows={[
             { name: 'variant', type: "'default' | 'alternate'", default: "'default'", description: { pt: 'Linha à esquerda ou eventos alternados.', en: 'Line on the left or alternating events.' } },
             { name: 'dateFormat', type: 'Intl.DateTimeFormatOptions', default: "{ dateStyle: 'medium' }", description: { pt: 'Formato das datas dos itens.', en: 'Date format for the items.' } },
+            { name: 'animated', type: 'boolean', default: 'false', description: { pt: 'Eventos entram escalonados ao aparecer na tela e a linha é desenhada.', en: 'Events enter staggered when scrolled into view and the line draws itself.' } },
             { name: '...rest', type: 'OlHTMLAttributes', description: { pt: 'Atributos nativos de <ol>.', en: 'Native <ol> attributes.' } },
           ]}
         />
@@ -117,6 +118,7 @@ export default function TimelinePage() {
             { name: 'dateFormat', type: 'Intl.DateTimeFormatOptions', description: { pt: 'Formato desta data.', en: 'Format for this date.' } },
             { name: 'tone', type: "'neutral' | 'accent' | 'success' | 'warning' | 'danger' | 'info'", default: "'neutral'", description: { pt: 'Cor do marcador.', en: 'Marker color.' } },
             { name: 'current', type: 'boolean', default: 'false', description: { pt: <>Evento atual: destaque e <Code>aria-current="step"</Code>.</>, en: <>Current event: highlight and <Code>aria-current="step"</Code>.</> } },
+            { name: 'pulse', type: 'boolean', default: 'current', description: { pt: 'Anel pulsando no marcador (evento ao vivo).', en: 'Pulsing ring on the marker (live event).' } },
             { name: 'icon', type: 'ReactNode', description: { pt: 'Ícone dentro do marcador.', en: 'Icon inside the marker.' } },
             { name: 'titleAs', type: 'ElementType', default: "'p'", description: { pt: 'Elemento do título (h3, h4…).', en: 'Title element (h3, h4…).' } },
           ]}

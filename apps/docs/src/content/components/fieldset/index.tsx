@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Address from './examples/Address'
 import AddressCode from './examples/Address?raw'
@@ -91,6 +101,22 @@ export default function FieldsetPage() {
             { name: 'disabled', type: 'boolean', default: 'false', description: { pt: 'Desabilita nativamente todos os controles internos.', en: 'Natively disables every inner control.' } },
             { name: 'gap', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Espaço entre os campos.', en: 'Space between fields.' } },
             { name: '...rest', type: 'FieldsetHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;fieldset&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;fieldset&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Habilitar/desabilitar', en: 'Enable/disable' }, description: { pt: 'Legenda, descrição, rótulos e molduras internos mudam de cor em 160ms.', en: 'Legend, description, inner labels and frames change color in 160ms.' } },
+            { term: { pt: 'Erro do grupo', en: 'Group error' }, description: { pt: 'A barra vermelha cresce de cima para baixo (scaleY, 400ms, --or-ease-out) e a mensagem desliza 4px com fade (250ms).', en: 'The red bar grows top to bottom (scaleY, 400ms, --or-ease-out) and the message slides 4px with a fade (250ms).' } },
+            { term: { pt: 'Seções × grupos de opções', en: 'Sections × option groups' }, description: { pt: 'Fieldset não treme (são vários campos); CheckboxGroup e RadioGroup tremem uma vez quando o erro surge.', en: 'Fieldset does not shake (it holds several fields); CheckboxGroup and RadioGroup shake once when the error appears.' } },
           ]}
         />
       </Section>

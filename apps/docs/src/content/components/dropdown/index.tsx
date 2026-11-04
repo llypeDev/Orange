@@ -101,6 +101,19 @@ export default function DropdownPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Opacidade + 6px vindo do gatilho. 160ms (--or-duration-fast), --or-ease-out.', en: 'Opacity + 6px from the trigger. 160ms (--or-duration-fast), --or-ease-out.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Recua para o gatilho em 80ms (--or-duration-instant); inerte durante a saída.', en: 'Retreats toward the trigger in 80ms (--or-duration-instant); inert while leaving.' } },
+            { term: { pt: 'Item em foco', en: 'Focused item' }, description: { pt: 'Fundo muda em 160ms e a barra laranja cresce do centro (scaleY). Mesmo efeito no hover e no teclado.', en: 'Background changes in 160ms and the orange bar grows from the center (scaleY). Same effect on hover and keyboard.' } },
+            { term: { pt: 'Pressionar item', en: 'Pressing an item' }, description: { pt: 'Afunda 1px. 90ms (--or-duration-press).', en: 'Sinks 1px. 90ms (--or-duration-press).' } },
+            { term: { pt: 'Check e rádio', en: 'Check and radio' }, description: { pt: 'O indicador entra com or-scale-in (160ms, --or-ease-bounce) quando o estado muda — não ao abrir o menu.', en: 'The indicator enters with or-scale-in (160ms, --or-ease-bounce) when the state changes — not when the menu opens.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Dropdown', en: 'Dropdown' }}

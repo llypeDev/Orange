@@ -84,7 +84,9 @@
 }
 
 .or-combobox__spinner {
-  animation: or-spin 0.7s linear infinite, or-fade-in var(--or-duration-fast) var(--or-ease-out) backwards;
+  animation:
+    or-spin 0.7s linear infinite,
+    or-fade-in var(--or-duration-fast) var(--or-ease-out) backwards;
   flex-shrink: 0;
   align-self: center;
   width: 0.875rem;

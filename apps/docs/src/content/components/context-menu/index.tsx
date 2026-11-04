@@ -1,4 +1,15 @@
-import { Bullets, Callout, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Callout,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T, useLang } from '../../../i18n'
 import Canvas from './examples/Canvas'
 import CanvasCode from './examples/Canvas?raw'
@@ -75,6 +86,17 @@ export default function ContextMenuPage() {
         >
           <Canvas />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Cresce de 96% a partir do canto junto ao ponteiro. 160ms, --or-ease-out.', en: 'Grows from 96% out of the corner next to the pointer. 160ms, --or-ease-out.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Encolhe para o mesmo canto em 80ms; inerte durante a saída.', en: 'Shrinks back to the same corner in 80ms; inert while leaving.' } },
+            { term: { pt: 'Itens', en: 'Items' }, description: { pt: 'Iguais ao Dropdown: fundo + barra laranja no foco (160ms), afundar ao pressionar (90ms), pop no check/rádio.', en: 'Same as Dropdown: background + orange bar on focus (160ms), sink on press (90ms), pop on check/radio.' } },
+            { term: { pt: 'prefers-reduced-motion', en: 'prefers-reduced-motion' }, description: { pt: 'Durações e distâncias vão a zero: o componente aparece e some na hora, sem deslocamento.', en: 'Durations and distances drop to zero: the component appears and disappears instantly, with no movement.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

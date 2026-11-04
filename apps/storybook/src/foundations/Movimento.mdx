@@ -1,0 +1,174 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { motion } from '@orange/tokens'
+import { Button, Eyebrow, Icon, Reveal, Text } from '@orange/ui'
+
+<Meta title="Fundamentos/Movimento" />
+
+export const cell = { padding: 8, borderTop: '1px solid var(--or-color-border)', verticalAlign: 'top' }
+export const mono = { fontFamily: 'var(--or-font-mono)', fontSize: 12 }
+
+export const TokenTable = ({ group, prefix, usage }) => (
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <tbody>
+      {Object.entries(motion[group]).map(([name, value]) => (
+        <tr key={name}>
+          <td style={{ ...cell, ...mono, color: 'var(--or-color-text)' }}>--or-{prefix}-{name}</td>
+          <td style={{ ...cell, ...mono, color: 'var(--or-color-text-subtle)' }}>{value}</td>
+          <td style={{ ...cell, color: 'var(--or-color-text-muted)' }}>{usage[name] ?? ''}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)
+
+export const Demo = ({ label, children }) => (
+  <div style={{ display: 'grid', gap: 12, alignContent: 'start', padding: 20, border: '1px solid var(--or-color-border)' }}>
+    <Text size="2xs" font="display" tone="subtle" style={{ letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+      {label}
+    </Text>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, minHeight: 56 }}>{children}</div>
+  </div>
+)
+
+export const card = {
+  display: 'grid',
+  gap: 6,
+  padding: 16,
+  border: '1px solid var(--or-color-border-strong)',
+  background: 'var(--or-color-bg)',
+  color: 'var(--or-color-text)',
+  fontFamily: 'var(--or-font-display)',
+  textDecoration: 'none',
+}
+
+<div className="sb-unstyled">
+  <Eyebrow marker>Fundamentos</Eyebrow>
+</div>
+
+# Movimento
+
+O Orange se move como uma ferramenta: **rápido, funcional e geométrico**. Botões afundam 1px, cartões sobem
+4px, setas deslizam 4px, sublinhados crescem da esquerda e o conteúdo entra 24px de baixo ao rolar. Saídas são
+mais curtas que entradas e tudo é zerado com `prefers-reduced-motion`.
+
+## Durações
+
+<div className="sb-unstyled">
+  <TokenTable
+    group="duration"
+    prefix="duration"
+    usage={{
+      press: 'Pressionar (o botão afunda)',
+      instant: 'Troca de ícone',
+      fast: 'Hover, foco e todas as saídas',
+      medium: 'Entradas de popovers e menus, indicadores',
+      slow: 'Expandir/recolher, painéis, drawers',
+      reveal: 'Revelação no scroll',
+      slower: 'Entradas grandes — raramente',
+      loop: 'Pulso de status',
+    }}
+  />
+</div>
+
+## Curvas
+
+<div className="sb-unstyled">
+  <TokenTable
+    group="easing"
+    prefix="ease"
+    usage={{
+      out: 'Padrão: entradas e hovers',
+      'in-out': 'Saídas e o cabeçalho que se esconde',
+      spring: 'Indicadores (aba, segmento, switch)',
+      snap: 'Encaixes e sliders',
+      bounce: 'Pequenos pops (check, radio, badge)',
+    }}
+  />
+</div>
+
+## Distâncias e escalonamento
+
+<div className="sb-unstyled">
+  <TokenTable
+    group="distance"
+    prefix="distance"
+    usage={{ sm: 'Popovers, menus, tooltips', md: 'Diálogos, toasts, entrada de página', lg: 'Revelação no scroll', lift: 'Cartões no hover' }}
+  />
+  <Text size="sm" tone="muted" style={{ marginTop: 12 }}>
+    <code style={mono}>--or-stagger</code> · {motion.stagger} entre itens de uma revelação escalonada.
+  </Text>
+</div>
+
+## Padrões
+
+Passe o mouse, use `Tab` e clique nas demonstrações. Todas usam as classes de `@orange/ui/styles.css`
+(`motion.css`).
+
+<div className="sb-unstyled" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+  <Demo label="or-press · pressionar">
+    <Button>Salvar</Button>
+    <button type="button" className="or-press" style={{ ...card, cursor: 'pointer' }}>
+      Alvo com or-press
+    </button>
+  </Demo>
+  <Demo label="or-lift · elevar">
+    <a href="#movimento" className="or-lift or-nudge" style={card}>
+      Plano Pro
+      <span style={{ color: 'var(--or-color-accent-text)', fontSize: 13 }}>
+        Ver plano <Icon name="arrow-right" size="sm" className="or-nudge__icon" />
+      </span>
+    </a>
+  </Demo>
+  <Demo label="or-nudge · seta que empurra">
+    <a href="#movimento" className="or-nudge" style={{ color: 'var(--or-color-accent-text)' }}>
+      Ver todos os pedidos <Icon name="arrow-right" size="sm" className="or-nudge__icon" />
+    </a>
+  </Demo>
+  <Demo label="or-underline · sublinhado">
+    <a href="#movimento" className="or-underline" style={{ color: 'var(--or-color-text)' }}>
+      Relatórios
+    </a>
+    <a href="#movimento" className="or-underline" aria-current="page" style={{ color: 'var(--or-color-text)' }}>
+      Pedidos
+    </a>
+  </Demo>
+  <Demo label="or-pulse · status ao vivo">
+    <span className="or-pulse" style={{ width: 10, height: 10, borderRadius: 9999, background: 'var(--or-color-success)' }} />
+    <Text size="sm">API de pedidos · Operacional</Text>
+  </Demo>
+  <Demo label="Reveal · revelação escalonada">
+    <Reveal stagger style={{ display: 'flex', gap: 6 }}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <span key={n} style={{ width: 24, height: 24, background: 'var(--or-color-accent)' }} />
+      ))}
+    </Reveal>
+  </Demo>
+</div>
+
+| Padrão | Como |
+| --- | --- |
+| Entrada/saída de sobreposições | `usePresence(open)` + `data-state` + `or-motion-pop` / `or-motion-drop` / `or-motion-fade` |
+| Pressionar | `:active` → `translateY(1px) scale(0.985)` em `--or-duration-press` (`or-press`) |
+| Elevar | `translateY(var(--or-distance-lift))` + `box-shadow: 0 8px 0 -4px` (`or-lift`) |
+| Seta que empurra | `or-nudge` + `or-nudge__icon` (4px) |
+| Sublinhado | `or-underline` (cresce da esquerda via `background-size`) |
+| Expandir/recolher | `or-collapse` + `data-state` (`grid-template-rows` 0fr → 1fr) |
+| Status ao vivo | `or-pulse` + `--_pulse-color` |
+| Erro | `or-shake`, uma vez |
+| Progresso temporizado | `or-fill-x` (`scaleX` 0 → 1) |
+| Revelação no scroll | componente `Reveal` / hook `useInView` |
+| Números | `useCountUp(valor)` |
+| Cabeçalho | `useScrollDirection()` |
+
+## Movimento reduzido
+
+Com `prefers-reduced-motion: reduce`, todas as durações, distâncias e o stagger viram zero, o `base.css`
+encurta qualquer animação restante, o `Reveal` mostra tudo de imediato, `or-pulse` para e `useCountUp`
+devolve o valor final. Para lógica em JavaScript, use `useReducedMotion()`.
+
+## Regras
+
+- Anime só `transform`, `opacity`, cores, bordas e `box-shadow` — exceção: `grid-template-rows`.
+- Nunca escreva `ms` ou `cubic-bezier` soltos: use os tokens, que zeram sozinhos.
+- Hover e foco visível sempre com a mesma resposta; movimento nunca é a única pista de estado.
+- Animações infinitas só para status e carregamento.

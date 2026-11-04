@@ -1,4 +1,14 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import {
+  Bullets,
+  Code,
+  ComponentPage,
+  DefinitionTable,
+  Example,
+  KeyboardTable,
+  PropsTable,
+  Section,
+  WcagList,
+} from '../../../kit'
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
@@ -105,6 +115,23 @@ export default function NumberFieldPage() {
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Altura do controle.', en: 'Control height.' } },
             { name: 'name', type: 'string', description: { pt: 'Envia o número cru (sem formatação) em um input oculto.', en: 'Submits the raw (unformatted) number in a hidden input.' } },
             { name: '...rest', type: 'InputHTMLAttributes', description: { pt: <>Atributos nativos e <Code>ref</Code> vão para o <Code>&lt;input&gt;</Code>.</>, en: <>Native attributes and <Code>ref</Code> go to the <Code>&lt;input&gt;</Code>.</> } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T
+            pt={<>Interações rápidas e geométricas, só com tokens de duração e curva. Com <Code>prefers-reduced-motion</Code>, as durações vão a zero e os estados mudam na hora — o movimento nunca é a única pista de estado.</>}
+            en={<>Fast, geometric interactions using only duration and easing tokens. With <Code>prefers-reduced-motion</Code>, durations drop to zero and states change instantly — motion is never the only cue.</>}
+          />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Borda e anel de foco mudam de cor juntos — 160ms (--or-duration-fast), --or-ease-out.', en: 'Border and focus ring change color together — 160ms (--or-duration-fast), --or-ease-out.' } },
+            { term: { pt: 'Botões − / +', en: '− / + buttons' }, description: { pt: 'Pressionar: o ícone afunda 1px e o fundo escurece em 90ms (--or-duration-press).', en: 'Press: the icon sinks 1px and the background darkens in 90ms (--or-duration-press).' } },
+            { term: { pt: 'Passo (setas, botões, Home/End)', en: 'Step (arrows, buttons, Home/End)' }, description: { pt: 'O valor faz um "tick": entra 3px de baixo (↑) ou de cima (↓) com fade, em 160ms. Não roda ao segurar o botão, para não prejudicar a leitura.', en: 'The value "ticks": it enters 3px from below (↑) or above (↓) with a fade, in 160ms. It does not run while holding a button, so reading is not disturbed.' } },
+            { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'A mensagem entra com fade e desliza 4px (250ms, --or-ease-out); o controle treme uma vez (or-shake, 400ms) só na passagem de válido para inválido.', en: 'The message fades in and slides 4px (250ms, --or-ease-out); the control shakes once (or-shake, 400ms) only when going from valid to invalid.' } },
           ]}
         />
       </Section>

@@ -224,7 +224,8 @@ function MultiSelectControl({
   const remove = (v: string, focusAfter: 'neighbor' | 'input') => {
     if (!interactive) return
     const index = values.indexOf(v)
-    const neighbor = focusAfter === 'neighbor' ? (values[index + 1] ?? values[index - 1]) : undefined
+    const neighbor =
+      focusAfter === 'neighbor' ? (values[index + 1] ?? values[index - 1]) : undefined
     pendingFocus.current = neighbor ?? 'input'
     initialValues.current.delete(v)
     emit(values.filter((x) => x !== v))
@@ -472,44 +473,44 @@ function MultiSelectControl({
             onMouseDown={(event) => event.preventDefault()}
           >
             <Freeze frozen={!isOpen}>
-            {limitReached && (
-              <div className="or-combobox-popup__message or-combobox-popup__message--warning">
-                <Icon name="info" size="sm" />
-                {t('maxItemsReached', { max: maxSelected! })}
-              </div>
-            )}
-            {loading ? (
-              <div className="or-combobox-popup__message">
-                <span className="or-combobox-popup__spinner" aria-hidden="true" />
-                {t('loading')}
-              </div>
-            ) : visible.length === 0 ? (
-              <div className="or-combobox-popup__message">{emptyMessage ?? t('noResults')}</div>
-            ) : null}
-            <ul
-              id={listboxId}
-              role="listbox"
-              aria-multiselectable="true"
-              className="or-combobox-listbox"
-              aria-labelledby={labelledBy}
-              aria-label={labelledBy ? undefined : rest['aria-label']}
-              aria-busy={loading || undefined}
-            >
-              {visible.map((option, index) => (
-                <ListboxOptionItem
-                  key={option.value}
-                  id={optionId(option)}
-                  option={option}
-                  query={query}
-                  multiple
-                  active={index === activeIndex}
-                  selected={values.includes(option.value)}
-                  disabled={isUnavailable(option)}
-                  onHover={() => setActiveIndex(index)}
-                  onSelect={() => toggle(option)}
-                />
-              ))}
-            </ul>
+              {limitReached && (
+                <div className="or-combobox-popup__message or-combobox-popup__message--warning">
+                  <Icon name="info" size="sm" />
+                  {t('maxItemsReached', { max: maxSelected! })}
+                </div>
+              )}
+              {loading ? (
+                <div className="or-combobox-popup__message">
+                  <span className="or-combobox-popup__spinner" aria-hidden="true" />
+                  {t('loading')}
+                </div>
+              ) : visible.length === 0 ? (
+                <div className="or-combobox-popup__message">{emptyMessage ?? t('noResults')}</div>
+              ) : null}
+              <ul
+                id={listboxId}
+                role="listbox"
+                aria-multiselectable="true"
+                className="or-combobox-listbox"
+                aria-labelledby={labelledBy}
+                aria-label={labelledBy ? undefined : rest['aria-label']}
+                aria-busy={loading || undefined}
+              >
+                {visible.map((option, index) => (
+                  <ListboxOptionItem
+                    key={option.value}
+                    id={optionId(option)}
+                    option={option}
+                    query={query}
+                    multiple
+                    active={index === activeIndex}
+                    selected={values.includes(option.value)}
+                    disabled={isUnavailable(option)}
+                    onHover={() => setActiveIndex(index)}
+                    onSelect={() => toggle(option)}
+                  />
+                ))}
+              </ul>
             </Freeze>
           </div>
         </Portal>

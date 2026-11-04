@@ -29,12 +29,15 @@
   justify-content: center;
   box-sizing: border-box;
   min-width: var(--_h);
-  height: var(--_h);
+  /* A borda inferior de 2px é 1px de borda + 1px de sombra, para a tecla
+     poder "afundar" sem mudar o layout. */
+  height: calc(var(--_h) - 1px);
+  margin-bottom: 1px;
   padding: 0 0.375rem;
   border: var(--or-border-thin) solid var(--or-color-border-strong);
-  border-bottom-width: var(--or-border-thick);
   border-radius: var(--or-radius-none);
   background: var(--or-color-bg-subtle);
+  box-shadow: 0 1px 0 0 var(--or-color-border-strong);
   color: var(--or-color-text);
   font-family: var(--or-font-mono);
   font-size: var(--_font);
@@ -42,6 +45,22 @@
   line-height: 1;
   letter-spacing: 0;
   white-space: nowrap;
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-bounce),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionada: desce 1px e a sombra inferior some; volta com --or-ease-bounce. */
+.or-kbd__key[data-pressed] {
+  transform: translateY(1px);
+  border-color: var(--or-color-accent-border);
+  background: var(--or-color-accent-subtle);
+  box-shadow: 0 0 0 0 var(--or-color-border-strong);
+  color: var(--or-color-text);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-kbd--sm .or-kbd__key,
@@ -63,5 +82,9 @@
 @media (forced-colors: active) {
   .or-kbd__key {
     border-color: CanvasText;
+    border-bottom-width: var(--or-border-thick);
+  }
+  .or-kbd__key[data-pressed] {
+    border-color: Highlight;
   }
 }

@@ -81,3 +81,8 @@ export const MaxHeight: Story = {
     showLineNumbers: true,
   },
 }
+
+/** Clique em "Copiar": o ícone troca para um check com "pop". Mude highlightLines nos controles para ver a transição. */
+export const CopyAndHighlight: Story = {
+  args: { showLineNumbers: true, highlightLines: [2] },
+}
