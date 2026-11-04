@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -11,6 +11,16 @@ const plans = [
   { value: 'anual', label: 'Anual', description: 'R$ 490 por ano — 2 meses grátis' },
   { value: 'empresa', label: 'Empresarial', disabled: true },
 ]
+
+
+/** jsdom não tem AnimationEvent: dispara um animationend com o nome informado. */
+function endAnimation(element: Element, animationName: string) {
+  const event = new Event('animationend', { bubbles: true })
+  Object.defineProperty(event, 'animationName', { value: animationName })
+  act(() => {
+    element.dispatchEvent(event)
+  })
+}
 
 describe('RadioGroup', () => {
   it('renderiza fieldset/legend com radios nativos que compartilham o name', () => {
@@ -106,5 +116,14 @@ describe('RadioGroup', () => {
       </div>,
     )
     await expectNoA11yViolations(container)
+  })
+
+  it('motion: as opções tremem uma vez quando o erro do grupo surge', () => {
+    const { rerender } = render(<RadioGroup label="Plano" options={plans} />)
+    rerender(<RadioGroup label="Plano" options={plans} error="Escolha um plano." />)
+    const content = document.querySelector('.or-radio-group__options')!
+    expect(content).toHaveClass('or-forms-shake')
+    endAnimation(content, 'or-shake')
+    expect(content).not.toHaveClass('or-forms-shake')
   })
 })

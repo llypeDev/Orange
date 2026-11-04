@@ -6,7 +6,13 @@
   font-size: var(--or-text-xs);
   font-variant-numeric: tabular-nums;
   color: var(--or-color-text-subtle);
-  transition: color var(--or-duration-fast) var(--or-ease-out);
+  /* A cor muda suavemente ao se aproximar do limite. */
+  transition: color var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-character-count > span:first-child {
+  display: inline-block;
+  transform-origin: right center;
 }
 
 .or-character-count[data-state='near'] {
@@ -16,4 +22,15 @@
 .or-character-count[data-state='limit'] {
   color: var(--or-color-danger-text);
   font-weight: var(--or-weight-medium);
+}
+
+/* Ao atingir o limite, o contador dá um "toque" único (a cor e o texto continuam sendo a pista principal). */
+@keyframes or-forms-count-bump {
+  40% {
+    transform: scale(1.08);
+  }
+}
+
+.or-character-count[data-state='limit'] > span:first-child {
+  animation: or-forms-count-bump var(--or-duration-medium) var(--or-ease-bounce) 1;
 }

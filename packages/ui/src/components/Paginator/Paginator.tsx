@@ -2,6 +2,7 @@ import {
   forwardRef,
   useEffect,
   useRef,
+  useState,
   type HTMLAttributes,
   type ReactNode,
 } from 'react'
@@ -145,6 +146,14 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
     fallback?.focus()
   }, [page])
 
+  // Depois da primeira troca de página, o texto da variante compacta anima.
+  const [prevPage, setPrevPage] = useState(page)
+  const [changed, setChanged] = useState(false)
+  if (prevPage !== page) {
+    setPrevPage(page)
+    setChanged(true)
+  }
+
   const goTo = (next: number) => {
     const target = clamp(next, 1, count)
     if (target === page) return
@@ -220,7 +229,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
           label: t('firstPage'),
           icon: 'chevrons-left',
           disabled: isFirst,
-          className: 'or-paginator__button--nav',
+          className: 'or-paginator__button--nav or-paginator__button--first',
           edge: true,
         })
       : null,
@@ -230,7 +239,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
       label: t('previousPage'),
       icon: 'chevron-left',
       disabled: isFirst,
-      className: 'or-paginator__button--nav',
+      className: 'or-paginator__button--nav or-paginator__button--prev',
     }),
     next: renderControl({
       key: 'next',
@@ -238,7 +247,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
       label: t('nextPage'),
       icon: 'chevron-right',
       disabled: isLast,
-      className: 'or-paginator__button--nav',
+      className: 'or-paginator__button--nav or-paginator__button--next',
     }),
     last: showFirstLast
       ? renderControl({
@@ -247,7 +256,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
           label: t('lastPage'),
           icon: 'chevrons-right',
           disabled: isLast,
-          className: 'or-paginator__button--nav',
+          className: 'or-paginator__button--nav or-paginator__button--last',
           edge: true,
         })
       : null,
@@ -256,7 +265,10 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(function Pagina
   const pages =
     variant === 'compact' ? (
       <li className="or-paginator__item or-paginator__status" aria-live="polite">
-        {t('pageOf', { page, total: count })}
+        {/* Remonta a cada troca para o texto entrar com um deslize curto. */}
+        <span key={page} className={cx('or-paginator__status-text', changed && 'or-paginator__status-text--enter')}>
+          {t('pageOf', { page, total: count })}
+        </span>
       </li>
     ) : (
       getPageItems(page, count, siblingCount, boundaryCount).map((item) =>

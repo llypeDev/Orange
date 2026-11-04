@@ -2,13 +2,15 @@ import {
   createContext,
   forwardRef,
   useContext,
+  useMemo,
   type CSSProperties,
   type HTMLAttributes,
   type LiHTMLAttributes,
   type ReactNode,
   type Ref,
 } from 'react'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
+import { useStaggerReveal } from './useStaggerReveal'
 import './List.css'
 
 export type ListVariant = 'bullet' | 'numbered' | 'icon' | 'divided' | 'inline' | 'plain'
@@ -29,6 +31,11 @@ export interface ListProps extends HTMLAttributes<HTMLElement> {
   start?: number
   /** Ícone padrão dos itens na variante `icon` (cada `ListItem` pode sobrescrever). */
   icon?: ReactNode
+  /**
+   * Os itens entram escalonados (subindo 24px, 80ms entre eles) quando a lista
+   * aparece na tela. Para listas de destaque em páginas de apresentação.
+   */
+  animated?: boolean
 }
 
 interface ListContextValue {
@@ -43,9 +50,11 @@ const ListContext = createContext<ListContextValue>({ variant: 'bullet' })
  * e `numbered` (`ol`) para passos e rankings.
  */
 export const List = forwardRef<HTMLElement, ListProps>(function List(
-  { variant = 'bullet', as, size = 'md', start, icon, className, style, children, ...rest },
+  { variant = 'bullet', as, size = 'md', start, icon, animated = false, className, style, children, ...rest },
   ref,
 ) {
+  const reveal = useStaggerReveal<HTMLElement>(animated)
+  const composedRef = useMemo(() => mergeRefs(ref, reveal.ref), [ref, reveal.ref])
   const Component = as ?? (variant === 'numbered' ? 'ol' : 'ul')
   const isOrdered = Component === 'ol'
   const counterStyle: CSSProperties | undefined =
@@ -54,13 +63,14 @@ export const List = forwardRef<HTMLElement, ListProps>(function List(
   return (
     <ListContext.Provider value={{ variant, icon }}>
       <Component
-        ref={ref as Ref<HTMLUListElement & HTMLOListElement>}
+        ref={composedRef as Ref<HTMLUListElement & HTMLOListElement>}
         // `list-style: none` remove a semântica de lista no Safari/VoiceOver;
         // o papel explícito a restaura.
         role="list"
         className={cx('or-list', `or-list--${variant}`, `or-list--${size}`, className)}
         start={isOrdered ? start : undefined}
         style={counterStyle}
+        data-reveal={reveal.state === 'idle' ? undefined : reveal.state}
         {...rest}
       >
         {children}

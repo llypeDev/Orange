@@ -1,9 +1,15 @@
 /* ---------------------------------------------------------------------------
  * Calendar — grade mensal de datas
+ *
+ * Movimento: ao trocar de mês a grade desliza na direção da navegação
+ * (próximo → entra pela direita, anterior → pela esquerda) e o título faz
+ * crossfade; dias respondem a hover/foco e "afundam" no clique; o dia
+ * escolhido entra com um pop (--or-ease-bounce).
  * ------------------------------------------------------------------------- */
 
 .or-calendar {
   --_cell: 2.5rem;
+  --_slide: calc(var(--or-distance-md) * 2);
   display: inline-flex;
   flex-direction: column;
   gap: var(--or-space-3);
@@ -23,15 +29,42 @@
   display: flex;
 }
 
+/* Título: os dois rótulos (saindo e entrando) ocupam a mesma célula. */
 .or-calendar__title {
+  display: grid;
   flex: 1;
-  text-align: center;
+  place-items: center;
+  overflow: hidden;
   font-family: var(--or-font-display);
   font-size: var(--or-text-md);
   font-weight: var(--or-weight-bold);
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
+
+.or-calendar__title-text {
+  grid-area: 1 / 1;
+}
+
+.or-calendar__title-text--in-next,
+.or-calendar__body--next {
+  animation: or-calendar-in-next var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-calendar__title-text--in-prev,
+.or-calendar__body--prev {
+  animation: or-calendar-in-prev var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-calendar__title-text--out-next {
+  animation: or-calendar-out-next var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-calendar__title-text--out-prev {
+  animation: or-calendar-out-prev var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+/* Botões de navegação ----------------------------------------------------- */
 
 .or-calendar__nav {
   display: inline-flex;
@@ -50,9 +83,39 @@
     color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-calendar__nav:hover:not([aria-disabled='true']) {
+.or-calendar__nav .or-icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']) {
   background: var(--or-color-surface-hover);
   color: var(--or-color-text);
+}
+
+/* A seta "empurra" na direção em que o mês vai mudar. */
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']):is(
+    .or-calendar__nav--prev-month,
+    .or-calendar__nav--prev-year
+  )
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / -2));
+}
+
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']):is(
+    .or-calendar__nav--next-month,
+    .or-calendar__nav--next-year
+  )
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / 2));
+}
+
+.or-calendar__nav:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+}
+
+.or-calendar__nav:active:not([aria-disabled='true']) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-calendar__nav:focus-visible,
@@ -101,11 +164,20 @@
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-calendar__day:hover:not(.or-calendar__day--disabled, .or-calendar__day--selected) {
+.or-calendar__day:is(:hover, :focus-visible):not(
+    .or-calendar__day--disabled,
+    .or-calendar__day--selected
+  ) {
   background: var(--or-color-surface-hover);
+}
+
+.or-calendar__day:active:not(.or-calendar__day--disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-calendar__day:focus-visible {
@@ -118,7 +190,7 @@
   color: var(--or-color-text-subtle);
 }
 
-/* Hoje: borda fina + marcador quadrado laranja. */
+/* Hoje: borda fina + marcador quadrado laranja que "assenta" ao aparecer. */
 .or-calendar__day--today {
   border-color: var(--or-color-border-strong);
   font-weight: var(--or-weight-bold);
@@ -133,6 +205,8 @@
   height: 4px;
   margin-left: -2px;
   background: var(--or-color-accent);
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
 }
 
 .or-calendar__day--selected {
@@ -152,6 +226,11 @@
 
 .or-calendar__day--selected:focus-visible {
   outline-offset: 2px;
+}
+
+/* Dia recém-escolhido: pop curto com overshoot. */
+.or-calendar__day--pop {
+  animation: or-calendar-pop var(--or-duration-medium) var(--or-ease-bounce) both;
 }
 
 .or-calendar__day--disabled {
@@ -180,16 +259,62 @@
   font-size: var(--or-text-xs);
   font-weight: var(--or-weight-bold);
   cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-calendar__today:hover:not([aria-disabled='true']) {
+.or-calendar__today:is(:hover, :focus-visible):not([aria-disabled='true']) {
   background: var(--or-color-surface-hover);
   border-color: var(--or-color-text-subtle);
+}
+
+.or-calendar__today:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-calendar__today[aria-disabled='true'] {
   opacity: 0.42;
   cursor: not-allowed;
+}
+
+/* Keyframes --------------------------------------------------------------- */
+
+@keyframes or-calendar-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(var(--_slide));
+  }
+}
+
+@keyframes or-calendar-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * -1));
+  }
+}
+
+@keyframes or-calendar-out-next {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * -0.5));
+  }
+}
+
+@keyframes or-calendar-out-prev {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * 0.5));
+  }
+}
+
+@keyframes or-calendar-pop {
+  from {
+    transform: scale(0.8);
+  }
 }
 
 @media (forced-colors: active) {

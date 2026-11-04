@@ -20,7 +20,7 @@ import {
   type ReactNode,
   type SyntheticEvent,
 } from 'react'
-import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
+import { useControllableState, useId, useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import { focusElement, getThemeScope, useLayer } from '../Modal/overlay'
@@ -99,9 +99,11 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
   const typeahead = useRef({ buffer: '', timer: 0 })
   const closeRef = useRef(onClose)
   closeRef.current = onClose
+  // O menu continua montado (inerte) durante a animação de saída.
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(open)
 
   const floating = useFloatingPanel({
-    open,
+    open: present,
     reference,
     floating: menuEl,
     placement,
@@ -176,17 +178,22 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
     if (match) focusElement(match)
   }
 
-  const menuRef = useMemo(() => mergeRefs<HTMLDivElement>(setMenuEl, setNode, ref), [setNode, ref])
+  const menuRef = useMemo(
+    () => mergeRefs<HTMLDivElement>(setMenuEl, setNode, nodeRef, ref),
+    [setNode, nodeRef, ref],
+  )
 
   return (
     <Portal>
-      {open && (
+      {present && (
         <MenuContext.Provider value={context}>
           <div
             ref={menuRef}
             role="menu"
             aria-orientation="vertical"
             tabIndex={-1}
+            data-state={state}
+            inert={state === 'closed' || undefined}
             data-side={floating.side}
             data-theme={getThemeScope(themeOrigin)}
             className={cx('or-floating', 'or-menu', className)}
@@ -289,6 +296,14 @@ const MenuItemBase = forwardRef<HTMLDivElement, BaseItemProps>(function MenuItem
     />
   )
 })
+
+/** `true` depois que `value` muda pela primeira vez (não anima o estado inicial ao abrir). */
+function useChangedSinceMount(value: unknown) {
+  const [initial] = useState(value)
+  const [changed, setChanged] = useState(false)
+  if (!changed && value !== initial) setChanged(true)
+  return changed
+}
 
 function renderIcon(icon: IconName | ReactElement | undefined) {
   if (!icon) return null
@@ -397,6 +412,7 @@ export const DropdownCheckboxItem = forwardRef<HTMLDivElement, DropdownCheckboxI
       defaultValue: defaultChecked,
       onChange: onCheckedChange,
     })
+    const animate = useChangedSinceMount(isChecked)
     return (
       <MenuItemBase
         ref={ref}
@@ -409,7 +425,7 @@ export const DropdownCheckboxItem = forwardRef<HTMLDivElement, DropdownCheckboxI
         className={cx('or-menu__item--checkable', className)}
         {...rest}
       >
-        <span className="or-menu__indicator" aria-hidden="true">
+        <span className="or-menu__indicator" data-animate={animate || undefined} aria-hidden="true">
           {isChecked && <Icon name="check" size="sm" strokeWidth={2.25} />}
         </span>
         <span className="or-menu__text">{children}</span>
@@ -498,6 +514,7 @@ export const DropdownRadioItem = forwardRef<HTMLDivElement, DropdownRadioItemPro
   ) {
     const group = useContext(RadioGroupContext)
     const checked = group?.value === value
+    const animate = useChangedSinceMount(checked)
     return (
       <MenuItemBase
         ref={ref}
@@ -510,7 +527,11 @@ export const DropdownRadioItem = forwardRef<HTMLDivElement, DropdownRadioItemPro
         className={cx('or-menu__item--checkable', className)}
         {...rest}
       >
-        <span className="or-menu__indicator or-menu__indicator--radio" aria-hidden="true">
+        <span
+          className="or-menu__indicator or-menu__indicator--radio"
+          data-animate={animate || undefined}
+          aria-hidden="true"
+        >
           {checked && <span className="or-menu__dot" />}
         </span>
         <span className="or-menu__text">{children}</span>

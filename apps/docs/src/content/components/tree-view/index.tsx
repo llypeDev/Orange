@@ -1,4 +1,4 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import Controlled from './examples/Controlled'
 import ControlledCode from './examples/Controlled?raw'
@@ -101,6 +101,19 @@ export default function TreeViewPage() {
             { name: 'defaultIcons', type: 'boolean', default: 'true', description: { pt: 'Ícones de pasta/arquivo para itens sem icon.', en: 'Folder/file icons for items without icon.' } },
             { name: 'size', type: "'sm' | 'md'", default: "'md'", description: { pt: 'Altura das linhas: 28px ou 32px.', en: 'Row height: 28px or 32px.' } },
             { name: 'aria-label', type: 'string', description: { pt: 'Nome acessível (ou use aria-labelledby).', en: 'Accessible name (or use aria-labelledby).' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Expandir', en: 'Expand' }, description: { pt: 'Os filhos abrem com altura (grade 0fr → 1fr) e opacidade — 400ms, ease-out. Pastas já abertas na montagem não animam.', en: 'Children open with height (grid 0fr → 1fr) and opacity — 400ms, ease-out. Folders open on mount do not animate.' } },
+            { term: { pt: 'Recolher', en: 'Collapse' }, description: { pt: 'Saída mais curta: 250ms, ease-in-out. Durante a saída o grupo fica inert (fora do foco e dos leitores de tela).', en: 'Shorter exit: 250ms, ease-in-out. While leaving, the group is inert (out of focus and screen readers).' } },
+            { term: { pt: 'Chevron', en: 'Chevron' }, description: { pt: 'Gira 90° — 250ms, ease-spring.', en: 'Rotates 90° — 250ms, ease-spring.' } },
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: 'Mesma resposta: fundo da linha — 160ms, ease-out. O contorno de foco aparece na hora.', en: 'Same response: row background — 160ms, ease-out. The focus ring appears instantly.' } },
+            { term: { pt: 'Seleção', en: 'Selection' }, description: { pt: 'Fundo e faixa laranja transicionam em 160ms; na seleção múltipla, o check entra com "pop" — 250ms, ease-bounce.', en: 'Background and orange bar transition in 160ms; with multiple selection, the check pops in — 250ms, ease-bounce.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'Expandir e recolher são instantâneos.', en: 'Expand and collapse are instant.' } },
           ]}
         />
       </Section>

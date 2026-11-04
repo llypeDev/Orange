@@ -62,6 +62,22 @@ describe('Rating', () => {
     expect(container.querySelectorAll('.or-rating__star[data-filled]')).toHaveLength(1)
   })
 
+  it('motion: escolher uma nota dispara o pop em onda sem tirar o foco do rádio', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<Rating label="Nota" defaultValue={2} />)
+    expect(container.querySelector('.or-rating__glyph--pop')).toBeNull()
+    await user.click(screen.getByRole('radio', { name: '3 de 5 estrelas' }))
+    const popped = container.querySelectorAll<HTMLElement>('.or-rating__glyph--pop')
+    expect(popped).toHaveLength(3)
+    expect(popped[2].style.getPropertyValue('--_i')).toBe('2')
+    const first = popped[0]
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('radio', { name: '4 de 5 estrelas' })).toHaveFocus()
+    expect(container.querySelectorAll('.or-rating__glyph--pop')).toHaveLength(4)
+    // o ícone remonta para repetir a animação
+    expect(container.querySelector('.or-rating__glyph--pop')).not.toBe(first)
+  })
+
   it('controlado: reflete value', async () => {
     const user = userEvent.setup()
     function Controlled() {
@@ -102,7 +118,14 @@ describe('Rating', () => {
   it('desabilitado, obrigatório e com erro', () => {
     const { rerender } = render(<Rating label="Nota" disabled />)
     screen.getAllByRole('radio').forEach((radio) => expect(radio).toBeDisabled())
-    rerender(<Rating label="Nota" required error="Dê uma nota de 1 a 5" description="Sua opinião é anônima" />)
+    rerender(
+      <Rating
+        label="Nota"
+        required
+        error="Dê uma nota de 1 a 5"
+        description="Sua opinião é anônima"
+      />,
+    )
     const group = screen.getByRole('radiogroup', { name: 'Nota' })
     expect(group).toHaveAttribute('aria-required', 'true')
     expect(group).toHaveAttribute('aria-invalid', 'true')

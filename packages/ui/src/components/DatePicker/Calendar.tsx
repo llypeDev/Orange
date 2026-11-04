@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -58,6 +59,16 @@ export interface CalendarProps extends Omit<
   autoFocus?: boolean
 }
 
+interface CalendarView {
+  date: Date
+  direction: 'next' | 'prev' | null
+  /** Mês exibido antes da última troca (título que sai no crossfade). */
+  from: Date | null
+}
+
+const monthIndex = (date: Date) => date.getFullYear() * 12 + date.getMonth()
+const monthKey = (date: Date) => `${date.getFullYear()}-${date.getMonth()}`
+
 /** Props internas usadas pelo DatePicker (não fazem parte da API pública). */
 interface CalendarInternalProps {
   /** Id do título "mês de ano" — o diálogo do DatePicker usa como rótulo. */
@@ -100,16 +111,34 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
     })
 
     const today = startOfDay(new Date())
-    const [focusedDate, setFocusedDate] = useState<Date>(() =>
-      clampDate(startOfDay(value ?? defaultMonth ?? today), min, max),
+    // Dia ativo (roving tabindex) + direção da última troca de mês, usada
+    // para deslizar a grade e fazer o crossfade do título.
+    const [view, setView] = useState<CalendarView>(() => ({
+      date: clampDate(startOfDay(value ?? defaultMonth ?? today), min, max),
+      direction: null,
+      from: null,
+    }))
+    const focusedDate = view.date
+    // Dia escolhido nesta sessão: ganha o "pop" ao ser selecionado.
+    const [popped, setPopped] = useState<string | null>(null)
+
+    const updateFocused = useCallback(
+      (next: Date) =>
+        setView((prev) => {
+          if (prev.date.getTime() === next.getTime()) return prev
+          const diff = monthIndex(next) - monthIndex(prev.date)
+          if (diff === 0) return { ...prev, date: next }
+          return { date: next, direction: diff > 0 ? 'next' : 'prev', from: prev.date }
+        }),
+      [],
     )
 
     // Quando o valor muda por fora (ex.: digitado no campo), acompanha o mês.
     const valueKey = value ? startOfDay(value).getTime() : null
     useEffect(() => {
       if (valueKey === null) return
-      setFocusedDate((prev) => (prev.getTime() === valueKey ? prev : new Date(valueKey)))
-    }, [valueKey])
+      updateFocused(new Date(valueKey))
+    }, [valueKey, updateFocused])
 
     const formatters = useMemo(() => {
       const make = (options: Intl.DateTimeFormatOptions) => {
@@ -148,13 +177,16 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
     }, [focusedDate])
 
     const moveFocus = (next: Date, focus = true) => {
+      const target = clampDate(startOfDay(next), min, max)
       shouldFocusRef.current = focus
-      setFocusedDate(clampDate(startOfDay(next), min, max))
+      if (!isSameMonth(target, focusedDate)) setPopped(null)
+      updateFocused(target)
     }
 
     const select = (date: Date) => {
       if (isDisabled(date)) return
       moveFocus(date, false)
+      setPopped(toISODate(date))
       // Sempre um novo objeto Date: o onChange dispara mesmo ao reescolher o dia.
       setValue(startOfDay(date))
     }
@@ -253,6 +285,8 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
 
     const todayDisabled = isDisabled(today)
     const title = capitalize(formatters.monthYear.format(focusedDate), locale)
+    const currentKey = monthKey(focusedDate)
+    const direction = view.direction
 
     return (
       <div
@@ -267,7 +301,28 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
             {navigation.slice(0, 2).map(renderNavButton)}
           </div>
           <div id={headingId} className="or-calendar__title" aria-live="polite" aria-atomic="true">
-            {title}
+            {/* Crossfade: o mês anterior sai enquanto o novo entra pela direção da navegação. */}
+            {view.from && direction && (
+              <span
+                key={`out-${monthKey(view.from)}-${currentKey}`}
+                className={cx(
+                  'or-calendar__title-text',
+                  `or-calendar__title-text--out-${direction}`,
+                )}
+                aria-hidden="true"
+              >
+                {capitalize(formatters.monthYear.format(view.from), locale)}
+              </span>
+            )}
+            <span
+              key={`in-${currentKey}`}
+              className={cx(
+                'or-calendar__title-text',
+                direction && `or-calendar__title-text--in-${direction}`,
+              )}
+            >
+              {title}
+            </span>
           </div>
           <div className="or-calendar__nav-group">{navigation.slice(2).map(renderNavButton)}</div>
         </div>
@@ -294,7 +349,10 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
               })}
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            key={currentKey}
+            className={cx('or-calendar__body', direction && `or-calendar__body--${direction}`)}
+          >
             {weeks.map((week) => (
               <tr key={toISODate(week[0])} role="row">
                 {week.map((date) => {
@@ -320,6 +378,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
                         isToday && 'or-calendar__day--today',
                         outside && 'or-calendar__day--outside',
                         disabled && 'or-calendar__day--disabled',
+                        selected && popped === iso && 'or-calendar__day--pop',
                       )}
                       onClick={() => select(date)}
                       onKeyDown={onDayKeyDown}

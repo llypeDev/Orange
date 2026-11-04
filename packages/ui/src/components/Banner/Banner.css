@@ -1,3 +1,47 @@
+/* Presença ----------------------------------------------------------------
+ * Entrada (live ou reaberto): desce 8px do topo + fade, --or-duration-medium.
+ * Saída: esmaece e sobe 4px (--or-duration-fast) enquanto a faixa recolhe a
+ * altura (grid 1fr → 0fr, --or-duration-medium) — a página sobe suave.
+ */
+.or-banner-presence {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.or-banner-presence__inner {
+  min-width: 0;
+  min-height: 0;
+}
+
+.or-banner-presence[data-state='closed'] {
+  grid-template-rows: 0fr;
+  pointer-events: none;
+  transition: grid-template-rows var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-banner-presence[data-state='closed'] > .or-banner-presence__inner {
+  overflow: hidden;
+}
+
+.or-banner-presence[data-state='closed'] .or-banner {
+  opacity: 0;
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+@keyframes or-banner-enter {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-md) * -1));
+  }
+}
+
+.or-banner--enter {
+  animation: or-banner-enter var(--or-duration-medium) var(--or-ease-out) both;
+}
+
 .or-banner {
   --_tone: var(--or-color-info);
   --_tone-text: var(--or-color-info-text);
@@ -27,6 +71,13 @@
   display: inline-flex;
   flex-shrink: 0;
   color: var(--_tone-text);
+}
+
+/* "Ao vivo": anel quadrado pulsando em volta do ícone (or-pulse, 2.4s). */
+.or-banner__icon--pulse {
+  --_pulse-color: var(--_tone);
+  padding: 0.125rem;
+  margin: -0.125rem;
 }
 
 .or-banner__icon > svg {
@@ -69,10 +120,13 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
+  transition: text-decoration-thickness var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-banner__body a:hover,
-.or-banner__action a:not([class]):hover {
+.or-banner__body a:focus-visible,
+.or-banner__action a:not([class]):hover,
+.or-banner__action a:not([class]):focus-visible {
   text-decoration-thickness: 2px;
 }
 

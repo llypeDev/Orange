@@ -236,6 +236,25 @@ describe('Dropdown', () => {
     )
   })
 
+  it('motion: menu expõe data-state e o check só anima quando o estado muda', async () => {
+    const user = userEvent.setup()
+    render(
+      <Dropdown trigger={<Button>Exibir</Button>}>
+        <DropdownCheckboxItem defaultChecked>Mostrar concluídas</DropdownCheckboxItem>
+        <DropdownCheckboxItem>Mostrar arquivadas</DropdownCheckboxItem>
+      </Dropdown>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Exibir' }))
+    expect(screen.getByRole('menu')).toHaveAttribute('data-state', 'open')
+    const indicator = (name: string) =>
+      screen.getByRole('menuitemcheckbox', { name }).querySelector('.or-menu__indicator')!
+    // estado inicial não "pula" ao abrir
+    expect(indicator('Mostrar concluídas')).not.toHaveAttribute('data-animate')
+    await user.click(screen.getByRole('menuitemcheckbox', { name: 'Mostrar arquivadas' }))
+    expect(indicator('Mostrar arquivadas')).toHaveAttribute('data-animate')
+    expect(indicator('Mostrar concluídas')).not.toHaveAttribute('data-animate')
+  })
+
   it('dentro de um Modal, fica acima dele e Escape fecha só o menu', async () => {
     const user = userEvent.setup()
     render(

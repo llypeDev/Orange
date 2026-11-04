@@ -33,7 +33,8 @@
   );
   background-repeat: no-repeat;
   background-size: 200% 100%;
-  animation: or-shimmer 1.6s var(--or-ease-in-out) infinite;
+  /* brilho a cada 1.6s (2/3 do loop de 2.4s) */
+  animation: or-shimmer calc(var(--or-duration-loop) * 2 / 3) var(--or-ease-in-out) infinite;
 }
 
 .or-skeleton-text {

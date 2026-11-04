@@ -120,6 +120,11 @@
   height: 0.875rem;
 }
 
+/* Pulso "ao vivo" no marcador (classe or-pulse de motion.css), na cor do tom. */
+.or-timeline__marker.or-pulse {
+  --_pulse-color: var(--_tone);
+}
+
 /* Texto -------------------------------------------------------------------- */
 
 .or-timeline__date {
@@ -200,6 +205,52 @@
     text-align: right;
   }
 }
+
+/* Entrada escalonada (prop animated) --------------------------------------
+ * data-reveal="hidden" é aplicado antes da primeira pintura; ao entrar na
+ * viewport vira "shown". Cada item sobe 24px e aparece em 600ms, 80ms depois do
+ * anterior; o marcador surge com um pequeno "pop" e a linha é desenhada de cima
+ * para baixo (scaleY). Tokens zerados em movimento reduzido. */
+
+.or-timeline[data-reveal] > .or-timeline__item {
+  transition:
+    opacity var(--or-duration-reveal) var(--or-ease-out),
+    transform var(--or-duration-reveal) var(--or-ease-out);
+  transition-delay: calc(var(--_i, 0) * var(--or-stagger));
+}
+
+.or-timeline[data-reveal] > .or-timeline__item::before {
+  transform-origin: top;
+  transition: transform var(--or-duration-reveal) var(--or-ease-out);
+  transition-delay: calc((var(--_i, 0) + 2) * var(--or-stagger));
+}
+
+.or-timeline[data-reveal] > .or-timeline__item > .or-timeline__marker {
+  transition: transform var(--or-duration-medium) var(--or-ease-bounce);
+  transition-delay: calc((var(--_i, 0) + 1) * var(--or-stagger));
+}
+
+.or-timeline[data-reveal='hidden'] > .or-timeline__item {
+  opacity: 0;
+  transform: translateY(var(--or-distance-lg));
+}
+
+.or-timeline[data-reveal='hidden'] > .or-timeline__item::before {
+  transform: scaleY(0);
+}
+
+.or-timeline[data-reveal='hidden'] > .or-timeline__item > .or-timeline__marker {
+  transform: scale(0.4);
+}
+
+.or-timeline > .or-timeline__item:nth-child(2) { --_i: 1; }
+.or-timeline > .or-timeline__item:nth-child(3) { --_i: 2; }
+.or-timeline > .or-timeline__item:nth-child(4) { --_i: 3; }
+.or-timeline > .or-timeline__item:nth-child(5) { --_i: 4; }
+.or-timeline > .or-timeline__item:nth-child(6) { --_i: 5; }
+.or-timeline > .or-timeline__item:nth-child(7) { --_i: 6; }
+.or-timeline > .or-timeline__item:nth-child(8) { --_i: 7; }
+.or-timeline > .or-timeline__item:nth-child(n + 9) { --_i: 8; }
 
 @media (forced-colors: active) {
   .or-timeline__marker {

@@ -1,3 +1,42 @@
+/* Presença ----------------------------------------------------------------
+ * Entrada (mensagens live ou reabertas): fade + 8px, em --or-duration-medium.
+ * Saída (ao dispensar): esmaece e sobe 4px em --or-duration-fast enquanto o
+ * invólucro recolhe a altura (grid 1fr → 0fr) em --or-duration-medium — o
+ * conteúdo abaixo sobe suavemente em vez de pular.
+ */
+.or-alert-presence {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.or-alert-presence__inner {
+  min-width: 0;
+  min-height: 0;
+}
+
+.or-alert-presence[data-state='closed'] {
+  grid-template-rows: 0fr;
+  pointer-events: none;
+  transition: grid-template-rows var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-alert-presence[data-state='closed'] > .or-alert-presence__inner {
+  overflow: hidden;
+}
+
+.or-alert-presence[data-state='closed'] .or-alert {
+  opacity: 0;
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-alert--enter {
+  /* fade + sobe 8px (keyframe compartilhada de motion.css) */
+  animation: or-page-enter var(--or-duration-medium) var(--or-ease-out) both;
+}
+
 .or-alert {
   --_tone: var(--or-color-info);
   --_tone-text: var(--or-color-info-text);
@@ -15,6 +54,7 @@
   font-family: var(--or-font-body);
   font-size: var(--or-text-sm);
   line-height: var(--or-leading-body);
+  transition: border-color var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-alert:not(.or-alert--dismissible) {
@@ -30,6 +70,12 @@
   /* alinha o ícone (20px) à primeira linha do título */
   margin-top: 0.0625rem;
   color: var(--_tone-text);
+  transition: color var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* O ícone "assenta" logo depois da mensagem entrar. */
+.or-alert--enter .or-alert__icon {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-press) both;
 }
 
 .or-alert__icon > svg {
@@ -73,9 +119,11 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
+  transition: text-decoration-thickness var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-alert__body a:hover {
+.or-alert__body a:hover,
+.or-alert__body a:focus-visible {
   text-decoration-thickness: 2px;
 }
 

@@ -112,4 +112,12 @@ describe('ErrorSummary', () => {
     const { container } = render(<Form />)
     await expectNoA11yViolations(container)
   })
+
+  it('motion: entra com data-state="open" e numera os itens para a entrada escalonada', () => {
+    render(<Form />)
+    const region = screen.getByRole('region')
+    expect(region).toHaveAttribute('data-state', 'open')
+    const items = region.querySelectorAll('li')
+    expect(items[1].style.getPropertyValue('--_i')).toBe('1')
+  })
 })

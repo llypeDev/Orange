@@ -21,6 +21,23 @@
   z-index: 2;
 }
 
+/* Pressionar: as duas partes são coladas, então a moldura fica parada (a borda
+ * compartilhada não pisca) e só o conteúdo "afunda" 1px, como no Button. */
+.or-split-button > .or-button:active:not(:disabled, [aria-disabled='true']) {
+  transform: none;
+}
+
+.or-split-button > .or-button > :is(.or-button__label, .or-button__icon--start) {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-split-button
+  > .or-button:active:not(:disabled, [aria-disabled='true'])
+  > :is(.or-button__label, .or-button__icon--start) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
 .or-split-button__main {
   min-width: 0;
 }
@@ -45,7 +62,7 @@
 .or-split-button__trigger .or-button__icon svg {
   width: 1.125rem;
   height: 1.125rem;
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-split-button__trigger[aria-expanded='true'] .or-button__icon svg {
@@ -71,17 +88,39 @@
   box-shadow: var(--or-shadow-overlay);
   color: var(--or-color-text);
   font-family: var(--or-font-body);
-  animation: or-split-button-in var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-split-button__menu:focus {
   outline: none;
 }
 
-@keyframes or-split-button-in {
+/* Entrada: opacidade + 6px vindo do botão (medium, ease-out).
+ * Saída: mais curta (fast, ease-in-out), recuando 4px para o botão.
+ * --_dir inverte o sentido quando o menu abre para cima (flip). */
+.or-split-button__menu[data-side='top'] {
+  --_dir: -1;
+}
+
+.or-split-button__menu[data-state='open'] {
+  animation: or-split-button-menu-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-split-button__menu[data-state='closed'] {
+  animation: or-split-button-menu-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-split-button-menu-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(calc(var(--or-distance-sm) * -1.5 * var(--_dir, 1)));
+  }
+}
+
+@keyframes or-split-button-menu-out {
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1 * var(--_dir, 1)));
   }
 }
 
@@ -101,6 +140,10 @@
   line-height: var(--or-leading-tight);
   text-align: start;
   cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-split-button__item:focus {
@@ -116,15 +159,24 @@
 
 .or-split-button__item:active:not([aria-disabled='true']) {
   background: var(--or-color-surface-active);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-split-button__item-icon {
   flex-shrink: 0;
   color: var(--or-color-text-subtle);
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-split-button__item:focus .or-split-button__item-icon {
   color: var(--or-color-accent-text);
+}
+
+/* O item ativo "empurra" o ícone 2px — mesma linguagem da seta do Button. */
+.or-split-button__item:focus:not([aria-disabled='true']) .or-split-button__item-icon {
+  transform: translateX(2px);
 }
 
 .or-split-button__item-label {

@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -154,6 +155,19 @@ export default function ButtonGroupPage() {
         >
           <Vertical />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: <>Afunda 1px e reduz para 98,5% em <Code>--or-duration-press</Code> (90ms); volta em <Code>fast</Code> com <Code>--or-ease-out</Code>.</>, en: <>Sinks 1px and shrinks to 98.5% in <Code>--or-duration-press</Code> (90ms); returns in <Code>fast</Code> with <Code>--or-ease-out</Code>.</> } },
+            { term: { pt: 'Pressionar colado', en: 'Press when attached' }, description: { pt: <>A moldura fica parada — a borda compartilhada não pisca — e só o rótulo e o ícone afundam 1px (90ms).</>, en: <>The frame stays put — the shared border never flickers — and only the label and icon sink 1px (90ms).</> } },
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: <>Fundo, borda e cor em <Code>--or-duration-fast</Code> (160ms) com <Code>--or-ease-out</Code>. Hover e foco visível têm a mesma resposta.</>, en: <>Background, border and color in <Code>--or-duration-fast</Code> (160ms) with <Code>--or-ease-out</Code>. Hover and visible focus respond the same way.</> } },
+            { term: { pt: 'Camadas', en: 'Layers' }, description: { pt: 'Em grupos colados, o item em hover sobe uma camada e o item focado, duas: a borda inteira e o contorno de foco ficam sempre visíveis.', en: 'In attached groups, the hovered item rises one layer and the focused item two: the full border and the focus outline are always visible.' } },
+            { term: { pt: 'Seta final', en: 'End arrow' }, description: { pt: <>Desliza 4px no hover e no foco (<Code>medium</Code>, <Code>ease-out</Code>), herdado do Button — também quando colado.</>, en: <>Slides 4px on hover and focus (<Code>medium</Code>, <Code>ease-out</Code>), inherited from Button — also when attached.</> } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

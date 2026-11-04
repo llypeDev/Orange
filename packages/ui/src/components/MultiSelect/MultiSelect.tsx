@@ -12,8 +12,10 @@ import { useClickOutside, useControllableState, useDisclosure, useId } from '../
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
+import { useExitingItems, useInlinePresence } from '../Combobox/motion'
 import {
   defaultOptionFilter,
+  Freeze,
   firstEnabledIndex,
   lastEnabledIndex,
   ListboxOptionItem,
@@ -130,8 +132,8 @@ function MultiSelectControl({
   const inputEl = useRef<HTMLInputElement>(null)
   const frameEl = useRef<HTMLDivElement>(null)
   const popupEl = useRef<HTMLDivElement>(null)
-  const chipButtons = useRef<(HTMLButtonElement | null)[]>([])
-  const pendingFocus = useRef<number | 'input' | null>(null)
+  const chipButtons = useRef(new Map<string, HTMLButtonElement>())
+  const pendingFocus = useRef<string | null>(null)
   const { announce, region } = useAnnouncer()
 
   const [values, setValues] = useControllableState<string[]>({ value: valueProp, defaultValue })
@@ -144,6 +146,9 @@ function MultiSelectControl({
   for (const option of options) known.current.set(option.value, option)
   const optionFor = (v: string): MultiSelectOption => known.current.get(v) ?? { value: v, label: v }
   const selectedOptions = values.map(optionFor)
+  // Chips presentes na montagem não animam; os adicionados depois entram com "pop".
+  const initialValues = useRef(new Set(values))
+  const { entries: chipEntries, leavingProps } = useExitingItems(selectedOptions, (o) => o.value)
 
   const limitReached = maxSelected !== undefined && values.length >= maxSelected
 
@@ -162,7 +167,7 @@ function MultiSelectControl({
   const activeId = activeOption ? optionId(activeOption) : undefined
   useScrollActiveIntoView(activeId)
 
-  const { refs, floatingStyles, theme } = useListboxPopup(isOpen)
+  const { refs, floatingStyles, theme, present, state, nodeRef, side } = useListboxPopup(isOpen)
   useClickOutside([frameEl, popupEl], () => setOpen(false), isOpen)
 
   useEffect(() => {
@@ -184,9 +189,8 @@ function MultiSelectControl({
     const target = pendingFocus.current
     if (target === null) return
     pendingFocus.current = null
-    if (target === 'input') inputEl.current?.focus()
-    else
-      (chipButtons.current[target] ?? chipButtons.current[target - 1] ?? inputEl.current)?.focus()
+    const next = target === 'input' ? null : chipButtons.current.get(target)
+    ;(next ?? inputEl.current)?.focus()
   }, [values])
 
   const emit = (next: string[]) => {
@@ -216,9 +220,13 @@ function MultiSelectControl({
     }
   }
 
-  const remove = (v: string, focusAfter: number | 'input' | null) => {
+  /** Remove `v`; o foco vai para o chip vizinho (`neighbor`) ou para o campo. */
+  const remove = (v: string, focusAfter: 'neighbor' | 'input') => {
     if (!interactive) return
-    pendingFocus.current = focusAfter
+    const index = values.indexOf(v)
+    const neighbor = focusAfter === 'neighbor' ? (values[index + 1] ?? values[index - 1]) : undefined
+    pendingFocus.current = neighbor ?? 'input'
+    initialValues.current.delete(v)
     emit(values.filter((x) => x !== v))
     announce(t('itemRemoved', { label: optionFor(v).label }))
   }
@@ -226,6 +234,7 @@ function MultiSelectControl({
   const clearAll = () => {
     if (!interactive) return
     pendingFocus.current = 'input'
+    initialValues.current.clear()
     emit([])
     setText('')
     announce(t('itemRemoved', { label: selectedOptions.map((o) => o.label).join(', ') }))
@@ -308,6 +317,7 @@ function MultiSelectControl({
 
   const labelledBy = hasLabel && field ? field.labelId : undefined
   const hasValues = values.length > 0
+  const clearPresence = useInlinePresence<HTMLButtonElement>(clearable && interactive && hasValues)
 
   return (
     // O mousedown só amplia a área de clique do input (que já é focável por teclado).
@@ -331,28 +341,43 @@ function MultiSelectControl({
       }}
     >
       <div className="or-multi-select__values">
-        {hasValues && (
+        {chipEntries.length > 0 && (
           // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
-           
           <ul role="list" className="or-multi-select__chips" aria-label={t('selectedItems')}>
-            {selectedOptions.map((option, index) => (
-              <li key={option.value} className="or-multi-select__chip">
-                <span className="or-multi-select__chip-label">{option.label}</span>
-                {interactive && (
-                  <button
-                    ref={(el) => {
-                      chipButtons.current[index] = el
-                    }}
-                    type="button"
-                    className="or-multi-select__chip-remove"
-                    aria-label={t('removeItem', { label: option.label })}
-                    onClick={() => remove(option.value, values.length > 1 ? index : 'input')}
-                  >
-                    <Icon name="close" size={12} strokeWidth={2} />
-                  </button>
-                )}
-              </li>
-            ))}
+            {chipEntries.map(({ item: option, key, leaving }) =>
+              leaving ? (
+                <li key={key} className="or-multi-select__chip" {...leavingProps(key)}>
+                  <span className="or-multi-select__chip-label">{option.label}</span>
+                  {interactive && (
+                    <span className="or-multi-select__chip-remove" aria-hidden="true">
+                      <Icon name="close" size={12} strokeWidth={2} />
+                    </span>
+                  )}
+                </li>
+              ) : (
+                <li
+                  key={key}
+                  className="or-multi-select__chip"
+                  data-enter={!initialValues.current.has(option.value) || undefined}
+                >
+                  <span className="or-multi-select__chip-label">{option.label}</span>
+                  {interactive && (
+                    <button
+                      ref={(el) => {
+                        if (el) chipButtons.current.set(option.value, el)
+                        else chipButtons.current.delete(option.value)
+                      }}
+                      type="button"
+                      className="or-multi-select__chip-remove"
+                      aria-label={t('removeItem', { label: option.label })}
+                      onClick={() => remove(option.value, 'neighbor')}
+                    >
+                      <Icon name="close" size={12} strokeWidth={2} />
+                    </button>
+                  )}
+                </li>
+              ),
+            )}
           </ul>
         )}
         <input
@@ -401,11 +426,15 @@ function MultiSelectControl({
           <input key={v} type="hidden" name={name} value={v} disabled={isDisabled} />
         ))}
       {loading && <span className="or-multi-select__spinner" aria-hidden="true" />}
-      {clearable && interactive && hasValues && (
+      {clearPresence.present && (
         <button
+          ref={clearPresence.nodeRef}
           type="button"
           className="or-multi-select__clear"
           aria-label={t('clearAll')}
+          aria-hidden={clearPresence.closing || undefined}
+          tabIndex={clearPresence.closing ? -1 : undefined}
+          data-state={clearPresence.dataState}
           onClick={clearAll}
         >
           <Icon name="close" size="sm" />
@@ -429,17 +458,20 @@ function MultiSelectControl({
         <Icon name="chevron-down" size="sm" className="or-multi-select__chevron" />
       </button>
       {region}
-      {isOpen && (
+      {present && (
         <Portal>
           {/* O mousedown só impede que o clique na lista tire o foco do campo (o teclado age no campo). */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
-            ref={mergeRefs(popupEl, refs.setFloating)}
+            ref={mergeRefs(popupEl, refs.setFloating, nodeRef)}
             className="or-combobox-popup"
             style={floatingStyles}
             data-theme={theme}
+            data-state={state}
+            data-side={side}
             onMouseDown={(event) => event.preventDefault()}
           >
+            <Freeze frozen={!isOpen}>
             {limitReached && (
               <div className="or-combobox-popup__message or-combobox-popup__message--warning">
                 <Icon name="info" size="sm" />
@@ -478,6 +510,7 @@ function MultiSelectControl({
                 />
               ))}
             </ul>
+            </Freeze>
           </div>
         </Portal>
       )}

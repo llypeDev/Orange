@@ -10,6 +10,9 @@
   height: var(--_size);
   vertical-align: middle;
   color: var(--_color);
+  /* aparece com um fade curto, sem "piscar" quando a espera é breve */
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) both;
+  transition: color var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-spinner__ring,
@@ -30,7 +33,8 @@
 .or-spinner__ring {
   border: var(--_stroke) solid transparent;
   border-top-color: currentColor;
-  animation: or-spin 0.75s linear infinite;
+  /* uma volta a cada 800ms (1/3 do loop de 2.4s) */
+  animation: or-spin calc(var(--or-duration-loop) / 3) linear infinite;
 }
 
 .or-spinner__ring::before {
@@ -61,7 +65,8 @@
 
 /*
  * Movimento reduzido: em vez de girar, o arco completo pulsa devagar — ainda
- * comunica atividade, sem rotação contínua.
+ * comunica atividade, sem rotação contínua. A duração é literal porque os
+ * tokens zeram nesse modo (o indicador pareceria travado).
  */
 @keyframes or-spinner-pulse {
   0%,
@@ -78,7 +83,7 @@
     border-color: currentColor;
     animation-name: or-spinner-pulse !important;
     animation-duration: 2s !important;
-    animation-timing-function: ease-in-out !important;
+    animation-timing-function: var(--or-ease-in-out) !important;
     animation-iteration-count: infinite !important;
   }
 }

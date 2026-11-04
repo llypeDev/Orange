@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -101,6 +102,18 @@ export default function CopyButtonPage() {
         <Example title={{ pt: 'Variantes e tamanhos', en: 'Variants and sizes' }} code={VariantsCode}>
           <Variants />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: <>Afunda 1px e reduz para 98,5% em <Code>--or-duration-press</Code> (90ms); volta em <Code>fast</Code> com <Code>--or-ease-out</Code>.</>, en: <>Sinks 1px and shrinks to 98.5% in <Code>--or-duration-press</Code> (90ms); returns in <Code>fast</Code> with <Code>--or-ease-out</Code>.</> } },
+            { term: { pt: 'Copiar', en: 'Copy' }, description: { pt: <>O ícone de cópia sai em <Code>fast</Code> (<Code>ease-in-out</Code>) e o check entra girando de -45° e crescendo de 0.6 a 1 com <Code>--or-ease-bounce</Code> em <Code>medium</Code>.</>, en: <>The copy icon leaves in <Code>fast</Code> (<Code>ease-in-out</Code>) and the check enters rotating from -45° and scaling from 0.6 to 1 with <Code>--or-ease-bounce</Code> in <Code>medium</Code>.</> } },
+            { term: { pt: 'Rótulo', en: 'Label' }, description: { pt: 'O texto atual sobe 4px e some; a confirmação sobe de baixo. Os dois ocupam o mesmo espaço: a largura não muda.', en: 'The current text moves up 4px and fades; the confirmation rises from below. Both share the same space: the width never changes.' } },
+            { term: { pt: 'Voltar', en: 'Return' }, description: { pt: <>Depois do <Code>timeout</Code>, o check sai rápido e o ícone de cópia volta suave (<Code>medium</Code>, <Code>ease-out</Code>); os textos fazem o caminho inverso.</>, en: <>After the <Code>timeout</Code>, the check leaves quickly and the copy icon eases back (<Code>medium</Code>, <Code>ease-out</Code>); the texts reverse their path.</> } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

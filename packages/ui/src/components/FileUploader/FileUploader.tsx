@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type ChangeEvent,
+  type CSSProperties,
   type DragEvent,
   type HTMLAttributes,
   type ReactNode,
@@ -13,7 +14,7 @@ import {
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
 import { Button } from '../Button'
 import { Field, useField, type FieldContextValue } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -236,6 +237,129 @@ function Dropzone({
   )
 }
 
+interface FileStatusProps {
+  status: FileUploaderStatus
+  progress: number
+  error?: string
+  /** Anima ao montar (status que mudou depois da primeira renderização). */
+  animate: boolean
+}
+
+/** Texto de status. Montado de novo a cada troca de status (key), anima uma vez. */
+function FileStatus({ status, progress, error, animate }: FileStatusProps) {
+  const { t } = useLocale()
+  // Decide na montagem: re-renderizações não reiniciam a animação.
+  const [play] = useState(animate)
+  if (status === 'uploading') return <span>{progress}%</span>
+  if (status === 'success')
+    return (
+      <span
+        className={cx(
+          'or-file-uploader__status',
+          'or-file-uploader__status--success',
+          play && 'or-file-uploader__status--animate',
+        )}
+      >
+        <Icon name="check" size="xs" />
+        {t('uploadComplete')}
+      </span>
+    )
+  if (status === 'error')
+    return (
+      <span
+        className={cx(
+          'or-file-uploader__status',
+          'or-file-uploader__status--error',
+          play && 'or-file-uploader__status--animate',
+        )}
+      >
+        {error ?? t('uploadFailed')}
+      </span>
+    )
+  return null
+}
+
+interface FileRowProps {
+  item: FileUploaderItem
+  disabled: boolean
+  /** Entra com slide/fade (arquivo adicionado depois da montagem). */
+  animate: boolean
+  /** Posição no lote adicionado — atraso escalonado da entrada. */
+  order: number
+  /** Item removido: anima a saída e some ao terminar. */
+  leaving: boolean
+  onRemove: (item: FileUploaderItem) => void
+  onExited: (id: string) => void
+}
+
+function FileRow({ item, disabled, animate, order, leaving, onRemove, onExited }: FileRowProps) {
+  const { t, locale } = useLocale()
+  const [enter] = useState(animate)
+  const status = item.status ?? 'idle'
+  const progress = Math.round(Math.min(100, Math.max(0, item.progress ?? 0)))
+  return (
+    <li
+      className={cx('or-file-uploader__item', enter && 'or-file-uploader__item--enter')}
+      data-status={status}
+      data-state={leaving ? 'closed' : undefined}
+      style={enter ? ({ '--_i': order } as CSSProperties) : undefined}
+      aria-hidden={leaving || undefined}
+      inert={leaving || undefined}
+      onAnimationEnd={(event) => {
+        if (leaving && event.target === event.currentTarget) onExited(item.id)
+      }}
+    >
+      <div className="or-file-uploader__row">
+        <Icon
+          name={status === 'error' ? 'alert-circle' : 'file'}
+          className="or-file-uploader__file-icon"
+        />
+        <div className="or-file-uploader__meta">
+          <span className="or-file-uploader__name" title={item.file.name}>
+            {item.file.name}
+          </span>
+          <span className="or-file-uploader__details">
+            <span>{formatFileSize(item.file.size, locale)}</span>
+            <FileStatus
+              key={status}
+              status={status}
+              progress={progress}
+              error={item.error}
+              animate={animate && !leaving}
+            />
+          </span>
+          {status === 'uploading' && (
+            <div
+              className="or-file-uploader__progress"
+              role="progressbar"
+              aria-label={t('uploadingFile', { name: item.file.name })}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={progress}
+            >
+              {/* scaleX em vez de width: a barra cresce com transform. */}
+              <span
+                className="or-file-uploader__progress-bar"
+                style={{ transform: `scaleX(${progress / 100})` }}
+              />
+            </div>
+          )}
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          iconOnly
+          className="or-file-uploader__remove"
+          aria-label={t('removeItem', { label: item.file.name })}
+          startIcon={<Icon name="close" />}
+          disabled={disabled}
+          onClick={() => onRemove(item)}
+        />
+      </div>
+    </li>
+  )
+}
+
 /** Lê o contexto do Field (precisa estar dentro dele). */
 function WithField({ children }: { children: (field: FieldContextValue | null) => ReactNode }) {
   return <>{children(useField())}</>
@@ -281,6 +405,15 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
   const [announcement, setAnnouncement] = useState('')
   const buttonRef = useRef<HTMLButtonElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+  // Motion: itens que já estavam na primeira renderização não animam a entrada.
+  const [ready, setReady] = useState(false)
+  useEffect(() => setReady(true), [])
+  // Posição de cada arquivo no lote adicionado (stagger da entrada).
+  const [order, setOrder] = useState<Record<string, number>>({})
+  // Itens removidos que ainda animam a saída (fora da lista real).
+  const [leaving, setLeaving] = useState<{ item: FileUploaderItem; index: number }[]>([])
+  const dropGhost = (id: string) => setLeaving((list) => list.filter((g) => g.item.id !== id))
   const maxSizeLabel = useMemo(
     () => (maxSize ? formatFileSize(maxSize, locale) : ''),
     [maxSize, locale],
@@ -314,6 +447,11 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
       return
     }
     setItems([...kept, ...added])
+    setOrder((prev) => {
+      const next = { ...prev }
+      added.forEach((item, i) => (next[item.id] = i))
+      return next
+    })
 
     const accepted = added.filter((item) => item.status !== 'error')
     const rejected = added.filter((item) => item.status === 'error')
@@ -333,6 +471,12 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
     announce(parts.join('. '))
   }
 
+  // Lista exibida: itens reais + itens saindo, na posição em que estavam.
+  const rows = items.map((item) => ({ item, leaving: false }))
+  for (const ghost of [...leaving].sort((a, b) => a.index - b.index)) {
+    rows.splice(Math.min(ghost.index, rows.length), 0, { item: ghost.item, leaving: true })
+  }
+
   const removeItem = (item: FileUploaderItem) => {
     const index = items.findIndex((i) => i.id === item.id)
     const next = items.filter((i) => i.id !== item.id)
@@ -340,10 +484,20 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
     setCountError(null)
     onFileRemove?.(item)
     announce(t('fileRemoved', { name: item.file.name }))
+    // Com movimento ativo, o item fica na tela animando a saída (inerte).
+    const root = rootRef.current
+    const exitDuration = root
+      ? parseFloat(getComputedStyle(root).getPropertyValue('--or-duration-fast'))
+      : 0
+    if (exitDuration > 0) {
+      const position = rows.findIndex((row) => row.item.id === item.id)
+      setLeaving((list) => [...list, { item, index: position }])
+      window.setTimeout(() => dropGhost(item.id), exitDuration * 4)
+    }
     // Leva o foco ao próximo "remover" (ou ao botão de escolher arquivos).
     requestAnimationFrame(() => {
       const buttons = listRef.current?.querySelectorAll<HTMLButtonElement>(
-        '.or-file-uploader__remove',
+        '.or-file-uploader__item:not([data-state="closed"]) .or-file-uploader__remove',
       )
       const target = buttons?.[Math.min(index, buttons.length - 1)] ?? buttonRef.current
       target?.focus()
@@ -353,7 +507,7 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
   const fieldError = error ?? countError ?? undefined
 
   return (
-    <div ref={ref} className={cx('or-file-uploader', className)} {...rest}>
+    <div ref={mergeRefs(rootRef, ref)} className={cx('or-file-uploader', className)} {...rest}>
       <Field
         label={label}
         hideLabel={hideLabel}
@@ -380,65 +534,20 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
           )}
         </WithField>
 
-        {items.length > 0 && (
+        {rows.length > 0 && (
           <ul ref={listRef} className="or-file-uploader__list" aria-label={t('selectedFiles')}>
-            {items.map((item) => {
-              const status = item.status ?? 'idle'
-              const progress = Math.round(Math.min(100, Math.max(0, item.progress ?? 0)))
-              return (
-                <li key={item.id} className="or-file-uploader__item" data-status={status}>
-                  <Icon
-                    name={status === 'error' ? 'alert-circle' : 'file'}
-                    className="or-file-uploader__file-icon"
-                  />
-                  <div className="or-file-uploader__meta">
-                    <span className="or-file-uploader__name" title={item.file.name}>
-                      {item.file.name}
-                    </span>
-                    <span className="or-file-uploader__details">
-                      <span>{formatFileSize(item.file.size, locale)}</span>
-                      {status === 'uploading' && <span>{progress}%</span>}
-                      {status === 'success' && (
-                        <span className="or-file-uploader__status or-file-uploader__status--success">
-                          <Icon name="check" size="xs" />
-                          {t('uploadComplete')}
-                        </span>
-                      )}
-                      {status === 'error' && (
-                        <span className="or-file-uploader__status or-file-uploader__status--error">
-                          {item.error ?? t('uploadFailed')}
-                        </span>
-                      )}
-                    </span>
-                    {status === 'uploading' && (
-                      <div
-                        className="or-file-uploader__progress"
-                        role="progressbar"
-                        aria-label={t('uploadingFile', { name: item.file.name })}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={progress}
-                      >
-                        <span
-                          className="or-file-uploader__progress-bar"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    iconOnly
-                    className="or-file-uploader__remove"
-                    aria-label={t('removeItem', { label: item.file.name })}
-                    startIcon={<Icon name="close" />}
-                    disabled={disabled}
-                    onClick={() => removeItem(item)}
-                  />
-                </li>
-              )
-            })}
+            {rows.map(({ item, leaving: isLeaving }) => (
+              <FileRow
+                key={item.id}
+                item={item}
+                disabled={disabled}
+                animate={ready}
+                order={order[item.id] ?? 0}
+                leaving={isLeaving}
+                onRemove={removeItem}
+                onExited={dropGhost}
+              />
+            ))}
           </ul>
         )}
         <VisuallyHidden role="status" aria-live="polite">

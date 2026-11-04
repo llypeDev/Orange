@@ -14,6 +14,7 @@ import {
 } from 'react'
 import { useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { composeEventHandlers, cx, devWarning, mergeRefs } from '../../utils'
+import { useSlidingIndicator } from './useSlidingIndicator'
 import './Tabs.css'
 
 export type TabsVariant = 'line' | 'enclosed'
@@ -32,6 +33,8 @@ interface TabsContextValue {
   orientation: TabsOrientation
   activation: TabsActivation
   variant: TabsVariant
+  /** Liga a entrada animada dos painéis depois da primeira troca de aba (não anima ao montar). */
+  animatePanels: boolean
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null)
@@ -126,9 +129,17 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       })
   }, [])
 
+  // Painéis só entram animados depois que a aba muda pela primeira vez.
+  const [prevValue, setPrevValue] = useState(value)
+  const [animatePanels, setAnimatePanels] = useState(false)
+  if (value !== prevValue) {
+    setPrevValue(value)
+    if (prevValue !== undefined) setAnimatePanels(true)
+  }
+
   const ctx = useMemo<TabsContextValue>(
-    () => ({ value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant }),
-    [value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant],
+    () => ({ value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant, animatePanels }),
+    [value, select, initialize, baseId, panels, registerPanel, orientation, activation, variant, animatePanels],
   )
 
   return (
@@ -161,8 +172,14 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
   { className, children, onKeyDown, ...rest },
   ref,
 ) {
-  const { orientation, activation, select, initialize, value } = useTabsContext('TabList')
+  const { orientation, activation, select, initialize, value, variant } = useTabsContext('TabList')
   const listRef = useRef<HTMLDivElement>(null)
+  const indicator = useSlidingIndicator(
+    listRef,
+    '[role="tab"][aria-selected="true"]',
+    orientation === 'vertical' ? 'y' : 'x',
+    `${value}|${orientation}|${variant}`,
+  )
 
   devWarning(
     !rest['aria-label'] && !rest['aria-labelledby'],
@@ -208,10 +225,21 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
       role="tablist"
       aria-orientation={orientation === 'vertical' ? 'vertical' : undefined}
       className={cx('or-tabs__list', className)}
+      data-indicator={variant === 'line' && indicator.ready ? 'ready' : undefined}
       onKeyDown={composeEventHandlers(onKeyDown, handleKeyDown)}
       {...rest}
     >
       {children}
+      {variant === 'line' && (
+        // Indicador único que desliza entre as abas (só transform).
+        <span
+          className="or-tabs__indicator"
+          aria-hidden="true"
+          data-visible={indicator.visible || undefined}
+          data-ready={indicator.ready || undefined}
+          style={indicator.style}
+        />
+      )}
     </div>
   )
 })
@@ -288,6 +316,7 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPa
       tabIndex={0}
       hidden={!selected}
       data-state={selected ? 'active' : 'inactive'}
+      data-motion={ctx.animatePanels || undefined}
       className={cx('or-tabs__panel', className)}
       {...rest}
     >

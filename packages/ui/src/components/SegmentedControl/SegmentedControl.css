@@ -76,10 +76,10 @@
   pointer-events: none;
 }
 
+/* Desliza com mola (spring, medium) — por clique ou pelas setas do teclado.
+ * Só o transform anima; a largura das opções é igual (grade 1fr). */
 .or-segmented-control__track[data-animate] .or-segmented-control__indicator {
-  transition:
-    transform var(--or-duration-medium) var(--or-ease-snap),
-    width var(--or-duration-medium) var(--or-ease-snap);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
 }
 
 /* Opções -------------------------------------------------------------------- */
@@ -142,6 +142,22 @@
   align-items: center;
   gap: var(--or-space-2);
   min-width: 0;
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionar: o conteúdo da opção "afunda" 1px, como o Button; o trilho fica parado. */
+.or-segmented-control__option:active:not([data-disabled]) .or-segmented-control__content {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* O ícone da opção escolhida ganha a cor de acento. */
+.or-segmented-control__icon {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-segmented-control__option[data-checked] .or-segmented-control__icon {
+  color: var(--or-color-accent-text);
 }
 
 .or-segmented-control__text {

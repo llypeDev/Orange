@@ -16,7 +16,23 @@
   cursor: pointer;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionar: afunda 1px, como os botões. */
+.or-toggletip-button:active {
+  transform: translateY(1px) scale(0.94);
+  transition-duration: var(--or-duration-press);
+}
+
+/* O ícone cresce de leve ao abrir — reforço visual, não a única pista (aria-expanded + cor). */
+.or-toggletip-button svg {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-toggletip-button[aria-expanded='true'] svg {
+  transform: scale(1.08);
 }
 
 .or-toggletip-button--md {

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { OrangeProvider } from '../../providers'
@@ -182,6 +182,61 @@ describe('SplitButton', () => {
     )
     expect(screen.getByRole('button', { name: 'Salvar' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Mais ações' })).toBeDisabled()
+  })
+
+  it('anima a saída: o menu fica montado e inerte até animationend', async () => {
+    const original = window.getComputedStyle
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+      if (el instanceof HTMLElement && el.classList.contains('or-split-button__menu')) {
+        return {
+          ...original(el, pseudo),
+          animationName: 'or-split-button-menu-out',
+          animationDuration: '0.16s',
+          transitionDuration: '0s',
+        } as CSSStyleDeclaration
+      }
+      return original(el, pseudo)
+    })
+    const { user, trigger } = setup()
+    await user.click(trigger)
+    const menu = screen.getByRole('menu')
+    await waitFor(() => expect(menu).toHaveAttribute('data-state', 'open'))
+    await user.keyboard('{Escape}')
+    // Fechando: continua no DOM, marcado como closed e inerte; o foco já voltou.
+    expect(menu).toBeInTheDocument()
+    expect(menu).toHaveAttribute('data-state', 'closed')
+    expect(menu).toHaveAttribute('inert')
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    expect(trigger).toHaveFocus()
+    act(() => {
+      menu.dispatchEvent(new Event('animationend', { bubbles: true }))
+    })
+    expect(menu).not.toBeInTheDocument()
+    spy.mockRestore()
+  })
+
+  it('reabrir durante a saída volta ao estado aberto', async () => {
+    const original = window.getComputedStyle
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+      if (el instanceof HTMLElement && el.classList.contains('or-split-button__menu')) {
+        return {
+          ...original(el, pseudo),
+          animationName: 'or-split-button-menu-out',
+          animationDuration: '0.16s',
+          transitionDuration: '0s',
+        } as CSSStyleDeclaration
+      }
+      return original(el, pseudo)
+    })
+    const { user, trigger } = setup()
+    await user.click(trigger)
+    await user.click(trigger)
+    const menu = screen.getByRole('menu', { hidden: true })
+    expect(menu).toHaveAttribute('data-state', 'closed')
+    await user.click(trigger)
+    expect(screen.getByRole('menu')).toHaveAttribute('data-state', 'open')
+    expect(screen.getByRole('menu')).not.toHaveAttribute('inert')
+    spy.mockRestore()
   })
 
   it('não possui violações de acessibilidade (fechado e aberto)', async () => {

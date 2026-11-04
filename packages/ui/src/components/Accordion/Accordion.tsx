@@ -3,15 +3,15 @@ import {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
-  useRef,
   useState,
   type ButtonHTMLAttributes,
   type ElementType,
   type HTMLAttributes,
   type KeyboardEvent,
 } from 'react'
-import { useControllableState, useId, useIsomorphicLayoutEffect, useReducedMotion } from '../../hooks'
+import { useControllableState, useId, usePresence } from '../../hooks'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import type { HeadingLevel } from '../Typography'
 import './Accordion.css'
@@ -270,18 +270,10 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
 
 export type AccordionContentProps = HTMLAttributes<HTMLDivElement>
 
-function readDuration(el: HTMLElement, token: string, fallback: number) {
-  if (typeof getComputedStyle !== 'function') return fallback
-  const raw = getComputedStyle(el).getPropertyValue(token).trim()
-  if (!raw) return fallback
-  const n = parseFloat(raw)
-  if (Number.isNaN(n)) return fallback
-  return raw.endsWith('ms') ? n : n * 1000
-}
-
 /**
- * Painel do item (`role="region"` rotulado pelo cabeçalho). A altura é
- * animada ao abrir e fechar, respeitando `prefers-reduced-motion`.
+ * Painel do item (`role="region"` rotulado pelo cabeçalho). Expande com
+ * `grid-template-rows: 0fr → 1fr` e só recebe `hidden` quando a transição de
+ * saída termina (`usePresence`). Sem movimento em `prefers-reduced-motion`.
  */
 export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(function AccordionContent(
   { className, children, ...rest },
@@ -289,50 +281,23 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
 ) {
   const item = useAccordionItemContext('AccordionContent')
   const { open } = item
-  const localRef = useRef<HTMLDivElement>(null)
-  const reducedMotion = useReducedMotion()
-  const [visible, setVisible] = useState(open)
-  const mounted = useRef(false)
-  const animation = useRef<Animation | null>(null)
-  const composedRef = useMemo(() => mergeRefs(ref, localRef), [ref])
+  const { present, nodeRef } = usePresence<HTMLDivElement>(open)
+  // Ao abrir, o painel fica um quadro em 0fr para a transição ter um ponto de partida.
+  const [expanded, setExpanded] = useState(open)
+  const composedRef = useMemo(() => mergeRefs(ref, nodeRef), [ref, nodeRef])
 
-  // Abre imediatamente; ao fechar, só esconde depois da animação.
-  if (open && !visible) setVisible(true)
-
-  useIsomorphicLayoutEffect(() => {
-    const el = localRef.current
-    if (!mounted.current) {
-      mounted.current = true
+  useEffect(() => {
+    if (!open) {
+      setExpanded(false)
       return
     }
-    if (!el) return
-    animation.current?.cancel()
-    animation.current = null
-    const duration = reducedMotion ? 0 : readDuration(el, '--or-duration-medium', 250)
-    const canAnimate = duration > 0 && typeof el.animate === 'function'
-    if (open) {
-      if (!canAnimate) return
-      animation.current = el.animate(
-        [
-          { height: '0px', opacity: 0 },
-          { height: `${el.scrollHeight}px`, opacity: 1 },
-        ],
-        { duration, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
-      )
-    } else {
-      if (!canAnimate) {
-        setVisible(false)
-        return
-      }
-      const anim = el.animate(
-        [
-          { height: `${el.scrollHeight}px`, opacity: 1 },
-          { height: '0px', opacity: 0 },
-        ],
-        { duration: duration * 0.8, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'forwards' },
-      )
-      anim.onfinish = () => setVisible(false)
-      animation.current = anim
+    let inner = 0
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setExpanded(true))
+    })
+    return () => {
+      cancelAnimationFrame(outer)
+      cancelAnimationFrame(inner)
     }
   }, [open])
 
@@ -343,11 +308,13 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
       role="region"
       aria-labelledby={item.triggerId}
       className={cx('or-accordion__content', className)}
-      data-state={open ? 'open' : 'closed'}
-      hidden={!visible}
+      data-state={open && expanded ? 'open' : 'closed'}
+      hidden={!present}
       {...rest}
     >
-      <div className="or-accordion__content-inner">{children}</div>
+      <div className="or-accordion__content-clip">
+        <div className="or-accordion__content-inner">{children}</div>
+      </div>
     </div>
   )
 })

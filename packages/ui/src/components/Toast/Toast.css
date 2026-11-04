@@ -101,11 +101,22 @@
   --_tone-text: var(--or-color-danger-text);
 }
 
-/* Região (pilha) ------------------------------------------------------------ */
+/* Região (pilha) ------------------------------------------------------------
+ * Movimento:
+ * - entrada: o toast desliza a partir da borda da `position` (direita → vem
+ *   da direita; bottom-center → sobe) com fade, em --or-duration-medium;
+ * - a linha do item cresce (grid 0fr → 1fr), então os outros toasts se
+ *   reacomodam suavemente em vez de pular;
+ * - saída (mais curta): o toast volta para a borda e esmaece em
+ *   --or-duration-fast enquanto a linha recolhe (1fr → 0fr). O usePresence
+ *   espera o fim dessa animação para desmontar.
+ * ------------------------------------------------------------------------- */
 
 .or-toast-region {
   --_gap: var(--or-space-6);
+  --_stack-gap: var(--or-space-3);
   --_enter: translateX(calc(100% + var(--_gap)));
+  --_exit: translateX(calc(100% + var(--_gap)));
 
   position: fixed;
   z-index: var(--or-z-toast);
@@ -128,8 +139,10 @@
 
 .or-toast-region--top-left,
 .or-toast-region--bottom-left {
-  left: var(--_gap);
   --_enter: translateX(calc(-100% - var(--_gap)));
+  --_exit: translateX(calc(-100% - var(--_gap)));
+
+  left: var(--_gap);
 }
 
 .or-toast-region--top-right,
@@ -143,31 +156,76 @@
   translate: -50% 0;
 }
 
+/* no topo, desce da borda; embaixo, sobe da borda */
 .or-toast-region--top-center {
-  --_enter: translateY(-1rem);
+  --_enter: translateY(calc(var(--or-distance-lg) * -1));
+  --_exit: translateY(calc(var(--or-distance-md) * -1));
 }
 
 .or-toast-region--bottom-center {
-  --_enter: translateY(1rem);
+  --_enter: translateY(var(--or-distance-lg));
+  --_exit: translateY(var(--or-distance-md));
 }
 
 .or-toast-region__list {
   display: flex;
   flex-direction: column;
-  gap: var(--or-space-3);
-  margin: 0;
+  /* o espaçamento fica dentro de cada item (meia distância em cima e embaixo)
+     para recolher junto com ele — sem "pulo" no fim da saída */
+  margin: calc(var(--_stack-gap) / -2) 0;
   padding: 0;
   list-style: none;
 }
 
 .or-toast-region__item {
+  display: grid;
+  grid-template-rows: 1fr;
   pointer-events: auto;
-  animation: or-toast-enter var(--or-duration-slow) var(--or-ease-snap) both;
+  animation: or-toast-grow var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-toast-region__collapse {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* embaixo, o toast se ancora na borda inferior da linha enquanto ela cresce */
+.or-toast-region[data-position^='bottom'] .or-toast-region__collapse {
+  justify-content: flex-end;
+}
+
+.or-toast-region__toast {
+  position: relative;
+  margin: calc(var(--_stack-gap) / 2) 0;
+  animation: or-toast-enter var(--or-duration-medium) var(--or-ease-out) both;
 }
 
 .or-toast-region__item[data-state='closed'] {
   pointer-events: none;
+  animation: or-toast-shrink var(--or-duration-medium) var(--or-ease-in-out) both;
+}
+
+.or-toast-region__item[data-state='closed'] .or-toast-region__toast {
   animation: or-toast-exit var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+@keyframes or-toast-grow {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes or-toast-shrink {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
 }
 
 @keyframes or-toast-enter {
@@ -175,26 +233,58 @@
     opacity: 0;
     transform: var(--_enter);
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @keyframes or-toast-exit {
-  from {
-    opacity: 1;
-  }
   to {
     opacity: 0;
-    transform: scale(0.97);
+    transform: var(--_exit);
   }
 }
 
-/* Movimento reduzido: sem deslocamento, apenas aparece/some. */
+/* Barra de tempo restante (showProgress): or-fill-x ao contrário, pausa com a pilha. */
+.or-toast-region__timer {
+  --_timer-color: var(--or-color-border-control);
+
+  position: absolute;
+  right: var(--or-border-thin);
+  bottom: var(--or-border-thin);
+  left: var(--or-border-accent);
+  height: 2px;
+  background: var(--_timer-color);
+  transform-origin: left center;
+  animation: or-fill-x var(--_timer-duration) linear reverse both;
+}
+
+.or-toast-region[data-paused] .or-toast-region__timer {
+  animation-play-state: paused;
+}
+
+.or-toast-region__toast--info .or-toast-region__timer {
+  --_timer-color: var(--or-color-info);
+}
+
+.or-toast-region__toast--success .or-toast-region__timer {
+  --_timer-color: var(--or-color-success);
+}
+
+.or-toast-region__toast--warning .or-toast-region__timer {
+  --_timer-color: var(--or-color-warning);
+}
+
+.or-toast-region__toast--danger .or-toast-region__timer {
+  --_timer-color: var(--or-color-danger);
+}
+
+/* Movimento reduzido: sem deslocamento (só aparece/some) e sem barra animada. */
 @media (prefers-reduced-motion: reduce) {
   .or-toast-region {
     --_enter: none;
+    --_exit: none;
+  }
+
+  .or-toast-region__timer {
+    display: none;
   }
 }
 
@@ -207,5 +297,9 @@
 @media (forced-colors: active) {
   .or-toast {
     border-color: CanvasText;
+  }
+
+  .or-toast-region__timer {
+    background: CanvasText;
   }
 }

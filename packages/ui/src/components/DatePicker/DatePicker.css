@@ -15,12 +15,36 @@
   letter-spacing: 0.02em;
 }
 
+/* Botão do calendário: o ícone "afunda" no clique e acende quando aberto. */
+.or-date-picker__button .or-icon {
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-date-picker__button:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+}
+
+.or-date-picker__button:active:not(:disabled) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
 .or-date-picker__button[aria-expanded='true'] {
   background: var(--or-color-surface-active);
   color: var(--or-color-accent-text);
 }
 
+/* Diálogo ------------------------------------------------------------------
+ * Entra com opacidade + 4px vindo do lado do campo (side-aware) e sai mais
+ * rápido. A posição usa top/left (floating-ui com transform: false), então o
+ * transform fica livre para a animação.
+ * ------------------------------------------------------------------------- */
+
 .or-date-picker__dialog {
+  --_from: translateY(calc(var(--or-distance-sm) * -1));
+
   z-index: var(--or-z-popover);
   padding: var(--or-space-4);
   border: var(--or-border-thin) solid var(--or-color-border-strong);
@@ -28,9 +52,45 @@
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface-raised);
   box-shadow: var(--or-shadow-overlay);
-  animation: or-pop-in var(--or-duration-fast) var(--or-ease-out);
+  transform-origin: top left;
+}
+
+.or-date-picker__dialog[data-side='top'] {
+  --_from: translateY(var(--or-distance-sm));
+  transform-origin: bottom left;
+}
+
+.or-date-picker__dialog[data-side='left'] {
+  --_from: translateX(var(--or-distance-sm));
+}
+
+.or-date-picker__dialog[data-side='right'] {
+  --_from: translateX(calc(var(--or-distance-sm) * -1));
+}
+
+.or-date-picker__dialog[data-state='open'] {
+  animation: or-date-picker-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-date-picker__dialog[data-state='closed'] {
+  animation: or-date-picker-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
 }
 
 .or-date-picker__dialog:focus {
   outline: none;
+}
+
+@keyframes or-date-picker-in {
+  from {
+    opacity: 0;
+    transform: var(--_from) scale(0.98);
+  }
+}
+
+@keyframes or-date-picker-out {
+  to {
+    opacity: 0;
+    transform: var(--_from) scale(0.98);
+  }
 }

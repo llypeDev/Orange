@@ -26,7 +26,14 @@
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionar: o chip "afunda" 1px. */
+.or-chip:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-chip--sm {
@@ -75,7 +82,11 @@
 
 .or-chip__icon--check {
   color: var(--or-color-accent-text);
-  animation: or-chip-check var(--or-duration-fast) var(--or-ease-spring);
+}
+
+/* O check entra com or-scale-in e --or-ease-bounce ao selecionar. */
+.or-chip[data-touched] .or-chip__icon--check {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
 }
 
 .or-chip__count {
@@ -84,22 +95,14 @@
   border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
   color: var(--or-color-text-subtle);
   font-variant-numeric: tabular-nums;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-chip[aria-pressed='true'] .or-chip__count {
   border-inline-start-color: var(--or-color-accent-border);
   color: var(--or-color-text-muted);
-}
-
-@keyframes or-chip-check {
-  from {
-    opacity: 0;
-    scale: 0.5;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-  }
 }
 
 /* Grupo -------------------------------------------------------------------- */

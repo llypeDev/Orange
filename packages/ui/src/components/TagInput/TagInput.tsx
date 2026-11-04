@@ -13,6 +13,7 @@ import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
 import { Field, useFieldControlProps } from '../Field'
+import { useExitingItems, useShake } from '../Combobox/motion'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './TagInput.css'
 
@@ -73,11 +74,24 @@ type ControlProps = Omit<
   text: string
   setText: (text: string) => void
   tryAdd: (raw: string[]) => boolean
-  removeAt: (index: number, focus: number | 'input') => void
+  removeAt: (index: number, focus: 'neighbor' | 'input') => void
   setError: (error: string | null) => void
   message: string
-  tagButtons: React.MutableRefObject<(HTMLButtonElement | null)[]>
+  tagButtons: React.MutableRefObject<Map<string, HTMLButtonElement>>
   inputEl: React.MutableRefObject<HTMLInputElement | null>
+  /** Chaves das tags presentes na montagem (não animam a entrada). */
+  initialKeys: React.MutableRefObject<Set<string>>
+  frameMotion: ReturnType<typeof useShake>
+}
+
+/** Chave estável por tag: texto + ocorrência (suporta `allowDuplicates`). */
+function tagKeys(tags: string[]): string[] {
+  const seen = new Map<string, number>()
+  return tags.map((tag) => {
+    const n = seen.get(tag) ?? 0
+    seen.set(tag, n + 1)
+    return `${tag}\u0000${n}`
+  })
 }
 
 const PASTE_SPLIT = /[,;\n\r\t]+/
@@ -93,6 +107,8 @@ function TagInputControl({
   message,
   tagButtons,
   inputEl,
+  initialKeys,
+  frameMotion,
   separators = ['Enter', ','],
   addOnBlur = false,
   invalid,
@@ -116,6 +132,11 @@ function TagInputControl({
   })
   const isDisabled = Boolean(controlProps.disabled)
   const interactive = !isDisabled && !readOnly
+  const keys = tagKeys(tags)
+  const { entries, leavingProps } = useExitingItems(
+    tags.map((tag, index) => ({ tag, index, key: keys[index] })),
+    (entry) => entry.key,
+  )
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(event)
@@ -153,6 +174,7 @@ function TagInputControl({
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-tag-input')}
       data-invalid={controlProps['aria-invalid'] || undefined}
       data-disabled={isDisabled || undefined}
+      {...frameMotion}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           event.preventDefault()
@@ -160,28 +182,39 @@ function TagInputControl({
         }
       }}
     >
-      {tags.length > 0 && (
+      {entries.length > 0 && (
         // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
-         
         <ul role="list" className="or-tag-input__tags">
-          {tags.map((tag, index) => (
-            <li key={`${tag}-${index}`} className="or-tag-input__tag">
-              <span className="or-tag-input__tag-label">{tag}</span>
-              {interactive && (
-                <button
-                  ref={(el) => {
-                    tagButtons.current[index] = el
-                  }}
-                  type="button"
-                  className="or-tag-input__remove"
-                  aria-label={t('removeItem', { label: tag })}
-                  onClick={() => removeAt(index, tags.length > 1 ? index : 'input')}
-                >
-                  <Icon name="close" size={12} strokeWidth={2} />
-                </button>
-              )}
-            </li>
-          ))}
+          {entries.map(({ item, key, leaving }) =>
+            leaving ? (
+              <li key={key} className="or-tag-input__tag" {...leavingProps(key)}>
+                <span className="or-tag-input__tag-label">{item.tag}</span>
+                {interactive && (
+                  <span className="or-tag-input__remove" aria-hidden="true">
+                    <Icon name="close" size={12} strokeWidth={2} />
+                  </span>
+                )}
+              </li>
+            ) : (
+              <li key={key} className="or-tag-input__tag" data-enter={!initialKeys.current.has(key) || undefined}>
+                <span className="or-tag-input__tag-label">{item.tag}</span>
+                {interactive && (
+                  <button
+                    ref={(el) => {
+                      if (el) tagButtons.current.set(key, el)
+                      else tagButtons.current.delete(key)
+                    }}
+                    type="button"
+                    className="or-tag-input__remove"
+                    aria-label={t('removeItem', { label: item.tag })}
+                    onClick={() => removeAt(item.index, 'neighbor')}
+                  >
+                    <Icon name="close" size={12} strokeWidth={2} />
+                  </button>
+                )}
+              </li>
+            ),
+          )}
         </ul>
       )}
       <input
@@ -262,8 +295,10 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
   const [internalError, setInternalError] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const inputEl = useRef<HTMLInputElement | null>(null)
-  const tagButtons = useRef<(HTMLButtonElement | null)[]>([])
-  const pendingFocus = useRef<number | 'input' | null>(null)
+  const tagButtons = useRef(new Map<string, HTMLButtonElement>())
+  const pendingFocus = useRef<string | null>(null)
+  const initialKeys = useRef(new Set(tagKeys(tags)))
+  const rejections = useRef(0)
 
   const announce = (msg: string) => setMessage((prev) => (prev === msg ? `${msg}\u00a0` : msg))
 
@@ -271,8 +306,8 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     const target = pendingFocus.current
     if (target === null) return
     pendingFocus.current = null
-    if (target === 'input') inputEl.current?.focus()
-    else (tagButtons.current[target] ?? tagButtons.current[target - 1] ?? inputEl.current)?.focus()
+    const next = target === 'input' ? null : tagButtons.current.get(target)
+    ;(next ?? inputEl.current)?.focus()
   }, [tags])
 
   /** Tenta adicionar uma ou mais tags; devolve `true` se todas foram aceitas. */
@@ -306,6 +341,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     if (added.length) setTags(next)
     // Mantém no campo o que foi recusado, para o usuário corrigir.
     setText(rejected.join(', '))
+    if (firstError) rejections.current += 1
     setInternalError(firstError)
     const parts = [
       added.length ? t('itemAdded', { label: added.join(', ') }) : '',
@@ -315,16 +351,23 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
     return rejected.length === 0
   }
 
-  const removeAt = (index: number, focus: number | 'input') => {
+  const removeAt = (index: number, focus: 'neighbor' | 'input') => {
     const removed = tags[index]
     if (removed === undefined) return
-    pendingFocus.current = focus
-    setTags(tags.filter((_, i) => i !== index))
+    const next = tags.filter((_, i) => i !== index)
+    const nextKeys = tagKeys(next)
+    pendingFocus.current = focus === 'neighbor' ? (nextKeys[index] ?? nextKeys[index - 1] ?? 'input') : 'input'
+    initialKeys.current.delete(tagKeys(tags)[index])
+    setTags(next)
     setInternalError(null)
     announce(t('itemRemoved', { label: removed }))
   }
 
   const shownError = error ?? internalError ?? undefined
+  // Tremor curto quando um erro surge (cada recusa conta, mesmo com a mesma mensagem).
+  const frameMotion = useShake(
+    internalError ? `${internalError}#${rejections.current}` : typeof error === 'string' ? error : Boolean(error),
+  )
 
   return (
     <Field
@@ -348,6 +391,8 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(function Tag
         inputRef={ref}
         inputEl={inputEl}
         tagButtons={tagButtons}
+        initialKeys={initialKeys}
+        frameMotion={frameMotion}
         tags={tags}
         text={text}
         setText={setText}

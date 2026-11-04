@@ -16,6 +16,7 @@
   width: 100%;
   padding: 0;
   color: var(--or-color-text);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-fieldset__required {
@@ -35,6 +36,7 @@
   margin: 0;
   font-size: var(--or-text-sm);
   color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-fieldset__error {
@@ -83,9 +85,31 @@
   --_gap: var(--or-space-8);
 }
 
+/* Erro de seção: barra vermelha que cresce de cima para baixo (scaleY). */
+@keyframes or-forms-bar-in {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.or-fieldset--section > .or-fieldset__content {
+  position: relative;
+}
+
 .or-fieldset--section[data-invalid] > .or-fieldset__content {
   padding-left: var(--or-space-4);
-  border-left: var(--or-border-accent) solid var(--or-color-danger);
+}
+
+.or-fieldset--section[data-invalid] > .or-fieldset__content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--or-border-accent);
+  background: var(--or-color-danger);
+  transform-origin: top;
+  animation: or-forms-bar-in var(--or-duration-slow) var(--or-ease-out) both;
 }
 
 /* Grupo de opções -------------------------------------------------------------- */
@@ -122,6 +146,12 @@
 
 /* Desabilitado (nativo: `fieldset:disabled` desabilita os descendentes) ------- */
 
+/* Ao (des)habilitar o grupo, rótulos e molduras internos mudam de cor suavemente. */
+.or-fieldset .or-field__label,
+.or-fieldset .or-field__description {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-fieldset:disabled .or-fieldset__legend,
 .or-fieldset:disabled .or-fieldset__description,
 .or-fieldset:disabled .or-field__label,
@@ -134,4 +164,11 @@
   background: var(--or-color-bg-subtle);
   color: var(--or-color-text-disabled);
   cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .or-fieldset--section[data-invalid] > .or-fieldset__content::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
 }

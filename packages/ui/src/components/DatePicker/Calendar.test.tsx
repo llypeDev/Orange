@@ -174,6 +174,45 @@ describe('Calendar', () => {
     expect(screen.getByRole('button', { name: 'Next month' })).toBeInTheDocument()
   })
 
+  it('ao trocar de mês, a grade e o título animam na direção da navegação', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<Calendar defaultValue={new Date(2026, 2, 18)} />)
+    const body = () => container.querySelector('tbody') as HTMLElement
+    // na montagem não há deslize
+    expect(body()).not.toHaveClass('or-calendar__body--next')
+    expect(body()).not.toHaveClass('or-calendar__body--prev')
+
+    cell(/18 de março/).focus()
+    await user.keyboard('{PageDown}')
+    expect(body()).toHaveClass('or-calendar__body--next')
+    const outgoing = container.querySelector('.or-calendar__title-text--out-next')
+    expect(outgoing).toHaveTextContent('Março de 2026')
+    expect(outgoing).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('.or-calendar__title-text--in-next')).toHaveTextContent('Abril de 2026')
+    // o título que sai não entra no nome acessível
+    expect(screen.getByRole('grid', { name: 'Abril de 2026' })).toBeInTheDocument()
+
+    await user.keyboard('{PageUp}{PageUp}')
+    expect(body()).toHaveClass('or-calendar__body--prev')
+    expect(container.querySelector('.or-calendar__title-text--in-prev')).toHaveTextContent('Fevereiro de 2026')
+
+    // mudar de dia dentro do mês mantém a mesma grade (sem nova animação)
+    const current = body()
+    await user.keyboard('{ArrowRight}')
+    expect(body()).toBe(current)
+  })
+
+  it('o dia escolhido ganha o pop de seleção', async () => {
+    const user = userEvent.setup()
+    render(<Calendar defaultMonth={new Date(2026, 2, 1)} />)
+    expect(cell(/10 de março/)).not.toHaveClass('or-calendar__day--pop')
+    await user.click(cell(/10 de março/))
+    expect(cell(/10 de março/)).toHaveClass('or-calendar__day--selected', 'or-calendar__day--pop')
+    await user.click(cell(/12 de março/))
+    expect(cell(/10 de março/)).not.toHaveClass('or-calendar__day--pop')
+    expect(cell(/12 de março/)).toHaveClass('or-calendar__day--pop')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <Calendar defaultValue={new Date(2026, 2, 15)} min={new Date(2026, 2, 3)} showTodayButton />,

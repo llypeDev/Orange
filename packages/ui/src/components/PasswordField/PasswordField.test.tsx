@@ -131,4 +131,14 @@ describe('PasswordField', () => {
     )
     await expectNoA11yViolations(container)
   })
+
+  it('motion: olho e olho cortado ficam empilhados para o crossfade; requisitos têm os dois ícones', () => {
+    render(<PasswordField label="Senha" requirements={rules('Abc')} />)
+    const toggle = screen.getByRole('button', { name: 'Mostrar senha' })
+    const icons = Array.from(toggle.querySelectorAll('svg')).map((svg) => svg.getAttribute('data-icon'))
+    expect(icons).toEqual(['eye', 'eye-off'])
+    const [first] = screen.getAllByRole('listitem')
+    expect(first.querySelector('.or-password-field__requirement-met')).not.toBeNull()
+    expect(first.querySelector('.or-password-field__requirement-unmet')).not.toBeNull()
+  })
 })

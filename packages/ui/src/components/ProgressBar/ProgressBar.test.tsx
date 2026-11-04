@@ -13,7 +13,9 @@ describe('ProgressBar', () => {
     expect(bar).toHaveAttribute('aria-valuemax', '100')
     expect(bar).toHaveAttribute('aria-valuetext', '45%')
     expect(screen.getByText('45%')).toHaveAttribute('aria-hidden', 'true')
-    expect(bar.querySelector<HTMLElement>('.or-progress-bar__fill')!.style.width).toBe('45%')
+    expect(bar.querySelector<HTMLElement>('.or-progress-bar__fill')!.style.transform).toBe(
+      'scaleX(0.45)',
+    )
   })
 
   it('calcula o percentual com min/max personalizados e limita o valor', () => {

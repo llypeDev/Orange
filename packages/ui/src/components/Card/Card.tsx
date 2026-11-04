@@ -6,6 +6,7 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from 'react'
+import { Icon } from '../../icons'
 import { cx } from '../../utils'
 import type { HeadingLevel } from '../Typography'
 import './Card.css'
@@ -52,6 +53,8 @@ export interface CardLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   as?: ElementType
   /** Repassado ao componente de roteador. */
   to?: string
+  /** Mostra uma seta após o texto, que desliza 4px no hover/foco do cartão. */
+  arrow?: boolean
 }
 
 /**
@@ -59,10 +62,19 @@ export interface CardLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
  * todo o cartão (padrão "stretched link").
  */
 export const CardLink = forwardRef<HTMLAnchorElement, CardLinkProps>(function CardLink(
-  { as: Component = 'a', className, ...rest },
+  { as: Component = 'a', arrow = false, className, children, ...rest },
   ref,
 ) {
-  return <Component ref={ref} className={cx('or-card__link', className)} {...rest} />
+  return (
+    <Component ref={ref} className={cx('or-card__link', className)} {...rest}>
+      {children}
+      {arrow && (
+        <span className="or-card__link-arrow" aria-hidden="true">
+          <Icon name="arrow-right" strokeWidth={2} />
+        </span>
+      )}
+    </Component>
+  )
 })
 
 export interface CardHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {

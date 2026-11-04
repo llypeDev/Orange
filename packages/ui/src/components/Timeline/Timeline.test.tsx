@@ -1,13 +1,13 @@
-import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Icon } from '../../icons'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { Timeline, TimelineItem } from './Timeline'
 
-function OrderHistory() {
+function OrderHistory({ animated }: { animated?: boolean }) {
   return (
-    <Timeline aria-label="Histórico do pedido">
+    <Timeline aria-label="Histórico do pedido" animated={animated}>
       <TimelineItem date="2026-03-02" title="Pedido realizado" tone="success" description="Pagamento aprovado." />
       <TimelineItem date="2026-03-03" title="Em separação" tone="success" />
       <TimelineItem date="2026-03-05" title="Saiu para entrega" current />
@@ -15,6 +15,32 @@ function OrderHistory() {
     </Timeline>
   )
 }
+
+type IOCallback = (entries: Partial<IntersectionObserverEntry>[]) => void
+
+/** IntersectionObserver controlável: `enter()` simula a entrada na viewport. */
+function mockIntersectionObserver() {
+  const callbacks: IOCallback[] = []
+  vi.stubGlobal(
+    'IntersectionObserver',
+    class {
+      constructor(cb: IOCallback) {
+        callbacks.push(cb)
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return []
+      }
+    },
+  )
+  return { enter: () => act(() => callbacks.forEach((cb) => cb([{ isIntersecting: true }]))) }
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 describe('Timeline', () => {
   it('renderiza uma lista ordenada com um item por evento', () => {
@@ -76,6 +102,50 @@ describe('Timeline', () => {
     const item = heading.closest('li')!
     expect(item).toHaveClass('or-timeline__item--danger', 'or-timeline__item--with-icon')
     expect(item.querySelector('.or-timeline__marker')).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('o marcador do item atual pulsa (or-pulse); pulse controla o efeito', () => {
+    render(
+      <Timeline>
+        <TimelineItem title="Concluído" tone="success" />
+        <TimelineItem title="Em andamento" current />
+        <TimelineItem title="Ao vivo" pulse tone="info" />
+        <TimelineItem title="Atual sem pulso" current pulse={false} />
+      </Timeline>,
+    )
+    const marker = (title: string) => screen.getByText(title).closest('li')!.querySelector('.or-timeline__marker')
+    expect(marker('Concluído')).not.toHaveClass('or-pulse')
+    expect(marker('Em andamento')).toHaveClass('or-pulse')
+    expect(marker('Ao vivo')).toHaveClass('or-pulse')
+    expect(marker('Atual sem pulso')).not.toHaveClass('or-pulse')
+  })
+
+  it('animated esconde os itens até a timeline entrar na viewport', async () => {
+    const io = mockIntersectionObserver()
+    render(<OrderHistory animated />)
+    const list = screen.getByRole('list')
+    expect(list).toHaveAttribute('data-reveal', 'hidden')
+    // conteúdo continua no DOM e acessível enquanto escondido visualmente
+    expect(within(list).getAllByRole('listitem')).toHaveLength(4)
+    io.enter()
+    await waitFor(() => expect(list).toHaveAttribute('data-reveal', 'shown'))
+  })
+
+  it('sem animated (padrão) ou com movimento reduzido, não esconde nada', () => {
+    const matchMedia = vi.spyOn(window, 'matchMedia').mockImplementation(
+      (query: string) =>
+        ({
+          matches: query.includes('reduce'),
+          media: query,
+          addEventListener: () => {},
+          removeEventListener: () => {},
+        }) as unknown as MediaQueryList,
+    )
+    const { rerender } = render(<OrderHistory />)
+    expect(screen.getByRole('list')).not.toHaveAttribute('data-reveal')
+    rerender(<OrderHistory animated />)
+    expect(screen.getByRole('list')).not.toHaveAttribute('data-reveal')
+    matchMedia.mockRestore()
   })
 
   it('renderiza children no corpo do evento', () => {

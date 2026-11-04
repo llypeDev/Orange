@@ -154,6 +154,18 @@ export default function IconButtonPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: <>Afunda 1px e reduz para 98,5% em <Code>--or-duration-press</Code> (90ms); volta em <Code>fast</Code> com <Code>--or-ease-out</Code>.</>, en: <>Sinks 1px and shrinks to 98.5% in <Code>--or-duration-press</Code> (90ms); returns in <Code>fast</Code> with <Code>--or-ease-out</Code>.</> } },
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: <>Fundo, borda e cor em <Code>--or-duration-fast</Code> (160ms) com <Code>--or-ease-out</Code>. Hover e foco visível têm a mesma resposta.</>, en: <>Background, border and color in <Code>--or-duration-fast</Code> (160ms) with <Code>--or-ease-out</Code>. Hover and visible focus respond the same way.</> } },
+            { term: { pt: 'Em grupos', en: 'In groups' }, description: { pt: 'Em ButtonGroup colado ou ToolbarGroup colado, a moldura fica parada e só o ícone afunda, para a borda compartilhada não pular.', en: 'In an attached ButtonGroup or ToolbarGroup, the frame stays put and only the icon sinks, so the shared border never jumps.' } },
+            { term: { pt: 'Carregando', en: 'Loading' }, description: { pt: 'O indicador gira em loop enquanto loading for verdadeiro (único movimento contínuo).', en: 'The indicator spins in a loop while loading is true (the only continuous motion).' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -126,6 +126,15 @@ describe('SegmentedControl', () => {
       'or-segmented-control--sm',
       'or-segmented-control--full-width',
     )
+  })
+
+  it('liga a transição do indicador só depois da primeira medição', async () => {
+    render(<SegmentedControl label="Período" options={periods} defaultValue="week" />)
+    const track = screen.getByRole('radiogroup')
+    const indicator = track.querySelector('.or-segmented-control__indicator')
+    expect(indicator).toHaveAttribute('aria-hidden', 'true')
+    expect(track).toHaveAttribute('data-ready')
+    await waitFor(() => expect(track).toHaveAttribute('data-animate'))
   })
 
   it('não possui violações de acessibilidade', async () => {

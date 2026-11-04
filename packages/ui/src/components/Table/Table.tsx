@@ -325,11 +325,14 @@ function TableInner<T>(
                   {column.sortable ? (
                     <button type="button" className="or-table__sort" onClick={() => handleSort(column)}>
                       <span className="or-table__sort-label">{label}</span>
-                      <span className="or-table__sort-icon" aria-hidden="true">
-                        <Icon
-                          name={active ? (sort!.direction === 'ascending' ? 'arrow-up' : 'arrow-down') : 'chevrons-up-down'}
-                          size={14}
-                        />
+                      {/* Os dois ícones ficam sobrepostos: a troca é um crossfade e a seta gira 180° entre crescente e decrescente. */}
+                      <span
+                        className="or-table__sort-icon"
+                        aria-hidden="true"
+                        data-direction={active ? sort!.direction : undefined}
+                      >
+                        <Icon name="chevrons-up-down" size={14} className="or-table__sort-idle" />
+                        <Icon name="arrow-up" size={14} className="or-table__sort-arrow" />
                       </span>
                     </button>
                   ) : (

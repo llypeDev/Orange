@@ -113,7 +113,18 @@ export const RelativeTime = forwardRef<HTMLTimeElement, RelativeTimeProps>(funct
     setNow(Date.now())
   }, [timestamp])
 
-  if (!parsed) {
+  let text: string | null = null
+  if (parsed && useRelative) {
+    const [value, unit] = selectUnit(diff, numeric)
+    text = new Intl.RelativeTimeFormat(locale, { numeric, style: relativeStyle }).format(value, unit)
+  } else if (parsed) {
+    text = new Intl.DateTimeFormat(locale, absoluteFormat ?? { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
+  }
+  // Só as atualizações (não a primeira renderização) fazem o fade do texto.
+  const [initialText] = useState(text)
+  const updated = text !== null && text !== initialText
+
+  if (!parsed || text === null) {
     return (
       <time ref={ref} className={cx('or-relative-time', className)} title={title} {...rest}>
         {String(date)}
@@ -121,13 +132,6 @@ export const RelativeTime = forwardRef<HTMLTimeElement, RelativeTimeProps>(funct
     )
   }
 
-  let text: string
-  if (useRelative) {
-    const [value, unit] = selectUnit(diff, numeric)
-    text = new Intl.RelativeTimeFormat(locale, { numeric, style: relativeStyle }).format(value, unit)
-  } else {
-    text = new Intl.DateTimeFormat(locale, absoluteFormat ?? { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
-  }
   const fullDate = showTitle
     ? new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(parsed)
     : undefined
@@ -142,7 +146,14 @@ export const RelativeTime = forwardRef<HTMLTimeElement, RelativeTimeProps>(funct
       suppressHydrationWarning
       {...rest}
     >
-      {text}
+      {/* Texto novo remonta (key) com um fade sutil; sem aria-live, nada é anunciado. */}
+      <span
+        key={text}
+        className={cx('or-relative-time__text', updated && 'or-relative-time__text--updated')}
+        suppressHydrationWarning
+      >
+        {text}
+      </span>
     </time>
   )
 })

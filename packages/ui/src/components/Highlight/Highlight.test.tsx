@@ -64,6 +64,16 @@ describe('Highlight', () => {
     expect(marks(adjacent.container)).toEqual(['abcd'])
   })
 
+  it('mantém as marcas que não mudaram quando a busca muda (só as novas entram)', () => {
+    const { container, rerender } = render(<Highlight query="ana">Ana e Mariana</Highlight>)
+    const [first] = Array.from(container.querySelectorAll('mark'))
+    rerender(<Highlight query={['ana', 'mari']}>Ana e Mariana</Highlight>)
+    const marks = Array.from(container.querySelectorAll('mark'))
+    expect(marks.map((m) => m.textContent)).toEqual(['Ana', 'Mariana'])
+    // a primeira marca é o mesmo elemento (não remonta nem repete a animação)
+    expect(marks[0]).toBe(first)
+  })
+
   it('permite trocar o elemento com `as`', () => {
     render(
       <Highlight as="p" query="x">

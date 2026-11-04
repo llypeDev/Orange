@@ -113,6 +113,19 @@ export default function SplitButtonPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir o menu', en: 'Open the menu' }, description: { pt: <>Opacidade + 6px vindo do botão em <Code>medium</Code> com <Code>--or-ease-out</Code>. Quando o menu vira para cima (flip), o sentido se inverte. A entrada só começa depois do posicionamento — nada pisca no canto.</>, en: <>Opacity + 6px coming from the button in <Code>medium</Code> with <Code>--or-ease-out</Code>. When the menu flips up, the direction reverses. The entrance only starts after positioning — nothing flashes in the corner.</> } },
+            { term: { pt: 'Fechar o menu', en: 'Close the menu' }, description: { pt: <>Saída mais curta: opacidade + 4px de volta ao botão em <Code>fast</Code> com <Code>--or-ease-in-out</Code>, via <Code>usePresence</Code>. Durante a saída o menu fica inerte e o foco já voltou para a seta.</>, en: <>Shorter exit: opacity + 4px back toward the button in <Code>fast</Code> with <Code>--or-ease-in-out</Code>, via <Code>usePresence</Code>. During the exit the menu is inert and focus is already back on the arrow.</> } },
+            { term: { pt: 'Seta', en: 'Arrow' }, description: { pt: <>Gira 180° ao abrir (<Code>medium</Code>, <Code>ease-out</Code>) e o botão fica com o fundo de pressionado enquanto o menu está aberto.</>, en: <>Rotates 180° on open (<Code>medium</Code>, <Code>ease-out</Code>) and keeps the pressed background while the menu is open.</> } },
+            { term: { pt: 'Itens', en: 'Items' }, description: { pt: <>Fundo, cor e barra laranja em <Code>fast</Code>; o ícone do item ativo desliza 2px.</>, en: <>Background, color and orange bar in <Code>fast</Code>; the active item icon slides 2px.</> } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'As duas partes são coladas: a moldura fica parada e só o rótulo e o ícone afundam 1px (90ms), sem a borda compartilhada piscar.', en: 'Both parts are attached: the frame stays put and only the label and icon sink 1px (90ms), with no flicker on the shared border.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'SplitButton', en: 'SplitButton' }}

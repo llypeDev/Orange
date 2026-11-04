@@ -18,6 +18,7 @@ import {
   useEventListener,
   useId,
   useIsomorphicLayoutEffect,
+  usePresence,
 } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
@@ -177,12 +178,17 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const caretRef = useRef<number | null>(null)
   const emittedRef = useRef<number | null | undefined>(undefined)
 
-  const { refs, floatingStyles } = useFloating({
-    open: isOpen,
+  // Saída animada: o diálogo continua montado (data-state="closed") até a animação acabar.
+  const presence = usePresence<HTMLDivElement>(isOpen)
+  const { refs, floatingStyles, placement } = useFloating({
+    open: presence.present,
     placement: 'bottom-start',
+    // top/left em vez de transform: o transform fica livre para a animação.
+    transform: false,
     middleware: [offset(4), flip({ padding: 8 }), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
   })
+  const side = placement.split('-')[0]
 
   const isUnavailable = (date: Date) => isOutOfRange(date, min, max) || !!isDateDisabled?.(date)
 
@@ -292,10 +298,20 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     () => mergeRefs(frameRef, refs.setReference),
     [refs.setReference],
   )
+  const presenceRef = presence.nodeRef
   const dialogRefCallback = useMemo(
-    () => mergeRefs<HTMLDivElement>(dialogRef, refs.setFloating, setDialogElement),
-    [refs.setFloating],
+    () => mergeRefs<HTMLDivElement>(dialogRef, presenceRef, refs.setFloating, setDialogElement),
+    [refs.setFloating, presenceRef],
   )
+
+  // Reaberto durante a animação de saída: o Calendar não remonta, então
+  // o foco volta ao dia ativo aqui.
+  useEffect(() => {
+    if (!isOpen) return
+    const cell = dialogRef.current?.querySelector<HTMLElement>('[role="gridcell"][tabindex="0"]')
+    if (cell && !dialogRef.current?.contains(document.activeElement))
+      cell.focus({ preventScroll: true })
+  }, [isOpen])
   useEventListener(
     'keydown',
     (event) => {
@@ -402,7 +418,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
           disabled={disabled}
         />
       )}
-      {isOpen && (
+      {presence.present && (
         <Portal>
           <div
             ref={dialogRefCallback}
@@ -411,6 +427,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             aria-modal="true"
             aria-labelledby={headingId}
             className="or-date-picker__dialog"
+            data-state={presence.state}
+            data-side={side}
+            inert={presence.state === 'closed' || undefined}
             style={floatingStyles}
           >
             <Calendar

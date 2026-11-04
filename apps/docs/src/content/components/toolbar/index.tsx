@@ -95,6 +95,19 @@ export default function ToolbarPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Mover o foco', en: 'Move focus' }, description: { pt: 'Com as setas, o contorno de foco vai direto para o próximo item, sem animação: foco precisa ser imediato.', en: 'With arrow keys, the focus outline jumps straight to the next item, without animation: focus must be immediate.' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: <>Afunda 1px e reduz para 98,5% em <Code>--or-duration-press</Code> (90ms); volta em <Code>fast</Code> com <Code>--or-ease-out</Code>.</>, en: <>Sinks 1px and shrinks to 98.5% in <Code>--or-duration-press</Code> (90ms); returns in <Code>fast</Code> with <Code>--or-ease-out</Code>.</> } },
+            { term: { pt: 'Grupos colados', en: 'Attached groups' }, description: { pt: 'Em ToolbarGroup attached, a moldura fica parada e só o conteúdo afunda, sem a borda compartilhada piscar.', en: 'In an attached ToolbarGroup, the frame stays put and only the content sinks, with no flicker on the shared border.' } },
+            { term: { pt: 'Alternar formatação', en: 'Toggle formatting' }, description: { pt: <>ToggleButtons da barra: fundo e borda em <Code>fast</Code>, barra laranja com <Code>--or-ease-spring</Code> (<Code>medium</Code>).</>, en: <>Toolbar ToggleButtons: background and border in <Code>fast</Code>, orange bar with <Code>--or-ease-spring</Code> (<Code>medium</Code>).</> } },
+            { term: { pt: 'Hover e foco', en: 'Hover and focus' }, description: { pt: <>Fundo, borda e cor em <Code>--or-duration-fast</Code> (160ms) com <Code>--or-ease-out</Code>. Hover e foco visível têm a mesma resposta.</>, en: <>Background, border and color in <Code>--or-duration-fast</Code> (160ms) with <Code>--or-ease-out</Code>. Hover and visible focus respond the same way.</> } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Toolbar', en: 'Toolbar' }}

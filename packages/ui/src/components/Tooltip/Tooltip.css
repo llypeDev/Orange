@@ -22,3 +22,9 @@
   font-size: var(--or-text-2xs);
   opacity: 0.72;
 }
+
+/* Motion: entra rápido (fade + 4px) depois do atraso; sai ainda mais rápido. */
+.or-tooltip {
+  --_floating-in: var(--or-duration-fast);
+  --_floating-out: var(--or-duration-instant);
+}

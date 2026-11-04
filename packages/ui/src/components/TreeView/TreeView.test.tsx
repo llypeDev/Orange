@@ -120,6 +120,27 @@ describe('TreeView', () => {
     expect(onExpandedChange).toHaveBeenLastCalledWith([])
   })
 
+  it('grupos animam ao expandir (não na montagem) e saem do DOM ao recolher', async () => {
+    const user = userEvent.setup()
+    renderTree({ defaultExpanded: ['src'] })
+    const srcGroup = document.getElementById(item('src').getAttribute('aria-owns')!)!
+    const srcCollapse = srcGroup.parentElement!
+    // aberto na montagem: sem animação de entrada
+    expect(srcCollapse).toHaveClass('or-tree__collapse', 'or-tree__collapse--static')
+    expect(srcCollapse).toHaveAttribute('data-state', 'open')
+    expect(srcCollapse).not.toHaveAttribute('inert')
+
+    await user.click(screen.getByText('docs'))
+    const docsCollapse = document.getElementById(item('docs').getAttribute('aria-owns')!)!.parentElement!
+    expect(docsCollapse).toHaveAttribute('data-state', 'open')
+    expect(docsCollapse).not.toHaveClass('or-tree__collapse--static')
+
+    await user.click(screen.getByText('docs'))
+    // sem CSS de animação (jsdom), o grupo desmonta na hora
+    expect(screen.queryByRole('treeitem', { name: 'Guia de início.md' })).not.toBeInTheDocument()
+    expect(item('docs')).not.toHaveAttribute('aria-owns')
+  })
+
   it('* expande todos os irmãos do item focado', async () => {
     const user = userEvent.setup()
     renderTree({ defaultExpanded: ['src'] })

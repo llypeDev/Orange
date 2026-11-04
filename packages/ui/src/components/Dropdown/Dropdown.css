@@ -1,4 +1,9 @@
 .or-menu {
+  /* Motion (zop): entra com opacidade + 6px em 160ms; sai em 80ms. */
+  --_floating-distance: calc(var(--or-distance-sm) * 1.5);
+  --_floating-in: var(--or-duration-fast);
+  --_floating-out: var(--or-duration-instant);
+
   z-index: var(--or-z-dropdown);
   min-width: max(12rem, var(--or-floating-reference-width, 0px));
   max-width: min(20rem, var(--or-floating-available-width, calc(100vw - 16px)));
@@ -28,6 +33,21 @@
   cursor: pointer;
   user-select: none;
   outline: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Barra de destaque: cresce do centro quando o item recebe foco (teclado ou hover). */
+.or-menu__item::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--or-border-thick);
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-menu__item:focus {
@@ -35,11 +55,14 @@
 }
 
 .or-menu__item:focus::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--or-border-thick);
-  background: var(--or-color-accent);
+  transform: scaleY(1);
+}
+
+/* Pressionar: o item afunda, como os botões. */
+.or-menu__item:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-menu__item[aria-disabled='true'] {
@@ -47,7 +70,7 @@
   cursor: not-allowed;
 }
 
-.or-menu__item[aria-disabled='true']:focus::before {
+.or-menu__item[aria-disabled='true']::before {
   background: var(--or-color-border-strong);
 }
 
@@ -59,7 +82,7 @@
   background: var(--or-color-danger-subtle);
 }
 
-.or-menu__item--danger:focus::before {
+.or-menu__item--danger::before {
   background: var(--or-color-danger);
 }
 
@@ -93,8 +116,17 @@
   margin: 0 0.0625rem;
 }
 
+.or-menu__indicator--radio {
+  transition: border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-menu__item[aria-checked='true'] .or-menu__indicator--radio {
   border-color: var(--or-color-accent);
+}
+
+/* Check e ponto entram com um pequeno "pop" quando o estado muda (não ao abrir o menu). */
+.or-menu__indicator[data-animate] > * {
+  animation: or-scale-in var(--or-duration-fast) var(--or-ease-bounce) both;
 }
 
 .or-menu__dot {

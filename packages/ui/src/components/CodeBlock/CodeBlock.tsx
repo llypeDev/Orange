@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, type CSSProperties, type HTMLAttributes } from 'react'
+import { forwardRef, useMemo, useState, type CSSProperties, type HTMLAttributes } from 'react'
 import { useClipboard, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
@@ -56,6 +56,8 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
 ) {
   const { t } = useLocale()
   const { copy, copied } = useClipboard()
+  // Depois da primeira cópia, a volta do ícone "copiar" também é animada.
+  const [hasCopied, setHasCopied] = useState(false)
   const labelId = useId('or-code-block-label')
   const trimmed = useMemo(() => code.replace(/\r\n?/g, '\n').replace(/\n+$/, ''), [code])
   const lines = useMemo(() => trimmed.split('\n'), [trimmed])
@@ -66,7 +68,10 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
 
   const handleCopy = async () => {
     const ok = await copy(trimmed)
-    if (ok) onCopy?.(trimmed)
+    if (ok) {
+      setHasCopied(true)
+      onCopy?.(trimmed)
+    }
   }
 
   return (
@@ -102,7 +107,17 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
               aria-describedby={name ? labelId : undefined}
               data-copied={copied || undefined}
             >
-              <Icon name={copied ? 'check' : 'copy'} size="sm" />
+              <span
+                key={copied ? 'check' : 'copy'}
+                className={cx(
+                  'or-code-block__copy-icon',
+                  copied && 'or-code-block__copy-icon--check',
+                  !copied && hasCopied && 'or-code-block__copy-icon--return',
+                )}
+                aria-hidden="true"
+              >
+                <Icon name={copied ? 'check' : 'copy'} size="sm" />
+              </span>
               <span>{copied ? t('copied') : t('copy')}</span>
             </button>
           )}
@@ -130,20 +145,22 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
           {lines.map((line, index) => {
             const lineNumber = startingLineNumber + index
             const isHighlighted = highlighted.has(lineNumber)
-            const Line = isHighlighted ? 'mark' : 'span'
+            // A linha mantém o mesmo elemento (o fundo do destaque transiciona);
+            // o texto destacado fica num <mark> para leitores de tela.
+            const Text = isHighlighted ? 'mark' : 'span'
             return (
-              <Line
+              <span
                 key={index}
                 className={cx('or-code-block__line', isHighlighted && 'or-code-block__line--highlighted')}
               >
                 {showLineNumbers && (
                   <span className="or-code-block__line-number" aria-hidden="true" data-line={lineNumber} />
                 )}
-                <span className="or-code-block__line-text">
+                <Text className="or-code-block__line-text">
                   {line}
                   {'\n'}
-                </span>
-              </Line>
+                </Text>
+              </span>
             )
           })}
         </code>

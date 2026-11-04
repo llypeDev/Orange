@@ -22,9 +22,31 @@
   stroke: var(--or-color-border);
 }
 
+/*
+ * Movimento: o arco muda de valor com transição de stroke-dashoffset em
+ * --or-duration-slow e, ao montar, é "desenhado" a partir do topo. A cor do
+ * tom também transiciona.
+ */
 .or-progress-circle__arc {
   stroke: var(--_arc);
-  transition: stroke-dashoffset var(--or-duration-medium) var(--or-ease-out);
+  transition:
+    stroke-dashoffset var(--or-duration-slow) var(--or-ease-out),
+    stroke var(--or-duration-medium) var(--or-ease-out);
+}
+
+@keyframes or-progress-circle-draw {
+  from {
+    stroke-dashoffset: var(--_circumference);
+  }
+}
+
+.or-progress-circle:not(.or-progress-circle--indeterminate) .or-progress-circle__arc {
+  animation: or-progress-circle-draw var(--or-duration-slow) var(--or-ease-out);
+}
+
+/* o valor central entra junto com o arco */
+.or-progress-circle__value {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-progress-circle__value {
@@ -64,14 +86,16 @@
 }
 
 .or-progress-circle--indeterminate .or-progress-circle__svg {
-  animation: or-progress-circle-spin 0.9s linear infinite;
+  animation: or-progress-circle-spin calc(var(--or-duration-loop) * 0.375) linear infinite;
 }
 
+/* Movimento reduzido: pulsação lenta de opacidade no lugar da rotação
+   (duração literal: os tokens zeram e o indicador pareceria travado). */
 @media (prefers-reduced-motion: reduce) {
   .or-progress-circle--indeterminate .or-progress-circle__svg {
     animation-name: or-progress-circle-pulse !important;
     animation-duration: 2s !important;
-    animation-timing-function: ease-in-out !important;
+    animation-timing-function: var(--or-ease-in-out) !important;
     animation-iteration-count: infinite !important;
   }
 }

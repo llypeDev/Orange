@@ -158,6 +158,18 @@ export default function SegmentedControlPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Mudar a seleção', en: 'Change selection' }, description: { pt: <>O indicador desliza até a opção com <Code>--or-ease-spring</Code> em <Code>medium</Code> (250ms) — por clique ou pelas setas do teclado. Só o <Code>transform</Code> anima.</>, en: <>The indicator slides to the option with <Code>--or-ease-spring</Code> in <Code>medium</Code> (250ms) — by click or arrow keys. Only <Code>transform</Code> animates.</> } },
+            { term: { pt: 'Montagem', en: 'Mount' }, description: { pt: 'Sem animação: a transição só é ligada depois da primeira medição, então o indicador não desliza a partir da borda ao carregar.', en: 'No animation: the transition is only enabled after the first measurement, so the indicator never slides in from the edge on load.' } },
+            { term: { pt: 'Pressionar uma opção', en: 'Press an option' }, description: { pt: <>O conteúdo afunda 1px em <Code>--or-duration-press</Code> (90ms); o trilho fica parado.</>, en: <>The content sinks 1px in <Code>--or-duration-press</Code> (90ms); the track stays still.</> } },
+            { term: { pt: 'Hover', en: 'Hover' }, description: { pt: <>Fundo e cor do texto em <Code>fast</Code>; o ícone da opção escolhida ganha a cor de acento.</>, en: <>Background and text color in <Code>fast</Code>; the selected option icon takes the accent color.</> } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

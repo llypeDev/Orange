@@ -1,4 +1,5 @@
 .or-bottom-nav {
+  position: relative;
   width: 100%;
   border-top: var(--or-border-thin) solid var(--or-color-border-strong);
   background: var(--or-color-surface-raised);
@@ -56,7 +57,7 @@
     background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-bottom-nav__item:hover {
+.or-bottom-nav__item:is(:hover, :focus-visible) {
   background: var(--or-color-surface-hover);
   color: var(--or-color-text);
 }
@@ -65,30 +66,59 @@
   background: var(--or-color-surface-active);
 }
 
+/* Pressionar: o ícone afunda; o destino recém-ativo dá um pequeno "pop". */
+.or-bottom-nav__item:active .or-bottom-nav__icon {
+  transform: translateY(1px) scale(0.9);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-bottom-nav__item[aria-current='page'] .or-bottom-nav__icon {
+  animation: or-bottom-nav-pop var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+@keyframes or-bottom-nav-pop {
+  from {
+    transform: scale(0.82);
+  }
+}
+
 .or-bottom-nav__item:focus-visible {
   outline: 2px solid var(--or-color-focus);
   outline-offset: -2px;
-}
-
-/* Indicador laranja no topo do destino ativo. */
-.or-bottom-nav__item::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  right: 20%;
-  left: 20%;
-  height: 2px;
-  background: var(--or-color-accent);
-  transform: scaleX(0);
-  transition: transform var(--or-duration-medium) var(--or-ease-snap);
 }
 
 .or-bottom-nav__item[aria-current='page'] {
   color: var(--or-color-text);
 }
 
-.or-bottom-nav__item[aria-current='page']::before {
-  transform: none;
+/*
+ * Indicador laranja no topo: um único elemento do tamanho de uma célula que
+ * desliza (translateX) até o destino ativo, com a curva "spring".
+ */
+.or-bottom-nav__indicator {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  z-index: 1;
+  width: calc(100% / var(--_count, 1));
+  height: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--_index, 0) * 100%));
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-bottom-nav__indicator::before {
+  content: '';
+  position: absolute;
+  inset: 0 20%;
+  background: var(--or-color-accent);
+}
+
+.or-bottom-nav__indicator[data-visible] {
+  opacity: 1;
 }
 
 .or-bottom-nav__item[aria-current='page'] .or-bottom-nav__icon {
@@ -98,6 +128,9 @@
 .or-bottom-nav__icon {
   position: relative;
   display: inline-flex;
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-bottom-nav__icon svg {
@@ -143,7 +176,7 @@
 }
 
 @media (forced-colors: active) {
-  .or-bottom-nav__item[aria-current='page']::before {
+  .or-bottom-nav__indicator::before {
     background: Highlight;
   }
 }

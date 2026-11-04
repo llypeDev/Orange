@@ -3,12 +3,13 @@ import {
   useEffect,
   useMemo,
   useRef,
+  type CSSProperties,
   type ElementType,
   type HTMLAttributes,
   type MouseEvent,
   type ReactNode,
 } from 'react'
-import { useId } from '../../hooks'
+import { useId, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, getFocusableElements, mergeRefs } from '../../utils'
@@ -70,8 +71,13 @@ export const ErrorSummary = forwardRef<HTMLElement, ErrorSummaryProps>(function 
   const { t } = useLocale()
   const titleId = useId('or-error-summary')
   const innerRef = useRef<HTMLElement>(null)
-  const mergedRef = useMemo(() => mergeRefs(ref, innerRef), [ref])
   const hasErrors = errors.length > 0
+  // Saída animada (mais curta que a entrada): mantém a última lista enquanto some.
+  const { present, state, nodeRef } = usePresence<HTMLElement>(hasErrors)
+  const mergedRef = useMemo(() => mergeRefs(ref, innerRef, nodeRef), [ref, nodeRef])
+  const lastErrors = useRef(errors)
+  if (hasErrors) lastErrors.current = errors
+  const shownErrors = hasErrors ? errors : lastErrors.current
   const Heading = `h${headingLevel}` as ElementType
 
   // Foca o painel quando ele aparece (montagem com erros ou lista que deixa de ser vazia).
@@ -95,7 +101,7 @@ export const ErrorSummary = forwardRef<HTMLElement, ErrorSummaryProps>(function 
     focusTarget.focus({ preventScroll: true })
   }
 
-  if (!hasErrors) return null
+  if (!present) return null
 
   return (
     <section
@@ -104,6 +110,8 @@ export const ErrorSummary = forwardRef<HTMLElement, ErrorSummaryProps>(function 
       role={autoFocus ? undefined : 'alert'}
       aria-labelledby={titleId}
       className={cx('or-error-summary', className)}
+      data-state={state}
+      inert={state === 'closed' || undefined}
       {...rest}
     >
       <Heading id={titleId} className="or-error-summary__title">
@@ -112,8 +120,8 @@ export const ErrorSummary = forwardRef<HTMLElement, ErrorSummaryProps>(function 
       </Heading>
       {description && <div className="or-error-summary__description">{description}</div>}
       <ul className="or-error-summary__list">
-        {errors.map((item) => (
-          <li key={item.id}>
+        {shownErrors.map((item, index) => (
+          <li key={item.id} style={{ '--_i': index } as CSSProperties}>
             <a href={`#${item.id}`} className="or-error-summary__link" onClick={handleClick(item)}>
               {item.message}
             </a>

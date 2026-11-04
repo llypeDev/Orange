@@ -4,6 +4,12 @@
 
 .or-text-area__control {
   display: block;
+  /* Hover/foco: borda, anel e fundo em 160ms, iguais aos campos de uma linha. */
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
   scrollbar-width: thin;
   scrollbar-color: var(--or-color-border-strong) transparent;
 }

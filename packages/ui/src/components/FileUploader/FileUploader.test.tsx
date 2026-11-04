@@ -1,3 +1,4 @@
+import type React from 'react'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
@@ -194,6 +195,56 @@ describe('FileUploader', () => {
     expect(screen.getByRole('button', { name: /Escolher arquivo/ })).toBeDisabled()
     fireEvent.drop(getDropzone(container), dataTransfer([makeFile('a.pdf', 10)]))
     expect(onFilesChange).not.toHaveBeenCalled()
+  })
+
+  it('motion: itens novos entram escalonados; os da primeira renderização não', async () => {
+    const user = userEvent.setup()
+    const initial: FileUploaderItem[] = [{ id: 'x', file: makeFile('existente.pdf', 10) }]
+    const { container } = render(<FileUploader label="Anexos" multiple defaultValue={initial} />)
+    expect(screen.getByRole('listitem')).not.toHaveClass('or-file-uploader__item--enter')
+    await user.upload(getInput(container), [makeFile('a.pdf', 10), makeFile('b.pdf', 10)])
+    const [, first, second] = screen.getAllByRole('listitem')
+    expect(first).toHaveClass('or-file-uploader__item--enter')
+    expect(first.style.getPropertyValue('--_i')).toBe('0')
+    expect(second.style.getPropertyValue('--_i')).toBe('1')
+  })
+
+  it('motion: progresso cresce com transform e o status anima ao mudar', () => {
+    const file = makeFile('planilha.xlsx', 4096)
+    const { rerender } = render(
+      <FileUploader label="Anexos" value={[{ id: '1', file, status: 'success' }]} />,
+    )
+    // status presente na primeira renderização não anima
+    expect(screen.getByText('Enviado').closest('.or-file-uploader__status')).not.toHaveClass(
+      'or-file-uploader__status--animate',
+    )
+    rerender(<FileUploader label="Anexos" value={[{ id: '1', file, status: 'uploading', progress: 42 }]} />)
+    const bar = document.querySelector('.or-file-uploader__progress-bar') as HTMLElement
+    expect(bar.style.transform).toBe('scaleX(0.42)')
+    rerender(<FileUploader label="Anexos" value={[{ id: '1', file, status: 'success' }]} />)
+    expect(screen.getByText('Enviado').closest('.or-file-uploader__status')).toHaveClass(
+      'or-file-uploader__status--animate',
+    )
+    rerender(<FileUploader label="Anexos" value={[{ id: '1', file, status: 'error', error: 'Falhou' }]} />)
+    expect(screen.getByText('Falhou')).toHaveClass('or-file-uploader__status--error', 'or-file-uploader__status--animate')
+  })
+
+  it('motion: com movimento ativo, o item removido sai animado sem roubar o foco', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <FileUploader label="Anexos" multiple style={{ '--or-duration-fast': '160ms' } as React.CSSProperties} />,
+    )
+    await user.upload(getInput(container), [makeFile('a.pdf', 10), makeFile('b.pdf', 10)])
+    await user.click(screen.getByRole('button', { name: 'Remover a.pdf' }))
+    const ghost = container.querySelector('.or-file-uploader__item[data-state="closed"]') as HTMLElement
+    expect(ghost).toHaveTextContent('a.pdf')
+    expect(ghost).toHaveAttribute('aria-hidden', 'true')
+    expect(ghost).toHaveAttribute('inert')
+    // fora da árvore de acessibilidade: só o item real é listado
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Remover b.pdf' })).toHaveFocus())
+    fireEvent.animationEnd(ghost)
+    expect(container.querySelector('.or-file-uploader__item[data-state="closed"]')).toBeNull()
   })
 
   it('não possui violações de acessibilidade', async () => {

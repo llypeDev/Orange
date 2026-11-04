@@ -23,7 +23,7 @@ describe('ProgressCircle', () => {
     const arc = container.querySelector('.or-progress-circle__arc')!
     const circumference = Number(arc.getAttribute('stroke-dasharray'))
     expect(arc).toHaveAttribute('stroke-linecap', 'square')
-    expect(Number(arc.getAttribute('stroke-dashoffset'))).toBeCloseTo(circumference * 0.75)
+    expect(parseFloat((arc as SVGElement).style.strokeDashoffset)).toBeCloseTo(circumference * 0.75)
   })
 
   it('não desenha o arco em 0% (evita o quadrado da terminação)', () => {

@@ -1,4 +1,14 @@
-import { forwardRef, useMemo, useRef, useState, type ElementType, type HTMLAttributes, type RefObject } from 'react'
+import {
+  forwardRef,
+  useMemo,
+  useRef,
+  useState,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
+  type ElementType,
+  type HTMLAttributes,
+  type RefObject,
+} from 'react'
 import { useIsomorphicLayoutEffect } from '../../hooks'
 import { useTheme, type ResolvedTheme } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
@@ -9,7 +19,10 @@ export type PaperBorder = 'none' | 'default' | 'strong' | 'accent-top' | 'accent
 export type PaperElevation = 'flat' | 'raised' | 'overlay'
 export type PaperTone = 'default' | 'subtle' | 'inverse'
 
-export interface PaperProps extends HTMLAttributes<HTMLElement> {
+export interface PaperProps
+  extends HTMLAttributes<HTMLElement>,
+    Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'download'>,
+    Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'disabled'> {
   /** Elemento renderizado (`section`, `article`, `aside`, `li`…). Padrão: `div`. */
   as?: ElementType
   /** Espaçamento interno na escala de espaço (`6` = 1.5rem). Padrão: `6`. */
@@ -23,6 +36,12 @@ export interface PaperProps extends HTMLAttributes<HTMLElement> {
    * (inverte o tema dentro da superfície — componentes internos acompanham).
    */
   tone?: PaperTone
+  /**
+   * Superfície clicável (cartão-link, opção selecionável): sobe 4px com sombra
+   * laranja no hover/foco e afunda ao pressionar. Use com `as="a"`/`as="button"`
+   * ou com um link/botão dentro.
+   */
+  interactive?: boolean
 }
 
 /**
@@ -73,6 +92,7 @@ export const Paper = forwardRef<HTMLElement, PaperProps>(function Paper(
     border = 'default',
     elevation = 'flat',
     tone = 'default',
+    interactive = false,
     className,
     ...rest
   },
@@ -91,6 +111,7 @@ export const Paper = forwardRef<HTMLElement, PaperProps>(function Paper(
         `or-paper--border-${border}`,
         `or-paper--${elevation}`,
         `or-paper--tone-${tone}`,
+        interactive && 'or-paper--interactive',
         className,
       )}
       data-theme={inverseTheme}

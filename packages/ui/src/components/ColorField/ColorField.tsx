@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   type ChangeEvent,
+  type CSSProperties,
   type FocusEvent,
   type InputHTMLAttributes,
   type KeyboardEvent,
@@ -143,10 +144,18 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
   )
   const checkedIndex = options.findIndex((option) => option.value === value)
 
+  // Cor escolhida na paleta nesta sessão: a amostra ganha o "pop".
+  const [popped, setPopped] = useState<string | null>(null)
+
   const commit = (next: string) => {
     setFormatError(false)
     setText(next)
     setValue(next)
+  }
+
+  const commitSwatch = (next: string) => {
+    setPopped(next)
+    commit(next)
   }
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +194,7 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
     else return
     event.preventDefault()
     if (swatchesDisabled) return
-    commit(options[next].value)
+    commitSwatch(options[next].value)
     swatchesRef.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[next]?.focus()
   }
 
@@ -217,7 +226,11 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
               data-invalid={invalid || undefined}
               data-disabled={disabled || undefined}
             >
-              <span className="or-color-field__picker" data-empty={!value || undefined}>
+              <span
+                className="or-color-field__picker"
+                data-empty={!value || undefined}
+                data-disabled={disabled || readOnly || undefined}
+              >
                 <input
                   type="color"
                   className="or-color-field__native"
@@ -225,6 +238,12 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
                   disabled={disabled || readOnly}
                   aria-labelledby={[field?.labelId, pickerTextId].filter(Boolean).join(' ')}
                   onChange={(event) => commit(event.target.value.toLowerCase())}
+                />
+                {/* Camada sobre a amostra nativa: faz o crossfade entre as cores. */}
+                <span
+                  className="or-color-field__preview"
+                  style={value ? { backgroundColor: value } : undefined}
+                  aria-hidden="true"
                 />
               </span>
               <span id={pickerTextId} hidden>
@@ -274,10 +293,14 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
                       tabIndex={focusable ? 0 : -1}
                       disabled={disabled}
                       aria-disabled={readOnly || undefined}
-                      className="or-color-field__swatch"
+                      className={cx(
+                        'or-color-field__swatch',
+                        checked && popped === option.value && 'or-color-field__swatch--pop',
+                      )}
+                      style={{ '--_swatch': option.value } as CSSProperties}
                       data-tone={valid && isLightColor(option.value) ? 'light' : 'dark'}
                       onClick={() => {
-                        if (!swatchesDisabled) commit(option.value)
+                        if (!swatchesDisabled) commitSwatch(option.value)
                       }}
                       onKeyDown={(event) => handleSwatchKeyDown(event, index)}
                     >

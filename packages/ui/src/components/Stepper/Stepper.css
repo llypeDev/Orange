@@ -36,16 +36,27 @@ button.or-stepper__trigger {
   cursor: pointer;
 }
 
-button.or-stepper__trigger:hover .or-stepper__label {
-  text-decoration: underline;
-  text-decoration-color: var(--or-color-accent);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.25em;
+/* Etapas clicáveis: sublinhado cresce da esquerda; o quadrado acende e afunda no clique. */
+button.or-stepper__trigger .or-stepper__label {
+  background-image: linear-gradient(var(--or-color-accent), var(--or-color-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
 }
 
-button.or-stepper__trigger:hover .or-stepper__marker {
+button.or-stepper__trigger:is(:hover, :focus-visible) .or-stepper__label {
+  background-size: 100% 2px;
+}
+
+button.or-stepper__trigger:is(:hover, :focus-visible) .or-stepper__marker {
   background: var(--or-color-accent);
   color: var(--or-color-text-on-accent);
+}
+
+button.or-stepper__trigger:active .or-stepper__marker {
+  transform: translateY(1px) scale(0.94);
+  transition-duration: var(--or-duration-press);
 }
 
 button.or-stepper__trigger:focus-visible {
@@ -74,9 +85,33 @@ button.or-stepper__trigger:focus-visible {
   font-variant-numeric: tabular-nums;
   line-height: 1;
   transition:
-    background-color var(--or-duration-fast) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-medium) var(--or-ease-out),
+    color var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Etapa atual: o quadrado "salta" (bounce) logo depois do conector preencher. */
+.or-stepper__step[data-status='current'] .or-stepper__marker {
+  animation: or-stepper-pop var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-fast) both;
+}
+
+@keyframes or-stepper-pop {
+  from {
+    transform: scale(0.72);
+  }
+}
+
+/* Etapa concluída: o check é desenhado. */
+.or-stepper__step[data-status='complete'] .or-stepper__marker svg {
+  --_draw-length: 24;
+  stroke-dasharray: 24;
+  animation: or-draw var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+/* Erro: o alerta entra com um pop curto. */
+.or-stepper__step[data-status='error'] .or-stepper__marker svg {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
 }
 
 .or-stepper__step[data-status='current'] .or-stepper__marker {
@@ -137,14 +172,28 @@ button.or-stepper__trigger:focus-visible {
 
 /* Conectores --------------------------------------------------------------- */
 
-.or-stepper__step:not(:last-child)::after {
+/*
+ * Trilho (::after) + preenchimento laranja (::before) com a mesma geometria.
+ * Ao concluir a etapa, o preenchimento cresce da esquerda (scaleX) — ou de
+ * cima, na vertical — como uma barra de progresso; ao voltar, ele recua.
+ */
+.or-stepper__step:not(:last-child)::after,
+.or-stepper__step:not(:last-child)::before {
   content: '';
   position: absolute;
   background: var(--_line);
 }
 
-.or-stepper__step[data-status='complete']:not(:last-child)::after {
+.or-stepper__step:not(:last-child)::before {
+  z-index: 1;
   background: var(--or-color-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-stepper__step[data-status='complete']:not(:last-child)::before {
+  transform: scaleX(1);
 }
 
 /* Horizontal --------------------------------------------------------------- */
@@ -168,7 +217,8 @@ button.or-stepper__trigger:focus-visible {
   gap: var(--or-space-2);
 }
 
-.or-stepper--horizontal .or-stepper__step:not(:last-child)::after {
+.or-stepper--horizontal .or-stepper__step:not(:last-child)::after,
+.or-stepper--horizontal .or-stepper__step:not(:last-child)::before {
   top: calc(var(--_marker) / 2 - 1px);
   right: var(--or-space-3);
   left: calc(var(--_marker) + var(--or-space-3));
@@ -214,7 +264,17 @@ button.or-stepper__trigger:focus-visible {
   padding-bottom: 0;
 }
 
-.or-stepper--vertical .or-stepper__step:not(:last-child)::after {
+.or-stepper--vertical .or-stepper__step:not(:last-child)::before {
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+}
+
+.or-stepper--vertical .or-stepper__step[data-status='complete']:not(:last-child)::before {
+  transform: scaleY(1);
+}
+
+.or-stepper--vertical .or-stepper__step:not(:last-child)::after,
+.or-stepper--vertical .or-stepper__step:not(:last-child)::before {
   top: calc(var(--_marker) + var(--or-space-1));
   bottom: var(--or-space-1);
   left: calc(var(--_marker) / 2 - 1px);

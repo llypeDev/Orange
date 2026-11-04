@@ -55,9 +55,7 @@
   padding: var(--_pad);
   color: var(--or-color-border-control);
   line-height: 0;
-  transition:
-    color var(--or-duration-fast) var(--or-ease-out),
-    transform var(--or-duration-fast) var(--or-ease-spring);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-rating-field--readonly .or-rating__star,
@@ -69,9 +67,19 @@ label.or-rating__star {
   cursor: pointer;
 }
 
+/* Ícone: o preenchimento e a cor fazem transição (transparent → laranja). */
+.or-rating__glyph {
+  display: inline-flex;
+  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
 .or-rating__icon {
   width: var(--_star);
   height: var(--_star);
+  fill: transparent;
+  transition:
+    fill var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
 }
 
 /* Estrela preenchida: laranja, com preenchimento sólido. */
@@ -83,13 +91,31 @@ label.or-rating__star {
   fill: currentColor;
 }
 
-/* Prévia no hover: as estrelas preenchidas ficam no tom de hover. */
+/* Prévia no hover: as estrelas da prévia crescem um pouco e a estrela sob o
+ * ponteiro (ou com foco do teclado) cresce mais. */
 .or-rating--preview .or-rating__star[data-filled] {
   color: var(--or-color-accent-hover);
 }
 
-.or-rating--preview label.or-rating__star:hover {
-  transform: scale(1.12);
+.or-rating--preview .or-rating__star[data-filled] .or-rating__glyph {
+  transform: scale(1.06);
+}
+
+.or-rating--preview label.or-rating__star:hover .or-rating__glyph,
+.or-rating__input:focus-visible + label.or-rating__star .or-rating__glyph {
+  transform: scale(1.18);
+}
+
+/* Pressionar: a estrela afunda. */
+.or-rating__input:not(:disabled) + label.or-rating__star:active .or-rating__glyph {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* Ao escolher: pop em onda até a nota escolhida (--_i = posição). */
+.or-rating__glyph--pop {
+  animation: or-rating-pop var(--or-duration-medium) var(--or-ease-bounce);
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 3);
 }
 
 /* Fração (somente leitura): metade/parte da estrela sobreposta. */
@@ -121,6 +147,12 @@ label.or-rating__star {
 
 .or-rating[aria-invalid='true'] .or-rating__star:not([data-filled]) {
   color: var(--or-color-danger);
+}
+
+@keyframes or-rating-pop {
+  40% {
+    transform: scale(1.25);
+  }
 }
 
 @media (forced-colors: active) {

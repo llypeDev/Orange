@@ -110,7 +110,10 @@
   text-transform: inherit;
   color: inherit;
   cursor: pointer;
-  transition: color var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-table__cell--end .or-table__sort {
@@ -119,6 +122,12 @@
 
 .or-table__sort:hover {
   color: var(--or-color-text);
+  background: var(--or-color-surface-hover);
+}
+
+.or-table__sort:active {
+  transform: translateY(1px);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-table__sort:focus-visible {
@@ -126,23 +135,51 @@
   outline-offset: 0;
 }
 
+/* Ícone: crossfade entre "não ordenado" e a seta; a seta gira 180° entre
+   crescente e decrescente com --or-ease-spring. */
 .or-table__sort-icon {
-  display: inline-flex;
-  opacity: 0.6;
-  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+  display: inline-grid;
+  place-items: center;
 }
 
-.or-table__sort:hover .or-table__sort-icon {
+.or-table__sort-icon > svg {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-table__sort-idle {
+  opacity: 0.6;
+}
+
+.or-table__sort:hover .or-table__sort-idle {
   opacity: 1;
+}
+
+.or-table__sort-arrow {
+  opacity: 0;
+  transform: translateY(var(--or-distance-sm)) scale(0.6);
+  color: var(--or-color-accent-text);
+}
+
+.or-table__sort-icon[data-direction] .or-table__sort-idle {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.or-table__sort-icon[data-direction] .or-table__sort-arrow {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.or-table__sort-icon[data-direction='descending'] .or-table__sort-arrow {
+  transform: rotate(180deg);
 }
 
 .or-table__th--sorted {
   color: var(--or-color-text) !important;
-}
-
-.or-table__th--sorted .or-table__sort-icon {
-  opacity: 1;
-  color: var(--or-color-accent-text);
 }
 
 /* Linhas ------------------------------------------------------------------- */
@@ -151,20 +188,44 @@
   transition: background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-table--striped tbody .or-table__row:nth-child(even) {
-  background: var(--or-color-bg-subtle);
+.or-table__row > * {
+  transition: box-shadow var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-table__row[data-selected] {
-  background: var(--or-color-accent-subtle) !important;
+.or-table--striped tbody .or-table__row:nth-child(even) {
+  background-color: var(--or-color-bg-subtle);
+}
+
+/* Hover de linha: ajuda a seguir a linha com o olho. */
+.or-table tbody .or-table__row:hover {
+  background-color: var(--or-color-bg-subtle);
+}
+
+.or-table--striped tbody .or-table__row:hover,
+.or-table--clickable tbody .or-table__row:hover {
+  background-color: var(--or-color-surface-hover);
 }
 
 .or-table--clickable .or-table__row {
   cursor: pointer;
 }
 
-.or-table--clickable .or-table__row:hover {
-  background: var(--or-color-surface-hover);
+/* Linha clicável: barra laranja de 2px entra pela esquerda no hover/foco. */
+.or-table--clickable .or-table__row > :first-child {
+  box-shadow: inset 0 0 0 0 var(--or-color-accent);
+}
+
+.or-table--clickable .or-table__row:hover > :first-child,
+.or-table--clickable .or-table__row:focus-within > :first-child {
+  box-shadow: inset 2px 0 0 0 var(--or-color-accent);
+}
+
+.or-table tbody .or-table__row[data-selected] {
+  background-color: var(--or-color-accent-subtle);
+}
+
+.or-table tbody .or-table__row[data-selected]:hover {
+  background-color: color-mix(in srgb, var(--or-color-accent) 20%, transparent);
 }
 
 .or-table__row-action {
@@ -178,12 +239,17 @@
   text-align: inherit;
   color: inherit;
   cursor: pointer;
+  /* sublinhado laranja que cresce da esquerda */
+  background-image: linear-gradient(var(--or-color-accent), var(--or-color-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-table__row:hover .or-table__row-action {
-  text-decoration: underline;
-  text-decoration-color: var(--or-color-accent);
-  text-underline-offset: 0.25em;
+.or-table__row:hover .or-table__row-action,
+.or-table__row-action:focus-visible {
+  background-size: 100% 1px;
 }
 
 .or-table__row-action:focus-visible {
@@ -197,6 +263,7 @@
   padding: var(--or-space-10) var(--or-space-6) !important;
   text-align: center !important;
   color: var(--or-color-text-subtle);
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
 }
 
 /* Seleção (checkbox nativo estilizado) ------------------------------------- */
@@ -242,17 +309,41 @@
   pointer-events: none;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out);
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-bounce);
 }
 
+/* Check e traço ficam sobrepostos; entram por transição (não animam no carregamento). */
 .or-table__check-icon {
-  display: none;
+  grid-area: 1 / 1;
   width: 0.75rem;
   height: 0.75rem;
+  opacity: 0;
+  transition: opacity var(--or-duration-instant) var(--or-ease-out);
+}
+
+/* O check é "desenhado" (stroke-dashoffset) ao marcar. */
+.or-table__check-icon:not(.or-table__check-icon--minus) path {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  transition: stroke-dashoffset var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-table__check-icon--minus {
+  transform: scaleX(0);
+  transition:
+    opacity var(--or-duration-instant) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
 }
 
 .or-table__check-input:hover:not(:disabled) + .or-table__check-box {
   border-color: var(--or-color-text-muted);
+}
+
+/* Pressionar: a caixa encolhe e volta com --or-ease-bounce ao soltar. */
+.or-table__check-input:active:not(:disabled) + .or-table__check-box {
+  transform: scale(0.85);
+  transition-duration: var(--or-duration-fast), var(--or-duration-fast), var(--or-duration-press);
 }
 
 .or-table__check-input:checked + .or-table__check-box,
@@ -261,13 +352,17 @@
   background: var(--or-color-accent);
 }
 
-.or-table__check-input:checked + .or-table__check-box .or-table__check-icon:not(.or-table__check-icon--minus),
-.or-table__check-input:indeterminate + .or-table__check-box .or-table__check-icon--minus {
-  display: block;
+.or-table__check-input:checked:not(:indeterminate) + .or-table__check-box .or-table__check-icon:not(.or-table__check-icon--minus) {
+  opacity: 1;
 }
 
-.or-table__check-input:indeterminate + .or-table__check-box .or-table__check-icon:not(.or-table__check-icon--minus) {
-  display: none;
+.or-table__check-input:checked:not(:indeterminate) + .or-table__check-box .or-table__check-icon:not(.or-table__check-icon--minus) path {
+  stroke-dashoffset: 0;
+}
+
+.or-table__check-input:indeterminate + .or-table__check-box .or-table__check-icon--minus {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .or-table__check-input:focus-visible + .or-table__check-box {

@@ -1,4 +1,4 @@
-import { Bullets, Code, ComponentPage, Example, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import Literal from './examples/Literal'
 import LiteralCode from './examples/Literal?raw'
@@ -94,6 +94,15 @@ export default function HighlightPage() {
             { name: 'caseSensitive', type: 'boolean', default: 'false', description: { pt: 'Diferencia maiúsculas de minúsculas.', en: 'Distinguishes letter case.' } },
             { name: 'accentSensitive', type: 'boolean', default: 'false', description: { pt: 'Diferencia letras acentuadas.', en: 'Distinguishes accented letters.' } },
             { name: 'markClassName', type: 'string', description: { pt: 'Classe extra de cada <mark>.', en: 'Extra class for each <mark>.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Nova ocorrência', en: 'New match' }, description: { pt: 'Fundo e sublinhado laranja surgem com fade — 250ms, ease-out. Marcas que continuam iguais quando a busca muda não repetem a animação.', en: 'Background and orange underline fade in — 250ms, ease-out. Marks that stay the same when the query changes do not replay.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'O destaque aparece sem fade.', en: 'The highlight appears without fading.' } },
           ]}
         />
       </Section>

@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
   type HTMLAttributes,
+  type CSSProperties,
   type LiHTMLAttributes,
   type ReactElement,
   type ReactNode,
@@ -31,6 +32,8 @@ interface ItemContextValue {
   isCurrent: boolean
   separator: ReactNode
   renderLink?: RenderLink
+  /** Posição do item entre os revelados pelo "…" (para a entrada em cascata). */
+  revealIndex?: number
 }
 
 const ItemContext = createContext<ItemContextValue>({ isCurrent: false, separator: '/' })
@@ -47,7 +50,7 @@ export interface BreadcrumbItemProps extends LiHTMLAttributes<HTMLLIElement> {
 
 /** Um nível da trilha. Use dentro de `Breadcrumb`. */
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(function BreadcrumbItem(
-  { href, icon, current, className, children, ...rest },
+  { href, icon, current, className, style, children, ...rest },
   ref,
 ) {
   const ctx = useContext(ItemContext)
@@ -69,7 +72,12 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(fun
     children: content,
   }
   return (
-    <li ref={ref} className={cx('or-breadcrumb__item', className)} {...rest}>
+    <li
+      ref={ref}
+      className={cx('or-breadcrumb__item', ctx.revealIndex !== undefined && 'or-breadcrumb__item--revealed', className)}
+      style={ctx.revealIndex !== undefined ? ({ '--_i': ctx.revealIndex, ...style } as CSSProperties) : style}
+      {...rest}
+    >
       <span className="or-breadcrumb__separator" aria-hidden="true">
         {ctx.separator}
       </span>
@@ -132,6 +140,8 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
 ) {
   const { t } = useLocale()
   const [expanded, setExpanded] = useState(false)
+  // Índices revelados pelo "…" (entram com fade + 4px, em cascata).
+  const [revealed, setRevealed] = useState<{ start: number; end: number } | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
   const focusAfterExpand = useRef(false)
 
@@ -160,7 +170,12 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
   const wrap = (element: ReactElement, index: number) => (
     <ItemContext.Provider
       key={element.key ?? index}
-      value={{ isCurrent: index === total - 1, separator, renderLink }}
+      value={{
+        isCurrent: index === total - 1,
+        separator,
+        renderLink,
+        revealIndex: revealed && index >= revealed.start && index < revealed.end ? index - revealed.start : undefined,
+      }}
     >
       {element}
     </ItemContext.Provider>
@@ -184,6 +199,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
             aria-label={t('showFullPath')}
             onClick={() => {
               focusAfterExpand.current = true
+              setRevealed({ start: itemsBeforeCollapse, end: total - itemsAfterCollapse })
               setExpanded(true)
             }}
           >

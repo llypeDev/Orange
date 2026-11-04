@@ -7,7 +7,9 @@
   width: min(40rem, 100%);
   max-height: min(34rem, 100%);
   overflow: hidden;
-  animation: or-command-palette-in var(--or-duration-medium) var(--or-ease-out) both;
+  /* Diálogo de busca do zop: entra em ~200ms (média entre fast e medium). */
+  animation: or-command-palette-in calc((var(--or-duration-fast) + var(--or-duration-medium)) / 2)
+    var(--or-ease-out) both;
 }
 
 .or-command-palette[data-state='closed'] {
@@ -48,6 +50,10 @@
   color: var(--or-color-text-subtle);
 }
 
+.or-command-palette__search {
+  transition: box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-command-palette__search:focus-within {
   box-shadow: inset 0 -2px 0 var(--or-color-accent);
 }
@@ -55,6 +61,7 @@
 /* Resultados --------------------------------------------------------------- */
 
 .or-command-palette__results {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
@@ -76,6 +83,38 @@
   color: var(--or-color-text-subtle);
 }
 
+/* Destaque do item ativo: um único bloco que desliza entre as opções. */
+.or-command-palette__highlight {
+  position: absolute;
+  top: 0;
+  right: var(--or-space-2);
+  left: var(--or-space-2);
+  height: var(--_h, 0px);
+  background: var(--or-color-surface-hover);
+  opacity: 0;
+  transform: translateY(var(--_y, 0px));
+  pointer-events: none;
+}
+
+.or-command-palette__highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--or-border-thick);
+  background: var(--or-color-accent);
+}
+
+.or-command-palette__highlight[data-visible] {
+  opacity: 1;
+}
+
+/* Só desliza depois da primeira medida (sem "voar" do topo ao abrir). */
+.or-command-palette__highlight[data-ready] {
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-command-palette__option {
   position: relative;
   display: flex;
@@ -86,18 +125,14 @@
   color: var(--or-color-text);
   cursor: pointer;
   user-select: none;
+  /* Opções que surgem ao filtrar entram com fade curto (as que ficam não reanimam). */
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) backwards;
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-command-palette__option[data-active] {
-  background: var(--or-color-surface-hover);
-}
-
-.or-command-palette__option[data-active]::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--or-border-thick);
-  background: var(--or-color-accent);
+.or-command-palette__option:active:not([aria-disabled='true']) {
+  transform: translateY(1px) scale(0.99);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-command-palette__option[aria-disabled='true'] {
@@ -106,6 +141,9 @@
 }
 
 .or-command-palette__icon {
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -168,6 +206,7 @@
 }
 
 .or-command-palette__empty {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) backwards;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -209,14 +248,14 @@
 @keyframes or-command-palette-in {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.98);
+    transform: translateY(calc(var(--or-distance-md) * -1)) scale(0.98);
   }
 }
 
 @keyframes or-command-palette-out {
   to {
     opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(calc(var(--or-distance-sm) * -1)) scale(0.98);
   }
 }
 

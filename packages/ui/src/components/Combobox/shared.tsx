@@ -5,7 +5,7 @@
  */
 import { autoUpdate, flip, offset, shift, size, useFloating } from '@floating-ui/react-dom'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
-import { useIsomorphicLayoutEffect } from '../../hooks'
+import { useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
 import { cx } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -101,12 +101,19 @@ export function lastEnabledIndex(items: { disabled?: boolean }[]): number {
  * limita a altura ao espaço disponível. Também copia o `data-theme` mais
  * próximo do controle, para que o popup (renderizado no `body`) siga o tema
  * de uma área com tema próprio.
+ *
+ * Movimento: com `usePresence`, o popup continua montado durante a animação
+ * de saída (`present` + `data-state`). `side` indica para que lado ele abriu
+ * (a entrada desliza a partir do campo). O posicionamento usa `left/top`
+ * (`transform: false`) para que o `transform` fique livre para a animação.
  */
 export function useListboxPopup(open: boolean) {
-  const { refs, floatingStyles, elements } = useFloating({
-    open,
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(open)
+  const { refs, floatingStyles, elements, placement } = useFloating({
+    open: present,
     placement: 'bottom-start',
     strategy: 'fixed',
+    transform: false,
     middleware: [
       offset(4),
       flip({ padding: 8 }),
@@ -127,7 +134,19 @@ export function useListboxPopup(open: boolean) {
     const reference = elements.reference as HTMLElement | null
     setTheme(reference?.closest?.('[data-theme]')?.getAttribute('data-theme') ?? undefined)
   }, [open, elements.reference])
-  return { refs, floatingStyles, theme }
+  const side = placement.startsWith('top') ? 'top' : 'bottom'
+  return { refs, floatingStyles, theme, present, state, nodeRef, side }
+}
+
+/**
+ * Congela o conteúdo enquanto `frozen` for verdadeiro: durante a saída do
+ * popup, a lista não pode mudar (ex.: a busca é limpa ao escolher) — senão
+ * o conteúdo "pisca" antes de sumir.
+ */
+export function Freeze({ frozen, children }: { frozen: boolean; children: ReactNode }) {
+  const last = useRef(children)
+  if (!frozen) last.current = children
+  return <>{last.current}</>
 }
 
 /**
@@ -186,6 +205,10 @@ export function ListboxOptionItem({
   onSelect,
   onHover,
 }: ListboxOptionItemProps) {
+  // O check só "pula" quando a seleção muda com a lista aberta (não ao abrir).
+  const initialSelected = useRef(selected)
+  const toggled = useRef(false)
+  if (selected !== initialSelected.current) toggled.current = true
   return (
     // A opção é operada pelo teclado a partir do campo (aria-activedescendant); o clique é o atalho do mouse.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -197,6 +220,7 @@ export function ListboxOptionItem({
       aria-selected={selected}
       aria-disabled={disabled || undefined}
       data-active={active || undefined}
+      data-pop={(toggled.current && selected) || undefined}
       className={cx('or-combobox-option', multiple && 'or-combobox-option--multiple')}
       // Mantém o foco no campo de texto ao clicar em uma opção.
       onMouseDown={(event) => event.preventDefault()}

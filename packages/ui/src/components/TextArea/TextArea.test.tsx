@@ -1,9 +1,19 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { TextArea } from './TextArea'
+
+
+/** jsdom não tem AnimationEvent: dispara um animationend com o nome informado. */
+function endAnimation(element: Element, animationName: string) {
+  const event = new Event('animationend', { bubbles: true })
+  Object.defineProperty(event, 'animationName', { value: animationName })
+  act(() => {
+    element.dispatchEvent(event)
+  })
+}
 
 describe('TextArea', () => {
   it('renderiza um textarea multilinha associado ao rótulo', () => {
@@ -101,5 +111,16 @@ describe('TextArea', () => {
       </div>,
     )
     await expectNoA11yViolations(container)
+  })
+
+  it('motion: o textarea treme uma vez quando passa a ficar inválido', () => {
+    const { rerender } = render(<TextArea label="Motivo" />)
+    const textarea = screen.getByRole('textbox')
+    rerender(<TextArea label="Motivo" invalid />)
+    expect(textarea).toHaveClass('or-forms-shake')
+    endAnimation(textarea, 'or-draw')
+    expect(textarea).toHaveClass('or-forms-shake')
+    endAnimation(textarea, 'or-shake')
+    expect(textarea).not.toHaveClass('or-forms-shake')
   })
 })

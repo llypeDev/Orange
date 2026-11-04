@@ -36,6 +36,13 @@ describe('CodeBlock', () => {
     expect(screen.getByRole('group', { name: 'Bloco de código' })).toBeInTheDocument()
   })
 
+  it('o ícone de copiar não anima na primeira renderização', () => {
+    render(<CodeBlock code="x" />)
+    const icon = document.querySelector('.or-code-block__copy-icon')!
+    expect(icon).not.toHaveClass('or-code-block__copy-icon--return')
+    expect(icon).not.toHaveClass('or-code-block__copy-icon--check')
+  })
+
   it('copia o código com mouse e teclado e anuncia o resultado', async () => {
     const user = userEvent.setup()
     const writeText = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
@@ -49,6 +56,8 @@ describe('CodeBlock', () => {
     expect(onCopy).toHaveBeenCalledWith('pnpm add @orange/ui')
     expect(screen.getByRole('status')).toHaveTextContent('Copiado!')
     expect(screen.getByRole('button', { name: 'Copiado!' })).toBeInTheDocument()
+    // o check entra com animação ("pop")
+    expect(button.querySelector('.or-code-block__copy-icon--check [data-icon="check"]')).not.toBeNull()
 
     button.focus()
     await user.keyboard('{Enter}')
@@ -67,6 +76,8 @@ describe('CodeBlock', () => {
       vi.advanceTimersByTime(2100)
     })
     expect(screen.getByRole('button', { name: 'Copiar' })).toBeInTheDocument()
+    // na volta, o ícone de copiar reaparece com fade (só depois da primeira cópia)
+    expect(document.querySelector('.or-code-block__copy-icon--return [data-icon="copy"]')).not.toBeNull()
     vi.useRealTimers()
   })
 
@@ -88,7 +99,9 @@ describe('CodeBlock', () => {
     const marks = container.querySelectorAll('mark')
     expect(marks).toHaveLength(1)
     expect(marks[0]).toHaveTextContent('const b = 2')
-    expect(marks[0]).toHaveClass('or-code-block__line--highlighted')
+    // a linha (elemento estável) recebe o destaque visual e pode transicionar
+    expect(marks[0].closest('.or-code-block__line')).toHaveClass('or-code-block__line--highlighted')
+    expect(container.querySelectorAll('.or-code-block__line--highlighted')).toHaveLength(1)
   })
 
   it('aplica wrap, maxHeight e permite ocultar o botão de copiar', () => {

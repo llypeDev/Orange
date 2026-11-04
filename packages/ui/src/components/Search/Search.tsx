@@ -12,6 +12,7 @@ import {
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
+import { useInlinePresence } from '../Combobox/motion'
 import { Field, useFieldControlProps } from '../Field'
 import './Search.css'
 
@@ -91,20 +92,20 @@ function SearchControl({
     'aria-describedby': rest['aria-describedby'],
   })
   const isDisabled = Boolean(controlProps.disabled)
+  const clearPresence = useInlinePresence<HTMLButtonElement>(Boolean(text) && !isDisabled && !readOnly)
   return (
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-search__frame')}
       data-disabled={isDisabled || undefined}
     >
+      {/* Lupa e indicador de carregamento ficam empilhados e trocam com fade + escala. */}
       <span
         className="or-control-frame__addon or-control-frame__addon--start or-search__icon"
+        data-loading={loading || undefined}
         aria-hidden="true"
       >
-        {loading ? (
-          <span className="or-search__spinner" />
-        ) : (
-          <Icon name="search" size={size === 'lg' ? 'md' : 'sm'} />
-        )}
+        <Icon name="search" size={size === 'lg' ? 'md' : 'sm'} className="or-search__glyph" />
+        <span className="or-search__spinner" />
       </span>
       <input
         ref={inputRef}
@@ -129,11 +130,15 @@ function SearchControl({
         {...rest}
         {...controlProps}
       />
-      {text && !isDisabled && !readOnly && (
+      {clearPresence.present && (
         <button
+          ref={clearPresence.nodeRef}
           type="button"
           className="or-control-frame__button or-search__clear"
           aria-label={t('clear')}
+          aria-hidden={clearPresence.closing || undefined}
+          tabIndex={clearPresence.closing ? -1 : undefined}
+          data-state={clearPresence.dataState}
           onClick={onClearClick}
         >
           <Icon name="close" size="sm" />

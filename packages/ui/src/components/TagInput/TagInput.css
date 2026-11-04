@@ -51,7 +51,32 @@
   font-size: var(--or-text-sm);
   font-weight: var(--or-weight-medium);
   line-height: 1;
-  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Movimento: a tag criada entra com pop (scale + bounce); a removida sai
+ * mais rápido (fade + scale) antes de deixar o DOM. */
+.or-tag-input__tag[data-enter] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-tag-input__tag[data-state='closed'] {
+  animation: or-tag-input-tag-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-tag-input-tag-out {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Erro de validação: tremor curto, uma vez, quando a mensagem surge. */
+.or-tag-input[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
 }
 
 .or-control-frame--sm .or-tag-input__tag {
@@ -88,12 +113,18 @@
   cursor: pointer;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-tag-input__remove:hover {
   background: var(--or-color-danger-subtle);
   color: var(--or-color-danger-text);
+}
+
+.or-tag-input__remove:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-tag-input__remove:focus-visible {

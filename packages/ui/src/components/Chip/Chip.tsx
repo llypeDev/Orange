@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type ReactNode,
@@ -74,6 +75,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
   const selected = inGroup ? group.isSelected(value) : ownSelected
   const disabled = disabledProp ?? group?.disabled ?? false
   const size = sizeProp ?? group?.size ?? 'md'
+  // O check só anima depois de uma interação (não "pisca" no carregamento).
+  const [touched, setTouched] = useState(false)
 
   return (
     <button
@@ -82,7 +85,9 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
       className={cx('or-chip', `or-chip--${size}`, className)}
       aria-pressed={selected}
       disabled={disabled}
+      data-touched={touched || undefined}
       onClick={composeEventHandlers(onClick, () => {
+        setTouched(true)
         if (inGroup) group.toggle(value)
         else setOwnSelected(!selected)
       })}

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useEffect, useState } from 'react'
 import { SegmentedControl } from './SegmentedControl'
 
 const meta = {
@@ -92,4 +93,29 @@ export const DisabledOption: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+}
+
+const cycle = ['day', 'week', 'month', 'year']
+
+function MotionDemo(args: Parameters<typeof SegmentedControl>[0]) {
+  const [index, setIndex] = useState(0)
+  useEffect(() => {
+    const timer = setInterval(() => setIndex((i) => (i + 1) % cycle.length), 1200)
+    return () => clearInterval(timer)
+  }, [])
+  return (
+    <SegmentedControl
+      {...args}
+      value={cycle[index]}
+      onChange={(value) => setIndex(cycle.indexOf(value))}
+    />
+  )
+}
+
+/** Troca a seleção a cada 1,2s para mostrar o indicador deslizando com spring. */
+export const Motion: Story = {
+  parameters: {
+    docs: { description: { story: 'Troca a seleção sozinho para inspecionar o indicador.' } },
+  },
+  render: (args) => <MotionDemo {...args} />,
 }

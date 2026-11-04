@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
 import { useControllableState } from '../../hooks'
 import { useLocale } from '../../providers'
 import { cx, devWarning } from '../../utils'
@@ -60,6 +60,8 @@ export const BottomNavigation = forwardRef<HTMLElement, BottomNavigationProps>(f
     onChange: onChange as ((value: string | undefined) => void) | undefined,
   })
 
+  const activeIndex = items.findIndex((item) => item.value === value)
+
   devWarning(
     items.length < 3 || items.length > 5,
     'BottomNavigation funciona melhor com 3 a 5 destinos. Para mais opções, use um menu.',
@@ -72,6 +74,13 @@ export const BottomNavigation = forwardRef<HTMLElement, BottomNavigationProps>(f
       className={cx('or-bottom-nav', fixed && 'or-bottom-nav--fixed', className)}
       {...rest}
     >
+      {/* Indicador único: desliza até o destino ativo (células têm a mesma largura). */}
+      <span
+        className="or-bottom-nav__indicator"
+        aria-hidden="true"
+        data-visible={activeIndex >= 0 || undefined}
+        style={{ '--_count': items.length, '--_index': Math.max(0, activeIndex) } as CSSProperties}
+      />
       <ul className="or-bottom-nav__list">
         {items.map((item) => {
           const active = item.value === value

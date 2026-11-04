@@ -70,17 +70,18 @@
   background: var(--or-color-bg-subtle);
 }
 
+/* Alerta: escala mais marcada + 8px na entrada; saída curta. */
 @keyframes or-confirm-in {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: translateY(var(--or-distance-md)) scale(0.96);
   }
 }
 
 @keyframes or-confirm-out {
   to {
     opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(var(--or-distance-sm)) scale(0.98);
   }
 }
 

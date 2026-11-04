@@ -126,6 +126,18 @@ describe('CommandPalette', () => {
     expect(screen.queryByRole('group', { name: 'Navegação' })).not.toBeInTheDocument()
   })
 
+  it('motion: destaque deslizante é decorativo e fica fora da listbox', async () => {
+    const user = userEvent.setup()
+    render(<Example />)
+    await user.click(screen.getByRole('button', { name: 'Comandos' }))
+    const highlight = document.querySelector('.or-command-palette__highlight')!
+    expect(highlight).toHaveAttribute('aria-hidden', 'true')
+    expect(screen.getByRole('listbox')).not.toContainElement(highlight as HTMLElement)
+    expect(highlight).toHaveAttribute('data-visible')
+    await user.keyboard('xyzw')
+    expect(highlight).not.toHaveAttribute('data-visible')
+  })
+
   it('mostra estado vazio sem resultados', async () => {
     const user = userEvent.setup()
     render(<Example />)

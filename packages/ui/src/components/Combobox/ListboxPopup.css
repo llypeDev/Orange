@@ -17,7 +17,49 @@
   font-family: var(--or-font-body);
   font-size: var(--or-text-sm);
   line-height: var(--or-leading-tight);
-  animation: or-pop-in var(--or-duration-fast) var(--or-ease-out);
+  transform-origin: top center;
+}
+
+/* Movimento ----------------------------------------------------------------
+ * Entrada: opacidade + 6px a partir do campo (desce quando abre embaixo, sobe
+ * quando abre em cima), 160ms. Saída: mais curta (120ms), recuando 4px em
+ * direção ao campo. Tudo zera com prefers-reduced-motion (tokens).
+ * ------------------------------------------------------------------------- */
+
+.or-combobox-popup[data-state='open'] {
+  animation: or-slide-down-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-combobox-popup[data-side='top'] {
+  transform-origin: bottom center;
+}
+
+.or-combobox-popup[data-side='top'][data-state='open'] {
+  animation-name: or-combobox-rise-in;
+}
+
+.or-combobox-popup[data-state='closed'] {
+  --_exit-y: calc(var(--or-distance-sm) * -1);
+  animation: or-combobox-popup-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+.or-combobox-popup[data-side='top'][data-state='closed'] {
+  --_exit-y: var(--or-distance-sm);
+}
+
+@keyframes or-combobox-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * 1.5));
+  }
+}
+
+@keyframes or-combobox-popup-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--_exit-y, 0));
+  }
 }
 
 .or-combobox-popup__message {
@@ -68,14 +110,14 @@
   padding: var(--or-space-2) var(--or-space-3);
   cursor: pointer;
   user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
 }
 
-/* Marca lateral laranja na opção ativa (foco visual do teclado ou mouse). */
-.or-combobox-option[data-active] {
-  background: var(--or-color-surface-hover);
-}
-
-.or-combobox-option[data-active]::before {
+/* Marca lateral laranja na opção ativa (foco visual do teclado ou mouse):
+ * cresce do centro com spring; o fundo muda com transição. */
+.or-combobox-option::before {
   content: '';
   position: absolute;
   top: 0;
@@ -83,6 +125,16 @@
   left: 0;
   width: var(--or-border-accent);
   background: var(--or-color-accent);
+  transform: scaleY(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-combobox-option[data-active] {
+  background: var(--or-color-surface-hover);
+}
+
+.or-combobox-option[data-active]::before {
+  transform: scaleY(1);
 }
 
 .or-combobox-option[aria-selected='true'] .or-combobox-option__label {
@@ -118,6 +170,7 @@
 
 .or-combobox-option__match {
   background: transparent;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
   color: var(--or-color-accent-text);
   font-weight: var(--or-weight-semibold);
   text-decoration: underline;
@@ -129,6 +182,11 @@
   flex-shrink: 0;
   margin-top: 1px;
   color: var(--or-color-accent);
+}
+
+/* O check entra com um pequeno "pop" (bounce) quando a opção é marcada. */
+.or-combobox-option[data-pop] .or-combobox-option__checkbox .or-icon {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
 }
 
 /* Caixa de seleção visual das opções múltiplas. */

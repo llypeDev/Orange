@@ -14,8 +14,10 @@ import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
 import { Field, useField, useFieldControlProps } from '../Field'
 import { Portal } from '../Portal'
+import { useInlinePresence } from './motion'
 import {
   defaultOptionFilter,
+  Freeze,
   firstEnabledIndex,
   lastEnabledIndex,
   ListboxOptionItem,
@@ -166,7 +168,7 @@ function ComboboxControl({
   const activeId = activeOption ? optionId(activeOption) : undefined
   useScrollActiveIntoView(activeId)
 
-  const { refs, floatingStyles, theme } = useListboxPopup(isOpen)
+  const { refs, floatingStyles, theme, present, state, nodeRef, side } = useListboxPopup(isOpen)
   useClickOutside([frameEl, popupEl], () => setOpen(false), isOpen)
 
   // Anuncia a quantidade de resultados quando a lista muda (com atraso para não interromper a digitação).
@@ -330,6 +332,7 @@ function ComboboxControl({
   }
 
   const showClear = clearable && interactive && (inputText !== '' || value !== null)
+  const clearPresence = useInlinePresence<HTMLButtonElement>(showClear)
   const labelledBy = hasLabel && field ? field.labelId : undefined
 
   return (
@@ -380,12 +383,15 @@ function ComboboxControl({
       />
       {name && <input type="hidden" name={name} value={value ?? ''} disabled={isDisabled} />}
       {loading && <span className="or-combobox__spinner" aria-hidden="true" />}
-      {showClear && (
+      {clearPresence.present && (
         <button
+          ref={clearPresence.nodeRef}
           type="button"
           tabIndex={-1}
           className="or-combobox__clear"
           aria-label={t('clear')}
+          aria-hidden={clearPresence.closing || undefined}
+          data-state={clearPresence.dataState}
           onMouseDown={(event) => event.preventDefault()}
           onClick={clear}
         >
@@ -410,17 +416,20 @@ function ComboboxControl({
         <Icon name="chevron-down" size="sm" className="or-combobox__chevron" />
       </button>
       {region}
-      {isOpen && (
+      {present && (
         <Portal>
           {/* O mousedown só impede que o clique na lista tire o foco do campo (o teclado age no campo). */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
-            ref={mergeRefs(popupEl, refs.setFloating)}
+            ref={mergeRefs(popupEl, refs.setFloating, nodeRef)}
             className="or-combobox-popup"
             style={floatingStyles}
             data-theme={theme}
+            data-state={state}
+            data-side={side}
             onMouseDown={(event) => event.preventDefault()}
           >
+            <Freeze frozen={!isOpen}>
             {loading ? (
               <div className="or-combobox-popup__message">
                 <span className="or-combobox-popup__spinner" aria-hidden="true" />
@@ -451,6 +460,7 @@ function ComboboxControl({
                 />
               ))}
             </ul>
+            </Freeze>
           </div>
         </Portal>
       )}

@@ -7,9 +7,10 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type CSSProperties,
   type ReactNode,
 } from 'react'
-import { useReducedMotion } from '../../hooks'
+import { usePresence } from '../../hooks'
 import { useLocale } from '../../providers'
 import { cx, getFocusableElements } from '../../utils'
 import { Button } from '../Button'
@@ -45,6 +46,8 @@ export interface ToastOptions {
   dismissible?: boolean
   /** Chamado quando o toast é fechado (pelo usuário, pelo tempo ou por `dismiss`). */
   onDismiss?: () => void
+  /** Mostra a barra de tempo restante deste toast. Padrão: o `showProgress` do provider. */
+  showProgress?: boolean
 }
 
 export interface UseToastReturn {
@@ -68,6 +71,11 @@ export interface ToastProviderProps {
   hotkey?: string | false
   /** Elemento onde a região é renderizada. Padrão: `document.body`. */
   container?: Element | null
+  /**
+   * Mostra uma barra fina com o tempo restante em toasts que fecham sozinhos.
+   * Ela pausa junto com o timer (hover, foco, aba oculta).
+   */
+  showProgress?: boolean
 }
 
 interface ToastRecord extends ToastOptions {
@@ -82,8 +90,6 @@ interface Announcement {
   assertive: boolean
 }
 
-/** Duração da animação de saída (ms) antes de remover o toast do DOM. */
-const EXIT_MS = 200
 /** Tempo que um anúncio fica na região viva oculta. */
 const ANNOUNCE_MS = 7000
 
@@ -132,11 +138,12 @@ export function ToastProvider({
   duration = 5000,
   hotkey = 'F8',
   container,
+  showProgress = false,
 }: ToastProviderProps) {
   const { t } = useLocale()
-  const reducedMotion = useReducedMotion()
-  const reducedMotionRef = useRef(reducedMotion)
-  reducedMotionRef.current = reducedMotion
+  const visibleLimit = Math.max(1, limit)
+  const limitRef = useRef(visibleLimit)
+  limitRef.current = visibleLimit
 
   const [store] = useState(createToastStore)
   const toasts = useSyncExternalStore(store.subscribe, store.get, store.get)
@@ -148,7 +155,6 @@ export function ToastProvider({
   const regionRef = useRef<HTMLElement>(null)
   const lastFocusOutside = useRef<HTMLElement | null>(null)
   const timeouts = useRef(new Set<ReturnType<typeof setTimeout>>())
-  const removals = useRef(new Map<string, ReturnType<typeof setTimeout>>())
 
   const later = useCallback((fn: () => void, ms: number) => {
     const handle = setTimeout(() => {
@@ -167,22 +173,54 @@ export function ToastProvider({
     }
   }, [])
 
+  /**
+   * Fecha um toast. Se o foco estava nele, vai para o toast vizinho ou volta
+   * para onde estava antes de entrar na pilha. O item fica `closed` e é
+   * removido do DOM pelo próprio ToastItem quando a animação de saída termina.
+   */
   const dismiss = useCallback(
     (id: string) => {
-      const record = store.get().find((item) => item.id === id)
+      const items = store.get()
+      const index = items.findIndex((item) => item.id === id)
+      const record = items[index]
       if (!record || record.state === 'closed') return
-      store.set(store.get().map((item) => (item.id === id ? { ...item, state: 'closed' } : item)))
-      record.onDismiss?.()
-      const handle = later(
-        () => {
-          removals.current.delete(id)
-          store.set(store.get().filter((item) => item.id !== id))
-        },
-        reducedMotionRef.current ? 0 : EXIT_MS,
+
+      const region = regionRef.current
+      const element = region
+        ? Array.from(region.querySelectorAll<HTMLElement>('[data-toast-id]')).find(
+            (el) => el.dataset.toastId === id,
+          )
+        : undefined
+      if (region && element?.contains(document.activeElement)) {
+        const open = Array.from(
+          region.querySelectorAll<HTMLElement>('[data-toast-id][data-state="open"]'),
+        )
+        const position = open.indexOf(element)
+        const neighbor = open[position + 1] ?? open[position - 1]
+        const target =
+          (neighbor && getFocusableElements(neighbor)[0]) ||
+          (lastFocusOutside.current?.isConnected ? lastFocusOutside.current : null)
+        target?.focus()
+      }
+
+      // Na fila (além do limite) o toast não está na tela: sai sem animação.
+      const queued = index >= limitRef.current
+      store.set(
+        queued
+          ? items.filter((item) => item.id !== id)
+          : items.map((item) => (item.id === id ? { ...item, state: 'closed' } : item)),
       )
-      removals.current.set(id, handle)
+      record.onDismiss?.()
     },
-    [store, later],
+    [store],
+  )
+
+  /** Remove do store um toast cuja saída animada terminou (se não foi reaberto). */
+  const remove = useCallback(
+    (id: string) => {
+      store.set(store.get().filter((item) => item.id !== id || item.state === 'open'))
+    },
+    [store],
   )
 
   const toast = useCallback(
@@ -191,12 +229,7 @@ export function ToastProvider({
       const items = store.get()
       const existing = items.find((item) => item.id === id)
       if (existing) {
-        const pending = removals.current.get(id)
-        if (pending) {
-          clearTimeout(pending)
-          timeouts.current.delete(pending)
-          removals.current.delete(id)
-        }
+        // reabrir durante a saída cancela a remoção: o item volta a `open`
         store.set(
           items.map((item) =>
             item.id === id
@@ -225,7 +258,7 @@ export function ToastProvider({
     [later],
   )
 
-  const visible = toasts.slice(0, Math.max(1, limit))
+  const visible = toasts.slice(0, visibleLimit)
   const hasVisible = visible.length > 0
   const isTop = position.startsWith('top')
   // No topo, o mais recente fica em cima; embaixo, o mais recente fica junto à borda.
@@ -254,7 +287,7 @@ export function ToastProvider({
       if (event.key !== hotkey || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
         return
       const newest = [...store.get()]
-        .slice(0, Math.max(1, limit))
+        .slice(0, limitRef.current)
         .reverse()
         .find((item) => item.state === 'open')
       if (!newest || !regionRef.current) return
@@ -268,27 +301,7 @@ export function ToastProvider({
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [hotkey, limit, store])
-
-  /** Fecha um toast cuidando do foco: vai para o toast vizinho ou volta para onde estava. */
-  const closeWithFocus = useCallback(
-    (id: string, item: HTMLElement | null) => {
-      const region = regionRef.current
-      if (item && region && item.contains(document.activeElement)) {
-        const open = Array.from(
-          region.querySelectorAll<HTMLElement>('[data-toast-id][data-state="open"]'),
-        )
-        const index = open.indexOf(item)
-        const neighbor = open[index + 1] ?? open[index - 1]
-        const target =
-          (neighbor && getFocusableElements(neighbor)[0]) ||
-          (lastFocusOutside.current?.isConnected ? lastFocusOutside.current : null)
-        target?.focus()
-      }
-      dismiss(id)
-    },
-    [dismiss],
-  )
+  }, [hotkey, store])
 
   const api = useMemo<UseToastReturn>(
     () => ({ toast, dismiss, dismissAll }),
@@ -307,6 +320,7 @@ export function ToastProvider({
             aria-label={regionLabel}
             className={cx('or-toast-region', `or-toast-region--${position}`)}
             data-paused={paused || undefined}
+            data-position={position}
             onPointerEnter={() => setHovered(true)}
             onPointerLeave={() => setHovered(false)}
             onFocus={(event) => {
@@ -326,7 +340,9 @@ export function ToastProvider({
                   record={record}
                   paused={paused}
                   defaultDuration={duration}
-                  onClose={closeWithFocus}
+                  showProgress={showProgress}
+                  onClose={dismiss}
+                  onRemove={remove}
                   onAnnounce={announce}
                 />
               ))}
@@ -383,14 +399,30 @@ interface ToastItemProps {
   record: ToastRecord
   paused: boolean
   defaultDuration: number
-  onClose: (id: string, item: HTMLElement | null) => void
+  showProgress: boolean
+  onClose: (id: string) => void
+  onRemove: (id: string) => void
   onAnnounce: (text: string, assertive: boolean) => void
 }
 
-function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: ToastItemProps) {
+function ToastItem({
+  record,
+  paused,
+  defaultDuration,
+  showProgress,
+  onClose,
+  onRemove,
+  onAnnounce,
+}: ToastItemProps) {
   const { id, state, version, action, tone = 'neutral', dismissible = true } = record
-  const itemRef = useRef<HTMLLIElement>(null)
   const duration = record.duration ?? (action ? Infinity : defaultDuration)
+  const timed = Number.isFinite(duration) && duration > 0
+
+  // Saída animada: o item continua montado até a animação de saída terminar.
+  const { present, nodeRef: itemRef } = usePresence<HTMLLIElement>(state === 'open')
+  useEffect(() => {
+    if (!present) onRemove(id)
+  }, [present, id, onRemove])
 
   // Timer com pausa: guarda o tempo restante entre pausas.
   const remaining = useRef(duration)
@@ -400,14 +432,14 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
       timerVersion.current = version
       remaining.current = duration
     }
-    if (state === 'closed' || paused || !Number.isFinite(duration) || duration <= 0) return
+    if (state === 'closed' || paused || !timed) return
     const startedAt = Date.now()
-    const handle = setTimeout(() => onClose(id, itemRef.current), remaining.current)
+    const handle = setTimeout(() => onClose(id), remaining.current)
     return () => {
       clearTimeout(handle)
       remaining.current = Math.max(0, remaining.current - (Date.now() - startedAt))
     }
-  }, [id, state, version, paused, duration, onClose])
+  }, [id, state, version, paused, duration, timed, onClose])
 
   // Anuncia o texto quando o toast aparece (e a cada atualização de conteúdo).
   const announcedVersion = useRef(-1)
@@ -416,9 +448,9 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
     announcedVersion.current = version
     const text = getAnnouncementText(itemRef.current?.querySelector('[data-toast-message]'))
     if (text) onAnnounce(text, tone === 'danger')
-  }, [version, tone, onAnnounce])
+  }, [version, tone, onAnnounce, itemRef])
 
-  const close = () => onClose(id, itemRef.current)
+  const close = () => onClose(id)
 
   // Escape fecha o toast que contém o foco. Listener nativo no item: o
   // stopPropagation impede que diálogos abertos por baixo (que escutam no
@@ -438,7 +470,11 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
     }
     item.addEventListener('keydown', onKeyDown)
     return () => item.removeEventListener('keydown', onKeyDown)
-  }, [])
+  }, [itemRef])
+
+  if (!present) return null
+
+  const showTimer = (record.showProgress ?? showProgress) && timed
 
   return (
     <li
@@ -448,27 +484,41 @@ function ToastItem({ record, paused, defaultDuration, onClose, onAnnounce }: Toa
       data-state={state}
       aria-hidden={state === 'closed' || undefined}
     >
-      <Toast
-        tone={tone}
-        title={record.title}
-        description={record.description}
-        icon={record.icon}
-        action={
-          action && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                action.onClick()
-                close()
-              }}
-            >
-              {action.label}
-            </Button>
-          )
-        }
-        onClose={dismissible ? close : undefined}
-      />
+      {/* __collapse: linha do grid que cresce/recolhe para a pilha se reacomodar */}
+      <div className="or-toast-region__collapse">
+        <div className={cx('or-toast-region__toast', `or-toast-region__toast--${tone}`)}>
+          <Toast
+            tone={tone}
+            title={record.title}
+            description={record.description}
+            icon={record.icon}
+            action={
+              action && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    action.onClick()
+                    close()
+                  }}
+                >
+                  {action.label}
+                </Button>
+              )
+            }
+            onClose={dismissible ? close : undefined}
+          />
+          {showTimer && (
+            // key: reinicia a barra quando o conteúdo do toast é atualizado
+            <span
+              key={version}
+              className="or-toast-region__timer"
+              style={{ '--_timer-duration': `${duration}ms` } as CSSProperties}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+      </div>
     </li>
   )
 }

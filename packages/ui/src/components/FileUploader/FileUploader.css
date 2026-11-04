@@ -1,5 +1,10 @@
 /* ---------------------------------------------------------------------------
  * FileUploader — área de soltar + lista de arquivos
+ *
+ * Movimento: a área de soltar reage ao arraste (borda tracejada laranja,
+ * fundo de acento, leve scale e o ícone sobe); itens entram com slide/fade
+ * escalonado e saem recolhendo; a barra de progresso cresce com transform;
+ * sucesso desenha o check (or-draw) e erro treme uma vez (or-shake).
  * ------------------------------------------------------------------------- */
 
 .or-file-uploader {
@@ -24,7 +29,8 @@
   text-align: center;
   transition:
     border-color var(--or-duration-fast) var(--or-ease-out),
-    background-color var(--or-duration-fast) var(--or-ease-out);
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-file-uploader__dropzone:hover:not([data-disabled]) {
@@ -35,11 +41,13 @@
   border-color: var(--or-color-accent);
 }
 
-/* Arrastando arquivos sobre a área: tracejado laranja + fundo de acento. */
+/* Arrastando arquivos sobre a área: tracejado laranja, fundo de acento e um
+ * leve "inchaço" que convida a soltar. O padding compensa a borda de 2px. */
 .or-file-uploader__dropzone[data-dragging] {
   border: var(--or-border-thick) dashed var(--or-color-accent);
   padding: calc(var(--or-space-6) - 1px) calc(var(--or-space-5) - 1px);
   background-color: var(--or-color-accent-subtle);
+  transform: scale(1.01);
 }
 
 .or-file-uploader__dropzone[data-invalid] {
@@ -61,11 +69,16 @@
   border: var(--or-border-thin) solid var(--or-color-border-strong);
   background: var(--or-color-surface-raised);
   color: var(--or-color-accent-text);
-  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-file-uploader__dropzone[data-dragging] .or-file-uploader__glyph {
-  transform: translateY(-4px);
+  border-color: var(--or-color-accent);
+  box-shadow: 0 8px 0 -4px var(--or-color-accent);
+  transform: translateY(var(--or-distance-lift));
 }
 
 .or-file-uploader__dropzone[data-disabled] .or-file-uploader__glyph {
@@ -89,10 +102,20 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   cursor: pointer;
+  transition:
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-file-uploader__button:hover:not(:disabled) {
+.or-file-uploader__button:is(:hover, :focus-visible):not(:disabled) {
   text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.or-file-uploader__button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-file-uploader__button:focus-visible {
@@ -116,16 +139,37 @@
   border: var(--or-border-thin) solid var(--or-color-border);
 }
 
+/* O <li> é um grid de uma linha: ao sair, a linha vai de 1fr a 0fr. */
 .or-file-uploader__item {
+  display: grid;
+  grid-template-rows: 1fr;
+  background: var(--or-color-surface);
+  transition: box-shadow var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-file-uploader__row {
   display: flex;
   align-items: center;
   gap: var(--or-space-3);
+  min-height: 0;
   padding: var(--or-space-3) var(--or-space-2) var(--or-space-3) var(--or-space-4);
-  background: var(--or-color-surface);
 }
 
 .or-file-uploader__item + .or-file-uploader__item {
   border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Entrada: slide curto + fade, escalonado dentro do lote (--_i). */
+.or-file-uploader__item--enter {
+  animation: or-file-uploader-item-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+/* Saída: desliza para a direita, some e recolhe a altura. */
+.or-file-uploader__item[data-state='closed'] {
+  overflow: hidden;
+  pointer-events: none;
+  animation: or-file-uploader-item-out var(--or-duration-fast) var(--or-ease-in-out) both;
 }
 
 .or-file-uploader__item[data-status='error'] {
@@ -143,6 +187,7 @@
 .or-file-uploader__file-icon {
   flex-shrink: 0;
   color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-file-uploader__item[data-status='error'] .or-file-uploader__file-icon {
@@ -198,6 +243,22 @@
   color: var(--or-color-danger-text);
 }
 
+/* Sucesso: o texto aparece e o check é desenhado. */
+.or-file-uploader__status--success.or-file-uploader__status--animate {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-file-uploader__status--success.or-file-uploader__status--animate .or-icon path {
+  --_draw-length: 24;
+  stroke-dasharray: 24;
+  animation: or-draw var(--or-duration-slow) var(--or-ease-out) both;
+}
+
+/* Erro: treme uma vez ao surgir. */
+.or-file-uploader__status--error.or-file-uploader__status--animate {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out) both;
+}
+
 .or-file-uploader__progress {
   height: 4px;
   margin-top: var(--or-space-1);
@@ -207,13 +268,30 @@
 
 .or-file-uploader__progress-bar {
   display: block;
+  width: 100%;
   height: 100%;
   background: var(--or-color-accent);
-  transition: width var(--or-duration-medium) var(--or-ease-out);
+  transform-origin: left center;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-file-uploader__remove {
   flex-shrink: 0;
+}
+
+@keyframes or-file-uploader-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+@keyframes or-file-uploader-item-out {
+  to {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateX(var(--or-distance-md));
+  }
 }
 
 @media (forced-colors: active) {

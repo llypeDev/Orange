@@ -41,6 +41,8 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'chil
   status?: AvatarStatus
   /** Substitui o texto acessível do status. */
   statusLabel?: string
+  /** Anel pulsante no indicador ("ao vivo"). Ignorado para `offline` e em movimento reduzido. */
+  pulse?: boolean
   /** Ícone usado quando não há imagem nem nome. */
   icon?: ReactNode
   /** Atributos extras da `<img>` (ex.: `referrerPolicy`, `loading`). */
@@ -85,7 +87,7 @@ type LoadState = 'loading' | 'loaded' | 'error'
  * indicador de presença opcional.
  */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
-  { src, alt, name, size: sizeProp, shape: shapeProp, status, statusLabel, icon, imgProps, className, ...rest },
+  { src, alt, name, size: sizeProp, shape: shapeProp, status, statusLabel, pulse = false, icon, imgProps, className, ...rest },
   ref,
 ) {
   const { t, locale } = useLocale()
@@ -145,7 +147,16 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
           />
         )}
       </span>
-      {status && <span className={cx('or-avatar__status', `or-avatar__status--${status}`)} aria-hidden="true" />}
+      {status && (
+        <span
+          className={cx(
+            'or-avatar__status',
+            `or-avatar__status--${status}`,
+            pulse && status !== 'offline' && 'or-avatar__status--pulse',
+          )}
+          aria-hidden="true"
+        />
+      )}
       {decorative && status && <VisuallyHidden>{statusText}</VisuallyHidden>}
     </span>
   )

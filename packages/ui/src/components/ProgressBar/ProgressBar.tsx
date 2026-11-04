@@ -130,7 +130,8 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
       >
         <div
           className="or-progress-bar__fill"
-          style={indeterminate ? undefined : { width: `${percent}%` }}
+          // transform (scaleX) em vez de width: anima sem recalcular layout
+          style={indeterminate ? undefined : { transform: `scaleX(${percent / 100})` }}
         />
       </div>
       {description && (

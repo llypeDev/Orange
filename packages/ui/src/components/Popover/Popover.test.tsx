@@ -42,6 +42,15 @@ describe('Popover', () => {
     expect(trigger).toHaveAttribute('aria-controls', dialog.id)
   })
 
+  it('motion: o painel aberto expõe data-state="open" para a animação de entrada', async () => {
+    const user = userEvent.setup()
+    render(<Example />)
+    await user.click(screen.getByRole('button', { name: 'Filtros' }))
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveAttribute('data-state', 'open')
+    expect(dialog).not.toHaveAttribute('inert')
+  })
+
   it('move o foco para o conteúdo ao abrir', async () => {
     const user = userEvent.setup()
     render(<Example />)

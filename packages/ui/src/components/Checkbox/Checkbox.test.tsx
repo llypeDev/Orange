@@ -1,10 +1,20 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { Checkbox } from './Checkbox'
 import { CheckboxGroup } from './CheckboxGroup'
+
+
+/** jsdom não tem AnimationEvent: dispara um animationend com o nome informado. */
+function endAnimation(element: Element, animationName: string) {
+  const event = new Event('animationend', { bubbles: true })
+  Object.defineProperty(event, 'animationName', { value: animationName })
+  act(() => {
+    element.dispatchEvent(event)
+  })
+}
 
 describe('Checkbox', () => {
   it('renderiza um checkbox nativo com rótulo clicável', async () => {
@@ -168,5 +178,31 @@ describe('CheckboxGroup', () => {
       </div>,
     )
     await expectNoA11yViolations(container)
+  })
+
+  it('motion: a caixa (Checkbox) e as opções (grupo) tremem quando o erro surge', () => {
+    const { rerender } = render(
+      <>
+        <Checkbox label="Aceito os termos" />
+        <CheckboxGroup label="Canais" options={options} />
+      </>,
+    )
+    rerender(
+      <>
+        <Checkbox label="Aceito os termos" error="Obrigatório" />
+        <CheckboxGroup label="Canais" options={options} error="Escolha um canal." />
+      </>,
+    )
+    const box = document.querySelector('.or-checkbox__box')!
+    expect(box).toHaveClass('or-forms-shake')
+    endAnimation(box, 'or-shake')
+    expect(box).not.toHaveClass('or-forms-shake')
+    expect(document.querySelector('.or-checkbox-group .or-fieldset__content')).toHaveClass('or-forms-shake')
+  })
+
+  it('motion: check e traço indeterminado ficam no DOM para animar (desenho/scaleX)', () => {
+    render(<Checkbox label="Todos" indeterminate />)
+    expect(document.querySelector('.or-checkbox__check path')).not.toBeNull()
+    expect(document.querySelector('.or-checkbox__dash')).not.toBeNull()
   })
 })

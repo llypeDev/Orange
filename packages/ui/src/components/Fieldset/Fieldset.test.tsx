@@ -1,9 +1,19 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { TextField } from '../TextField'
 import { Fieldset } from './Fieldset'
+
+
+/** jsdom não tem AnimationEvent: dispara um animationend com o nome informado. */
+function endAnimation(element: Element, animationName: string) {
+  const event = new Event('animationend', { bubbles: true })
+  Object.defineProperty(event, 'animationName', { value: animationName })
+  act(() => {
+    element.dispatchEvent(event)
+  })
+}
 
 describe('Fieldset', () => {
   it('renderiza um grupo nomeado pela legenda', () => {
@@ -70,5 +80,22 @@ describe('Fieldset', () => {
       </form>,
     )
     await expectNoA11yViolations(container)
+  })
+
+  it('motion: seção não treme (a barra de erro anima no CSS)', () => {
+    const { rerender, container } = render(
+      <Fieldset legend="Contato">
+        <TextField label="E-mail" />
+      </Fieldset>,
+    )
+    rerender(
+      <Fieldset legend="Contato" error="Preencha um contato.">
+        <TextField label="E-mail" />
+      </Fieldset>,
+    )
+    const content = container.querySelector('.or-fieldset__content')!
+    expect(content).not.toHaveClass('or-forms-shake')
+    endAnimation(content, 'or-forms-bar-in')
+    expect(screen.getByRole('group')).toHaveAttribute('data-invalid')
   })
 })

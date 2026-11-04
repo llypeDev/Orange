@@ -77,12 +77,11 @@ function PasswordRequirements({
               className="or-password-field__requirement"
               data-met={requirement.met || undefined}
             >
-              <Icon
-                name={requirement.met ? 'check' : 'square'}
-                size="sm"
-                strokeWidth={requirement.met ? 2.5 : 1.75}
-                className="or-password-field__requirement-icon"
-              />
+              {/* Os dois ícones ficam empilhados: o check entra desenhando com um "pop". */}
+              <span className="or-password-field__requirement-icon" aria-hidden="true">
+                <Icon name="square" size="sm" className="or-password-field__requirement-unmet" />
+                <Icon name="check" size="sm" strokeWidth={2.5} className="or-password-field__requirement-met" />
+              </span>
               <span>
                 {requirement.label}
                 <VisuallyHidden> ({requirement.met ? t('requirementMet') : t('requirementNotMet')})</VisuallyHidden>
@@ -216,7 +215,11 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
             onMouseDown={(event) => event.preventDefault()}
             onClick={handleToggle}
           >
-            <Icon name={visible ? 'eye-off' : 'eye'} />
+            {/* Olho e olho cortado empilhados: troca com crossfade + escala. */}
+            <span className="or-password-field__eye" aria-hidden="true">
+              <Icon name="eye" className="or-password-field__eye-icon or-password-field__eye-icon--show" />
+              <Icon name="eye-off" className="or-password-field__eye-icon or-password-field__eye-icon--hide" />
+            </span>
           </button>
         }
         after={

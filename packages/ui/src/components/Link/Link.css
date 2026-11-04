@@ -16,21 +16,25 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 0.24em;
   cursor: pointer;
+  /* O sublinhado engrossa (1px → 2px) e se aproxima do texto no hover/foco. */
   transition:
     color var(--or-duration-fast) var(--or-ease-out),
-    text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+    text-decoration-color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-link[class]:hover {
+.or-link[class]:hover,
+.or-link[class]:focus-visible {
   color: var(--_fg-hover);
   text-decoration-color: var(--_line-hover);
   text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
 }
 
 .or-link[class]:focus-visible {
   outline: 2px solid var(--or-color-focus);
   outline-offset: 2px;
-  text-decoration-color: var(--_line-hover);
 }
 
 .or-link[class]:active {
@@ -44,11 +48,12 @@
   margin-left: 0.15em;
   vertical-align: -0.1em;
   flex-shrink: 0;
-  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-link:hover .or-link__icon--external {
-  transform: translate(1px, -1px);
+/* ↗ desliza na diagonal, para fora da página. */
+.or-link:is(:hover, :focus-visible) .or-link__icon--external {
+  transform: translate(2px, -2px);
 }
 
 /* Variantes ---------------------------------------------------------------- */
@@ -75,16 +80,18 @@
   text-decoration-line: none;
 }
 
+/* Sublinhado que cresce da esquerda (background-size), como na navegação do zop. */
 .or-link--standalone .or-link__label {
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.3em;
-  transition: text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+  padding-bottom: 0.125em;
+  background-image: linear-gradient(var(--or-color-accent), var(--or-color-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-link--standalone:hover .or-link__label {
-  text-decoration-color: var(--or-color-accent);
+.or-link--standalone:is(:hover, :focus-visible) .or-link__label {
+  background-size: 100% 2px;
 }
 
 .or-link--standalone .or-link__icon {
@@ -93,7 +100,8 @@
   height: 1.1em;
 }
 
-.or-link--standalone:hover .or-link__icon--arrow {
+/* → empurra 4px no hover/foco. */
+.or-link--standalone:is(:hover, :focus-visible) .or-link__icon--arrow {
   transform: translateX(4px);
 }
 

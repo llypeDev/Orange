@@ -49,8 +49,8 @@ export default function ToggleButtonPage() {
               ),
             },
             {
-              pt: 'O estado pressionado não depende só da cor: fundo, borda, barra inferior e um ícone de check mudam juntos.',
-              en: 'The pressed state does not rely on color alone: background, border, bottom bar and a check icon change together.',
+              pt: 'O estado pressionado não depende só da cor: fundo, borda, barra inferior e o indicador (+ vira check) mudam juntos.',
+              en: 'The pressed state does not rely on color alone: background, border, bottom bar and the indicator (+ turns into a check) change together.',
             },
             {
               pt: (
@@ -96,8 +96,8 @@ export default function ToggleButtonPage() {
         <Example
           title={{ pt: 'Filtros', en: 'Filters' }}
           description={{
-            pt: 'Botões com texto mostram um check ao serem pressionados. Variantes: outline (padrão) e ghost.',
-            en: 'Text buttons show a check when pressed. Variants: outline (default) and ghost.',
+            pt: 'Botões com texto mostram um indicador: + solto e check pressionado, num espaço fixo. Variantes: outline (padrão) e ghost.',
+            en: 'Text buttons show an indicator: + when released and a check when pressed, in a fixed slot. Variants: outline (default) and ghost.',
           }}
           code={BasicCode}
         >
@@ -106,8 +106,8 @@ export default function ToggleButtonPage() {
         <Example
           title={{ pt: 'Com ícone e somente ícone', en: 'With icon and icon only' }}
           description={{
-            pt: <>Com <Code>startIcon</Code> o check não aparece. Somente ícone exige <Code>aria-label</Code>.</>,
-            en: <>With <Code>startIcon</Code> the check is hidden. Icon only requires <Code>aria-label</Code>.</>,
+            pt: <>Com <Code>startIcon</Code> o indicador não aparece. Somente ícone exige <Code>aria-label</Code>.</>,
+            en: <>With <Code>startIcon</Code> the indicator is hidden. Icon only requires <Code>aria-label</Code>.</>,
           }}
           code={WithIconsCode}
         >
@@ -152,6 +152,19 @@ export default function ToggleButtonPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Solto → pressionado', en: 'Released → pressed' }, description: { pt: <>Fundo e borda laranjas em <Code>fast</Code>; a barra inferior cresce de 0 a 2px com <Code>--or-ease-spring</Code> em <Code>medium</Code> (250ms).</>, en: <>Orange background and border in <Code>fast</Code>; the bottom bar grows from 0 to 2px with <Code>--or-ease-spring</Code> in <Code>medium</Code> (250ms).</> } },
+            { term: { pt: 'Indicador + → check', en: 'Indicator + → check' }, description: { pt: <>O <Code>+</Code> gira 90° e some (<Code>fast</Code>); o check entra como <Code>or-scale-in</Code> (0.6 → 1) com <Code>--or-ease-bounce</Code> em <Code>medium</Code>. O espaço é fixo: a largura não muda.</>, en: <>The <Code>+</Code> turns 90° and fades (<Code>fast</Code>); the check enters like <Code>or-scale-in</Code> (0.6 → 1) with <Code>--or-ease-bounce</Code> in <Code>medium</Code>. The slot is fixed: the width never changes.</> } },
+            { term: { pt: 'Pressionado → solto', en: 'Pressed → released' }, description: { pt: <>Saída mais curta: a barra recolhe e o check some em <Code>fast</Code> com <Code>--or-ease-in-out</Code>; o <Code>+</Code> volta suave (<Code>medium</Code>, <Code>ease-out</Code>).</>, en: <>Shorter exit: the bar retracts and the check fades in <Code>fast</Code> with <Code>--or-ease-in-out</Code>; the <Code>+</Code> eases back in (<Code>medium</Code>, <Code>ease-out</Code>).</> } },
+            { term: { pt: 'Ícones', en: 'Icons' }, description: { pt: <>Com <Code>startIcon</Code> ou somente ícone, o ícone ganha a cor de acento em <Code>fast</Code>.</>, en: <>With <Code>startIcon</Code> or icon only, the icon takes the accent color in <Code>fast</Code>.</> } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: <>Afunda 1px e reduz para 98,5% em <Code>--or-duration-press</Code> (90ms); volta em <Code>fast</Code> com <Code>--or-ease-out</Code>.</>, en: <>Sinks 1px and shrinks to 98.5% in <Code>--or-duration-press</Code> (90ms); returns in <Code>fast</Code> with <Code>--or-ease-out</Code>.</> } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: <>Com <Code>prefers-reduced-motion</Code>, os tokens zeram as durações: os estados mudam na hora, sem perder nenhuma pista visual.</>, en: <>With <Code>prefers-reduced-motion</Code>, the tokens zero every duration: states change instantly without losing any visual cue.</> } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'ToggleButton', en: 'ToggleButton' }}
@@ -162,7 +175,7 @@ export default function ToggleButtonPage() {
             { name: 'value', type: 'string', description: { pt: 'Identificador dentro do ToggleButtonGroup.', en: 'Identifier inside ToggleButtonGroup.' } },
             { name: 'variant', type: "'outline' | 'ghost'", default: "'outline'", description: { pt: 'Estilo em repouso.', en: 'Resting style.' } },
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Altura: 32, 40 ou 48px.', en: 'Height: 32, 40 or 48px.' } },
-            { name: 'showCheck', type: 'boolean', description: { pt: 'Mostra o check quando pressionado. Padrão: true para botões com texto e sem startIcon.', en: 'Shows the check when pressed. Default: true for text buttons without startIcon.' } },
+            { name: 'showCheck', type: 'boolean', description: { pt: 'Mostra o indicador antes do rótulo (+ solto, check pressionado). Padrão: true para botões com texto e sem startIcon.', en: 'Shows the indicator before the label (+ released, check pressed). Default: true for text buttons without startIcon.' } },
             { name: 'iconOnly', type: 'boolean', default: 'false', description: { pt: <>Botão quadrado só com ícone. Exige <Code>aria-label</Code>.</>, en: <>Square icon-only button. Requires <Code>aria-label</Code>.</> } },
             { name: 'startIcon', type: 'ReactNode', description: { pt: 'Ícone antes do rótulo.', en: 'Icon before the label.' } },
             { name: '...rest', type: 'ButtonHTMLAttributes', description: { pt: 'Atributos nativos de <button>.', en: 'Native <button> attributes.' } },

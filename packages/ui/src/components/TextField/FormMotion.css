@@ -1,0 +1,36 @@
+/* ---------------------------------------------------------------------------
+ * Motion compartilhado do grupo de formulários (TextField, TextArea,
+ * PasswordField, NumberField, Checkbox, RadioGroup, Fieldset).
+ * Só tokens: tudo zera em prefers-reduced-motion.
+ * ------------------------------------------------------------------------- */
+
+/* Mensagem de erro: entra com fade + desliza 4px de cima. */
+@keyframes or-forms-error-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+.or-text-field > .or-field__error,
+.or-text-area > .or-field__error,
+.or-password-field > .or-field__error,
+.or-number-field > .or-field__error,
+.or-checkbox__error,
+.or-fieldset__error {
+  animation: or-forms-error-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+/* Tremor curto, uma única vez, quando o controle passa a ficar inválido
+ * (classe ligada pelo hook useErrorShake). */
+.or-forms-shake {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out) 1 both;
+}
+
+/* Pequeno "pop" (ícones de estado que entram). */
+@keyframes or-forms-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}

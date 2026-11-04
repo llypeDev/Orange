@@ -7,7 +7,7 @@ import {
   type ElementType,
   type HTMLAttributes,
 } from 'react'
-import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
+import { useControllableState, useId, useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx } from '../../utils'
@@ -67,6 +67,9 @@ export const ExpandableText = forwardRef<HTMLDivElement, ExpandableTextProps>(fu
     onChange: onExpandedChange,
   })
   const clamp = Math.max(1, Math.floor(lines))
+  // `unclamped` continua verdadeiro durante a transição de recolher: o texto só
+  // volta ao line-clamp (com reticências) quando a altura chega a `lines` linhas.
+  const { present: unclamped, state, nodeRef } = usePresence<HTMLDivElement>(expanded)
 
   useIsomorphicLayoutEffect(() => {
     const el = contentRef.current
@@ -87,28 +90,36 @@ export const ExpandableText = forwardRef<HTMLDivElement, ExpandableTextProps>(fu
     return () => observer.disconnect()
   }, [expanded, clamp, children])
 
-  // Ao recolher um texto longo, mantém o botão (com foco) dentro da tela.
-  const wasExpanded = useRef(expanded)
+  // Ao terminar de recolher um texto longo, mantém o botão (com foco) na tela.
+  const wasUnclamped = useRef(unclamped)
   useEffect(() => {
-    if (wasExpanded.current && !expanded && document.activeElement === buttonRef.current) {
+    if (wasUnclamped.current && !unclamped && document.activeElement === buttonRef.current) {
       buttonRef.current?.scrollIntoView({ block: 'nearest' })
     }
-    wasExpanded.current = expanded
-  }, [expanded])
+    wasUnclamped.current = unclamped
+  }, [unclamped])
 
   const showButton = overflowing
 
   return (
     <div ref={ref} className={cx('or-expandable-text', className)} {...rest}>
-      <Content
-        ref={contentRef}
-        id={contentId}
-        className="or-expandable-text__content"
-        data-expanded={expanded || undefined}
+      <div
+        ref={nodeRef}
+        className="or-expandable-text__viewport"
+        // Só anima a altura quando há o que expandir (sem botão, nada muda).
+        data-state={overflowing ? state : undefined}
         style={{ '--_lines': clamp } as CSSProperties}
       >
-        {children}
-      </Content>
+        <Content
+          ref={contentRef}
+          id={contentId}
+          className="or-expandable-text__content"
+          data-expanded={expanded || undefined}
+          data-clamped={unclamped ? undefined : true}
+        >
+          {children}
+        </Content>
+      </div>
       {showButton && (
         <button
           ref={buttonRef}

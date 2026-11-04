@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from 'react'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
+import { useStaggerReveal } from '../List/useStaggerReveal'
 import './Timeline.css'
 
 export type TimelineVariant = 'default' | 'alternate'
@@ -24,6 +25,11 @@ export interface TimelineProps extends OlHTMLAttributes<HTMLOListElement> {
   variant?: TimelineVariant
   /** Formato das datas dos itens (`Intl.DateTimeFormat`). Padrão: `{ dateStyle: 'medium' }`. */
   dateFormat?: Intl.DateTimeFormatOptions
+  /**
+   * Os eventos entram escalonados (80ms entre eles) quando a timeline aparece
+   * na tela, e a linha vertical é "desenhada". Desligado com movimento reduzido.
+   */
+  animated?: boolean
 }
 
 interface TimelineContextValue {
@@ -37,18 +43,20 @@ const TimelineContext = createContext<TimelineContextValue>({})
  * etapas de um processo. Renderiza um `<ol>` com datas em `<time>`.
  */
 export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(function Timeline(
-  { variant = 'default', dateFormat, className, children, ...rest },
+  { variant = 'default', dateFormat, animated = false, className, children, ...rest },
   ref,
 ) {
   const value = useMemo(() => ({ dateFormat }), [dateFormat])
+  const reveal = useStaggerReveal<HTMLOListElement>(animated)
+  const composedRef = useMemo(() => mergeRefs(ref, reveal.ref), [ref, reveal.ref])
   return (
     <TimelineContext.Provider value={value}>
       {/* `list-style: none` remove a semântica de lista no Safari/VoiceOver; o papel explícito a restaura. */}
-      { }
       <ol
-        ref={ref}
+        ref={composedRef}
         role="list"
         className={cx('or-timeline', `or-timeline--${variant}`, className)}
+        data-reveal={reveal.state === 'idle' ? undefined : reveal.state}
         {...rest}
       >
         {children}
@@ -75,6 +83,11 @@ export interface TimelineItemProps extends Omit<LiHTMLAttributes<HTMLLIElement>,
   tone?: TimelineTone
   /** Marca o evento atual: destaque visual e `aria-current="step"`. */
   current?: boolean
+  /**
+   * Anel pulsando no marcador, para eventos "ao vivo" (em andamento).
+   * Padrão: igual a `current`. O estado nunca depende só do pulso.
+   */
+  pulse?: boolean
   /** Ícone dentro do marcador (marcador maior). */
   icon?: ReactNode
   /** Elemento do título. Padrão: `p`. Use `h3`/`h4` se os eventos forem seções. */
@@ -108,6 +121,7 @@ export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(functio
     dateFormat,
     tone = 'neutral',
     current = false,
+    pulse,
     icon,
     titleAs: Title = 'p',
     className,
@@ -143,7 +157,10 @@ export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(functio
       aria-current={current ? 'step' : undefined}
       {...rest}
     >
-      <span className="or-timeline__marker" aria-hidden="true">
+      <span
+        className={cx('or-timeline__marker', (pulse ?? current) && 'or-pulse')}
+        aria-hidden="true"
+      >
         {icon}
       </span>
       {hasDate &&

@@ -23,11 +23,12 @@
   position: absolute;
   inset: 0;
   background: var(--or-color-overlay);
-  animation: or-dialog-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
 }
 
+/* Saída mais curta que a entrada; o painel sai junto (mesma duração). */
 .or-dialog__backdrop[data-state='closed'] {
-  animation: or-dialog-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
 }
 
 .or-dialog__panel {
@@ -41,18 +42,6 @@
   color: var(--or-color-text);
   box-shadow: var(--or-shadow-overlay);
   outline: none;
-}
-
-@keyframes or-dialog-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes or-dialog-fade-out {
-  to {
-    opacity: 0;
-  }
 }
 
 @media (max-width: 40rem) {

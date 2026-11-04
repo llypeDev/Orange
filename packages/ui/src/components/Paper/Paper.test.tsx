@@ -99,6 +99,16 @@ describe('Paper', () => {
     window.getComputedStyle = original
   })
 
+  it('interactive aplica a classe de elevação e funciona como link', () => {
+    render(
+      <Paper as="a" href="#plano" interactive>
+        Plano Pro
+      </Paper>,
+    )
+    const link = screen.getByRole('link', { name: 'Plano Pro' })
+    expect(link).toHaveClass('or-paper', 'or-paper--interactive')
+  })
+
   it('repassa a ref para o elemento raiz', () => {
     const ref = createRef<HTMLElement>()
     render(<Paper ref={ref} as="article" />)

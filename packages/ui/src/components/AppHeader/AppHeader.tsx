@@ -1,5 +1,15 @@
-import { forwardRef, useRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react'
-import { useClickOutside, useControllableState, useId } from '../../hooks'
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FocusEvent,
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react'
+import { useClickOutside, useControllableState, useId, usePresence, useScrollDirection } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
@@ -35,6 +45,12 @@ export interface AppHeaderProps extends HTMLAttributes<HTMLElement> {
   /** Fixa o cabeçalho no topo durante a rolagem. */
   sticky?: boolean
   /**
+   * Esconde o cabeçalho ao rolar a página para baixo (depois de 120px) e o
+   * mostra de novo ao rolar para cima. Implica `sticky`. Nunca esconde com o
+   * foco dentro do cabeçalho ou com o menu aberto.
+   */
+  hideOnScroll?: boolean
+  /**
    * Largura do cabeçalho abaixo da qual a navegação vai para o menu
    * (`sm` 40rem, `md` 48rem, `lg` 64rem). Padrão: `md`.
    */
@@ -61,12 +77,15 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
     menuFooter,
     navLabel,
     sticky = false,
+    hideOnScroll = false,
     collapseBelow = 'md',
     menuOpen: menuOpenProp,
     defaultMenuOpen = false,
     onMenuOpenChange,
     className,
     onKeyDown,
+    onFocus,
+    onBlur,
     ...rest
   },
   ref,
@@ -83,6 +102,32 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
 
   useClickOutside(headerRef, () => setMenuOpen(false), menuOpen)
 
+  // Painel móvel com entrada e saída animadas: continua montado até a saída terminar.
+  const panel = usePresence<HTMLElement>(menuOpen)
+
+  // O ícone do botão de menu só anima depois da primeira troca (não ao montar).
+  const [prevMenuOpen, setPrevMenuOpen] = useState(menuOpen)
+  const [iconMotion, setIconMotion] = useState(false)
+  if (prevMenuOpen !== menuOpen) {
+    setPrevMenuOpen(menuOpen)
+    setIconMotion(true)
+  }
+
+  // Esconder ao rolar: nunca com foco dentro do cabeçalho ou com o menu aberto.
+  const [scrolledDown, setScrolledDown] = useState(false)
+  const [focusWithin, setFocusWithin] = useState(false)
+  const scrollHidden = hideOnScroll && scrolledDown && !focusWithin && !menuOpen
+
+  const handleFocus = (event: FocusEvent<HTMLElement>) => {
+    onFocus?.(event)
+    setFocusWithin(true)
+  }
+  const handleBlur = (event: FocusEvent<HTMLElement>) => {
+    onBlur?.(event)
+    const next = event.relatedTarget as Node | null
+    if (!next || !event.currentTarget.contains(next)) setFocusWithin(false)
+  }
+
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     onKeyDown?.(event)
     if (event.defaultPrevented || event.key !== 'Escape' || !menuOpen) return
@@ -96,12 +141,22 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- onKeyDown delegado trata Escape do painel móvel
     <header
       ref={mergeRefs(ref, headerRef)}
-      className={cx('or-app-header', sticky && 'or-app-header--sticky', className)}
+      className={cx(
+        'or-app-header',
+        (sticky || hideOnScroll) && 'or-app-header--sticky',
+        hideOnScroll && 'or-app-header--hide-on-scroll',
+        className,
+      )}
       data-collapse={collapseBelow}
       data-menu-open={menuOpen || undefined}
+      data-menu-present={panel.present || undefined}
+      data-scroll-hidden={scrollHidden || undefined}
       onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       {...rest}
     >
+      {hideOnScroll && <ScrollWatcher onChange={setScrolledDown} />}
       <div className="or-app-header__bar">
         <div className="or-app-header__start">
           {hasNav && (
@@ -114,7 +169,12 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
               aria-label={t('menu')}
               onClick={() => setMenuOpen((v) => !v)}
             >
-              <Icon name={menuOpen ? 'close' : 'menu'} />
+              <span
+                key={menuOpen ? 'close' : 'menu'}
+                className={cx('or-app-header__menu-icon', iconMotion && 'or-app-header__menu-icon--enter')}
+              >
+                <Icon name={menuOpen ? 'close' : 'menu'} />
+              </span>
             </button>
           )}
           {brand && <div className="or-app-header__brand">{brand}</div>}
@@ -122,15 +182,17 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
         {hasNav && (
           // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- clique delegado fecha o painel ao escolher um link nativo
           <nav
+            ref={panel.nodeRef}
             id={navId}
             className="or-app-header__nav"
+            data-state={panel.state}
             aria-label={navLabel ?? t('mainNavigation')}
             onClick={(event) => {
               if ((event.target as HTMLElement).closest('a[href]')) setMenuOpen(false)
             }}
           >
             <ul className="or-app-header__list">
-              {items.map((item) => {
+              {items.map((item, index) => {
                 const active = item.active ?? (currentHref !== undefined && item.href === currentHref)
                 const linkProps = {
                   href: item.href,
@@ -139,7 +201,7 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
                   children: item.label,
                 }
                 return (
-                  <li key={item.href} className="or-app-header__item">
+                  <li key={item.href} className="or-app-header__item" style={{ '--_i': index } as CSSProperties}>
                     {renderLink ? renderLink(linkProps) : <a {...linkProps} />}
                   </li>
                 )
@@ -153,3 +215,11 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
     </header>
   )
 })
+
+/** Observa a direção da rolagem só quando `hideOnScroll` está ligado (evita re-renderizar o cabeçalho). */
+function ScrollWatcher({ onChange }: { onChange: (scrolledDown: boolean) => void }) {
+  const { direction, pastThreshold } = useScrollDirection()
+  const down = direction === 'down' && pastThreshold
+  useEffect(() => onChange(down), [down, onChange])
+  return null
+}

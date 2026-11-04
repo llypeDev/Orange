@@ -26,6 +26,23 @@
   letter-spacing: 0;
   white-space: nowrap;
   vertical-align: middle;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Remoção: a tag encolhe e some antes de sair da lista. */
+.or-tag[data-leaving] {
+  animation: or-tag-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-tag-out {
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 }
 
 .or-tag--sm {
@@ -149,6 +166,16 @@
 .or-tag--solid .or-tag__remove:hover:not(:disabled) {
   background: color-mix(in srgb, currentColor 14%, transparent);
   color: inherit;
+}
+
+.or-tag__remove svg {
+  transition: transform var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+/* Pressionar: o "x" encolhe e volta com --or-ease-bounce. */
+.or-tag__remove:active:not(:disabled) svg {
+  transform: scale(0.75);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-tag__remove:focus-visible {

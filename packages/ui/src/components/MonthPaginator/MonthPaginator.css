@@ -23,10 +23,11 @@
 }
 
 .or-month-paginator__label {
-  display: inline-flex;
+  /* Os dois rótulos (saindo e entrando) ocupam a mesma célula do grid. */
+  display: grid;
   flex: 1;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
+  overflow: hidden;
   min-width: 11em;
   padding: 0 var(--or-space-4);
   border-inline: var(--or-border-thin) solid var(--or-color-border);
@@ -37,6 +38,26 @@
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   color: var(--or-color-text);
+}
+
+.or-month-paginator__text {
+  grid-area: 1 / 1;
+}
+
+.or-month-paginator__text--in-next {
+  animation: or-month-paginator-in-next var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-month-paginator__text--in-prev {
+  animation: or-month-paginator-in-prev var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-month-paginator__text--out-next {
+  animation: or-month-paginator-out-next var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-month-paginator__text--out-prev {
+  animation: or-month-paginator-out-prev var(--or-duration-fast) var(--or-ease-in-out) both;
 }
 
 .or-month-paginator__button {
@@ -57,13 +78,33 @@
     color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-month-paginator__button:hover:not([aria-disabled='true']) {
+.or-month-paginator__button .or-icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-month-paginator__button:is(:hover, :focus-visible):not([aria-disabled='true']) {
   background: var(--or-color-surface-hover);
   color: var(--or-color-accent-text);
 }
 
+/* A seta "empurra" para o lado em que o mês vai mudar. */
+.or-month-paginator__button--previous:is(:hover, :focus-visible):not([aria-disabled='true'])
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / -2));
+}
+
+.or-month-paginator__button--next:is(:hover, :focus-visible):not([aria-disabled='true']) .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / 2));
+}
+
+/* Pressionar: fundo ativo e o ícone "afunda" 1px. */
 .or-month-paginator__button:active:not([aria-disabled='true']) {
   background: var(--or-color-surface-active);
+}
+
+.or-month-paginator__button:active:not([aria-disabled='true']) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-month-paginator__button:focus-visible {
@@ -84,6 +125,34 @@
 
 .or-month-paginator[data-disabled] .or-month-paginator__label {
   color: var(--or-color-text-disabled);
+}
+
+@keyframes or-month-paginator-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(var(--or-distance-md));
+  }
+}
+
+@keyframes or-month-paginator-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-md) * -1));
+  }
+}
+
+@keyframes or-month-paginator-out-next {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-md) * -1));
+  }
+}
+
+@keyframes or-month-paginator-out-prev {
+  to {
+    opacity: 0;
+    transform: translateX(var(--or-distance-md));
+  }
 }
 
 @media (forced-colors: active) {

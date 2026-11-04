@@ -148,6 +148,42 @@
   font-weight: var(--or-weight-bold);
 }
 
+/* Entrada escalonada (prop animated) ---------------------------------------
+ * Itens sobem 24px e aparecem em 600ms, 80ms depois do anterior; o marcador
+ * quadrado/numeração surge com um pequeno "pop". Zerado em movimento reduzido. */
+
+.or-list[data-reveal] > .or-list__item {
+  transition:
+    opacity var(--or-duration-reveal) var(--or-ease-out),
+    transform var(--or-duration-reveal) var(--or-ease-out);
+  transition-delay: calc(var(--_i, 0) * var(--or-stagger));
+}
+
+.or-list[data-reveal] > .or-list__item::before,
+.or-list[data-reveal] > .or-list__item > .or-list__icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-bounce);
+  transition-delay: calc((var(--_i, 0) + 2) * var(--or-stagger));
+}
+
+.or-list[data-reveal='hidden'] > .or-list__item {
+  opacity: 0;
+  transform: translateY(var(--or-distance-lg));
+}
+
+.or-list[data-reveal='hidden'] > .or-list__item::before,
+.or-list[data-reveal='hidden'] > .or-list__item > .or-list__icon {
+  transform: scale(0.4);
+}
+
+.or-list > .or-list__item:nth-child(2) { --_i: 1; }
+.or-list > .or-list__item:nth-child(3) { --_i: 2; }
+.or-list > .or-list__item:nth-child(4) { --_i: 3; }
+.or-list > .or-list__item:nth-child(5) { --_i: 4; }
+.or-list > .or-list__item:nth-child(6) { --_i: 5; }
+.or-list > .or-list__item:nth-child(7) { --_i: 6; }
+.or-list > .or-list__item:nth-child(8) { --_i: 7; }
+.or-list > .or-list__item:nth-child(n + 9) { --_i: 8; }
+
 @media (forced-colors: active) {
   .or-list--bullet > .or-list__item::before {
     background: CanvasText;

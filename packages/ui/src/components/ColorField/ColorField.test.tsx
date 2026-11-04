@@ -11,7 +11,8 @@ const swatches = [
   { value: '#7fb236', label: 'Verde' },
 ]
 
-const getPicker = (container: HTMLElement) => container.querySelector('input[type="color"]') as HTMLInputElement
+const getPicker = (container: HTMLElement) =>
+  container.querySelector('input[type="color"]') as HTMLInputElement
 
 describe('ColorField', () => {
   it('renderiza o campo hexadecimal rotulado e o seletor nativo', () => {
@@ -71,7 +72,14 @@ describe('ColorField', () => {
   it('paleta é um radiogroup com nomes acessíveis e navegação por setas', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
-    render(<ColorField label="Cor da etiqueta" swatches={swatches} defaultValue="#0f0f12" onChange={onChange} />)
+    render(
+      <ColorField
+        label="Cor da etiqueta"
+        swatches={swatches}
+        defaultValue="#0f0f12"
+        onChange={onChange}
+      />,
+    )
     const group = screen.getByRole('radiogroup', { name: 'Cor da etiqueta Cores sugeridas' })
     expect(group).toBeInTheDocument()
     const carbon = screen.getByRole('radio', { name: 'Carbono' })
@@ -85,11 +93,39 @@ describe('ColorField', () => {
 
     await user.keyboard('{ArrowRight}')
     expect(screen.getByRole('radio', { name: 'Laranja Orange' })).toHaveFocus()
-    expect(screen.getByRole('radio', { name: 'Laranja Orange' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('radio', { name: 'Laranja Orange' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    )
     await user.keyboard('{End}')
     expect(screen.getByRole('radio', { name: 'Verde' })).toHaveFocus()
     await user.keyboard('{ArrowLeft}')
     expect(onChange).toHaveBeenLastCalledWith('#0f0f12')
+  })
+
+  it('motion: amostra principal com camada de crossfade e pop só na cor escolhida', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <ColorField label="Cor" swatches={swatches} defaultValue="#f58549" />,
+    )
+    const preview = container.querySelector('.or-color-field__preview') as HTMLElement
+    expect(preview).toHaveAttribute('aria-hidden', 'true')
+    expect(preview).toHaveStyle({ backgroundColor: '#f58549' })
+    // a cor inicial não "pula"
+    expect(screen.getByRole('radio', { name: 'Laranja Orange' })).not.toHaveClass(
+      'or-color-field__swatch--pop',
+    )
+
+    await user.click(screen.getByRole('radio', { name: 'Verde' }))
+    expect(screen.getByRole('radio', { name: 'Verde' })).toHaveClass('or-color-field__swatch--pop')
+    expect(preview).toHaveStyle({ backgroundColor: '#7fb236' })
+    await user.keyboard('{ArrowLeft}')
+    expect(screen.getByRole('radio', { name: 'Carbono' })).toHaveClass(
+      'or-color-field__swatch--pop',
+    )
+    expect(screen.getByRole('radio', { name: 'Verde' })).not.toHaveClass(
+      'or-color-field__swatch--pop',
+    )
   })
 
   it('sem valor correspondente, a primeira cor da paleta recebe o tab', () => {
@@ -129,7 +165,12 @@ describe('ColorField', () => {
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>
-        <ColorField label="Cor primária" description="Usada em botões e links" defaultValue="#f58549" swatches={swatches} />
+        <ColorField
+          label="Cor primária"
+          description="Usada em botões e links"
+          defaultValue="#f58549"
+          swatches={swatches}
+        />
         <ColorField label="Cor secundária" error="Escolha uma cor com mais contraste" size="sm" />
       </div>,
     )

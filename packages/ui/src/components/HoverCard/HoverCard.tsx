@@ -11,7 +11,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react'
-import { useControllableState, useId, useMounted } from '../../hooks'
+import { useControllableState, useId, useMounted, usePresence } from '../../hooks'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import { getThemeScope, isFocusVisible, useLayer } from '../Modal/overlay'
 import { useFloatingPanel, useTriggerElement, type FloatingPlacement } from '../Popover/floating'
@@ -75,6 +75,7 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
   })
   const mounted = useMounted()
   const visible = isOpen && mounted
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(visible)
   const cardId = useId('or-hover-card')
   const [triggerEl, triggerRef] = useTriggerElement(trigger)
   const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null)
@@ -83,7 +84,7 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
   const pointerFocus = useRef(false)
 
   const floating = useFloatingPanel({
-    open: visible,
+    open: present,
     reference: triggerEl,
     floating: cardEl,
     placement,
@@ -119,7 +120,10 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
     insideElements: () => [triggerEl],
   })
 
-  const cardRef = useMemo(() => mergeRefs<HTMLDivElement>(setCardEl, setNode, ref), [setNode, ref])
+  const cardRef = useMemo(
+    () => mergeRefs<HTMLDivElement>(setCardEl, setNode, nodeRef, ref),
+    [setNode, nodeRef, ref],
+  )
 
   const triggerProps = trigger.props as HTMLAttributes<HTMLElement>
   const triggerElement = cloneElement(
@@ -157,10 +161,12 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(function Hov
     <>
       {triggerElement}
       <Portal>
-        {visible && (
+        {present && (
           <div
             ref={cardRef}
             id={cardId}
+            data-state={state}
+            inert={state === 'closed' || undefined}
             data-side={floating.side}
             data-theme={getThemeScope(triggerEl)}
             className={cx('or-floating', 'or-hover-card', className)}

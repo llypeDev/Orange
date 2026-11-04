@@ -11,7 +11,13 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react'
-import { useDisclosure, useId, useIsomorphicLayoutEffect, useMounted } from '../../hooks'
+import {
+  useDisclosure,
+  useId,
+  useIsomorphicLayoutEffect,
+  useMounted,
+  usePresence,
+} from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { composeEventHandlers, cx, getFocusableElements, mergeRefs } from '../../utils'
@@ -93,6 +99,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange })
   const mounted = useMounted()
   const active = disclosure.isOpen && mounted
+  // Mantém o painel montado durante a animação de saída.
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(active)
   const [triggerEl, triggerRef] = useTriggerElement(trigger)
   const [panelEl, setPanelEl] = useState<HTMLDivElement | null>(null)
   const triggerProps = trigger.props as HTMLAttributes<HTMLElement>
@@ -101,7 +109,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
   const titleId = useId('or-popover-title')
 
   const floating = useFloatingPanel({
-    open: active,
+    open: present,
     reference: triggerEl,
     floating: panelEl,
     placement,
@@ -171,8 +179,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
   }
 
   const panelRef = useMemo(
-    () => mergeRefs<HTMLDivElement>(setPanelEl, setNode, ref),
-    [setNode, ref],
+    () => mergeRefs<HTMLDivElement>(setPanelEl, setNode, nodeRef, ref),
+    [setNode, nodeRef, ref],
   )
 
   const triggerElement = cloneElement(
@@ -198,7 +206,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
     <>
       {triggerElement}
       <Portal>
-        {active && (
+        {present && (
           // onKeyDown só gerencia o Tab (ordem de foco); o diálogo em si não é um controle.
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
@@ -207,6 +215,8 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover
             role="dialog"
             aria-labelledby={labelled ? undefined : title ? titleId : triggerId}
             tabIndex={-1}
+            data-state={state}
+            inert={state === 'closed' || undefined}
             data-side={floating.side}
             data-theme={getThemeScope(triggerEl)}
             className={cx('or-floating', 'or-popover', className)}

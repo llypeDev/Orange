@@ -21,8 +21,9 @@ export interface ToggleButtonProps extends Omit<ButtonProps, 'variant' | 'value'
   /** Identificador do botão dentro de um `ToggleButtonGroup`. */
   value?: string
   /**
-   * Mostra um ícone de check antes do rótulo quando pressionado. Padrão: `true`
-   * para botões com texto e sem `startIcon`.
+   * Mostra um indicador antes do rótulo: `+` solto e check pressionado (o
+   * espaço é fixo, então a largura não muda). Padrão: `true` para botões com
+   * texto e sem `startIcon`.
    */
   showCheck?: boolean
 }
@@ -30,7 +31,7 @@ export interface ToggleButtonProps extends Omit<ButtonProps, 'variant' | 'value'
 /**
  * Botão de alternância (liga/desliga) com `aria-pressed`. O rótulo não muda
  * entre os estados — o estado é comunicado pelo `aria-pressed` e, visualmente,
- * por fundo, borda, barra inferior e ícone de check.
+ * por fundo, borda, barra inferior e indicador (+ → check).
  */
 export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(function ToggleButton(
   {
@@ -96,7 +97,8 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(fun
       {withCheck ? (
         <>
           <span className="or-toggle-button__check" aria-hidden="true">
-            <Icon name="check" strokeWidth={2.25} />
+            <Icon name="plus" className="or-toggle-button__check-off" />
+            <Icon name="check" strokeWidth={2.25} className="or-toggle-button__check-on" />
           </span>
           {children}
         </>

@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type ClipboardEvent,
+  type CSSProperties,
   type HTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
@@ -12,6 +13,7 @@ import {
 import { useControllableState } from '../../hooks'
 import { useLocale } from '../../providers'
 import { cx } from '../../utils'
+import { useShake } from '../Combobox/motion'
 import { Field, useField } from '../Field'
 import './PinInput.css'
 
@@ -82,6 +84,8 @@ type ControlProps = Required<Pick<PinInputProps, 'length' | 'type' | 'size'>> &
   > & {
     hasLabel: boolean
     groupRef: React.Ref<HTMLDivElement>
+    /** Muda quando o erro surge/muda — dispara o tremor do grupo. */
+    errorSignal: string | boolean
     rest: HTMLAttributes<HTMLDivElement>
   }
 
@@ -101,6 +105,7 @@ function PinInputControl({
   name,
   hasLabel,
   groupRef,
+  errorSignal,
   rest,
 }: ControlProps) {
   const { t } = useLocale()
@@ -121,6 +126,10 @@ function PinInputControl({
   }, [])
 
   const isInvalid = invalid || Boolean(field?.invalid)
+  const complete = chars.every(Boolean)
+  const shake = useShake(errorSignal)
+  const pops = useRef<number[]>([])
+  const popOrder = useRef<number[]>([])
   const disabled = Boolean(field?.disabled)
   const required = Boolean(field?.required)
   const describedBy = [field?.descriptionId, field?.errorId].filter(Boolean).join(' ') || undefined
@@ -134,6 +143,15 @@ function PinInputControl({
   const clampIndex = (index: number) => Math.max(0, Math.min(length - 1, index))
 
   const commit = (next: string[]) => {
+    // Cada caractere novo faz um pequeno "pop"; vários de uma vez (colar) entram em onda.
+    let order = 0
+    next.forEach((c, i) => {
+      if (c && c !== chars[i]) {
+        pops.current[i] = (pops.current[i] ?? 0) + 1
+        popOrder.current[i] = order++
+      }
+    })
+    if (order === 1) popOrder.current = popOrder.current.map(() => 0)
     setChars(next)
     const joined = next.join('')
     setValue(joined)
@@ -255,6 +273,8 @@ function PinInputControl({
       className={cx('or-pin-input', `or-pin-input--${size}`)}
       data-invalid={isInvalid || undefined}
       data-disabled={disabled || undefined}
+      data-complete={(complete && !isInvalid) || undefined}
+      {...shake}
       {...groupRest}
     >
       {chars.map((char, index) => (
@@ -285,6 +305,8 @@ function PinInputControl({
               total: length,
             })}
             data-filled={char ? '' : undefined}
+            data-pop={char && pops.current[index] ? (pops.current[index] % 2 ? 'a' : 'b') : undefined}
+            style={{ '--_i': index, '--_pop-order': popOrder.current[index] ?? 0 } as CSSProperties}
             onChange={(event) => handleInput(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}
             onPaste={(event) => handlePaste(index, event)}
@@ -355,6 +377,7 @@ export const PinInput = forwardRef<HTMLDivElement, PinInputProps>(function PinIn
         name={name}
         hasLabel={Boolean(label)}
         groupRef={ref}
+        errorSignal={typeof error === 'string' ? error : Boolean(error) || Boolean(invalid)}
         rest={rest}
       />
     </Field>

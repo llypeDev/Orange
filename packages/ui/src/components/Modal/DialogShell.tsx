@@ -161,6 +161,7 @@ export function DialogShell({
           ref={setNode}
           className={cx('or-dialog', rootClassName)}
           data-state={state}
+          inert={state === 'closed' || undefined}
           data-theme={themeRef.current}
           {...layerProps}
         >

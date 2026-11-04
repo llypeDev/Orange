@@ -1,4 +1,4 @@
-import { Bullets, Code, ComponentPage, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, Example, KeyboardTable, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import Controlled from './examples/Controlled'
 import ControlledCode from './examples/Controlled?raw'
@@ -94,6 +94,18 @@ export default function ExpandableTextPage() {
             { name: 'showMoreLabel', type: 'string', default: "t('showMore')", description: { pt: 'Rótulo do botão recolhido.', en: 'Collapsed button label.' } },
             { name: 'showLessLabel', type: 'string', default: "t('showLess')", description: { pt: 'Rótulo do botão expandido.', en: 'Expanded button label.' } },
             { name: '...rest', type: 'HTMLAttributes<HTMLDivElement>', description: { pt: 'Atributos do contêiner.', en: 'Container attributes.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Mostrar mais', en: 'Show more' }, description: { pt: 'A altura cresce de N linhas até o texto completo (linha de grade minmax(N linhas, 0fr → 1fr)) — 400ms, ease-out. As reticências somem no início.', en: 'Height grows from N lines to the full text (grid row minmax(N lines, 0fr → 1fr)) — 400ms, ease-out. The ellipsis goes away at the start.' } },
+            { term: { pt: 'Mostrar menos', en: 'Show less' }, description: { pt: 'A altura volta a N linhas — 400ms, ease-in-out. O line-clamp só é reaplicado no fim, então não há salto.', en: 'Height returns to N lines — 400ms, ease-in-out. The line clamp is only reapplied at the end, so nothing jumps.' } },
+            { term: { pt: 'Chevron', en: 'Chevron' }, description: { pt: 'Gira 180° — 250ms, ease-spring.', en: 'Rotates 180° — 250ms, ease-spring.' } },
+            { term: { pt: 'Botão', en: 'Button' }, description: { pt: 'Hover e foco mostram o sublinhado (160ms); pressionar afunda 1px (90ms).', en: 'Hover and focus show the underline (160ms); pressing sinks it 1px (90ms).' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'O texto abre e fecha sem transição.', en: 'Text opens and closes without transition.' } },
           ]}
         />
       </Section>

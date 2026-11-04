@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -196,6 +196,42 @@ describe('DatePicker', () => {
     expect(screen.getByRole('textbox', { name: 'Data' })).toHaveAccessibleDescription(
       'Informe a data de entrega Formato: dd/mm/aaaa',
     )
+  })
+
+  it('entra pelo lado do campo e sai animado (usePresence) antes de desmontar', async () => {
+    const user = userEvent.setup()
+    const original = window.getComputedStyle
+    // Simula a animação de saída só no diálogo (o jsdom não roda CSS).
+    const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudo) => {
+      const style = original.call(window, element, pseudo)
+      if (!(element as HTMLElement).classList?.contains('or-date-picker__dialog')) return style
+      return new Proxy(style, {
+        get(target, prop) {
+          if (prop === 'animationName') return 'or-date-picker-out'
+          if (prop === 'animationDuration') return '0.16s'
+          const result = Reflect.get(target, prop)
+          return typeof result === 'function' ? result.bind(target) : result
+        },
+      })
+    })
+    render(<DatePicker label="Data" />)
+    const button = screen.getByRole('button', { name: 'Escolher data' })
+    await user.click(button)
+    const dialog = await screen.findByRole('dialog')
+    expect(dialog).toHaveAttribute('data-state', 'open')
+    expect(dialog).toHaveAttribute('data-side', 'bottom')
+
+    await user.keyboard('{Escape}')
+    expect(button).toHaveFocus()
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+    const closing = document.querySelector('.or-date-picker__dialog') as HTMLElement
+    expect(closing).toHaveAttribute('data-state', 'closed')
+    expect(closing).toHaveAttribute('inert')
+    act(() => {
+      closing.dispatchEvent(new Event('animationend', { bubbles: true }))
+    })
+    expect(document.querySelector('.or-date-picker__dialog')).toBeNull()
+    spy.mockRestore()
   })
 
   it('não possui violações de acessibilidade (fechado e aberto)', async () => {

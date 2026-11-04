@@ -23,6 +23,8 @@ describe('ExpandableText', () => {
     render(<ExpandableText>Texto curto.</ExpandableText>)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(screen.getByText('Texto curto.')).toHaveClass('or-expandable-text__content')
+    // sem transbordar, a área não vira grade animada
+    expect(screen.getByText('Texto curto.').parentElement).not.toHaveAttribute('data-state')
   })
 
   it('mostra "Mostrar mais" ligado ao conteúdo quando transborda', () => {
@@ -32,7 +34,9 @@ describe('ExpandableText', () => {
     const content = screen.getByText(review)
     expect(button).toHaveAttribute('aria-expanded', 'false')
     expect(button).toHaveAttribute('aria-controls', content.id)
-    expect(content.style.getPropertyValue('--_lines')).toBe('2')
+    expect(content.parentElement!.style.getPropertyValue('--_lines')).toBe('2')
+    expect(content.parentElement).toHaveAttribute('data-state', 'closed')
+    expect(content).toHaveAttribute('data-clamped', 'true')
     expect(content).not.toHaveAttribute('data-expanded')
   })
 
@@ -46,6 +50,9 @@ describe('ExpandableText', () => {
     const button = screen.getByRole('button', { name: 'Mostrar menos' })
     expect(button).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByText(review)).toHaveAttribute('data-expanded', 'true')
+    // expandido: sem line-clamp e com a linha da grade em 1fr (data-state="open")
+    expect(screen.getByText(review)).not.toHaveAttribute('data-clamped')
+    expect(screen.getByText(review).parentElement).toHaveAttribute('data-state', 'open')
     expect(onExpandedChange).toHaveBeenLastCalledWith(true)
     button.focus()
     await user.keyboard('{Enter}')

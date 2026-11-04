@@ -15,6 +15,14 @@ import {
 import { SubHeading } from '../_shared/Blocks'
 import UseClipboard from './examples/UseClipboard'
 import UseClipboardCode from './examples/UseClipboard?raw'
+import UseCountUp from './examples/UseCountUp'
+import UseCountUpCode from './examples/UseCountUp?raw'
+import UseInView from './examples/UseInView'
+import UseInViewCode from './examples/UseInView?raw'
+import UsePresence from './examples/UsePresence'
+import UsePresenceCode from './examples/UsePresence?raw'
+import UseScrollDirection from './examples/UseScrollDirection'
+import UseScrollDirectionCode from './examples/UseScrollDirection?raw'
 import UseControllableState from './examples/UseControllableState'
 import UseControllableStateCode from './examples/UseControllableState?raw'
 import UseDebouncedValue from './examples/UseDebouncedValue'
@@ -121,6 +129,10 @@ export default function HooksPage() {
                   [
                     { pt: 'Eventos', en: 'Events' },
                     ['useEventListener', 'useClickOutside', 'useClipboard'],
+                  ],
+                  [
+                    { pt: 'Movimento', en: 'Motion' },
+                    ['usePresence', 'useInView', 'useCountUp', 'useScrollDirection'],
                   ],
                   [
                     { pt: 'Ambiente e SSR', en: 'Environment and SSR' },
@@ -462,6 +474,106 @@ export default function HooksPage() {
             ),
           }}
           example={{ node: <UseClipboard />, code: UseClipboardCode }}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <Prose>
+          <p>
+            <T
+              pt={<>Hooks do sistema de movimento. Todos respeitam <Code>prefers-reduced-motion</Code> e são seguros para SSR. Os padrões visuais estão em <Link to={to('/design-guidelines/motion')}>Movimento</Link>.</>}
+              en={<>Hooks from the motion system. All of them respect <Code>prefers-reduced-motion</Code> and are SSR-safe. The visual patterns are in <Link to={to('/design-guidelines/motion')}>Motion</Link>.</>}
+            />
+          </p>
+        </Prose>
+        <HookDoc
+          name="usePresence"
+          signature={`function usePresence<T extends HTMLElement = HTMLElement>(
+  open: boolean,
+  options?: { timeout?: number /* 1000 */ },
+): { present: boolean; state: 'open' | 'closed'; nodeRef: RefObject<T | null> }`}
+          description={{
+            pt: <>Mantém um elemento montado enquanto a animação de saída roda. <Code>state</Code> vira <Code>closed</Code> assim que <Code>open</Code> fica falso; <Code>present</Code> só vira falso no <Code>animationend</Code>/<Code>transitionend</Code> do elemento ligado a <Code>nodeRef</Code> (ou após <Code>timeout</Code>). Sem animação — jsdom, CSS ausente, movimento reduzido — desmonta na hora.</>,
+            en: <>Keeps an element mounted while its exit animation runs. <Code>state</Code> becomes <Code>closed</Code> as soon as <Code>open</Code> turns false; <Code>present</Code> only turns false on the <Code>animationend</Code>/<Code>transitionend</Code> of the element bound to <Code>nodeRef</Code> (or after <Code>timeout</Code>). Without animation — jsdom, missing CSS, reduced motion — it unmounts right away.</>,
+          }}
+          params={[
+            { name: 'open', type: 'boolean', required: true, description: { pt: 'Se o elemento deve estar aberto.', en: 'Whether the element should be open.' } },
+            { name: 'options.timeout', type: 'number', default: '1000', description: { pt: 'Limite (ms) para desmontar caso o evento de fim não chegue.', en: 'Limit (ms) to unmount if the end event never arrives.' } },
+          ]}
+          returns={{
+            pt: <><Code>present</Code> (renderizar?), <Code>state</Code> (use em <Code>data-state</Code> com <Code>or-motion-pop</Code>, <Code>-drop</Code> ou <Code>-fade</Code>) e <Code>nodeRef</Code> (ligue ao elemento animado).</>,
+            en: <><Code>present</Code> (render?), <Code>state</Code> (use on <Code>data-state</Code> with <Code>or-motion-pop</Code>, <Code>-drop</Code> or <Code>-fade</Code>) and <Code>nodeRef</Code> (bind to the animated element).</>,
+          }}
+          example={{
+            node: <UsePresence />,
+            code: UsePresenceCode,
+            description: { pt: 'Observe present continuar true por 160ms depois de esconder: é a saída rodando.', en: 'Watch present stay true for 160ms after hiding: that is the exit running.' },
+          }}
+        />
+        <HookDoc
+          name="useInView"
+          signature={`function useInView<T extends Element = HTMLElement>(options?: {
+  rootMargin?: string        // '0px 0px -60px 0px'
+  threshold?: number | number[] // 0.08
+  once?: boolean             // true
+  root?: Element | null      // null (viewport)
+}): [ref: RefCallback<T>, inView: boolean]`}
+          description={{
+            pt: <>Diz se o elemento está na área visível, com <Code>IntersectionObserver</Code>. Por padrão dispara uma vez — ideal para revelações no scroll e para iniciar <Code>useCountUp</Code>. Sem suporte ao observer, devolve <Code>true</Code>. É o hook por trás do componente <Code>Reveal</Code>.</>,
+            en: <>Tells whether the element is in view, using <Code>IntersectionObserver</Code>. By default it fires once — ideal for scroll reveals and for starting <Code>useCountUp</Code>. Without observer support it returns <Code>true</Code>. It is the hook behind the <Code>Reveal</Code> component.</>,
+          }}
+          params={[
+            { name: 'rootMargin', type: 'string', default: "'0px 0px -60px 0px'", description: { pt: 'Margem da área observada (negativa = dispara um pouco depois de entrar).', en: 'Margin of the observed area (negative = fires a little after entering).' } },
+            { name: 'threshold', type: 'number | number[]', default: '0.08', description: { pt: 'Fração visível necessária.', en: 'Visible fraction required.' } },
+            { name: 'once', type: 'boolean', default: 'true', description: { pt: 'Para de observar após a primeira entrada.', en: 'Stops observing after the first entry.' } },
+            { name: 'root', type: 'Element | null', default: 'null', description: { pt: 'Contêiner de rolagem (null = viewport).', en: 'Scroll container (null = viewport).' } },
+          ]}
+          returns={{ pt: 'Uma tupla [ref, inView]: passe ref ao elemento observado.', en: 'A [ref, inView] tuple: pass ref to the observed element.' }}
+          example={{ node: <UseInView />, code: UseInViewCode, description: { pt: 'Com once: false, cada linha alterna entre “na tela” e “fora da tela”.', en: 'With once: false, each row toggles between “na tela” (in view) and “fora da tela” (out of view).' } }}
+        />
+        <HookDoc
+          name="useCountUp"
+          signature={`function useCountUp(
+  target: number,
+  options?: { duration?: number /* 900 */; from?: number /* 0 */; enabled?: boolean /* true */ },
+): number`}
+          description={{
+            pt: <>Anima um número de <Code>from</Code> até <Code>target</Code> com desaceleração cúbica, via <Code>requestAnimationFrame</Code>. Com movimento reduzido ou <Code>enabled=false</Code>, devolve o valor final. O retorno é fracionário: formate com <Code>toLocaleString</Code> ou <Code>Math.round</Code>.</>,
+            en: <>Animates a number from <Code>from</Code> to <Code>target</Code> with cubic deceleration, via <Code>requestAnimationFrame</Code>. With reduced motion or <Code>enabled=false</Code>, it returns the final value. The return value is fractional: format it with <Code>toLocaleString</Code> or <Code>Math.round</Code>.</>,
+          }}
+          params={[
+            { name: 'target', type: 'number', required: true, description: { pt: 'Valor final.', en: 'Final value.' } },
+            { name: 'duration', type: 'number', default: '900', description: { pt: 'Duração em ms.', en: 'Duration in ms.' } },
+            { name: 'from', type: 'number', default: '0', description: { pt: 'Valor inicial de cada contagem.', en: 'Starting value of each count.' } },
+            { name: 'enabled', type: 'boolean', default: 'true', description: { pt: 'Liga a animação (ex.: quando useInView fica true).', en: 'Turns the animation on (e.g. when useInView becomes true).' } },
+          ]}
+          returns={{ pt: 'O valor atual da contagem.', en: 'The current count value.' }}
+          example={{ node: <UseCountUp />, code: UseCountUpCode }}
+        />
+        <HookDoc
+          name="useScrollDirection"
+          signature={`function useScrollDirection(options?: {
+  threshold?: number  // 120 — px a partir do topo
+  tolerance?: number  // 6 — px mínimos de variação
+}): { direction: 'up' | 'down'; pastThreshold: boolean }`}
+          description={{
+            pt: <>Direção da rolagem da página e se ela já passou de <Code>threshold</Code>. Ignora variações menores que <Code>tolerance</Code> e agrupa leituras com <Code>requestAnimationFrame</Code>. Use para esconder o cabeçalho ao rolar para baixo — como o desta documentação.</>,
+            en: <>Page scroll direction and whether it is past <Code>threshold</Code>. It ignores changes smaller than <Code>tolerance</Code> and batches reads with <Code>requestAnimationFrame</Code>. Use it to hide the header when scrolling down — like these docs’ header.</>,
+          }}
+          params={[
+            { name: 'threshold', type: 'number', default: '120', description: { pt: 'Distância do topo a partir da qual pastThreshold vira true.', en: 'Distance from the top after which pastThreshold becomes true.' } },
+            { name: 'tolerance', type: 'number', default: '6', description: { pt: 'Variação mínima para trocar a direção.', en: 'Minimum change to flip the direction.' } },
+          ]}
+          returns={{ pt: '{ direction, pastThreshold } — esconda quando direction for down e pastThreshold for true.', en: '{ direction, pastThreshold } — hide when direction is down and pastThreshold is true.' }}
+          usage={`const { direction, pastThreshold } = useScrollDirection({ threshold: 160 })
+const escondido = direction === 'down' && pastThreshold
+
+return <header data-hidden={escondido || undefined} className="cabecalho">…</header>
+
+/* cabecalho.css */
+.cabecalho { transition: transform var(--or-duration-medium) var(--or-ease-in-out); }
+.cabecalho[data-hidden] { transform: translateY(-100%); }`}
+          example={{ node: <UseScrollDirection />, code: UseScrollDirectionCode, description: { pt: 'Role a página para cima e para baixo e veja os valores mudarem.', en: 'Scroll the page up and down and watch the values change.' } }}
         />
       </Section>
 

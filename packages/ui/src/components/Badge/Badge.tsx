@@ -1,6 +1,16 @@
-import { cloneElement, forwardRef, isValidElement, type HTMLAttributes, type ReactElement, type ReactNode } from 'react'
-import { useId } from '../../hooks'
-import { cx } from '../../utils'
+import {
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useMemo,
+  useRef,
+  useState,
+  type HTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+} from 'react'
+import { useId, useIsomorphicLayoutEffect, usePresence } from '../../hooks'
+import { cx, mergeRefs } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Badge.css'
 
@@ -27,6 +37,8 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'child
   showZero?: boolean
   /** Forma do elemento ancorado, para ajustar a posição do badge. */
   overlap?: 'square' | 'circle'
+  /** Anel pulsante ("ao vivo"), útil com `dot`. Desligado em movimento reduzido. */
+  pulse?: boolean
   /**
    * Elemento sobre o qual o badge é posicionado (canto superior direito).
    * O `label` é ligado a ele via `aria-describedby`.
@@ -48,6 +60,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
     label,
     showZero = false,
     overlap = 'square',
+    pulse = false,
     className,
     children,
     ...rest
@@ -61,11 +74,30 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   const anchored = children !== undefined && children !== null
   const anchorElement = anchored && isValidElement<{ 'aria-describedby'?: string }>(children) ? children : null
 
+  // Movimento: nada na primeira renderização; "pop" quando o badge surge;
+  // "bump" quando a contagem muda; saída animada via usePresence.
+  const { present, state, nodeRef } = usePresence<HTMLSpanElement>(visible)
+  const composedRef = useMemo(() => mergeRefs(ref, nodeRef), [ref, nodeRef])
+  const [motion, setMotion] = useState<'pop' | 'bump' | undefined>(undefined)
+  const [shownDisplay, setShownDisplay] = useState(display)
+  const previous = useRef({ visible, display })
+  useIsomorphicLayoutEffect(() => {
+    const prev = previous.current
+    if (visible && !prev.visible) setMotion('pop')
+    else if (visible && display !== prev.display) setMotion('bump')
+    if (visible) setShownDisplay(display)
+    previous.current = { visible, display }
+  }, [visible, display])
+  // Durante a saída, mantém o último número em vez de mostrar "0".
+  const text = visible ? display : shownDisplay
+  const leaving = !visible
+
   const classes = cx(
     'or-badge',
     `or-badge--${tone}`,
     `or-badge--${size}`,
     dot && 'or-badge--dot',
+    pulse && 'or-badge--pulse',
     anchored && 'or-badge--overlay',
     anchored && `or-badge--overlap-${overlap}`,
     className,
@@ -82,31 +114,45 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
         {cloneElement(anchorElement as ReactElement<{ 'aria-describedby'?: string }>, {
           'aria-describedby': describedBy || undefined,
         })}
-        {visible && (
-          <>
-            <span ref={ref} className={classes} aria-hidden="true" {...rest}>
-              {display}
-            </span>
-            {description && (
-              <span id={descriptionId} hidden>
-                {description}
-              </span>
-            )}
-          </>
+        {present && (
+          <span
+            key={text}
+            ref={composedRef}
+            className={classes}
+            data-state={state}
+            data-motion={motion}
+            aria-hidden="true"
+            {...rest}
+          >
+            {text}
+          </span>
+        )}
+        {visible && description && (
+          <span id={descriptionId} hidden>
+            {description}
+          </span>
         )}
       </span>
     )
   }
 
-  const indicator = visible ? (
-    <span ref={ref} className={classes} aria-hidden={!label && dot ? true : undefined} {...rest}>
+  const indicator = present ? (
+    <span
+      key={text}
+      ref={composedRef}
+      className={classes}
+      data-state={state}
+      data-motion={motion}
+      aria-hidden={leaving || (!label && dot) ? true : undefined}
+      {...rest}
+    >
       {label ? (
         <>
-          {display && <span aria-hidden="true">{display}</span>}
+          {text && <span aria-hidden="true">{text}</span>}
           <VisuallyHidden>{label}</VisuallyHidden>
         </>
       ) : (
-        display
+        text
       )}
     </span>
   ) : null

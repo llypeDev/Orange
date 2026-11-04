@@ -6,6 +6,11 @@
 .or-input-frame {
   position: relative;
   cursor: text;
+  /* Hover/foco: borda, anel e fundo mudam juntos em 160ms (zop.dev). */
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-input-frame[data-disabled] {
@@ -49,6 +54,10 @@
   height: 1.25rem;
 }
 
+.or-input-frame .or-control-frame__addon {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
 .or-input-frame:focus-within .or-control-frame__addon {
   color: var(--or-color-text-muted);
 }
@@ -65,6 +74,14 @@
   font-size: var(--or-text-sm);
   white-space: nowrap;
   user-select: none;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-input-frame:focus-within .or-input-frame__affix {
+  color: var(--or-color-text);
 }
 
 .or-control-frame--sm .or-input-frame__affix {
@@ -84,7 +101,14 @@
   color: var(--or-color-text-disabled);
 }
 
-/* Botão interno pressionado (ex.: mostrar senha) ---------------------------- */
+/* Botões internos (mostrar senha, − / +) ------------------------------------ */
+
+.or-input-frame .or-control-frame__button {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
 
 .or-input-frame .or-control-frame__button[aria-pressed='true'] {
   color: var(--or-color-accent-text);
@@ -93,6 +117,20 @@
 .or-input-frame .or-control-frame__button svg {
   width: 1.125rem;
   height: 1.125rem;
+}
+
+.or-input-frame .or-control-frame__button > * {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionar: o ícone "afunda" 1px (o botão fica preso à moldura). */
+.or-input-frame .or-control-frame__button:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+}
+
+.or-input-frame .or-control-frame__button:active:not(:disabled) > * {
+  transform: translateY(1px) scale(0.9);
+  transition-duration: var(--or-duration-press);
 }
 
 @media (forced-colors: active) {

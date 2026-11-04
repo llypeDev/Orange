@@ -104,10 +104,12 @@ export const Highlight = forwardRef<HTMLElement, HighlightProps>(function Highli
     const ranges = findRanges(text, queryKey.split('\u0000'), { caseSensitive, accentSensitive })
     const out: ReactNode[] = []
     let cursor = 0
-    ranges.forEach(([start, end], index) => {
+    ranges.forEach(([start, end]) => {
       if (start > cursor) out.push(text.slice(cursor, start))
+      // A chave pelo intervalo mantém as marcas que não mudaram; só as novas
+      // montam (e fazem o fade de entrada) quando a busca muda.
       out.push(
-        <mark key={index} className={cx('or-highlight__mark', markClassName)}>
+        <mark key={`${start}-${end}`} className={cx('or-highlight__mark', markClassName)}>
           {text.slice(start, end)}
         </mark>,
       )

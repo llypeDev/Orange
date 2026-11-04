@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useEffect, useState } from 'react'
 import { Icon } from '../../icons'
 import { ToggleButton } from './ToggleButton'
 
@@ -10,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Botão de alternância com `aria-pressed`. Pressionado, ganha fundo e borda laranjas, barra inferior e ícone de check — o estado não depende só da cor. O rótulo não muda entre os estados.',
+          'Botão de alternância com `aria-pressed`. Pressionado, ganha fundo e borda laranjas, a barra inferior cresce com mola e o indicador troca + por check (com bounce) — o estado não depende só da cor. O rótulo não muda entre os estados.',
       },
     },
   },
@@ -72,4 +73,35 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true, defaultPressed: true },
+}
+
+function MotionDemo() {
+  const [pressed, setPressed] = useState(false)
+  useEffect(() => {
+    const timer = setInterval(() => setPressed((p) => !p), 1400)
+    return () => clearInterval(timer)
+  }, [])
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <ToggleButton pressed={pressed} onPressedChange={setPressed}>
+        Somente remotas
+      </ToggleButton>
+      <ToggleButton
+        pressed={pressed}
+        onPressedChange={setPressed}
+        iconOnly
+        variant="ghost"
+        aria-label="Negrito"
+        startIcon={<Icon name="bold" />}
+      />
+    </div>
+  )
+}
+
+/** Alterna sozinho a cada 1,4s para mostrar a barra (spring) e o check (bounce). */
+export const Motion: Story = {
+  parameters: {
+    docs: { description: { story: 'Alterna automaticamente para inspecionar o movimento.' } },
+  },
+  render: () => <MotionDemo />,
 }

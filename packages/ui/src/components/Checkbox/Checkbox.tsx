@@ -3,7 +3,9 @@ import { useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon } from '../../icons'
 import { cx, devWarning, mergeRefs } from '../../utils'
 import { hasContent } from '../Fieldset/FieldsetBase'
+import { useErrorShake } from '../TextField/useErrorShake'
 import { useCheckboxGroup } from './CheckboxGroupContext'
+import '../TextField/FormMotion.css'
 import './Checkbox.css'
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
@@ -60,6 +62,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   const isDisabled = Boolean(disabled || group?.disabled)
   const inGroup = group !== null && value !== undefined
   const isChecked = inGroup ? group.value.includes(String(value)) : checked
+  const { shakeClassName, onAnimationEnd } = useErrorShake(isInvalid)
 
   devWarning(group !== null && value === undefined, 'Checkbox dentro de CheckboxGroup precisa de `value`.')
   devWarning(
@@ -102,7 +105,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             onChange={handleChange}
             {...rest}
           />
-          <span className="or-checkbox__box" aria-hidden="true">
+          <span className={cx('or-checkbox__box', shakeClassName)} aria-hidden="true" onAnimationEnd={onAnimationEnd}>
             <Icon name="check" size={14} strokeWidth={3} className="or-checkbox__check" />
             <Icon name="minus" size={14} strokeWidth={3} className="or-checkbox__dash" />
           </span>

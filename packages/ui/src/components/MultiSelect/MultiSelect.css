@@ -57,7 +57,27 @@
   font-size: var(--or-text-sm);
   font-weight: var(--or-weight-medium);
   line-height: 1;
-  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Movimento: o chip adicionado entra com pop (scale + bounce); o removido
+ * sai mais rápido (fade + scale) antes de deixar o DOM. */
+.or-multi-select__chip[data-enter] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-multi-select__chip[data-state='closed'] {
+  animation: or-multi-select-chip-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-multi-select-chip-out {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
 }
 
 .or-control-frame--sm .or-multi-select__chip {
@@ -94,7 +114,8 @@
   cursor: pointer;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-multi-select__chip-remove:hover {
@@ -123,7 +144,9 @@
   border: 2px solid var(--or-color-text-subtle);
   border-right-color: transparent;
   border-radius: var(--or-radius-full);
-  animation: or-spin 0.7s linear infinite;
+  animation:
+    or-spin 0.7s linear infinite,
+    or-fade-in var(--or-duration-fast) var(--or-ease-out) backwards;
 }
 
 .or-multi-select__clear {
@@ -143,7 +166,8 @@
   cursor: pointer;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-multi-select__clear:hover {
@@ -156,14 +180,42 @@
   outline-offset: -2px;
 }
 
+.or-multi-select__clear[data-state='open'] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-multi-select__clear[data-state='closed'] {
+  animation: or-multi-select-clear-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-multi-select-clear-out {
+  to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Botões internos "afundam" no clique (press). */
+.or-multi-select__chip-remove:active,
+.or-multi-select__clear:active,
+.or-multi-select__toggle:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
 .or-multi-select__toggle {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
   align-self: stretch;
   width: calc(var(--_height) - 2px);
   min-height: calc(var(--_height) - 2px);
 }
 
 .or-multi-select__chevron {
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
 }
 
 .or-multi-select[data-open] .or-multi-select__chevron {

@@ -8,6 +8,7 @@
   --_h: 1.25rem;
   --_ring: var(--or-badge-ring, var(--or-color-bg));
 
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -25,7 +26,6 @@
   letter-spacing: -0.01em;
   white-space: nowrap;
   vertical-align: middle;
-  animation: or-badge-pop var(--or-duration-medium) var(--or-ease-spring);
 }
 
 .or-badge--sm {
@@ -96,14 +96,59 @@
   right: 14%;
 }
 
+/* Movimento ---------------------------------------------------------------- */
+
+/* Surge (count passa de 0 para N): pop com --or-ease-bounce. */
+.or-badge[data-motion='pop'] {
+  animation: or-badge-pop var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Contagem mudou: o badge "salta" sem piscar. */
+.or-badge[data-motion='bump'] {
+  animation: or-badge-bump var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+/* Saída (count volta a 0): mais curta que a entrada. */
+.or-badge[data-state='closed'] {
+  animation: or-badge-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
 @keyframes or-badge-pop {
   from {
     scale: 0.4;
     opacity: 0;
   }
+}
+
+@keyframes or-badge-bump {
+  from {
+    scale: 0.7;
+  }
+}
+
+@keyframes or-badge-out {
   to {
-    scale: 1;
-    opacity: 1;
+    scale: 0.4;
+    opacity: 0;
+  }
+}
+
+/* Pulso "ao vivo" em um pseudo-elemento (não apaga o anel na cor do fundo). */
+.or-badge--pulse::before {
+  --_pulse-color: var(--_bg);
+
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-badge--pulse::before {
+    animation: none;
   }
 }
 

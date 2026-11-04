@@ -19,13 +19,16 @@
 
 .or-drawer {
   --_size: 30rem;
-  --_from: translateX(100%);
+  /* Motion: desliza da borda de origem em 250ms (ease-out) e volta para ela em
+     160ms (ease-in-out). O fundo faz fade junto (DialogShell). */
+  --_in: or-slide-in-right;
+  --_out: or-slide-out-right;
 
-  animation: or-drawer-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation: var(--_in) var(--or-duration-medium) var(--or-ease-out) both;
 }
 
 .or-drawer[data-state='closed'] {
-  animation: or-drawer-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  animation: var(--_out) var(--or-duration-fast) var(--or-ease-in-out) both;
 }
 
 /* Posições ----------------------------------------------------------------- */
@@ -37,12 +40,14 @@
 }
 
 .or-drawer--left {
-  --_from: translateX(-100%);
+  --_in: or-slide-in-left;
+  --_out: or-slide-out-left;
 }
 
 .or-drawer--bottom {
   --_size: 60%;
-  --_from: translateY(100%);
+  --_in: or-slide-in-up;
+  --_out: or-slide-out-down;
 
   width: 100%;
   max-height: var(--_size);
@@ -131,18 +136,6 @@
   padding: var(--or-space-4) var(--or-space-6);
   border-top: var(--or-border-thin) solid var(--or-color-border);
   background: var(--or-color-bg-subtle);
-}
-
-@keyframes or-drawer-in {
-  from {
-    transform: var(--_from);
-  }
-}
-
-@keyframes or-drawer-out {
-  to {
-    transform: var(--_from);
-  }
 }
 
 @media (max-width: 40rem) {

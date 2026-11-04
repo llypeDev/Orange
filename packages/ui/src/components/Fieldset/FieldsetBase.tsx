@@ -3,7 +3,9 @@ import { useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx } from '../../utils'
+import { useErrorShake } from '../TextField/useErrorShake'
 import { VisuallyHidden } from '../VisuallyHidden'
+import '../TextField/FormMotion.css'
 import './Fieldset.css'
 
 /**
@@ -55,6 +57,8 @@ export const FieldsetBase = forwardRef<HTMLFieldSetElement, FieldsetBaseProps>(f
   const descriptionId = hasDescription ? `${baseId}-description` : undefined
   const errorId = hasError ? `${baseId}-error` : undefined
   const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
+  // Grupos de opções tremem uma vez quando o erro surge; seções só mostram a barra.
+  const { shakeClassName, onAnimationEnd } = useErrorShake(appearance === 'group' && hasError)
 
   return (
     <fieldset
@@ -81,7 +85,14 @@ export const FieldsetBase = forwardRef<HTMLFieldSetElement, FieldsetBaseProps>(f
           {description}
         </p>
       )}
-      <div {...contentProps} className={cx('or-fieldset__content', contentProps?.className)}>
+      <div
+        {...contentProps}
+        className={cx('or-fieldset__content', contentProps?.className, shakeClassName)}
+        onAnimationEnd={(event) => {
+          contentProps?.onAnimationEnd?.(event)
+          onAnimationEnd(event)
+        }}
+      >
         {children}
       </div>
       {hasError && (

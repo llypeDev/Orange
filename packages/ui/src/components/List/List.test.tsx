@@ -1,8 +1,12 @@
-import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Icon } from '../../icons'
 import { expectNoA11yViolations } from '../../test/axe'
 import { List, ListItem } from './List'
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 describe('List', () => {
   it('renderiza <ul> com marcadores por padrão e mantém o papel de lista', () => {
@@ -82,6 +86,31 @@ describe('List', () => {
       </List>,
     )
     expect(screen.getByRole('list')).toHaveClass('or-list--inline', 'or-list--sm')
+  })
+
+  it('animated revela os itens quando a lista entra na viewport', async () => {
+    let callback: ((entries: Partial<IntersectionObserverEntry>[]) => void) | undefined
+    vi.stubGlobal(
+      'IntersectionObserver',
+      class {
+        constructor(cb: typeof callback) {
+          callback = cb
+        }
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    )
+    render(
+      <List animated>
+        <ListItem>Um</ListItem>
+        <ListItem>Dois</ListItem>
+      </List>,
+    )
+    const list = screen.getByRole('list')
+    expect(list).toHaveAttribute('data-reveal', 'hidden')
+    act(() => callback?.([{ isIntersecting: true }]))
+    await waitFor(() => expect(list).toHaveAttribute('data-reveal', 'shown'))
   })
 
   it('não possui violações de acessibilidade', async () => {

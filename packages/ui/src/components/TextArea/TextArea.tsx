@@ -13,6 +13,8 @@ import { cx, devWarning, mergeRefs } from '../../utils'
 import { Field, useFieldControlProps } from '../Field'
 import { CharacterCount } from '../TextField/CharacterCount'
 import type { TextFieldBaseProps } from '../TextField/TextField'
+import { useErrorShake } from '../TextField/useErrorShake'
+import '../TextField/FormMotion.css'
 import './TextArea.css'
 
 export interface TextAreaProps extends TextFieldBaseProps, TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -35,7 +37,18 @@ interface TextAreaControlProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 const TextAreaControl = forwardRef<HTMLTextAreaElement, TextAreaControlProps>(function TextAreaControl(
-  { size, invalid, autoResize, maxRows, describedBy, className, onChange, 'aria-describedby': ariaDescribedBy, ...rest },
+  {
+    size,
+    invalid,
+    autoResize,
+    maxRows,
+    describedBy,
+    className,
+    onChange,
+    onAnimationEnd,
+    'aria-describedby': ariaDescribedBy,
+    ...rest
+  },
   ref,
 ) {
   const innerRef = useRef<HTMLTextAreaElement>(null)
@@ -44,6 +57,7 @@ const TextAreaControl = forwardRef<HTMLTextAreaElement, TextAreaControlProps>(fu
     'aria-describedby': [ariaDescribedBy, describedBy].filter(Boolean).join(' ') || undefined,
     'aria-invalid': invalid ? true : undefined,
   })
+  const { shakeClassName, onAnimationEnd: onShakeEnd } = useErrorShake(controlProps['aria-invalid'] === true)
 
   const resize = useCallback(() => {
     const el = innerRef.current
@@ -102,11 +116,16 @@ const TextAreaControl = forwardRef<HTMLTextAreaElement, TextAreaControlProps>(fu
         `or-control--${size}`,
         'or-text-area__control',
         autoResize && 'or-text-area__control--auto',
+        shakeClassName,
         className,
       )}
       onChange={(event) => {
         onChange?.(event)
         resize()
+      }}
+      onAnimationEnd={(event) => {
+        onAnimationEnd?.(event)
+        onShakeEnd(event)
       }}
       {...controlProps}
       {...rest}

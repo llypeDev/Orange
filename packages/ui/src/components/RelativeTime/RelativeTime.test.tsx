@@ -29,7 +29,8 @@ describe('RelativeTime', () => {
   it('renderiza <time dateTime> com texto relativo em português', () => {
     const date = minutesAgo(5)
     render(<RelativeTime date={date} />)
-    const time = screen.getByText('há 5 minutos')
+    const time = screen.getByRole('time')
+    expect(time).toHaveTextContent('há 5 minutos')
     expect(time.tagName).toBe('TIME')
     expect(time).toHaveAttribute('datetime', date.toISOString())
     expect(time).toHaveClass('or-relative-time')
@@ -87,8 +88,12 @@ describe('RelativeTime', () => {
   it('atualiza o texto periodicamente', () => {
     render(<RelativeTime date={new Date(NOW.getTime() - 30_000)} />)
     expect(screen.getByRole('time')).toHaveTextContent('agora')
+    expect(screen.getByText('agora')).not.toHaveClass('or-relative-time__text--updated')
     tick(30_000)
     expect(screen.getByRole('time')).toHaveTextContent('há 1 minuto')
+    // o texto novo entra com fade; a região não é aria-live
+    expect(screen.getByText('há 1 minuto')).toHaveClass('or-relative-time__text--updated')
+    expect(screen.getByRole('time')).not.toHaveAttribute('aria-live')
     tick(5 * 60_000, 30_000)
     expect(screen.getByRole('time')).toHaveTextContent('há 6 minutos')
   })

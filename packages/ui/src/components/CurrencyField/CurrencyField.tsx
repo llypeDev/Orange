@@ -10,6 +10,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { useLocale } from '../../providers'
 import { clamp, cx, mergeRefs } from '../../utils'
+import { useShake } from '../Combobox/motion'
 import { Field, useFieldControlProps } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './CurrencyField.css'
@@ -146,7 +147,13 @@ export const CurrencyField = forwardRef<HTMLInputElement, CurrencyFieldProps>(
         controlId={id}
         className={cx('or-currency-field', className)}
       >
-        <CurrencyFieldControl inputRef={ref} required={required} disabled={disabled} {...rest} />
+        <CurrencyFieldControl
+          inputRef={ref}
+          required={required}
+          disabled={disabled}
+          errorSignal={typeof error === 'string' ? error : Boolean(error)}
+          {...rest}
+        />
       </Field>
     )
   },
@@ -157,10 +164,13 @@ type ControlProps = Omit<
   'label' | 'hideLabel' | 'description' | 'error' | 'className' | 'id'
 > & {
   inputRef: React.Ref<HTMLInputElement>
+  /** Muda quando a mensagem de erro surge/muda — dispara o tremor do campo. */
+  errorSignal: string | boolean
 }
 
 function CurrencyFieldControl({
   inputRef,
+  errorSignal,
   value: valueProp,
   defaultValue = null,
   onChange,
@@ -194,6 +204,7 @@ function CurrencyFieldControl({
     'aria-describedby': [rest['aria-describedby'], hintId].filter(Boolean).join(' '),
   })
   const isDisabled = Boolean(controlProps.disabled)
+  const shake = useShake(errorSignal)
   const allowNegative = min !== undefined && min < 0
 
   const [value, setValue] = useControllableState<number | null>({ value: valueProp, defaultValue })
@@ -266,6 +277,7 @@ function CurrencyFieldControl({
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-currency-field__frame')}
       data-invalid={controlProps['aria-invalid'] || undefined}
+      {...shake}
       data-disabled={isDisabled || undefined}
       onMouseDown={(event) => {
         if (event.target !== inputEl.current) {

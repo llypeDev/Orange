@@ -15,7 +15,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react'
-import { useClickOutside, useControllableState, useId } from '../../hooks'
+import { useClickOutside, useControllableState, useId, usePresence } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, devWarning, mergeRefs } from '../../utils'
@@ -106,11 +106,17 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
 
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
+  // O menu continua montado durante a animação de saída (data-state="closed").
+  const { present, state, nodeRef: menuRef } = usePresence<HTMLDivElement>(isOpen)
 
-  const { refs, floatingStyles, isPositioned } = useFloating({
-    open: isOpen,
+  const {
+    refs,
+    floatingStyles,
+    isPositioned,
+    placement: resolvedPlacement,
+  } = useFloating({
+    open: present,
     placement,
     transform: false,
     whileElementsMounted: autoUpdate,
@@ -254,7 +260,7 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
         {...rovingItemProps(group)}
       />
       <Portal>
-        {isOpen && (
+        {present && (
           <div
             ref={mergeRefs(menuRef, refs.setFloating)}
             id={menuId}
@@ -262,6 +268,10 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
             tabIndex={-1}
             aria-labelledby={triggerId}
             className="or-split-button__menu"
+            // A entrada só começa depois do posicionamento (sem "piscar" no canto).
+            data-state={isPositioned ? state : undefined}
+            data-side={resolvedPlacement.split('-')[0]}
+            inert={state === 'closed' || undefined}
             style={{ ...floatingStyles, opacity: isPositioned ? undefined : 0 }}
             onKeyDown={onMenuKeyDown}
             onBlur={onMenuBlur}

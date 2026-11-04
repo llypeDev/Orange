@@ -1,3 +1,14 @@
 .or-relative-time {
   font-variant-numeric: tabular-nums;
 }
+
+/* Ao mudar ("agora" → "há 1 minuto"), o texto novo surge com um fade curto. */
+.or-relative-time__text--updated {
+  animation: or-relative-time-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+@keyframes or-relative-time-in {
+  from {
+    opacity: 0.2;
+  }
+}

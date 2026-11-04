@@ -11,6 +11,15 @@
   text-decoration-skip-ink: none;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+  /* Marcas novas surgem com um fade do fundo e do sublinhado. */
+  animation: or-highlight-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+@keyframes or-highlight-in {
+  from {
+    background-color: transparent;
+    text-decoration-color: transparent;
+  }
 }
 
 @media (forced-colors: active) {

@@ -69,7 +69,16 @@ describe('ToggleButton', () => {
     expect(screen.getByRole('button', { name: 'Negrito' })).not.toHaveClass(
       'or-toggle-button--with-check',
     )
-    expect(container.querySelectorAll('.or-toggle-button__check')).toHaveLength(1)
+    const indicators = container.querySelectorAll('.or-toggle-button__check')
+    expect(indicators).toHaveLength(1)
+    // Espaço fixo com os dois ícones (+ solto, check pressionado): a largura não muda.
+    expect(indicators[0]).toHaveAttribute('aria-hidden', 'true')
+    expect(indicators[0].querySelector('[data-icon="plus"]')).toHaveClass(
+      'or-toggle-button__check-off',
+    )
+    expect(indicators[0].querySelector('[data-icon="check"]')).toHaveClass(
+      'or-toggle-button__check-on',
+    )
   })
 
   it('respeita preventDefault no onClick e o estado desabilitado', async () => {

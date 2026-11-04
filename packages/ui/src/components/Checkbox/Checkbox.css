@@ -50,23 +50,34 @@
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface);
   color: var(--or-color-text-on-accent);
+  /* A caixa muda de cor suavemente; o clique "afunda" (ver :active). */
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
     box-shadow var(--or-duration-fast) var(--or-ease-out),
-    transform var(--or-duration-instant) var(--or-ease-out);
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
+/* Saída (desmarcar) curta; a entrada usa animações abaixo. */
 .or-checkbox__box .or-icon {
   position: absolute;
   opacity: 0;
-  transform: scale(0.5);
   transition:
-    opacity var(--or-duration-fast) var(--or-ease-out),
-    transform var(--or-duration-fast) var(--or-ease-spring);
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
 }
 
-.or-checkbox:hover .or-checkbox__input:not(:disabled) + .or-checkbox__box {
+.or-checkbox__check {
+  transform: scale(0.6);
+}
+
+.or-checkbox__dash {
+  transform: scaleX(0);
+}
+
+/* Hover e foco visível têm a mesma resposta: borda mais forte + anel suave. */
+.or-checkbox:hover .or-checkbox__input:not(:disabled) + .or-checkbox__box,
+.or-checkbox__input:focus-visible + .or-checkbox__box {
   border-color: var(--or-color-text-subtle);
   box-shadow: 0 0 0 3px var(--or-color-accent-subtle);
 }
@@ -78,15 +89,33 @@
 }
 
 .or-checkbox:hover .or-checkbox__input:checked:not(:disabled) + .or-checkbox__box,
-.or-checkbox:hover .or-checkbox__input:indeterminate:not(:disabled) + .or-checkbox__box {
+.or-checkbox:hover .or-checkbox__input:indeterminate:not(:disabled) + .or-checkbox__box,
+.or-checkbox__input:checked:focus-visible + .or-checkbox__box,
+.or-checkbox__input:indeterminate:focus-visible + .or-checkbox__box {
   border-color: var(--or-color-accent-hover);
   background: var(--or-color-accent-hover);
 }
 
-.or-checkbox__input:checked:not(:indeterminate) + .or-checkbox__box .or-checkbox__check,
-.or-checkbox__input:indeterminate + .or-checkbox__box .or-checkbox__dash {
+/* Marcado: o check entra desenhando o traço (or-draw) com --or-ease-bounce. */
+.or-checkbox__input:checked:not(:indeterminate) + .or-checkbox__box .or-checkbox__check {
   opacity: 1;
   transform: none;
+  transition-duration: var(--or-duration-press);
+}
+
+.or-checkbox__input:checked:not(:indeterminate) + .or-checkbox__box .or-checkbox__check path {
+  --_draw-length: 22;
+  stroke-dasharray: 22;
+  animation: or-draw var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Indeterminado: o traço cresce do centro em scaleX. */
+.or-checkbox__input:indeterminate + .or-checkbox__box .or-checkbox__dash {
+  opacity: 1;
+  transform: scaleX(1);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-bounce);
 }
 
 .or-checkbox__input:focus-visible + .or-checkbox__box {
@@ -94,8 +123,10 @@
   outline-offset: 2px;
 }
 
-.or-checkbox__input:active:not(:disabled) + .or-checkbox__box {
-  transform: scale(0.94);
+/* Pressionar (na caixa ou no rótulo): a caixa afunda 1px. */
+.or-checkbox__row:active .or-checkbox__input:not(:disabled) + .or-checkbox__box {
+  transform: translateY(1px) scale(0.92);
+  transition-duration: var(--or-duration-press);
 }
 
 /* Inválido */
@@ -113,6 +144,7 @@
   line-height: var(--or-leading-body);
   color: var(--or-color-text);
   cursor: pointer;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-checkbox__required {
@@ -130,6 +162,7 @@
 .or-checkbox__description {
   margin-top: calc(var(--or-space-1) * -1);
   color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-checkbox__error {

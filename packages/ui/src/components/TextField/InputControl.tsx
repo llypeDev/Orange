@@ -2,6 +2,8 @@ import { forwardRef, useMemo, useRef, type InputHTMLAttributes, type MouseEvent,
 import { useId } from '../../hooks'
 import { cx, mergeRefs } from '../../utils'
 import { useFieldControlProps } from '../Field'
+import { useErrorShake } from './useErrorShake'
+import './FormMotion.css'
 import './TextField.css'
 
 /** Tamanho dos controles de texto: `sm` 32px, `md` 40px, `lg` 48px. */
@@ -73,6 +75,7 @@ export const InputControl = forwardRef<HTMLInputElement, InputControlProps>(func
   })
   const isInvalid = controlProps['aria-invalid'] === true
   const isDisabled = Boolean(controlProps.disabled)
+  const { shakeClassName, onAnimationEnd } = useErrorShake(isInvalid)
 
   // Clicar em qualquer parte da moldura (ícone, prefixo) foca o campo.
   const handleFrameMouseDown = (event: MouseEvent<HTMLDivElement>) => {
@@ -88,11 +91,12 @@ export const InputControl = forwardRef<HTMLInputElement, InputControlProps>(func
       {/* O mousedown só amplia a área de clique do input (que já é focável por teclado). */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
-        className={cx('or-control-frame', `or-control-frame--${size}`, 'or-input-frame', frameClassName)}
+        className={cx('or-control-frame', `or-control-frame--${size}`, 'or-input-frame', frameClassName, shakeClassName)}
         data-invalid={isInvalid || undefined}
         data-disabled={isDisabled || undefined}
         data-readonly={readOnly || undefined}
         onMouseDown={handleFrameMouseDown}
+        onAnimationEnd={onAnimationEnd}
       >
         {leading}
         {hasPrefix && (

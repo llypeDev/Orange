@@ -78,17 +78,30 @@
   text-decoration: none;
   cursor: pointer;
   transition:
-    background-color var(--or-duration-fast) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-medium) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-paginator__button svg {
   width: 1rem;
   height: 1rem;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-paginator__button:hover:not(:disabled, [aria-disabled='true'], [aria-current='page']) {
+/* Setas empurram na direção em que levam. */
+.or-paginator__button--next:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+.or-paginator__button--last:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(2px);
+}
+
+.or-paginator__button--prev:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+.or-paginator__button--first:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(-2px);
+}
+
+.or-paginator__button:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true'], [aria-current='page']) {
   border-color: var(--or-color-border-strong);
   background: var(--or-color-surface-hover);
   color: var(--or-color-text);
@@ -96,6 +109,8 @@
 
 .or-paginator__button:active:not(:disabled, [aria-disabled='true']) {
   background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-paginator__button:focus-visible {
@@ -124,7 +139,8 @@
   cursor: default;
 }
 
-.or-paginator__button[aria-current='page']::after {
+/* A barra existe em toda página e cresce do centro quando ela vira a atual. */
+.or-paginator__button--page::after {
   content: '';
   position: absolute;
   right: -1px;
@@ -132,6 +148,12 @@
   left: -1px;
   height: 2px;
   background: var(--or-color-accent);
+  transform: scaleX(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-paginator__button[aria-current='page']::after {
+  transform: scaleX(1);
 }
 
 .or-paginator__ellipsis {
@@ -144,6 +166,18 @@
 }
 
 /* Compacta ---------------------------------------------------------------- */
+
+.or-paginator__status-text--enter {
+  display: inline-block;
+  animation: or-paginator-status-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+@keyframes or-paginator-status-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
 
 .or-paginator__status {
   align-items: center;

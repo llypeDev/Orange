@@ -21,6 +21,41 @@
   list-style: none;
 }
 
+/* Expandir/recolher: altura via grid 0fr → 1fr + opacidade. A saída é mais
+   curta que a entrada; grupos abertos na montagem não animam (--static). */
+.or-tree__collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.or-tree__collapse > .or-tree__group {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.or-tree__collapse[data-state='open']:not(.or-tree__collapse--static) {
+  animation: or-tree-expand var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-tree__collapse[data-state='closed'] {
+  animation: or-tree-collapse var(--or-duration-medium) var(--or-ease-in-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes or-tree-expand {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+@keyframes or-tree-collapse {
+  to {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
 .or-tree__node {
   margin: 0;
   padding: 0;
@@ -38,7 +73,10 @@
   color: var(--or-color-text-muted);
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-tree__item:focus {
@@ -70,7 +108,9 @@
   pointer-events: none;
 }
 
-.or-tree__item:hover {
+/* Hover e foco visível têm a mesma resposta. */
+.or-tree__item:hover,
+.or-tree__item:focus-visible {
   background: var(--or-color-surface-hover);
 }
 
@@ -85,14 +125,20 @@
 }
 
 .or-tree__toggle svg {
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
 }
 
 .or-tree__item[aria-expanded='true'] .or-tree__toggle svg {
   transform: rotate(90deg);
 }
 
-.or-tree__item:hover .or-tree__toggle {
+.or-tree__toggle,
+.or-tree__icon {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-tree__item:hover .or-tree__toggle,
+.or-tree__item:focus-visible .or-tree__toggle {
   color: var(--or-color-text);
 }
 
@@ -140,6 +186,14 @@
   height: 0.875rem;
   border: var(--or-border-thin) solid var(--or-color-border-control);
   color: var(--or-color-text-on-accent);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* O check entra com um pequeno "pop". */
+.or-tree__checkbox svg {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce);
 }
 
 .or-tree__item[aria-selected='true'] .or-tree__checkbox {
@@ -159,6 +213,12 @@
 
 .or-tree__item--disabled:hover {
   background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-tree__collapse[data-state] {
+    animation: none;
+  }
 }
 
 @media (forced-colors: active) {

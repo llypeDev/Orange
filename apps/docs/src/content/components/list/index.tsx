@@ -10,6 +10,8 @@ import Numbered from './examples/Numbered'
 import NumberedCode from './examples/Numbered?raw'
 import WithIcons from './examples/WithIcons'
 import WithIconsCode from './examples/WithIcons?raw'
+import Animated from './examples/Animated'
+import AnimatedCode from './examples/Animated?raw'
 import { meta } from './meta'
 
 export default function ListPage() {
@@ -95,6 +97,13 @@ export default function ListPage() {
         >
           <Inline />
         </Example>
+        <Example
+          title={{ pt: 'Entrada animada', en: 'Animated entrance' }}
+          description={{ pt: 'Para listas de destaque em páginas de apresentação: os itens entram escalonados ao aparecer na tela.', en: 'For highlight lists on landing pages: items enter staggered as they scroll into view.' }}
+          code={AnimatedCode}
+        >
+          <Animated />
+        </Example>
       </Section>
 
       <Section title="Props" id="props">
@@ -114,6 +123,17 @@ export default function ListPage() {
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto secundário abaixo do conteúdo.', en: 'Secondary text below the content.' } },
             { name: 'icon', type: 'ReactNode', description: { pt: 'Ícone do item (variante icon).', en: 'Item icon (icon variant).' } },
             { name: '...rest', type: 'LiHTMLAttributes', description: { pt: 'Atributos nativos de <li>.', en: 'Native <li> attributes.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Entrada (animated)', en: 'Entrance (animated)' }, description: { pt: 'Cada item sobe 24px e aparece — 600ms, ease-out, 80ms entre itens.', en: 'Each item rises 24px and fades in — 600ms, ease-out, 80ms between items.' } },
+            { term: { pt: 'Marcadores', en: 'Markers' }, description: { pt: 'Quadrado, numeração ou ícone surgem com "pop" (escala 0.4 → 1) — 250ms, ease-bounce.', en: 'Square, number or icon pop in (scale 0.4 → 1) — 250ms, ease-bounce.' } },
+            { term: { pt: 'Sem animated', en: 'Without animated' }, description: { pt: 'A lista é estática: itens não são interativos, então não há hover.', en: 'The list is static: items are not interactive, so there is no hover.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'Nada é escondido: a lista aparece direto.', en: 'Nothing is hidden: the list appears immediately.' } },
           ]}
         />
       </Section>

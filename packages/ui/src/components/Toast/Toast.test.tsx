@@ -44,6 +44,25 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
+/**
+ * O jsdom não aplica CSS: simula a animação de saída dos itens da pilha para
+ * que o usePresence espere o `animationend`, como no navegador.
+ */
+function simulateExitAnimation() {
+  const real = window.getComputedStyle.bind(window)
+  vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+    const style = real(el, pseudo)
+    if (!(el as Element).matches?.('.or-toast-region__item')) return style
+    return Object.assign(Object.create(style), {
+      animationName: 'or-toast-shrink',
+      animationDuration: '0.25s',
+      transitionDuration: '0s',
+    }) as CSSStyleDeclaration
+  })
+}
+
+const item = (text: string) => getToast(text).closest('li') as HTMLLIElement
+
 describe('Toast', () => {
   it('renderiza o visual com título, descrição, tom e botão de fechar', async () => {
     const user = userEvent.setup()
@@ -256,6 +275,96 @@ describe('ToastProvider / useToast', () => {
     expect(within(region()).getAllByRole('listitem')).toHaveLength(1)
     expect(getToast('Arquivo enviado')).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent('Sucesso: Arquivo enviado')
+  })
+
+  it('saída animada: o item fica "closed" até a animação terminar e então sai do DOM', () => {
+    simulateExitAnimation()
+    setup({ title: 'x' }, { duration: Infinity })
+    let id = ''
+    act(() => {
+      id = api.toast({ title: 'Contrato enviado' })
+    })
+    const li = item('Contrato enviado')
+    expect(li).toHaveAttribute('data-state', 'open')
+    act(() => api.dismiss(id))
+    expect(li).toHaveAttribute('data-state', 'closed')
+    expect(li).toHaveAttribute('aria-hidden', 'true')
+    expect(li).toBeInTheDocument()
+    act(() => {
+      fireEvent.animationEnd(li)
+    })
+    expect(li).not.toBeInTheDocument()
+    expect(screen.queryByRole('region')).not.toBeInTheDocument()
+  })
+
+  it('reabrir pelo id durante a saída cancela a remoção', () => {
+    simulateExitAnimation()
+    setup({ title: 'x' }, { duration: Infinity })
+    act(() => {
+      api.toast({ id: 'sync', title: 'Sincronizando…' })
+    })
+    const li = item('Sincronizando…')
+    act(() => api.dismiss('sync'))
+    act(() => {
+      api.toast({ id: 'sync', title: 'Sincronizado', tone: 'success' })
+    })
+    expect(li).toHaveAttribute('data-state', 'open')
+    act(() => {
+      fireEvent.animationEnd(li)
+    })
+    expect(getToast('Sincronizado')).toBeInTheDocument()
+  })
+
+  it('toasts na fila saem na hora (não há o que animar)', () => {
+    simulateExitAnimation()
+    setup({ title: 'x' }, { limit: 1, duration: Infinity })
+    let queued = ''
+    act(() => {
+      api.toast({ title: 'Visível' })
+      queued = api.toast({ title: 'Na fila' })
+    })
+    expect(within(region()).getAllByRole('listitem')).toHaveLength(1)
+    act(() => api.dismiss(queued))
+    // sem animação de saída para esperar: o item da fila some do store na hora
+    act(() => api.dismissAll())
+    expect(item('Visível')).toHaveAttribute('data-state', 'closed')
+    act(() => {
+      fireEvent.animationEnd(item('Visível'))
+    })
+    expect(queryToast('Na fila')).not.toBeInTheDocument()
+    expect(screen.queryByRole('region')).not.toBeInTheDocument()
+  })
+
+  it('showProgress mostra a barra de tempo restante só em toasts temporizados', () => {
+    setup({ title: 'x' }, { showProgress: true, duration: 3000 })
+    act(() => {
+      api.toast({ title: 'Com tempo' })
+      api.toast({ title: 'Fixo', duration: Infinity })
+      api.toast({ title: 'Sem barra', showProgress: false })
+    })
+    const timer = item('Com tempo').querySelector<HTMLElement>('.or-toast-region__timer')!
+    expect(timer).toHaveAttribute('aria-hidden', 'true')
+    expect(timer.style.getPropertyValue('--_timer-duration')).toBe('3000ms')
+    expect(item('Fixo').querySelector('.or-toast-region__timer')).not.toBeInTheDocument()
+    expect(item('Sem barra').querySelector('.or-toast-region__timer')).not.toBeInTheDocument()
+    expect(region()).not.toHaveAttribute('data-paused')
+    fireEvent.pointerEnter(region())
+    // a barra pausa junto com o timer (CSS: [data-paused] → animation-play-state: paused)
+    expect(region()).toHaveAttribute('data-paused', 'true')
+  })
+
+  it('a barra recomeça quando o conteúdo do toast é atualizado', () => {
+    setup({ title: 'x' }, { showProgress: true })
+    act(() => {
+      api.toast({ id: 'up', title: 'Enviando' })
+    })
+    const before = item('Enviando').querySelector('.or-toast-region__timer')
+    act(() => {
+      api.toast({ id: 'up', title: 'Enviado' })
+    })
+    const after = item('Enviado').querySelector('.or-toast-region__timer')
+    expect(after).toBeInTheDocument()
+    expect(after).not.toBe(before)
   })
 
   it('dismissAll fecha todos', () => {

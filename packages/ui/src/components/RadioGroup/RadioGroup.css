@@ -45,7 +45,9 @@
   background: var(--or-color-surface);
   transition:
     border-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-radio__indicator::after {
@@ -59,28 +61,40 @@
   background: var(--or-color-accent);
   opacity: 0;
   transform: scale(0.2);
+  /* Saída (opção desmarcada pelas setas) curta. */
   transition:
-    opacity var(--or-duration-fast) var(--or-ease-out),
-    transform var(--or-duration-fast) var(--or-ease-spring);
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
 }
 
-.or-radio:hover .or-radio__input:not(:disabled) + .or-radio__indicator {
+/* Hover e foco visível: mesma resposta (borda mais forte + anel suave). */
+.or-radio:hover .or-radio__input:not(:disabled) + .or-radio__indicator,
+.or-radio__input:focus-visible + .or-radio__indicator {
   border-color: var(--or-color-text-subtle);
   box-shadow: 0 0 0 3px var(--or-color-accent-subtle);
 }
 
-.or-radio__input:checked + .or-radio__indicator {
+.or-radio__input:checked + .or-radio__indicator,
+.or-radio:hover .or-radio__input:checked:not(:disabled) + .or-radio__indicator {
   border-color: var(--or-color-accent);
 }
 
+/* Selecionado: o ponto entra com or-scale-in e --or-ease-bounce. */
 .or-radio__input:checked + .or-radio__indicator::after {
   opacity: 1;
   transform: none;
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
 }
 
 .or-radio__input:focus-visible + .or-radio__indicator {
   outline: 2px solid var(--or-color-focus);
   outline-offset: 2px;
+}
+
+/* Pressionar (no ponto ou no rótulo): o indicador afunda 1px. */
+.or-radio--default:active .or-radio__input:not(:disabled) + .or-radio__indicator {
+  transform: translateY(1px) scale(0.92);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-fieldset[data-invalid] .or-radio__input:not(:checked) + .or-radio__indicator {
@@ -99,12 +113,14 @@
   font-size: var(--or-text-md);
   line-height: var(--or-leading-body);
   color: var(--or-color-text);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-radio__description {
   font-size: var(--or-text-sm);
   line-height: var(--or-leading-tight);
   color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 /* Desabilitado (prop ou fieldset desabilitado) */
@@ -146,10 +162,12 @@
   border: var(--or-border-thin) solid var(--or-color-border-strong);
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface);
+  /* Borda, fundo e anel animados; o cartão afunda no clique. */
   transition:
     border-color var(--or-duration-fast) var(--or-ease-out),
-    background-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-radio--card .or-radio__label {
@@ -158,8 +176,14 @@
   letter-spacing: -0.01em;
 }
 
-.or-radio--card:hover:not([data-disabled]) {
+.or-radio--card:hover:not([data-disabled], [data-checked]),
+.or-radio--card:not([data-checked]):has(.or-radio__input:focus-visible) {
   border-color: var(--or-color-text-subtle);
+}
+
+.or-radio--card:active:not([data-disabled], :has(.or-radio__input:disabled)) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-radio--card:hover .or-radio__input:not(:disabled) + .or-radio__indicator {

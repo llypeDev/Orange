@@ -10,6 +10,8 @@ import Polymorphic from './examples/Polymorphic'
 import PolymorphicCode from './examples/Polymorphic?raw'
 import Summary from './examples/Summary'
 import SummaryCode from './examples/Summary?raw'
+import Interactive from './examples/Interactive'
+import InteractiveCode from './examples/Interactive?raw'
 import { meta } from './meta'
 
 export default function PaperPage() {
@@ -93,6 +95,13 @@ export default function PaperPage() {
         >
           <Polymorphic />
         </Example>
+        <Example
+          title={{ pt: 'Superfície interativa', en: 'Interactive surface' }}
+          description={{ pt: 'interactive transforma o Paper em alvo clicável: eleva no hover/foco e afunda ao pressionar. Aqui com as="a" e a seta do utilitário or-nudge.', en: 'interactive turns Paper into a clickable target: it lifts on hover/focus and sinks on press. Here with as="a" and the or-nudge arrow utility.' }}
+          code={InteractiveCode}
+        >
+          <Interactive />
+        </Example>
       </Section>
 
       <Section title="Props" id="props">
@@ -104,6 +113,17 @@ export default function PaperPage() {
             { name: 'elevation', type: "'flat' | 'raised' | 'overlay'", default: "'flat'", description: { pt: 'Sombra.', en: 'Shadow.' } },
             { name: 'tone', type: "'default' | 'subtle' | 'inverse'", default: "'default'", description: { pt: 'Cor de fundo; inverse inverte o tema.', en: 'Background color; inverse flips the theme.' } },
             { name: '...rest', type: 'HTMLAttributes<HTMLElement>', description: { pt: 'Atributos do elemento.', en: 'Element attributes.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover e foco (interactive)', en: 'Hover and focus (interactive)' }, description: { pt: 'Sobe 4px (--or-distance-lift) com sombra laranja deslocada — 250ms, ease-out. Vale também para o foco de um link ou botão interno.', en: 'Rises 4px (--or-distance-lift) with an offset orange shadow — 250ms, ease-out. Also applies when an inner link or button has focus.' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'Desce 1px abaixo da posição original — 90ms.', en: 'Sinks 1px below its resting position — 90ms.' } },
+            { term: { pt: 'Bordas e fundo', en: 'Borders and background' }, description: { pt: 'Transicionam em 160ms quando mudam.', en: 'Transition in 160ms when they change.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'A superfície não se desloca; só a cor da borda muda.', en: 'The surface does not move; only the border color changes.' } },
           ]}
         />
       </Section>

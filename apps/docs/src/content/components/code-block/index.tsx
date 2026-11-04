@@ -18,6 +18,8 @@ import LineHighlight from './examples/LineHighlight'
 import LineHighlightCode from './examples/LineHighlight?raw'
 import WrapAndHeight from './examples/WrapAndHeight'
 import WrapAndHeightCode from './examples/WrapAndHeight?raw'
+import Steps from './examples/Steps'
+import StepsCode from './examples/Steps?raw'
 import { meta } from './meta'
 
 export default function CodeBlockPage() {
@@ -142,6 +144,13 @@ export default function CodeBlockPage() {
         >
           <WrapAndHeight />
         </Example>
+        <Example
+          title={{ pt: 'Destaque passo a passo', en: 'Step-by-step highlight' }}
+          description={{ pt: 'Mudar highlightLines faz o destaque deslizar suavemente entre as linhas.', en: 'Changing highlightLines smoothly moves the highlight between lines.' }}
+          code={StepsCode}
+        >
+          <Steps />
+        </Example>
       </Section>
 
       <Section title="Props" id="props">
@@ -159,6 +168,17 @@ export default function CodeBlockPage() {
             { name: 'onCopy', type: '(code: string) => void', description: { pt: 'Chamado depois de copiar com sucesso.', en: 'Called after a successful copy.' } },
             { name: 'codeLabel', type: 'string', description: { pt: <>Nome acessível da área de código. Padrão: <Code>Código: {'{title ou language}'}</Code>.</>, en: <>Accessible name of the code area. Default: <Code>Code: {'{title or language}'}</Code>.</> } },
             { name: '...rest', type: 'HTMLAttributes<HTMLDivElement>', description: { pt: 'Atributos do contêiner.', en: 'Container attributes.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Copiar', en: 'Copy' }, description: { pt: 'O ícone troca para um check que "salta" (escala 0.6 → 1) — 250ms, ease-bounce; ao voltar, o ícone de copiar surge com fade de 160ms. "Copiado!" continua anunciado pela região de status.', en: 'The icon swaps to a check that pops (scale 0.6 → 1) — 250ms, ease-bounce; on return, the copy icon fades in over 160ms. "Copied!" is still announced by the status region.' } },
+            { term: { pt: 'Botão Copiar', en: 'Copy button' }, description: { pt: 'Hover e foco: borda e cor em 160ms; pressionar afunda 1px (90ms).', en: 'Hover and focus: border and color in 160ms; pressing sinks it 1px (90ms).' } },
+            { term: { pt: 'Linhas destacadas', en: 'Highlighted lines' }, description: { pt: 'Fundo e faixa laranja transicionam quando highlightLines muda — 250ms, ease-out.', en: 'Background and orange bar transition when highlightLines changes — 250ms, ease-out.' } },
+            { term: { pt: 'Hover na linha', en: 'Line hover' }, description: { pt: 'O número da linha clareia — 160ms.', en: 'The line number brightens — 160ms.' } },
           ]}
         />
       </Section>

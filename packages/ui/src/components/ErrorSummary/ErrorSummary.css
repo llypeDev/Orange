@@ -12,7 +12,22 @@
   border-radius: var(--or-radius-none);
   background: var(--or-color-danger-subtle);
   color: var(--or-color-text);
-  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Entrada: desce deslizando (or-slide-down-in); saída: fade mais curto. */
+.or-error-summary[data-state='open'] {
+  animation: or-slide-down-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-error-summary[data-state='closed'] {
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+/* Os erros entram em sequência, meio --or-stagger (40ms) de intervalo. */
+.or-error-summary[data-state='open'] .or-error-summary__list li {
+  animation: or-slide-down-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--or-duration-instant) + var(--_i, 0) * var(--or-stagger) / 2);
 }
 
 .or-error-summary:focus {

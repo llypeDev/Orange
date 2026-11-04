@@ -7,7 +7,7 @@ import {
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from 'react'
-import { useControllableState, useId, useMounted } from '../../hooks'
+import { useControllableState, useId, useMounted, usePresence } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
 import { useLocale } from '../../providers'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
@@ -74,12 +74,21 @@ export const Toggletip = forwardRef<HTMLButtonElement, ToggletipProps>(function 
   })
   const mounted = useMounted()
   const visible = isOpen && mounted
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(visible)
+  // Cada abertura monta uma bolha nova na região viva — inclusive se reabrir
+  // durante a animação de saída —, garantindo que o texto seja anunciado de novo.
+  const [openings, setOpenings] = useState(0)
+  const [wasVisible, setWasVisible] = useState(visible)
+  if (wasVisible !== visible) {
+    setWasVisible(visible)
+    if (visible) setOpenings((count) => count + 1)
+  }
   const bubbleId = useId('or-toggletip')
   const [buttonEl, setButtonEl] = useState<HTMLButtonElement | null>(null)
   const [bubbleEl, setBubbleEl] = useState<HTMLDivElement | null>(null)
 
   const floating = useFloatingPanel({
-    open: visible,
+    open: present,
     reference: buttonEl,
     floating: bubbleEl,
     placement,
@@ -94,7 +103,10 @@ export const Toggletip = forwardRef<HTMLButtonElement, ToggletipProps>(function 
   })
 
   const buttonRef = useMemo(() => mergeRefs<HTMLButtonElement>(ref, setButtonEl), [ref])
-  const bubbleRef = useMemo(() => mergeRefs<HTMLDivElement>(setBubbleEl, setNode), [setNode])
+  const bubbleRef = useMemo(
+    () => mergeRefs<HTMLDivElement>(setBubbleEl, setNode, nodeRef),
+    [setNode, nodeRef],
+  )
 
   return (
     <>
@@ -119,10 +131,12 @@ export const Toggletip = forwardRef<HTMLButtonElement, ToggletipProps>(function 
       <Portal>
         {/* A região existe desde a montagem; inserir a bolha nela dispara o anúncio. */}
         <div role="status" aria-live="polite" className="or-toggletip-region">
-          {visible && (
+          {present && (
             <div
+              key={openings}
               ref={bubbleRef}
               id={bubbleId}
+              data-state={state}
               data-side={floating.side}
               data-theme={getThemeScope(buttonEl)}
               className="or-floating or-toggletip"

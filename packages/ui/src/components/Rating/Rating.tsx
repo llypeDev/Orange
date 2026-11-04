@@ -1,4 +1,11 @@
-import { forwardRef, useMemo, useState, type HTMLAttributes, type ReactNode } from 'react'
+import {
+  forwardRef,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type HTMLAttributes,
+  type ReactNode,
+} from 'react'
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
@@ -85,6 +92,8 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
     onChange: onChange as ((value: number | null) => void) | undefined,
   })
   const [hover, setHover] = useState<number | null>(null)
+  // Cada escolha dispara um "pop" em onda nas estrelas preenchidas.
+  const [pop, setPop] = useState({ count: 0, value: 0 })
   const hasError = error !== undefined && error !== null && error !== false && error !== ''
   const stars = range(1, Math.max(1, Math.round(max)))
   const numberFormat = useMemo(() => {
@@ -132,6 +141,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
   }
 
   const display = hover ?? current
+  const popped = (n: number) => pop.count > 0 && n <= pop.value && pop.value === current
   const caption = display > 0 && labels?.[display - 1]
   const describedBy =
     [description && descriptionId, hasError && errorId].filter(Boolean).join(' ') || undefined
@@ -191,7 +201,10 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
                     checked={current === n}
                     disabled={disabled}
                     required={required}
-                    onChange={() => setValue(n)}
+                    onChange={() => {
+                      setPop((prev) => ({ count: prev.count + 1, value: n }))
+                      setValue(n)
+                    }}
                   />
                   <label
                     htmlFor={inputId}
@@ -201,7 +214,14 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
                       if (!disabled) setHover(n)
                     }}
                   >
-                    <Icon name="star" className="or-rating__icon" />
+                    {/* Só o ícone remonta (key) para repetir o pop; o rádio mantém o foco. */}
+                    <span
+                      key={popped(n) ? `pop-${pop.count}` : 'static'}
+                      className={cx('or-rating__glyph', popped(n) && 'or-rating__glyph--pop')}
+                      style={popped(n) ? ({ '--_i': n - 1 } as CSSProperties) : undefined}
+                    >
+                      <Icon name="star" className="or-rating__icon" />
+                    </span>
                     <span className="or-visually-hidden">{optionLabel(n)}</span>
                   </label>
                 </span>

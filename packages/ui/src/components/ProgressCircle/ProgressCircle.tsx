@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from 'react'
+import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react'
 import { useLocale } from '../../providers'
 import { clamp, cx } from '../../utils'
 import './ProgressCircle.css'
@@ -128,7 +128,14 @@ export const ProgressCircle = forwardRef<HTMLDivElement, ProgressCircleProps>(
               strokeWidth={stroke}
               strokeLinecap="square"
               strokeDasharray={circumference}
-              strokeDashoffset={dashOffset}
+              // via style (não atributo) para a transição de stroke-dashoffset ser garantida;
+              // --_circumference alimenta o "desenho" de entrada
+              style={
+                {
+                  strokeDashoffset: dashOffset,
+                  '--_circumference': circumference,
+                } as CSSProperties
+              }
             />
           )}
         </svg>

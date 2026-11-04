@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -6,6 +6,16 @@ import { Icon } from '../../icons'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { TextField } from './TextField'
+
+
+/** jsdom não tem AnimationEvent: dispara um animationend com o nome informado. */
+function endAnimation(element: Element, animationName: string) {
+  const event = new Event('animationend', { bubbles: true })
+  Object.defineProperty(event, 'animationName', { value: animationName })
+  act(() => {
+    element.dispatchEvent(event)
+  })
+}
 
 describe('TextField', () => {
   it('renderiza um textbox associado ao rótulo', () => {
@@ -133,5 +143,20 @@ describe('TextField', () => {
       </form>,
     )
     await expectNoA11yViolations(container)
+  })
+
+  it('motion: treme uma vez quando o erro surge (não na montagem já inválida)', () => {
+    const { rerender } = render(<TextField label="E-mail" error="Já cadastrado." />)
+    const frame = screen.getByRole('textbox').closest('.or-control-frame')!
+    expect(frame).not.toHaveClass('or-forms-shake')
+    rerender(<TextField label="E-mail" />)
+    rerender(<TextField label="E-mail" error="Informe um e-mail válido." />)
+    expect(frame).toHaveClass('or-forms-shake')
+    rerender(<TextField label="E-mail" error="Outro erro" />)
+    expect(frame).toHaveClass('or-forms-shake')
+    endAnimation(frame, 'or-shake')
+    expect(frame).not.toHaveClass('or-forms-shake')
+    rerender(<TextField label="E-mail" error="Mais um erro" />)
+    expect(frame).not.toHaveClass('or-forms-shake')
   })
 })

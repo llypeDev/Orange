@@ -40,7 +40,14 @@
   line-height: var(--or-leading-tight);
   text-align: start;
   cursor: pointer;
-  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pergunta aberta em laranja, como no FAQ do zop.dev. */
+.or-accordion__trigger[aria-expanded='true'] {
+  color: var(--or-color-accent-text);
 }
 
 .or-accordion--flush .or-accordion__trigger {
@@ -53,7 +60,10 @@
 
 .or-accordion--flush .or-accordion__trigger:hover:not(:disabled, [aria-disabled='true']) {
   background: transparent;
-  color: var(--or-color-text);
+}
+
+.or-accordion--flush .or-accordion__trigger:hover:not(:disabled, [aria-disabled='true'], [aria-expanded='true']) {
+  color: var(--or-color-accent-text);
 }
 
 .or-accordion__trigger:focus-visible {
@@ -74,7 +84,7 @@
   min-width: 0;
 }
 
-/* Ícone: caixa quadrada com "+" que vira "−" ------------------------------- */
+/* Ícone: caixa quadrada com "+" que gira e vira "−" ------------------------- */
 
 .or-accordion__icon {
   position: relative;
@@ -83,7 +93,12 @@
   height: 1.375rem;
   border: var(--or-border-thin) solid var(--or-color-border-strong);
   color: var(--or-color-text);
-  transition: border-color var(--or-duration-fast) var(--or-ease-out);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    scale var(--or-duration-press) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-accordion__icon::before,
@@ -96,7 +111,7 @@
   height: 0;
   border-top: 1px solid currentColor;
   transform: translate(-50%, -50%);
-  transition: transform var(--or-duration-fast) var(--or-ease-out);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
 }
 
 .or-accordion__icon::after {
@@ -107,12 +122,21 @@
   border-color: var(--or-color-text-subtle);
 }
 
+/* Aberto: a caixa gira meia volta e a barra vertical deita, formando "−". */
 .or-accordion__trigger[aria-expanded='true'] .or-accordion__icon {
+  transform: rotate(180deg);
   border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+  color: var(--or-color-accent-text);
 }
 
 .or-accordion__trigger[aria-expanded='true'] .or-accordion__icon::after {
   transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Pressionar: o ícone encolhe levemente. */
+.or-accordion__trigger:active:not(:disabled, [aria-disabled='true']) .or-accordion__icon {
+  scale: 0.88;
 }
 
 .or-accordion__trigger:disabled .or-accordion__icon {
@@ -120,17 +144,46 @@
   border-color: var(--or-color-border);
 }
 
-/* Painel ------------------------------------------------------------------- */
+/* Painel: grid 0fr → 1fr (abre em 400ms, fecha mais rápido) --------------- */
 
 .or-accordion__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-accordion__content[hidden] {
+  display: none;
+}
+
+.or-accordion__content[data-state='open'] {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-accordion__content-clip {
+  min-height: 0;
   overflow: hidden;
 }
 
 .or-accordion__content-inner {
   max-width: 72ch;
-  padding: 0 var(--or-space-6) var(--or-space-6);
+  padding: var(--or-space-1) var(--or-space-6) var(--or-space-6);
   color: var(--or-color-text-muted);
   line-height: var(--or-leading-loose);
+  opacity: 0;
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-accordion__content[data-state='open'] .or-accordion__content-inner {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--or-duration-medium) var(--or-ease-out) var(--or-duration-instant),
+    transform var(--or-duration-slow) var(--or-ease-out);
 }
 
 .or-accordion--flush .or-accordion__content-inner {

@@ -81,12 +81,34 @@
   cursor: pointer;
   transition:
     border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-code-block__copy:hover {
+/* Hover e foco visível: mesma resposta. */
+.or-code-block__copy:hover,
+.or-code-block__copy:focus-visible {
   border-color: var(--_muted);
   color: var(--or-palette-carbon-900);
+}
+
+/* Pressionar: afunda 1px. */
+.or-code-block__copy:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-code-block__copy-icon {
+  display: inline-flex;
+}
+
+/* Copiar → check: o check "salta" para dentro; na volta, o ícone de copiar surge. */
+.or-code-block__copy-icon--check {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+.or-code-block__copy-icon--return {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-code-block__copy:focus-visible {
@@ -135,6 +157,9 @@
   padding: 0 var(--or-space-5);
   background: transparent;
   color: inherit;
+  transition:
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out);
 }
 
 .or-code-block__line-text {
@@ -148,6 +173,18 @@
   color: var(--_line-number);
   text-align: right;
   user-select: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Passar o mouse sobre uma linha realça o número dela. */
+.or-code-block__line:hover .or-code-block__line-number {
+  color: var(--or-color-code-text);
+}
+
+/* O <mark> só carrega a semântica; o visual do destaque está na linha. */
+mark.or-code-block__line-text {
+  background: transparent;
+  color: inherit;
 }
 
 .or-code-block__line-number::before {

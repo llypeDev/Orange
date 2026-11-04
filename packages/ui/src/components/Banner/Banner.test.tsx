@@ -1,10 +1,24 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { Button } from '../Button'
 import { Banner } from './Banner'
+
+/** Simula uma transição de saída (o jsdom não aplica CSS). */
+function simulateExitTransition(selector: string) {
+  const real = window.getComputedStyle.bind(window)
+  vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {
+    const style = real(el, pseudo)
+    if (!(el as Element).matches?.(selector)) return style
+    return Object.assign(Object.create(style), {
+      animationName: 'none',
+      animationDuration: '0s',
+      transitionDuration: '0.25s',
+    }) as CSSStyleDeclaration
+  })
+}
 
 describe('Banner', () => {
   it('renderiza título, texto, ícone do tom e ação', () => {
@@ -13,7 +27,7 @@ describe('Banner', () => {
         Alguns pagamentos podem levar até 30 minutos para compensar.
       </Banner>,
     )
-    const root = container.firstElementChild!
+    const root = container.querySelector('.or-banner')!
     expect(root).toHaveClass('or-banner', 'or-banner--default', 'or-banner--warning')
     expect(screen.getByText('Instabilidade no Pix').tagName).toBe('P')
     expect(container.querySelector('[data-icon="alert-triangle"]')).toBeInTheDocument()
@@ -35,7 +49,7 @@ describe('Banner', () => {
         Quinta, 19h.
       </Banner>,
     )
-    const root = container.firstElementChild!
+    const root = container.querySelector('.or-banner')!
     expect(root).toHaveClass('or-banner--accent')
     expect(root).not.toHaveClass('or-banner--danger')
     expect(container.querySelector('.or-banner__icon')).not.toBeInTheDocument()
@@ -66,6 +80,26 @@ describe('Banner', () => {
     expect(onDismiss).toHaveBeenCalledTimes(1)
     expect(screen.queryByText('Novo painel disponível')).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Conteúdo' })).toHaveFocus()
+  })
+
+  it('anima a entrada só quando live; pulse adiciona o anel ao ícone', () => {
+    const { container, rerender } = render(<Banner title="Manutenção" />)
+    expect(container.querySelector('.or-banner')).not.toHaveClass('or-banner--enter')
+    rerender(<Banner live tone="danger" title="Incidente em andamento" pulse />)
+    expect(container.querySelector('.or-banner')).toHaveClass('or-banner--enter')
+    expect(container.querySelector('.or-banner__icon')).toHaveClass('or-pulse', 'or-banner__icon--pulse')
+  })
+
+  it('na saída fica montado e inert até a transição terminar', async () => {
+    simulateExitTransition('.or-banner-presence')
+    const user = userEvent.setup()
+    const { container } = render(<Banner dismissible title="Novo painel" />)
+    await user.click(screen.getByRole('button', { name: 'Fechar' }))
+    const presence = container.querySelector('.or-banner-presence')!
+    expect(presence).toHaveAttribute('data-state', 'closed')
+    expect(presence).toHaveAttribute('inert')
+    fireEvent.transitionEnd(presence)
+    expect(container.querySelector('.or-banner')).not.toBeInTheDocument()
   })
 
   it('respeita a visibilidade controlada', async () => {

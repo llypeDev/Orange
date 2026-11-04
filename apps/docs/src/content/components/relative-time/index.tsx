@@ -1,4 +1,4 @@
-import { Bullets, Code, ComponentPage, Example, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import ActivityFeed from './examples/ActivityFeed'
 import ActivityFeedCode from './examples/ActivityFeed?raw'
@@ -98,6 +98,16 @@ export default function RelativeTimePage() {
             { name: 'absoluteFormat', type: 'Intl.DateTimeFormatOptions', default: "{ dateStyle: 'medium', timeStyle: 'short' }", description: { pt: 'Formato do texto absoluto.', en: 'Absolute text format.' } },
             { name: 'showTitle', type: 'boolean', default: 'true', description: { pt: 'Data completa no title.', en: 'Full date in the title.' } },
             { name: '...rest', type: 'TimeHTMLAttributes', description: { pt: 'Atributos nativos de <time>.', en: 'Native <time> attributes.' } },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Atualização do texto', en: 'Text update' }, description: { pt: 'O texto novo ("agora" → "há 1 minuto") surge com fade de 20% a 100% — 250ms, ease-out. A primeira renderização não anima.', en: 'The new text ("now" → "1 minute ago") fades from 20% to 100% — 250ms, ease-out. The first render does not animate.' } },
+            { term: { pt: 'Leitores de tela', en: 'Screen readers' }, description: { pt: 'Sem aria-live: as atualizações não são anunciadas nem interrompem a leitura.', en: 'No aria-live: updates are neither announced nor interrupt reading.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'O texto muda sem fade.', en: 'Text changes without fading.' } },
           ]}
         />
       </Section>

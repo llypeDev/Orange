@@ -14,7 +14,7 @@ import {
   type ReactNode,
 } from 'react'
 import { flushSync } from 'react-dom'
-import { useDisclosure, useId } from '../../hooks'
+import { useDisclosure, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
 import { useLocale } from '../../providers'
 import { composeEventHandlers, cx } from '../../utils'
@@ -131,6 +131,8 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     const [query, setQuery] = useState('')
     const [activeId, setActiveId] = useState<string | null>(null)
     const inputRef = useRef<HTMLInputElement>(null)
+    const resultsRef = useRef<HTMLDivElement>(null)
+    const highlightRef = useRef<HTMLDivElement>(null)
     const baseId = useId('or-command')
     const listboxId = `${baseId}-listbox`
     const name = label ?? t('commandPalette')
@@ -195,6 +197,26 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       if (!activeOptionId) return
       document.getElementById(activeOptionId)?.scrollIntoView({ block: 'nearest' })
     }, [activeOptionId])
+
+    // Posiciona o destaque sobre o item ativo. A primeira medida é instantânea
+    // (sem deslizar a partir do topo); as seguintes deslizam com transição.
+    useIsomorphicLayoutEffect(() => {
+      const highlight = highlightRef.current
+      const results = resultsRef.current
+      if (!highlight || !results) return
+      const option = activeOptionId ? document.getElementById(activeOptionId) : null
+      if (!option || !results.contains(option)) {
+        highlight.removeAttribute('data-visible')
+        return
+      }
+      highlight.style.setProperty('--_y', `${option.offsetTop}px`)
+      highlight.style.setProperty('--_h', `${option.offsetHeight}px`)
+      highlight.setAttribute('data-visible', '')
+      if (!highlight.hasAttribute('data-ready')) {
+        const frame = requestAnimationFrame(() => highlight.setAttribute('data-ready', ''))
+        return () => cancelAnimationFrame(frame)
+      }
+    })
 
     const select = (item: CommandItem) => {
       if (item.disabled) return
@@ -291,7 +313,9 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             />
           </div>
 
-          <div className="or-command-palette__results">
+          <div ref={resultsRef} className="or-command-palette__results">
+            {/* Destaque único que desliza até o item ativo (só visual). */}
+            <div ref={highlightRef} className="or-command-palette__highlight" aria-hidden="true" />
             <div
               role="listbox"
               id={listboxId}

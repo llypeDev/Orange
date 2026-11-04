@@ -78,6 +78,26 @@ describe('MonthPaginator', () => {
     expect(screen.getByText('Março de 2026')).toBeInTheDocument()
   })
 
+  it('o rótulo desliza na direção da navegação com crossfade do mês anterior', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<MonthPaginator defaultValue={{ year: 2026, month: 2 }} />)
+    expect(container.querySelector('[class*="or-month-paginator__text--"]')).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: 'Próximo mês' }))
+    expect(screen.getByText('Abril de 2026')).toHaveClass('or-month-paginator__text--in-next')
+    const outgoing = container.querySelector('.or-month-paginator__text--out-next')
+    expect(outgoing).toHaveTextContent('Março de 2026')
+    expect(outgoing).toHaveAttribute('aria-hidden', 'true')
+
+    await user.click(screen.getByRole('button', { name: 'Mês anterior' }))
+    expect(screen.getByText('Março de 2026', { selector: 'time' })).toHaveClass(
+      'or-month-paginator__text--in-prev',
+    )
+    expect(container.querySelector('.or-month-paginator__text--out-prev')).toHaveTextContent(
+      'Abril de 2026',
+    )
+  })
+
   it('desabilitado ignora cliques', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()

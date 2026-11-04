@@ -182,18 +182,31 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
     return parsed === null || Number.isNaN(parsed) ? prev : parsed
   }
 
-  const stepBy = (delta: number) => {
+  // "Tick" visual do valor a cada passo discreto (alterna a paridade para reiniciar a animação).
+  const [bump, setBump] = useState<{ direction: 'up' | 'down'; count: number } | null>(null)
+  const announceBump = (direction: 'up' | 'down') =>
+    setBump((previous) => ({ direction, count: (previous?.count ?? 0) + 1 }))
+
+  const stepBy = (delta: number, animate = true) => {
+    let from: number | null = null
+    let to: number | null = null
+    // O updater do useControllableState roda de forma síncrona.
     setValue((prev) => {
       const current = resolveCurrent(prev)
-      if (current === null) return clamp(0, lower, upper)
-      const precision = Math.max(decimalsOf(step), decimalsOf(current), decimalsOf(delta))
-      return clamp(roundTo(current + delta, precision), lower, upper)
+      from = prev
+      to =
+        current === null
+          ? clamp(0, lower, upper)
+          : clamp(roundTo(current + delta, Math.max(decimalsOf(step), decimalsOf(current), decimalsOf(delta))), lower, upper)
+      return to
     })
     editingRef.current = null
     setEditingText(null)
+    if (animate && to !== from) announceBump(delta > 0 ? 'up' : 'down')
   }
 
   const setTo = (next: number) => {
+    if (value !== null && next !== value) announceBump(next > value ? 'up' : 'down')
     setValue(next)
     editingRef.current = null
     setEditingText(null)
@@ -267,14 +280,15 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
     onMouseDown: (event: { preventDefault: () => void }) => event.preventDefault(),
     onPointerDown: (event: PointerEvent<HTMLButtonElement>) => {
       if (event.button !== 0) return
-      event.preventDefault()
+      // Sem preventDefault aqui: ele suprimiria o :active (press). O foco é
+      // preservado pelo preventDefault do mousedown.
       pointerStepped.current = true
       if (event.pointerType === 'mouse') innerRef.current?.focus({ preventScroll: true })
       stepBy(delta)
       stopRepeat()
       const tick = (delay: number) => {
         repeatTimer.current = setTimeout(() => {
-          stepBy(delta)
+          stepBy(delta, false)
           tick(60)
         }, delay)
       }
@@ -334,6 +348,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuetext={value === null ? undefined : format(value)}
+        data-tick={bump ? `${bump.direction}-${bump.count % 2}` : undefined}
         form={form}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           editingRef.current = event.target.value

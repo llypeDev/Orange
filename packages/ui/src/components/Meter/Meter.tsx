@@ -170,7 +170,8 @@ export const Meter = forwardRef<HTMLDivElement, MeterProps>(function Meter(
         aria-valuenow={current}
         aria-valuetext={valueText}
       >
-        <div className="or-meter__fill" style={{ width: `${percent}%` }} />
+        {/* transform (scaleX) em vez de width: anima sem recalcular layout */}
+        <div className="or-meter__fill" style={{ transform: `scaleX(${percent / 100})` }} />
         {thresholds.map((threshold) => (
           <span
             key={threshold}

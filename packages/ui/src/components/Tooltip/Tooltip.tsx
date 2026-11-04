@@ -11,7 +11,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react'
-import { useControllableState, useId, useMounted } from '../../hooks'
+import { useControllableState, useId, useMounted, usePresence } from '../../hooks'
 import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import { getThemeScope, isFocusVisible, useLayer } from '../Modal/overlay'
 import {
@@ -87,6 +87,8 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   })
   const mounted = useMounted()
   const visible = isOpen && mounted && !disabled
+  // Continua visível durante a saída (fade rápido de volta ao gatilho).
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(visible)
   const tooltipId = useId('or-tooltip')
   const [triggerEl, triggerRef] = useTriggerElement(children)
   const [tooltipEl, setTooltipEl] = useState<HTMLDivElement | null>(null)
@@ -95,7 +97,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   const pointerFocus = useRef(false)
 
   const floating = useFloatingPanel({
-    open: visible,
+    open: present,
     reference: triggerEl,
     floating: tooltipEl,
     placement,
@@ -134,8 +136,8 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   const { setNode, layerProps } = useLayer(visible, { onEscape: () => hide(true) })
 
   const tooltipRef = useMemo(
-    () => mergeRefs<HTMLDivElement>(setTooltipEl, setNode, ref),
-    [setNode, ref],
+    () => mergeRefs<HTMLDivElement>(setTooltipEl, setNode, nodeRef, ref),
+    [setNode, nodeRef, ref],
   )
 
   if (disabled) return children
@@ -176,14 +178,15 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
       {trigger}
       <Portal>
         <div
-          ref={visible ? tooltipRef : undefined}
+          ref={present ? tooltipRef : undefined}
           id={tooltipId}
           role="tooltip"
-          hidden={!visible}
+          hidden={!present}
+          data-state={present ? state : undefined}
           data-side={floating.side}
-          data-theme={visible ? getThemeScope(triggerEl) : undefined}
+          data-theme={present ? getThemeScope(triggerEl) : undefined}
           className={cx('or-floating', 'or-tooltip', className)}
-          style={visible ? { ...floating.floatingStyles, ...style } : style}
+          style={present ? { ...floating.floatingStyles, ...style } : style}
           onPointerEnter={composeEventHandlers(onPointerEnter, () =>
             window.clearTimeout(closeTimer.current),
           )}

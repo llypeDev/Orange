@@ -55,20 +55,21 @@
   transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
+/* Sublinhado laranja que cresce da esquerda no hover/foco. */
 .or-breadcrumb__link .or-breadcrumb__label {
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.24em;
-  transition: text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+  background-image: linear-gradient(var(--or-color-accent), var(--or-color-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-breadcrumb__link:hover {
+.or-breadcrumb__link:is(:hover, :focus-visible) {
   color: var(--or-color-text);
 }
 
-.or-breadcrumb__link:hover .or-breadcrumb__label {
-  text-decoration-color: var(--or-color-accent);
+.or-breadcrumb__link:is(:hover, :focus-visible) .or-breadcrumb__label {
+  background-size: 100% 1px;
 }
 
 .or-breadcrumb__link:focus-visible {
@@ -119,16 +120,35 @@
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-breadcrumb__expand:hover {
+.or-breadcrumb__expand:is(:hover, :focus-visible) {
   border-color: var(--or-color-border-strong);
   background: var(--or-color-surface-hover);
   color: var(--or-color-text);
 }
 
+.or-breadcrumb__expand:active {
+  transform: translateY(1px) scale(0.94);
+  transition-duration: var(--or-duration-press);
+}
+
 .or-breadcrumb__expand:focus-visible {
   outline: 2px solid var(--or-color-focus);
   outline-offset: 2px;
+}
+
+/* Níveis revelados pelo "…": entram com fade + 4px, um depois do outro. */
+.or-breadcrumb__item--revealed {
+  animation: or-breadcrumb-reveal var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+@keyframes or-breadcrumb-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-sm) * -1));
+  }
 }

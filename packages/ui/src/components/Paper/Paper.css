@@ -81,6 +81,56 @@
   background: var(--or-color-surface-raised);
 }
 
+/* Interativa ---------------------------------------------------------------
+ * Elevação no hover/foco (or-lift): sobe 4px com sombra deslocada laranja;
+ * pressionar afunda. Hover e foco visível têm a mesma resposta. */
+
+.or-paper {
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-paper--interactive {
+  --_lift-color: var(--or-color-accent);
+  cursor: pointer;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+:is(a, button).or-paper {
+  display: block;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+}
+
+button.or-paper {
+  width: 100%;
+}
+
+.or-paper--interactive:hover,
+.or-paper--interactive:focus-visible,
+.or-paper--interactive:has(:focus-visible) {
+  transform: translateY(var(--or-distance-lift));
+  box-shadow: 0 8px 0 -4px var(--_lift-color);
+  border-color: var(--or-color-border-strong);
+}
+
+.or-paper--interactive:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow: 0 2px 0 -1px var(--_lift-color);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-paper--interactive:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
 @media (forced-colors: active) {
   .or-paper {
     border-color: CanvasText;

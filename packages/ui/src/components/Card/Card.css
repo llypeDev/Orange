@@ -19,7 +19,8 @@
   background: var(--or-color-surface);
   color: var(--or-color-text);
   transition:
-    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out);
 }
 
@@ -163,12 +164,29 @@
 
 /* Cartão interativo (link esticado) ---------------------------------------- */
 
-.or-card--interactive:hover {
-  border-color: var(--or-color-text-subtle);
-  box-shadow: var(--or-shadow-hover-accent);
+/* Elevação: sobe 4px com sombra deslocada, no hover e com foco em qualquer
+   elemento interno (mesma resposta para mouse e teclado). */
+.or-card--interactive {
+  --_lift-color: var(--or-card-lift-color, var(--or-color-accent));
 }
 
-.or-card--interactive.or-card--accent:hover {
+.or-card--interactive:hover,
+.or-card--interactive:focus-within {
+  border-color: var(--or-color-text-subtle);
+  transform: translateY(var(--or-distance-lift));
+  box-shadow: 0 8px 0 -4px var(--_lift-color);
+}
+
+/* Pressionar: o cartão "afunda" metade da elevação enquanto o link está ativo
+   (cliques em botões internos não afundam o cartão). */
+.or-card--interactive:has(.or-card__link:active) {
+  transform: translateY(calc(var(--or-distance-lift) / 2)) scale(0.995);
+  box-shadow: 0 4px 0 -2px var(--_lift-color);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-card--interactive.or-card--accent:hover,
+.or-card--interactive.or-card--accent:focus-within {
   border-top-color: var(--or-color-accent);
 }
 
@@ -179,7 +197,8 @@
   z-index: 0;
 }
 
-.or-card--interactive:hover .or-card__link {
+.or-card--interactive:hover .or-card__link,
+.or-card--interactive:focus-within .or-card__link {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-decoration-color: var(--or-color-accent);
@@ -193,6 +212,30 @@
 .or-card--interactive .or-card__link:focus-visible::after {
   outline: 2px solid var(--or-color-focus);
   outline-offset: 2px;
+}
+
+/* Seta do link: empurra 4px no hover/foco. */
+.or-card__link-arrow {
+  display: inline-flex;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.08em;
+  color: var(--or-color-text-subtle);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-card__link-arrow svg {
+  width: 0.8em;
+  height: 0.8em;
+}
+
+.or-card__link:hover .or-card__link-arrow,
+.or-card__link:focus-visible .or-card__link-arrow,
+.or-card--interactive:hover .or-card__link-arrow,
+.or-card--interactive:focus-within .or-card__link-arrow {
+  transform: translateX(var(--or-distance-sm));
+  color: var(--or-color-accent-text);
 }
 
 /* Outros elementos interativos ficam acima do link esticado. */

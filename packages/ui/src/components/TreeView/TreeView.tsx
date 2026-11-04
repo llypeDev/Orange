@@ -10,7 +10,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react'
-import { useControllableState, useId } from '../../hooks'
+import { useControllableState, useId, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
 import { cx, devWarning, mergeRefs } from '../../utils'
 import './TreeView.css'
@@ -76,6 +76,32 @@ const normalize = (value: string) =>
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
     .toLocaleLowerCase()
+
+/**
+ * Grupo de filhos com animação de altura (grid 0fr → 1fr). Permanece montado
+ * durante a saída (`usePresence`), mas `inert` — fora do foco e da árvore de
+ * acessibilidade — enquanto recolhe. Grupos já abertos na montagem da árvore
+ * não animam a entrada.
+ */
+function TreeGroup({ open, id, render }: { open: boolean; id: string; render: () => ReactNode }) {
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(open)
+  const [openOnMount] = useState(open)
+  const [interacted, setInteracted] = useState(false)
+  if (!interacted && open !== openOnMount) setInteracted(true)
+  if (!present) return null
+  return (
+    <div
+      ref={nodeRef}
+      className={cx('or-tree__collapse', !interacted && 'or-tree__collapse--static')}
+      data-state={state}
+      inert={open ? undefined : true}
+    >
+      <ul id={id} role="group" className="or-tree__group">
+        {render()}
+      </ul>
+    </div>
+  )
+}
 
 /**
  * Árvore hierárquica navegável por teclado (padrão "tree view" do WAI-ARIA):
@@ -359,7 +385,8 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
       const icon = renderIcon(item, open)
       const groupId = `${info.domId}-group`
       const labelId = `${info.domId}-label`
-      const showGroup = open && item.children !== undefined && item.children.length > 0
+      const hasChildren = item.children !== undefined && item.children.length > 0
+      const showGroup = open && hasChildren
       return (
         <li key={item.id} role="none" className="or-tree__node">
           {/* O teclado é tratado no onKeyDown da árvore (roving tabindex). */}
@@ -401,10 +428,8 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
               {item.label}
             </span>
           </div>
-          {showGroup && (
-            <ul id={groupId} role="group" className="or-tree__group">
-              {renderItems(item.children!, level + 1)}
-            </ul>
+          {hasChildren && (
+            <TreeGroup open={open} id={groupId} render={() => renderItems(item.children!, level + 1)} />
           )}
         </li>
       )

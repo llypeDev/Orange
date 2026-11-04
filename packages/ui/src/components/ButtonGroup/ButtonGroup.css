@@ -44,6 +44,30 @@
   z-index: 2;
 }
 
+/* Pressionar colado: a moldura fica parada (a borda compartilhada não pisca)
+ * e só o conteúdo "afunda" 1px — mesma resposta do Button, sem mexer na grade. */
+.or-button-group--attached > .or-button:active:not(:disabled, [aria-disabled='true']) {
+  transform: none;
+}
+
+.or-button-group--attached > .or-button > :is(.or-button__label, .or-button__icon--start) {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-button-group--attached
+  > .or-button:active:not(:disabled, [aria-disabled='true'])
+  > :is(.or-button__label, .or-button__icon--start) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* A seta final mantém o deslize de 4px enquanto afunda. */
+.or-button-group--attached
+  > .or-button:active:not(:disabled, [aria-disabled='true'])
+  > .or-button__icon--end {
+  transform: translate(4px, 1px);
+}
+
 /* Variantes preenchidas: a borda interna vira um divisor sutil. */
 .or-button-group--attached.or-button-group--horizontal
   > :is(.or-button--primary, .or-button--secondary, .or-button--danger):not(:first-child) {

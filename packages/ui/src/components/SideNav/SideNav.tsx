@@ -96,6 +96,22 @@ export const SideNav = forwardRef<HTMLElement, SideNavProps>(function SideNav(
   const listCtx = useMemo(() => ({ ...ctx, inList: true }), [ctx])
   const toggleLabel = collapsed ? t('expandSidebar') : t('collapseSidebar')
 
+  // Troca de modo: rótulos entram com fade (só depois da 1ª troca) e, no quadro
+  // da troca, os painéis não animam (evita um "fantasma" do painel ao mudar de lugar).
+  const [prevCollapsed, setPrevCollapsed] = useState(collapsed)
+  const [modeChanged, setModeChanged] = useState(false)
+  const [switching, setSwitching] = useState(false)
+  if (prevCollapsed !== collapsed) {
+    setPrevCollapsed(collapsed)
+    setModeChanged(true)
+    setSwitching(true)
+  }
+  useEffect(() => {
+    if (!switching) return
+    const raf = requestAnimationFrame(() => setSwitching(false))
+    return () => cancelAnimationFrame(raf)
+  }, [switching])
+
   return (
     <SideNavContext.Provider value={ctx}>
       <nav
@@ -103,6 +119,8 @@ export const SideNav = forwardRef<HTMLElement, SideNavProps>(function SideNav(
         aria-label={ariaLabel ?? t('mainNavigation')}
         className={cx('or-side-nav', collapsed && 'or-side-nav--collapsed', className)}
         data-collapsed={collapsed || undefined}
+        data-motion={modeChanged || undefined}
+        data-switching={switching || undefined}
         {...rest}
       >
         {header && <div className="or-side-nav__header">{renderSlot(header, collapsed)}</div>}
@@ -122,7 +140,7 @@ export const SideNav = forwardRef<HTMLElement, SideNavProps>(function SideNav(
                 onClick={() => setCollapsed((v) => !v)}
               >
                 <span className="or-side-nav__icon" aria-hidden="true">
-                  <Icon name={collapsed ? 'chevrons-right' : 'chevrons-left'} />
+                  <Icon name="chevrons-left" />
                 </span>
                 <span className="or-side-nav__label">{toggleLabel}</span>
               </button>
@@ -322,16 +340,19 @@ export const SideNavGroup = forwardRef<HTMLLIElement, SideNavGroupProps>(functio
           if (isFlyout && (event.target as HTMLElement).closest('a[href]')) setFlyoutOpen(false)
         }}
       >
-        {isFlyout && (
-          <p className="or-side-nav__panel-title" aria-hidden="true">
-            {label}
-          </p>
-        )}
-        <SideNavContext.Provider value={childCtx}>
-          <ul id={listId} className="or-side-nav__sublist">
-            {children}
-          </ul>
-        </SideNavContext.Provider>
+        {/* Wrapper único: a altura anima com grid-template-rows 0fr → 1fr. */}
+        <div className="or-side-nav__panel-inner">
+          {isFlyout && (
+            <p className="or-side-nav__panel-title" aria-hidden="true">
+              {label}
+            </p>
+          )}
+          <SideNavContext.Provider value={childCtx}>
+            <ul id={listId} className="or-side-nav__sublist">
+              {children}
+            </ul>
+          </SideNavContext.Provider>
+        </div>
       </div>
     </li>
   )

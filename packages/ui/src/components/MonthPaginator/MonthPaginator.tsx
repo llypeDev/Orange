@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, type HTMLAttributes } from 'react'
+import { forwardRef, useMemo, useState, type HTMLAttributes } from 'react'
 import { useControllableState } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
@@ -85,8 +85,27 @@ export const MonthPaginator = forwardRef<HTMLDivElement, MonthPaginatorProps>(
     const index = toIndex(value)
     const atMin = !!min && index <= toIndex(min)
     const atMax = !!max && index >= toIndex(max)
-    const raw = formatter.format(new Date(value.year, value.month, 1))
-    const label = raw.charAt(0).toLocaleUpperCase(locale) + raw.slice(1)
+    const format = (month: YearMonth) => {
+      const raw = formatter.format(new Date(month.year, month.month, 1))
+      return raw.charAt(0).toLocaleUpperCase(locale) + raw.slice(1)
+    }
+    const label = format(value)
+
+    // Direção da última mudança (controlada ou não): o rótulo desliza para o
+    // lado da navegação enquanto o mês anterior sai em crossfade.
+    const [transition, setTransition] = useState<{
+      index: number
+      direction: 'next' | 'prev' | null
+      from: number | null
+    }>({ index, direction: null, from: null })
+    if (transition.index !== index) {
+      setTransition({
+        index,
+        direction: index > transition.index ? 'next' : 'prev',
+        from: transition.index,
+      })
+    }
+    const { direction } = transition
 
     const go = (delta: number) => {
       if (disabled || (delta < 0 && atMin) || (delta > 0 && atMax)) return
@@ -120,7 +139,24 @@ export const MonthPaginator = forwardRef<HTMLDivElement, MonthPaginatorProps>(
       >
         {renderButton('previous')}
         <span className="or-month-paginator__label" aria-live="polite" aria-atomic="true">
+          {transition.from !== null && direction && (
+            <span
+              key={`out-${transition.from}-${index}`}
+              className={cx(
+                'or-month-paginator__text',
+                `or-month-paginator__text--out-${direction}`,
+              )}
+              aria-hidden="true"
+            >
+              {format(fromIndex(transition.from))}
+            </span>
+          )}
           <time
+            key={`in-${index}`}
+            className={cx(
+              'or-month-paginator__text',
+              direction && `or-month-paginator__text--in-${direction}`,
+            )}
             dateTime={`${String(value.year).padStart(4, '0')}-${String(value.month + 1).padStart(2, '0')}`}
           >
             {label}
