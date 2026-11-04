@@ -1196,7 +1196,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero > *,
+  .home-hero > :not(.home-grid-lines),
   .home-grid-lines,
   .home-chip .doc-square {
     animation: none;

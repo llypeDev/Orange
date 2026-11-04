@@ -15,10 +15,10 @@ bordas de 1px e grade explícita.
 
 ## Componentes
 
-85 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
+86 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
 Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
 critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
-(`Heading`, `Text`, `Eyebrow`), 16 hooks, ~90 ícones e o `OrangeProvider` (tema + idioma).
+(`Heading`, `Text`, `Eyebrow`), 20 hooks, 90 ícones e o `OrangeProvider` (tema + idioma).
 
 | Categoria | Componentes |
 | --- | --- |
@@ -29,7 +29,27 @@ critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
 | Navegação (12) | AppHeader, BackToTop, BottomNavigation, Breadcrumb, Link, MonthPaginator, Paginator, SideNav, SkipLink, Stepper, TableOfContents, Tabs |
 | Exibição de dados (15) | Accordion, Avatar, AvatarGroup, Badge, Card, Chip, CodeBlock, DescriptionList, Kbd, List, Stat, Table, Tag, Timeline, TreeView |
 | Layout (2) | Divider, Paper |
-| Utilitários (5) | ExpandableText, Highlight, RelativeTime, TruncatedText, VisuallyHidden |
+| Utilitários (6) | ExpandableText, Highlight, RelativeTime, Reveal, TruncatedText, VisuallyHidden |
+
+## Motion
+
+O Orange se move como o zop.dev: **rápido, funcional e geométrico** — e tudo desliga com
+`prefers-reduced-motion`.
+
+- **Tokens** (`@orange/tokens`): durações `press` (90ms) · `fast` · `medium` · `slow` · `reveal` ·
+  `loop`; curvas `out`, `in-out`, `spring`, `bounce`; distâncias `sm` · `md` · `lg` · `lift`; `stagger`.
+- **Utilitários** (`motion.css`): `or-press` (afundar no clique), `or-lift` (subir 4px com sombra
+  deslocada), `or-nudge` (seta que desliza), `or-underline`, `or-collapse` (altura 0fr → 1fr),
+  `or-pulse`, `or-shake`, `or-motion-pop/drop/fade` (entrada e saída por `data-state`).
+- **Hooks**: `usePresence` (animação de saída antes de desmontar), `useInView`, `useCountUp`,
+  `useScrollDirection`; componente **`Reveal`** para revelação no scroll com escalonamento.
+- **Em todos os componentes**: sobreposições com entrada e saída, indicadores deslizantes (abas,
+  segmentos, polegar), checks desenhados, chips e tags que entram e saem, tremor em erros,
+  progresso com transição, cartões que sobem, contadores e linhas do tempo animadas — cada página
+  da documentação tem uma seção **Movimento** com o que anima, a duração e a curva.
+- **No site**: entrada de página, cabeçalho que se esconde ao rolar, revelação das seções, passos em
+  loop com barra temporizada, troca de tema com View Transitions e botão "Pausar animações"
+  (WCAG 2.2.2). O Storybook tem um seletor de **movimento reduzido** na barra.
 
 ## Documentação
 
