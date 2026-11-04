@@ -84,7 +84,7 @@
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: var(--or-radius-full);
-  animation: or-spin 0.7s linear infinite;
+  animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
 }
 
 .or-combobox-listbox {

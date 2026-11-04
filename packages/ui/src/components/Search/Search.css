@@ -52,7 +52,7 @@
   border-radius: var(--or-radius-full);
   opacity: 0;
   scale: 0.6;
-  animation: or-spin 0.7s linear infinite;
+  animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
   animation-play-state: paused;
   transition:
     opacity var(--or-duration-fast) var(--or-ease-out),
