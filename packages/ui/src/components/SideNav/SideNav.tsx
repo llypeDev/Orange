@@ -202,6 +202,7 @@ export const SideNavItem = forwardRef<HTMLElement, SideNavItemProps>(function Si
     )
   } else if (href && disabled) {
     control = (
+      // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- link desabilitado: onClick é explicitamente removido
       <a ref={ref as Ref<HTMLAnchorElement>} {...common} {...rest} role="link" aria-disabled="true" onClick={undefined}>
         {content}
       </a>
@@ -287,6 +288,7 @@ export const SideNavGroup = forwardRef<HTMLLIElement, SideNavGroupProps>(functio
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- onKeyDown delegado trata Escape do grupo flutuante
     <li
       ref={mergeRefs(ref, groupRef)}
       className={cx('or-side-nav__entry', 'or-side-nav__group', className)}
@@ -312,6 +314,7 @@ export const SideNavGroup = forwardRef<HTMLLIElement, SideNavGroupProps>(functio
         <span className="or-side-nav__label">{label}</span>
         <Icon name="chevron-down" size="sm" className="or-side-nav__chevron" />
       </button>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- clique delegado fecha o painel flutuante ao escolher um link nativo */}
       <div
         className="or-side-nav__panel"
         hidden={!expanded}

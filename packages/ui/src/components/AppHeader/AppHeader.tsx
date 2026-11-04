@@ -93,6 +93,7 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
   const hasNav = items.length > 0 || Boolean(menuFooter)
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- onKeyDown delegado trata Escape do painel móvel
     <header
       ref={mergeRefs(ref, headerRef)}
       className={cx('or-app-header', sticky && 'or-app-header--sticky', className)}
@@ -119,6 +120,7 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
           {brand && <div className="or-app-header__brand">{brand}</div>}
         </div>
         {hasNav && (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- clique delegado fecha o painel ao escolher um link nativo
           <nav
             id={navId}
             className="or-app-header__nav"

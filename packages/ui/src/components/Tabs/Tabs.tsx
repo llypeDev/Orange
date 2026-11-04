@@ -202,6 +202,7 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- o foco fica nas abas (roving tabindex); o tablist só delega as setas
     <div
       ref={mergeRefs(ref, listRef)}
       role="tablist"

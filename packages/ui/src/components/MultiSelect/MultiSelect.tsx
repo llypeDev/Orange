@@ -333,7 +333,7 @@ function MultiSelectControl({
       <div className="or-multi-select__values">
         {hasValues && (
           // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
-          // eslint-disable-next-line jsx-a11y/no-redundant-roles
+           
           <ul role="list" className="or-multi-select__chips" aria-label={t('selectedItems')}>
             {selectedOptions.map((option, index) => (
               <li key={option.value} className="or-multi-select__chip">

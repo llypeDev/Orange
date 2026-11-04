@@ -162,7 +162,7 @@ function TagInputControl({
     >
       {tags.length > 0 && (
         // role="list" explícito: o Safari remove a semântica de listas com list-style: none.
-        // eslint-disable-next-line jsx-a11y/no-redundant-roles
+         
         <ul role="list" className="or-tag-input__tags">
           {tags.map((tag, index) => (
             <li key={`${tag}-${index}`} className="or-tag-input__tag">

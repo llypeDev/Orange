@@ -177,6 +177,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
 
   return (
     <AccordionContext.Provider value={context}>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- onKeyDown delega ↑/↓/Home/End entre os botões de cabeçalho (padrão APG) */}
       <div
         ref={ref}
         className={cx('or-accordion', `or-accordion--${variant}`, className)}
