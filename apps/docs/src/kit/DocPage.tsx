@@ -172,7 +172,9 @@ export function ComponentPage({ meta, children }: { meta: ComponentMeta; childre
               <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
             </a>
             {meta.status && meta.status !== 'stable' && (
-              <span className={`doc-status doc-status--${meta.status}`}>{meta.status}</span>
+              <span className={`doc-status doc-status--${meta.status}`}>
+                {meta.status === 'new' ? t({ pt: 'Novo', en: 'New' }) : 'Beta'}
+              </span>
             )}
           </div>
         </div>

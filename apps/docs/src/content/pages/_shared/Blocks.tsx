@@ -14,7 +14,13 @@ import '../../../styles/guides.css'
 export function TableWrap({ label, children }: { label: Localized<string>; children: ReactNode }) {
   const { t } = useLang()
   return (
-    <div className="doc-table-wrap" role="region" aria-label={t(label)} tabIndex={0}>
+    // Prefixo "Tabela:" evita repetir o nome da seção que contém a tabela (landmark-unique).
+    <div
+      className="doc-table-wrap"
+      role="region"
+      aria-label={t({ pt: `Tabela: ${label.pt}`, en: `Table: ${label.en}` })}
+      tabIndex={0}
+    >
       {children}
     </div>
   )

@@ -2,7 +2,7 @@ import { Button, Divider, Icon } from '@orange/ui'
 
 export default function Vertical() {
   return (
-    <div role="group" aria-label="Ações do documento" style={{ display: 'flex', alignItems: 'center', height: 40 }}>
+    <div role="group" aria-label="Ações do documento" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', rowGap: 8, minHeight: 40 }}>
       <Button variant="ghost" size="sm" startIcon={<Icon name="edit" />}>
         Editar
       </Button>

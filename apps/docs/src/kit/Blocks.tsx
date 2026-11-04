@@ -94,13 +94,14 @@ export function Callout({
   const { t } = useLang()
   const icon = tone === 'warning' ? 'alert-triangle' : tone === 'danger' ? 'alert-circle' : tone === 'success' ? 'check-circle' : 'info'
   return (
-    <aside className={`doc-callout doc-callout--${tone}`}>
+    // <div> em vez de <aside>: um destaque dentro do texto não é uma região complementar (landmark).
+    <div className={`doc-callout doc-callout--${tone}`}>
       <Icon name={icon} size="md" />
       <div>
         {title && <p className="doc-callout__title">{t(title)}</p>}
         <div className="doc-callout__body">{children}</div>
       </div>
-    </aside>
+    </div>
   )
 }
 

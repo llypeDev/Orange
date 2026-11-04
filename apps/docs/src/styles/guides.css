@@ -91,9 +91,6 @@
   font-weight: var(--or-weight-bold);
 }
 
-.guide-chip__value {
-  opacity: 0.85;
-}
 
 .guide-palette {
   margin: var(--or-space-6) 0 0;

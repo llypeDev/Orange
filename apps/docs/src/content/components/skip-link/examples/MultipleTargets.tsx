@@ -4,7 +4,7 @@ export default function MultipleTargets() {
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: 220, transform: 'translateZ(0)', border: '1px solid var(--or-color-border)' }}>
       <SkipLink href="#loja-resultados" />
-      <SkipLink href="#loja-busca" style={{ left: 300 }}>
+      <SkipLink href="#loja-busca">
         Pular para a busca
       </SkipLink>
       <nav aria-label="Categorias" style={{ display: 'flex', gap: 20, padding: '14px 16px', borderBottom: '1px solid var(--or-color-border)' }}>
