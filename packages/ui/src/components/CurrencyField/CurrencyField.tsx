@@ -278,6 +278,7 @@ function CurrencyFieldControl({
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-currency-field__frame')}
       data-invalid={controlProps['aria-invalid'] || undefined}
       {...shake}
+      aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
       onMouseDown={(event) => {
         if (event.target !== inputEl.current) {

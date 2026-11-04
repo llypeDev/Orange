@@ -31,7 +31,13 @@ const box = {
 export const AoRolar: Story = {
   name: 'Ao rolar',
   render: (args) => (
-    <div style={{ height: 420, overflow: 'auto', border: '1px dashed var(--or-color-border)' }}>
+    // Região rolável focável: quem usa teclado também consegue rolar (WCAG 2.1.1).
+    <div
+      role="region"
+      aria-label="Área rolável de demonstração"
+      tabIndex={0}
+      style={{ height: 420, overflow: 'auto', border: '1px dashed var(--or-color-border)' }}
+    >
       <p style={{ padding: 16, color: 'var(--or-color-text-muted)' }}>Role para baixo ↓</p>
       <div style={{ height: 520 }} />
       <Reveal {...args} style={box}>

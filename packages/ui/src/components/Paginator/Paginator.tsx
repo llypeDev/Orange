@@ -12,6 +12,8 @@ import { useLocale } from '../../providers'
 import { clamp, cx, range } from '../../utils'
 import type { RenderLink } from '../Link'
 import { VisuallyHidden } from '../VisuallyHidden'
+// Estilos compartilhados de controle (.or-control) usados no seletor de itens por página.
+import '../Field/Field.css'
 import './Paginator.css'
 
 export type PaginatorVariant = 'default' | 'compact'

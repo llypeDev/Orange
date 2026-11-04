@@ -370,6 +370,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             ref={frameRefCallback}
             className={cx('or-control-frame', `or-control-frame--${size}`, 'or-date-picker__frame')}
             data-invalid={invalid || undefined}
+            aria-disabled={disabled || undefined}
             data-disabled={disabled || undefined}
           >
             <input

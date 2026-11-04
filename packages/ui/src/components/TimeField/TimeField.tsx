@@ -115,6 +115,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
           <div
             className={cx('or-control-frame', `or-control-frame--${size}`, 'or-time-field__frame')}
             data-invalid={hasError || undefined}
+            aria-disabled={disabled || undefined}
             data-disabled={disabled || undefined}
             data-readonly={readOnly || undefined}
           >

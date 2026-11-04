@@ -60,9 +60,14 @@
   margin-top: 0.15em;
 }
 
-.or-field[data-disabled] .or-field__label,
-.or-field[data-disabled] .or-field__description {
+.or-field[data-disabled] .or-field__label {
   color: var(--or-color-text-disabled);
+}
+
+/* A descrição é informação (formato esperado, regras): continua legível
+   mesmo com o campo desabilitado. */
+.or-field[data-disabled] .or-field__description {
+  color: var(--or-color-text-subtle);
 }
 
 /* ---------------------------------------------------------------------------

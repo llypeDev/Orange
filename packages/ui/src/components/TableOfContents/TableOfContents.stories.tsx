@@ -35,7 +35,14 @@ function Layout(args: Story['args']) {
   const panelRef = useRef<HTMLDivElement>(null)
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px', gap: 32 }}>
-      <div ref={panelRef} style={{ height: 360, overflow: 'auto', paddingRight: 16 }}>
+      {/* Região rolável focável: quem usa teclado também consegue rolar (WCAG 2.1.1). */}
+      <div
+        ref={panelRef}
+        role="region"
+        aria-label="Conteúdo do artigo"
+        tabIndex={0}
+        style={{ height: 360, overflow: 'auto', paddingRight: 16 }}
+      >
         {sections.map((s) => {
           const Tag = s.level === 3 ? 'h3' : 'h2'
           return (

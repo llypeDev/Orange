@@ -327,7 +327,8 @@
 }
 
 .or-field[data-disabled] .or-slider__output {
-  color: var(--or-color-text-disabled);
+  /* O valor atual é informação: legível mesmo desabilitado. */
+  color: var(--or-color-text-subtle);
 }
 
 @media (forced-colors: active) {

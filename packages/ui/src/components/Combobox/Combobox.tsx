@@ -340,6 +340,7 @@ function ComboboxControl({
       ref={mergeRefs(frameEl, refs.setReference)}
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-combobox')}
       data-invalid={controlProps['aria-invalid'] || undefined}
+      aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
       data-open={isOpen || undefined}
     >

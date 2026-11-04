@@ -98,6 +98,7 @@ function SearchControl({
   return (
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-search__frame')}
+      aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
     >
       {/* Lupa e indicador de carregamento ficam empilhados e trocam com fade + escala. */}

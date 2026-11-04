@@ -93,6 +93,7 @@ export const InputControl = forwardRef<HTMLInputElement, InputControlProps>(func
       <div
         className={cx('or-control-frame', `or-control-frame--${size}`, 'or-input-frame', frameClassName, shakeClassName)}
         data-invalid={isInvalid || undefined}
+        aria-disabled={isDisabled || undefined}
         data-disabled={isDisabled || undefined}
         data-readonly={readOnly || undefined}
         onMouseDown={handleFrameMouseDown}
