@@ -68,7 +68,7 @@ export default function AccordionPage() {
         />
         <DoDont
           doExample={
-            <Accordion headingLevel={4} style={{ width: '100%' }}>
+            <Accordion headingLevel={3} style={{ width: '100%' }}>
               <AccordionItem value="a">
                 <AccordionTrigger>Qual o prazo de reembolso?</AccordionTrigger>
                 <AccordionContent>Até 7 dias úteis.</AccordionContent>

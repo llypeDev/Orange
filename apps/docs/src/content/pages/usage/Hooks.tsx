@@ -54,7 +54,7 @@ function HookDoc({ name, signature, description, params, returns, example, usage
       </div>
       <CodeBlock code={signature} language="ts" title={t({ pt: 'assinatura', en: 'signature' })} />
       {params && params.length > 0 && (
-        <PropsTable rows={params} caption={{ pt: 'Parâmetros', en: 'Parameters' }} />
+        <PropsTable rows={params} caption={{ pt: `Parâmetros de ${name}`, en: `${name} parameters` }} />
       )}
       {returns && (
         <p className="guide-hook__returns">

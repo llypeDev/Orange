@@ -13,6 +13,32 @@ bordas de 1px e grade explícita.
 | `apps/docs`         | Site de documentação (PT/EN) com guidelines e páginas de componentes |
 | `apps/storybook`    | Storybook 9 com painel de acessibilidade, temas e idiomas        |
 
+## Componentes
+
+85 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
+Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
+critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
+(`Heading`, `Text`, `Eyebrow`), 16 hooks, ~90 ícones e o `OrangeProvider` (tema + idioma).
+
+| Categoria | Componentes |
+| --- | --- |
+| Ações (8) | Button, ButtonGroup, CopyButton, IconButton, SegmentedControl, SplitButton, ToggleButton, Toolbar |
+| Formulários (23) | Checkbox, ColorField, Combobox, CurrencyField, DatePicker, ErrorSummary, Fieldset, FileUploader, InlineEdit, MultiSelect, NumberField, PasswordField, PinInput, RadioGroup, Rating, Search, Select, Slider, Switch, TagInput, TextArea, TextField, TimeField |
+| Feedback (10) | Alert, Banner, EmptyState, LoadingOverlay, Meter, ProgressBar, ProgressCircle, Skeleton, Spinner, Toast |
+| Sobreposições (10) | CommandPalette, ConfirmDialog, ContextMenu, Drawer, Dropdown, HoverCard, Modal, Popover, Toggletip, Tooltip |
+| Navegação (12) | AppHeader, BackToTop, BottomNavigation, Breadcrumb, Link, MonthPaginator, Paginator, SideNav, SkipLink, Stepper, TableOfContents, Tabs |
+| Exibição de dados (15) | Accordion, Avatar, AvatarGroup, Badge, Card, Chip, CodeBlock, DescriptionList, Kbd, List, Stat, Table, Tag, Timeline, TreeView |
+| Layout (2) | Divider, Paper |
+| Utilitários (5) | ExpandableText, Highlight, RelativeTime, TruncatedText, VisuallyHidden |
+
+## Documentação
+
+Mesma organização do [Lemonade UI](https://lemonade-ui.llypedev.com.br/pt/): **Começando**,
+**Sobre**, **Design Guidelines** (acessibilidade, cor, visualização de dados, grid, iconografia,
+movimento, tipografia), **Usando** (estilos, tema, i18n, hooks), **Componentes** (visão geral +
+uma página por componente), **Recursos** e **Storybook** — em português e inglês, com temas claro e
+escuro.
+
 ## Começando
 
 ```bash

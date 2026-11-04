@@ -147,7 +147,8 @@ export const themes: Record<ThemeName, ColorTokens> = {
     text: carbon[900],
     'text-muted': carbon[700],
     'text-subtle': carbon[600],
-    'text-disabled': carbon[400],
+    // ~3.4:1 sobre o fundo: legível para baixa visão, mas claramente inativo.
+    'text-disabled': '#6b6b74',
     'text-inverse': carbon[50],
     'text-on-accent': carbon[50],
     border: carbon[200],

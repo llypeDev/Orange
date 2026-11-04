@@ -31,7 +31,10 @@ export function rgbToHex(r: number, g: number, b: number): string {
 export function inkOn(background: string): string {
   const dark = primitives.carbon[50]
   const light = primitives.carbon[900]
-  return contrastRatio(dark, background) >= contrastRatio(light, background) ? dark : light
+  const best = contrastRatio(dark, background) >= contrastRatio(light, background) ? dark : light
+  if (contrastRatio(best, background) >= 4.5) return best
+  // Tons médios (ex.: laranja 700): carvão e creme ficam abaixo de 4.5:1 — use preto ou branco puro.
+  return contrastRatio('#000000', background) >= contrastRatio('#ffffff', background) ? '#000000' : '#ffffff'
 }
 
 /** Valor de um token semântico como hex opaco (rgba é composto sobre o `bg` do tema). */

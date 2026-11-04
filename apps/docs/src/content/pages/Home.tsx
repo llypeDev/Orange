@@ -5,6 +5,7 @@ import { useLang, type Localized } from '../../i18n'
 import { CodeBlock } from '../../kit'
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import '../../styles/home.css'
+import { Showcase } from './home/Showcase'
 
 function Marquee({ items, tone = 'paper' }: { items: Localized<string>[]; tone?: 'paper' | 'ink' }) {
   const { t } = useLang()
@@ -432,6 +433,21 @@ export default function Home() {
           {t({ pt: 'Um sistema, não cinco ferramentas separadas.', en: 'One system, not five separate tools.' })}
         </h2>
         <Layers />
+      </section>
+
+      <section className="home-section" aria-labelledby="home-showcase-title">
+        <div className="home-section__head">
+          <h2 id="home-showcase-title" className="home-h2">
+            {t({ pt: 'Componentes de verdade, aqui mesmo.', en: 'Real components, right here.' })}
+          </h2>
+          <p className="home-section__aside">
+            {t({
+              pt: 'Tudo abaixo é a biblioteca rodando ao vivo. Use o teclado: Tab, setas e Espaço funcionam como esperado.',
+              en: 'Everything below is the library running live. Try the keyboard: Tab, arrows and Space work as expected.',
+            })}
+          </p>
+        </div>
+        <Showcase />
       </section>
 
       <section className="home-section">
