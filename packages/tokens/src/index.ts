@@ -315,20 +315,50 @@ export const shadow = {
   overlay: '0 24px 64px -16px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--or-color-border-strong)',
 } as const
 
+/**
+ * Movimento: rápido, funcional, sem bloquear. Saídas são mais curtas que
+ * entradas. Tudo é zerado em `prefers-reduced-motion: reduce`.
+ */
 export const motion = {
   duration: {
+    /** Clique/pressionar (feedback tátil). */
+    press: '90ms',
     instant: '80ms',
+    /** Hover, foco, cor, borda — e saídas de sobreposições. */
     fast: '160ms',
+    /** Entradas de sobreposições, indicadores deslizando. */
     medium: '250ms',
+    /** Expandir/recolher, painéis, drawers. */
     slow: '400ms',
+    /** Revelação no scroll. */
+    reveal: '600ms',
     slower: '640ms',
+    /** Ciclos decorativos (pulso de status). */
+    loop: '2400ms',
   },
   easing: {
+    /** Padrão de entradas e hovers: desacelera no fim. */
     out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    /** Movimentos de ida e volta, saídas e o cabeçalho que se esconde. */
     'in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
+    /** Indicadores (abas, segmentos, polegar do switch). */
     spring: 'cubic-bezier(0.2, 0.9, 0.3, 1.05)',
     snap: 'cubic-bezier(0.19, 1, 0.22, 1)',
+    /** Pequeno "pop" com overshoot (check, ponto do radio, badges). */
+    bounce: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   },
+  distance: {
+    /** Popovers, menus, tooltips. */
+    sm: '4px',
+    /** Diálogos, toasts, entrada de página. */
+    md: '8px',
+    /** Revelação no scroll. */
+    lg: '24px',
+    /** Elevação de cartões no hover. */
+    lift: '-4px',
+  },
+  /** Atraso entre itens de uma revelação escalonada. */
+  stagger: '80ms',
 } as const
 
 export const zIndex = {

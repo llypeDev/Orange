@@ -12,9 +12,7 @@
  */
 import {
   useCallback,
-  useEffect,
   useRef,
-  useState,
   version,
   type ReactElement,
   type Ref,
@@ -177,51 +175,8 @@ export function useLayer(active: boolean, options: LayerOptions) {
 /* Presença (animação de saída)                                               */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Mantém o conteúdo montado enquanto a animação de saída roda. Retorna
- * `present` (renderizar?) e `state` (`open` | `closed`, para `data-state`).
- * Sem animação (jsdom, CSS ausente), desmonta imediatamente.
- */
-export function usePresence(open: boolean) {
-  const [mounted, setMounted] = useState(open)
-  const nodeRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    if (open) {
-      setMounted(true)
-      return
-    }
-    if (!mounted) return
-    const node = nodeRef.current
-    const style = node ? getComputedStyle(node) : null
-    const animated =
-      !!style &&
-      !!style.animationName &&
-      style.animationName !== 'none' &&
-      Number.parseFloat(style.animationDuration) > 0
-    if (!node || !animated) {
-      setMounted(false)
-      return
-    }
-    const done = (event: AnimationEvent) => {
-      if (event.target === node) setMounted(false)
-    }
-    node.addEventListener('animationend', done)
-    node.addEventListener('animationcancel', done)
-    const fallback = window.setTimeout(() => setMounted(false), 1000)
-    return () => {
-      node.removeEventListener('animationend', done)
-      node.removeEventListener('animationcancel', done)
-      window.clearTimeout(fallback)
-    }
-  }, [open, mounted])
-
-  return {
-    present: open || mounted,
-    state: open ? ('open' as const) : ('closed' as const),
-    nodeRef,
-  }
-}
+// A implementação vive em src/hooks (pública); reexportada para os overlays.
+export { usePresence } from '../../hooks'
 
 /* -------------------------------------------------------------------------- */
 /* Utilitários                                                                */

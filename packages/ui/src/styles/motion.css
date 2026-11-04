@@ -1,0 +1,304 @@
+/* ===========================================================================
+ * Orange Motion — keyframes e utilitários compartilhados
+ *
+ * Linguagem: rápido, funcional e geométrico. Entradas desaceleram
+ * (--or-ease-out), saídas são mais curtas (--or-duration-fast). Indicadores
+ * usam --or-ease-spring; pequenos "pops" usam --or-ease-bounce.
+ * Tudo é zerado em prefers-reduced-motion (tokens + override em base.css).
+ * ========================================================================= */
+
+/* --- Keyframes ------------------------------------------------------------ */
+
+@keyframes or-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes or-pop-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--or-distance-sm)) scale(0.98);
+  }
+}
+
+@keyframes or-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes or-slide-down-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1.5));
+  }
+}
+
+@keyframes or-slide-in-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes or-slide-out-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes or-slide-out-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes or-slide-out-down {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes or-reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-lg));
+  }
+}
+
+@keyframes or-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md));
+  }
+}
+
+/* Anel de pulso para indicadores "ao vivo" (status online, deploy ativo). */
+@keyframes or-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--_pulse-color, var(--or-color-success)) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Barra de progresso temporizada (ex.: passos que avançam sozinhos). */
+@keyframes or-fill-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Desenho de traço SVG (check, linhas de gráfico). Defina --_draw-length. */
+@keyframes or-draw {
+  from {
+    stroke-dashoffset: var(--_draw-length, 24);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Peças que "caem" no lugar (marca, ilustrações geométricas). */
+@keyframes or-piece-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40%);
+  }
+}
+
+/* Tremor curto para erro de validação. */
+@keyframes or-shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-3px);
+  }
+  40%,
+  60% {
+    transform: translateX(3px);
+  }
+}
+
+/* --- Presença: entrada/saída guiadas por data-state ------------------------
+ * Use com o hook usePresence: <div data-state={state} class="or-motion-pop">.
+ * ------------------------------------------------------------------------- */
+
+.or-motion-fade[data-state='open'] {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+.or-motion-fade[data-state='closed'] {
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-motion-pop[data-state='open'] {
+  animation: or-pop-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+.or-motion-pop[data-state='closed'] {
+  animation: or-pop-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+.or-motion-drop[data-state='open'] {
+  animation: or-slide-down-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+.or-motion-drop[data-state='closed'] {
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+/* --- Interação ------------------------------------------------------------ */
+
+/* Pressionar: o controle "afunda" 1px. Aplique em botões e alvos clicáveis. */
+.or-press {
+  transition-property: transform, background-color, border-color, color, box-shadow;
+  transition-duration: var(--or-duration-fast);
+  transition-timing-function: var(--or-ease-out);
+}
+
+.or-press:active:not(:disabled, [aria-disabled='true']) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* Elevar: cartões e blocos clicáveis sobem 4px com sombra deslocada. */
+.or-lift {
+  --_lift-color: var(--or-color-accent);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-lift:hover,
+.or-lift:focus-within {
+  transform: translateY(var(--or-distance-lift));
+  box-shadow: 0 8px 0 -4px var(--_lift-color);
+}
+
+/* Empurrar: o ícone (seta) desliza 4px no hover/foco do pai. */
+.or-nudge .or-nudge__icon {
+  display: inline-block;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-nudge:hover .or-nudge__icon,
+.or-nudge:focus-visible .or-nudge__icon {
+  transform: translateX(4px);
+}
+
+/* Sublinhado que cresce da esquerda (funciona em texto de várias linhas). */
+.or-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  text-decoration: none;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-underline:hover,
+.or-underline:focus-visible,
+.or-underline[aria-current] {
+  background-size: 100% 1px;
+}
+
+/* Pulso de status: ponto "ao vivo". Defina --_pulse-color. */
+.or-pulse {
+  animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
+}
+
+/* Recolher/expandir altura sem medir: grid 0fr → 1fr. */
+.or-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--or-duration-slow) var(--or-ease-out),
+    opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-collapse > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.or-collapse[data-state='open'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.or-shake {
+  animation: or-shake 360ms var(--or-ease-out) both;
+}
+
+/* --- Revelação no scroll (componente Reveal) ------------------------------ */
+
+.or-reveal {
+  --or-reveal-index: 0;
+  transition:
+    opacity var(--or-duration-reveal) var(--or-ease-out),
+    transform var(--or-duration-reveal) var(--or-ease-out);
+  transition-delay: calc(var(--or-reveal-delay, 0ms) + var(--or-reveal-index) * var(--or-stagger));
+}
+
+.or-reveal[data-reveal='hidden'] {
+  opacity: 0;
+}
+
+.or-reveal--up[data-reveal='hidden'] {
+  transform: translateY(var(--or-distance-lg));
+}
+
+.or-reveal--scale[data-reveal='hidden'] {
+  transform: scale(0.96);
+}
+
+/* Grupo escalonado: cada filho entra 80ms depois do anterior. */
+.or-reveal-group > * {
+  transition:
+    opacity var(--or-duration-reveal) var(--or-ease-out),
+    transform var(--or-duration-reveal) var(--or-ease-out);
+  transition-delay: calc(var(--or-reveal-delay, 0ms) + var(--or-reveal-index, 0) * var(--or-stagger));
+}
+
+.or-reveal-group[data-reveal='hidden'] > * {
+  opacity: 0;
+  transform: translateY(var(--or-distance-lg));
+}
+
+.or-reveal-group > :nth-child(2) { --or-reveal-index: 1; }
+.or-reveal-group > :nth-child(3) { --or-reveal-index: 2; }
+.or-reveal-group > :nth-child(4) { --or-reveal-index: 3; }
+.or-reveal-group > :nth-child(5) { --or-reveal-index: 4; }
+.or-reveal-group > :nth-child(6) { --or-reveal-index: 5; }
+.or-reveal-group > :nth-child(7) { --or-reveal-index: 6; }
+.or-reveal-group > :nth-child(8) { --or-reveal-index: 7; }
+.or-reveal-group > :nth-child(n + 9) { --or-reveal-index: 8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .or-reveal[data-reveal='hidden'],
+  .or-reveal-group[data-reveal='hidden'] > * {
+    opacity: 1;
+    transform: none;
+  }
+  .or-pulse {
+    animation: none;
+  }
+}

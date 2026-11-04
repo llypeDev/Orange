@@ -97,6 +97,42 @@ Classes de controle compartilhadas (em `Field.css`): `.or-control` (input/select
 - Camadas: `--or-z-dropdown`, `--or-z-modal`, `--or-z-popover`, `--or-z-toast`, `--or-z-tooltip`.
 - Funciona nos dois temas: teste com `data-theme="light"` (o Example da doc tem o seletor de tema).
 
+### Motion (obrigatório)
+
+O Orange se move como o zop.dev: **rápido, funcional, geométrico**. Todo componente interativo
+precisa de movimento coerente — nada "pisca" de um estado para outro.
+
+**Tokens** (`packages/tokens`): durações `--or-duration-press` (90ms) · `instant` · `fast` (160ms,
+hover/foco/saídas) · `medium` (250ms, entradas e indicadores) · `slow` (400ms, expandir/recolher) ·
+`reveal` (600ms) · `loop` (2.4s, pulsos); curvas `--or-ease-out` (padrão), `--or-ease-in-out`
+(saídas, idas e voltas), `--or-ease-spring` (indicadores), `--or-ease-bounce` (pequenos pops);
+distâncias `--or-distance-sm` (4px, popovers) · `md` (8px, diálogos/toasts) · `lg` (24px, reveal) ·
+`lift` (-4px); `--or-stagger` (80ms). Nunca escreva `ms`/`cubic-bezier` soltos no CSS — use tokens
+(eles zeram sozinhos em `prefers-reduced-motion`).
+
+**Utilitários** (`src/styles/motion.css`) e **hooks** (`src/hooks`):
+
+| Padrão | Como |
+| --- | --- |
+| Entrada/saída de sobreposições | `usePresence(open)` → `{ present, state, nodeRef }`; `data-state={state}` + classe `or-motion-pop` / `or-motion-drop` / `or-motion-fade` (ou keyframes próprias com `[data-state='closed']`). Saída mais curta que entrada. |
+| Pressionar | `:active` → `transform: translateY(1px) scale(0.985)` em `--or-duration-press` (ou classe `or-press`). |
+| Elevar (cartões/blocos clicáveis) | hover/foco → `translateY(var(--or-distance-lift))` + `box-shadow: 0 8px 0 -4px <cor>` (classe `or-lift`). |
+| Seta que empurra | ícone final desliza 4px no hover/foco (`or-nudge` + `or-nudge__icon`). |
+| Sublinhado animado | cresce da esquerda via `background-size` (`or-underline`). |
+| Expandir/recolher | `grid-template-rows: 0fr → 1fr` + opacidade em `--or-duration-slow` (`or-collapse` + `data-state`), chevron gira 180°. |
+| Indicadores de seleção | deslizam/escala com `--or-ease-spring` (aba ativa, segmento, polegar do switch); check/ponto entram com `or-scale-in`/`or-draw` e `--or-ease-bounce`. |
+| Progresso | largura/`transform` com transição; indeterminado em loop; `or-fill-x` para barras temporizadas. |
+| Status "ao vivo" | `or-pulse` (anel em `box-shadow`, `--_pulse-color`). |
+| Erro de validação | `or-shake` curto ao surgir o erro (uma vez). |
+| Revelação no scroll | componente `Reveal` (`stagger` para grupos) / hook `useInView`. |
+| Números | `useCountUp(valor)` quando o número entra em cena. |
+| Cabeçalhos | `useScrollDirection()` para esconder ao rolar para baixo. |
+
+Regras: anime só `transform`, `opacity`, cores, bordas e `box-shadow` (nada de `width/height/top`
+— exceto `grid-template-rows`). Hover e foco visível sempre com a mesma resposta. Movimento nunca
+pode ser a única pista de estado. Animações infinitas só para status/carregamento. Teste a
+saída com `usePresence` (o jsdom desmonta na hora porque não há animação).
+
 ### Acessibilidade (obrigatório)
 
 - HTML semântico primeiro (`button`, `a`, `input`, `dialog`, `nav`, `ul`…). ARIA só quando necessário,

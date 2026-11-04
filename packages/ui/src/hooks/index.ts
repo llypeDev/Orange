@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type RefCallback,
   type RefObject,
 } from 'react'
 import { canUseDOM, getFocusableElements } from '../utils'
@@ -323,4 +324,168 @@ export function useMounted(): boolean {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   return mounted
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion                                                                      */
+/* -------------------------------------------------------------------------- */
+
+export type PresenceState = 'open' | 'closed'
+
+/**
+ * Mantém um elemento montado enquanto a animação (ou transição) de saída roda.
+ *
+ * - `present`: renderizar o elemento?
+ * - `state`: `open` | `closed` — aplique em `data-state` e anime
+ *   `[data-state='closed']` com uma keyframe de saída (ex.: `or-pop-out`).
+ * - `nodeRef`: ligue ao elemento animado.
+ *
+ * Sem animação (jsdom, CSS ausente, movimento reduzido) desmonta na hora.
+ *
+ * @example
+ * const { present, state, nodeRef } = usePresence(open)
+ * return present ? <div ref={nodeRef} data-state={state} className="or-popover" /> : null
+ */
+export function usePresence<T extends HTMLElement = HTMLElement>(open: boolean, options: { timeout?: number } = {}) {
+  const { timeout = 1000 } = options
+  const [mounted, setMounted] = useState(open)
+  const nodeRef = useRef<T | null>(null)
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true)
+      return
+    }
+    if (!mounted) return
+    const node = nodeRef.current
+    const style = node && canUseDOM ? getComputedStyle(node) : null
+    const seconds = (value: string | undefined) =>
+      Math.max(0, ...(value ?? '0s').split(',').map((v) => (v.trim().endsWith('ms') ? parseFloat(v) / 1000 : parseFloat(v) || 0)))
+    const animated =
+      !!style &&
+      ((!!style.animationName && style.animationName !== 'none' && seconds(style.animationDuration) > 0) ||
+        seconds(style.transitionDuration) > 0)
+    if (!node || !animated) {
+      setMounted(false)
+      return
+    }
+    const done = (event: Event) => {
+      if (event.target === node) setMounted(false)
+    }
+    node.addEventListener('animationend', done)
+    node.addEventListener('animationcancel', done)
+    node.addEventListener('transitionend', done)
+    const fallback = window.setTimeout(() => setMounted(false), timeout)
+    return () => {
+      node.removeEventListener('animationend', done)
+      node.removeEventListener('animationcancel', done)
+      node.removeEventListener('transitionend', done)
+      window.clearTimeout(fallback)
+    }
+  }, [open, mounted, timeout])
+
+  return {
+    present: open || mounted,
+    state: (open ? 'open' : 'closed') as PresenceState,
+    nodeRef,
+  }
+}
+
+/**
+ * `true` quando o elemento entra na viewport (IntersectionObserver).
+ * Por padrão dispara uma vez (`once`) — ideal para revelações no scroll.
+ * Sem suporte a IntersectionObserver, retorna `true`.
+ */
+export function useInView<T extends Element = HTMLElement>(
+  options: { rootMargin?: string; threshold?: number | number[]; once?: boolean; root?: Element | null } = {},
+): [RefCallback<T>, boolean] {
+  const { rootMargin = '0px 0px -60px 0px', threshold = 0.08, once = true, root = null } = options
+  const [inView, setInView] = useState(false)
+  const [node, setNode] = useState<T | null>(null)
+  const ref = useCallback<RefCallback<T>>((el) => setNode(el), [])
+
+  useEffect(() => {
+    if (!node) return
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true)
+      return
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true)
+          if (once) observer.disconnect()
+        } else if (!once) {
+          setInView(false)
+        }
+      },
+      { rootMargin, threshold, root },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [node, rootMargin, once, root, JSON.stringify(threshold)]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  return [ref, inView]
+}
+
+/**
+ * Anima um número de 0 (ou `from`) até `target` com desaceleração cúbica.
+ * Com movimento reduzido (ou `enabled=false`), retorna o valor final direto.
+ */
+export function useCountUp(target: number, options: { duration?: number; from?: number; enabled?: boolean } = {}) {
+  const { duration = 900, from = 0, enabled = true } = options
+  const reduced = useReducedMotion()
+  const [value, setValue] = useState(enabled && !reduced ? from : target)
+
+  useEffect(() => {
+    if (!enabled || reduced || !canUseDOM) {
+      setValue(target)
+      return
+    }
+    let raf = 0
+    const start = performance.now()
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      setValue(from + (target - from) * (1 - Math.pow(1 - p, 3)))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [target, duration, from, enabled, reduced])
+
+  return value
+}
+
+/**
+ * Direção da rolagem da página (`up` | `down`) e se já passou de `threshold`.
+ * Útil para cabeçalhos que se escondem ao rolar para baixo.
+ */
+export function useScrollDirection(options: { threshold?: number; tolerance?: number } = {}) {
+  const { threshold = 120, tolerance = 6 } = options
+  const [state, setState] = useState<{ direction: 'up' | 'down'; pastThreshold: boolean }>({
+    direction: 'up',
+    pastThreshold: false,
+  })
+  useEffect(() => {
+    if (!canUseDOM) return
+    let last = window.scrollY
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const y = window.scrollY
+      const delta = y - last
+      if (Math.abs(delta) < tolerance) return
+      setState({ direction: delta > 0 ? 'down' : 'up', pastThreshold: y > threshold })
+      last = y
+    }
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(update)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [threshold, tolerance])
+  return state
 }

@@ -42,6 +42,8 @@ const staticTokens: [string, string][] = [
   ...prefixed('shadow', shadow),
   ...prefixed('duration', motion.duration),
   ...prefixed('ease', motion.easing),
+  ...prefixed('distance', motion.distance),
+  ['stagger', motion.stagger],
   ...prefixed('z', zIndex),
   ...prefixed('layout', layout),
   ...prefixed('control', controlSize),
@@ -74,11 +76,9 @@ ${themeBlock('light')}
 /* Movimento reduzido: anula durações para quem prefere menos animação */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --or-duration-instant: 0ms;
-    --or-duration-fast: 0ms;
-    --or-duration-medium: 0ms;
-    --or-duration-slow: 0ms;
-    --or-duration-slower: 0ms;
+${Object.keys(motion.duration).map((k) => `    --or-duration-${k}: 0ms;`).join('\n')}
+${Object.keys(motion.distance).map((k) => `    --or-distance-${k}: 0px;`).join('\n')}
+    --or-stagger: 0ms;
   }
 }
 `
