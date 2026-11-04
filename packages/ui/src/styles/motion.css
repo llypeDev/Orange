@@ -224,6 +224,20 @@
   animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
 }
 
+/* Variante que preserva o box-shadow do elemento: o anel pulsa num ::after. */
+.or-pulse-after {
+  position: relative;
+}
+
+.or-pulse-after::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
+}
+
 /* Recolher/expandir altura sem medir: grid 0fr → 1fr. */
 .or-collapse {
   display: grid;
@@ -298,7 +312,8 @@
     opacity: 1;
     transform: none;
   }
-  .or-pulse {
+  .or-pulse,
+  .or-pulse-after::after {
     animation: none;
   }
 }

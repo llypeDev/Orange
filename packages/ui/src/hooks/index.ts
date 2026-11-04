@@ -372,8 +372,15 @@ export function usePresence<T extends HTMLElement = HTMLElement>(open: boolean, 
       setMounted(false)
       return
     }
+    // Espera TODAS as animações/transições do nó terminarem (ex.: opacidade em 160ms
+    // e transform em 250ms) — não só o primeiro *end que chegar.
     const done = (event: Event) => {
-      if (event.target === node) setMounted(false)
+      if (event.target !== node) return
+      const running =
+        typeof node.getAnimations === 'function'
+          ? node.getAnimations().some((a) => a.playState === 'running' || a.pending)
+          : false
+      if (!running) setMounted(false)
     }
     node.addEventListener('animationend', done)
     node.addEventListener('animationcancel', done)
@@ -460,7 +467,8 @@ export function useCountUp(target: number, options: { duration?: number; from?: 
     let raf = 0
     const start = performance.now()
     const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration)
+      // O timestamp do rAF pode ser anterior a `start`: limita o progresso a [0, 1].
+      const p = Math.min(1, Math.max(0, (now - start) / duration))
       setValue(from + (target - from) * (1 - Math.pow(1 - p, 3)))
       if (p < 1) raf = requestAnimationFrame(tick)
     }
