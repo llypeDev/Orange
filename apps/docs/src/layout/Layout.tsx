@@ -13,7 +13,8 @@ import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { REPO_URL, STORYBOOK_URL } from '../content/registry'
-import { LANGS, useLang } from '../i18n'
+import { LANGS, useLang, type Localized } from '../i18n'
+import { guidelinePages, usagePages } from '../nav'
 import { Logo } from './Logo'
 import { Sidebar } from './Sidebar'
 
@@ -144,20 +145,66 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
   )
 }
 
+interface FooterLink {
+  label: string
+  href: string
+  external?: boolean
+}
+
+/** Rodapé em colunas, no formato de mapa do site do zop.dev. */
 function Footer() {
   const { t, to } = useLang()
-  const links: { label: string; href: string; internal?: boolean }[] = [
-    { label: t({ pt: 'Começando', en: 'Getting started' }), href: to('/getting-started'), internal: true },
-    { label: t({ pt: 'Componentes', en: 'Components' }), href: to('/components/overview'), internal: true },
-    { label: t({ pt: 'Acessibilidade', en: 'Accessibility' }), href: to('/design-guidelines/accessibility'), internal: true },
-    { label: t({ pt: 'Movimento', en: 'Motion' }), href: to('/design-guidelines/motion'), internal: true },
-    { label: 'Storybook', href: STORYBOOK_URL },
-    { label: 'GitHub', href: REPO_URL },
+  const internal = (path: string, label: Localized<string>): FooterLink => ({ label: t(label), href: to(path) })
+  const columns: { id: string; title: Localized<string>; links: FooterLink[] }[] = [
+    {
+      id: 'start',
+      title: { pt: 'Começar', en: 'Start' },
+      links: [
+        internal('/getting-started', { pt: 'Começando', en: 'Getting started' }),
+        internal('/about', { pt: 'Sobre', en: 'About' }),
+        internal('/resources', { pt: 'Recursos', en: 'Resources' }),
+        internal('/changelog', { pt: 'Novidades', en: 'Changelog' }),
+      ],
+    },
+    {
+      id: 'guidelines',
+      title: { pt: 'Design Guidelines', en: 'Design Guidelines' },
+      links: guidelinePages.map((page) => internal(page.path, page.label)),
+    },
+    {
+      id: 'usage',
+      title: { pt: 'Usando', en: 'Usage' },
+      links: usagePages.map((page) => internal(page.path, page.label)),
+    },
+    {
+      id: 'components',
+      title: { pt: 'Componentes', en: 'Components' },
+      links: [
+        internal('/components/overview', { pt: 'Visão geral', en: 'Overview' }),
+        internal('/components/button', { pt: 'Button', en: 'Button' }),
+        internal('/components/text-field', { pt: 'TextField', en: 'TextField' }),
+        internal('/components/date-picker', { pt: 'DatePicker', en: 'DatePicker' }),
+        internal('/components/modal', { pt: 'Modal', en: 'Modal' }),
+        internal('/components/table', { pt: 'Table', en: 'Table' }),
+        internal('/components/tabs', { pt: 'Tabs', en: 'Tabs' }),
+      ],
+    },
+    {
+      id: 'project',
+      title: { pt: 'Projeto', en: 'Project' },
+      links: [
+        { label: 'Storybook', href: STORYBOOK_URL, external: true },
+        { label: 'GitHub', href: REPO_URL, external: true },
+        { label: t({ pt: 'Reportar um problema', en: 'Report an issue' }), href: `${REPO_URL}/issues`, external: true },
+        { label: t({ pt: 'Como contribuir', en: 'Contributing' }), href: `${REPO_URL}/blob/main/CONTRIBUTING.md`, external: true },
+        { label: t({ pt: 'Licença MIT', en: 'MIT license' }), href: `${REPO_URL}/blob/main/LICENSE`, external: true },
+      ],
+    },
   ]
   return (
     <footer className="doc-footer">
       <div className="doc-footer__top">
-        <div>
+        <div className="doc-footer__brand">
           <Logo />
           <p className="doc-footer__tagline">
             {t({
@@ -166,21 +213,33 @@ function Footer() {
             })}
           </p>
         </div>
-        <ul className="doc-footer__links">
-          {links.map((link) => (
-            <li key={link.href}>
-              {link.internal ? (
-                <Link to={link.href} className="doc-footer__link">
-                  {link.label}
-                </Link>
-              ) : (
-                <a href={link.href} className="doc-footer__link">
-                  {link.label}
-                </a>
-              )}
-            </li>
+        <nav className="doc-footer__sitemap" aria-label={t({ pt: 'Mapa do site', en: 'Site map' })}>
+          {columns.map((column) => (
+            <div key={column.id} className="doc-footer__col">
+              <h2 id={`doc-footer-${column.id}`} className="doc-footer__heading">
+                {t(column.title)}
+              </h2>
+              <ul className="doc-footer__links" aria-labelledby={`doc-footer-${column.id}`}>
+                {column.links.map((link) =>
+                  link.external ? (
+                    <li key={link.href}>
+                      <a href={link.href} className="doc-footer__link doc-footer__link--external">
+                        {link.label}
+                        <Icon name="arrow-up-right" size="sm" className="doc-footer__ext" />
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={link.href}>
+                      <Link to={link.href} className="doc-footer__link">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </nav>
       </div>
       <div className="doc-footer__bottom">
         <span>© 2026 Orange Design System · MIT</span>

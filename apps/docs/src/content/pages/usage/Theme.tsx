@@ -181,7 +181,8 @@ const presets: { name: string; value: string }[] = [
 
 function ThemeBuilder() {
   const { t } = useLang()
-  const [accent, setAccent] = useState('#8b6cf0')
+  // Começa num acento da paleta (azul); qualquer cor pode ser escolhida no gerador.
+  const [accent, setAccent] = useState<string>(primitives.blue[400])
   const inputId = useId()
   const derived = useMemo(
     () => ({ dark: deriveAccent(accent, 'dark'), light: deriveAccent(accent, 'light') }),

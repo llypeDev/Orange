@@ -97,6 +97,14 @@ export default function About() {
   const { t } = useLang()
   return (
     <DocPage
+      hero={{
+        stats: [
+          { value: componentMetas.length, label: { pt: 'componentes documentados', en: 'documented components' } },
+          { value: iconNames.length, label: { pt: 'ícones na mesma grade', en: 'icons on the same grid' } },
+          { value: Object.keys(ptBR).length, label: { pt: 'mensagens traduzidas PT/EN', en: 'translated PT/EN messages' } },
+          { value: Object.keys(themes).length, label: { pt: 'temas, claro e escuro', en: 'themes, light and dark' } },
+        ],
+      }}
       eyebrow={{ pt: 'Orange', en: 'Orange' }}
       title={{ pt: 'Sobre o Orange', en: 'About Orange' }}
       lead={{

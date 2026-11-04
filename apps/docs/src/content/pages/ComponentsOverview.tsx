@@ -42,6 +42,14 @@ export default function ComponentsOverview() {
         en: `${componentMetas.length} accessible React components, tested with axe-core and documented in Portuguese and English.`,
       }}
       toc={false}
+      hero={{
+        stats: [
+          { value: componentMetas.length, label: { pt: 'componentes', en: 'components' } },
+          { value: counts.size, label: { pt: 'categorias', en: 'categories' } },
+          { value: 'AA', label: { pt: 'WCAG 2.2 em todos', en: 'WCAG 2.2 across the board' } },
+          { value: 'PT·EN', label: { pt: 'documentação bilíngue', en: 'bilingual docs' } },
+        ],
+      }}
     >
       <div className="ov-filters">
         <div className="ov-search">

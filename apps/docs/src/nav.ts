@@ -32,6 +32,7 @@ export const topPages: StaticPage[] = [
   { path: '/getting-started', label: { pt: 'Começando', en: 'Getting started' }, component: page(() => import('./content/pages/GettingStarted')) },
   { path: '/about', label: { pt: 'Sobre', en: 'About' }, component: page(() => import('./content/pages/About')) },
   { path: '/resources', label: { pt: 'Recursos', en: 'Resources' }, component: page(() => import('./content/pages/Resources')) },
+  { path: '/changelog', label: { pt: 'Novidades', en: 'Changelog' }, component: page(() => import('./content/pages/Changelog')) },
   { path: '/components/overview', label: { pt: 'Visão geral', en: 'Overview' }, component: page(() => import('./content/pages/ComponentsOverview')) },
 ]
 
@@ -44,5 +45,6 @@ export const navIcons: Record<string, IconName> = {
   usage: 'code',
   components: 'grid',
   resources: 'book',
+  changelog: 'sparkle',
   storybook: 'layers',
 }

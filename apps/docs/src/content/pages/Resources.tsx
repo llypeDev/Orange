@@ -1,4 +1,4 @@
-import { Button, Icon } from '@orange/ui'
+import { Button, buttonClassName, Icon } from '@orange/ui'
 import { motion, primitives, radius, space, themes, tokens, typography } from '@orange/tokens'
 import tokensCss from '@orange/tokens/tokens.css?raw'
 import { useMemo, useState } from 'react'
@@ -189,8 +189,29 @@ function TokenDownloads() {
 }
 
 export default function Resources() {
+  const { t } = useLang()
   return (
     <DocPage
+      hero={{
+        actions: (
+          <>
+            <a href={STORYBOOK_URL} target="_blank" rel="noreferrer" className={buttonClassName({ variant: 'secondary', size: 'lg' })}>
+              <span className="or-button__label">{t({ pt: 'Abrir o Storybook', en: 'Open Storybook' })}</span>
+              <span className="or-button__icon or-button__icon--end" aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
+              <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
+            </a>
+            <a href={REPO_URL} target="_blank" rel="noreferrer" className={buttonClassName({ variant: 'outline', size: 'lg' })}>
+              <span className="or-button__label">GitHub</span>
+              <span className="or-button__icon or-button__icon--end" aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
+              <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
+            </a>
+          </>
+        ),
+      }}
       eyebrow={{ pt: 'Orange', en: 'Orange' }}
       title={{ pt: 'Recursos', en: 'Resources' }}
       lead={{

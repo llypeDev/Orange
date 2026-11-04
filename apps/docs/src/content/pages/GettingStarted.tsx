@@ -1,4 +1,5 @@
-import { Button, Eyebrow, Heading, Icon, Text } from '@orange/ui'
+import { Button, buttonClassName, Eyebrow, Heading, Icon, Text } from '@orange/ui'
+import { Link } from 'react-router-dom'
 import { T, useLang } from '../../i18n'
 import {
   Bullets,
@@ -132,9 +133,34 @@ const tree = `orange/
 └── scripts/           gen-index.mjs, merge-storybook.mjs`
 
 export default function GettingStarted() {
-  const { t } = useLang()
+  const { t, to } = useLang()
   return (
     <DocPage
+      hero={{
+        actions: (
+          <>
+            <Link to={to('/components/overview')} className={buttonClassName({ variant: 'primary', size: 'lg' })}>
+              <span className="or-button__label">{t({ pt: 'Ver componentes', en: 'Browse components' })}</span>
+              <span className="or-button__icon or-button__icon--end" aria-hidden="true">
+                <Icon name="arrow-right" />
+              </span>
+            </Link>
+            <a href={STORYBOOK_URL} target="_blank" rel="noreferrer" className={buttonClassName({ variant: 'outline', size: 'lg' })}>
+              <span className="or-button__label">Storybook</span>
+              <span className="or-button__icon or-button__icon--end" aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
+              <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
+            </a>
+          </>
+        ),
+        stats: [
+          { value: '5 min', label: { pt: 'para instalar e configurar', en: 'to install and configure' } },
+          { value: '2', label: { pt: 'pacotes: tokens e ui', en: 'packages: tokens and ui' } },
+          { value: 'React 19', label: { pt: 'ou 18.2+, com TypeScript', en: 'or 18.2+, with TypeScript' } },
+          { value: 'MIT', label: { pt: 'licença open source', en: 'open source license' } },
+        ],
+      }}
       eyebrow={{ pt: 'Primeiros passos', en: 'First steps' }}
       title={{ pt: 'Começando', en: 'Getting started' }}
       lead={{

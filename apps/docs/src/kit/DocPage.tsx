@@ -47,9 +47,19 @@ export interface DocPageProps {
   toc?: boolean
   children: ReactNode
   footer?: ReactNode
+  /**
+   * Cabeçalho no padrão das páginas de topo do zop.dev: título display sobre
+   * linhas de grade, texto de apoio, ações e uma grade de números.
+   */
+  hero?: {
+    actions?: ReactNode
+    stats?: { value: ReactNode; label: Localized<string> }[]
+    /** Centraliza o hero (como o changelog do zop.dev). */
+    align?: 'start' | 'center'
+  }
 }
 
-export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, children, footer }: DocPageProps) {
+export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, children, footer, hero }: DocPageProps) {
   const { t } = useLang()
   const contentRef = useRef<HTMLDivElement>(null)
   const { items, active } = useHeadings(contentRef)
@@ -61,7 +71,10 @@ export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, childre
 
   return (
     <article className="doc-page">
-      <header className="doc-page__header">
+      <header
+        className={`doc-page__header ${hero ? 'doc-page__header--hero' : ''} ${hero?.align === 'center' ? 'doc-page__header--center' : ''}`}
+      >
+        {hero && <div className="doc-hero__grid" aria-hidden="true" />}
         {eyebrow && (
           <p className="or-eyebrow doc-page__eyebrow">
             <span className="doc-square" aria-hidden="true" />
@@ -70,7 +83,18 @@ export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, childre
         )}
         <h1 className="doc-h1">{resolvedTitle}</h1>
         {lead && <div className="doc-lead">{t(lead)}</div>}
+        {hero?.actions && <div className="doc-hero__actions">{hero.actions}</div>}
         {headerExtra}
+        {hero?.stats && (
+          <dl className="doc-hero__stats">
+            {hero.stats.map((stat, i) => (
+              <div key={i}>
+                <dt>{t(stat.label)}</dt>
+                <dd>{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </header>
       <div className={`doc-page__body ${toc && items.length > 1 ? 'doc-page__body--toc' : ''}`}>
         <div className="doc-page__content" ref={contentRef}>

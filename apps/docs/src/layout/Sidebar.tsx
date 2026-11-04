@@ -154,6 +154,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           onNavigate={onNavigate}
         />
         {top('/resources', { pt: 'Recursos', en: 'Resources' }, navIcons.resources)}
+        {top('/changelog', { pt: 'Novidades', en: 'Changelog' }, navIcons.changelog)}
         {(!q || normalize('storybook').includes(q)) && (
           <li>
             <a href={STORYBOOK_URL} className="doc-nav__item" target="_blank" rel="noreferrer">

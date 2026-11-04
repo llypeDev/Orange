@@ -1193,25 +1193,43 @@ a {
 }
 
 .doc-footer__top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--or-space-8);
-  padding-bottom: var(--or-space-8);
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 3.2fr);
+  gap: var(--or-space-10);
+  padding-bottom: var(--or-space-10);
   border-bottom: 1px solid var(--or-color-border);
 }
 
 .doc-footer__tagline {
-  max-width: 36ch;
+  max-width: 30ch;
   margin: var(--or-space-3) 0 0;
   color: var(--or-color-text-subtle);
   font-size: var(--or-text-sm);
 }
 
+/* Mapa do site em colunas, como o rodapé do zop.dev: rótulo em caixa alta
+   discreto e a lista de links logo abaixo. */
+.doc-footer__sitemap {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--or-space-8) var(--or-space-6);
+}
+
+.doc-footer__heading {
+  margin: 0 0 var(--or-space-4);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
 .doc-footer__links {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--or-space-2) var(--or-space-6);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--or-space-3);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1225,8 +1243,18 @@ a {
 
 .doc-footer__links a:hover {
   color: var(--or-color-text);
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+}
+
+/* Externos: o ↗ acompanha a última palavra quando o rótulo quebra linha. */
+.doc-footer__link.doc-footer__link--external {
+  display: inline-block;
+}
+
+.doc-footer__ext {
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: -0.15em;
+  color: var(--or-color-text-subtle);
 }
 
 .doc-footer__bottom {
@@ -1249,6 +1277,13 @@ a {
   }
   .doc-toc {
     display: none;
+  }
+  .doc-footer__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--or-space-8);
+  }
+  .doc-footer__sitemap {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1309,6 +1344,9 @@ a {
 @media (max-width: 640px) {
   .doc-logo__tag {
     display: none;
+  }
+  .doc-footer__sitemap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .doc-dodont,
   .doc-pager {
@@ -1775,6 +1813,10 @@ a {
   transform: translateX(2px);
 }
 
+.doc-footer__link--external::after {
+  content: none;
+}
+
 .doc-footer__link:hover::after,
 .doc-footer__link:focus-visible::after {
   opacity: 1;
@@ -1822,4 +1864,152 @@ a {
 /* Espaço para o botão "voltar ao topo" não cobrir o rodapé. */
 .doc-footer {
   padding-bottom: calc(var(--or-space-6) + 4.5rem);
+}
+
+/* ===========================================================================
+ * Hero de página (padrão das páginas de topo do zop.dev: /about, /changelog,
+ * /integrations, /resources/blogs) — título display sobre linhas de grade.
+ * ========================================================================= */
+
+.doc-page__header--hero {
+  position: relative;
+  isolation: isolate;
+  margin: calc(var(--or-space-12) * -1) calc(var(--or-space-14) * -1) var(--or-space-6);
+  padding: var(--or-space-16) var(--or-space-14) var(--or-space-12);
+}
+
+.doc-hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(90deg, var(--or-color-border-subtle) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  animation: or-fade-in var(--or-duration-slower) var(--or-ease-out) both;
+}
+
+.doc-page__header--hero .doc-h1 {
+  max-width: 16ch;
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.doc-page__header--hero .doc-lead {
+  max-width: 58ch;
+  margin-top: var(--or-space-6);
+  font-size: var(--or-text-lg);
+}
+
+.doc-page__header--center {
+  text-align: center;
+}
+
+.doc-page__header--center .doc-page__eyebrow,
+.doc-page__header--center .doc-h1,
+.doc-page__header--center .doc-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.doc-page__header--center .doc-hero__actions {
+  justify-content: center;
+}
+
+.doc-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-3);
+  margin-top: var(--or-space-8);
+}
+
+/* Grade de números do hero (como o /integrations do zop.dev). */
+.doc-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: var(--or-space-10) 0 0;
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
+}
+
+.doc-hero__stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: var(--or-space-2);
+  padding: var(--or-space-6) var(--or-space-5);
+}
+
+.doc-hero__stats > div + div {
+  border-left: 1px solid var(--or-color-border-strong);
+}
+
+.doc-hero__stats dd {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: var(--or-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--or-color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.doc-hero__stats dt {
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+/* Entrada em sequência, como o hero da home. */
+.doc-page__header--hero > :not(.doc-hero__grid) {
+  animation: or-reveal-up var(--or-duration-reveal) var(--or-ease-out) both;
+}
+.doc-page__header--hero > :nth-child(3) { animation-delay: 70ms; }
+.doc-page__header--hero > :nth-child(4) { animation-delay: 140ms; }
+.doc-page__header--hero > :nth-child(5) { animation-delay: 210ms; }
+.doc-page__header--hero > :nth-child(6) { animation-delay: 280ms; }
+
+/* Filtros em chips (como os filtros do blog do zop.dev): caixa alta, ativo em creme. */
+.ov-cats button {
+  height: 2.25rem;
+  padding: 0 var(--or-space-4);
+  border-color: var(--or-color-border-strong);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ov-cats button[aria-pressed='true'] {
+  border-color: var(--or-color-neutral);
+  background: var(--or-color-neutral);
+  color: var(--or-color-text-on-neutral);
+}
+
+.ov-cats button[aria-pressed='true'] span {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-page__header--hero > *,
+  .doc-hero__grid {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .doc-page__header--hero {
+    margin: calc(var(--or-space-8) * -1) calc(var(--or-space-5) * -1) var(--or-space-6);
+    padding: var(--or-space-12) var(--or-space-5) var(--or-space-10);
+  }
+  .doc-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .doc-hero__stats > div:nth-child(3) {
+    border-left: 0;
+  }
+  .doc-hero__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--or-color-border-strong);
+  }
 }
