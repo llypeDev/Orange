@@ -1,3 +1,4 @@
+import { buttonClassName } from '@orange/ui'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../i18n'
 import { DocPage } from '../../kit'
@@ -15,7 +16,7 @@ export default function NotFound() {
       toc={false}
     >
       <p style={{ marginTop: 32 }}>
-        <Link to={to('/')} className="or-button or-button--primary or-button--md" style={{ textDecoration: 'none' }}>
+        <Link to={to('/')} className={buttonClassName({ variant: 'primary', size: 'md' })} style={{ textDecoration: 'none' }}>
           <span className="or-button__label">{t({ pt: 'Voltar para o início', en: 'Back to home' })}</span>
         </Link>
       </p>

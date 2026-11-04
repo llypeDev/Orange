@@ -1,5 +1,6 @@
 import {
   BackToTop,
+  buttonClassName,
   Icon,
   useEscapeKey,
   useFocusTrap,
@@ -131,7 +132,8 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
         <LangSwitch />
         <span className="doc-header__divider" aria-hidden="true" />
         <ThemeToggle />
-        <Link to={to('/getting-started')} className="or-button or-button--primary or-button--sm doc-header__cta">
+        {/* buttonClassName importa o módulo do Button — e com ele o CSS — no chunk principal. */}
+        <Link to={to('/getting-started')} className={`${buttonClassName({ variant: 'primary', size: 'sm' })} doc-header__cta`}>
           <span className="or-button__label">{t({ pt: 'Começar', en: 'Get started' })}</span>
           <span className="or-button__icon or-button__icon--end" aria-hidden="true">
             <Icon name="arrow-right" size="sm" />
