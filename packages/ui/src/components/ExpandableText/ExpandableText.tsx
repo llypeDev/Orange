@@ -75,20 +75,22 @@ export const ExpandableText = forwardRef<HTMLDivElement, ExpandableTextProps>(fu
     const el = contentRef.current
     if (!el) return
     const measure = () => {
-      if (!expanded) {
-        setOverflowing(el.scrollHeight > el.clientHeight + 1)
-        return
-      }
-      // Expandido: compara a altura total com a altura de `lines` linhas.
+      // Compara a altura total do texto (scrollHeight inclui as linhas cortadas)
+      // com `lines` linhas — vale em qualquer estado, inclusive no meio da
+      // transição de altura.
       const lineHeight = lineHeightOf(el)
-      if (!Number.isNaN(lineHeight) && lineHeight > 0) setOverflowing(el.scrollHeight > lineHeight * clamp + 1)
+      if (Number.isFinite(lineHeight) && lineHeight > 0) {
+        setOverflowing(el.scrollHeight > lineHeight * clamp + 1)
+      } else if (!unclamped) {
+        setOverflowing(el.scrollHeight > el.clientHeight + 1)
+      }
     }
     measure()
     if (typeof ResizeObserver === 'undefined') return
     const observer = new ResizeObserver(measure)
     observer.observe(el)
     return () => observer.disconnect()
-  }, [expanded, clamp, children])
+  }, [unclamped, clamp, children])
 
   // Ao terminar de recolher um texto longo, mantém o botão (com foco) na tela.
   const wasUnclamped = useRef(unclamped)

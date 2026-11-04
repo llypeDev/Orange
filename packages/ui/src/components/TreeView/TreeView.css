@@ -22,7 +22,10 @@
 }
 
 /* Expandir/recolher: altura via grid 0fr → 1fr + opacidade. A saída é mais
-   curta que a entrada; grupos abertos na montagem não animam (--static). */
+   curta que a entrada; grupos abertos na montagem não animam (--static).
+   Em movimento reduzido os tokens zeram a duração e o `forwards` deixa o
+   grupo recolhido na hora (sem `animation: none`, que o manteria visível
+   até o usePresence desmontá-lo). */
 .or-tree__collapse {
   display: grid;
   grid-template-rows: 1fr;
@@ -213,12 +216,6 @@
 
 .or-tree__item--disabled:hover {
   background: transparent;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .or-tree__collapse[data-state] {
-    animation: none;
-  }
 }
 
 @media (forced-colors: active) {

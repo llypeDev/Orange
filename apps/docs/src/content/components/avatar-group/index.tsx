@@ -1,4 +1,4 @@
-import { Bullets, Code, ComponentPage, Example, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
@@ -88,6 +88,15 @@ export default function AvatarGroupPage() {
         >
           <OnSurface />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover ou foco em um avatar', en: 'Hover or focus on an avatar' }, description: { pt: 'Sobe 4px (--or-distance-lift), fica acima dos vizinhos e ganha a sombra deslocada laranja. --or-duration-medium (250ms), --or-ease-out.', en: 'Lifts 4px (--or-distance-lift), moves above its neighbors and gets the orange offset shadow. --or-duration-medium (250ms), --or-ease-out.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'Sem deslocamento; a sombra laranja continua indicando o destaque.', en: 'No movement; the orange shadow still marks the highlight.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

@@ -103,8 +103,8 @@ export default function CardPage() {
         <Example
           title={{ pt: 'Cartão clicável', en: 'Clickable card' }}
           description={{
-            pt: 'Com interactive, o link do título se estende por todo o cartão e o hover ganha a sombra laranja. O botão de salvar continua sendo um alvo independente.',
-            en: 'With interactive, the title link stretches over the whole card and hover gets the orange shadow. The save button remains an independent target.',
+            pt: 'Com interactive, o link do título se estende por todo o cartão: no hover ou foco ele sobe 4px com a sombra laranja e a seta desliza. O botão de salvar continua sendo um alvo independente.',
+            en: 'With interactive, the title link stretches over the whole card: on hover or focus it lifts 4px with the orange shadow and the arrow slides. The save button remains an independent target.',
           }}
           code={InteractiveCode}
           align="stretch"
@@ -121,6 +121,17 @@ export default function CardPage() {
         >
           <Product />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover ou foco no cartão', en: 'Hover or focus on the card' }, description: { pt: 'Sobe 4px e ganha a sombra deslocada 0 8px 0 -4px laranja; a borda clareia. --or-duration-medium (250ms), --or-ease-out.', en: 'Lifts 4px and gets the offset 0 8px 0 -4px orange shadow; the border lightens. --or-duration-medium (250ms), --or-ease-out.' } },
+            { term: { pt: 'Pressionar o cartão', en: 'Pressing the card' }, description: { pt: 'Afunda metade da elevação e a sombra encolhe. --or-duration-press (90ms). Cliques em botões internos não afundam o cartão.', en: 'Sinks half of the lift and the shadow shrinks. --or-duration-press (90ms). Clicks on inner buttons do not sink the card.' } },
+            { term: { pt: 'Seta do CardLink', en: 'CardLink arrow' }, description: { pt: 'Desliza 4px (--or-distance-sm) e fica laranja no hover/foco. 250ms, --or-ease-out.', en: 'Slides 4px (--or-distance-sm) and turns orange on hover/focus. 250ms, --or-ease-out.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'Sem deslocamento: a sombra e as cores continuam indicando o estado.', en: 'No movement: the shadow and colors still indicate the state.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">
@@ -152,6 +163,7 @@ export default function CardPage() {
             { name: 'ratio', type: 'string | number', default: "'16/9'", description: { pt: 'CardMedia: proporção da área de mídia.', en: 'CardMedia: media aspect ratio.' } },
             { name: 'divider', type: 'boolean', default: 'false', description: { pt: 'CardFooter: linha acima do rodapé.', en: 'CardFooter: line above the footer.' } },
             { name: 'as', type: 'ElementType', default: "'a'", description: { pt: 'CardLink: componente de link do roteador.', en: "CardLink: your router's link component." } },
+            { name: 'arrow', type: 'boolean', default: 'false', description: { pt: 'CardLink: seta que desliza 4px no hover/foco (via linkProps no CardHeader).', en: 'CardLink: arrow that slides 4px on hover/focus (via linkProps on CardHeader).' } },
           ]}
         />
       </Section>

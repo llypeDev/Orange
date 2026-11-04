@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { Icon } from '../../icons'
 import { Button } from '../Button'
 import { Banner } from './Banner'
@@ -94,5 +95,35 @@ export const AccentDismissible: Story = {
   args: {
     ...Accent.args,
     dismissible: true,
+  },
+}
+
+/** Situação em andamento: o anel pulsa em volta do ícone (or-pulse, 2.4s). */
+export const LivePulse: Story = {
+  args: {
+    tone: 'danger',
+    live: true,
+    pulse: true,
+    title: 'Incidente em andamento',
+    children: 'A emissão de NF-e está instável desde 14h. Atualizamos a cada 15 minutos.',
+    action: <a href="#status">Acompanhar status</a>,
+  },
+}
+
+/** Feche e reabra para ver a saída (recolhe a altura) e a entrada (desce 8px). */
+export const EnterAndExit: Story = {
+  render: function EnterAndExitStory(args) {
+    const [open, setOpen] = useState(true)
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Banner {...args} open={open} dismissible onDismiss={() => setOpen(false)} />
+        <p style={{ margin: 0, padding: '0 16px' }}>Conteúdo da página logo abaixo do aviso.</p>
+        <div style={{ padding: '0 16px' }}>
+          <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
+            Mostrar aviso
+          </Button>
+        </div>
+      </div>
+    )
   },
 }

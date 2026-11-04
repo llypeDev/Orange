@@ -91,8 +91,8 @@ export default function StatPage() {
         <Example
           title={{ pt: 'Painel com StatGroup', en: 'Dashboard with StatGroup' }}
           description={{
-            pt: 'Grade com divisórias de 1px. Reflui para 2 colunas e depois 1 conforme a largura do contêiner.',
-            en: 'A grid with 1px dividers. Reflows to 2 columns, then 1, based on the container width.',
+            pt: 'Grade com divisórias de 1px que reflui para 2 e 1 coluna. Com animate, cada número conta até o valor ao entrar na tela.',
+            en: 'A grid with 1px dividers that reflows to 2 and 1 columns. With animate, each number counts up when it enters the screen.',
           }}
           code={DashboardCode}
           align="stretch"
@@ -123,6 +123,17 @@ export default function StatPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'animate', en: 'animate' }, description: { pt: 'Conta de zero até o valor quando o Stat entra na tela (useInView + useCountUp, 1,2s com desaceleração). Todos os números do texto são interpolados com os separadores do idioma.', en: 'Counts from zero to the value when the Stat enters the screen (useInView + useCountUp, 1.2s with deceleration). Every number in the text is interpolated with the locale separators.' } },
+            { term: { pt: 'Seta da variação', en: 'Change arrow' }, description: { pt: 'Entra pela direção da tendência (de baixo no aumento, de cima na queda) com --or-ease-spring, após --or-duration-slow (400ms).', en: 'Enters from the trend direction (from below on increase, from above on decrease) with --or-ease-spring, after --or-duration-slow (400ms).' } },
+            { term: { pt: 'Leitores de tela', en: 'Screen readers' }, description: { pt: 'O número animado é aria-hidden; o valor final fica no lugar (transparente) e é o único lido.', en: 'The animated number is aria-hidden; the final value stays in place (transparent) and is the only one read.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'Mostra o valor final imediatamente, sem contagem.', en: 'Shows the final value immediately, without counting.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Stat', en: 'Stat' }}
@@ -134,6 +145,8 @@ export default function StatPage() {
             { name: 'deltaTone', type: "'positive' | 'negative' | 'neutral'", description: { pt: 'Se a variação é boa ou ruim. Padrão: segue trend.', en: 'Whether the change is good or bad. Default: follows trend.' } },
             { name: 'help', type: 'ReactNode', description: { pt: 'Contexto da métrica.', en: 'Metric context.' } },
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Tamanho do número.', en: 'Number size.' } },
+            { name: 'animate', type: 'boolean', default: 'false', description: { pt: 'Conta até o valor ao entrar na tela (leitores de tela ouvem só o valor final).', en: 'Counts up to the value when entering the screen (screen readers only hear the final value).' } },
+            { name: 'format', type: '(value: number) => string', default: 'Intl.NumberFormat', description: { pt: 'Formata value numérico.', en: 'Formats a numeric value.' } },
           ]}
         />
         <PropsTable

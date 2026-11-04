@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { iconNames } from '../../icons'
 import { Button } from '../Button'
 import { EmptyState } from './EmptyState'
@@ -71,4 +72,19 @@ export const Compact: Story = {
 
 export const WithoutIllustration: Story = {
   args: { illustration: false },
+}
+
+/** Remonte para ver os quadrados caindo no lugar (or-piece-drop escalonado). */
+export const Entrance: Story = {
+  render: function EntranceStory(args) {
+    const [round, setRound] = useState(0)
+    return (
+      <div style={{ display: 'grid', justifyItems: 'center', gap: 16 }}>
+        <EmptyState key={round} {...args} />
+        <Button size="sm" variant="ghost" onClick={() => setRound((r) => r + 1)}>
+          Repetir animação
+        </Button>
+      </div>
+    )
+  },
 }

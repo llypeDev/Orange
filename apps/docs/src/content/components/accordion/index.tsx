@@ -145,6 +145,18 @@ export default function AccordionPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir', en: 'Open' }, description: { pt: 'Altura via grid-template-rows 0fr → 1fr em --or-duration-slow (400ms), --or-ease-out; o conteúdo entra com fade e 4px de deslocamento.', en: 'Height via grid-template-rows 0fr → 1fr in --or-duration-slow (400ms), --or-ease-out; content fades in with a 4px offset.' } },
+            { term: { pt: 'Fechar', en: 'Close' }, description: { pt: 'Mais curto: --or-duration-medium (250ms), --or-ease-in-out. O painel só recebe hidden quando a transição termina.', en: 'Shorter: --or-duration-medium (250ms), --or-ease-in-out. The panel only gets hidden when the transition ends.' } },
+            { term: { pt: 'Ícone +/−', en: '+/− icon' }, description: { pt: 'A caixa gira 180° e a barra vertical deita, formando "−"; borda e fundo laranja. 250ms, --or-ease-spring.', en: 'The box turns 180° and the vertical bar lies down, forming "−"; orange border and fill. 250ms, --or-ease-spring.' } },
+            { term: { pt: 'Cabeçalho aberto e hover', en: 'Open header and hover' }, description: { pt: 'Texto do cabeçalho aberto em laranja; fundo de hover. --or-duration-fast (160ms).', en: 'Open header text in orange; hover background. --or-duration-fast (160ms).' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'O ícone encolhe 12% em --or-duration-press (90ms).', en: 'The icon shrinks 12% in --or-duration-press (90ms).' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Accordion', en: 'Accordion' }}

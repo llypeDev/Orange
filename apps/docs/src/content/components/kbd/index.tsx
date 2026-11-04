@@ -8,6 +8,8 @@ import MacSymbols from './examples/MacSymbols'
 import MacSymbolsCode from './examples/MacSymbols?raw'
 import ShortcutList from './examples/ShortcutList'
 import ShortcutListCode from './examples/ShortcutList?raw'
+import Pressed from './examples/Pressed'
+import PressedCode from './examples/Pressed?raw'
 import { meta } from './meta'
 
 export default function KbdPage() {
@@ -99,6 +101,16 @@ export default function KbdPage() {
           <MacSymbols />
         </Example>
         <Example
+          title={{ pt: 'Teclas pressionadas', en: 'Pressed keys' }}
+          description={{
+            pt: 'pressed aceita true ou uma lista de teclas. Clique no campo e pressione Shift + N: cada tecla afunda enquanto está pressionada.',
+            en: 'pressed takes true or a list of keys. Click the field and press Shift + N: each key sinks while it is held.',
+          }}
+          code={PressedCode}
+        >
+          <Pressed />
+        </Example>
+        <Example
           title={{ pt: 'Lista de atalhos', en: 'Shortcut list' }}
           description={{
             pt: 'Uma tabela de atalhos que alterna entre Windows/Linux e macOS com o mesmo array de teclas.',
@@ -110,6 +122,15 @@ export default function KbdPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'pressed', en: 'pressed' }, description: { pt: 'A tecla desce 1px e a sombra inferior some (a borda de 2px vira 1px), com fundo laranja suave. --or-duration-press (90ms).', en: 'The key moves down 1px and its bottom shadow disappears (the 2px edge becomes 1px), with a soft orange fill. --or-duration-press (90ms).' } },
+            { term: { pt: 'Soltar', en: 'Release' }, description: { pt: 'Volta à posição com --or-ease-bounce em --or-duration-fast (160ms).', en: 'Returns into place with --or-ease-bounce in --or-duration-fast (160ms).' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[
@@ -117,6 +138,7 @@ export default function KbdPage() {
             { name: 'separator', type: 'ReactNode', default: "'+'", description: { pt: <>Separador visual entre teclas. Use <Code>""</Code> para nenhum.</>, en: <>Visual separator between keys. Use <Code>""</Code> for none.</> } },
             { name: 'symbols', type: 'boolean', default: 'false', description: { pt: 'Símbolos do macOS para modificadores.', en: 'macOS symbols for modifiers.' } },
             { name: 'size', type: "'sm' | 'md'", default: "'md'", description: { pt: 'Altura de 20 ou 24px.', en: '20 or 24px height.' } },
+            { name: 'pressed', type: 'boolean | string[]', default: 'false', description: { pt: 'Teclas exibidas como pressionadas (todas ou as listadas).', en: 'Keys shown as pressed (all or the listed ones).' } },
             { name: '...rest', type: 'HTMLAttributes<HTMLElement>', description: { pt: 'Atributos nativos do <kbd> raiz.', en: 'Native attributes of the root <kbd>.' } },
           ]}
         />

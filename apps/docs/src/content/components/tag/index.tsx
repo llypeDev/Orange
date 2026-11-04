@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -96,6 +97,16 @@ export default function TagPage() {
         >
           <Removable />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Remover', en: 'Remove' }, description: { pt: 'A tag encolhe para 90% e some em --or-duration-fast (160ms), --or-ease-in-out; onRemove é chamado ao final (na hora, em movimento reduzido).', en: 'The tag shrinks to 90% and fades in --or-duration-fast (160ms), --or-ease-in-out; onRemove is called at the end (immediately with reduced motion).' } },
+            { term: { pt: 'Pressionar o "x"', en: 'Pressing the "x"' }, description: { pt: 'O ícone encolhe em --or-duration-press (90ms) e volta com --or-ease-bounce.', en: 'The icon shrinks in --or-duration-press (90ms) and springs back with --or-ease-bounce.' } },
+            { term: { pt: 'Hover', en: 'Hover' }, description: { pt: 'Fundo e cor do botão de remover em --or-duration-fast (160ms).', en: 'Remove button background and color in --or-duration-fast (160ms).' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

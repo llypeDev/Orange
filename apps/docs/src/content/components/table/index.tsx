@@ -168,6 +168,17 @@ export default function TablePage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover de linha', en: 'Row hover' }, description: { pt: 'Fundo da linha em --or-duration-fast (160ms). Em linhas clicáveis, uma barra laranja de 2px entra pela esquerda e o texto principal ganha sublinhado que cresce (250ms).', en: 'Row background in --or-duration-fast (160ms). On clickable rows, a 2px orange bar enters from the left and the main text gets a growing underline (250ms).' } },
+            { term: { pt: 'Ordenar', en: 'Sort' }, description: { pt: 'Crossfade entre o ícone neutro e a seta (160ms); a seta gira 180° entre crescente e decrescente com --or-ease-spring (250ms). O botão afunda 1px ao clicar (90ms).', en: 'Crossfade between the neutral icon and the arrow (160ms); the arrow turns 180° between ascending and descending with --or-ease-spring (250ms). The button sinks 1px on click (90ms).' } },
+            { term: { pt: 'Selecionar', en: 'Select' }, description: { pt: 'Fundo da linha em 160ms. A caixa encolhe ao pressionar e volta com --or-ease-bounce; o check é desenhado (stroke-dashoffset, 250ms) e o traço indeterminado cresce com spring.', en: 'Row background in 160ms. The box shrinks on press and springs back with --or-ease-bounce; the check is drawn (stroke-dashoffset, 250ms) and the indeterminate dash grows with spring.' } },
+            { term: { pt: 'Estado vazio', en: 'Empty state' }, description: { pt: 'Entra com fade (250ms).', en: 'Fades in (250ms).' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Table', en: 'Table' }}

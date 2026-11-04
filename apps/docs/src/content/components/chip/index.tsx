@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -96,6 +97,16 @@ export default function ChipPage() {
         >
           <WithIcons />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Selecionar', en: 'Select' }, description: { pt: 'O check entra com or-scale-in em --or-duration-medium (250ms), --or-ease-bounce (só depois de uma interação, não no carregamento).', en: 'The check enters with or-scale-in in --or-duration-medium (250ms), --or-ease-bounce (only after an interaction, not on load).' } },
+            { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'Afunda 1px e reduz para 98,5% em --or-duration-press (90ms).', en: 'Sinks 1px and scales to 98.5% in --or-duration-press (90ms).' } },
+            { term: { pt: 'Hover e seleção', en: 'Hover and selection' }, description: { pt: 'Borda, fundo e cor transicionam em --or-duration-fast (160ms).', en: 'Border, background and color transition in --or-duration-fast (160ms).' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

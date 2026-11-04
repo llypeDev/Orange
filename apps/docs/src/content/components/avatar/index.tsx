@@ -100,8 +100,8 @@ export default function AvatarPage() {
         <Example
           title={{ pt: 'Presença', en: 'Presence' }}
           description={{
-            pt: 'online, away, busy e offline. O texto do status entra no nome acessível (ou em texto oculto, com alt=""). Use statusLabel para detalhar.',
-            en: 'online, away, busy and offline. The status text joins the accessible name (or hidden text, with alt=""). Use statusLabel for details.',
+            pt: 'online, away, busy e offline. O texto do status entra no nome acessível (ou em texto oculto, com alt=""). Use statusLabel para detalhar e pulse para o anel "ao vivo".',
+            en: 'online, away, busy and offline. The status text joins the accessible name (or hidden text, with alt=""). Use statusLabel for details and pulse for the "live" ring.',
           }}
           code={PresenceCode}
         >
@@ -119,6 +119,16 @@ export default function AvatarPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Foto carregada', en: 'Photo loaded' }, description: { pt: 'Fade e escala 1.06 → 1 sobre as iniciais. --or-duration-slow (400ms), --or-ease-out.', en: 'Fade and 1.06 → 1 scale over the initials. --or-duration-slow (400ms), --or-ease-out.' } },
+            { term: { pt: 'Mudança de status', en: 'Status change' }, description: { pt: 'A cor do indicador transiciona em --or-duration-medium (250ms).', en: 'The indicator color transitions in --or-duration-medium (250ms).' } },
+            { term: { pt: 'pulse', en: 'pulse' }, description: { pt: 'Anel pulsante em box-shadow (or-pulse-ring), --or-duration-loop (2.4s) em loop, na cor do status. Só para estados "ao vivo"; desligado em movimento reduzido.', en: 'Pulsing box-shadow ring (or-pulse-ring), --or-duration-loop (2.4s) looping, in the status color. Only for "live" states; off with reduced motion.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[
@@ -129,6 +139,7 @@ export default function AvatarPage() {
             { name: 'shape', type: "'square' | 'circle'", default: "'square'", description: { pt: 'Forma.', en: 'Shape.' } },
             { name: 'status', type: "'online' | 'away' | 'busy' | 'offline'", description: { pt: 'Indicador de presença.', en: 'Presence indicator.' } },
             { name: 'statusLabel', type: 'string', description: { pt: 'Substitui o texto do status.', en: 'Overrides the status text.' } },
+            { name: 'pulse', type: 'boolean', default: 'false', description: { pt: 'Anel pulsante no status (exceto offline).', en: 'Pulsing ring on the status (except offline).' } },
             { name: 'icon', type: 'ReactNode', default: '<Icon name="user" />', description: { pt: 'Ícone quando não há foto nem nome.', en: 'Icon when there is no photo or name.' } },
             { name: 'imgProps', type: 'ImgHTMLAttributes', description: { pt: <>Atributos da <Code>&lt;img&gt;</Code> (ex.: <Code>loading="lazy"</Code>).</>, en: <><Code>&lt;img&gt;</Code> attributes (e.g. <Code>loading="lazy"</Code>).</> } },
             { name: '...rest', type: 'HTMLAttributes<HTMLSpanElement>', description: { pt: 'Atributos nativos do <span> raiz.', en: 'Native attributes of the root <span>.' } },

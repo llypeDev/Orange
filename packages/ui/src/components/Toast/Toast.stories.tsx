@@ -125,3 +125,20 @@ export const TopCenter: Story = {
     </ToastProvider>
   ),
 }
+
+/** Barra de tempo restante (showProgress): pausa com o mouse em cima ou com foco. */
+export const WithProgress: Story = {
+  render: () => (
+    <ToastProvider showProgress duration={6000}>
+      <Demo />
+    </ToastProvider>
+  ),
+}
+
+export const BottomCenter: Story = {
+  render: () => (
+    <ToastProvider position="bottom-center">
+      <Demo />
+    </ToastProvider>
+  ),
+}

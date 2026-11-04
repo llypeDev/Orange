@@ -1,7 +1,9 @@
-import { Bullets, Code, ComponentPage, DoDont, Example, PropsTable, Section, WcagList } from '../../../kit'
+import { Bullets, Code, ComponentPage, DefinitionTable, DoDont, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
 import { Badge, Button, Icon } from '@orange/ui'
 import Inline from './examples/Inline'
+import LiveCount from './examples/LiveCount'
+import LiveCountCode from './examples/LiveCount?raw'
 import InlineCode from './examples/Inline?raw'
 import OnAvatar from './examples/OnAvatar'
 import OnAvatarCode from './examples/OnAvatar?raw'
@@ -84,6 +86,16 @@ export default function BadgePage() {
           <Overlay />
         </Example>
         <Example
+          title={{ pt: 'Contagem ao vivo', en: 'Live count' }}
+          description={{
+            pt: 'O badge surge com um pop, salta quando a contagem muda e encolhe ao zerar. pulse liga o anel "ao vivo" no ponto.',
+            en: 'The badge pops in, bumps when the count changes and shrinks away at zero. pulse turns on the "live" ring on the dot.',
+          }}
+          code={LiveCountCode}
+        >
+          <LiveCount />
+        </Example>
+        <Example
           title={{ pt: 'Inline em navegação', en: 'Inline in navigation' }}
           description={{
             pt: 'Sem children, o badge acompanha o texto. Com count={0}, ele some (use showZero para manter).',
@@ -116,6 +128,17 @@ export default function BadgePage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Surgir (0 → N)', en: 'Appear (0 → N)' }, description: { pt: 'Pop de escala 0.4 → 1 com fade, --or-duration-medium (250ms), --or-ease-bounce. A primeira renderização da página não anima.', en: 'Scale pop 0.4 → 1 with fade, --or-duration-medium (250ms), --or-ease-bounce. The first page render does not animate.' } },
+            { term: { pt: 'Contagem muda', en: 'Count changes' }, description: { pt: '"Salto" de escala 0.7 → 1 sem piscar, 250ms, --or-ease-bounce.', en: 'Scale "bump" 0.7 → 1 without flashing, 250ms, --or-ease-bounce.' } },
+            { term: { pt: 'Sumir (N → 0)', en: 'Disappear (N → 0)' }, description: { pt: 'Encolhe e some em --or-duration-fast (160ms), --or-ease-in-out, mantendo o último número durante a saída.', en: 'Shrinks and fades in --or-duration-fast (160ms), --or-ease-in-out, keeping the last number during the exit.' } },
+            { term: { pt: 'pulse', en: 'pulse' }, description: { pt: 'Anel pulsante (or-pulse-ring) em --or-duration-loop (2.4s). Use para status ao vivo; desligado em movimento reduzido.', en: 'Pulsing ring (or-pulse-ring) in --or-duration-loop (2.4s). Use for live status; off with reduced motion.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[
@@ -127,6 +150,7 @@ export default function BadgePage() {
             { name: 'size', type: "'sm' | 'md'", default: "'md'", description: { pt: 'Altura de 16 ou 20px.', en: '16 or 20px height.' } },
             { name: 'showZero', type: 'boolean', default: 'false', description: { pt: 'Mantém o badge com count 0.', en: 'Keeps the badge with count 0.' } },
             { name: 'overlap', type: "'square' | 'circle'", default: "'square'", description: { pt: 'Forma do elemento ancorado.', en: 'Shape of the anchored element.' } },
+            { name: 'pulse', type: 'boolean', default: 'false', description: { pt: 'Anel pulsante "ao vivo".', en: 'Pulsing "live" ring.' } },
             { name: 'children', type: 'ReactElement', description: { pt: 'Elemento sobre o qual o badge é posicionado.', en: 'Element the badge is positioned over.' } },
             { name: '...rest', type: 'HTMLAttributes<HTMLSpanElement>', description: { pt: 'Atributos do indicador.', en: 'Indicator attributes.' } },
           ]}

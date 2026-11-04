@@ -157,11 +157,15 @@ describe('MultiSelect', () => {
 
   it('movimento: só chips adicionados depois da montagem animam a entrada', async () => {
     const { user, input } = setup({ defaultValue: ['react'] })
-    const initial = screen.getByText('React', { selector: '.or-multi-select__chip-label' }).closest('li')
+    const initial = screen
+      .getByText('React', { selector: '.or-multi-select__chip-label' })
+      .closest('li')
     expect(initial).not.toHaveAttribute('data-enter')
     input.focus()
     await user.keyboard('{ArrowDown}{ArrowDown}{Enter}')
-    const added = screen.getByText('TypeScript', { selector: '.or-multi-select__chip-label' }).closest('li')
+    const added = screen
+      .getByText('TypeScript', { selector: '.or-multi-select__chip-label' })
+      .closest('li')
     expect(added).toHaveAttribute('data-enter')
     // o check da opção marcada com a lista aberta ganha o "pop"
     expect(screen.getByRole('option', { name: 'TypeScript' })).toHaveAttribute('data-pop')
