@@ -80,6 +80,24 @@ export default function SkeletonPage() {
           />
         </p>
         <CodeBlock code={patternCode} language="tsx" />
+        <p>
+          <T
+            pt={
+              <>
+                Com <Code>loaded</Code>, o próprio Skeleton vira o contêiner da troca: recebe{' '}
+                <Code>aria-busy</Code> enquanto carrega e faz crossfade para o conteúdo real. O
+                anúncio de início e fim continua numa região <Code>role="status"</Code> fora dele.
+              </>
+            }
+            en={
+              <>
+                With <Code>loaded</Code>, Skeleton itself becomes the swap container: it gets{' '}
+                <Code>aria-busy</Code> while loading and crossfades to the real content. Start and
+                end announcements still go in a <Code>role="status"</Code> region outside it.
+              </>
+            }
+          />
+        </p>
       </Section>
 
       <Section title={{ pt: 'Exemplos', en: 'Examples' }}>

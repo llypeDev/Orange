@@ -29,6 +29,7 @@ export default function Presence() {
             src={person.photo}
             status={person.status}
             statusLabel={person.statusLabel}
+            pulse={person.status === 'online'}
           />
           <span style={{ display: 'grid' }}>
             <strong style={{ fontWeight: 600 }}>{person.name}</strong>

@@ -34,6 +34,7 @@ export default function Interactive() {
             eyebrow={article.type}
             title={article.title}
             href={`#${article.id}`}
+            linkProps={{ arrow: true }}
             headingLevel={4}
             actions={
               <Button

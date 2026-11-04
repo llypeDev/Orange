@@ -12,7 +12,14 @@ export default function Swap() {
 
   return (
     <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
-      <article style={{ display: 'grid', gap: 12, padding: 20, border: '1px solid var(--or-color-border)' }}>
+      <article
+        style={{
+          display: 'grid',
+          gap: 12,
+          padding: 20,
+          border: '1px solid var(--or-color-border)',
+        }}
+      >
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           {/* loaded: crossfade do placeholder para o conteúdo real */}
           <Skeleton variant="circle" width={40} loaded={loaded}>
