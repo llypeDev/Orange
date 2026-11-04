@@ -6,9 +6,10 @@ import { orangeTheme } from './theme'
 
 const withOrangeProvider: Decorator = (Story, context) => {
   const locale = (context.globals.locale as string) ?? 'pt-BR'
+  const motion = (context.globals.motion as string) ?? 'full'
   return (
     <OrangeProvider locale={locale} themeTarget="scoped" theme={(context.globals.theme as 'dark' | 'light') ?? 'dark'}>
-      <div style={{ padding: 4 }}>
+      <div style={{ padding: 4 }} data-motion={motion}>
         <Story />
       </div>
     </OrangeProvider>
@@ -29,9 +30,22 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    motion: {
+      description: 'Simula prefers-reduced-motion nas stories',
+      toolbar: {
+        title: 'Movimento',
+        icon: 'lightning',
+        items: [
+          { value: 'full', title: 'Movimento completo' },
+          { value: 'reduced', title: 'Movimento reduzido' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     locale: 'pt-BR',
+    motion: 'full',
   },
   decorators: [
     withOrangeProvider,
