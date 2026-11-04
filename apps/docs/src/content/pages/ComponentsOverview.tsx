@@ -89,7 +89,8 @@ export default function ComponentsOverview() {
               <span className="ov-card__name">{m.name}</span>
               <span className="ov-card__desc">{t(m.description)}</span>
               <span className="ov-card__more" aria-hidden="true">
-                {t({ pt: 'Ver documentação', en: 'View docs' })} <span className="or-nudge__icon">→</span>
+                {t({ pt: 'Ver documentação', en: 'View docs' })}{' '}
+                <Icon name="arrow-right" size="xs" className="or-nudge__icon" />
               </span>
             </Link>
           </li>

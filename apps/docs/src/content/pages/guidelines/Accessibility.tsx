@@ -93,7 +93,7 @@ function ContrastTable() {
   ]
   return (
     <TableWrap label={{ pt: 'Contraste dos pares semânticos', en: 'Semantic pair contrast' }}>
-      <table className="doc-table">
+      <table className="doc-table guide-contrast-pairs">
         <thead>
           <tr>
             <th scope="col">
@@ -108,8 +108,12 @@ function ContrastTable() {
           {rows.map(([fg, bg, kind]) => (
             <tr key={`${fg}-${bg}`}>
               <th scope="row">
+                {/* Cada token fica inteiro (nowrap); a linha só quebra nos espaços em volta
+                    da barra — assim nomes longos como "text-inverse / surface-inverse"
+                    ocupam duas linhas em vez de alargar a tabela além da coluna. */}
                 <span className="guide-mono">
-                  {fg} <span className="guide-muted">/</span> {bg}
+                  <span className="guide-nowrap">{fg}</span> <span className="guide-muted">/</span>{' '}
+                  <span className="guide-nowrap">{bg}</span>
                 </span>
               </th>
               <td>

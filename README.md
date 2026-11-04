@@ -38,8 +38,8 @@ O Orange se move como o zop.dev: **rápido, funcional e geométrico** — e tudo
 
 - **Tokens** (`@orange/tokens`): durações `press` (90ms) · `fast` · `medium` · `slow` · `reveal` ·
   `loop`; curvas `out`, `in-out`, `spring`, `bounce`; distâncias `sm` · `md` · `lg` · `lift`; `stagger`.
-- **Utilitários** (`motion.css`): `or-press` (afundar no clique), `or-lift` (subir 4px com sombra
-  deslocada), `or-nudge` (seta que desliza), `or-underline`, `or-collapse` (altura 0fr → 1fr),
+- **Utilitários** (`motion.css`): `or-press` (afundar no clique), `or-lift` (subir 4px com sombra sólida
+  na base e barra de acento descendo pela borda esquerda, como os cartões do zop.dev), `or-nudge` (seta que desliza), `or-underline`, `or-collapse` (altura 0fr → 1fr),
   `or-pulse`, `or-shake`, `or-motion-pop/drop/fade` (entrada e saída por `data-state`).
 - **Hooks**: `usePresence` (animação de saída antes de desmontar), `useInView`, `useCountUp`,
   `useScrollDirection`; componente **`Reveal`** para revelação no scroll com escalonamento.

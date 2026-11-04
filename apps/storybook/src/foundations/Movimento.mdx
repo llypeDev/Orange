@@ -149,7 +149,7 @@ Passe o mouse, use `Tab` e clique nas demonstrações. Todas usam as classes de 
 | --- | --- |
 | Entrada/saída de sobreposições | `usePresence(open)` + `data-state` + `or-motion-pop` / `or-motion-drop` / `or-motion-fade` |
 | Pressionar | `:active` → `translateY(1px) scale(0.985)` em `--or-duration-press` (`or-press`) |
-| Elevar | `translateY(var(--or-distance-lift))` + `box-shadow: 0 8px 0 -4px` (`or-lift`) |
+| Elevar | `translateY(var(--or-distance-lift))` + `box-shadow: var(--or-shadow-lift)` + barra de acento que desce pela borda esquerda (`scaleY` 0 → 1) + ponte de 12px contra tremor (`or-lift`) |
 | Seta que empurra | `or-nudge` + `or-nudge__icon` (4px) |
 | Sublinhado | `or-underline` (cresce da esquerda via `background-size`) |
 | Expandir/recolher | `or-collapse` + `data-state` (`grid-template-rows` 0fr → 1fr) |

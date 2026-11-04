@@ -320,13 +320,21 @@ export default function RevealPage() {
                 pt: (
                   <>
                     <Code>IntersectionObserver</Code> com <Code>rootMargin</Code> −60px na base e{' '}
-                    <Code>threshold</Code> 0.08; por padrão, uma única vez.
+                    <Code>threshold</Code> 0: revela assim que o topo entra na tela, mesmo em
+                    contêineres mais altos que a viewport (uma grade longa no celular). Por padrão,
+                    uma única vez. Quando a entrada termina, o elemento ganha{' '}
+                    <Code>data-reveal-settled</Code> e os filhos voltam às próprias transições
+                    (o hover de um cartão não herda o atraso escalonado).
                   </>
                 ),
                 en: (
                   <>
                     <Code>IntersectionObserver</Code> with a −60px bottom <Code>rootMargin</Code>{' '}
-                    and <Code>threshold</Code> 0.08; once by default.
+                    and <Code>threshold</Code> 0: it reveals as soon as the top enters the screen,
+                    even for containers taller than the viewport (a long grid on mobile). Once by
+                    default. When the entrance ends the element gets{' '}
+                    <Code>data-reveal-settled</Code> and children go back to their own transitions
+                    (a card hover does not inherit the stagger delay).
                   </>
                 ),
               },

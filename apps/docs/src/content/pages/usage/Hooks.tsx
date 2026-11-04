@@ -69,7 +69,10 @@ function HookDoc({ name, signature, description, params, returns, example, usage
       )}
       {returns && (
         <p className="guide-hook__returns">
-          <span className="or-eyebrow">{t({ pt: 'Retorna', en: 'Returns' })}</span> {t(returns)}
+          <span className="or-eyebrow">{t({ pt: 'Retorna', en: 'Returns' })}</span>{' '}
+          {/* Um único span: o <p> é flex, e cada nó de texto/<Code> solto viraria um item
+              separado com gap — a frase se desmancharia (inclusive antes das vírgulas). */}
+          <span className="guide-hook__returns-text">{t(returns)}</span>
         </p>
       )}
       {usage && <CodeBlock code={usage} language="tsx" title={t({ pt: 'uso', en: 'usage' })} />}

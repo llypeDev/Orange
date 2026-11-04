@@ -121,10 +121,10 @@ export default function PaperPage() {
       <Section title={{ pt: 'Movimento', en: 'Motion' }}>
         <DefinitionTable
           rows={[
-            { term: { pt: 'Hover e foco (interactive)', en: 'Hover and focus (interactive)' }, description: { pt: 'Sobe 4px (--or-distance-lift) com sombra laranja deslocada — 250ms, ease-out. Vale também para o foco de um link ou botão interno.', en: 'Rises 4px (--or-distance-lift) with an offset orange shadow — 250ms, ease-out. Also applies when an inner link or button has focus.' } },
+            { term: { pt: 'Hover e foco (interactive)', en: 'Hover and focus (interactive)' }, description: { pt: 'Sobe 4px (--or-distance-lift) com a sombra sólida 0 8px 0 -4px na cor do texto, e uma barra de acento de 4px desce pela borda esquerda (scaleY 0 → 1) — 250ms, ease-out, como os cartões do zop.dev. Uma ponte de 12px abaixo evita tremor com o cursor na borda de baixo. Vale também para o foco de um link ou botão interno. Cores: --or-paper-lift-color e --or-paper-lift-shadow.', en: 'Rises 4px (--or-distance-lift) with the solid 0 8px 0 -4px shadow in the text color, and a 4px accent bar draws down the left edge (scaleY 0 → 1) — 250ms, ease-out, like zop.dev cards. A 12px bridge below prevents flicker with the cursor on the bottom edge. Also applies when an inner link or button has focus. Colors: --or-paper-lift-color and --or-paper-lift-shadow.' } },
             { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'Desce 1px abaixo da posição original — 90ms.', en: 'Sinks 1px below its resting position — 90ms.' } },
             { term: { pt: 'Bordas e fundo', en: 'Borders and background' }, description: { pt: 'Transicionam em 160ms quando mudam.', en: 'Transition in 160ms when they change.' } },
-            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'A superfície não se desloca; só a cor da borda muda.', en: 'The surface does not move; only the border color changes.' } },
+            { term: { pt: 'Movimento reduzido', en: 'Reduced motion' }, description: { pt: 'A superfície não se desloca: a sombra e a barra aparecem direto.', en: 'The surface does not move: the shadow and the bar appear instantly.' } },
           ]}
         />
       </Section>

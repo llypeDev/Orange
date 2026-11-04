@@ -4,7 +4,9 @@ const inviteLink = 'https://app.orange.dev/convite/equipe-produto'
 
 export default function WithLabel() {
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%', maxWidth: 520 }}>
+    // minmax(0, 1fr): sem isso a largura mínima do input (~20 caracteres)
+    // empurrava a linha para fora da prévia no celular.
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 8, width: '100%', maxWidth: 520 }}>
       <label
         htmlFor="invite-link"
         style={{

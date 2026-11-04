@@ -98,14 +98,18 @@ const tracking: Record<string, Localized<string>> = {
   },
 }
 
+// Espelha exatamente a prévia do exemplo "Heading" abaixo. Os níveis começam no h4 porque a
+// prévia fica dentro do <h3> do exemplo: usar h1/h2 ali quebraria o sumário de títulos da página.
+// Isso também é a lição do exemplo — o nível vem da estrutura, o tamanho vem do size.
 const headingCode = `import { Heading } from '@orange/ui'
 
-// level = semântica (h1–h6); size = aparência
-<Heading level={1} size="4xl">Relatório de vendas</Heading>
-<Heading level={2}>Resumo do trimestre</Heading>          {/* 3xl */}
-<Heading level={3}>Por canal</Heading>                    {/* 2xl */}
-<Heading level={4}>Loja física</Heading>                  {/* xl */}
-<Heading level={2} size="xl">Um h2 com tamanho de h4</Heading>`
+// level = semântica (h1–h6), definida pela estrutura do documento;
+// size = aparência. Aqui o exemplo está dentro de um h3, então começa no h4.
+<Heading level={4} size="4xl">Relatório de vendas</Heading>
+<Heading level={5} size="3xl">Resumo do trimestre</Heading>
+<Heading level={6} size="2xl">Por canal</Heading>
+<Heading level={6} size="xl">Loja física</Heading>
+<Heading level={5} size="xl">Um h5 com tamanho de h4</Heading>`
 
 const textCode = `import { Text } from '@orange/ui'
 
@@ -445,6 +449,10 @@ export default function TypographyPage() {
             </Heading>
             <Heading level={6} size="xl">
               {t({ pt: 'Loja física', en: 'Physical store' })}
+            </Heading>
+            {/* Nível mais alto com tamanho menor: mostra que size não depende de level. */}
+            <Heading level={5} size="xl">
+              {t({ pt: 'Um h5 com tamanho de h4', en: 'An h5 sized like an h4' })}
             </Heading>
           </div>
         </Example>
