@@ -10,7 +10,17 @@ function Contagem({ valor, casas }: { valor: number; casas: number }) {
   return <>{formatar(atual, casas)}</>
 }
 
-function Numero({ valor, rotulo, prefixo = '', casas = 0 }: { valor: number; rotulo: string; prefixo?: string; casas?: number }) {
+function Numero({
+  valor,
+  rotulo,
+  prefixo = '',
+  casas = 0,
+}: {
+  valor: number
+  rotulo: string
+  prefixo?: string
+  casas?: number
+}) {
   const [ref, visivel] = useInView<HTMLDivElement>()
   return (
     <div ref={ref} className="guide-count">
@@ -33,7 +43,12 @@ export default function Contadores() {
         <Numero valor={98} rotulo="% entregues no prazo" />
       </dl>
       <div>
-        <Button size="sm" variant="ghost" startIcon={<Icon name="refresh" size="sm" />} onClick={() => setRodada((n) => n + 1)}>
+        <Button
+          size="sm"
+          variant="ghost"
+          startIcon={<Icon name="refresh" size="sm" />}
+          onClick={() => setRodada((n) => n + 1)}
+        >
           Repetir
         </Button>
       </div>

@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -126,6 +127,19 @@ export default function BottomNavigationPage() {
         >
           <Fixed />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Trocar de destino', en: 'Changing destination' }, description: { pt: 'O indicador laranja do topo desliza até o novo destino (translateX) — medium, ease-spring.', en: 'The orange top indicator slides to the new destination (translateX) — medium, ease-spring.' } },
+            { term: { pt: 'Destino ativo', en: 'Active destination' }, description: { pt: 'O ícone dá um pequeno pop (scale 0.82 → 1) — medium, ease-bounce; cor em fast.', en: 'The icon gives a small pop (scale 0.82 → 1) — medium, ease-bounce; color in fast.' } },
+            { term: { pt: 'Pressionar', en: 'Pressing' }, description: { pt: 'O ícone afunda (translateY(1px) scale(0.9)) — press (90ms).', en: 'The icon sinks (translateY(1px) scale(0.9)) — press (90ms).' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

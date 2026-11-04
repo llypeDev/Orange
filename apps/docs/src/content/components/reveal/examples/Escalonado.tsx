@@ -10,7 +10,11 @@ const recursos = [
 export default function Escalonado() {
   return (
     // stagger: cada filho direto entra --or-stagger (80ms) depois do anterior
-    <Reveal as="ul" stagger className="guide-reveal-grid guide-reveal-grid--flush guide-reveal-list">
+    <Reveal
+      as="ul"
+      stagger
+      className="guide-reveal-grid guide-reveal-grid--flush guide-reveal-list"
+    >
       {recursos.map((r) => (
         <li key={r.titulo} className="guide-reveal-card">
           <Icon name={r.icone} />

@@ -65,6 +65,15 @@ describe('Avatar', () => {
     expect(screen.getByRole('img', { name: 'Ana Souza, Away' })).toHaveClass('or-avatar--circle')
   })
 
+  it('pulse liga o anel "ao vivo" no status (exceto offline)', () => {
+    const { container, rerender } = render(<Avatar name="Ana Souza" status="online" pulse />)
+    expect(container.querySelector('.or-avatar__status')).toHaveClass('or-avatar__status--pulse')
+    rerender(<Avatar name="Ana Souza" status="offline" pulse />)
+    expect(container.querySelector('.or-avatar__status')).not.toHaveClass('or-avatar__status--pulse')
+    rerender(<Avatar name="Ana Souza" status="online" />)
+    expect(container.querySelector('.or-avatar__status')).not.toHaveClass('or-avatar__status--pulse')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

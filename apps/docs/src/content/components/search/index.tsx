@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -237,6 +238,48 @@ export default function SearchPage() {
               description: {
                 pt: 'Atributos do input (a ref aponta para ele).',
                 en: 'Input attributes (the ref points to it).',
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Foco', en: 'Focus' },
+              description: {
+                pt: 'Borda e anel laranja em 160ms; a lupa acende em laranja em 160ms (ease-out).',
+                en: 'Orange border and ring in 160ms; the magnifier turns orange in 160ms (ease-out).',
+              },
+            },
+            {
+              term: { pt: 'Digitar', en: 'Typing' },
+              description: {
+                pt: 'O botão limpar entra com fade + escala (scale 0.6 → 1, 250ms, bounce).',
+                en: 'The clear button enters with fade + scale (0.6 → 1, 250ms, bounce).',
+              },
+            },
+            {
+              term: { pt: 'Limpar', en: 'Clearing' },
+              description: {
+                pt: 'O botão afunda no clique (90ms) e sai em 120ms (fade + scale); o foco volta ao campo.',
+                en: 'The button sinks on click (90ms) and leaves in 120ms (fade + scale); focus returns to the field.',
+              },
+            },
+            {
+              term: { pt: 'loading', en: 'loading' },
+              description: {
+                pt: 'Lupa e spinner ficam empilhados e trocam com fade (160ms) + escala (250ms, spring). O giro só roda enquanto carrega.',
+                en: 'Magnifier and spinner are stacked and swap with fade (160ms) + scale (250ms, spring). The spin only runs while loading.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}

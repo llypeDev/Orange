@@ -146,6 +146,20 @@ export default function TabsPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Trocar de aba', en: 'Switching tabs' }, description: { pt: 'Um único indicador de 2px desliza até a aba ativa (translateX + scaleX) — medium (250ms), ease-spring. Na vertical, translateY + scaleY.', en: 'A single 2px indicator slides to the active tab (translateX + scaleX) — medium (250ms), ease-spring. Vertically, translateY + scaleY.' } },
+            { term: { pt: 'Painel novo', en: 'New panel' }, description: { pt: 'Entra com fade + 4px de baixo para cima — medium, ease-out. Não anima na primeira renderização.', en: 'Enters with a fade + 4px upward — medium, ease-out. Does not animate on first render.' } },
+            { term: { pt: 'Hover / foco em aba inativa', en: 'Hover / focus on an inactive tab' }, description: { pt: 'Prévia do sublinhado cresce da esquerda (scaleX) — medium, ease-out; cor do texto em fast (160ms).', en: 'An underline preview grows from the left (scaleX) — medium, ease-out; text color in fast (160ms).' } },
+            { term: { pt: 'Enclosed: selecionar', en: 'Enclosed: select' }, description: { pt: 'O traço laranja do topo cresce de 0 a 2px (box-shadow) — medium, ease-spring; fundo e borda em fast.', en: 'The orange top stroke grows from 0 to 2px (box-shadow) — medium, ease-spring; background and border in fast.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'Tabs', en: 'Tabs' }}

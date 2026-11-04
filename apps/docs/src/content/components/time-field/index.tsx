@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -106,6 +107,48 @@ export default function TimeFieldPage() {
         >
           <States />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Hover e foco', en: 'Hover and focus' },
+              description: {
+                pt: 'Borda e anel laranja do campo; o relógio muda de cor · fast (160ms), ease-out.',
+                en: 'Field border and orange ring; the clock changes color · fast (160ms), ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Receber foco', en: 'Receiving focus' },
+              description: {
+                pt: 'O relógio avança um "tique" (gira 30°) · medium (250ms), ease-spring.',
+                en: 'The clock advances one "tick" (rotates 30°) · medium (250ms), ease-spring.',
+              },
+            },
+            {
+              term: { pt: 'Clicar no relógio', en: 'Clicking the clock' },
+              description: {
+                pt: 'O ícone afunda 1px antes de abrir o seletor nativo · press (90ms).',
+                en: 'The icon sinks 1px before opening the native picker · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Segmento em edição', en: 'Editing segment' },
+              description: {
+                pt: 'Fundo laranja do segmento ativo com transição · fast.',
+                en: 'Orange background on the active segment, with a transition · fast.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

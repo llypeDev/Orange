@@ -11,7 +11,9 @@ export default function Sequencia() {
         <h4 className="guide-reveal-title">Tudo o que sua loja precisa para crescer</h4>
       </Reveal>
       <Reveal index={2}>
-        <p className="guide-reveal-text">Até 10 lojas, relatórios diários e suporte em português.</p>
+        <p className="guide-reveal-text">
+          Até 10 lojas, relatórios diários e suporte em português.
+        </p>
       </Reveal>
       <Reveal index={3} delay={120} variant="fade">
         <Button endIcon={<Icon name="arrow-right" />}>Assinar o Pro</Button>

@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -103,6 +104,48 @@ export default function ColorFieldPage() {
         >
           <States />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Trocar a cor', en: 'Changing the color' },
+              description: {
+                pt: 'A amostra principal faz crossfade entre as cores (camada sobre o seletor nativo) · medium (250ms), ease-out.',
+                en: 'The main swatch crossfades between colors (a layer over the native picker) · medium (250ms), ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Hover e foco na paleta', en: 'Palette hover and focus' },
+              description: {
+                pt: 'A amostra sobe 4px com sombra deslocada na própria cor · medium, ease-out.',
+                en: 'The swatch lifts 4px with an offset shadow in its own color · medium, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Pressionar', en: 'Pressing' },
+              description: {
+                pt: 'Amostras afundam 1px (translateY(1px) scale(0.985)) · press (90ms).',
+                en: 'Swatches sink 1px (translateY(1px) scale(0.985)) · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Escolher na paleta', en: 'Choosing from the palette' },
+              description: {
+                pt: 'A amostra faz pop (0,85 → 1) e o check entra em escala · medium, ease-bounce.',
+                en: 'The swatch pops (0.85 → 1) and the check scales in · medium, ease-bounce.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

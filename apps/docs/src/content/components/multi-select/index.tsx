@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -223,6 +224,83 @@ export default function MultiSelectPage() {
               name: 'required / disabled / invalid',
               type: 'boolean',
               description: { pt: 'Estados do campo.', en: 'Field states.' },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Abrir a lista', en: 'Opening the list' },
+              description: {
+                pt: 'Opacidade + 6px a partir do campo (desce quando abre embaixo, sobe quando abre em cima) — 160ms, ease-out.',
+                en: 'Opacity + 6px from the field (slides down when opening below, up when above) — 160ms, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Fechar a lista', en: 'Closing the list' },
+              description: {
+                pt: 'Fade + recuo de 4px em direção ao campo — 120ms, ease-in-out. O conteúdo fica congelado durante a saída.',
+                en: 'Fade + 4px retreat toward the field — 120ms, ease-in-out. Content is frozen during the exit.',
+              },
+            },
+            {
+              term: { pt: 'Opção ativa', en: 'Active option' },
+              description: {
+                pt: 'Fundo em 160ms (ease-out); a marca laranja lateral cresce (scaleY) em 250ms, spring.',
+                en: 'Background in 160ms (ease-out); the orange side marker grows (scaleY) in 250ms, spring.',
+              },
+            },
+            {
+              term: { pt: 'Chevron', en: 'Chevron' },
+              description: {
+                pt: 'Gira 180° ao abrir — 250ms, spring.',
+                en: 'Rotates 180° when opening — 250ms, spring.',
+              },
+            },
+            {
+              term: { pt: 'Marcar opção', en: 'Checking an option' },
+              description: {
+                pt: 'A caixa muda de cor em 160ms e o check entra com pop (scale-in, 250ms, bounce) — só quando a seleção muda com a lista aberta.',
+                en: 'The box changes color in 160ms and the check pops in (scale-in, 250ms, bounce) — only when the selection changes with the list open.',
+              },
+            },
+            {
+              term: { pt: 'Adicionar item', en: 'Adding an item' },
+              description: {
+                pt: 'O chip entra com pop (scale 0.6 → 1, 250ms, bounce). Chips já presentes ao carregar não animam.',
+                en: 'The chip pops in (scale 0.6 → 1, 250ms, bounce). Chips present on load do not animate.',
+              },
+            },
+            {
+              term: { pt: 'Remover item', en: 'Removing an item' },
+              description: {
+                pt: 'O chip sai com fade + scale 0.8 em 120ms antes de deixar o DOM; o foco vai para o vizinho na hora.',
+                en: 'The chip leaves with fade + scale 0.8 in 120ms before leaving the DOM; focus moves to the neighbor immediately.',
+              },
+            },
+            {
+              term: { pt: 'Limpar tudo', en: 'Clear all' },
+              description: {
+                pt: 'O botão aparece/some com pop; todos os chips saem juntos.',
+                en: 'The button appears/disappears with a pop; all chips leave together.',
+              },
+            },
+            {
+              term: { pt: 'Botões internos', en: 'Inner buttons' },
+              description: {
+                pt: 'Afundam no clique: translateY(1px) scale(0.985) em 90ms (press).',
+                en: 'Sink on click: translateY(1px) scale(0.985) in 90ms (press).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
+              },
             },
           ]}
         />

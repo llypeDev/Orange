@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -122,6 +122,22 @@ describe('Accordion', () => {
     render(<Faq headingLevel={2} />)
     expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(4)
     expect(trigger('Onde baixo a nota fiscal?')).toBeDisabled()
+  })
+
+  it('motion: o painel abre com data-state e só fica hidden ao fechar', async () => {
+    const user = userEvent.setup()
+    render(<Faq />)
+    const button = trigger('Posso trocar um produto?')
+    const panel = document.getElementById(button.getAttribute('aria-controls')!)!
+    expect(panel).toHaveAttribute('data-state', 'closed')
+    expect(panel).not.toBeVisible()
+    await user.click(button)
+    expect(panel).toBeVisible()
+    // um quadro em 0fr antes de expandir, para a transição acontecer
+    await waitFor(() => expect(panel).toHaveAttribute('data-state', 'open'))
+    await user.click(button)
+    expect(panel).toHaveAttribute('data-state', 'closed')
+    await waitFor(() => expect(panel).not.toBeVisible())
   })
 
   it('não possui violações de acessibilidade', async () => {

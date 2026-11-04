@@ -158,6 +158,69 @@ export default function FileUploaderPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Arrastar sobre a área', en: 'Dragging over the area' },
+              description: {
+                pt: 'Borda tracejada laranja, fundo de acento e scale 1,01 · medium; o ícone sobe 4px com sombra laranja · medium, ease-spring.',
+                en: 'Orange dashed border, accent background and 1.01 scale · medium; the icon lifts 4px with an orange shadow · medium, ease-spring.',
+              },
+            },
+            {
+              term: { pt: 'Adicionar arquivos', en: 'Adding files' },
+              description: {
+                pt: 'Cada item entra com fade + 4px, escalonado em 40ms dentro do lote · medium, ease-out.',
+                en: 'Each item enters with a fade + 4px, staggered by 40ms within the batch · medium, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Remover', en: 'Removing' },
+              description: {
+                pt: 'O item desliza 8px, some e recolhe a altura (grid-template-rows) · fast, ease-in-out. O foco vai na hora para o próximo item.',
+                en: 'The item slides 8px, fades and collapses its height (grid-template-rows) · fast, ease-in-out. Focus moves immediately to the next item.',
+              },
+            },
+            {
+              term: { pt: 'Progresso', en: 'Progress' },
+              description: {
+                pt: 'A barra cresce com transform: scaleX · medium, ease-out.',
+                en: 'The bar grows with transform: scaleX · medium, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Sucesso', en: 'Success' },
+              description: {
+                pt: 'O check é desenhado (or-draw) e o texto aparece · slow (400ms).',
+                en: 'The check is drawn (or-draw) and the text fades in · slow (400ms).',
+              },
+            },
+            {
+              term: { pt: 'Erro', en: 'Error' },
+              description: {
+                pt: 'A mensagem do arquivo treme uma vez (or-shake) · slow.',
+                en: 'The file message shakes once (or-shake) · slow.',
+              },
+            },
+            {
+              term: { pt: 'Botão "Escolher arquivos"', en: '"Choose files" button' },
+              description: {
+                pt: 'O sublinhado engrossa no hover/foco · fast; afunda 1px no clique · press (90ms).',
+                en: 'The underline thickens on hover/focus · fast; sinks 1px on click · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

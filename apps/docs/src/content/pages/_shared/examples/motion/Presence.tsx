@@ -7,11 +7,20 @@ function Painel({ variante, titulo }: { variante: 'pop' | 'drop' | 'fade'; titul
   const { present, state, nodeRef } = usePresence<HTMLDivElement>(aberto)
   return (
     <div className="guide-presence">
-      <Button size="sm" variant="outline" aria-expanded={aberto} onClick={() => setAberto((v) => !v)}>
+      <Button
+        size="sm"
+        variant="outline"
+        aria-expanded={aberto}
+        onClick={() => setAberto((v) => !v)}
+      >
         {aberto ? 'Fechar' : 'Abrir'} {titulo}
       </Button>
       {present && (
-        <div ref={nodeRef} data-state={state} className={`guide-presence__panel or-motion-${variante}`}>
+        <div
+          ref={nodeRef}
+          data-state={state}
+          className={`guide-presence__panel or-motion-${variante}`}
+        >
           <Icon name="bell" size="sm" />
           or-motion-{variante}
         </div>

@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -112,6 +113,19 @@ export default function BreadcrumbPage() {
         >
           <WithRouter />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover / foco em um nível', en: 'Hover / focus on a level' }, description: { pt: 'Sublinhado laranja cresce da esquerda (background-size) — medium, ease-out; cor em fast.', en: 'Orange underline grows from the left (background-size) — medium, ease-out; color in fast.' } },
+            { term: { pt: 'Expandir "…"', en: 'Expanding "…"' }, description: { pt: 'Os níveis revelados entram com fade + 4px da esquerda, em cascata (40ms entre eles) — medium, ease-out.', en: 'Revealed levels enter with a fade + 4px from the left, staggered (40ms apart) — medium, ease-out.' } },
+            { term: { pt: 'Pressionar "…"', en: 'Pressing "…"' }, description: { pt: 'O botão afunda 1px (translateY + scale) — press (90ms).', en: 'The button sinks 1px (translateY + scale) — press (90ms).' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

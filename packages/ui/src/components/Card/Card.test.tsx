@@ -87,6 +87,18 @@ describe('Card', () => {
     expect(screen.getByTestId('media').style.aspectRatio).toBe('4/3')
   })
 
+  it('CardLink com arrow mostra uma seta decorativa sem mudar o nome do link', () => {
+    const { container } = render(
+      <Card interactive>
+        <CardHeader title="Relatório anual" href="#relatorio" linkProps={{ arrow: true }} />
+      </Card>,
+    )
+    expect(screen.getByRole('link', { name: 'Relatório anual' })).toBeInTheDocument()
+    const arrow = container.querySelector('.or-card__link-arrow')!
+    expect(arrow).toHaveAttribute('aria-hidden', 'true')
+    expect(arrow.querySelector('[data-icon="arrow-right"]')).not.toBeNull()
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <ul>

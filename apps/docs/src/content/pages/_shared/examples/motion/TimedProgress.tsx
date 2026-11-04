@@ -32,7 +32,9 @@ export default function PassosTemporizados() {
                   <span
                     key={rodada}
                     className="guide-steps-timed__bar guide-steps-timed__bar--run"
-                    onAnimationEnd={() => (i < passos.length - 1 ? setAtual(i + 1) : setFase('fim'))}
+                    onAnimationEnd={() =>
+                      i < passos.length - 1 ? setAtual(i + 1) : setFase('fim')
+                    }
                   />
                 ) : (
                   <span className="guide-steps-timed__bar" data-full={cheio || undefined} />
@@ -46,7 +48,12 @@ export default function PassosTemporizados() {
         })}
       </ol>
       <div>
-        <Button size="sm" variant="ghost" startIcon={<Icon name={fase === 'parado' ? 'play' : 'refresh'} size="sm" />} onClick={iniciar}>
+        <Button
+          size="sm"
+          variant="ghost"
+          startIcon={<Icon name={fase === 'parado' ? 'play' : 'refresh'} size="sm" />}
+          onClick={iniciar}
+        >
           {fase === 'parado' ? 'Reproduzir' : 'Repetir'}
         </Button>
       </div>

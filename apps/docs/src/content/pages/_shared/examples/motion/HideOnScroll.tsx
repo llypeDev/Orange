@@ -13,7 +13,8 @@ export default function CabecalhoQueSeEsconde() {
         </div>
       </div>
       <p className="guide-live" role="status">
-        direction: <strong>{direction}</strong> · pastThreshold: <strong>{String(pastThreshold)}</strong>
+        direction: <strong>{direction}</strong> · pastThreshold:{' '}
+        <strong>{String(pastThreshold)}</strong>
       </p>
     </div>
   )

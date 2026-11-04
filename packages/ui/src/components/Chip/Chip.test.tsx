@@ -32,6 +32,16 @@ describe('Chip', () => {
     expect(container.querySelector('[data-icon="star"]')).toBeNull()
   })
 
+  it('motion: o check só anima depois de uma interação', async () => {
+    const user = userEvent.setup()
+    render(<Chip defaultSelected>Promoções</Chip>)
+    const chip = screen.getByRole('button')
+    expect(chip).not.toHaveAttribute('data-touched')
+    await user.click(chip)
+    await user.click(chip)
+    expect(chip).toHaveAttribute('data-touched')
+  })
+
   it('inclui a contagem no nome acessível', () => {
     render(<Chip count={12}>Ativos</Chip>)
     expect(screen.getByRole('button', { name: 'Ativos (12)' })).toBeInTheDocument()

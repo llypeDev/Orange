@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -279,6 +280,48 @@ export default function SelectPage() {
                     points to the select.
                   </>
                 ),
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Hover', en: 'Hover' },
+              description: {
+                pt: 'Borda clareia e o fundo muda para bg-subtle em 160ms (ease-out); o chevron escurece e desce 2px em 250ms, spring.',
+                en: 'Border lightens and the background shifts to bg-subtle in 160ms (ease-out); the chevron darkens and drops 2px in 250ms, spring.',
+              },
+            },
+            {
+              term: { pt: 'Foco', en: 'Focus' },
+              description: {
+                pt: 'Borda e anel laranja em 160ms, ease-out; o chevron responde igual ao hover.',
+                en: 'Orange border and ring in 160ms, ease-out; the chevron responds as on hover.',
+              },
+            },
+            {
+              term: { pt: 'Clique', en: 'Click' },
+              description: {
+                pt: 'O chevron "afunda" mais 1px em 90ms (press).',
+                en: 'The chevron "sinks" 1px further in 90ms (press).',
+              },
+            },
+            {
+              term: { pt: 'Lista aberta', en: 'List open' },
+              description: {
+                pt: 'Em navegadores com :open em <select>, o chevron gira 180° em 250ms, spring. A lista em si é a nativa do sistema.',
+                en: 'In browsers with :open on <select>, the chevron rotates 180° in 250ms, spring. The list itself is the native system one.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}

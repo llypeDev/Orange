@@ -13,11 +13,16 @@ export default function AvisoDeSalvamento() {
         </Button>
       </div>
       <p className="guide-live">
-        visivel: <strong>{String(visivel)}</strong> · present: <strong>{String(present)}</strong> · state:{' '}
-        <strong>{state}</strong>
+        visivel: <strong>{String(visivel)}</strong> · present: <strong>{String(present)}</strong> ·
+        state: <strong>{state}</strong>
       </p>
       {present && (
-        <div ref={nodeRef} data-state={state} role="status" className="guide-presence__panel or-motion-pop">
+        <div
+          ref={nodeRef}
+          data-state={state}
+          role="status"
+          className="guide-presence__panel or-motion-pop"
+        >
           <Icon name="check-circle" size="sm" />
           Rascunho salvo às 14h32
         </div>

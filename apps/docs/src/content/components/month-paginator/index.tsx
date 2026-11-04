@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -112,6 +113,41 @@ export default function MonthPaginatorPage() {
         >
           <Sizes />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Próximo / anterior', en: 'Next / previous' },
+              description: {
+                pt: 'O novo mês entra deslizando 8px na direção da navegação com fade, enquanto o anterior sai para o outro lado · medium (entrada) e fast (saída).',
+                en: 'The new month slides in 8px in the navigation direction with a fade while the previous one leaves the other way · medium (enter) and fast (exit).',
+              },
+            },
+            {
+              term: { pt: 'Hover e foco', en: 'Hover and focus' },
+              description: {
+                pt: 'Fundo e cor dos botões · fast; a seta empurra 2px para o seu lado · medium, ease-out.',
+                en: 'Button background and color · fast; the arrow nudges 2px towards its side · medium, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Pressionar', en: 'Pressing' },
+              description: {
+                pt: 'Fundo ativo e o ícone afunda 1px · press (90ms).',
+                en: 'Active background and the icon sinks 1px · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

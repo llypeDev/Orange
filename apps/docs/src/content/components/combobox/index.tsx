@@ -3,6 +3,7 @@ import {
   Callout,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -248,6 +249,69 @@ export default function ComboboxPage() {
               description: {
                 pt: 'Atributos do campo de texto (a ref aponta para ele).',
                 en: 'Text input attributes (the ref points to it).',
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Abrir a lista', en: 'Opening the list' },
+              description: {
+                pt: 'Opacidade + 6px a partir do campo (desce quando abre embaixo, sobe quando abre em cima) — 160ms, ease-out.',
+                en: 'Opacity + 6px from the field (slides down when opening below, up when above) — 160ms, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Fechar a lista', en: 'Closing the list' },
+              description: {
+                pt: 'Fade + recuo de 4px em direção ao campo — 120ms, ease-in-out. O conteúdo fica congelado durante a saída.',
+                en: 'Fade + 4px retreat toward the field — 120ms, ease-in-out. Content is frozen during the exit.',
+              },
+            },
+            {
+              term: { pt: 'Opção ativa', en: 'Active option' },
+              description: {
+                pt: 'Fundo em 160ms (ease-out); a marca laranja lateral cresce (scaleY) em 250ms, spring.',
+                en: 'Background in 160ms (ease-out); the orange side marker grows (scaleY) in 250ms, spring.',
+              },
+            },
+            {
+              term: { pt: 'Chevron', en: 'Chevron' },
+              description: {
+                pt: 'Gira 180° ao abrir — 250ms, spring.',
+                en: 'Rotates 180° when opening — 250ms, spring.',
+              },
+            },
+            {
+              term: { pt: 'Botão limpar', en: 'Clear button' },
+              description: {
+                pt: 'Entra com pop (scale 0.6 → 1, 250ms, bounce) e sai em 120ms (fade + scale).',
+                en: 'Enters with a pop (scale 0.6 → 1, 250ms, bounce) and leaves in 120ms (fade + scale).',
+              },
+            },
+            {
+              term: { pt: 'Carregando', en: 'Loading' },
+              description: {
+                pt: 'O indicador surge com fade de 160ms; a lista mostra "Carregando…".',
+                en: 'The indicator fades in over 160ms; the list shows "Loading…".',
+              },
+            },
+            {
+              term: { pt: 'Botões internos', en: 'Inner buttons' },
+              description: {
+                pt: 'Afundam no clique: translateY(1px) scale(0.985) em 90ms (press).',
+                en: 'Sink on click: translateY(1px) scale(0.985) in 90ms (press).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}

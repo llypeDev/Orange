@@ -6,6 +6,8 @@
 .or-banner-presence {
   display: grid;
   grid-template-rows: 1fr;
+  /* a faixa é de largura total também quando está num contêiner flex */
+  width: 100%;
 }
 
 .or-banner-presence__inner {

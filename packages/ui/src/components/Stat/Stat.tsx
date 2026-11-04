@@ -167,7 +167,9 @@ export const Stat = forwardRef<HTMLElement, StatProps>(function Stat(
   const reducedMotion = useReducedMotion()
   const [inViewRef, inView] = useInView<HTMLElement>()
   const canCount = animate && !reducedMotion && tokens.length > 0
-  const progress = useCountUp(inView ? 1 : 0, { from: 0, duration: COUNT_DURATION, enabled: canCount })
+  const rawProgress = useCountUp(inView ? 1 : 0, { from: 0, duration: COUNT_DURATION, enabled: canCount })
+  // O timestamp do rAF pode vir antes do início da contagem: limita a [0, 1].
+  const progress = Math.min(1, Math.max(0, rawProgress))
   const counting = canCount && progress < 1
   const composedRef = useMemo(() => mergeRefs(ref, inViewRef), [ref, inViewRef])
 

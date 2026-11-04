@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -84,6 +85,18 @@ export default function TableOfContentsPage() {
         >
           <ThisPage />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Nova seção visível', en: 'New visible section' }, description: { pt: 'Um único marcador laranja de 2px desliza até o link da seção (translateY + scaleY) — medium, ease-spring.', en: 'A single 2px orange marker slides to the section link (translateY + scaleY) — medium, ease-spring.' } },
+            { term: { pt: 'Hover / foco em um link', en: 'Hover / focus on a link' }, description: { pt: 'Cor do texto — fast (160ms), ease-out.', en: 'Text color — fast (160ms), ease-out.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

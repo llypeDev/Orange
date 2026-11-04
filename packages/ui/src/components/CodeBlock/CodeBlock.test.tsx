@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { OrangeProvider } from '../../providers'
@@ -66,13 +66,15 @@ describe('CodeBlock', () => {
   })
 
   it('volta ao rótulo original depois do tempo de confirmação', async () => {
-    // Só os timers do componente são falsos (sem avançar com o relógio real, que
-    // deixaria o teste instável sob carga).
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    // Relógio totalmente falso e clique síncrono: o teste não depende do tempo real.
+    userEvent.setup() // instala a área de transferência simulada do user-event
+    vi.useFakeTimers()
     vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
     render(<CodeBlock code="npm test" />)
-    await user.click(screen.getByRole('button', { name: 'Copiar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Copiar' }))
+    await act(async () => {
+      await Promise.resolve()
+    })
     expect(screen.getByRole('button', { name: 'Copiado!' })).toBeInTheDocument()
     act(() => {
       vi.advanceTimersByTime(2100)

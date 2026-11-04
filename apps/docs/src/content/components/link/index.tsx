@@ -142,6 +142,19 @@ export default function LinkPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover / foco (default, subtle)', en: 'Hover / focus (default, subtle)' }, description: { pt: 'O sublinhado engrossa de 1px para 2px, se aproxima do texto e muda de cor — fast (160ms), ease-out.', en: 'The underline thickens from 1px to 2px, moves closer to the text and changes color — fast (160ms), ease-out.' } },
+            { term: { pt: 'Hover / foco (standalone)', en: 'Hover / focus (standalone)' }, description: { pt: 'Sublinhado laranja cresce da esquerda (background-size) e a seta → empurra 4px — medium, ease-out.', en: 'An orange underline grows from the left (background-size) and the → arrow nudges 4px — medium, ease-out.' } },
+            { term: { pt: 'Hover / foco (external)', en: 'Hover / focus (external)' }, description: { pt: 'O ícone ↗ desliza 2px na diagonal, para fora da página — medium, ease-out.', en: 'The ↗ icon slides 2px diagonally, out of the page — medium, ease-out.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

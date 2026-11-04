@@ -11,11 +11,20 @@ export default function RevelacaoEscalonada() {
     const el = caixa.current
     if (!el) return
     el.scrollTo({ top: 0 })
-    window.setTimeout(() => el.scrollTo({ top: el.scrollHeight, behavior: reduzido ? 'auto' : 'smooth' }), 150)
+    window.setTimeout(
+      () => el.scrollTo({ top: el.scrollHeight, behavior: reduzido ? 'auto' : 'smooth' }),
+      150,
+    )
   }
   return (
     <div className="guide-stack">
-      <div ref={caixa} className="guide-stage" tabIndex={0} role="region" aria-label="Área rolável: revelação escalonada">
+      <div
+        ref={caixa}
+        className="guide-stage"
+        tabIndex={0}
+        role="region"
+        aria-label="Área rolável: revelação escalonada"
+      >
         <p className="guide-stage__hint">
           Role dentro da caixa <Icon name="arrow-down" size="sm" />
         </p>
@@ -30,7 +39,12 @@ export default function RevelacaoEscalonada() {
         </Reveal>
       </div>
       <div>
-        <Button size="sm" variant="ghost" startIcon={<Icon name="refresh" size="sm" />} onClick={repetir}>
+        <Button
+          size="sm"
+          variant="ghost"
+          startIcon={<Icon name="refresh" size="sm" />}
+          onClick={repetir}
+        >
           Repetir
         </Button>
       </div>

@@ -237,6 +237,41 @@ export default function CurrencyFieldPage() {
         />
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Foco', en: 'Focus' },
+              description: {
+                pt: 'Borda e anel em 160ms; o símbolo acende em laranja (160ms) e encosta 2px no valor (250ms, spring).',
+                en: 'Border and ring in 160ms; the symbol turns orange (160ms) and nudges 2px toward the value (250ms, spring).',
+              },
+            },
+            {
+              term: { pt: 'Erro', en: 'Error' },
+              description: {
+                pt: 'O campo treme uma vez (or-shake, 400ms) quando a mensagem surge ou muda; o símbolo fica vermelho.',
+                en: 'The field shakes once (or-shake, 400ms) when the message appears or changes; the symbol turns red.',
+              },
+            },
+            {
+              term: { pt: 'Sair do campo', en: 'Blur' },
+              description: {
+                pt: 'A formatação é aplicada sem animar o texto, para não atrapalhar a leitura do valor.',
+                en: 'Formatting is applied without animating the text, so the value stays readable.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
+              },
+            },
+          ]}
+        />
+      </Section>
+
       <Section title={{ pt: 'Acessibilidade', en: 'Accessibility' }}>
         <p>
           <T

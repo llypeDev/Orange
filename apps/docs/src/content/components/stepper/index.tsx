@@ -122,6 +122,20 @@ export default function StepperPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Concluir uma etapa', en: 'Completing a step' }, description: { pt: 'O conector se preenche de laranja da esquerda para a direita (scaleX; na vertical, scaleY) — slow (400ms), ease-out. Ao voltar, ele recua.', en: 'The connector fills orange from left to right (scaleX; vertically, scaleY) — slow (400ms), ease-out. Going back retracts it.' } },
+            { term: { pt: 'Nova etapa atual', en: 'New current step' }, description: { pt: 'O quadrado "salta" (scale 0.72 → 1) logo depois do conector — medium, ease-bounce, 160ms de atraso.', en: 'The square "pops" (scale 0.72 → 1) right after the connector — medium, ease-bounce, 160ms delay.' } },
+            { term: { pt: 'Etapa concluída / com erro', en: 'Completed step / step with error' }, description: { pt: 'O check é desenhado (stroke-dashoffset); o alerta entra com scale-in — medium.', en: 'The check is drawn (stroke-dashoffset); the alert scales in — medium.' } },
+            { term: { pt: 'Etapa clicável', en: 'Clickable step' }, description: { pt: 'Hover/foco: sublinhado cresce da esquerda e o quadrado acende (medium); clique: afunda (press).', en: 'Hover/focus: underline grows from the left and the square lights up (medium); click: it sinks (press).' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

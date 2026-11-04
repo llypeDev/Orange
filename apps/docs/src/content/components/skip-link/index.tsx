@@ -3,6 +3,7 @@ import {
   Callout,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -91,6 +92,19 @@ export default function SkipLinkPage() {
         >
           <AppShell />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Receber foco', en: 'Receiving focus' }, description: { pt: 'Desce do topo da tela até o lugar (translateY) — medium, ease-spring (leve passada e acomodação).', en: 'Drops from the top of the screen into place (translateY) — medium, ease-spring (slight overshoot and settle).' } },
+            { term: { pt: 'Perder o foco', en: 'Losing focus' }, description: { pt: 'Sobe para fora da tela — fast, ease-in-out.', en: 'Moves back off screen — fast, ease-in-out.' } },
+            { term: { pt: 'Pressionar', en: 'Pressing' }, description: { pt: 'Afunda 1px — press (90ms).', en: 'Sinks 1px — press (90ms).' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

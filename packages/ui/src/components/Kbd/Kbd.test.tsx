@@ -45,6 +45,15 @@ describe('Kbd', () => {
     expect(screen.getByTitle('Down arrow')).toHaveTextContent('↓')
   })
 
+  it('pressed marca todas as teclas ou só as listadas (com apelidos)', () => {
+    const { container, rerender } = render(<Kbd keys={['Ctrl', 'K']} pressed />)
+    expect(container.querySelectorAll('kbd kbd[data-pressed]')).toHaveLength(2)
+    rerender(<Kbd keys={['Ctrl', 'Shift', 'K']} pressed={['control', 'k']} />)
+    expect(Array.from(container.querySelectorAll('kbd kbd[data-pressed]')).map((k) => k.textContent)).toEqual(['Ctrl', 'K'])
+    rerender(<Kbd pressed>Esc</Kbd>)
+    expect(screen.getByText('Esc')).toHaveAttribute('data-pressed')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <p>

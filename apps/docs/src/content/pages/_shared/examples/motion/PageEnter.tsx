@@ -12,7 +12,12 @@ export default function EntradaDePagina() {
         <span>32 pedidos aguardam separação.</span>
       </div>
       <div>
-        <Button size="sm" variant="ghost" startIcon={<Icon name="refresh" size="sm" />} onClick={() => setRodada((n) => n + 1)}>
+        <Button
+          size="sm"
+          variant="ghost"
+          startIcon={<Icon name="refresh" size="sm" />}
+          onClick={() => setRodada((n) => n + 1)}
+        >
           Trocar de página
         </Button>
       </div>

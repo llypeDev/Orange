@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -122,6 +123,55 @@ export default function InlineEditPage() {
         <Example title={{ pt: 'Tamanhos e estados', en: 'Sizes and states' }} code={SizesCode}>
           <Sizes />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Entrar e sair da edição', en: 'Entering and leaving edit mode' },
+              description: {
+                pt: 'O campo entra com fade + 2px e o valor volta com fade · fast (160ms). Só anima depois da primeira interação — nada se move no carregamento.',
+                en: 'The field enters with a fade + 2px and the value comes back with a fade · fast (160ms). Only animates after the first interaction — nothing moves on load.',
+              },
+            },
+            {
+              term: { pt: 'Salvar', en: 'Saving' },
+              description: {
+                pt: 'Flash verde sutil (borda e fundo) no valor salvo · reveal (600ms), ease-out.',
+                en: 'Subtle green flash (border and background) on the saved value · reveal (600ms), ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Erro', en: 'Error' },
+              description: {
+                pt: 'O campo treme a cada tentativa inválida (or-shake) · slow; a mensagem desce com fade · fast.',
+                en: 'The field shakes on each invalid attempt (or-shake) · slow; the message drops in with a fade · fast.',
+              },
+            },
+            {
+              term: { pt: 'Hover e foco no valor', en: 'Value hover and focus' },
+              description: {
+                pt: 'Fundo e borda · fast; o lápis entra deslizando 4px · medium.',
+                en: 'Background and border · fast; the pencil slides in 4px · medium.',
+              },
+            },
+            {
+              term: { pt: 'Pressionar', en: 'Pressing' },
+              description: {
+                pt: 'O valor afunda 1px · press (90ms).',
+                en: 'The value sinks 1px · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

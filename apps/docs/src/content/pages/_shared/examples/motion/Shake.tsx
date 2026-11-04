@@ -4,7 +4,13 @@ import { useState } from 'react'
 function CampoCupom({ valor, onChange }: { valor: string; onChange: (v: string) => void }) {
   const props = useFieldControlProps()
   return (
-    <input {...props} className="or-control" value={valor} onChange={(e) => onChange(e.target.value)} placeholder="LARANJA10" />
+    <input
+      {...props}
+      className="or-control"
+      value={valor}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="LARANJA10"
+    />
   )
 }
 
@@ -28,7 +34,11 @@ export default function TremorDeErro() {
         className={tremer ? 'or-shake' : undefined}
         onAnimationEnd={(e) => e.target === e.currentTarget && setTremer(false)}
       >
-        <Field label="Cupom de desconto" description="Experimente enviar vazio e depois LARANJA10." error={erro}>
+        <Field
+          label="Cupom de desconto"
+          description="Experimente enviar vazio e depois LARANJA10."
+          error={erro}
+        >
           <CampoCupom valor={cupom} onChange={setCupom} />
         </Field>
       </div>

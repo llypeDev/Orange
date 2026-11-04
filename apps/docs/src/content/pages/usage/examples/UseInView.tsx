@@ -13,12 +13,24 @@ function Linha({ rotulo }: { rotulo: string }) {
 
 export default function Observador() {
   return (
-    <div className="guide-stage guide-stage--short" tabIndex={0} role="region" aria-label="Área rolável: useInView">
+    <div
+      className="guide-stage guide-stage--short"
+      tabIndex={0}
+      role="region"
+      aria-label="Área rolável: useInView"
+    >
       <p className="guide-stage__hint">
         Role dentro da caixa <Icon name="arrow-down" size="sm" />
       </p>
       <ul className="guide-inview-list">
-        {['Pedido #4821', 'Pedido #4822', 'Pedido #4823', 'Pedido #4824', 'Pedido #4825', 'Pedido #4826'].map((p) => (
+        {[
+          'Pedido #4821',
+          'Pedido #4822',
+          'Pedido #4823',
+          'Pedido #4824',
+          'Pedido #4825',
+          'Pedido #4826',
+        ].map((p) => (
           <Linha key={p} rotulo={p} />
         ))}
       </ul>

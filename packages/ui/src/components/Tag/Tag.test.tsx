@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -74,6 +74,24 @@ describe('Tag', () => {
     expect(button).toBeDisabled()
     await user.click(button)
     expect(onRemove).not.toHaveBeenCalled()
+  })
+
+  it('motion: com animação de saída, onRemove espera o fim da animação', async () => {
+    const user = userEvent.setup()
+    const onRemove = vi.fn()
+    render(
+      <Tag onRemove={onRemove} data-testid="tag" style={{ animationName: 'or-tag-out', animationDuration: '160ms' }}>
+        Curitiba
+      </Tag>,
+    )
+    const tag = screen.getByTestId('tag')
+    await user.click(screen.getByRole('button', { name: 'Remover Curitiba' }))
+    expect(tag).toHaveAttribute('data-leaving')
+    expect(onRemove).not.toHaveBeenCalled()
+    // cliques repetidos durante a saída são ignorados
+    await user.click(screen.getByRole('button', { name: 'Remover Curitiba' }))
+    fireEvent.animationEnd(tag)
+    expect(onRemove).toHaveBeenCalledTimes(1)
   })
 
   it('não possui violações de acessibilidade', async () => {

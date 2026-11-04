@@ -305,7 +305,9 @@ function PinInputControl({
               total: length,
             })}
             data-filled={char ? '' : undefined}
-            data-pop={char && pops.current[index] ? (pops.current[index] % 2 ? 'a' : 'b') : undefined}
+            data-pop={
+              char && pops.current[index] ? (pops.current[index] % 2 ? 'a' : 'b') : undefined
+            }
             style={{ '--_i': index, '--_pop-order': popOrder.current[index] ?? 0 } as CSSProperties}
             onChange={(event) => handleInput(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}

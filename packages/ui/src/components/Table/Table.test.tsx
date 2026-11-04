@@ -177,6 +177,18 @@ describe('Table', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Cliente, sorted ascending')
   })
 
+  it('motion: o ícone de ordenação expõe a direção para a rotação da seta', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<Table caption="Faturas" columns={columns} data={data} />)
+    const icon = () => container.querySelector('th[aria-sort] .or-table__sort-icon')!
+    expect(icon()).not.toHaveAttribute('data-direction')
+    expect(icon().querySelectorAll('svg')).toHaveLength(2)
+    await user.click(screen.getByRole('button', { name: 'Cliente' }))
+    expect(icon()).toHaveAttribute('data-direction', 'ascending')
+    await user.click(screen.getByRole('button', { name: 'Cliente' }))
+    expect(icon()).toHaveAttribute('data-direction', 'descending')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

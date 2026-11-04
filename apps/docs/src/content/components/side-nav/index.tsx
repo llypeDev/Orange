@@ -105,6 +105,21 @@ export default function SideNavPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Abrir / fechar grupo', en: 'Opening / closing a group' }, description: { pt: 'A altura anima com grid-template-rows 0fr → 1fr + opacidade — slow (400ms), ease-out; o chevron gira 180° no mesmo tempo.', en: 'Height animates with grid-template-rows 0fr → 1fr + opacity — slow (400ms), ease-out; the chevron rotates 180° in sync.' } },
+            { term: { pt: 'Item atual', en: 'Current item' }, description: { pt: 'A barra laranja de 2px cresce do centro (scaleY) — medium, ease-spring; fundo em fast.', en: 'The 2px orange bar grows from the center (scaleY) — medium, ease-spring; background in fast.' } },
+            { term: { pt: 'Recolher / expandir o menu', en: 'Collapsing / expanding the menu' }, description: { pt: 'O ícone do botão gira 180° — medium, ease-spring. Ao expandir, rótulos e selos entram com fade + 4px — medium, ease-out. A largura não anima.', en: 'The button icon rotates 180° — medium, ease-spring. When expanding, labels and badges enter with a fade + 4px — medium, ease-out. Width does not animate.' } },
+            { term: { pt: 'Painel flutuante (recolhido)', en: 'Flyout panel (collapsed)' }, description: { pt: 'Entra com fade + 4px da esquerda em medium, ease-out; sai em fast, ease-in-out.', en: 'Enters with a fade + 4px from the left in medium, ease-out; exits in fast, ease-in-out.' } },
+            { term: { pt: 'Dica do rótulo (recolhido)', en: 'Label hint (collapsed)' }, description: { pt: 'Aparece no hover/foco com fade + 4px — fast, ease-out.', en: 'Shows on hover/focus with a fade + 4px — fast, ease-out.' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'SideNav', en: 'SideNav' }}

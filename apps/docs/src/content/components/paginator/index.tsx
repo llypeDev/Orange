@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -113,6 +114,20 @@ export default function PaginatorPage() {
         >
           <Links />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Trocar de página', en: 'Changing page' }, description: { pt: 'A barra laranja da página atual cresce do centro (scaleX) e a anterior recua — medium, ease-spring; fundo e borda em medium.', en: 'The current page orange bar grows from the center (scaleX) while the previous one retracts — medium, ease-spring; background and border in medium.' } },
+            { term: { pt: 'Pressionar', en: 'Pressing' }, description: { pt: 'Botões afundam 1px (translateY(1px) scale(0.985)) — press (90ms).', en: 'Buttons sink 1px (translateY(1px) scale(0.985)) — press (90ms).' } },
+            { term: { pt: 'Hover / foco em anterior/próximo', en: 'Hover / focus on previous/next' }, description: { pt: 'A seta empurra 2px na direção do destino — medium, ease-out.', en: 'The arrow nudges 2px toward its destination — medium, ease-out.' } },
+            { term: { pt: 'Compacta: nova página', en: 'Compact: new page' }, description: { pt: '"Página X de Y" entra com fade + 4px de cima — medium, ease-out.', en: '"Page X of Y" enters with a fade + 4px from above — medium, ease-out.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

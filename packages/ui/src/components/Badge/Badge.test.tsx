@@ -73,6 +73,24 @@ describe('Badge', () => {
     expect(screen.getByRole('button').getAttribute('aria-describedby')).toMatch(/^dica or-badge-/)
   })
 
+  it('motion: não anima na primeira renderização; "pop" ao surgir e "bump" ao mudar a contagem', () => {
+    const { rerender } = render(<Badge count={3} data-testid="b" />)
+    expect(screen.getByTestId('b')).not.toHaveAttribute('data-motion')
+    expect(screen.getByTestId('b')).toHaveAttribute('data-state', 'open')
+    rerender(<Badge count={4} data-testid="b" />)
+    expect(screen.getByTestId('b')).toHaveAttribute('data-motion', 'bump')
+    expect(screen.getByTestId('b')).toHaveTextContent('4')
+    rerender(<Badge count={0} data-testid="b" />)
+    expect(screen.queryByTestId('b')).toBeNull()
+    rerender(<Badge count={1} data-testid="b" />)
+    expect(screen.getByTestId('b')).toHaveAttribute('data-motion', 'pop')
+  })
+
+  it('pulse adiciona o anel pulsante', () => {
+    render(<Badge dot pulse tone="success" label="Ao vivo" data-testid="b" />)
+    expect(screen.getByTestId('b')).toHaveClass('or-badge--pulse')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

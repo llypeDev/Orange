@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -227,6 +228,55 @@ export default function PinInputPage() {
               description: {
                 pt: 'Atributos do grupo (a ref aponta para ele).',
                 en: 'Group attributes (the ref points to it).',
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Digitar', en: 'Typing' },
+              description: {
+                pt: 'O campo preenchido faz um pop (scale 0.86 → 1, 250ms, bounce).',
+                en: 'The filled field pops (scale 0.86 → 1, 250ms, bounce).',
+              },
+            },
+            {
+              term: { pt: 'Colar / preencher automaticamente', en: 'Paste / autofill' },
+              description: {
+                pt: 'Os pops entram em onda, 40ms por campo.',
+                en: 'Pops roll in as a wave, 40ms per field.',
+              },
+            },
+            {
+              term: { pt: 'Completar', en: 'Completing' },
+              description: {
+                pt: 'As bordas passam a success em onda (160ms cada, 40ms entre campos). Não é confirmação: verifique o código e mostre o erro se preciso.',
+                en: 'Borders turn success as a wave (160ms each, 40ms apart). It is not a confirmation: verify the code and show an error if needed.',
+              },
+            },
+            {
+              term: { pt: 'Erro', en: 'Error' },
+              description: {
+                pt: 'O grupo treme uma vez (or-shake, 400ms) quando o erro surge ou muda.',
+                en: 'The group shakes once (or-shake, 400ms) when the error appears or changes.',
+              },
+            },
+            {
+              term: { pt: 'Foco', en: 'Focus' },
+              description: {
+                pt: 'Borda, anel e fundo laranja em 160ms, ease-out.',
+                en: 'Orange border, ring and fill in 160ms, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}

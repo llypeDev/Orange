@@ -245,7 +245,7 @@
 }
 
 .or-shake {
-  animation: or-shake 360ms var(--or-ease-out) both;
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out) both;
 }
 
 /* --- Revelação no scroll (componente Reveal) ------------------------------ */

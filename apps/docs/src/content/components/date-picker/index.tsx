@@ -195,6 +195,69 @@ export default function DatePickerPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Abrir o calendário', en: 'Opening the calendar' },
+              description: {
+                pt: 'O diálogo entra com opacidade, 4px vindos do lado do campo (acima ou abaixo) e escala 0,98 → 1 · medium (250ms), ease-out.',
+                en: 'The dialog enters with opacity, 4px from the field side (above or below) and 0.98 → 1 scale · medium (250ms), ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Fechar', en: 'Closing' },
+              description: {
+                pt: 'Sai mais rápido pelo mesmo lado e fica inerte durante a saída · fast (160ms), ease-in-out.',
+                en: 'Exits faster towards the same side and is inert while leaving · fast (160ms), ease-in-out.',
+              },
+            },
+            {
+              term: { pt: 'Trocar de mês', en: 'Changing month' },
+              description: {
+                pt: 'A grade desliza 16px na direção (próximo → da direita, anterior → da esquerda) com fade; o título faz crossfade · medium, ease-out (saída do título em fast).',
+                en: 'The grid slides 16px in the direction (next → from the right, previous → from the left) with a fade; the title crossfades · medium, ease-out (outgoing title in fast).',
+              },
+            },
+            {
+              term: { pt: 'Escolher um dia', en: 'Choosing a day' },
+              description: {
+                pt: 'O dia selecionado faz pop de 0,8 → 1 com overshoot · medium, ease-bounce.',
+                en: 'The selected day pops from 0.8 → 1 with overshoot · medium, ease-bounce.',
+              },
+            },
+            {
+              term: { pt: 'Hover e foco', en: 'Hover and focus' },
+              description: {
+                pt: 'Fundo e cor dos dias e botões · fast; as setas de navegação empurram 2px na direção · medium.',
+                en: 'Day and button background and color · fast; navigation arrows nudge 2px in their direction · medium.',
+              },
+            },
+            {
+              term: { pt: 'Pressionar', en: 'Pressing' },
+              description: {
+                pt: 'Dias, botões e o ícone do calendário afundam 1px (translateY(1px) scale(0.985)) · press (90ms).',
+                en: 'Days, buttons and the calendar icon sink 1px (translateY(1px) scale(0.985)) · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Hoje', en: 'Today' },
+              description: {
+                pt: 'O marcador laranja entra em escala ao exibir o mês · medium, ease-bounce.',
+                en: 'The orange marker scales in when the month is shown · medium, ease-bounce.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           caption={{ pt: 'DatePicker', en: 'DatePicker' }}

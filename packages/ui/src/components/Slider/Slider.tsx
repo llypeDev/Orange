@@ -261,66 +261,69 @@ function SliderControl({
           const thumbId = index === 0 ? baseId : `${baseId}-max`
           return (
             <Fragment key={index}>
-            <input
-              ref={mergeRefs(index === 0 ? inputRef : undefined, (el: HTMLInputElement | null) => {
-                inputs.current[index] = el
-              })}
-              type="range"
-              className="or-slider__input"
-              min={min}
-              max={max}
-              step={step}
-              value={v}
-              data-top={(isRange && topIndex === index) || undefined}
-              aria-valuetext={formatValue ? formatValue(v) : undefined}
-              aria-labelledby={
-                isRange && labelId ? `${labelId} ${thumbLabelId}-${index}` : undefined
-              }
-              aria-label={
-                isRange && !labelId
-                  ? `${ariaLabel ?? ''} ${thumbLabels[index]}`.trim()
-                  : !isRange
-                    ? ariaLabel
-                    : undefined
-              }
-              onChange={(event) => {
-                setLastActive(index)
-                onValueChange(index, Number(event.target.value))
-              }}
-              onPointerDown={() => setAnimate(true)}
-              onPointerMove={(event) => {
-                if (event.buttons & 1) setAnimate(false)
-              }}
-              onKeyDown={() => setAnimate(true)}
-              onPointerUp={onCommit}
-              onKeyUp={(event) => {
-                if (
-                  [
-                    'ArrowLeft',
-                    'ArrowRight',
-                    'ArrowUp',
-                    'ArrowDown',
-                    'Home',
-                    'End',
-                    'PageUp',
-                    'PageDown',
-                  ].includes(event.key)
-                )
-                  onCommit()
-              }}
-              {...inputRest}
-              {...controlProps}
-              id={thumbId}
-            />
-            {/* Polegar visual: o nativo fica transparente (continua sendo o alvo do ponteiro). */}
-            <span
-              className="or-slider__thumb-pos"
-              data-top={(isRange && topIndex === index) || undefined}
-              style={{ '--_p': `${pct(v)}%` } as CSSProperties}
-              aria-hidden="true"
-            >
-              <span className="or-slider__thumb" />
-            </span>
+              <input
+                ref={mergeRefs(
+                  index === 0 ? inputRef : undefined,
+                  (el: HTMLInputElement | null) => {
+                    inputs.current[index] = el
+                  },
+                )}
+                type="range"
+                className="or-slider__input"
+                min={min}
+                max={max}
+                step={step}
+                value={v}
+                data-top={(isRange && topIndex === index) || undefined}
+                aria-valuetext={formatValue ? formatValue(v) : undefined}
+                aria-labelledby={
+                  isRange && labelId ? `${labelId} ${thumbLabelId}-${index}` : undefined
+                }
+                aria-label={
+                  isRange && !labelId
+                    ? `${ariaLabel ?? ''} ${thumbLabels[index]}`.trim()
+                    : !isRange
+                      ? ariaLabel
+                      : undefined
+                }
+                onChange={(event) => {
+                  setLastActive(index)
+                  onValueChange(index, Number(event.target.value))
+                }}
+                onPointerDown={() => setAnimate(true)}
+                onPointerMove={(event) => {
+                  if (event.buttons & 1) setAnimate(false)
+                }}
+                onKeyDown={() => setAnimate(true)}
+                onPointerUp={onCommit}
+                onKeyUp={(event) => {
+                  if (
+                    [
+                      'ArrowLeft',
+                      'ArrowRight',
+                      'ArrowUp',
+                      'ArrowDown',
+                      'Home',
+                      'End',
+                      'PageUp',
+                      'PageDown',
+                    ].includes(event.key)
+                  )
+                    onCommit()
+                }}
+                {...inputRest}
+                {...controlProps}
+                id={thumbId}
+              />
+              {/* Polegar visual: o nativo fica transparente (continua sendo o alvo do ponteiro). */}
+              <span
+                className="or-slider__thumb-pos"
+                data-top={(isRange && topIndex === index) || undefined}
+                style={{ '--_p': `${pct(v)}%` } as CSSProperties}
+                aria-hidden="true"
+              >
+                <span className="or-slider__thumb" />
+              </span>
             </Fragment>
           )
         })}

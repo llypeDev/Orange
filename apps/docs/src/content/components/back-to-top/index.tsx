@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -86,6 +87,20 @@ export default function BackToTopPage() {
         >
           <Page />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Aparecer', en: 'Appearing' }, description: { pt: 'Depois do threshold, entra com fade + 8px de baixo — medium, ease-out.', en: 'After the threshold, enters with a fade + 8px from below — medium, ease-out.' } },
+            { term: { pt: 'Sumir', en: 'Disappearing' }, description: { pt: 'Sai com fade + 8px para baixo — fast, ease-in-out — e só então é desmontado (usePresence); sem cliques durante a saída.', en: 'Exits with a fade + 8px downward — fast, ease-in-out — and only then unmounts (usePresence); no clicks during the exit.' } },
+            { term: { pt: 'Hover / foco', en: 'Hover / focus' }, description: { pt: 'A seta empurra 4px para cima (medium, ease-out); borda laranja e sombra deslocada (medium).', en: 'The arrow nudges 4px up (medium, ease-out); orange border and offset shadow (medium).' } },
+            { term: { pt: 'Pressionar', en: 'Pressing' }, description: { pt: 'Afunda 1px — press (90ms). A rolagem é suave, ou instantânea com movimento reduzido.', en: 'Sinks 1px — press (90ms). Scrolling is smooth, or instant with reduced motion.' } },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -198,6 +199,55 @@ export default function TagInputPage() {
               description: {
                 pt: 'Atributos do input de texto (a ref aponta para ele).',
                 en: 'Text input attributes (the ref points to it).',
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Criar tag', en: 'Creating a tag' },
+              description: {
+                pt: 'A tag entra com pop (scale 0.6 → 1, 250ms, bounce). Tags presentes ao carregar não animam.',
+                en: 'The tag pops in (scale 0.6 → 1, 250ms, bounce). Tags present on load do not animate.',
+              },
+            },
+            {
+              term: { pt: 'Remover tag', en: 'Removing a tag' },
+              description: {
+                pt: 'Sai com fade + scale 0.8 em 120ms antes de deixar o DOM; o foco vai para a tag vizinha (ou o campo) na hora.',
+                en: 'Leaves with fade + scale 0.8 in 120ms before leaving the DOM; focus moves to the neighbor tag (or the field) immediately.',
+              },
+            },
+            {
+              term: { pt: 'Recusa (erro)', en: 'Rejection (error)' },
+              description: {
+                pt: 'O campo treme uma vez (or-shake, 400ms) a cada recusa — duplicada, limite ou validação.',
+                en: 'The field shakes once (or-shake, 400ms) on each rejection — duplicate, limit or validation.',
+              },
+            },
+            {
+              term: { pt: 'Foco / hover', en: 'Focus / hover' },
+              description: {
+                pt: 'Borda e anel em 160ms, ease-out.',
+                en: 'Border and ring in 160ms, ease-out.',
+              },
+            },
+            {
+              term: { pt: 'Botões internos', en: 'Inner buttons' },
+              description: {
+                pt: 'Afundam no clique: translateY(1px) scale(0.985) em 90ms (press).',
+                en: 'Sink on click: translateY(1px) scale(0.985) in 90ms (press).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}

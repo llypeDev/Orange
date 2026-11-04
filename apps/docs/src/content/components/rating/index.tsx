@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   DoDont,
   Example,
   KeyboardTable,
@@ -111,6 +112,48 @@ export default function RatingPage() {
         >
           <Sizes />
         </Example>
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Hover (prévia)', en: 'Hover (preview)' },
+              description: {
+                pt: 'As estrelas da prévia crescem 6% e a estrela sob o ponteiro (ou com foco do teclado) cresce 18% · fast, ease-spring.',
+                en: 'Preview stars grow 6% and the star under the pointer (or with keyboard focus) grows 18% · fast, ease-spring.',
+              },
+            },
+            {
+              term: { pt: 'Escolher uma nota', en: 'Choosing a score' },
+              description: {
+                pt: 'Pop em onda até a nota escolhida, ~27ms entre estrelas · medium (250ms), ease-bounce.',
+                en: 'Wave pop up to the chosen score, ~27ms between stars · medium (250ms), ease-bounce.',
+              },
+            },
+            {
+              term: { pt: 'Preenchimento', en: 'Fill' },
+              description: {
+                pt: 'Cor e preenchimento passam de transparente a laranja · fast (160ms).',
+                en: 'Color and fill go from transparent to orange · fast (160ms).',
+              },
+            },
+            {
+              term: { pt: 'Pressionar', en: 'Pressing' },
+              description: {
+                pt: 'A estrela afunda 1px · press (90ms).',
+                en: 'The star sinks 1px · press (90ms).',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Os tokens de duração e distância viram 0: tudo muda na hora e as saídas não esperam animação.',
+                en: 'Duration and distance tokens become 0: everything changes instantly and exits do not wait for animation.',
+              },
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Props" id="props">

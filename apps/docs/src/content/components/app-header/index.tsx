@@ -123,6 +123,21 @@ export default function AppHeaderPage() {
         </Example>
       </Section>
 
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <p>
+          <T pt='Durações e curvas vêm dos tokens de motion e zeram com prefers-reduced-motion: o estado continua indicado por cor, borda ou texto.' en='Durations and curves come from the motion tokens and drop to zero with prefers-reduced-motion: state is still conveyed by color, border or text.' />
+        </p>
+        <DefinitionTable
+          rows={[
+            { term: { pt: 'Hover / foco em um link', en: 'Hover / focus on a link' }, description: { pt: 'Sublinhado de 2px cresce da esquerda (scaleX) — medium, ease-out. Na página atual ele fica laranja.', en: 'A 2px underline grows from the left (scaleX) — medium, ease-out. On the current page it stays orange.' } },
+            { term: { pt: 'Rolar com hideOnScroll', en: 'Scrolling with hideOnScroll' }, description: { pt: 'Ao rolar para baixo, o cabeçalho sobe (translateY(-110%)); ao subir, volta — medium (250ms), ease-in-out. Nunca some com foco dentro ou com o menu aberto.', en: 'Scrolling down slides the header up (translateY(-110%)); scrolling up brings it back — medium (250ms), ease-in-out. It never hides with focus inside or the menu open.' } },
+            { term: { pt: 'Abrir o menu (telas pequenas)', en: 'Opening the menu (small screens)' }, description: { pt: 'O painel desce com fade (medium, ease-out) e os itens entram em cascata (40ms entre eles).', en: 'The panel drops in with a fade (medium, ease-out) and items enter staggered (40ms apart).' } },
+            { term: { pt: 'Fechar o menu', en: 'Closing the menu' }, description: { pt: 'O painel sai com fade + 4px para cima — fast, ease-in-out — e só então é escondido (usePresence).', en: 'The panel exits with a fade + 4px upward — fast, ease-in-out — and only then gets hidden (usePresence).' } },
+            { term: { pt: 'Botão de menu', en: 'Menu button' }, description: { pt: 'O ícone ☰/✕ entra girando com um pop (medium, ease-bounce); o botão afunda 1px ao pressionar (press).', en: 'The ☰/✕ icon spins in with a pop (medium, ease-bounce); the button sinks 1px when pressed (press).' } },
+          ]}
+        />
+      </Section>
+
       <Section title="Props" id="props">
         <PropsTable
           rows={[

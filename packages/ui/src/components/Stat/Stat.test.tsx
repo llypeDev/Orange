@@ -1,5 +1,5 @@
-import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { Stat, StatGroup } from './Stat'
@@ -42,6 +42,68 @@ describe('Stat', () => {
       </OrangeProvider>,
     )
     expect(container.querySelector('.or-stat__delta')).toHaveTextContent('increase of 12%')
+  })
+})
+
+describe('Stat animate', () => {
+  const OriginalIO = window.IntersectionObserver
+  afterEach(() => {
+    window.IntersectionObserver = OriginalIO
+    vi.unstubAllGlobals()
+  })
+
+  function mockInView() {
+    class InstantObserver {
+      constructor(private callback: IntersectionObserverCallback) {}
+      observe(target: Element) {
+        this.callback([{ isIntersecting: true, target } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
+      }
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return []
+      }
+    }
+    window.IntersectionObserver = InstantObserver as unknown as typeof IntersectionObserver
+  }
+
+  it('antes de entrar na tela mostra zero, mas o leitor de tela lê o valor final', () => {
+    const { container } = render(<Stat animate label="Receita" value="R$ 48,2 mil" delta="12%" trend="increase" />)
+    const valueEl = container.querySelector('.or-stat__value')!
+    expect(valueEl).toHaveAttribute('data-counting')
+    expect(valueEl.querySelector('.or-stat__value-count')).toHaveAttribute('aria-hidden', 'true')
+    expect(valueEl.querySelector('.or-stat__value-count')).toHaveTextContent('R$ 0,0 mil')
+    expect(valueEl.querySelector('.or-stat__value-final')).toHaveTextContent('R$ 48,2 mil')
+    expect(container.querySelector('dl')).toHaveAttribute('data-animate')
+    expect(container.querySelector('dl')).not.toHaveAttribute('data-inview')
+  })
+
+  it('interpola todos os números do texto com os separadores do idioma', () => {
+    const { container, rerender } = render(<Stat animate label="Tempo" value="1h 12min" />)
+    expect(container.querySelector('.or-stat__value-count')).toHaveTextContent('0h 0min')
+    rerender(<Stat animate label="Pedidos" value={12840} />)
+    expect(container.querySelector('.or-stat__value-final')).toHaveTextContent('12.840')
+    expect(container.querySelector('.or-stat__value-count')).toHaveTextContent(/^0$/)
+  })
+
+  it('ao entrar na tela conta até o valor final e remove a camada animada', async () => {
+    mockInView()
+    // jsdom usa outro relógio no timestamp do rAF; aqui ele segue performance.now()
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => window.setTimeout(() => cb(performance.now()), 16))
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => window.clearTimeout(id))
+    const { container } = render(
+      <Stat animate label="Pedidos" value={1284} format={(n) => `${Math.round(n)} pedidos`} />,
+    )
+    expect(container.querySelector('dl')).toHaveAttribute('data-inview')
+    await waitFor(() => expect(container.querySelector('.or-stat__value-count')).toBeNull(), { timeout: 3000 })
+    expect(container.querySelector('.or-stat__value')).toHaveTextContent('1284 pedidos')
+    expect(container.querySelector('.or-stat__value')).not.toHaveAttribute('data-counting')
+  })
+
+  it('sem animate não usa a camada de contagem', () => {
+    const { container } = render(<Stat label="NPS" value="72" />)
+    expect(container.querySelector('.or-stat__value-count')).toBeNull()
+    expect(container.querySelector('dl')).not.toHaveAttribute('data-animate')
   })
 })
 

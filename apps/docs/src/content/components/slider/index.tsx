@@ -2,6 +2,7 @@ import {
   Bullets,
   Code,
   ComponentPage,
+  DefinitionTable,
   Example,
   KeyboardTable,
   PropsTable,
@@ -240,6 +241,58 @@ export default function SliderPage() {
               description: {
                 pt: 'Atributos do input range (name…). A ref aponta para o primeiro polegar.',
                 en: 'Range input attributes (name…). The ref points to the first thumb.',
+              },
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Movimento', en: 'Motion' }}>
+        <DefinitionTable
+          rows={[
+            {
+              term: { pt: 'Hover e foco', en: 'Hover and focus' },
+              description: {
+                pt: 'O polegar cresce 12% (250ms, spring) e ganha um anel que se expande de 0 (250ms, ease-out) — mesma resposta para mouse e teclado.',
+                en: 'The thumb grows 12% (250ms, spring) and gains a ring that expands from 0 (250ms, ease-out) — same response for mouse and keyboard.',
+              },
+            },
+            {
+              term: { pt: 'Pressionar / arrastar', en: 'Press / drag' },
+              description: {
+                pt: 'O polegar cresce 22% e preenche de laranja.',
+                en: 'The thumb grows 22% and fills with orange.',
+              },
+            },
+            {
+              term: {
+                pt: 'Clique no trilho ou marca, teclado',
+                en: 'Track or mark click, keyboard',
+              },
+              description: {
+                pt: 'Preenchimento e polegar deslizam até o novo valor por transform (250ms, spring).',
+                en: 'Fill and thumb slide to the new value via transform (250ms, spring).',
+              },
+            },
+            {
+              term: { pt: 'Arraste', en: 'Dragging' },
+              description: {
+                pt: 'Sem transição: o polegar segue o ponteiro sem atraso.',
+                en: 'No transition: the thumb follows the pointer with no lag.',
+              },
+            },
+            {
+              term: { pt: 'Marcas', en: 'Marks' },
+              description: {
+                pt: 'Mudam de cor em 160ms quando entram/saem do intervalo.',
+                en: 'Change color in 160ms as they enter/leave the range.',
+              },
+            },
+            {
+              term: { pt: 'Movimento reduzido', en: 'Reduced motion' },
+              description: {
+                pt: 'Durações e distâncias zeram pelos tokens; o estado continua indicado por cor, borda e texto.',
+                en: 'Durations and distances drop to zero via tokens; state is still conveyed by color, border and text.',
               },
             },
           ]}
