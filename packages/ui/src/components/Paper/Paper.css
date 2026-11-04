@@ -63,10 +63,12 @@
 
 /* Elevação ----------------------------------------------------------------- */
 
+/* A sombra difusa usa a cor de sombra do tema (--or-color-shadow): com o
+   carvão fixo, no tema claro virava uma mancha cinza pesada. */
 .or-paper--raised {
   box-shadow:
     0 1px 0 0 var(--or-color-border-strong),
-    0 18px 40px -28px color-mix(in srgb, var(--or-palette-carbon-0) 70%, transparent);
+    0 18px 40px -28px var(--or-color-shadow);
 }
 
 .or-paper--raised.or-paper--tone-default {
@@ -82,8 +84,12 @@
 }
 
 /* Interativa ---------------------------------------------------------------
- * Elevação no hover/foco (or-lift): sobe 4px com sombra deslocada laranja;
- * pressionar afunda. Hover e foco visível têm a mesma resposta. */
+ * Elevação no hover/foco (assinatura do zop.dev, igual ao `or-lift`): sobe
+ * 4px com uma sombra sólida de 4px na base, e uma barra de acento de 4px
+ * desce pela borda esquerda. Uma ponte invisível de 12px abaixo evita que o
+ * cursor na borda de baixo faça a superfície tremer. Pressionar afunda.
+ * Hover e foco visível têm a mesma resposta.
+ * Cores: --or-paper-lift-color (barra) e --or-paper-lift-shadow (sombra). */
 
 .or-paper {
   transition:
@@ -92,13 +98,44 @@
 }
 
 .or-paper--interactive {
-  --_lift-color: var(--or-color-accent);
+  --_lift-accent: var(--or-paper-lift-color, var(--or-color-accent));
+  --_lift-shadow: var(--or-paper-lift-shadow, var(--or-color-text));
   cursor: pointer;
   transition:
     transform var(--or-duration-medium) var(--or-ease-out),
     box-shadow var(--or-duration-medium) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
     background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-paper--interactive::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 4px;
+  height: 100%;
+  background: var(--_lift-accent);
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+  pointer-events: none;
+}
+
+.or-paper--interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.or-paper--interactive:hover::before {
+  bottom: -12px;
+}
+
+.or-paper--interactive:is(:hover, :focus-visible, :has(:focus-visible))::after {
+  transform: scaleY(1);
 }
 
 :is(a, button).or-paper {
@@ -116,13 +153,12 @@ button.or-paper {
 .or-paper--interactive:focus-visible,
 .or-paper--interactive:has(:focus-visible) {
   transform: translateY(var(--or-distance-lift));
-  box-shadow: 0 8px 0 -4px var(--_lift-color);
-  border-color: var(--or-color-border-strong);
+  box-shadow: 0 8px 0 -4px var(--_lift-shadow);
 }
 
 .or-paper--interactive:active {
   transform: translateY(1px) scale(0.995);
-  box-shadow: 0 2px 0 -1px var(--_lift-color);
+  box-shadow: 0 2px 0 -1px var(--_lift-shadow);
   transition-duration: var(--or-duration-press);
 }
 
@@ -134,5 +170,9 @@ button.or-paper {
 @media (forced-colors: active) {
   .or-paper {
     border-color: CanvasText;
+  }
+
+  .or-paper--interactive::after {
+    background: Highlight;
   }
 }

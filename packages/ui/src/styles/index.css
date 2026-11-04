@@ -6,4 +6,5 @@
  */
 @import '@orange/tokens/tokens.css';
 @import './base.css';
+@import './controls.css';
 @import './motion.css';

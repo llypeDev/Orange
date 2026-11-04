@@ -166,6 +166,12 @@
   .or-stat-group__list {
     grid-template-columns: repeat(var(--_cols-md, 2), minmax(0, 1fr));
   }
+
+  /* Em 2 colunas, um número ímpar de itens deixava uma célula vazia e a
+     divisória horizontal parando no meio: o último item ocupa a linha toda. */
+  .or-stat-group__list > .or-stat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 @container (max-width: 26rem) {

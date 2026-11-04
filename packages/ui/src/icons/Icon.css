@@ -1,5 +1,9 @@
+/* max-width: none — o reset `svg { max-width: 100% }` deixava ícones de
+   tamanho fixo encolherem até sumir dentro de pais estreitos (ex.: a seta de
+   ordenação numa coluna estreita da Table). */
 .or-icon {
   display: inline-block;
   flex-shrink: 0;
+  max-width: none;
   vertical-align: middle;
 }

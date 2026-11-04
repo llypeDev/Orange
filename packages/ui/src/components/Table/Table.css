@@ -137,8 +137,11 @@
 
 /* Ícone: crossfade entre "não ordenado" e a seta; a seta gira 180° entre
    crescente e decrescente com --or-ease-spring. */
+/* flex-shrink: 0 — em colunas estreitas o ícone encolhia até 0px e a coluna
+   ordenada ficava sem seta. */
 .or-table__sort-icon {
   display: inline-grid;
+  flex-shrink: 0;
   place-items: center;
 }
 

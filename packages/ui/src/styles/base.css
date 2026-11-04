@@ -37,6 +37,25 @@ body {
   color: inherit;
 }
 
+/* Controles nativos sem componente (range, checkbox, radio, progress) usam o
+   acento do tema, e não o azul padrão do navegador. */
+:where(input[type='range'], input[type='checkbox'], input[type='radio'], progress) {
+  accent-color: var(--or-color-accent);
+}
+
+/* O navegador aplica `font-family: monospace` direto em code/kbd/samp/pre —
+   que não herda do pai e cai na Courier New no Windows (e encolhe o texto
+   para 13px). Usa a fonte mono do sistema, no tamanho do texto ao redor. */
+:where(code, kbd, samp, pre) {
+  font-family: var(--or-font-mono);
+  font-size: 1em;
+}
+
+:where(pre) code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
 :where(img, svg, video, canvas) {
   display: block;
   max-width: 100%;
