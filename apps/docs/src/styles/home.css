@@ -331,21 +331,37 @@
   border-left: 1px solid var(--or-color-border-strong);
 }
 
-.home-layers li::before {
-  content: '';
+/* Trilha de progresso temporizada (como os passos do zop.dev). */
+.home-layers__track {
   position: absolute;
   top: -1px;
   left: -1px;
   right: -1px;
   height: 2px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-layers__track i {
+  display: block;
+  height: 100%;
   background: var(--or-color-accent);
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: left center;
   transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
-.home-layers li[data-active]::before {
+.home-layers li[data-state='on'] .home-layers__track i,
+.home-layers li[data-state='done'] .home-layers__track i {
   transform: scaleX(1);
+}
+
+.home-layers li[data-state='done'] .home-layers__track i {
+  background: var(--or-color-border-strong);
+}
+
+.home-layers[data-playing] li[data-state='on'] .home-layers__track i {
+  animation: or-fill-x var(--home-layer-ms, 3600ms) linear both;
 }
 
 .home-layers a {
@@ -456,6 +472,7 @@
 
 .home-tabs__list [role='tab'] {
   position: relative;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
   padding: var(--or-space-4) var(--or-space-5);
   border: 0;
   background: transparent;
@@ -475,14 +492,25 @@
   color: var(--or-color-text);
 }
 
-.home-tabs__list [role='tab'][aria-selected='true']::after {
-  content: '';
+.home-tabs__list {
+  position: relative;
+}
+
+/* Indicador único que desliza entre as abas (spring). */
+.home-tabs__indicator {
   position: absolute;
   left: 0;
-  right: 0;
   bottom: -1px;
   height: 2px;
   background: var(--or-color-accent);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    width var(--or-duration-medium) var(--or-ease-spring);
+  pointer-events: none;
+}
+
+.home-tabs__fade {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
 }
 
 .home-tabs__list [role='tab']:focus-visible {
@@ -604,13 +632,16 @@
   padding: var(--or-space-7) var(--or-space-6);
   border: 1px solid var(--or-color-border-strong);
   transition:
-    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.home-pillar:hover {
+.home-pillar:hover,
+.home-pillar:focus-within {
   border-color: var(--or-color-text-subtle);
   box-shadow: 0 8px 0 -4px var(--_c);
+  transform: translateY(var(--or-distance-lift));
 }
 
 .home-pillar--green {
@@ -1031,5 +1062,154 @@
   }
   .home-showcase__form {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- Motion da home (linguagem do zop.dev) -------------------------------- */
+
+/* Hero entra em sequência: selo, título, texto, ações, comando, nota. */
+.home-hero > :not(.home-grid-lines) {
+  animation: or-reveal-up var(--or-duration-reveal) var(--or-ease-out) both;
+}
+.home-hero > :nth-child(2) { animation-delay: 60ms; }
+.home-hero > :nth-child(3) { animation-delay: 140ms; }
+.home-hero > :nth-child(4) { animation-delay: 220ms; }
+.home-hero > :nth-child(5) { animation-delay: 300ms; }
+.home-hero > :nth-child(6) { animation-delay: 380ms; }
+.home-hero > :nth-child(7) { animation-delay: 460ms; }
+
+.home-grid-lines {
+  animation: or-fade-in var(--or-duration-slower) var(--or-ease-out) both;
+}
+
+/* Ponto verde "ao vivo" no selo de versão. */
+.home-chip .doc-square {
+  --_pulse-color: var(--or-palette-green-500);
+  animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
+}
+
+.home-chip__arrow {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.home-chip:hover .home-chip__arrow {
+  transform: translateX(4px);
+}
+
+/* Faixa de cima e a de baixo: pausam no hover e pelo botão. */
+.home[data-paused] .home-marquee__track,
+.home[data-paused] .home-chip .doc-square {
+  animation-play-state: paused;
+}
+
+.home {
+  position: relative;
+}
+
+.home-motion-toggle {
+  position: absolute;
+  top: 3.5rem;
+  right: var(--or-space-4);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  padding: 0.3125rem 0.625rem;
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.home-motion-toggle:hover {
+  border-color: var(--or-color-text-subtle);
+  color: var(--or-color-text);
+}
+
+.home-motion-toggle:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.home-motion-toggle[aria-pressed='true'] {
+  border-color: var(--or-color-accent);
+  color: var(--or-color-text);
+}
+
+/* Cards 01–05: título/texto acendem com transição; clique afunda. */
+.home-layers a:active {
+  transform: translateY(1px);
+}
+
+/* Vitrine: cabeçalho do bloco acende no hover. */
+.home-showcase__tile .home-showcase__head .or-eyebrow {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.home-showcase__tile:hover .home-showcase__head .or-eyebrow {
+  color: var(--or-color-accent-text);
+}
+
+/* Banner de chamada: borda laranja "cresce" ao revelar. */
+.home-cta-band {
+  position: relative;
+}
+
+.home-cta-band::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -3px;
+  width: 3px;
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--or-duration-slower) var(--or-ease-out) 200ms;
+}
+
+.home-cta-band[data-reveal='shown']::before {
+  transform: scaleY(1);
+}
+
+.home-cta-band {
+  border-left-color: transparent;
+}
+
+/* Linhas "Sempre/Nunca": quadrado faz pop ao revelar. */
+.home-rules[data-reveal='shown'] .home-rules__sq {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both 300ms;
+}
+
+/* FAQ (Accordion da biblioteca) com a moldura da home. */
+.home-faq.or-accordion {
+  border: 1px solid var(--or-color-border-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero > *,
+  .home-grid-lines,
+  .home-chip .doc-square {
+    animation: none;
+  }
+  .home-cta-band::before {
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-motion-toggle {
+    position: static;
+    margin: var(--or-space-3) var(--or-space-4) 0 auto;
+    display: flex;
   }
 }

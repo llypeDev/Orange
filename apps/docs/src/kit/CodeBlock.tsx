@@ -39,7 +39,13 @@ export function CodeBlock({ code, language = 'tsx', title, lineNumbers = false, 
     <div className="doc-code">
       <div className="doc-code__bar">
         <span className="doc-code__lang">{title ?? language.toUpperCase()}</span>
-        <button type="button" className="doc-code__copy" onClick={() => copy(trimmed)} aria-live="polite">
+        <button
+          type="button"
+          className="doc-code__copy"
+          onClick={() => copy(trimmed)}
+          aria-live="polite"
+          data-copied={copied || undefined}
+        >
           {copied ? t({ pt: 'Copiado', en: 'Copied' }) : t({ pt: 'Copiar', en: 'Copy' })}
         </button>
       </div>

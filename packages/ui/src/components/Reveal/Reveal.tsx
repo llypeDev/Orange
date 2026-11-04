@@ -19,6 +19,11 @@ export interface RevealProps extends HTMLAttributes<HTMLElement> {
   once?: boolean
   /** Margem do IntersectionObserver. */
   rootMargin?: string
+  /**
+   * Anima também quando o conteúdo já está visível ao montar (entrada de
+   * página/hero). Sem `appear`, conteúdo acima da dobra aparece direto.
+   */
+  appear?: boolean
 }
 
 type RevealState = 'idle' | 'hidden' | 'shown'
@@ -38,6 +43,7 @@ export const Reveal = forwardRef<HTMLElement, RevealProps>(function Reveal(
     stagger = false,
     once = true,
     rootMargin = '0px 0px -60px 0px',
+    appear = false,
     className,
     style,
     children,
@@ -55,9 +61,23 @@ export const Reveal = forwardRef<HTMLElement, RevealProps>(function Reveal(
     if (!node || reduced) return
     const rect = node.getBoundingClientRect()
     const alreadyVisible = rect.top < window.innerHeight && rect.bottom >= 0
-    // Acima da dobra já aparece; o resto aguarda o scroll.
-    if (!alreadyVisible) setState('hidden')
-  }, [node, reduced])
+    if (!alreadyVisible) {
+      // Abaixo da dobra: aguarda o scroll.
+      setState('hidden')
+      return
+    }
+    if (!appear) return
+    // Já visível e `appear`: esconde, e revela dois frames depois (a transição precisa de um frame).
+    setState('hidden')
+    let raf2 = 0
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setState('shown'))
+    })
+    return () => {
+      cancelAnimationFrame(raf1)
+      cancelAnimationFrame(raf2)
+    }
+  }, [node, reduced, appear])
 
   useEffect(() => {
     if (inView) setState((s) => (s === 'hidden' ? 'shown' : s))

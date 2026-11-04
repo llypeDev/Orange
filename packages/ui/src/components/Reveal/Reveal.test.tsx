@@ -111,3 +111,21 @@ describe('Reveal', () => {
     await expectNoA11yViolations(container)
   })
 })
+
+describe('Reveal appear', () => {
+  it('com appear anima mesmo já visível: começa escondido e revela nos próximos frames', async () => {
+    mockIntersectionObserver()
+    const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      setTimeout(() => cb(0), 0)
+      return 1
+    })
+    render(<Reveal appear>Hero</Reveal>)
+    const el = screen.getByText('Hero')
+    expect(el).toHaveAttribute('data-reveal', 'hidden')
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 10))
+    })
+    expect(el).toHaveAttribute('data-reveal', 'shown')
+    raf.mockRestore()
+  })
+})

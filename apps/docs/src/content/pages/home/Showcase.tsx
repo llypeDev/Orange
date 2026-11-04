@@ -7,6 +7,7 @@ import {
   Icon,
   Kbd,
   ProgressBar,
+  Reveal,
   SegmentedControl,
   Switch,
   Tab,
@@ -40,8 +41,8 @@ function Tile({
     >
       <div className="home-showcase__head">
         <span className="or-eyebrow">{t(name)}</span>
-        <Link to={to(`/components/${slug}`)} className="home-showcase__link">
-          {t({ pt: 'Docs', en: 'Docs' })} <span aria-hidden="true">→</span>
+        <Link to={to(`/components/${slug}`)} className="home-showcase__link or-nudge">
+          {t({ pt: 'Docs', en: 'Docs' })} <span className="or-nudge__icon" aria-hidden="true">→</span>
           <span className="or-visually-hidden">{t(name)}</span>
         </Link>
       </div>
@@ -64,7 +65,7 @@ export function Showcase() {
   const people = ['Mariana Lopes', 'Rafael Costa', 'Beatriz Nunes', 'Diego Almeida', 'Lívia Martins', 'Thiago Rocha']
 
   return (
-    <div className="home-showcase">
+    <Reveal stagger className="home-showcase">
       <Tile name={{ pt: 'Formulário', en: 'Form' }} slug="text-field" wide>
         <form className="home-showcase__form" onSubmit={(e) => e.preventDefault()}>
           <TextField
@@ -170,6 +171,6 @@ export function Showcase() {
           })}
         </Alert>
       </Tile>
-    </div>
+    </Reveal>
   )
 }

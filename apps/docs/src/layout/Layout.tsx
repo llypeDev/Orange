@@ -1,6 +1,16 @@
-import { Icon, useEscapeKey, useFocusTrap, useLockBodyScroll, useTheme } from '@orange/ui'
+import {
+  BackToTop,
+  Icon,
+  useEscapeKey,
+  useFocusTrap,
+  useLockBodyScroll,
+  usePresence,
+  useScrollDirection,
+  useTheme,
+} from '@orange/ui'
 import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { flushSync } from 'react-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { REPO_URL, STORYBOOK_URL } from '../content/registry'
 import { LANGS, useLang } from '../i18n'
 import { Logo } from './Logo'
@@ -29,26 +39,62 @@ function LangSwitch() {
   )
 }
 
+type ViewTransitionDocument = Document & { startViewTransition?: (cb: () => void) => unknown }
+
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
   const { t } = useLang()
   const next = resolvedTheme === 'dark' ? 'light' : 'dark'
+
+  const toggle = () => {
+    const doc = document as ViewTransitionDocument
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    // Cross-fade da página inteira na troca de tema (View Transitions), quando disponível.
+    if (doc.startViewTransition && !reduced) {
+      doc.startViewTransition(() => {
+        flushSync(() => setTheme(next))
+        document.documentElement.setAttribute('data-theme', next)
+      })
+    } else {
+      setTheme(next)
+    }
+  }
+
   return (
     <button
       type="button"
-      className="doc-icon-button"
-      onClick={() => setTheme(next)}
-      aria-label={next === 'light' ? t({ pt: 'Ativar tema claro', en: 'Switch to light theme' }) : t({ pt: 'Ativar tema escuro', en: 'Switch to dark theme' })}
+      className="doc-icon-button doc-theme-toggle"
+      onClick={toggle}
+      aria-label={
+        next === 'light'
+          ? t({ pt: 'Ativar tema claro', en: 'Switch to light theme' })
+          : t({ pt: 'Ativar tema escuro', en: 'Switch to dark theme' })
+      }
     >
-      <Icon name={resolvedTheme === 'dark' ? 'sun' : 'moon'} size="md" />
+      <Icon key={resolvedTheme} name={resolvedTheme === 'dark' ? 'sun' : 'moon'} size="md" className="doc-theme-toggle__icon" />
     </button>
   )
 }
 
 function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void }) {
   const { t, to } = useLang()
+  const headerRef = useRef<HTMLElement>(null)
+  const { direction, pastThreshold } = useScrollDirection({ threshold: 160 })
+  const [focusInside, setFocusInside] = useState(false)
+  // Como no zop.dev: some ao rolar para baixo, volta ao rolar para cima.
+  // Nunca esconde com foco dentro do cabeçalho ou com o menu aberto.
+  const hidden = direction === 'down' && pastThreshold && !focusInside && !menuOpen
+
   return (
-    <header className="doc-header">
+    <header
+      ref={headerRef}
+      className="doc-header"
+      data-hidden={hidden || undefined}
+      onFocus={() => setFocusInside(true)}
+      onBlur={(e) => {
+        if (!headerRef.current?.contains(e.relatedTarget as Node)) setFocusInside(false)
+      }}
+    >
       <div className="doc-header__start">
         <button
           type="button"
@@ -61,19 +107,23 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
           <Icon name={menuOpen ? 'close' : 'menu'} size="md" />
         </button>
         <Link to={to('/')} className="doc-header__brand">
-          <Logo />
+          <Logo animated />
           <span className="or-visually-hidden">{t({ pt: '— início', en: '— home' })}</span>
         </Link>
       </div>
       <nav className="doc-header__nav" aria-label={t({ pt: 'Atalhos', en: 'Shortcuts' })}>
-        <Link to={to('/components/overview')}>{t({ pt: 'Componentes', en: 'Components' })}</Link>
-        <Link to={to('/design-guidelines/color')}>Guidelines</Link>
-        <a href={STORYBOOK_URL} target="_blank" rel="noreferrer">
-          Storybook <Icon name="arrow-up-right" size="xs" />
+        <NavLink to={to('/components/overview')} className="doc-header__link">
+          {t({ pt: 'Componentes', en: 'Components' })}
+        </NavLink>
+        <NavLink to={to('/design-guidelines/color')} className="doc-header__link">
+          Guidelines
+        </NavLink>
+        <a href={STORYBOOK_URL} target="_blank" rel="noreferrer" className="doc-header__link">
+          Storybook <Icon name="arrow-up-right" size="xs" className="doc-header__ext" />
           <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
         </a>
-        <a href={REPO_URL} target="_blank" rel="noreferrer">
-          GitHub <Icon name="arrow-up-right" size="xs" />
+        <a href={REPO_URL} target="_blank" rel="noreferrer" className="doc-header__link">
+          GitHub <Icon name="arrow-up-right" size="xs" className="doc-header__ext" />
           <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
         </a>
       </nav>
@@ -94,6 +144,14 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
 
 function Footer() {
   const { t, to } = useLang()
+  const links: { label: string; href: string; internal?: boolean }[] = [
+    { label: t({ pt: 'Começando', en: 'Getting started' }), href: to('/getting-started'), internal: true },
+    { label: t({ pt: 'Componentes', en: 'Components' }), href: to('/components/overview'), internal: true },
+    { label: t({ pt: 'Acessibilidade', en: 'Accessibility' }), href: to('/design-guidelines/accessibility'), internal: true },
+    { label: t({ pt: 'Movimento', en: 'Motion' }), href: to('/design-guidelines/motion'), internal: true },
+    { label: 'Storybook', href: STORYBOOK_URL },
+    { label: 'GitHub', href: REPO_URL },
+  ]
   return (
     <footer className="doc-footer">
       <div className="doc-footer__top">
@@ -107,27 +165,26 @@ function Footer() {
           </p>
         </div>
         <ul className="doc-footer__links">
-          <li>
-            <Link to={to('/getting-started')}>{t({ pt: 'Começando', en: 'Getting started' })}</Link>
-          </li>
-          <li>
-            <Link to={to('/components/overview')}>{t({ pt: 'Componentes', en: 'Components' })}</Link>
-          </li>
-          <li>
-            <Link to={to('/design-guidelines/accessibility')}>{t({ pt: 'Acessibilidade', en: 'Accessibility' })}</Link>
-          </li>
-          <li>
-            <a href={STORYBOOK_URL}>Storybook</a>
-          </li>
-          <li>
-            <a href={REPO_URL}>GitHub</a>
-          </li>
+          {links.map((link) => (
+            <li key={link.href}>
+              {link.internal ? (
+                <Link to={link.href} className="doc-footer__link">
+                  {link.label}
+                </Link>
+              ) : (
+                <a href={link.href} className="doc-footer__link">
+                  {link.label}
+                </a>
+              )}
+            </li>
+          ))}
         </ul>
       </div>
       <div className="doc-footer__bottom">
         <span>© 2026 Orange Design System · MIT</span>
         <span>
-          {t({ pt: 'feito com', en: 'made with' })} <span className="doc-square doc-square--inline" aria-hidden="true" />{' '}
+          {t({ pt: 'feito com', en: 'made with' })}{' '}
+          <span className="doc-square doc-square--inline doc-footer__heart" aria-hidden="true" />{' '}
           {t({ pt: 'por llypeDev', en: 'by llypeDev' })}
         </span>
       </div>
@@ -154,17 +211,28 @@ export function PageFallback() {
   )
 }
 
-export function Layout({ children, fullWidth = false }: { children: ReactNode; fullWidth?: boolean }) {
+function Backdrop({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { present, state, nodeRef } = usePresence<HTMLDivElement>(open)
+  if (!present) return null
+  return <div ref={nodeRef} className="doc-backdrop" data-state={state} onClick={onClose} aria-hidden="true" />
+}
+
+/**
+ * Layout persistente (rota-pai): cabeçalho e menu lateral não remontam ao
+ * navegar — só o conteúdo, que entra com fade + 8px (como no zop.dev).
+ */
+export function Layout({ children }: { children?: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const sidebarRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
   const mainRef = useRef<HTMLElement>(null)
+  const isHome = /^\/(pt|en)\/?$/.test(location.pathname)
 
   useFocusTrap(sidebarRef, menuOpen)
   useLockBodyScroll(menuOpen)
   useEscapeKey(() => setMenuOpen(false), menuOpen)
 
-  // Ao trocar de rota: fecha o menu, rola para o topo (ou âncora) e anuncia.
+  // Ao trocar de rota: fecha o menu, rola para o topo (ou âncora).
   useEffect(() => {
     setMenuOpen(false)
     if (location.hash) {
@@ -178,24 +246,22 @@ export function Layout({ children, fullWidth = false }: { children: ReactNode; f
   }, [location.pathname, location.hash])
 
   return (
-    <div className={`doc-shell ${fullWidth ? 'doc-shell--full' : ''}`}>
+    <div className={`doc-shell ${isHome ? 'doc-shell--home' : ''}`}>
       <SkipLink />
       <Header menuOpen={menuOpen} onMenu={() => setMenuOpen((v) => !v)} />
       <div className="doc-body">
-        <div
-          id="doc-sidebar"
-          ref={sidebarRef}
-          className="doc-sidebar-wrap"
-          data-open={menuOpen || undefined}
-        >
+        <div id="doc-sidebar" ref={sidebarRef} className="doc-sidebar-wrap" data-open={menuOpen || undefined}>
           <Sidebar onNavigate={() => setMenuOpen(false)} />
         </div>
-        {menuOpen && <div className="doc-backdrop" onClick={() => setMenuOpen(false)} aria-hidden="true" />}
+        <Backdrop open={menuOpen} onClose={() => setMenuOpen(false)} />
         <main id="main" ref={mainRef} className="doc-main" tabIndex={-1}>
-          <Suspense fallback={<PageFallback />}>{children}</Suspense>
+          <div key={location.pathname} className="doc-route">
+            <Suspense fallback={<PageFallback />}>{children ?? <Outlet />}</Suspense>
+          </div>
           <Footer />
         </main>
       </div>
+      <BackToTop threshold={900} focusTarget="#main" />
     </div>
   )
 }
