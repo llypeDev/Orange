@@ -64,6 +64,32 @@ describe('Reveal', () => {
     expect(el).toHaveAttribute('data-reveal', 'shown')
   })
 
+  it('marca data-reveal-settled quando a entrada termina (filhos voltam às próprias transições)', async () => {
+    const io = mockIntersectionObserver()
+    belowTheFold()
+    render(
+      <Reveal stagger data-testid="grupo">
+        <a href="#a">a</a>
+        <a href="#b">b</a>
+      </Reveal>,
+    )
+    const group = screen.getByTestId('grupo')
+    expect(group).not.toHaveAttribute('data-reveal-settled')
+    io.trigger(true)
+    expect(group).toHaveAttribute('data-reveal', 'shown')
+    expect(group).not.toHaveAttribute('data-reveal-settled')
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 120))
+    })
+    expect(group).toHaveAttribute('data-reveal-settled')
+  })
+
+  it('conteúdo já visível na carga nasce assentado', () => {
+    mockIntersectionObserver()
+    render(<Reveal>Topo</Reveal>)
+    expect(screen.getByText('Topo')).toHaveAttribute('data-reveal-settled')
+  })
+
   it('o conteúdo escondido continua na árvore de acessibilidade', () => {
     mockIntersectionObserver()
     belowTheFold()

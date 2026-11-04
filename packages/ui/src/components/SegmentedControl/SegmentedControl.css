@@ -65,6 +65,16 @@
   width: 100%;
 }
 
+/* Telas estreitas: colunas iguais (1fr) cortavam "Semana", "Sistema"… com
+   reticências enquanto "Mês" e "Ano" sobravam. minmax(0, auto) reparte o
+   espaço pelo conteúdo: as opções curtas param no tamanho delas e o resto vai
+   para as longas; só corta se nem assim couber. */
+@media (max-width: 40rem) {
+  .or-segmented-control__track {
+    grid-auto-columns: minmax(0, auto);
+  }
+}
+
 /* Indicador que desliza até a opção selecionada: fundo + barra laranja. */
 .or-segmented-control__indicator {
   position: absolute;
@@ -77,9 +87,12 @@
 }
 
 /* Desliza com mola (spring, medium) — por clique ou pelas setas do teclado.
- * Só o transform anima; a largura das opções é igual (grade 1fr). */
+ * A largura também anima: em telas estreitas as opções têm larguras
+ * diferentes (ver o media query do trilho). */
 .or-segmented-control__track[data-animate] .or-segmented-control__indicator {
-  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    width var(--or-duration-medium) var(--or-ease-spring);
 }
 
 /* Opções -------------------------------------------------------------------- */

@@ -42,7 +42,7 @@ function Tile({
       <div className="home-showcase__head">
         <span className="or-eyebrow">{t(name)}</span>
         <Link to={to(`/components/${slug}`)} className="home-showcase__link or-nudge">
-          {t({ pt: 'Docs', en: 'Docs' })} <span className="or-nudge__icon" aria-hidden="true">→</span>
+          {t({ pt: 'Docs', en: 'Docs' })} <Icon name="arrow-right" size="xs" className="or-nudge__icon" />
           <span className="or-visually-hidden">{t(name)}</span>
         </Link>
       </div>

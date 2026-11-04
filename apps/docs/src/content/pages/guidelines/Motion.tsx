@@ -449,14 +449,22 @@ export default function MotionPage() {
           description={{
             pt: (
               <>
-                Cartões clicáveis sobem 4px com uma sombra laranja sólida <Code>0 8px 0 -4px</Code>{' '}
-                — no hover e no foco do teclado. Troque a cor com <Code>--_lift-color</Code>.
+                Cartões clicáveis sobem 4px, ganham uma sombra sólida <Code>0 8px 0 -4px</Code> na
+                cor do texto e uma barra de acento de 4px que desce pela borda esquerda (
+                <Code>scaleY(0 → 1)</Code>, a partir do topo) — no hover e no foco do teclado. Uma
+                ponte invisível de 12px abaixo do cartão evita que ele trema com o cursor na borda
+                de baixo. Troque as cores com <Code>--or-lift-accent</Code> (barra) e{' '}
+                <Code>--or-lift-shadow</Code> (sombra).
               </>
             ),
             en: (
               <>
-                Clickable cards lift 4px with a solid orange <Code>0 8px 0 -4px</Code> shadow — on
-                hover and on keyboard focus. Change the color with <Code>--_lift-color</Code>.
+                Clickable cards lift 4px, gain a solid <Code>0 8px 0 -4px</Code> shadow in the text
+                color and a 4px accent bar that draws down the left edge (<Code>scaleY(0 → 1)</Code>,
+                from the top) — on hover and on keyboard focus. An invisible 12px bridge below the
+                card keeps it from flickering when the cursor sits on its bottom edge. Change the
+                colors with <Code>--or-lift-accent</Code> (bar) and <Code>--or-lift-shadow</Code>{' '}
+                (shadow).
               </>
             ),
           }}

@@ -92,6 +92,8 @@ export interface ColorTokens {
   'surface-active': string
   'surface-inverse': string
   overlay: string
+  /** Sombra difusa das sobreposições (modais, menus, toasts). */
+  shadow: string
   text: string
   'text-muted': string
   'text-subtle': string
@@ -144,6 +146,7 @@ export const themes: Record<ThemeName, ColorTokens> = {
     'surface-active': carbon[300],
     'surface-inverse': carbon[900],
     overlay: 'rgba(5, 5, 7, 0.72)',
+    shadow: 'rgba(0, 0, 0, 0.55)',
     text: carbon[900],
     'text-muted': carbon[700],
     'text-subtle': carbon[600],
@@ -193,6 +196,8 @@ export const themes: Record<ThemeName, ColorTokens> = {
     'surface-active': paper[300],
     'surface-inverse': paper[950],
     overlay: 'rgba(15, 15, 18, 0.48)',
+    // Bem mais leve que no escuro: a mesma sombra virava um halo cinza pesado sobre o papel.
+    shadow: 'rgba(15, 15, 18, 0.14)',
     text: paper[950],
     'text-muted': paper[800],
     'text-subtle': paper[700],
@@ -309,10 +314,12 @@ export const borderWidth = {
 
 export const shadow = {
   none: 'none',
+  /** Hover de cartões clicáveis (zop.dev): faixa sólida de 4px na base, na cor do texto. */
+  lift: '0 8px 0 -4px var(--or-color-text)',
   'hover-accent': '0 8px 0 -4px var(--or-color-accent)',
   'hover-ink': '0 4px 0 -2px var(--or-color-text)',
   raised: '0 1px 0 0 var(--or-color-border-strong)',
-  overlay: '0 24px 64px -16px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--or-color-border-strong)',
+  overlay: '0 24px 64px -16px var(--or-color-shadow), 0 0 0 1px var(--or-color-border-strong)',
 } as const
 
 /**

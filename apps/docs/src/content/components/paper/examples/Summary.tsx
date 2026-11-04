@@ -1,4 +1,4 @@
-import { DescriptionList, Paper } from '@orange/ui'
+import { DescriptionList, Heading, Paper } from '@orange/ui'
 
 export default function Summary() {
   return (
@@ -6,9 +6,9 @@ export default function Summary() {
       <p className="or-eyebrow" style={{ margin: 0 }}>
         Assinatura
       </p>
-      <h3 id="assinatura-titulo" style={{ margin: '6px 0 16px', fontSize: 22 }}>
+      <Heading level={3} size="xl" id="assinatura-titulo" style={{ margin: '6px 0 16px' }}>
         Plano Pro anual
-      </h3>
+      </Heading>
       <DescriptionList
         size="sm"
         termWidth="9rem"

@@ -11,7 +11,8 @@ export default function CartoesQueSobem() {
     <ul className="guide-lift-grid">
       {planos.map((plano) => (
         <li key={plano.nome}>
-          {/* or-lift: sobe --or-distance-lift (4px) com sombra 0 8px 0 -4px no hover e no foco */}
+          {/* or-lift: no hover e no foco sobe 4px, ganha a sombra 0 8px 0 -4px e a barra
+              de acento desce pela borda esquerda. Cores: --or-lift-accent e --or-lift-shadow. */}
           <a href="#elevar" className="guide-lift-card or-lift or-nudge">
             <span className="or-eyebrow">{plano.nome}</span>
             <strong>{plano.preco}/mês</strong>

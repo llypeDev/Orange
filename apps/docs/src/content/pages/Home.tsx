@@ -19,12 +19,21 @@ import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import '../../styles/home.css'
 import { Showcase } from './home/Showcase'
 
+/**
+ * Cada linha repete os itens (`MARQUEE_REPEAT` vezes) para ser mais larga que
+ * qualquer tela: com uma cópia só (~1,1 mil px), em telas largas sobrava uma
+ * faixa vazia no fim de cada volta. Só a primeira cópia é lida por leitores
+ * de tela.
+ */
+const MARQUEE_REPEAT = 3
+
 function Marquee({ items, tone = 'paper' }: { items: Localized<string>[]; tone?: 'paper' | 'ink' }) {
   const { t } = useLang()
+  const copies = Array.from({ length: MARQUEE_REPEAT }, () => items).flat()
   const row = (hidden: boolean) => (
     <ul className="home-marquee__row" aria-hidden={hidden || undefined}>
-      {items.map((item, i) => (
-        <li key={i}>
+      {copies.map((item, i) => (
+        <li key={i} aria-hidden={(!hidden && i >= items.length) || undefined}>
           <span>{t(item)}</span>
           <span className="home-marquee__dot" aria-hidden="true" />
         </li>
@@ -415,16 +424,6 @@ export default function Home() {
 
   return (
     <div className="home" data-paused={motionPaused || undefined}>
-      {/* WCAG 2.2.2: conteúdo que se move sozinho por mais de 5s precisa de controle de pausa. */}
-      <button
-        type="button"
-        className="home-motion-toggle"
-        aria-pressed={motionPaused}
-        onClick={() => setMotionPaused((v) => !v)}
-      >
-        <Icon name={motionPaused ? 'play' : 'pause'} size="xs" />
-        {motionPaused ? t({ pt: 'Retomar animações', en: 'Resume animations' }) : t({ pt: 'Pausar animações', en: 'Pause animations' })}
-      </button>
       <Marquee
         items={[
           { pt: 'WCAG 2.2 AA em todos os componentes', en: 'WCAG 2.2 AA in every component' },
@@ -434,6 +433,17 @@ export default function Home() {
           { pt: 'Open source · MIT', en: 'Open source · MIT' },
         ]}
       />
+      {/* WCAG 2.2.2: conteúdo que se move sozinho por mais de 5s precisa de controle de pausa.
+          Vem depois da faixa: no celular ele entra no fluxo e não pode empurrá-la para baixo do cabeçalho. */}
+      <button
+        type="button"
+        className="home-motion-toggle"
+        aria-pressed={motionPaused}
+        onClick={() => setMotionPaused((v) => !v)}
+      >
+        <Icon name={motionPaused ? 'play' : 'pause'} size="xs" />
+        {motionPaused ? t({ pt: 'Retomar animações', en: 'Resume animations' }) : t({ pt: 'Pausar animações', en: 'Pause animations' })}
+      </button>
 
       <section className="home-hero" aria-labelledby="home-title">
         <div className="home-grid-lines" aria-hidden="true" />
@@ -441,7 +451,9 @@ export default function Home() {
           <span className="doc-square" aria-hidden="true" />
           <span className="home-chip__version">v0.1.0</span>
           <span className="home-chip__sep" aria-hidden="true" />
-          <span>{t({ pt: `${componentMetas.length} componentes prontos para usar.`, en: `${componentMetas.length} components ready to use.` })}</span>
+          <span className="home-chip__text">
+            {t({ pt: `${componentMetas.length} componentes prontos para usar.`, en: `${componentMetas.length} components ready to use.` })}
+          </span>
           <Icon name="arrow-right" size="sm" className="home-chip__arrow" />
         </Link>
         <h1 id="home-title" className="home-hero__title">
@@ -607,7 +619,7 @@ export default function Home() {
         </Reveal>
         <Reveal stagger className="home-pillars">
           {pillars.map((p) => (
-            <article key={p.color} className={`home-pillar home-pillar--${p.color}`}>
+            <article key={p.color} className={`home-pillar home-pillar--${p.color} or-lift`}>
               <span className="home-pillar__icon" aria-hidden="true">
                 <span />
               </span>
@@ -620,10 +632,9 @@ export default function Home() {
                 ))}
               </ul>
               <Link to={to(p.path)} className="home-pillar__link or-nudge">
-                {t({ pt: 'Explorar', en: 'Explore' })} <span className="or-visually-hidden">{t(p.title)}</span>{' '}
-                <span className="or-nudge__icon" aria-hidden="true">
-                  →
-                </span>
+                {t({ pt: 'Explorar', en: 'Explore' })} <span className="or-visually-hidden">{t(p.title)}</span>
+                {/* Seta em SVG: o subconjunto "latin" das fontes não tem U+2192 e o "→" caía numa fonte do sistema. */}
+                <Icon name="arrow-right" size="xs" className="or-nudge__icon home-pillar__arrow" />
               </Link>
             </article>
           ))}

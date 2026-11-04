@@ -34,7 +34,12 @@ function useHeadings(ref: React.RefObject<HTMLElement | null>) {
     return () => io.disconnect()
   }, [ref])
 
-  return { items, active }
+  // No topo da página (cabeçalho/lead ainda à vista) nenhum h2 cruzou a faixa observada,
+  // então o observer não marca nada e o índice ficava sem destaque até a primeira rolagem.
+  // Enquanto não houver uma seção ativa válida, a primeira é a "atual": é onde o leitor está.
+  const current = active && items.some((item) => item.id === active) ? active : items[0]?.id
+
+  return { items, active: current }
 }
 
 export interface DocPageProps {
@@ -154,16 +159,21 @@ function ComponentPager({ slug }: { slug: string }) {
   return (
     <nav className="doc-pager" aria-label={t({ pt: 'Navegação entre componentes', en: 'Component navigation' })}>
       {prev ? (
-        <Link className="doc-pager__link" to={to(`/components/${prev.slug}`)}>
-          <span className="or-eyebrow">← {t({ pt: 'Anterior', en: 'Previous' })}</span>
+        <Link className="doc-pager__link or-lift" to={to(`/components/${prev.slug}`)}>
+          {/* Setas em SVG: o subconjunto "latin" das fontes não tem ← e →. */}
+          <span className="or-eyebrow doc-pager__dir">
+            <Icon name="arrow-left" size="xs" /> {t({ pt: 'Anterior', en: 'Previous' })}
+          </span>
           <span className="doc-pager__name">{prev.name}</span>
         </Link>
       ) : (
         <span />
       )}
       {next && (
-        <Link className="doc-pager__link doc-pager__link--next" to={to(`/components/${next.slug}`)}>
-          <span className="or-eyebrow">{t({ pt: 'Próximo', en: 'Next' })} →</span>
+        <Link className="doc-pager__link doc-pager__link--next or-lift" to={to(`/components/${next.slug}`)}>
+          <span className="or-eyebrow doc-pager__dir">
+            {t({ pt: 'Próximo', en: 'Next' })} <Icon name="arrow-right" size="xs" />
+          </span>
           <span className="doc-pager__name">{next.name}</span>
         </Link>
       )}

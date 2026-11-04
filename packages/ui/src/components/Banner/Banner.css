@@ -132,12 +132,16 @@
   text-decoration-thickness: 2px;
 }
 
+/* max-width: 100% — sem limite, a área de ações ficava na largura dos botões
+   lado a lado e passava da borda do banner em telas estreitas, em vez de
+   quebrar os botões em linhas. */
 .or-banner__action {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--or-space-2);
   flex-shrink: 0;
+  max-width: 100%;
 }
 
 .or-banner__close {

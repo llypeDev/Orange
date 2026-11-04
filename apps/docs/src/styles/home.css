@@ -2,15 +2,50 @@
  * Página inicial
  * ========================================================================= */
 
-.home {
+/* Largura e respiro lateral das seções — o rodapé da home usa os mesmos
+   valores para alinhar com elas (como o container único do zop.dev). Com o
+   menu lateral visível (≥1024px), enquanto as seções encostam nas bordas da
+   coluna, o respiro sobe para 5rem: o botão "voltar ao topo" (fixo, 24px da
+   direita, 48px de largura) fica na margem e não cobre conteúdo. */
+.doc-shell--home {
   --home-max: 71rem;
+  --home-pad: var(--or-space-8);
+}
+
+@media (min-width: 1024px) {
+  .doc-shell--home {
+    --home-pad: max(var(--or-space-8), 5rem - max(0px, (100% - var(--home-max)) / 2));
+  }
+}
+
+/* A home responde à largura da própria coluna (container query), não à da
+   janela: de 1024 a ~1300px o menu lateral ocupa 280px e a coluna fica
+   estreita — com media queries, as camadas 01–05 e a vitrine continuavam em
+   5 e 3 colunas e os títulos se sobrepunham. */
+.home {
+  container: home / inline-size;
   overflow: hidden;
 }
 
 .home-section {
-  max-width: var(--home-max);
+  max-width: var(--home-max, 71rem);
   margin: 0 auto;
-  padding: var(--or-space-20) var(--or-space-8) 0;
+  padding: var(--or-space-20) var(--home-pad, var(--or-space-8)) 0;
+}
+
+.doc-shell--home .doc-footer {
+  padding-inline: calc(max(0px, (100% - var(--home-max)) / 2) + var(--home-pad));
+}
+
+@media (max-width: 640px) {
+  .doc-shell--home .doc-footer {
+    padding-inline: var(--or-space-4);
+  }
+}
+
+/* "Pausar animações" também para o coração do rodapé. */
+.doc-shell:has(.home[data-paused]) .doc-footer__heart {
+  animation-play-state: paused;
 }
 
 .home-eyebrow {
@@ -39,9 +74,12 @@
   border-bottom: 1px solid var(--or-color-border);
 }
 
+/* margin-left:auto — quando o cabeçalho quebra linha, o texto continua
+   encostado à direita (alinhado com a régua de baixo), e não solto à
+   esquerda com o texto alinhado à direita. */
 .home-section__aside {
   max-width: 40ch;
-  margin: 0;
+  margin: 0 0 0 auto;
   color: var(--or-color-text-muted);
   font-size: var(--or-text-lg);
   text-align: right;
@@ -50,22 +88,26 @@
 /* --- Faixa animada -------------------------------------------------------- */
 
 .home-marquee {
+  --_marquee-bg: var(--or-color-bg);
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--or-color-border);
+  background: var(--_marquee-bg);
   font-size: var(--or-text-sm);
 }
 
 .home-marquee--paper {
-  background: var(--or-palette-carbon-900);
+  --_marquee-bg: var(--or-palette-carbon-900);
   color: var(--or-palette-carbon-50);
 }
 
 [data-theme='light'] .home-marquee--paper {
-  background: var(--or-palette-carbon-50);
+  --_marquee-bg: var(--or-palette-carbon-50);
   color: var(--or-palette-carbon-900);
 }
 
+/* Bordas esmaecidas na própria cor da faixa (um degradê escuro fixo deixava
+   manchas cinza sobre o creme). */
 .home-marquee::before,
 .home-marquee::after {
   content: '';
@@ -79,12 +121,12 @@
 
 .home-marquee::before {
   left: 0;
-  background: linear-gradient(90deg, rgba(15, 15, 18, 0.55), transparent);
+  background: linear-gradient(90deg, var(--_marquee-bg), transparent);
 }
 
 .home-marquee::after {
   right: 0;
-  background: linear-gradient(-90deg, rgba(15, 15, 18, 0.55), transparent);
+  background: linear-gradient(-90deg, var(--_marquee-bg), transparent);
 }
 
 .home-marquee__track {
@@ -157,6 +199,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--or-space-3);
+  max-width: 100%;
   margin-bottom: var(--or-space-10);
   padding: 0.625rem var(--or-space-4);
   border: 1px solid var(--or-color-border-strong);
@@ -179,6 +222,18 @@
 
 .home-chip__version {
   color: var(--or-color-accent-text);
+}
+
+/* Em telas estreitas o selo fica numa linha só, com reticências (zop.dev). */
+.home-chip__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-chip > :not(.home-chip__text) {
+  flex-shrink: 0;
 }
 
 .home-chip__sep {
@@ -224,11 +279,14 @@
   margin-top: var(--or-space-10);
 }
 
+/* A caixa do comando é sempre escura (como os blocos de código), então as
+   bordas usam um tom escuro fixo — com a borda do tema, no claro ela ganhava
+   uma moldura creme sobre o preto. */
 .home-install {
   display: inline-flex;
   align-items: stretch;
   margin-top: var(--or-space-6);
-  border: 1px solid var(--or-color-border);
+  border: 1px solid var(--or-palette-carbon-200);
   background: var(--or-color-code-bg);
   font-family: var(--or-font-mono);
   font-size: var(--or-text-sm);
@@ -251,7 +309,7 @@
 .home-install__copy {
   padding: 0.5rem var(--or-space-4);
   border: 0;
-  border-left: 1px solid var(--or-color-border);
+  border-left: 1px solid var(--or-palette-carbon-200);
   background: transparent;
   color: #b8b0a0;
   font-family: var(--or-font-display);
@@ -314,6 +372,7 @@
 /* --- Camadas numeradas ---------------------------------------------------- */
 
 .home-layers {
+  container: layers / inline-size;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   margin: 0;
@@ -386,9 +445,11 @@
   color: var(--or-color-text-subtle);
 }
 
+/* Em 5 colunas o título acompanha a largura da célula (cqi da lista), para
+   "Acessibilidade" nunca invadir a vizinha; em 2 ou 1 coluna volta a 2xl. */
 .home-layers__title {
   font-family: var(--or-font-display);
-  font-size: var(--or-text-2xl);
+  font-size: clamp(var(--or-text-lg), 2.3cqi, var(--or-text-2xl));
   font-weight: var(--or-weight-semibold);
   letter-spacing: -0.03em;
   color: var(--or-color-text-subtle);
@@ -464,10 +525,13 @@
   background: var(--or-color-code-bg);
 }
 
+/* A linha de base é uma sombra interna (e não border-bottom): com
+   overflow-x:auto a lista recorta o que passa da borda, e o indicador de 2px
+   ficava com 1px escondido. Assim ele cobre a linha por dentro. */
 .home-tabs__list {
   display: flex;
   overflow-x: auto;
-  border-bottom: 1px solid var(--or-color-border-strong);
+  box-shadow: inset 0 -1px 0 var(--or-color-border-strong);
 }
 
 .home-tabs__list [role='tab'] {
@@ -500,7 +564,7 @@
 .home-tabs__indicator {
   position: absolute;
   left: 0;
-  bottom: -1px;
+  bottom: 0;
   height: 2px;
   background: var(--or-color-accent);
   transition:
@@ -624,24 +688,22 @@
   gap: var(--or-space-5);
 }
 
+/* Cartões de produto do zop.dev: o cartão inteiro é clicável (o "Explorar"
+   estica sobre ele) e o hover vem do utilitário or-lift — sobe 4px, sombra
+   sólida na base e a barra na cor do pilar descendo pela borda esquerda. */
 .home-pillar {
   --_c: var(--or-palette-orange-500);
   --_t: var(--or-color-accent-text);
+  --or-lift-accent: var(--_c);
   display: flex;
   flex-direction: column;
   padding: var(--or-space-7) var(--or-space-6);
   border: 1px solid var(--or-color-border-strong);
-  transition:
-    transform var(--or-duration-medium) var(--or-ease-out),
-    box-shadow var(--or-duration-medium) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out);
+  background: var(--or-color-bg);
 }
 
-.home-pillar:hover,
-.home-pillar:focus-within {
-  border-color: var(--or-color-text-subtle);
-  box-shadow: 0 8px 0 -4px var(--_c);
-  transform: translateY(var(--or-distance-lift));
+.home-pillar:is(:hover, :has(:focus-visible)) {
+  border-color: var(--or-color-border);
 }
 
 .home-pillar--green {
@@ -726,15 +788,42 @@
 .home-pillar__link {
   align-self: flex-start;
   margin-top: var(--or-space-8);
-  color: var(--or-color-text-muted);
+  color: var(--or-color-text-subtle);
+  font-size: var(--or-text-sm);
   font-weight: var(--or-weight-medium);
   text-decoration: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.home-pillar__link:hover {
+/* Link esticado: a área clicável cobre o cartão inteiro. */
+.home-pillar__link::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+}
+
+.home-pillar__link:focus-visible {
+  outline: none;
+}
+
+.home-pillar__link:focus-visible::after {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* "Explorar →" clareia e a seta desliza 4px com o hover do cartão. */
+.home-pillar:is(:hover, :has(:focus-visible)) .home-pillar__link {
   color: var(--or-color-text);
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+}
+
+.home-pillar:is(:hover, :has(:focus-visible)) .or-nudge__icon {
+  transform: translateX(var(--or-distance-sm));
+}
+
+.home-pillar__arrow {
+  margin-left: 0.1em;
+  vertical-align: -0.05em;
 }
 
 /* --- FAQ ------------------------------------------------------------------ */
@@ -872,7 +961,7 @@
 
 /* --- Responsivo ----------------------------------------------------------- */
 
-@media (max-width: 1023px) {
+@container home (max-width: 1023px) {
   .home-layers {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -884,6 +973,17 @@
   }
   .home-layers li:nth-child(even) {
     border-left: 1px solid var(--or-color-border-strong);
+  }
+  /* Último item: sem borda dupla com a moldura e, se sobrar sozinho na
+     linha, ocupa as duas colunas (sem meia célula vazia). */
+  .home-layers li:last-child {
+    border-bottom: 0;
+  }
+  .home-layers li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .home-layers__title {
+    font-size: var(--or-text-2xl);
   }
   .home-split,
   .home-pillars {
@@ -900,7 +1000,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@container home (max-width: 640px) {
   .home-section {
     padding: var(--or-space-14) var(--or-space-4) 0;
   }
@@ -908,7 +1008,12 @@
     padding: var(--or-space-12) var(--or-space-4) var(--or-space-10);
   }
   .home-section__aside {
+    margin-left: 0;
     text-align: left;
+  }
+  /* O padding do .home-section acima zeraria o respiro final. */
+  .home-section.home-final {
+    padding-bottom: var(--or-space-14);
   }
   .home-layers {
     grid-template-columns: minmax(0, 1fr);
@@ -977,6 +1082,11 @@
 }
 
 .home-showcase__link {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
   font-family: var(--or-font-display);
   font-size: var(--or-text-xs);
   font-weight: var(--or-weight-semibold);
@@ -1047,13 +1157,13 @@
   color: var(--or-color-text-muted);
 }
 
-@media (max-width: 1023px) {
+@container home (max-width: 1023px) {
   .home-showcase {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@container home (max-width: 640px) {
   .home-showcase {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1206,7 +1316,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@container home (max-width: 640px) {
   .home-motion-toggle {
     position: static;
     margin: var(--or-space-3) var(--or-space-4) 0 auto;

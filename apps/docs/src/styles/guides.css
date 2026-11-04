@@ -91,8 +91,11 @@
   font-weight: var(--or-weight-bold);
 }
 
+/* A grade da paleta depende da largura da própria coluna de conteúdo (que muda com o
+   menu lateral e o índice), não da janela — por isso container query em vez de media query. */
 .guide-palette {
   margin: var(--or-space-6) 0 0;
+  container-type: inline-size;
 }
 
 .guide-palette__head {
@@ -113,12 +116,29 @@
   color: var(--or-color-text);
 }
 
+/* Cada amostra precisa de ~4.25rem para o hex inteiro (#0a0a0d) caber sem corte. Com 13
+   colunas fixas, a 1366px elas ficavam com ~55px e o hex aparecia cortado ("#0a0a0").
+   Padrão estreito: colunas automáticas (celular). Coluna média: 7 colunas fixas, que dividem
+   as paletas longas em duas linhas equilibradas (13 = 7 + 6) e mantêm as colunas alinhadas
+   entre paletas. Uma linha só quando cabem 13 amostras de 4.5rem. */
 .guide-palette__row {
   display: grid;
-  grid-template-columns: repeat(13, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@container (min-width: 32rem) {
+  .guide-palette__row {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 58.5rem) {
+  .guide-palette__row {
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+  }
 }
 
 .guide-palette__row > li {
@@ -428,26 +448,31 @@
 
 /* --- Alternador segmentado ------------------------------------------------ */
 
+/* Quando as opções não cabem (ex.: I18n a 390px), o grupo quebra em linhas. Para a quebra
+   ficar limpa: os botões crescem e preenchem cada linha (sem área vazia) e as divisórias são
+   sombras de 1px à esquerda e acima de cada botão — o overflow:hidden recorta as que caem na
+   borda externa. Um border-left fixo deixava um traço solto no início da segunda linha. */
 .guide-segmented {
   display: inline-flex;
   flex-wrap: wrap;
+  max-width: 100%;
+  overflow: hidden;
   border: 1px solid var(--or-color-border-strong);
 }
 
 .guide-segmented button {
+  --_sep: -1px 0 0 var(--or-color-border-strong), 0 -1px 0 var(--or-color-border-strong);
+  flex: 1 1 auto;
   min-height: 2rem;
   padding: 0 var(--or-space-3);
   border: 0;
   background: transparent;
+  box-shadow: var(--_sep);
   color: var(--or-color-text-muted);
   font-family: var(--or-font-display);
   font-size: var(--or-text-xs);
   font-weight: var(--or-weight-semibold);
   cursor: pointer;
-}
-
-.guide-segmented button + button {
-  border-left: 1px solid var(--or-color-border-strong);
 }
 
 .guide-segmented button:hover {
@@ -457,7 +482,9 @@
 .guide-segmented button[aria-pressed='true'] {
   background: var(--or-color-accent-subtle);
   color: var(--or-color-text);
-  box-shadow: inset 0 -2px 0 var(--or-color-accent);
+  box-shadow:
+    var(--_sep),
+    inset 0 -2px 0 var(--or-color-accent);
 }
 
 .guide-segmented button:focus-visible {
@@ -767,8 +794,25 @@
 }
 
 .guide-matrix__cell {
-  min-width: 9.5rem;
+  min-width: 7rem;
   vertical-align: middle;
+}
+
+/* Na matriz (5 colunas) o selo empilha razão e nível. Lado a lado, "3.63:1 | AA LARGE"
+   pedia ~161px por célula e a tabela passava ~47px da coluna de conteúdo a 1366px.
+   Empilhado, cada célula precisa de ~105px e a matriz cabe sem rolagem horizontal. */
+.guide-matrix .guide-badge {
+  flex-direction: column;
+  text-align: center;
+}
+
+.guide-matrix .guide-badge__level {
+  border-top: 1px solid var(--or-color-border-strong);
+  border-left: 0;
+}
+
+.guide-matrix .guide-badge--fail .guide-badge__level {
+  border-top-color: var(--or-color-danger);
 }
 
 .guide-matrix__sample {
@@ -866,12 +910,6 @@
   color: var(--or-color-text);
 }
 
-@media (max-width: 760px) {
-  .guide-palette__row {
-    grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr));
-  }
-}
-
 @media (max-width: 640px) {
   .guide-status-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -903,6 +941,19 @@
   display: inline-flex;
   align-items: center;
   gap: var(--or-space-3);
+}
+
+.guide-nowrap {
+  white-space: nowrap;
+}
+
+/* Tabela de pares de contraste (Acessibilidade): o .doc-table tbody th padrão é nowrap e
+   "text-inverse / surface-inverse" sozinho alargava a tabela ~40px além da coluna a 1366px.
+   Aqui o nome do par pode quebrar — só nos espaços em volta da barra (cada token é
+   .guide-nowrap). O par amostra + selo continua numa linha: se ele também quebrasse, o
+   layout automático da tabela apertaria todas as colunas e quebraria os selos primeiro. */
+.guide-contrast-pairs tbody th {
+  white-space: normal;
 }
 
 .guide-pair__sample {
@@ -1934,9 +1985,11 @@
   text-decoration: none;
 }
 
+/* Como no zop.dev: no hover a borda recua para o tom discreto e a sombra de
+   base + a barra lateral do or-lift fazem o destaque. */
 .guide-lift-card:hover,
 .guide-lift-card:focus-visible {
-  border-color: var(--or-color-text-subtle);
+  border-color: var(--or-color-border);
 }
 
 .guide-lift-card strong {
@@ -2418,6 +2471,16 @@
   overflow: visible;
 }
 
+/* Modo compacto (SVG estreito, texto ampliado): o nome da série no fim da linha não cabe. */
+.guide-figure__svg[data-compact] .guide-viz-series-name {
+  display: none;
+}
+
+/* ...e o primeiro rótulo do eixo X, na origem, encostaria no "0" do eixo Y. */
+.guide-figure__svg[data-compact] .guide-viz-tick--origin {
+  text-anchor: start;
+}
+
 .guide-figure__source {
   margin: 0;
   padding: var(--or-space-3) var(--or-space-5);
@@ -2465,17 +2528,19 @@
   stroke-width: 1;
 }
 
+/* Tamanhos em unidades do viewBox. --viz-k (useTextScale em DataVisualization.tsx) é 1 no
+   desktop e cresce quando o SVG encolhe, para os rótulos não ficarem abaixo de 11px na tela. */
 .guide-viz-tick {
   fill: var(--or-color-text-subtle);
   font-family: var(--or-font-body);
-  font-size: 12px;
+  font-size: calc(12px * var(--viz-k, 1));
   font-variant-numeric: tabular-nums;
 }
 
 .guide-viz-label {
   fill: var(--or-color-text);
   font-family: var(--or-font-display);
-  font-size: 13px;
+  font-size: calc(13px * var(--viz-k, 1));
   font-weight: var(--or-weight-bold);
 }
 
@@ -2559,6 +2624,7 @@
 
 .guide-ramp {
   margin: var(--or-space-2) 0 var(--or-space-5);
+  container-type: inline-size;
 }
 
 .guide-ramp__title {
@@ -2582,6 +2648,18 @@
   padding: var(--or-space-2);
   font-family: var(--or-font-mono);
   font-size: var(--or-text-2xs);
+}
+
+/* Em colunas estreitas (celular: 7 faixas de ~50px) o hex horizontal não cabe e era cortado
+   ("#6b2e0("). Girar o texto mantém a rampa contínua numa linha só — partir em duas linhas
+   quebraria a leitura de escala — e o valor inteiro visível, de baixo para cima. */
+@container (max-width: 30rem) {
+  .guide-ramp__strip > span {
+    align-items: flex-start;
+    height: 4.75rem;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
 }
 
 .guide-ramp__labels {
@@ -3026,13 +3104,24 @@
   border: 1px solid var(--or-color-border);
 }
 
+/* Rótulo à esquerda + frase numa coluna própria. Sem flex-wrap: com wrap, uma frase
+   longa pularia inteira para a linha de baixo e deixaria o rótulo sozinho. O texto do
+   retorno vem num único span (Hooks.tsx), então flui como frase e quebra na própria coluna. */
 .guide-hook__returns {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
   gap: var(--or-space-3);
   margin: var(--or-space-3) 0;
   color: var(--or-color-text-muted);
+}
+
+.guide-hook__returns > .or-eyebrow {
+  flex: none;
+}
+
+.guide-hook__returns-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .guide-hook-index th {

@@ -111,10 +111,11 @@
   --or-border-thick: 2px;
   --or-border-accent: 3px;
   --or-shadow-none: none;
+  --or-shadow-lift: 0 8px 0 -4px var(--or-color-text);
   --or-shadow-hover-accent: 0 8px 0 -4px var(--or-color-accent);
   --or-shadow-hover-ink: 0 4px 0 -2px var(--or-color-text);
   --or-shadow-raised: 0 1px 0 0 var(--or-color-border-strong);
-  --or-shadow-overlay: 0 24px 64px -16px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--or-color-border-strong);
+  --or-shadow-overlay: 0 24px 64px -16px var(--or-color-shadow), 0 0 0 1px var(--or-color-border-strong);
   --or-duration-press: 90ms;
   --or-duration-instant: 80ms;
   --or-duration-fast: 160ms;
@@ -164,6 +165,7 @@
   --or-color-surface-active: #3a3a42;
   --or-color-surface-inverse: #f0ebdb;
   --or-color-overlay: rgba(5, 5, 7, 0.72);
+  --or-color-shadow: rgba(0, 0, 0, 0.55);
   --or-color-text: #f0ebdb;
   --or-color-text-muted: #b8b0a0;
   --or-color-text-subtle: #9c9588;
@@ -215,6 +217,7 @@
   --or-color-surface-active: #e2ddcd;
   --or-color-surface-inverse: #0f0f12;
   --or-color-overlay: rgba(15, 15, 18, 0.48);
+  --or-color-shadow: rgba(15, 15, 18, 0.14);
   --or-color-text: #0f0f12;
   --or-color-text-muted: #525252;
   --or-color-text-subtle: #666057;

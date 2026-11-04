@@ -1,0 +1,163 @@
+/* ---------------------------------------------------------------------------
+ * Controles compartilhados — parte dos estilos globais (`@orange/ui/styles.css`).
+ *
+ * Viviam em Field.css e só chegavam junto com componentes de formulário: em
+ * apps que dividem o CSS por rota (como a documentação), um <input
+ * class="or-control"> numa página sem TextField aparecia com o visual padrão
+ * do navegador. Como utilitário público, precisa estar sempre carregado.
+ *
+ * `.or-control`        → aplicado direto em <input>, <select>, <textarea>.
+ * `.or-control-frame`  → contêiner com aparência de controle que recebe
+ *                        adornos (ícones, botões) e um input interno
+ *                        `.or-control-frame__input`.
+ * Tamanhos: `--sm`, `--md` (padrão), `--lg`.
+ * Estados: `[aria-invalid='true']` / `[data-invalid]`, `:disabled` / `[data-disabled]`.
+ * ------------------------------------------------------------------------- */
+
+.or-control,
+.or-control-frame {
+  --_height: var(--or-control-md);
+  width: 100%;
+  min-height: var(--_height);
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-md);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-control {
+  padding: 0 var(--or-space-3);
+}
+
+textarea.or-control {
+  padding: var(--or-space-2) var(--or-space-3);
+  line-height: var(--or-leading-body);
+  resize: vertical;
+}
+
+.or-control::placeholder,
+.or-control-frame__input::placeholder {
+  color: var(--or-color-text-subtle);
+  opacity: 1;
+}
+
+.or-control:hover:not(:disabled, :focus),
+.or-control-frame:hover:not([data-disabled], :focus-within) {
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-control:focus-visible,
+.or-control:focus,
+.or-control-frame:focus-within {
+  outline: none;
+  border-color: var(--or-color-accent);
+  box-shadow: 0 0 0 1px var(--or-color-accent);
+}
+
+.or-control[aria-invalid='true'],
+.or-control-frame[data-invalid] {
+  border-color: var(--or-color-danger);
+}
+
+.or-control[aria-invalid='true']:focus,
+.or-control-frame[data-invalid]:focus-within {
+  box-shadow: 0 0 0 1px var(--or-color-danger);
+}
+
+.or-control:disabled,
+.or-control-frame[data-disabled] {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.or-control[readonly] {
+  background: var(--or-color-bg-subtle);
+}
+
+.or-control--sm,
+.or-control-frame--sm {
+  --_height: var(--or-control-sm);
+  font-size: var(--or-text-sm);
+}
+
+.or-control--lg,
+.or-control-frame--lg {
+  --_height: var(--or-control-lg);
+  font-size: var(--or-text-lg);
+}
+
+.or-control-frame {
+  display: flex;
+  align-items: stretch;
+}
+
+.or-control-frame__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--or-space-3);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+
+.or-control-frame__input:disabled {
+  cursor: not-allowed;
+}
+
+.or-control-frame__addon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--or-space-3);
+  color: var(--or-color-text-subtle);
+}
+
+.or-control-frame__addon--start {
+  padding-right: 0;
+}
+
+.or-control-frame__addon--end {
+  padding-left: 0;
+}
+
+/* Botão interno de um controle (mostrar senha, limpar, abrir calendário). */
+.or-control-frame__button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--_height) - 2px);
+  border: 0;
+  border-left: var(--or-border-thin) solid var(--or-color-border);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-control-frame__button:hover:not(:disabled) {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-control-frame__button:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-control-frame__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

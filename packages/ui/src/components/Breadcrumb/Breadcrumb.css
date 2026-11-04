@@ -26,7 +26,9 @@
   align-items: center;
   margin: 0 var(--or-space-2);
   color: var(--or-color-text-disabled);
-  font-family: var(--or-font-mono);
+  /* Fonte do texto (e não a mono): o subconjunto da JetBrains Mono carregado
+     não tem "→" e outros separadores, que caíam na Consolas. */
+  font-family: var(--or-font-body);
   user-select: none;
 }
 

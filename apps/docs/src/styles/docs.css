@@ -994,6 +994,14 @@ a {
   min-width: 12rem;
 }
 
+/* Na coluna de descrição, trechos de código longos podem quebrar nos espaços. Um chip nowrap
+   como <div data-theme class="or-theme-scope"> (Tema → OrangeProvider) sozinho fixava a
+   coluna em ~300px e empurrava a tabela 15px além da coluna de conteúdo a 1366px.
+   Tokens sem espaço (ex.: aria-label) continuam inteiros. */
+.doc-table--props td:last-child .doc-inline-code {
+  white-space: normal;
+}
+
 .doc-keys {
   white-space: nowrap;
 }
@@ -1154,26 +1162,31 @@ a {
   border-top: 1px solid var(--or-color-border);
 }
 
+/* Hover: utilitário or-lift (sobe 4px, sombra sólida na base e barra de
+   acento descendo pela borda esquerda), como os cartões do zop.dev. */
 .doc-pager__link {
   display: flex;
   flex-direction: column;
   gap: var(--or-space-2);
   padding: var(--or-space-5);
-  border: 1px solid var(--or-color-border);
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
   text-decoration: none;
-  transition:
-    border-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
-}
-
-.doc-pager__link:hover {
-  border-color: var(--or-color-border-strong);
-  box-shadow: var(--or-shadow-hover-accent);
 }
 
 .doc-pager__link--next {
   grid-column: 2;
   text-align: right;
+}
+
+.doc-pager__dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.doc-pager__link--next .doc-pager__dir {
+  align-self: flex-end;
 }
 
 .doc-pager__name {
@@ -1215,8 +1228,20 @@ a {
   gap: var(--or-space-8) var(--or-space-6);
 }
 
+/* Título e lista compartilham as linhas do grid pai (subgrid): um título que
+   quebra em duas linhas ("Design Guidelines") não desalinha os links das
+   outras colunas. */
+.doc-footer__col {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: var(--or-space-4);
+  align-content: start;
+}
+
 .doc-footer__heading {
-  margin: 0 0 var(--or-space-4);
+  align-self: end;
+  margin: 0;
   font-family: var(--or-font-display);
   font-size: var(--or-text-2xs);
   font-weight: var(--or-weight-medium);
@@ -1312,13 +1337,22 @@ a {
     height: auto;
     transform: translateX(-100%);
     visibility: hidden;
+    /* Desliza (como o painel do zop.dev); ao fechar, só fica invisível
+       depois que a saída termina. */
     transition:
       transform var(--or-duration-medium) var(--or-ease-out),
-      visibility var(--or-duration-medium);
+      visibility 0s linear var(--or-duration-medium);
+  }
+  /* O foco entra no painel ao abrir; o anel ficaria em volta do menu inteiro. */
+  .doc-sidebar-wrap:focus {
+    outline: none;
   }
   .doc-sidebar-wrap[data-open] {
     transform: none;
     visibility: visible;
+    transition:
+      transform var(--or-duration-medium) var(--or-ease-out),
+      visibility 0s;
   }
   .doc-backdrop {
     display: block;
@@ -1364,6 +1398,24 @@ a {
   }
   .doc-h2 {
     font-size: var(--or-text-2xl);
+  }
+  /* Tabela termo → descrição no celular: com o termo fixo em 14rem, a descrição ficava com
+     ~110px (Começando → Requisitos) e um código longo (Sobre → Como testamos) estourava a
+     tabela. Empilhado, o termo vira um rótulo e a descrição usa a largura toda. */
+  .doc-table--definitions,
+  .doc-table--definitions tbody,
+  .doc-table--definitions tr,
+  .doc-table--definitions tbody th,
+  .doc-table--definitions td {
+    display: block;
+  }
+  .doc-table--definitions tbody th {
+    width: auto;
+    padding-bottom: var(--or-space-1);
+    border-bottom: 0;
+  }
+  .doc-table--definitions td {
+    padding-top: 0;
   }
 }
 
@@ -1553,13 +1605,15 @@ a {
   transform: translateY(-110%);
 }
 
-.doc-sidebar-wrap {
-  transition:
-    top var(--or-duration-medium) var(--or-ease-in-out),
-    height var(--or-duration-medium) var(--or-ease-in-out);
-}
-
+/* Só no desktop: no mobile esta regra (que vem depois no arquivo) anulava a
+   transição de transform do menu gaveta, que abria e fechava sem deslizar. */
 @media (min-width: 1024px) {
+  .doc-sidebar-wrap {
+    transition:
+      top var(--or-duration-medium) var(--or-ease-in-out),
+      height var(--or-duration-medium) var(--or-ease-in-out);
+  }
+
   .doc-shell:has(.doc-header[data-hidden]) .doc-sidebar-wrap {
     top: 0;
     height: 100vh;
@@ -1755,19 +1809,6 @@ a {
 
 .doc-example__toggle[aria-expanded='true'] span {
   transform: rotate(180deg);
-}
-
-/* Paginação entre componentes: cartão sobe 4px e a seta desliza. */
-.doc-pager__link {
-  transition:
-    transform var(--or-duration-medium) var(--or-ease-out),
-    border-color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-medium) var(--or-ease-out);
-}
-
-.doc-pager__link:hover,
-.doc-pager__link:focus-visible {
-  transform: translateY(var(--or-distance-lift));
 }
 
 /* Visão geral: seta do cartão empurra, clique afunda. */

@@ -289,7 +289,9 @@ export function Layout({ children }: { children?: ReactNode }) {
   const mainRef = useRef<HTMLElement>(null)
   const isHome = /^\/(pt|en)\/?$/.test(location.pathname)
 
-  useFocusTrap(sidebarRef, menuOpen)
+  // O foco entra no próprio painel (e não no primeiro campo, o "Filtrar…"):
+  // no celular, focar o campo abriria o teclado toda vez que o menu abre.
+  useFocusTrap(sidebarRef, menuOpen, { initialFocus: sidebarRef })
   useLockBodyScroll(menuOpen)
   useEscapeKey(() => setMenuOpen(false), menuOpen)
 

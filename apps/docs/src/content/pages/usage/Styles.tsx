@@ -616,8 +616,10 @@ import { Link } from 'react-router-dom'
                 />
                 <Code>--or-shadow-{name}</Code>
                 <span className="guide-mono guide-muted">
-                  {name === 'hover-accent' || name === 'hover-ink'
+                  {name === 'lift'
                     ? t({ pt: 'hover de cartões', en: 'card hover' })
+                    : name === 'hover-accent' || name === 'hover-ink'
+                    ? t({ pt: 'destaque no hover', en: 'hover highlight' })
                     : name === 'overlay'
                       ? t({ pt: 'modais e popovers', en: 'modals and popovers' })
                       : t({ pt: 'linha de base', en: 'baseline' })}
@@ -644,14 +646,20 @@ import { Link } from 'react-router-dom'
             {
               pt: (
                 <>
-                  <Code>--or-shadow-hover-accent</Code> é a assinatura dos cartões interativos: uma
-                  faixa laranja sólida que aparece embaixo no hover.
+                  <Code>--or-shadow-lift</Code> é a assinatura dos cartões interativos (como no
+                  zop.dev): uma faixa sólida na cor do texto que aparece embaixo no hover, junto com
+                  a subida de 4px e a barra de acento na borda esquerda (<Code>or-lift</Code>,{' '}
+                  <Code>Card interactive</Code>, <Code>Paper interactive</Code>).{' '}
+                  <Code>--or-shadow-hover-accent</Code> é a variante laranja para destaques pontuais.
                 </>
               ),
               en: (
                 <>
-                  <Code>--or-shadow-hover-accent</Code> is the interactive card signature: a solid
-                  orange band that appears underneath on hover.
+                  <Code>--or-shadow-lift</Code> is the interactive card signature (like zop.dev): a
+                  solid band in the text color that appears underneath on hover, together with the
+                  4px lift and the accent bar on the left edge (<Code>or-lift</Code>,{' '}
+                  <Code>Card interactive</Code>, <Code>Paper interactive</Code>).{' '}
+                  <Code>--or-shadow-hover-accent</Code> is the orange variant for one-off highlights.
                 </>
               ),
             },

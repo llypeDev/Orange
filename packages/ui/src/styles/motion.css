@@ -177,19 +177,73 @@
   transition-duration: var(--or-duration-press);
 }
 
-/* Elevar: cartões e blocos clicáveis sobem 4px com sombra deslocada. */
+/* Elevar (assinatura dos cartões do zop.dev). No hover e no foco do teclado:
+ *   1. o bloco sobe 4px (--or-distance-lift);
+ *   2. ganha uma "sombra" sólida de 4px na base, recuada 4px dos lados
+ *      (0 8px 0 -4px, na cor do texto);
+ *   3. uma barra de acento de 4px desce pela borda esquerda (scaleY 0 → 1,
+ *      a partir do topo).
+ * Uma ponte invisível (::before) se estende 12px abaixo do bloco enquanto
+ * ele está elevado: o cursor na borda de baixo não "perde" o hover quando o
+ * bloco sobe — sem tremer.
+ *
+ * Personalize por bloco:
+ *   --or-lift-accent  cor da barra lateral   (padrão: --or-color-accent)
+ *   --or-lift-shadow  cor da sombra de base  (padrão: --or-color-text)
+ * Usa ::before e ::after do próprio elemento. */
+
+/* Especificidade zero: só posiciona se o autor não tiver definido position
+   (um bloco absolute/fixed/sticky já serve de referência para a barra). */
+:where(.or-lift) {
+  position: relative;
+}
+
 .or-lift {
-  --_lift-color: var(--or-color-accent);
   transition:
     transform var(--or-duration-medium) var(--or-ease-out),
     box-shadow var(--or-duration-medium) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-lift:hover,
-.or-lift:focus-within {
+.or-lift::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 4px;
+  height: 100%;
+  background: var(--or-lift-accent, var(--or-color-accent));
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+  pointer-events: none;
+}
+
+.or-lift::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.or-lift:is(:hover, :focus-visible, :has(:focus-visible)) {
   transform: translateY(var(--or-distance-lift));
-  box-shadow: 0 8px 0 -4px var(--_lift-color);
+  box-shadow: 0 8px 0 -4px var(--or-lift-shadow, var(--or-color-text));
+}
+
+.or-lift:is(:hover, :focus-visible, :has(:focus-visible))::after {
+  transform: scaleY(1);
+}
+
+.or-lift:hover::before {
+  bottom: -12px;
+}
+
+@media (forced-colors: active) {
+  .or-lift::after {
+    background: Highlight;
+  }
 }
 
 /* Empurrar: o ícone (seta) desliza 4px no hover/foco do pai. */
@@ -262,10 +316,17 @@
   animation: or-shake var(--or-duration-slow) var(--or-ease-out) both;
 }
 
-/* --- Revelação no scroll (componente Reveal) ------------------------------ */
+/* --- Revelação no scroll (componente Reveal) ------------------------------
+ * As transições da revelação só valem até a entrada terminar. Depois, o
+ * Reveal marca `data-reveal-settled` e o elemento (ou os filhos do grupo)
+ * volta a usar as próprias transições — senão o hover de um cartão revelado
+ * herdaria o atraso escalonado e perderia o box-shadow. */
 
 .or-reveal {
   --or-reveal-index: 0;
+}
+
+.or-reveal:not([data-reveal-settled]) {
   transition:
     opacity var(--or-duration-reveal) var(--or-ease-out),
     transform var(--or-duration-reveal) var(--or-ease-out);
@@ -285,7 +346,7 @@
 }
 
 /* Grupo escalonado: cada filho entra 80ms depois do anterior. */
-.or-reveal-group > * {
+.or-reveal-group:not([data-reveal-settled]) > * {
   transition:
     opacity var(--or-duration-reveal) var(--or-ease-out),
     transform var(--or-duration-reveal) var(--or-ease-out);

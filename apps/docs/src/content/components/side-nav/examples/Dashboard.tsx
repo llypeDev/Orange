@@ -57,7 +57,10 @@ export default function Dashboard() {
           </SideNavItem>
         </SideNavSection>
       </SideNav>
-      <div style={{ flex: 1, padding: 24, color: 'var(--or-color-text-muted)' }}>Página atual: {current}</div>
+      {/* minWidth 0 + overflowWrap: no celular, "#checkout" vazava da caixa do exemplo. */}
+      <div style={{ flex: 1, minWidth: 0, padding: 24, color: 'var(--or-color-text-muted)', overflowWrap: 'anywhere' }}>
+        Página atual: {current}
+      </div>
     </div>
   )
 }

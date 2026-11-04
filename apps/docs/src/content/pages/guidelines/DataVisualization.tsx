@@ -1,6 +1,14 @@
 import { useTheme } from '@orange/ui'
 import { primitives, themes, type ThemeName } from '@orange/tokens'
-import { useId, useState, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { T, useLang, type Localized } from '../../../i18n'
 import {
   Bullets,
@@ -64,6 +72,38 @@ const months: Localized<string>[] = [
 
 /* --- Figura acessível ------------------------------------------------------ */
 
+/** Tamanho mínimo, em px de tela, dos rótulos dos gráficos (base: 12px no viewBox). */
+const MIN_LABEL_PX = 11
+/** Teto do fator: acima disso (telas de ~320px) os rótulos começam a se encostar. */
+const MAX_TEXT_SCALE = 2.2
+
+/**
+ * Fator para o texto do SVG. O SVG escala com o viewBox, e o texto junto: num celular de 390px
+ * um gráfico de 640 unidades fica com ~308px e os rótulos de 12px viravam ~5–6px. Medimos a
+ * escala real e aumentamos a fonte (em unidades do viewBox) só o necessário para ela continuar
+ * com ≥ 11px na tela. A geometria não muda: o gráfico inteiro segue visível, sem rolagem —
+ * com rolagem, o destaque de junho e as barras positivas ficavam fora da tela no celular.
+ * No desktop a escala é ≥ 1 e o fator fica em 1 (nada muda).
+ */
+function useTextScale(ref: RefObject<SVGSVGElement | null>, viewBoxWidth: number) {
+  const [k, setK] = useState(1)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !viewBoxWidth || typeof ResizeObserver === 'undefined') return
+    const update = () => {
+      const scale = el.getBoundingClientRect().width / viewBoxWidth
+      const next =
+        scale > 0 ? Math.min(MAX_TEXT_SCALE, Math.max(1, MIN_LABEL_PX / (12 * scale))) : 1
+      setK(Math.round(next * 100) / 100)
+    }
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [ref, viewBoxWidth])
+  return k
+}
+
 function Figure({
   title,
   subtitle,
@@ -87,6 +127,8 @@ function Figure({
 }) {
   const { t } = useLang()
   const id = useId()
+  const svgRef = useRef<SVGSVGElement>(null)
+  const k = useTextScale(svgRef, Number(viewBox.split(/\s+/)[2]))
   return (
     <figure className="guide-figure">
       <figcaption className="guide-figure__head">
@@ -98,10 +140,14 @@ function Figure({
         className={aside ? 'guide-figure__body guide-figure__body--aside' : 'guide-figure__body'}
       >
         <svg
+          ref={svgRef}
           className="guide-figure__svg"
           viewBox={viewBox}
           role="img"
           aria-labelledby={`${id}-t ${id}-d`}
+          style={{ '--viz-k': k } as CSSProperties}
+          // Texto ampliado não cabe em todo lugar (ex.: nome da série no fim da linha).
+          data-compact={k > 1.1 || undefined}
         >
           <title id={`${id}-t`}>{title}</title>
           <desc id={`${id}-d`}>{description}</desc>
@@ -347,7 +393,15 @@ function LineChart({ theme }: { theme: ThemeName }) {
         </g>
       ))}
       {months.map((mo, i) => (
-        <text key={mo.en} x={x(i)} y={H - m.b + 20} className="guide-viz-tick" textAnchor="middle">
+        <text
+          key={mo.en}
+          x={x(i)}
+          y={H - m.b + 20}
+          // "jan" fica na origem dos eixos; com a fonte ampliada (celular) ele encostaria no
+          // "0" do eixo Y — guides.css alinha esse primeiro rótulo pelo início no modo compacto.
+          className={i === 0 ? 'guide-viz-tick guide-viz-tick--origin' : 'guide-viz-tick'}
+          textAnchor="middle"
+        >
           {t(mo)}
         </text>
       ))}
@@ -371,7 +425,11 @@ function LineChart({ theme }: { theme: ThemeName }) {
             className="guide-viz-label"
             dominantBaseline="middle"
           >
-            {s.name} <tspan className="guide-viz-tick">{fmt(s.values[5])}</tspan>
+            {/* No modo compacto (celular) o nome sai e fica só o valor: com a fonte ampliada,
+                "Marketplace 130" passaria da margem direita. A legenda acima, com as mesmas
+                formas dos marcadores, continua identificando cada linha. */}
+            <tspan className="guide-viz-series-name">{s.name} </tspan>
+            <tspan className="guide-viz-tick">{fmt(s.values[5])}</tspan>
           </text>
         </g>
       ))}

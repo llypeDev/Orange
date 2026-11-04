@@ -246,11 +246,14 @@ function SliderControl({
           <div className="or-slider__fill" />
           {markList.map((mark) => {
             const p = pct(mark.value)
+            // Com valor único o preenchimento começa antes do 0% (cap): uma marca
+            // "ativa" no início cortaria o preenchimento e deixaria um toco laranja solto.
+            const active = (isRange ? p >= start : p > start) && p <= end
             return (
               <span
                 key={mark.value}
                 className="or-slider__tick"
-                data-active={(p >= start && p <= end) || undefined}
+                data-active={active || undefined}
                 style={{ left: `${p}%` }}
                 aria-hidden="true"
               />

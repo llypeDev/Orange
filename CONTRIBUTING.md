@@ -116,7 +116,7 @@ distâncias `--or-distance-sm` (4px, popovers) · `md` (8px, diálogos/toasts) �
 | --- | --- |
 | Entrada/saída de sobreposições | `usePresence(open)` → `{ present, state, nodeRef }`; `data-state={state}` + classe `or-motion-pop` / `or-motion-drop` / `or-motion-fade` (ou keyframes próprias com `[data-state='closed']`). Saída mais curta que entrada. |
 | Pressionar | `:active` → `transform: translateY(1px) scale(0.985)` em `--or-duration-press` (ou classe `or-press`). |
-| Elevar (cartões/blocos clicáveis) | hover/foco → `translateY(var(--or-distance-lift))` + `box-shadow: 0 8px 0 -4px <cor>` (classe `or-lift`). |
+| Elevar (cartões/blocos clicáveis) | hover/foco → `translateY(var(--or-distance-lift))` + `box-shadow: var(--or-shadow-lift)` + barra de acento de 4px na borda esquerda (`::after`, `scaleY(0 → 1)` a partir do topo) + ponte invisível de 12px abaixo (`::before`) para não tremer na borda — como os cartões do zop.dev (classe `or-lift`; `Card`/`Paper` `interactive` fazem o mesmo). |
 | Seta que empurra | ícone final desliza 4px no hover/foco (`or-nudge` + `or-nudge__icon`). |
 | Sublinhado animado | cresce da esquerda via `background-size` (`or-underline`). |
 | Expandir/recolher | `grid-template-rows: 0fr → 1fr` + opacidade em `--or-duration-slow` (`or-collapse` + `data-state`), chevron gira 180°. |
