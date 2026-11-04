@@ -1,0 +1,59 @@
+/* ---------------------------------------------------------------------------
+ * Toolbar — barra de ferramentas com roving tabindex
+ * ------------------------------------------------------------------------- */
+
+.or-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.or-toolbar--vertical {
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+.or-toolbar--bordered {
+  padding: var(--or-space-1);
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+}
+
+.or-toolbar__group.or-button-group {
+  flex-wrap: nowrap;
+}
+
+.or-toolbar__group:not(.or-button-group--attached) {
+  gap: var(--or-space-1);
+}
+
+/* Divisor: vertical numa barra horizontal e vice-versa. */
+.or-toolbar__separator {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: var(--or-border-thin);
+  margin: var(--or-space-1) var(--or-space-1);
+  background: var(--or-color-border-strong);
+}
+
+.or-toolbar--vertical > .or-toolbar__separator {
+  width: auto;
+  height: var(--or-border-thin);
+  margin: var(--or-space-1);
+}
+
+@media (forced-colors: active) {
+  .or-toolbar--bordered {
+    border-color: CanvasText;
+  }
+
+  .or-toolbar__separator {
+    background: CanvasText;
+  }
+}

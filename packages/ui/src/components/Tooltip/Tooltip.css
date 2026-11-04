@@ -1,0 +1,30 @@
+.or-tooltip {
+  --_arrow-bg: var(--or-color-surface-inverse);
+  --_arrow-border: var(--or-color-surface-inverse);
+
+  z-index: var(--or-z-tooltip);
+  max-width: min(17.5rem, var(--or-floating-available-width, calc(100vw - 16px)));
+  padding: var(--or-space-1) var(--or-space-3);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-inverse);
+  color: var(--or-color-text-inverse);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-medium);
+  line-height: var(--or-leading-tight);
+  overflow-wrap: break-word;
+  /* respiro vertical mínimo para textos de uma linha */
+  padding-block: 0.375rem;
+}
+
+.or-tooltip kbd {
+  margin-left: var(--or-space-2);
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-2xs);
+  opacity: 0.72;
+}
+
+/* Motion: entra rápido (fade + 4px) depois do atraso; sai ainda mais rápido. */
+.or-tooltip {
+  --_floating-in: var(--or-duration-fast);
+  --_floating-out: var(--or-duration-instant);
+}

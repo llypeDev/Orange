@@ -1,0 +1,182 @@
+/* ---------------------------------------------------------------------------
+ * Switch — trilho e polegar quadrados (geométrico), laranja quando ligado.
+ * ------------------------------------------------------------------------- */
+
+.or-switch {
+  --_w: 2.75rem;
+  --_h: 1.5rem;
+  --_thumb: 1rem;
+  --_pad: 3px;
+  --_gap: var(--or-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+}
+
+.or-switch--sm {
+  --_w: 2.25rem;
+  --_h: 1.25rem;
+  --_thumb: 0.75rem;
+}
+
+.or-switch__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_gap);
+}
+
+.or-switch--label-start .or-switch__row {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.or-switch__control {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: var(--_w);
+  height: var(--_h);
+  margin: 0;
+  padding: 0 var(--_pad);
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg-subtle);
+  cursor: pointer;
+  /* O trilho troca de cor em --or-duration-medium; o anel do hover em fast. */
+  transition:
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Amplia a área de toque para no mínimo 24px de altura sem mudar o visual. */
+.or-switch__control::before {
+  content: '';
+  position: absolute;
+  inset: max(-4px, calc((var(--_h) - 1.5rem) / 2)) -2px;
+}
+
+.or-switch__thumb {
+  display: block;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-text-subtle);
+  /* O polegar desliza com mola; `scale` (separado de transform) dá o press. */
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    scale var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Hover e foco visível: mesma resposta (borda mais forte + anel suave). */
+.or-switch__control:hover:not(:disabled),
+.or-switch__control:focus-visible {
+  border-color: var(--or-color-text-subtle);
+  box-shadow: 0 0 0 3px var(--or-color-accent-subtle);
+}
+
+.or-switch__control:hover:not(:disabled) .or-switch__thumb,
+.or-switch__control:focus-visible .or-switch__thumb {
+  background: var(--or-color-text-muted);
+}
+
+/* Pressionar (no switch ou no rótulo): o polegar encolhe levemente. */
+.or-switch__control:active:not(:disabled) .or-switch__thumb,
+.or-switch__row:has(.or-switch__label:active) .or-switch__control:not(:disabled) .or-switch__thumb {
+  scale: 0.82;
+  transition-duration: var(--or-duration-medium), var(--or-duration-medium), var(--or-duration-press);
+}
+
+.or-switch__control:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-switch__control[aria-checked='true'] {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+}
+
+.or-switch__control[aria-checked='true']:hover:not(:disabled),
+.or-switch__control[aria-checked='true']:focus-visible {
+  border-color: var(--or-color-accent-hover);
+  background: var(--or-color-accent-hover);
+}
+
+.or-switch__control[aria-checked='true'] .or-switch__thumb,
+.or-switch__control[aria-checked='true']:hover:not(:disabled) .or-switch__thumb,
+.or-switch__control[aria-checked='true']:focus-visible .or-switch__thumb {
+  background: var(--or-color-text-on-accent);
+  transform: translateX(calc(var(--_w) - var(--_thumb) - 2 * var(--_pad) - 2px));
+}
+
+.or-switch__control:disabled {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  cursor: not-allowed;
+}
+
+.or-switch__control:disabled .or-switch__thumb {
+  background: var(--or-color-text-disabled);
+}
+
+.or-switch__control[aria-checked='true']:disabled {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-border-strong);
+}
+
+/* Rótulo e descrição ---------------------------------------------------------- */
+
+.or-switch__label {
+  min-width: 0;
+  padding-top: calc((var(--_h) - 1lh) / 2);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text);
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-switch--sm .or-switch__label {
+  font-size: var(--or-text-sm);
+}
+
+.or-switch__description {
+  margin: 0;
+  padding-left: calc(var(--_w) + var(--_gap));
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-switch--label-start .or-switch__description {
+  padding-left: 0;
+  padding-right: calc(var(--_w) + var(--_gap));
+}
+
+.or-switch[data-disabled] .or-switch__label,
+.or-switch[data-disabled] .or-switch__description,
+.or-switch:has(.or-switch__control:disabled) .or-switch__label,
+.or-switch:has(.or-switch__control:disabled) .or-switch__description {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .or-switch__control {
+    border-color: ButtonText;
+  }
+  .or-switch__thumb {
+    background: ButtonText;
+  }
+  .or-switch__control[aria-checked='true'] {
+    background: Highlight;
+  }
+  .or-switch__control[aria-checked='true'] .or-switch__thumb {
+    background: HighlightText;
+  }
+}

@@ -1,0 +1,188 @@
+.or-empty-state {
+  --_art: 5.5rem;
+  --_shape: 4rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--or-space-6);
+  width: 100%;
+  padding: var(--or-space-12) var(--or-space-6);
+  text-align: center;
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-body);
+}
+
+/* Ilustração geométrica ----------------------------------------------------- */
+
+.or-empty-state__art {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--_art);
+  height: var(--_art);
+}
+
+.or-empty-state__shape {
+  position: absolute;
+  border-radius: var(--or-radius-none);
+}
+
+/* quadrado de trás: contorno laranja deslocado */
+.or-empty-state__shape--back {
+  top: 0;
+  right: 0;
+  width: var(--_shape);
+  height: var(--_shape);
+  border: var(--or-border-thin) solid var(--or-color-accent-border);
+  background-image:
+    linear-gradient(var(--or-color-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--or-color-grid-line) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* quadrado da frente: superfície com o ícone */
+.or-empty-state__shape--front {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_shape);
+  height: var(--_shape);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-text-muted);
+}
+
+/* marcador quadrado sólido — o acento */
+.or-empty-state__shape--dot {
+  top: calc(var(--_art) - var(--_shape) - 0.3125rem);
+  left: calc(var(--_shape) - 0.3125rem);
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--or-color-accent);
+}
+
+/* Texto e ações ------------------------------------------------------------- */
+
+.or-empty-state__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 30rem;
+}
+
+.or-empty-state__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xl);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: var(--or-tracking-heading);
+  line-height: var(--or-leading-heading);
+  color: var(--or-color-text);
+  text-wrap: balance;
+}
+
+.or-empty-state__description {
+  margin-top: var(--or-space-2);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+  text-wrap: pretty;
+}
+
+.or-empty-state__description > :first-child {
+  margin-top: 0;
+}
+
+.or-empty-state__description > :last-child {
+  margin-bottom: 0;
+}
+
+.or-empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--or-space-3);
+  margin-top: var(--or-space-6);
+}
+
+/* Compacta ----------------------------------------------------------------- */
+
+.or-empty-state--compact {
+  --_art: 3rem;
+  --_shape: 2.5rem;
+
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--or-space-4);
+  padding: var(--or-space-5);
+  text-align: left;
+}
+
+.or-empty-state--compact .or-empty-state__shape--dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  top: calc(var(--_art) - var(--_shape) - 0.1875rem);
+  left: calc(var(--_shape) - 0.1875rem);
+}
+
+.or-empty-state--compact .or-empty-state__shape--back {
+  background-size: 6px 6px;
+}
+
+.or-empty-state--compact .or-empty-state__body {
+  align-items: flex-start;
+  max-width: 40rem;
+}
+
+.or-empty-state--compact .or-empty-state__title {
+  font-size: var(--or-text-md);
+  letter-spacing: var(--or-tracking-body);
+  line-height: var(--or-leading-tight);
+}
+
+.or-empty-state--compact .or-empty-state__description {
+  margin-top: var(--or-space-1);
+  font-size: var(--or-text-sm);
+}
+
+.or-empty-state--compact .or-empty-state__actions {
+  justify-content: flex-start;
+  gap: var(--or-space-2);
+  margin-top: var(--or-space-3);
+}
+
+/* Movimento ---------------------------------------------------------------
+ * Ao montar, as peças geométricas caem no lugar (or-piece-drop) em sequência —
+ * quadrado de trás, quadrado da frente — e o marcador laranja "estala"
+ * (or-scale-in + --or-ease-bounce). O texto sobe 8px junto. Intervalo entre
+ * peças: --or-stagger (80ms).
+ */
+.or-empty-state--animated .or-empty-state__shape--back {
+  animation: or-piece-drop var(--or-duration-slow) var(--or-ease-spring) both;
+}
+
+.or-empty-state--animated .or-empty-state__shape--front {
+  animation: or-piece-drop var(--or-duration-slow) var(--or-ease-spring) var(--or-stagger) both;
+}
+
+.or-empty-state--animated .or-empty-state__shape--dot {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) calc(var(--or-stagger) * 3)
+    both;
+}
+
+.or-empty-state--animated .or-empty-state__body {
+  animation: or-page-enter var(--or-duration-medium) var(--or-ease-out) var(--or-stagger) both;
+}
+
+@media (forced-colors: active) {
+  .or-empty-state__shape--back,
+  .or-empty-state__shape--front {
+    border-color: CanvasText;
+  }
+
+  .or-empty-state__shape--dot {
+    background: Highlight;
+  }
+}

@@ -115,15 +115,24 @@
   --or-shadow-hover-ink: 0 4px 0 -2px var(--or-color-text);
   --or-shadow-raised: 0 1px 0 0 var(--or-color-border-strong);
   --or-shadow-overlay: 0 24px 64px -16px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--or-color-border-strong);
+  --or-duration-press: 90ms;
   --or-duration-instant: 80ms;
   --or-duration-fast: 160ms;
   --or-duration-medium: 250ms;
   --or-duration-slow: 400ms;
+  --or-duration-reveal: 600ms;
   --or-duration-slower: 640ms;
+  --or-duration-loop: 2400ms;
   --or-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --or-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --or-ease-spring: cubic-bezier(0.2, 0.9, 0.3, 1.05);
   --or-ease-snap: cubic-bezier(0.19, 1, 0.22, 1);
+  --or-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --or-distance-sm: 4px;
+  --or-distance-md: 8px;
+  --or-distance-lg: 24px;
+  --or-distance-lift: -4px;
+  --or-stagger: 80ms;
   --or-z-base: 0;
   --or-z-raised: 10;
   --or-z-sticky: 100;
@@ -158,7 +167,7 @@
   --or-color-text: #f0ebdb;
   --or-color-text-muted: #b8b0a0;
   --or-color-text-subtle: #9c9588;
-  --or-color-text-disabled: #55555e;
+  --or-color-text-disabled: #6b6b74;
   --or-color-text-inverse: #0f0f12;
   --or-color-text-on-accent: #0f0f12;
   --or-color-border: #2a2a30;
@@ -249,10 +258,18 @@
 /* Movimento reduzido: anula durações para quem prefere menos animação */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --or-duration-press: 0ms;
     --or-duration-instant: 0ms;
     --or-duration-fast: 0ms;
     --or-duration-medium: 0ms;
     --or-duration-slow: 0ms;
+    --or-duration-reveal: 0ms;
     --or-duration-slower: 0ms;
+    --or-duration-loop: 0ms;
+    --or-distance-sm: 0px;
+    --or-distance-md: 0px;
+    --or-distance-lg: 0px;
+    --or-distance-lift: 0px;
+    --or-stagger: 0ms;
   }
 }

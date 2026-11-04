@@ -1,0 +1,89 @@
+/* ---------------------------------------------------------------------------
+ * ButtonGroup — agrupa botões relacionados
+ * ------------------------------------------------------------------------- */
+
+.or-button-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2);
+  max-width: 100%;
+}
+
+.or-button-group--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+/* Colado: sem espaço, bordas internas compartilhadas ------------------------ */
+
+.or-button-group--attached {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.or-button-group--attached > * {
+  position: relative;
+}
+
+.or-button-group--attached.or-button-group--horizontal > :not(:first-child) {
+  margin-inline-start: calc(var(--or-border-thin) * -1);
+}
+
+.or-button-group--attached.or-button-group--vertical > :not(:first-child) {
+  margin-block-start: calc(var(--or-border-thin) * -1);
+}
+
+/* A borda do item em hover/foco fica por cima das vizinhas. */
+.or-button-group--attached > :hover {
+  z-index: 1;
+}
+
+.or-button-group--attached > :is(:focus-visible, :focus-within) {
+  z-index: 2;
+}
+
+/* Pressionar colado: a moldura fica parada (a borda compartilhada não pisca)
+ * e só o conteúdo "afunda" 1px — mesma resposta do Button, sem mexer na grade. */
+.or-button-group--attached > .or-button:active:not(:disabled, [aria-disabled='true']) {
+  transform: none;
+}
+
+.or-button-group--attached > .or-button > :is(.or-button__label, .or-button__icon--start) {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-button-group--attached
+  > .or-button:active:not(:disabled, [aria-disabled='true'])
+  > :is(.or-button__label, .or-button__icon--start) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* A seta final mantém o deslize de 4px enquanto afunda. */
+.or-button-group--attached
+  > .or-button:active:not(:disabled, [aria-disabled='true'])
+  > .or-button__icon--end {
+  transform: translate(4px, 1px);
+}
+
+/* Variantes preenchidas: a borda interna vira um divisor sutil. */
+.or-button-group--attached.or-button-group--horizontal
+  > :is(.or-button--primary, .or-button--secondary, .or-button--danger):not(:first-child) {
+  border-inline-start-color: color-mix(in srgb, var(--_fg) 30%, var(--_bg));
+}
+
+.or-button-group--attached.or-button-group--vertical
+  > :is(.or-button--primary, .or-button--secondary, .or-button--danger):not(:first-child) {
+  border-block-start-color: color-mix(in srgb, var(--_fg) 30%, var(--_bg));
+}
+
+/* Ghost colado ganha uma moldura para continuar parecendo um grupo. */
+.or-button-group--attached > .or-button--ghost {
+  --_border: var(--or-color-border);
+}
+
+.or-button-group--vertical > .or-button:not(.or-button--icon-only) {
+  justify-content: flex-start;
+}

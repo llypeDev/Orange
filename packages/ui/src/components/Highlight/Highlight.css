@@ -1,0 +1,32 @@
+.or-highlight__mark {
+  padding: 0 0.0625em;
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-accent-subtle);
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--or-color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  text-decoration-skip-ink: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  /* Marcas novas surgem com um fade do fundo e do sublinhado. */
+  animation: or-highlight-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+@keyframes or-highlight-in {
+  from {
+    background-color: transparent;
+    text-decoration-color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-highlight__mark {
+    forced-color-adjust: none;
+    background: Mark;
+    color: MarkText;
+    text-decoration-color: MarkText;
+  }
+}

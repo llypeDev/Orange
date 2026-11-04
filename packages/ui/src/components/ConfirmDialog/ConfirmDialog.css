@@ -1,0 +1,98 @@
+.or-confirm-dialog {
+  width: min(28rem, 100%);
+  animation: or-confirm-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-confirm-dialog[data-state='closed'] {
+  animation: or-confirm-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-confirm-dialog--danger {
+  box-shadow:
+    inset 0 var(--or-border-accent) 0 0 var(--or-color-danger),
+    var(--or-shadow-overlay);
+}
+
+.or-confirm-dialog__content {
+  display: flex;
+  gap: var(--or-space-4);
+  padding: var(--or-space-6);
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.or-confirm-dialog__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--or-color-danger-subtle);
+  color: var(--or-color-danger-text);
+}
+
+.or-confirm-dialog__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.or-confirm-dialog__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xl);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: -0.02em;
+  color: var(--or-color-text);
+  overflow-wrap: anywhere;
+}
+
+.or-confirm-dialog__description {
+  margin: var(--or-space-2) 0 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.or-confirm-dialog__extra {
+  margin-top: var(--or-space-4);
+  font-size: var(--or-text-sm);
+}
+
+.or-confirm-dialog__actions {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--or-space-3);
+  padding: var(--or-space-4) var(--or-space-6);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+}
+
+/* Alerta: escala mais marcada + 8px na entrada; saída curta. */
+@keyframes or-confirm-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md)) scale(0.96);
+  }
+}
+
+@keyframes or-confirm-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--or-distance-sm)) scale(0.98);
+  }
+}
+
+@media (max-width: 40rem) {
+  .or-confirm-dialog__content {
+    padding: var(--or-space-5);
+  }
+  .or-confirm-dialog__actions {
+    padding: var(--or-space-3) var(--or-space-5);
+  }
+  .or-confirm-dialog__actions > .or-button {
+    flex: 1;
+  }
+}

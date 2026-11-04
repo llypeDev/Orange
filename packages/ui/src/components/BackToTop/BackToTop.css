@@ -1,0 +1,112 @@
+.or-back-to-top {
+  --or-back-to-top-offset: var(--or-space-6);
+
+  z-index: var(--or-z-sticky);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--or-space-2);
+  min-width: var(--or-control-lg);
+  height: var(--or-control-lg);
+  padding: 0;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--or-shadow-raised);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Presença (usePresence): entra com fade + 8px; sai mais rápido, sem cliques. */
+.or-back-to-top[data-state='open'] {
+  animation: or-back-to-top-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-back-to-top[data-state='closed'] {
+  animation: or-back-to-top-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-back-to-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md));
+  }
+}
+
+@keyframes or-back-to-top-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--or-distance-md));
+  }
+}
+
+.or-back-to-top:is(:hover, :focus-visible) {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-surface-hover);
+  box-shadow: var(--or-shadow-hover-accent);
+}
+
+.or-back-to-top:active {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-back-to-top:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-back-to-top__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* A seta empurra 4px para cima no hover/foco. */
+.or-back-to-top:is(:hover, :focus-visible) .or-back-to-top__icon {
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+}
+
+.or-back-to-top--labeled {
+  padding: 0 var(--or-space-4) 0 var(--or-space-3);
+}
+
+/* Posicionamento ----------------------------------------------------------- */
+
+.or-back-to-top--fixed {
+  position: fixed;
+  right: var(--or-back-to-top-offset);
+  bottom: calc(var(--or-back-to-top-offset) + env(safe-area-inset-bottom, 0px));
+}
+
+.or-back-to-top--sticky {
+  position: sticky;
+  bottom: var(--or-space-4);
+  display: flex;
+  width: fit-content;
+  margin-top: var(--or-space-4);
+  margin-left: auto;
+}
+
+@media (max-width: 40rem) {
+  .or-back-to-top--fixed {
+    --or-back-to-top-offset: var(--or-space-4);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-back-to-top {
+    border-color: ButtonText;
+  }
+}

@@ -34,6 +34,11 @@ export default tseslint.config(
       'jsx-a11y/no-autofocus': 'off',
       // Regiões roláveis (pre, tabelas largas) precisam ser focáveis pelo teclado (WCAG 2.1.1).
       'jsx-a11y/no-noninteractive-tabindex': ['error', { tags: ['pre'], roles: ['tabpanel', 'region'] }],
+      // <ul role="list"> é intencional: o Safari remove a semântica de lista com list-style: none.
+      'jsx-a11y/no-redundant-roles': ['error', { ul: ['list'], ol: ['list'] }],
+      // Wrappers de roteador (<a {...props} />) recebem o texto via spread; o plugin não enxerga.
+      // Links sem nome acessível são pegos em runtime pelos testes axe (regra link-name).
+      'jsx-a11y/anchor-has-content': 'off',
     },
   },
   {
@@ -41,6 +46,13 @@ export default tseslint.config(
     rules: {
       'jsx-a11y/no-static-element-interactions': 'off',
       'jsx-a11y/click-events-have-key-events': 'off',
+      // Demos de regiões roláveis focáveis.
+      'jsx-a11y/no-noninteractive-tabindex': 'off',
     },
+  },
+  {
+    // Hooks dentro de `render` são o padrão documentado do Storybook.
+    files: ['**/*.stories.tsx'],
+    rules: { 'react-hooks/rules-of-hooks': 'off' },
   },
 )

@@ -1,0 +1,140 @@
+/* ---------------------------------------------------------------------------
+ * TextField — complementa `.or-control-frame` (Field.css) com prefixo/sufixo
+ * de texto e ajustes de ícones. Também usado por PasswordField e NumberField.
+ * ------------------------------------------------------------------------- */
+
+.or-input-frame {
+  position: relative;
+  cursor: text;
+  /* Hover/foco: borda, anel e fundo mudam juntos em 160ms (zop.dev). */
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-input-frame[data-disabled] {
+  cursor: not-allowed;
+}
+
+.or-input-frame[data-readonly]:not([data-disabled]) {
+  background: var(--or-color-bg-subtle);
+}
+
+.or-input-frame .or-control-frame__input {
+  min-height: calc(var(--_height) - 2px);
+}
+
+.or-input-frame .or-control-frame__input:disabled {
+  color: var(--or-color-text-disabled);
+}
+
+/* Remove adornos nativos que competem com os do Orange. */
+.or-input-frame .or-control-frame__input::-ms-reveal,
+.or-input-frame .or-control-frame__input::-ms-clear {
+  display: none;
+}
+
+.or-input-frame .or-control-frame__input[type='search']::-webkit-search-decoration {
+  appearance: none;
+}
+
+.or-input-frame .or-control-frame__addon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.or-control-frame--sm.or-input-frame .or-control-frame__addon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.or-control-frame--lg.or-input-frame .or-control-frame__addon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-input-frame .or-control-frame__addon {
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-input-frame:focus-within .or-control-frame__addon {
+  color: var(--or-color-text-muted);
+}
+
+/* Prefixo / sufixo de texto ------------------------------------------------ */
+
+.or-input-frame__affix {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--or-space-3);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-muted);
+  font-size: var(--or-text-sm);
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-input-frame:focus-within .or-input-frame__affix {
+  color: var(--or-color-text);
+}
+
+.or-control-frame--sm .or-input-frame__affix {
+  padding: 0 var(--or-space-2);
+  font-size: var(--or-text-xs);
+}
+
+.or-input-frame__affix--prefix {
+  border-right: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-input-frame__affix--suffix {
+  border-left: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-input-frame[data-disabled] .or-input-frame__affix {
+  color: var(--or-color-text-disabled);
+}
+
+/* Botões internos (mostrar senha, − / +) ------------------------------------ */
+
+.or-input-frame .or-control-frame__button {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-input-frame .or-control-frame__button[aria-pressed='true'] {
+  color: var(--or-color-accent-text);
+}
+
+.or-input-frame .or-control-frame__button svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.or-input-frame .or-control-frame__button > * {
+  transition: transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Pressionar: o ícone "afunda" 1px (o botão fica preso à moldura). */
+.or-input-frame .or-control-frame__button:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+}
+
+.or-input-frame .or-control-frame__button:active:not(:disabled) > * {
+  transform: translateY(1px) scale(0.9);
+  transition-duration: var(--or-duration-press);
+}
+
+@media (forced-colors: active) {
+  .or-input-frame:focus-within {
+    outline: 2px solid Highlight;
+  }
+}

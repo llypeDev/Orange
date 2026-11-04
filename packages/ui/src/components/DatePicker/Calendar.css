@@ -1,0 +1,329 @@
+/* ---------------------------------------------------------------------------
+ * Calendar — grade mensal de datas
+ *
+ * Movimento: ao trocar de mês a grade desliza na direção da navegação
+ * (próximo → entra pela direita, anterior → pela esquerda) e o título faz
+ * crossfade; dias respondem a hover/foco e "afundam" no clique; o dia
+ * escolhido entra com um pop (--or-ease-bounce).
+ * ------------------------------------------------------------------------- */
+
+.or-calendar {
+  --_cell: 2.5rem;
+  --_slide: calc(var(--or-distance-md) * 2);
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+  width: max-content;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+}
+
+.or-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-2);
+}
+
+.or-calendar__nav-group {
+  display: flex;
+}
+
+/* Título: os dois rótulos (saindo e entrando) ocupam a mesma célula. */
+.or-calendar__title {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-md);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.or-calendar__title-text {
+  grid-area: 1 / 1;
+}
+
+.or-calendar__title-text--in-next,
+.or-calendar__body--next {
+  animation: or-calendar-in-next var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-calendar__title-text--in-prev,
+.or-calendar__body--prev {
+  animation: or-calendar-in-prev var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-calendar__title-text--out-next {
+  animation: or-calendar-out-next var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-calendar__title-text--out-prev {
+  animation: or-calendar-out-prev var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+/* Botões de navegação ----------------------------------------------------- */
+
+.or-calendar__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: var(--or-border-thin) solid transparent;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-calendar__nav .or-icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']) {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+/* A seta "empurra" na direção em que o mês vai mudar. */
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']):is(
+    .or-calendar__nav--prev-month,
+    .or-calendar__nav--prev-year
+  )
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / -2));
+}
+
+.or-calendar__nav:is(:hover, :focus-visible):not([aria-disabled='true']):is(
+    .or-calendar__nav--next-month,
+    .or-calendar__nav--next-year
+  )
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / 2));
+}
+
+.or-calendar__nav:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+}
+
+.or-calendar__nav:active:not([aria-disabled='true']) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-calendar__nav:focus-visible,
+.or-calendar__today:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 0;
+}
+
+.or-calendar__nav[aria-disabled='true'] {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Grade ------------------------------------------------------------------- */
+
+.or-calendar__grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.or-calendar__weekday {
+  width: var(--_cell);
+  height: 2rem;
+  padding: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--or-color-text-subtle);
+}
+
+.or-calendar__day {
+  position: relative;
+  width: var(--_cell);
+  height: var(--_cell);
+  padding: 0;
+  border: var(--or-border-thin) solid transparent;
+  text-align: center;
+  font-size: var(--or-text-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-calendar__day:is(:hover, :focus-visible):not(
+    .or-calendar__day--disabled,
+    .or-calendar__day--selected
+  ) {
+  background: var(--or-color-surface-hover);
+}
+
+.or-calendar__day:active:not(.or-calendar__day--disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-calendar__day:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.or-calendar__day--outside {
+  color: var(--or-color-text-subtle);
+}
+
+/* Hoje: borda fina + marcador quadrado laranja que "assenta" ao aparecer. */
+.or-calendar__day--today {
+  border-color: var(--or-color-border-strong);
+  font-weight: var(--or-weight-bold);
+}
+
+.or-calendar__day--today::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  background: var(--or-color-accent);
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+.or-calendar__day--selected {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+  font-weight: var(--or-weight-bold);
+}
+
+.or-calendar__day--selected:hover {
+  background: var(--or-color-accent-hover);
+}
+
+.or-calendar__day--selected.or-calendar__day--today::after {
+  background: var(--or-color-text-on-accent);
+}
+
+.or-calendar__day--selected:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Dia recém-escolhido: pop curto com overshoot. */
+.or-calendar__day--pop {
+  animation: or-calendar-pop var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+.or-calendar__day--disabled {
+  color: var(--or-color-text-disabled);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* Rodapé ------------------------------------------------------------------ */
+
+.or-calendar__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--or-space-3);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-calendar__today {
+  min-height: var(--or-control-sm);
+  padding: 0 var(--or-space-3);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-bold);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-calendar__today:is(:hover, :focus-visible):not([aria-disabled='true']) {
+  background: var(--or-color-surface-hover);
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-calendar__today:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-calendar__today[aria-disabled='true'] {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* Keyframes --------------------------------------------------------------- */
+
+@keyframes or-calendar-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(var(--_slide));
+  }
+}
+
+@keyframes or-calendar-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * -1));
+  }
+}
+
+@keyframes or-calendar-out-next {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * -0.5));
+  }
+}
+
+@keyframes or-calendar-out-prev {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--_slide) * 0.5));
+  }
+}
+
+@keyframes or-calendar-pop {
+  from {
+    transform: scale(0.8);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-calendar__day--selected {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  .or-calendar__day--today {
+    border-color: CanvasText;
+  }
+}

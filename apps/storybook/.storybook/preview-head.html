@@ -11,4 +11,27 @@
   .sb-show-main.sb-main-padded {
     padding: 2rem;
   }
+  /* Toolbar "Movimento reduzido": mesmo efeito de prefers-reduced-motion. */
+  [data-motion='reduced'] {
+    --or-duration-press: 0ms;
+    --or-duration-instant: 0ms;
+    --or-duration-fast: 0ms;
+    --or-duration-medium: 0ms;
+    --or-duration-slow: 0ms;
+    --or-duration-reveal: 0ms;
+    --or-duration-slower: 0ms;
+    --or-duration-loop: 0ms;
+    --or-distance-sm: 0px;
+    --or-distance-md: 0px;
+    --or-distance-lg: 0px;
+    --or-distance-lift: 0px;
+    --or-stagger: 0ms;
+  }
+  [data-motion='reduced'] *,
+  [data-motion='reduced'] *::before,
+  [data-motion='reduced'] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 </style>

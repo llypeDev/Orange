@@ -1,0 +1,112 @@
+/*
+ * `.or-link[class]` eleva a especificidade (0,2,0) para que estilos globais de
+ * conteúdo (`.prose a`, `article p a`) não sobrescrevam cor e sublinhado.
+ */
+.or-link {
+  --_fg: var(--or-color-text);
+  --_fg-hover: var(--or-color-accent-text);
+  --_line: var(--or-color-accent);
+  --_line-hover: var(--or-color-accent);
+}
+
+.or-link[class] {
+  color: var(--_fg);
+  text-decoration-line: underline;
+  text-decoration-color: var(--_line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+  cursor: pointer;
+  /* O sublinhado engrossa (1px → 2px) e se aproxima do texto no hover/foco. */
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-link[class]:hover,
+.or-link[class]:focus-visible {
+  color: var(--_fg-hover);
+  text-decoration-color: var(--_line-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+.or-link[class]:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-link[class]:active {
+  color: var(--or-color-accent-active);
+}
+
+.or-link__icon {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.15em;
+  vertical-align: -0.1em;
+  flex-shrink: 0;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* ↗ desliza na diagonal, para fora da página. */
+.or-link:is(:hover, :focus-visible) .or-link__icon--external {
+  transform: translate(2px, -2px);
+}
+
+/* Variantes ---------------------------------------------------------------- */
+
+.or-link--subtle {
+  --_fg: var(--or-color-text-muted);
+  --_fg-hover: var(--or-color-text);
+  --_line: var(--or-color-border-strong);
+  --_line-hover: var(--or-color-text-subtle);
+}
+
+.or-link--standalone[class] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  text-decoration-line: none;
+}
+
+.or-link--standalone[class]:hover,
+.or-link--standalone[class]:focus-visible {
+  text-decoration-line: none;
+}
+
+/* Sublinhado que cresce da esquerda (background-size), como na navegação do zop. */
+.or-link--standalone .or-link__label {
+  padding-bottom: 0.125em;
+  background-image: linear-gradient(var(--or-color-accent), var(--or-color-accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-link--standalone:is(:hover, :focus-visible) .or-link__label {
+  background-size: 100% 2px;
+}
+
+.or-link--standalone .or-link__icon {
+  margin-left: 0;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* → empurra 4px no hover/foco. */
+.or-link--standalone:is(:hover, :focus-visible) .or-link__icon--arrow {
+  transform: translateX(4px);
+}
+
+@media (forced-colors: active) {
+  .or-link {
+    text-decoration-color: LinkText;
+  }
+}

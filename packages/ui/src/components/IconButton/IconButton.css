@@ -1,0 +1,16 @@
+/* ---------------------------------------------------------------------------
+ * IconButton — botão quadrado somente com ícone
+ * ------------------------------------------------------------------------- */
+
+.or-icon-button {
+  flex-shrink: 0;
+}
+
+/* Em telas de toque, o alvo do tamanho sm cresce sem alterar o visual. */
+@media (pointer: coarse) {
+  .or-icon-button.or-button--sm::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+  }
+}

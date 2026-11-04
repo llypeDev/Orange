@@ -1,0 +1,216 @@
+.or-paginator {
+  --_size: var(--or-control-md);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-3) var(--or-space-6);
+  min-width: 0;
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-sm);
+}
+
+.or-paginator--sm {
+  --_size: var(--or-control-sm);
+}
+
+.or-paginator__info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2) var(--or-space-6);
+  color: var(--or-color-text-muted);
+}
+
+.or-paginator__range {
+  font-variant-numeric: tabular-nums;
+}
+
+.or-paginator__size {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  white-space: nowrap;
+}
+
+.or-paginator__select {
+  width: auto;
+  min-width: 4.5rem;
+  padding-right: var(--or-space-2);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.or-paginator__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-paginator__item {
+  display: flex;
+}
+
+/* Botões de página e de navegação --------------------------------------- */
+
+.or-paginator__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--_size);
+  height: var(--_size);
+  padding: 0 var(--or-space-2);
+  border: var(--or-border-thin) solid transparent;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-medium) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-paginator__button svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Setas empurram na direção em que levam. */
+.or-paginator__button--next:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+.or-paginator__button--last:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(2px);
+}
+
+.or-paginator__button--prev:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+.or-paginator__button--first:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(-2px);
+}
+
+.or-paginator__button:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true'], [aria-current='page']) {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-paginator__button:active:not(:disabled, [aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-paginator__button:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-paginator__button--nav {
+  border-color: var(--or-color-border);
+  color: var(--or-color-text);
+}
+
+.or-paginator__button:disabled,
+.or-paginator__button[aria-disabled='true'] {
+  border-color: var(--or-color-border-subtle);
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Página atual: texto forte + barra laranja de 2px. */
+.or-paginator__button[aria-current='page'] {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+  font-weight: var(--or-weight-bold);
+  cursor: default;
+}
+
+/* A barra existe em toda página e cresce do centro quando ela vira a atual. */
+.or-paginator__button--page::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  height: 2px;
+  background: var(--or-color-accent);
+  transform: scaleX(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-paginator__button[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+.or-paginator__ellipsis {
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--_size) * 0.75);
+  height: var(--_size);
+  color: var(--or-color-text-subtle);
+  user-select: none;
+}
+
+/* Compacta ---------------------------------------------------------------- */
+
+.or-paginator__status-text--enter {
+  display: inline-block;
+  animation: or-paginator-status-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+@keyframes or-paginator-status-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+.or-paginator__status {
+  align-items: center;
+  padding: 0 var(--or-space-3);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-medium);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Telas estreitas: botões de 32px, sem primeira/última (anterior/próximo continuam). */
+@media (max-width: 30rem) {
+  .or-paginator__list {
+    --_size: var(--or-control-sm);
+    gap: 0;
+  }
+
+  .or-paginator__item--edge {
+    display: none;
+  }
+
+  .or-paginator__ellipsis {
+    min-width: 1.25rem;
+  }
+
+  .or-paginator__info {
+    gap: var(--or-space-2) var(--or-space-4);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-paginator__button[aria-current='page'] {
+    outline: 2px solid Highlight;
+  }
+}

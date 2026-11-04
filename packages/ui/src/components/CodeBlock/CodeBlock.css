@@ -1,0 +1,227 @@
+/*
+ * O bloco de código é escuro nos dois temas (--or-color-code-bg). Por isso os
+ * tons internos (bordas, rótulos, numeração) usam a paleta carbon diretamente,
+ * em vez dos tokens semânticos que mudam com o tema.
+ */
+.or-code-block {
+  --_border: var(--or-palette-carbon-200);
+  --_muted: var(--or-palette-carbon-600);
+  --_line-number: var(--or-palette-carbon-500);
+  --_accent: var(--or-palette-orange-500);
+  --_focus: var(--or-palette-orange-400);
+
+  position: relative;
+  min-width: 0;
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-code-bg);
+  color: var(--or-color-code-text);
+}
+
+/* Cabeçalho ---------------------------------------------------------------- */
+
+.or-code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-3);
+  min-height: 2.5rem;
+  padding: var(--or-space-1) var(--or-space-2) var(--or-space-1) var(--or-space-4);
+  border-bottom: var(--or-border-thin) solid var(--_border);
+}
+
+.or-code-block__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-3);
+  min-width: 0;
+}
+
+.or-code-block__title {
+  overflow: hidden;
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  color: var(--or-color-code-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.or-code-block__language {
+  flex-shrink: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--_muted);
+}
+
+.or-code-block__title + .or-code-block__language {
+  padding-left: var(--or-space-3);
+  border-left: var(--or-border-thin) solid var(--_border);
+}
+
+.or-code-block__copy {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-height: 1.75rem;
+  margin-left: auto;
+  padding: 0 var(--or-space-3);
+  border: var(--or-border-thin) solid var(--or-palette-carbon-300);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-code-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Hover e foco visível: mesma resposta. */
+.or-code-block__copy:hover,
+.or-code-block__copy:focus-visible {
+  border-color: var(--_muted);
+  color: var(--or-palette-carbon-900);
+}
+
+/* Pressionar: afunda 1px. */
+.or-code-block__copy:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-code-block__copy-icon {
+  display: inline-flex;
+}
+
+/* Copiar → check: o check "salta" para dentro; na volta, o ícone de copiar surge. */
+.or-code-block__copy-icon--check {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+.or-code-block__copy-icon--return {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-code-block__copy:focus-visible {
+  outline: 2px solid var(--_focus);
+  outline-offset: 2px;
+}
+
+.or-code-block__copy[data-copied] {
+  border-color: var(--_accent);
+  color: var(--or-palette-carbon-900);
+}
+
+.or-code-block__copy[data-copied] .or-icon {
+  color: var(--_accent);
+}
+
+/* Área de código ----------------------------------------------------------- */
+
+.or-code-block__pre {
+  margin: 0;
+  padding: var(--or-space-4) 0;
+  overflow: auto;
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-sm);
+  line-height: 1.7;
+  tab-size: 2;
+  color: inherit;
+  scrollbar-color: var(--or-palette-carbon-300) transparent;
+}
+
+.or-code-block__pre:focus-visible {
+  outline: 2px solid var(--_focus);
+  outline-offset: -2px;
+}
+
+.or-code-block__code {
+  display: grid;
+  width: max-content;
+  min-width: 100%;
+  font: inherit;
+  white-space: pre;
+}
+
+.or-code-block__line {
+  display: flex;
+  padding: 0 var(--or-space-5);
+  background: transparent;
+  color: inherit;
+  transition:
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-code-block__line-text {
+  flex: 1 0 auto;
+}
+
+.or-code-block__line-number {
+  flex-shrink: 0;
+  min-width: var(--_digits, 2ch);
+  margin-right: var(--or-space-5);
+  color: var(--_line-number);
+  text-align: right;
+  user-select: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Passar o mouse sobre uma linha realça o número dela. */
+.or-code-block__line:hover .or-code-block__line-number {
+  color: var(--or-color-code-text);
+}
+
+/* O <mark> só carrega a semântica; o visual do destaque está na linha. */
+mark.or-code-block__line-text {
+  background: transparent;
+  color: inherit;
+}
+
+.or-code-block__line-number::before {
+  content: attr(data-line);
+}
+
+/* Linhas destacadas: <mark> com faixa laranja à esquerda. */
+.or-code-block__line--highlighted {
+  background: var(--or-color-accent-subtle);
+  box-shadow: inset var(--or-border-accent) 0 0 var(--_accent);
+}
+
+.or-code-block__line--highlighted .or-code-block__line-number {
+  color: var(--_accent);
+}
+
+/* Quebra de linha ---------------------------------------------------------- */
+
+.or-code-block--wrap .or-code-block__code {
+  display: block;
+  width: auto;
+  white-space: pre-wrap;
+}
+
+.or-code-block--wrap .or-code-block__line-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (forced-colors: active) {
+  .or-code-block {
+    border-color: CanvasText;
+  }
+  .or-code-block__line--highlighted {
+    forced-color-adjust: none;
+    background: Mark;
+    color: MarkText;
+  }
+}

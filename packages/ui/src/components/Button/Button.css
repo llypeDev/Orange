@@ -34,7 +34,8 @@
     background-color var(--or-duration-fast) var(--or-ease-out),
     border-color var(--or-duration-fast) var(--or-ease-out),
     color var(--or-duration-fast) var(--or-ease-out),
-    box-shadow var(--or-duration-fast) var(--or-ease-out);
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-button:hover:not(:disabled, [aria-disabled='true']) {
@@ -45,6 +46,9 @@
 
 .or-button:active:not(:disabled, [aria-disabled='true']) {
   background: var(--_bg-active);
+  /* "Afunda" 1px no clique — feedback tátil do zop/Orange. */
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
 }
 
 .or-button:focus-visible {
@@ -134,11 +138,12 @@
 }
 
 .or-button__icon--end {
-  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
-.or-button:hover:not(:disabled) .or-button__icon--end {
-  transform: translateX(3px);
+.or-button:hover:not(:disabled) .or-button__icon--end,
+.or-button:focus-visible .or-button__icon--end {
+  transform: translateX(4px);
 }
 
 /* Estados ------------------------------------------------------------------ */
@@ -166,7 +171,7 @@
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: var(--or-radius-full);
-  animation: or-spin 0.7s linear infinite;
+  animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
 }
 
 @media (forced-colors: active) {

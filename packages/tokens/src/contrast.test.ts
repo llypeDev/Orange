@@ -25,6 +25,8 @@ const textPairs: [fg: string, bg: string][] = [
 ]
 
 const uiPairs: [fg: string, bg: string][] = [
+  // Componentes inativos são isentos da 1.4.3, mas mantemos ≥ 3:1 para baixa visão.
+  ['text-disabled', 'bg'],
   ['border-control', 'bg'],
   ['border-control', 'surface'],
   ['focus', 'bg'],

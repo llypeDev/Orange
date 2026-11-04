@@ -54,15 +54,19 @@ function Group({
         <span>{label}</span>
         <Icon name="chevron-down" size="sm" className="doc-nav__chevron" />
       </button>
-      <ul id={listId} className="doc-nav__sublist" hidden={!expanded}>
-        {items.map((item) => (
-          <li key={item.path}>
-            <NavLink to={item.path} className="doc-nav__sublink" onClick={onNavigate}>
-              {item.label}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      {/* Recolhe com animação de altura (grid 0fr → 1fr). Fechado fica `inert`:
+          fora da ordem de Tab e da árvore de acessibilidade, como `hidden`. */}
+      <div className="or-collapse doc-nav__collapse" data-state={expanded ? 'open' : 'closed'} inert={!expanded}>
+        <ul id={listId} className="doc-nav__sublist">
+          {items.map((item) => (
+            <li key={item.path}>
+              <NavLink to={item.path} className="doc-nav__sublink" onClick={onNavigate}>
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </li>
   )
 }
@@ -150,6 +154,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           onNavigate={onNavigate}
         />
         {top('/resources', { pt: 'Recursos', en: 'Resources' }, navIcons.resources)}
+        {top('/changelog', { pt: 'Novidades', en: 'Changelog' }, navIcons.changelog)}
         {(!q || normalize('storybook').includes(q)) && (
           <li>
             <a href={STORYBOOK_URL} className="doc-nav__item" target="_blank" rel="noreferrer">

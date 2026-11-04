@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Button, Eyebrow, Icon, iconNames, Text } from '@orange/ui'
+
+<Meta title="Fundamentos/Ícones" />
+
+export const Gallery = () => (
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 1, background: 'var(--or-color-border)', border: '1px solid var(--or-color-border)' }}>
+    {iconNames.map((name) => (
+      <div key={name} style={{ background: 'var(--or-color-bg)', color: 'var(--or-color-text)', padding: 16, display: 'grid', justifyItems: 'center', gap: 10 }}>
+        <Icon name={name} size="lg" />
+        <Text size="2xs" tone="subtle" font="mono">
+          {name}
+        </Text>
+      </div>
+    ))}
+  </div>
+)
+
+export const Sizes = () => (
+  <div style={{ display: 'flex', gap: 32, alignItems: 'flex-end', padding: 24, border: '1px solid var(--or-color-border)', color: 'var(--or-color-text)' }}>
+    {[['xs', 12], ['sm', 16], ['md', 20], ['lg', 24], ['xl', 32]].map(([size, px]) => (
+      <div key={size} style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
+        <Icon name="rocket" size={size} />
+        <Text size="xs" font="mono" tone="subtle">
+          {size} · {px}px
+        </Text>
+      </div>
+    ))}
+  </div>
+)
+
+<div className="sb-unstyled">
+  <Eyebrow marker>Fundamentos</Eyebrow>
+</div>
+
+# Ícones
+
+{iconNames.length} ícones desenhados para o Orange: grade de 24×24, traço de 1.75, terminações quadradas
+(`stroke-linecap: square`) e cantos vivos (`stroke-linejoin: miter`). Todos usam `currentColor` e herdam a
+cor do texto ao redor.
+
+## Tamanhos
+
+<div className="sb-unstyled">
+  <Sizes />
+</div>
+
+Use `size` com os nomes da escala (`xs`, `sm`, `md`, `lg`, `xl`) ou um número em pixels. Acompanhe a
+altura do texto ou do controle onde o ícone está.
+
+## Decorativo ou informativo
+
+Por padrão o ícone é **decorativo** (`aria-hidden`). Quando ele é a única forma de transmitir a
+informação, passe `label` — ele ganha `role="img"` e `aria-label`. Em botões só com ícone, o nome vai
+no botão (`aria-label`), não no ícone.
+
+<div className="sb-unstyled" style={{ display: 'flex', gap: 12, alignItems: 'center', padding: 24, border: '1px solid var(--or-color-border)' }}>
+  <Button startIcon={<Icon name="download" />}>Exportar CSV</Button>
+  <span style={{ color: 'var(--or-color-text)' }}>
+    <Icon name="lock" label="Arquivo protegido" />
+  </span>
+  <Button iconOnly variant="outline" aria-label="Excluir relatório">
+    <Icon name="trash" />
+  </Button>
+</div>
+
+```tsx
+<Button startIcon={<Icon name="download" />}>Exportar CSV</Button>
+<Icon name="lock" label="Arquivo protegido" />
+<Button iconOnly variant="outline" aria-label="Excluir relatório">
+  <Icon name="trash" />
+</Button>
+```
+
+## Galeria
+
+<div className="sb-unstyled">
+  <Gallery />
+</div>
+
+## Como adicionar um ícone
+
+1. Desenhe numa área viva de 20×20 dentro da grade de 24, com traço de 1.75 e sem preenchimento.
+2. Use apenas `<path>`, `<circle>`, `<rect>` ou `<line>`, sem `fill`, `stroke` ou `style`.
+3. Adicione a chave em `packages/ui/src/icons/paths.tsx`, em ordem alfabética e kebab-case — `IconName` e `iconNames` se atualizam sozinhos.
+4. Confira o ícone nesta página nos dois temas antes de abrir o pull request.

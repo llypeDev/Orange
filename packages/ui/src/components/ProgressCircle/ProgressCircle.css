@@ -1,0 +1,133 @@
+.or-progress-circle {
+  --_arc: var(--or-color-accent);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.or-progress-circle__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* o arco começa no topo e cresce no sentido horário */
+  transform: rotate(-90deg);
+}
+
+.or-progress-circle__track {
+  stroke: var(--or-color-border);
+}
+
+/*
+ * Movimento: o arco muda de valor com transição de stroke-dashoffset em
+ * --or-duration-slow e, ao montar, é "desenhado" a partir do topo. A cor do
+ * tom também transiciona.
+ */
+.or-progress-circle__arc {
+  stroke: var(--_arc);
+  transition:
+    stroke-dashoffset var(--or-duration-slow) var(--or-ease-out),
+    stroke var(--or-duration-medium) var(--or-ease-out);
+}
+
+@keyframes or-progress-circle-draw {
+  from {
+    stroke-dashoffset: var(--_circumference);
+  }
+}
+
+.or-progress-circle:not(.or-progress-circle--indeterminate) .or-progress-circle__arc {
+  animation: or-progress-circle-draw var(--or-duration-slow) var(--or-ease-out);
+}
+
+/* o valor central entra junto com o arco */
+.or-progress-circle__value {
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-progress-circle__value {
+  position: relative;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--or-color-text);
+}
+
+.or-progress-circle--lg .or-progress-circle__value {
+  font-size: var(--or-text-lg);
+}
+
+/* Indeterminado ------------------------------------------------------------ */
+
+@keyframes or-progress-circle-spin {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes or-progress-circle-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.or-progress-circle--indeterminate .or-progress-circle__svg {
+  animation: or-progress-circle-spin calc(var(--or-duration-loop) * 0.375) linear infinite;
+}
+
+/* Movimento reduzido: pulsação lenta de opacidade no lugar da rotação
+   (duração literal: os tokens zeram e o indicador pareceria travado). */
+@media (prefers-reduced-motion: reduce) {
+  .or-progress-circle--indeterminate .or-progress-circle__svg {
+    animation-name: or-progress-circle-pulse !important;
+    animation-duration: 2s !important;
+    animation-timing-function: var(--or-ease-in-out) !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-progress-circle--neutral {
+  --_arc: var(--or-color-text);
+}
+
+.or-progress-circle--info {
+  --_arc: var(--or-color-info);
+}
+
+.or-progress-circle--success {
+  --_arc: var(--or-color-success);
+}
+
+.or-progress-circle--warning {
+  --_arc: var(--or-color-warning);
+}
+
+.or-progress-circle--danger {
+  --_arc: var(--or-color-danger);
+}
+
+@media (forced-colors: active) {
+  .or-progress-circle__track {
+    stroke: GrayText;
+  }
+
+  .or-progress-circle__arc {
+    stroke: Highlight;
+  }
+}

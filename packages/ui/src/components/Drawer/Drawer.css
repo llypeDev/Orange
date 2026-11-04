@@ -1,0 +1,151 @@
+.or-drawer-root {
+  padding: 0;
+}
+
+.or-drawer-root--right {
+  justify-content: flex-end;
+  align-items: stretch;
+}
+
+.or-drawer-root--left {
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.or-drawer-root--bottom {
+  align-items: flex-end;
+  justify-content: stretch;
+}
+
+.or-drawer {
+  --_size: 30rem;
+  /* Motion: desliza da borda de origem em 250ms (ease-out) e volta para ela em
+     160ms (ease-in-out). O fundo faz fade junto (DialogShell). */
+  --_in: or-slide-in-right;
+  --_out: or-slide-out-right;
+
+  animation: var(--_in) var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-drawer[data-state='closed'] {
+  animation: var(--_out) var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+/* Posições ----------------------------------------------------------------- */
+
+.or-drawer--left,
+.or-drawer--right {
+  width: min(var(--_size), 100%);
+  height: 100%;
+}
+
+.or-drawer--left {
+  --_in: or-slide-in-left;
+  --_out: or-slide-out-left;
+}
+
+.or-drawer--bottom {
+  --_size: 60%;
+  --_in: or-slide-in-up;
+  --_out: or-slide-out-down;
+
+  width: 100%;
+  max-height: var(--_size);
+}
+
+/* Tamanhos ----------------------------------------------------------------- */
+
+.or-drawer--sm {
+  --_size: 22.5rem;
+}
+
+.or-drawer--lg {
+  --_size: 40rem;
+}
+
+.or-drawer--full {
+  --_size: 100%;
+}
+
+.or-drawer--bottom.or-drawer--sm {
+  --_size: 40%;
+}
+
+.or-drawer--bottom.or-drawer--lg {
+  --_size: 85%;
+}
+
+.or-drawer--bottom.or-drawer--full {
+  --_size: 100%;
+  height: 100%;
+}
+
+/* Partes ------------------------------------------------------------------- */
+
+.or-drawer__header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  gap: var(--or-space-4);
+  padding: var(--or-space-5) var(--or-space-6);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-drawer__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.or-drawer__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xl);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: -0.02em;
+  color: var(--or-color-text);
+  overflow-wrap: anywhere;
+}
+
+.or-drawer__description {
+  margin: var(--or-space-2) 0 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.or-drawer__close {
+  flex-shrink: 0;
+  margin: calc(var(--or-space-1) * -1) calc(var(--or-space-2) * -1) 0 0;
+}
+
+.or-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--or-space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.or-drawer__footer {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--or-space-3);
+  padding: var(--or-space-4) var(--or-space-6);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+}
+
+@media (max-width: 40rem) {
+  .or-drawer__header {
+    padding: var(--or-space-4) var(--or-space-5);
+  }
+  .or-drawer__body {
+    padding: var(--or-space-5);
+  }
+  .or-drawer__footer {
+    padding: var(--or-space-3) var(--or-space-5);
+  }
+}

@@ -1,0 +1,304 @@
+/* ---------------------------------------------------------------------------
+ * FileUploader — área de soltar + lista de arquivos
+ *
+ * Movimento: a área de soltar reage ao arraste (borda tracejada laranja,
+ * fundo de acento, leve scale e o ícone sobe); itens entram com slide/fade
+ * escalonado e saem recolhendo; a barra de progresso cresce com transform;
+ * sucesso desenha o check (or-draw) e erro treme uma vez (or-shake).
+ * ------------------------------------------------------------------------- */
+
+.or-file-uploader {
+  min-width: 0;
+}
+
+.or-file-uploader__dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--or-space-3);
+  min-height: 9.5rem;
+  padding: var(--or-space-6) var(--or-space-5);
+  border: var(--or-border-thin) dashed var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background:
+    linear-gradient(var(--or-color-grid-line) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, var(--or-color-grid-line) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--or-color-surface);
+  text-align: center;
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-file-uploader__dropzone:hover:not([data-disabled]) {
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-file-uploader__dropzone:focus-within {
+  border-color: var(--or-color-accent);
+}
+
+/* Arrastando arquivos sobre a área: tracejado laranja, fundo de acento e um
+ * leve "inchaço" que convida a soltar. O padding compensa a borda de 2px. */
+.or-file-uploader__dropzone[data-dragging] {
+  border: var(--or-border-thick) dashed var(--or-color-accent);
+  padding: calc(var(--or-space-6) - 1px) calc(var(--or-space-5) - 1px);
+  background-color: var(--or-color-accent-subtle);
+  transform: scale(1.01);
+}
+
+.or-file-uploader__dropzone[data-invalid] {
+  border-color: var(--or-color-danger);
+}
+
+.or-file-uploader__dropzone[data-disabled] {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-disabled);
+}
+
+.or-file-uploader__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-accent-text);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-file-uploader__dropzone[data-dragging] .or-file-uploader__glyph {
+  border-color: var(--or-color-accent);
+  box-shadow: 0 8px 0 -4px var(--or-color-accent);
+  transform: translateY(var(--or-distance-lift));
+}
+
+.or-file-uploader__dropzone[data-disabled] .or-file-uploader__glyph {
+  color: var(--or-color-text-disabled);
+}
+
+.or-file-uploader__prompt {
+  margin: 0;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.or-file-uploader__button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--or-color-accent-text);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-bold);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition:
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-file-uploader__button:is(:hover, :focus-visible):not(:disabled) {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.or-file-uploader__button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-file-uploader__button:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-file-uploader__button:disabled {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Lista ------------------------------------------------------------------- */
+
+.or-file-uploader__list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--or-space-1) 0 0;
+  padding: 0;
+  list-style: none;
+  border: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* O <li> é um grid de uma linha: ao sair, a linha vai de 1fr a 0fr. */
+.or-file-uploader__item {
+  display: grid;
+  grid-template-rows: 1fr;
+  background: var(--or-color-surface);
+  transition: box-shadow var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-file-uploader__row {
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-3);
+  min-height: 0;
+  padding: var(--or-space-3) var(--or-space-2) var(--or-space-3) var(--or-space-4);
+}
+
+.or-file-uploader__item + .or-file-uploader__item {
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Entrada: slide curto + fade, escalonado dentro do lote (--_i). */
+.or-file-uploader__item--enter {
+  animation: or-file-uploader-item-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+/* Saída: desliza para a direita, some e recolhe a altura. */
+.or-file-uploader__item[data-state='closed'] {
+  overflow: hidden;
+  pointer-events: none;
+  animation: or-file-uploader-item-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-file-uploader__item[data-status='error'] {
+  box-shadow: inset 3px 0 0 var(--or-color-danger);
+}
+
+.or-file-uploader__item[data-status='success'] {
+  box-shadow: inset 3px 0 0 var(--or-color-success);
+}
+
+.or-file-uploader__item[data-status='uploading'] {
+  box-shadow: inset 3px 0 0 var(--or-color-accent);
+}
+
+.or-file-uploader__file-icon {
+  flex-shrink: 0;
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-file-uploader__item[data-status='error'] .or-file-uploader__file-icon {
+  color: var(--or-color-danger-text);
+}
+
+.or-file-uploader__meta {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+}
+
+.or-file-uploader__name {
+  overflow: hidden;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--or-color-text);
+}
+
+.or-file-uploader__details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--or-space-2);
+  font-size: var(--or-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text-subtle);
+}
+
+.or-file-uploader__details > * + *::before {
+  content: '·';
+  margin-right: var(--or-space-2);
+  color: var(--or-color-text-subtle);
+}
+
+.or-file-uploader__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-1);
+  font-weight: var(--or-weight-medium);
+}
+
+.or-file-uploader__status--success {
+  color: var(--or-color-success-text);
+}
+
+.or-file-uploader__status--error {
+  color: var(--or-color-danger-text);
+}
+
+/* Sucesso: o texto aparece e o check é desenhado. */
+.or-file-uploader__status--success.or-file-uploader__status--animate {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-file-uploader__status--success.or-file-uploader__status--animate .or-icon path {
+  --_draw-length: 24;
+  stroke-dasharray: 24;
+  animation: or-draw var(--or-duration-slow) var(--or-ease-out) both;
+}
+
+/* Erro: treme uma vez ao surgir. */
+.or-file-uploader__status--error.or-file-uploader__status--animate {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out) both;
+}
+
+.or-file-uploader__progress {
+  height: 4px;
+  margin-top: var(--or-space-1);
+  background: var(--or-color-surface-hover);
+  overflow: hidden;
+}
+
+.or-file-uploader__progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--or-color-accent);
+  transform-origin: left center;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-file-uploader__remove {
+  flex-shrink: 0;
+}
+
+@keyframes or-file-uploader-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+@keyframes or-file-uploader-item-out {
+  to {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateX(var(--or-distance-md));
+  }
+}
+
+@media (forced-colors: active) {
+  .or-file-uploader__dropzone[data-dragging] {
+    border-color: Highlight;
+  }
+  .or-file-uploader__progress-bar {
+    background: Highlight;
+  }
+}

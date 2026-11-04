@@ -1,0 +1,102 @@
+/* Base compartilhada das sobreposições ancoradas.
+ *
+ * Motion: entra com opacidade + deslocamento curto vindo do gatilho e sai
+ * voltando na direção dele (saída mais curta). Cada componente ajusta:
+ *   --_floating-distance  deslocamento (padrão --or-distance-sm, 4px)
+ *   --_floating-in        duração da entrada (padrão --or-duration-medium)
+ *   --_floating-out       duração da saída (padrão --or-duration-fast)
+ * O estado vem de usePresence: [data-state='open' | 'closed'].
+ */
+
+.or-floating {
+  --_floating-distance: var(--or-distance-sm);
+  --_floating-in: var(--or-duration-medium);
+  --_floating-out: var(--or-duration-fast);
+  --_floating-from: translateY(calc(var(--_floating-distance) * -1));
+
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--or-floating-available-width, calc(100vw - 16px));
+  font-family: var(--or-font-body);
+  letter-spacing: var(--or-tracking-body);
+  animation: or-floating-in var(--_floating-in) var(--or-ease-out) both;
+}
+
+/* Saindo: anima de volta para o gatilho e não recebe mais cliques. */
+.or-floating[data-state='closed'] {
+  animation: or-floating-out var(--_floating-out) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+.or-floating[hidden] {
+  display: none !important;
+}
+
+.or-floating[data-side='top'] {
+  --_floating-from: translateY(var(--_floating-distance));
+}
+
+.or-floating[data-side='left'] {
+  --_floating-from: translateX(var(--_floating-distance));
+}
+
+.or-floating[data-side='right'] {
+  --_floating-from: translateX(calc(var(--_floating-distance) * -1));
+}
+
+@keyframes or-floating-in {
+  from {
+    opacity: 0;
+    transform: var(--_floating-from);
+  }
+}
+
+@keyframes or-floating-out {
+  to {
+    opacity: 0;
+    transform: var(--_floating-from);
+  }
+}
+
+/* Seta: quadrado girado com borda nos dois lados externos. */
+.or-floating-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--_arrow-bg, var(--or-color-surface-raised));
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.or-floating-arrow[data-side='bottom'] {
+  top: -5px;
+  border-top: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-left: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='top'] {
+  bottom: -5px;
+  border-right: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-bottom: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='right'] {
+  left: -5px;
+  border-bottom: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-left: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+.or-floating-arrow[data-side='left'] {
+  right: -5px;
+  border-top: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+  border-right: var(--or-border-thin) solid var(--_arrow-border, var(--or-color-border-strong));
+}
+
+@media (forced-colors: active) {
+  .or-floating {
+    border: 1px solid CanvasText;
+  }
+  .or-floating-arrow {
+    display: none;
+  }
+}

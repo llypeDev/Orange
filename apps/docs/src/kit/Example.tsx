@@ -29,10 +29,11 @@ export function Example({ title, description, code, children, align = 'start', m
   const [theme, setTheme] = useState<'inherit' | 'dark' | 'light'>('inherit')
   const [showCode, setShowCode] = useState(!collapsed)
   const heading = title ? t(title) : undefined
-  const id = heading ? slugify(heading) : undefined
+  // Prefixo evita colisão com o id da Section de mesmo título (ex.: seção "Tons" e exemplo "Tons").
+  const id = heading ? `ex-${slugify(heading)}` : undefined
 
   return (
-    <section className="doc-example" aria-labelledby={id}>
+    <div className="doc-example">
       {heading && (
         <h3 id={id} className="doc-h3">
           <a href={`#${id}`} className="doc-anchor">
@@ -80,10 +81,15 @@ export function Example({ title, description, code, children, align = 'start', m
               <span aria-hidden="true">{showCode ? '−' : '+'}</span>
               {showCode ? t({ pt: 'Ocultar código', en: 'Hide code' }) : t({ pt: 'Mostrar código', en: 'Show code' })}
             </button>
-            {showCode && <CodeBlock code={code} language="tsx" maxHeight={460} />}
+            {/* Recolhe com animação de altura; fechado fica inert (fora do Tab e dos leitores). */}
+            <div className="or-collapse doc-example__code" data-state={showCode ? 'open' : 'closed'} inert={!showCode}>
+              <div>
+                <CodeBlock code={code} language="tsx" maxHeight={460} />
+              </div>
+            </div>
           </>
         )}
       </div>
-    </section>
+    </div>
   )
 }

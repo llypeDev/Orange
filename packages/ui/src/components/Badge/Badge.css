@@ -1,0 +1,159 @@
+/* ---------------------------------------------------------------------------
+ * Badge — indicador numérico ou ponto
+ * ------------------------------------------------------------------------- */
+
+.or-badge {
+  --_bg: var(--or-color-accent);
+  --_fg: var(--or-color-text-on-accent);
+  --_h: 1.25rem;
+  --_ring: var(--or-badge-ring, var(--or-color-bg));
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--_h);
+  height: var(--_h);
+  padding: 0 0.375rem;
+  border-radius: var(--or-radius-none);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.or-badge--sm {
+  --_h: 1rem;
+  padding: 0 0.25rem;
+  font-size: 0.625rem;
+}
+
+.or-badge--dot {
+  --_h: 0.625rem;
+  min-width: 0;
+  width: var(--_h);
+  padding: 0;
+}
+
+.or-badge--dot.or-badge--sm {
+  --_h: 0.5rem;
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-badge--neutral {
+  --_bg: var(--or-color-neutral);
+  --_fg: var(--or-color-text-on-neutral);
+}
+.or-badge--success {
+  --_bg: var(--or-color-success);
+  --_fg: var(--or-palette-carbon-50);
+}
+.or-badge--warning {
+  --_bg: var(--or-color-warning);
+  --_fg: var(--or-palette-carbon-50);
+}
+.or-badge--danger {
+  --_bg: var(--or-color-danger);
+  --_fg: var(--or-color-text-on-danger);
+}
+.or-badge--info {
+  --_bg: var(--or-color-info);
+  --_fg: var(--or-palette-paper-0);
+}
+
+/* Sobreposto --------------------------------------------------------------- */
+
+.or-badge-anchor {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.or-badge--overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-shadow: 0 0 0 2px var(--_ring);
+  transform: translate(40%, -40%);
+  pointer-events: none;
+}
+
+.or-badge--overlay.or-badge--dot {
+  transform: translate(35%, -35%);
+}
+
+.or-badge--overlap-circle {
+  top: 14%;
+  right: 14%;
+}
+
+/* Movimento ---------------------------------------------------------------- */
+
+/* Surge (count passa de 0 para N): pop com --or-ease-bounce. */
+.or-badge[data-motion='pop'] {
+  animation: or-badge-pop var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Contagem mudou: o badge "salta" sem piscar. */
+.or-badge[data-motion='bump'] {
+  animation: or-badge-bump var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+/* Saída (count volta a 0): mais curta que a entrada. */
+.or-badge[data-state='closed'] {
+  animation: or-badge-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-badge-pop {
+  from {
+    scale: 0.4;
+    opacity: 0;
+  }
+}
+
+@keyframes or-badge-bump {
+  from {
+    scale: 0.7;
+  }
+}
+
+@keyframes or-badge-out {
+  to {
+    scale: 0.4;
+    opacity: 0;
+  }
+}
+
+/* Pulso "ao vivo" em um pseudo-elemento (não apaga o anel na cor do fundo). */
+.or-badge--pulse::before {
+  --_pulse-color: var(--_bg);
+
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: or-pulse-ring var(--or-duration-loop) var(--or-ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-badge--pulse::before {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-badge {
+    border: 1px solid CanvasText;
+  }
+}

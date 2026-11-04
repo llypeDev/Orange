@@ -1,0 +1,80 @@
+/* ---------------------------------------------------------------------------
+ * NumberField — moldura do TextField + botões − / + no fim.
+ * ------------------------------------------------------------------------- */
+
+.or-number-field__frame .or-control-frame__input {
+  font-variant-numeric: tabular-nums;
+}
+
+.or-number-field__step {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.or-number-field__step svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.or-number-field__step:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+  color: var(--or-color-accent-text);
+}
+
+.or-number-field__frame[data-disabled] .or-number-field__step {
+  border-left-color: var(--or-color-border);
+}
+
+.or-number-field__frame[data-readonly] .or-number-field__step {
+  display: none;
+}
+
+/* Motion --------------------------------------------------------------------- */
+
+/* "Tick" do valor a cada passo: o texto entra 3px de baixo (↑) ou de cima (↓).
+ * Duas keyframes idênticas (a/b) reiniciam a animação a cada passo. Não roda
+ * durante a repetição de pressionar e segurar, para não atrapalhar a leitura. */
+@keyframes or-forms-tick-up-a {
+  from {
+    opacity: 0.6;
+    transform: translateY(calc(var(--or-distance-sm) * 0.75));
+  }
+}
+
+@keyframes or-forms-tick-up-b {
+  from {
+    opacity: 0.6;
+    transform: translateY(calc(var(--or-distance-sm) * 0.75));
+  }
+}
+
+@keyframes or-forms-tick-down-a {
+  from {
+    opacity: 0.6;
+    transform: translateY(calc(var(--or-distance-sm) * -0.75));
+  }
+}
+
+@keyframes or-forms-tick-down-b {
+  from {
+    opacity: 0.6;
+    transform: translateY(calc(var(--or-distance-sm) * -0.75));
+  }
+}
+
+.or-number-field__frame .or-control-frame__input[data-tick='up-0'] {
+  animation: or-forms-tick-up-a var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-number-field__frame .or-control-frame__input[data-tick='up-1'] {
+  animation: or-forms-tick-up-b var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-number-field__frame .or-control-frame__input[data-tick='down-0'] {
+  animation: or-forms-tick-down-a var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-number-field__frame .or-control-frame__input[data-tick='down-1'] {
+  animation: or-forms-tick-down-b var(--or-duration-fast) var(--or-ease-out);
+}

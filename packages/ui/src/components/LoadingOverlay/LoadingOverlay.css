@@ -1,0 +1,76 @@
+.or-loading-overlay {
+  position: relative;
+  /* evita que o painel ultrapasse cantos de contêineres com overflow */
+  isolation: isolate;
+}
+
+.or-loading-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: var(--or-z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--or-space-4);
+  background: var(--or-color-overlay);
+  /* oculta com opacidade (não display/visibility): a região de status precisa
+     continuar na árvore de acessibilidade para anunciar a mensagem */
+  opacity: 0;
+  pointer-events: none;
+  /* saída: mais curta (--or-duration-fast); o usePresence espera o fim dela */
+  transition: opacity var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-loading-overlay[data-state='visible'] > .or-loading-overlay__backdrop {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: progress;
+  /* entrada: --or-duration-medium */
+  transition: opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* o painel sobe 4px ao entrar e desce ao sair, junto com o fade do fundo */
+.or-loading-overlay__panel {
+  transform: translateY(var(--or-distance-sm)) scale(0.98);
+  transition: transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-loading-overlay[data-state='visible'] .or-loading-overlay__panel {
+  transform: none;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-loading-overlay__panel {
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-3);
+  max-width: 100%;
+  padding: var(--or-space-3) var(--or-space-5) var(--or-space-3) var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+}
+
+.or-loading-overlay__panel:focus {
+  outline: none;
+}
+
+.or-loading-overlay__panel:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-loading-overlay__message {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-tight);
+}
+
+@media (forced-colors: active) {
+  .or-loading-overlay__panel {
+    border-color: CanvasText;
+  }
+}

@@ -1,0 +1,351 @@
+/* ---------------------------------------------------------------------------
+ * Slider — <input type="range"> nativo com trilho reto e polegar quadrado
+ *
+ * O input nativo continua sendo o controle (teclado, leitor de tela, toque e
+ * alvo do ponteiro), mas o polegar dele fica transparente: o polegar visível
+ * e o preenchimento são desenhados por elementos posicionados com
+ * `transform`, para que possam animar nos saltos (clique no trilho/marca,
+ * teclado) sem animar durante o arraste.
+ * ------------------------------------------------------------------------- */
+
+.or-slider {
+  --_thumb: 1.125rem;
+  --_track: 4px;
+  --_h: 1.75rem;
+  --_start: 0%;
+  --_end: 0%;
+  --_fill-start: 0;
+  --_fill-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  width: 100%;
+  min-width: 8rem;
+}
+
+.or-slider--sm {
+  --_thumb: 0.875rem;
+  --_track: 2px;
+  --_h: 1.5rem;
+}
+
+.or-slider--lg {
+  --_thumb: 1.375rem;
+  --_track: 6px;
+  --_h: 2rem;
+}
+
+.or-slider__control {
+  position: relative;
+  height: var(--_h);
+}
+
+/* Trilho recuado meio polegar de cada lado: as porcentagens batem com o centro do polegar. */
+.or-slider__rail {
+  position: absolute;
+  top: 0;
+  right: calc(var(--_thumb) / 2);
+  bottom: 0;
+  left: calc(var(--_thumb) / 2);
+}
+
+.or-slider--range .or-slider__rail {
+  cursor: pointer;
+  touch-action: none;
+}
+
+.or-slider__track,
+.or-slider__fill,
+.or-slider__cap {
+  position: absolute;
+  top: calc(50% - var(--_track) / 2);
+  height: var(--_track);
+  pointer-events: none;
+}
+
+.or-slider__track {
+  left: calc(var(--_thumb) / -2);
+  right: calc(var(--_thumb) / -2);
+  background: var(--or-color-border-strong);
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Preenchimento: ocupa o trilho inteiro e é recortado por translate + scaleX. */
+.or-slider__fill {
+  left: 0;
+  right: 0;
+  background: var(--or-color-accent);
+  transform-origin: left center;
+  transform: translateX(calc(var(--_fill-start) * 100%)) scaleX(var(--_fill-size));
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Valor único: o preenchimento começa na ponta do trilho (meio polegar antes do 0%). */
+.or-slider__cap {
+  left: calc(var(--_thumb) / -2);
+  width: calc(var(--_thumb) / 2);
+  background: var(--or-color-accent);
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: calc(var(--_track) + 6px);
+  background: var(--or-color-border-strong);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__tick[data-active] {
+  background: var(--or-color-bg);
+}
+
+/* Polegar visual ------------------------------------------------------------
+ * `thumb-pos` tem a largura do trilho e é deslocado por translateX(p − 100%):
+ * o polegar, preso à borda direita, fica exatamente em p%.
+ * ------------------------------------------------------------------------- */
+
+.or-slider__thumb-pos {
+  position: absolute;
+  top: 0;
+  right: calc(var(--_thumb) / 2);
+  bottom: 0;
+  left: calc(var(--_thumb) / 2);
+  transform: translateX(calc(var(--_p, 0%) - 100%));
+  pointer-events: none;
+}
+
+.or-slider__thumb-pos[data-top] {
+  z-index: 1;
+}
+
+.or-slider__thumb {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  box-sizing: border-box;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  margin: calc(var(--_thumb) / -2) calc(var(--_thumb) / -2) 0 0;
+  border: 2px solid var(--or-color-accent);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  /* Duas sombras sempre presentes: o anel cresce de 0 (hover/foco) em vez de surgir. */
+  box-shadow:
+    0 0 0 0 transparent,
+    0 0 0 0 transparent;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Saltos animam o preenchimento e o polegar (spring); o arraste segue o ponteiro sem atraso. */
+.or-slider[data-animate] .or-slider__fill,
+.or-slider[data-animate] .or-slider__thumb-pos {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+/* Hover e foco: o polegar cresce levemente e ganha um anel (mesma resposta nos dois). */
+.or-slider__input:hover:not(:disabled) + .or-slider__thumb-pos .or-slider__thumb {
+  transform: scale(1.12);
+  box-shadow:
+    0 0 0 0 transparent,
+    0 0 0 5px var(--or-color-accent-subtle);
+}
+
+.or-slider__input:focus-visible + .or-slider__thumb-pos .or-slider__thumb {
+  transform: scale(1.12);
+  box-shadow:
+    0 0 0 2px var(--or-color-bg),
+    0 0 0 4px var(--or-color-focus);
+}
+
+/* Pressionado/arrastando: cresce um pouco mais e preenche de laranja. */
+.or-slider__input:active:not(:disabled) + .or-slider__thumb-pos .or-slider__thumb {
+  transform: scale(1.22);
+  background: var(--or-color-accent);
+}
+
+/* Input nativo ------------------------------------------------------------- */
+
+.or-slider__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.or-slider__input:focus-visible {
+  outline: none;
+}
+
+.or-slider--range .or-slider__input {
+  pointer-events: none;
+}
+
+.or-slider__input[data-top] {
+  z-index: 1;
+}
+
+.or-slider__input::-webkit-slider-runnable-track {
+  height: var(--_h);
+  border: 0;
+  background: transparent;
+}
+
+.or-slider__input::-moz-range-track {
+  height: var(--_h);
+  border: 0;
+  background: transparent;
+}
+
+/* Polegar nativo invisível, do mesmo tamanho do visual: é o alvo do ponteiro. */
+.or-slider__input::-webkit-slider-thumb {
+  width: var(--_thumb);
+  height: var(--_thumb);
+  margin-top: calc((var(--_h) - var(--_thumb)) / 2);
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  box-shadow: none;
+  cursor: grab;
+  pointer-events: auto;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.or-slider__input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  box-shadow: none;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.or-slider__input:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.or-slider__input:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+/* Estados ------------------------------------------------------------------ */
+
+.or-slider[data-invalid] .or-slider__fill,
+.or-slider[data-invalid] .or-slider__cap {
+  background: var(--or-color-danger);
+}
+
+.or-slider[data-invalid] .or-slider__thumb {
+  border-color: var(--or-color-danger);
+}
+
+.or-slider[data-disabled] .or-slider__fill,
+.or-slider[data-disabled] .or-slider__cap {
+  background: var(--or-color-text-disabled);
+}
+
+.or-slider[data-disabled] .or-slider__track {
+  background: var(--or-color-border);
+}
+
+.or-slider[data-disabled] .or-slider__thumb {
+  border-color: var(--or-color-text-disabled);
+  background: var(--or-color-bg-subtle);
+}
+
+.or-slider[data-disabled] .or-slider__rail,
+.or-slider__input:disabled,
+.or-slider__input:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+
+.or-slider__input:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+}
+
+/* Rótulos das marcas -------------------------------------------------------- */
+
+.or-slider__marks {
+  position: relative;
+  height: 1.25rem;
+  margin: 0 calc(var(--_thumb) / 2);
+  font-size: var(--or-text-xs);
+  color: var(--or-color-text-subtle);
+}
+
+.or-slider__mark-label {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-slider__mark-label:hover {
+  color: var(--or-color-text);
+}
+
+.or-slider__mark-label[data-edge='start'] {
+  transform: translateX(calc(var(--_thumb) / -2));
+}
+
+.or-slider__mark-label[data-edge='end'] {
+  transform: translateX(calc(-100% + var(--_thumb) / 2));
+}
+
+.or-slider[data-disabled] .or-slider__mark-label {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Valor exibido ao lado do rótulo. */
+.or-slider__output {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text);
+}
+
+.or-field[data-disabled] .or-slider__output {
+  /* O valor atual é informação: legível mesmo desabilitado. */
+  color: var(--or-color-text-subtle);
+}
+
+@media (forced-colors: active) {
+  .or-slider__track {
+    background: GrayText;
+  }
+  .or-slider__fill,
+  .or-slider__cap {
+    background: Highlight;
+  }
+  .or-slider__thumb {
+    border-color: ButtonText;
+    background: ButtonFace;
+  }
+  /* box-shadow some em alto contraste: o foco usa outline. */
+  .or-slider__input:focus-visible + .or-slider__thumb-pos .or-slider__thumb {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

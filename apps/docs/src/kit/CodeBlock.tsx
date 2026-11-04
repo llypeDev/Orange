@@ -6,7 +6,7 @@ import { useLang } from '../i18n'
 const orangePrism: PrismTheme = {
   plain: { color: '#d4cdb5', backgroundColor: 'transparent' },
   styles: [
-    { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#75757f', fontStyle: 'italic' } },
+    { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#8a8a94', fontStyle: 'italic' } },
     { types: ['punctuation', 'operator'], style: { color: '#9c9588' } },
     { types: ['keyword', 'boolean', 'important', 'atrule'], style: { color: '#f58549' } },
     { types: ['string', 'char', 'attr-value', 'inserted', 'url'], style: { color: '#a6d16a' } },
@@ -39,7 +39,13 @@ export function CodeBlock({ code, language = 'tsx', title, lineNumbers = false, 
     <div className="doc-code">
       <div className="doc-code__bar">
         <span className="doc-code__lang">{title ?? language.toUpperCase()}</span>
-        <button type="button" className="doc-code__copy" onClick={() => copy(trimmed)} aria-live="polite">
+        <button
+          type="button"
+          className="doc-code__copy"
+          onClick={() => copy(trimmed)}
+          aria-live="polite"
+          data-copied={copied || undefined}
+        >
           {copied ? t({ pt: 'Copiado', en: 'Copied' }) : t({ pt: 'Copiar', en: 'Copy' })}
         </button>
       </div>

@@ -1,0 +1,19 @@
+.or-truncated-text {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.or-truncated-text--single {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.or-truncated-text--multi {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--_lines, 2);
+  line-clamp: var(--_lines, 2);
+  overflow-wrap: anywhere;
+}

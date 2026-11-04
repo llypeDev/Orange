@@ -1,0 +1,151 @@
+/* ---------------------------------------------------------------------------
+ * TagInput — campo que transforma texto em tags removíveis
+ * ------------------------------------------------------------------------- */
+
+.or-tag-input {
+  --_chip-h: 1.75rem;
+  --_pad-y: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1);
+  height: auto;
+  padding: var(--_pad-y) var(--or-space-1);
+  cursor: text;
+}
+
+.or-control-frame--sm.or-tag-input {
+  --_chip-h: 1.5rem;
+  --_pad-y: 3px;
+}
+
+.or-control-frame--lg.or-tag-input {
+  --_chip-h: 2.125rem;
+  --_pad-y: 6px;
+}
+
+.or-tag-input[data-disabled] {
+  cursor: not-allowed;
+}
+
+.or-tag-input__tags {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  gap: var(--or-space-1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-tag-input__tag {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  height: var(--_chip-h);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-left: var(--or-border-accent) solid var(--or-color-accent);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  line-height: 1;
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Movimento: a tag criada entra com pop (scale + bounce); a removida sai
+ * mais rápido (fade + scale) antes de deixar o DOM. */
+.or-tag-input__tag[data-enter] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-tag-input__tag[data-state='closed'] {
+  animation: or-tag-input-tag-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-tag-input-tag-out {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Erro de validação: tremor curto, uma vez, quando a mensagem surge. */
+.or-tag-input[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-control-frame--sm .or-tag-input__tag {
+  font-size: var(--or-text-xs);
+}
+
+.or-tag-input__tag-label {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 var(--or-space-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.or-tag-input[data-disabled] .or-tag-input__tag {
+  border-color: var(--or-color-border);
+  color: var(--or-color-text-disabled);
+}
+
+.or-tag-input__remove {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: max(1.5rem, calc(var(--_chip-h) - 2px));
+  padding: 0;
+  border: 0;
+  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-tag-input__remove:hover {
+  background: var(--or-color-danger-subtle);
+  color: var(--or-color-danger-text);
+}
+
+.or-tag-input__remove:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-tag-input__remove:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-tag-input__input {
+  flex: 1 1 5rem;
+  min-width: 5rem;
+  height: var(--_chip-h);
+  padding: 0 var(--or-space-2);
+}
+
+.or-tag-input__count {
+  font-family: var(--or-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (forced-colors: active) {
+  .or-tag-input__tag {
+    border-color: CanvasText;
+  }
+}

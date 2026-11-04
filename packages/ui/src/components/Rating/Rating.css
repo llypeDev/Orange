@@ -1,0 +1,163 @@
+/* ---------------------------------------------------------------------------
+ * Rating — avaliação por estrelas
+ * ------------------------------------------------------------------------- */
+
+.or-rating-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-2);
+}
+
+.or-rating-field--readonly {
+  display: inline-flex;
+  gap: var(--or-space-1);
+}
+
+.or-rating-field__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-3);
+}
+
+.or-rating-field__caption {
+  min-width: 6rem;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  color: var(--or-color-text-muted);
+}
+
+.or-rating {
+  --_star: 1.5rem;
+  --_pad: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.or-rating--sm {
+  --_star: 1rem;
+  --_pad: 0.25rem;
+}
+
+.or-rating--lg {
+  --_star: 2rem;
+  --_pad: 0.25rem;
+}
+
+.or-rating__option {
+  display: inline-flex;
+}
+
+.or-rating__star {
+  position: relative;
+  display: inline-flex;
+  padding: var(--_pad);
+  color: var(--or-color-border-control);
+  line-height: 0;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-rating-field--readonly .or-rating__star,
+.or-rating--readonly .or-rating__star {
+  padding: 1px;
+}
+
+label.or-rating__star {
+  cursor: pointer;
+}
+
+/* Ícone: o preenchimento e a cor fazem transição (transparent → laranja). */
+.or-rating__glyph {
+  display: inline-flex;
+  transition: transform var(--or-duration-fast) var(--or-ease-spring);
+}
+
+.or-rating__icon {
+  width: var(--_star);
+  height: var(--_star);
+  fill: transparent;
+  transition:
+    fill var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Estrela preenchida: laranja, com preenchimento sólido. */
+.or-rating__star[data-filled] {
+  color: var(--or-color-accent);
+}
+
+.or-rating__star[data-filled] .or-rating__icon {
+  fill: currentColor;
+}
+
+/* Prévia no hover: as estrelas da prévia crescem um pouco e a estrela sob o
+ * ponteiro (ou com foco do teclado) cresce mais. */
+.or-rating--preview .or-rating__star[data-filled] {
+  color: var(--or-color-accent-hover);
+}
+
+.or-rating--preview .or-rating__star[data-filled] .or-rating__glyph {
+  transform: scale(1.06);
+}
+
+.or-rating--preview label.or-rating__star:hover .or-rating__glyph,
+.or-rating__input:focus-visible + label.or-rating__star .or-rating__glyph {
+  transform: scale(1.18);
+}
+
+/* Pressionar: a estrela afunda. */
+.or-rating__input:not(:disabled) + label.or-rating__star:active .or-rating__glyph {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* Ao escolher: pop em onda até a nota escolhida (--_i = posição). */
+.or-rating__glyph--pop {
+  animation: or-rating-pop var(--or-duration-medium) var(--or-ease-bounce);
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 3);
+}
+
+/* Fração (somente leitura): metade/parte da estrela sobreposta. */
+.or-rating__partial {
+  position: absolute;
+  inset: 1px auto 1px 1px;
+  overflow: hidden;
+  color: var(--or-color-accent);
+}
+
+.or-rating__partial .or-rating__icon {
+  fill: currentColor;
+}
+
+/* Foco no rádio (visualmente oculto) aparece na estrela. */
+.or-rating__input:focus-visible + .or-rating__star {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -1px;
+}
+
+.or-rating__input:disabled + .or-rating__star {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.or-rating__input:disabled + .or-rating__star[data-filled] {
+  color: var(--or-color-text-disabled);
+}
+
+.or-rating[aria-invalid='true'] .or-rating__star:not([data-filled]) {
+  color: var(--or-color-danger);
+}
+
+@keyframes or-rating-pop {
+  40% {
+    transform: scale(1.25);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-rating__star[data-filled],
+  .or-rating__partial {
+    color: Highlight;
+  }
+}

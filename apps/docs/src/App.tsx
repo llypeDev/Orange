@@ -35,42 +35,16 @@ function LangRoutes({ theme, onThemeChange }: { theme: ThemeSetting; onThemeChan
     <OrangeProvider theme={theme} onThemeChange={onThemeChange} locale={lang === 'pt' ? 'pt-BR' : 'en-US'}>
     <LangProvider lang={lang}>
       <Routes>
-        <Route
-          index
-          element={
-            <Layout fullWidth>
-              <Home />
-            </Layout>
-          }
-        />
-        {allStaticPages.map(({ path, component: Page }) => (
-          <Route
-            key={path}
-            path={path.slice(1)}
-            element={
-              <Layout>
-                <Page />
-              </Layout>
-            }
-          />
-        ))}
-        <Route path="components" element={<Navigate to="overview" replace />} />
-        <Route
-          path="components/:slug"
-          element={
-            <Layout>
-              <ComponentRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <Layout>
-              <NotFound />
-            </Layout>
-          }
-        />
+        {/* Layout persistente: só o conteúdo troca (e anima) entre rotas. */}
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          {allStaticPages.map(({ path, component: Page }) => (
+            <Route key={path} path={path.slice(1)} element={<Page />} />
+          ))}
+          <Route path="components" element={<Navigate to="overview" replace />} />
+          <Route path="components/:slug" element={<ComponentRoute />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </LangProvider>
     </OrangeProvider>

@@ -1,0 +1,65 @@
+/* ---------------------------------------------------------------------------
+ * CurrencyField — valor monetário com símbolo da moeda no campo
+ * ------------------------------------------------------------------------- */
+
+.or-currency-field__frame {
+  cursor: text;
+}
+
+.or-currency-field__symbol {
+  font-family: var(--or-font-display);
+  font-size: 0.9em;
+  font-weight: var(--or-weight-semibold);
+  color: var(--or-color-text-muted);
+  user-select: none;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+/* Foco: o símbolo acende em laranja e "encosta" 2px no valor (spring). */
+.or-currency-field__frame:focus-within .or-currency-field__symbol {
+  color: var(--or-color-accent-text);
+}
+
+.or-currency-field__frame:focus-within .or-currency-field__symbol.or-control-frame__addon--start {
+  transform: translateX(2px);
+}
+
+.or-currency-field__frame:focus-within .or-currency-field__symbol.or-control-frame__addon--end {
+  transform: translateX(-2px);
+}
+
+.or-currency-field__frame[data-invalid] .or-currency-field__symbol {
+  color: var(--or-color-danger-text);
+}
+
+/* Erro: tremor curto, uma vez, quando a mensagem surge. */
+.or-currency-field__frame[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-currency-field__frame[data-disabled] .or-currency-field__symbol {
+  color: var(--or-color-text-disabled);
+}
+
+.or-currency-field__symbol.or-control-frame__addon--start {
+  padding-right: 0;
+}
+
+.or-currency-field__symbol.or-control-frame__addon--end {
+  padding-left: 0;
+}
+
+.or-currency-field__input {
+  font-variant-numeric: tabular-nums;
+}
+
+.or-currency-field__frame:has(.or-control-frame__addon--start) .or-currency-field__input {
+  padding-left: var(--or-space-2);
+}
+
+.or-currency-field__frame:has(.or-control-frame__addon--end) .or-currency-field__input {
+  padding-right: var(--or-space-2);
+  text-align: right;
+}

@@ -1,0 +1,517 @@
+.or-app-header {
+  --or-app-header-height: var(--or-layout-header-height);
+
+  /* A navegação responde à largura do próprio cabeçalho (container query). */
+  container-type: inline-size;
+  container-name: or-app-header;
+  position: relative;
+  z-index: var(--or-z-header);
+  width: 100%;
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  background: var(--or-color-bg);
+  font-family: var(--or-font-display);
+}
+
+.or-app-header--sticky {
+  position: sticky;
+  top: 0;
+  background: color-mix(in srgb, var(--or-color-bg) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+}
+
+/* Esconder ao rolar: sobe para fora da tela (240–250ms, ida e volta). */
+.or-app-header--hide-on-scroll {
+  transition: transform var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-app-header--hide-on-scroll[data-scroll-hidden] {
+  transform: translateY(-110%);
+}
+
+.or-app-header__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-6);
+  height: var(--or-app-header-height);
+  padding: 0 var(--or-space-6);
+}
+
+.or-app-header__start {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-3);
+}
+
+.or-app-header__brand {
+  display: flex;
+  align-items: center;
+  color: var(--or-color-text);
+  font-size: var(--or-text-lg);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.or-app-header__brand a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  color: inherit;
+  text-decoration: none;
+}
+
+.or-app-header__brand a:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 4px;
+}
+
+.or-app-header__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-2);
+  margin-left: auto;
+}
+
+/* Botão de menu (só em telas estreitas) --------------------------------- */
+
+.or-app-header__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--or-control-md);
+  height: var(--or-control-md);
+  margin-left: calc(var(--or-space-2) * -1);
+  padding: 0;
+  border: var(--or-border-thin) solid transparent;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-app-header__menu:is(:hover, :focus-visible) {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-surface-hover);
+}
+
+.or-app-header__menu[aria-expanded='true'] {
+  border-color: var(--or-color-border-strong);
+}
+
+.or-app-header__menu:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-app-header__menu-icon {
+  display: inline-flex;
+}
+
+/* Hambúrguer ↔ X: o ícone novo entra girando com um pequeno "pop". */
+.or-app-header__menu-icon--enter {
+  animation: or-app-header-icon-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+@keyframes or-app-header-icon-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+}
+
+.or-app-header__menu:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Navegação em linha ------------------------------------------------------ */
+
+.or-app-header__nav {
+  display: flex;
+  align-self: stretch;
+  min-width: 0;
+}
+
+.or-app-header__list {
+  display: flex;
+  align-items: stretch;
+  gap: var(--or-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-app-header__item {
+  display: flex;
+}
+
+.or-app-header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: var(--or-color-text-muted);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-app-header__link:is(:hover, :focus-visible) {
+  color: var(--or-color-text);
+}
+
+.or-app-header__link:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-app-header__link[aria-current='page'] {
+  color: var(--or-color-text);
+}
+
+/*
+ * Sublinhado de 2px que cresce da esquerda (como no zop.dev), alinhado à borda
+ * inferior do cabeçalho: no hover/foco na cor do texto; na página atual, laranja.
+ */
+.or-app-header__link::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-app-header__link:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
+}
+
+.or-app-header__link[aria-current='page']::after {
+  background: var(--or-color-accent);
+  transform: scaleX(1);
+}
+
+.or-app-header__menu-footer {
+  display: none;
+}
+
+/*
+ * Telas estreitas: a navegação vai para um painel abaixo da barra. Um bloco por
+ * ponto de quebra (`collapseBelow`), medido na largura do próprio cabeçalho.
+ */
+@container or-app-header (max-width: 40rem) {
+  .or-app-header[data-collapse='sm'] .or-app-header__menu {
+    display: inline-flex;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: none;
+    max-height: calc(100vh - var(--or-app-header-height));
+    overflow-y: auto;
+    padding: var(--or-space-2) 0 var(--or-space-4);
+    border-bottom: var(--or-border-thin) solid var(--or-color-border-strong);
+    background: var(--or-color-bg);
+    box-shadow: var(--or-shadow-overlay);
+  }
+
+  /* Montado enquanto aberto ou saindo (usePresence). */
+  .or-app-header[data-collapse='sm'][data-menu-present] .or-app-header__nav {
+    display: block;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__nav[data-state='open'] {
+    animation: or-app-header-panel-in var(--or-duration-medium) var(--or-ease-out) both;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__nav[data-state='closed'] {
+    animation: or-app-header-panel-out var(--or-duration-fast) var(--or-ease-in-out) both;
+    pointer-events: none;
+  }
+
+  /* Itens entram em cascata. */
+  .or-app-header[data-collapse='sm'] .or-app-header__nav[data-state='open'] .or-app-header__item {
+    animation: or-app-header-item-in var(--or-duration-medium) var(--or-ease-out) both;
+    animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link {
+    width: 100%;
+    min-height: var(--or-control-lg);
+    padding: 0 var(--or-space-6);
+    font-size: var(--or-text-md);
+    transition:
+      color var(--or-duration-fast) var(--or-ease-out),
+      background-color var(--or-duration-fast) var(--or-ease-out);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link:is(:hover, :focus-visible) {
+    background: var(--or-color-surface-hover);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link::after {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 2px;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link:is(:hover, :focus-visible)::after {
+    transform: scaleY(0);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link[aria-current='page'] {
+    background: var(--or-color-accent-subtle);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__link[aria-current='page']::after {
+    transform: scaleY(1);
+  }
+
+  .or-app-header[data-collapse='sm'] .or-app-header__menu-footer {
+    display: block;
+    margin-top: var(--or-space-3);
+    padding: var(--or-space-4) var(--or-space-6) 0;
+    border-top: var(--or-border-thin) solid var(--or-color-border);
+  }
+}
+
+@container or-app-header (max-width: 48rem) {
+  .or-app-header[data-collapse='md'] .or-app-header__menu {
+    display: inline-flex;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: none;
+    max-height: calc(100vh - var(--or-app-header-height));
+    overflow-y: auto;
+    padding: var(--or-space-2) 0 var(--or-space-4);
+    border-bottom: var(--or-border-thin) solid var(--or-color-border-strong);
+    background: var(--or-color-bg);
+    box-shadow: var(--or-shadow-overlay);
+  }
+
+  /* Montado enquanto aberto ou saindo (usePresence). */
+  .or-app-header[data-collapse='md'][data-menu-present] .or-app-header__nav {
+    display: block;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__nav[data-state='open'] {
+    animation: or-app-header-panel-in var(--or-duration-medium) var(--or-ease-out) both;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__nav[data-state='closed'] {
+    animation: or-app-header-panel-out var(--or-duration-fast) var(--or-ease-in-out) both;
+    pointer-events: none;
+  }
+
+  /* Itens entram em cascata. */
+  .or-app-header[data-collapse='md'] .or-app-header__nav[data-state='open'] .or-app-header__item {
+    animation: or-app-header-item-in var(--or-duration-medium) var(--or-ease-out) both;
+    animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link {
+    width: 100%;
+    min-height: var(--or-control-lg);
+    padding: 0 var(--or-space-6);
+    font-size: var(--or-text-md);
+    transition:
+      color var(--or-duration-fast) var(--or-ease-out),
+      background-color var(--or-duration-fast) var(--or-ease-out);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link:is(:hover, :focus-visible) {
+    background: var(--or-color-surface-hover);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link::after {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 2px;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link:is(:hover, :focus-visible)::after {
+    transform: scaleY(0);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link[aria-current='page'] {
+    background: var(--or-color-accent-subtle);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__link[aria-current='page']::after {
+    transform: scaleY(1);
+  }
+
+  .or-app-header[data-collapse='md'] .or-app-header__menu-footer {
+    display: block;
+    margin-top: var(--or-space-3);
+    padding: var(--or-space-4) var(--or-space-6) 0;
+    border-top: var(--or-border-thin) solid var(--or-color-border);
+  }
+}
+
+@container or-app-header (max-width: 64rem) {
+  .or-app-header[data-collapse='lg'] .or-app-header__menu {
+    display: inline-flex;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: none;
+    max-height: calc(100vh - var(--or-app-header-height));
+    overflow-y: auto;
+    padding: var(--or-space-2) 0 var(--or-space-4);
+    border-bottom: var(--or-border-thin) solid var(--or-color-border-strong);
+    background: var(--or-color-bg);
+    box-shadow: var(--or-shadow-overlay);
+  }
+
+  /* Montado enquanto aberto ou saindo (usePresence). */
+  .or-app-header[data-collapse='lg'][data-menu-present] .or-app-header__nav {
+    display: block;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__nav[data-state='open'] {
+    animation: or-app-header-panel-in var(--or-duration-medium) var(--or-ease-out) both;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__nav[data-state='closed'] {
+    animation: or-app-header-panel-out var(--or-duration-fast) var(--or-ease-in-out) both;
+    pointer-events: none;
+  }
+
+  /* Itens entram em cascata. */
+  .or-app-header[data-collapse='lg'] .or-app-header__nav[data-state='open'] .or-app-header__item {
+    animation: or-app-header-item-in var(--or-duration-medium) var(--or-ease-out) both;
+    animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link {
+    width: 100%;
+    min-height: var(--or-control-lg);
+    padding: 0 var(--or-space-6);
+    font-size: var(--or-text-md);
+    transition:
+      color var(--or-duration-fast) var(--or-ease-out),
+      background-color var(--or-duration-fast) var(--or-ease-out);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link:is(:hover, :focus-visible) {
+    background: var(--or-color-surface-hover);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link::after {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 2px;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link:is(:hover, :focus-visible)::after {
+    transform: scaleY(0);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link[aria-current='page'] {
+    background: var(--or-color-accent-subtle);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__link[aria-current='page']::after {
+    transform: scaleY(1);
+  }
+
+  .or-app-header[data-collapse='lg'] .or-app-header__menu-footer {
+    display: block;
+    margin-top: var(--or-space-3);
+    padding: var(--or-space-4) var(--or-space-6) 0;
+    border-top: var(--or-border-thin) solid var(--or-color-border);
+  }
+}
+
+@keyframes or-app-header-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1.5));
+  }
+}
+
+@keyframes or-app-header-panel-out {
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+@keyframes or-app-header-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-sm) * -2));
+  }
+}
+
+@container or-app-header (max-width: 40rem) {
+  .or-app-header__bar {
+    gap: var(--or-space-3);
+    padding: 0 var(--or-space-4);
+  }
+}

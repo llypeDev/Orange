@@ -1,0 +1,173 @@
+.or-dl {
+  --_term-width: 12rem;
+  --_cols: 3;
+  --_row-pad: var(--or-space-3);
+  --_font-size: var(--or-text-md);
+
+  margin: 0;
+  padding: 0;
+  font-size: var(--_font-size);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text);
+}
+
+.or-dl--sm {
+  --_row-pad: var(--or-space-2);
+  --_font-size: var(--or-text-sm);
+}
+
+.or-dl__term,
+.or-dl__details {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.or-dl__details {
+  color: var(--or-color-text);
+}
+
+/* Estilos de termo --------------------------------------------------------- */
+
+.or-dl--term-eyebrow .or-dl__term {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
+.or-dl--term-strong .or-dl__term {
+  font-weight: var(--or-weight-semibold);
+  color: var(--or-color-text);
+}
+
+/* horizontal: termo à esquerda -------------------------------------------- */
+
+.or-dl--horizontal {
+  display: grid;
+  grid-template-columns: minmax(0, var(--_term-width)) minmax(0, 1fr);
+}
+
+.or-dl--horizontal .or-dl__group {
+  display: contents;
+}
+
+.or-dl--horizontal .or-dl__term {
+  grid-column: 1;
+  /* espaço entre colunas como padding, para a linha de 1px ser contínua */
+  padding-block: var(--_row-pad);
+  padding-right: var(--or-space-6);
+}
+
+.or-dl--horizontal.or-dl--term-eyebrow .or-dl__term {
+  /* alinha a caixa alta pequena com a primeira linha do valor */
+  padding-top: calc(var(--_row-pad) + (var(--_font-size) - var(--or-text-2xs)) * 0.75);
+}
+
+.or-dl--horizontal .or-dl__details {
+  grid-column: 2;
+  padding-block: var(--_row-pad);
+}
+
+.or-dl--horizontal .or-dl__details + .or-dl__details {
+  padding-top: 0;
+}
+
+.or-dl--horizontal.or-dl--divided {
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-dl--horizontal.or-dl--divided .or-dl__term,
+.or-dl--horizontal.or-dl--divided .or-dl__term + .or-dl__details {
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+@media (max-width: 40rem) {
+  .or-dl--horizontal {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .or-dl--horizontal .or-dl__term,
+  .or-dl--horizontal .or-dl__details {
+    grid-column: 1;
+  }
+  .or-dl--horizontal .or-dl__term {
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+  .or-dl--horizontal .or-dl__term + .or-dl__details {
+    padding-top: var(--or-space-1);
+  }
+  .or-dl--horizontal.or-dl--divided .or-dl__term + .or-dl__details {
+    border-top: 0;
+  }
+}
+
+/* vertical: termo acima ---------------------------------------------------- */
+
+.or-dl--vertical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-4);
+}
+
+.or-dl--vertical > .or-dl__term:not(:first-child) {
+  margin-top: var(--or-space-4);
+}
+
+.or-dl--vertical .or-dl__term + .or-dl__details {
+  margin-top: calc(var(--or-space-1) - var(--or-space-4));
+}
+
+.or-dl--vertical .or-dl__group > .or-dl__term + .or-dl__details {
+  margin-top: var(--or-space-1);
+}
+
+.or-dl--vertical.or-dl--divided {
+  gap: 0;
+}
+
+.or-dl--vertical.or-dl--divided > .or-dl__group {
+  padding-block: var(--_row-pad);
+}
+
+.or-dl--vertical.or-dl--divided > .or-dl__group + .or-dl__group {
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* grid: células com bordas de 1px ----------------------------------------- */
+
+.or-dl--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(10rem, calc(100% / var(--_cols) - 0.5px)), 1fr));
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  border-left: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-dl--grid > .or-dl__group,
+.or-dl--grid > .or-dl__term,
+.or-dl--grid > .or-dl__details {
+  padding: var(--or-space-4) var(--or-space-5);
+  border-right: var(--or-border-thin) solid var(--or-color-border);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-dl--grid.or-dl--sm > .or-dl__group {
+  padding: var(--or-space-3) var(--or-space-4);
+}
+
+.or-dl--grid .or-dl__group > .or-dl__term + .or-dl__details {
+  margin-top: var(--or-space-1);
+}
+
+.or-dl--grid .or-dl__details + .or-dl__details {
+  margin-top: var(--or-space-1);
+}
+
+.or-dl--grid .or-dl__details {
+  font-family: var(--or-font-display);
+  font-size: calc(var(--_font-size) * 1.15);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: -0.01em;
+}

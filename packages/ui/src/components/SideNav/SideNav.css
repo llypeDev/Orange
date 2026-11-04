@@ -1,0 +1,450 @@
+.or-side-nav {
+  --or-side-nav-width: var(--or-layout-sidebar-width);
+  --or-side-nav-collapsed-width: 4rem;
+  --_indent: 0px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--or-side-nav-width);
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-right: var(--or-border-thin) solid var(--or-color-border);
+  background: var(--or-color-bg);
+  font-family: var(--or-font-display);
+}
+
+.or-side-nav--collapsed {
+  width: var(--or-side-nav-collapsed-width);
+}
+
+.or-side-nav__header {
+  flex-shrink: 0;
+  padding: var(--or-space-4) var(--or-space-5);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-side-nav__body {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: var(--or-space-3) 0;
+  scrollbar-width: thin;
+}
+
+.or-side-nav__footer {
+  flex-shrink: 0;
+  padding: var(--or-space-2) 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-side-nav__list,
+.or-side-nav__sublist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Item ------------------------------------------------------------------- */
+
+.or-side-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-3);
+  width: 100%;
+  min-height: var(--or-control-md);
+  padding: 0.5rem var(--or-space-5) 0.5rem calc(var(--or-space-5) + var(--_indent));
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: var(--or-leading-tight);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-side-nav__item[data-level='1'] {
+  --_indent: 2rem;
+  min-height: var(--or-control-sm);
+  font-family: var(--or-font-body);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-body);
+}
+
+.or-side-nav__item[data-level='2'] {
+  --_indent: 3rem;
+}
+
+.or-side-nav__item:hover:not(:disabled, [aria-disabled='true']) {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-side-nav__item:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-side-nav__item:disabled,
+.or-side-nav__item[aria-disabled='true'] {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Item atual: barra laranja de 2px à esquerda. */
+.or-side-nav__item[aria-current='page'],
+.or-side-nav__toggle[data-active] {
+  color: var(--or-color-text);
+}
+
+.or-side-nav__item[aria-current='page'] {
+  background: var(--or-color-accent-subtle);
+}
+
+/* A barra existe em todo item e cresce do centro (scaleY) quando ele fica atual. */
+.or-side-nav__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-side-nav__item[aria-current='page']::before,
+.or-side-nav__toggle[data-active][aria-expanded='false']::before,
+.or-side-nav--collapsed .or-side-nav__toggle[data-active]::before {
+  transform: scaleY(1);
+}
+
+.or-side-nav__item[aria-current='page'] .or-side-nav__icon {
+  color: var(--or-color-accent-text);
+}
+
+.or-side-nav__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-side-nav__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-side-nav__initial {
+  border: var(--or-border-thin) solid currentColor;
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-bold);
+  line-height: 1;
+}
+
+.or-side-nav__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.or-side-nav__badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.or-side-nav__item[aria-current='page'] .or-side-nav__badge {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+}
+
+/* Grupo ------------------------------------------------------------------ */
+
+.or-side-nav__chevron {
+  flex-shrink: 0;
+  color: var(--or-color-text-subtle);
+  transition:
+    transform var(--or-duration-slow) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-side-nav__toggle:is(:hover, :focus-visible) .or-side-nav__chevron {
+  color: var(--or-color-text);
+}
+
+.or-side-nav__toggle[aria-expanded='true'] .or-side-nav__chevron {
+  transform: rotate(180deg);
+}
+
+/*
+ * Expandir/recolher: a altura anima com grid-template-rows 0fr → 1fr (sem
+ * medir) + opacidade. O atributo `hidden` continua valendo (fora da árvore de
+ * acessibilidade quando fechado); `display` sai por último graças a
+ * `allow-discrete`, e @starting-style dá o ponto de partida da entrada.
+ */
+.or-side-nav__panel {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--or-duration-slow) var(--or-ease-out),
+    opacity var(--or-duration-medium) var(--or-ease-out),
+    display var(--or-duration-slow) allow-discrete;
+}
+
+.or-side-nav__panel[hidden] {
+  display: none;
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+@starting-style {
+  .or-side-nav__panel:not([hidden]) {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+.or-side-nav__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.or-side-nav__panel-title {
+  display: none;
+}
+
+.or-side-nav__sublist {
+  padding-bottom: var(--or-space-2);
+}
+
+/* Seção ------------------------------------------------------------------ */
+
+.or-side-nav__section + .or-side-nav__section,
+.or-side-nav__entry + .or-side-nav__section {
+  margin-top: var(--or-space-4);
+}
+
+.or-side-nav__section-title {
+  display: block;
+  padding: var(--or-space-2) var(--or-space-5);
+  color: var(--or-color-text-subtle);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Botão de recolher ------------------------------------------------------ */
+
+.or-side-nav__collapse {
+  color: var(--or-color-text-subtle);
+}
+
+.or-side-nav__collapse .or-side-nav__icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-side-nav--collapsed .or-side-nav__collapse .or-side-nav__icon {
+  transform: rotate(180deg);
+}
+
+/* Depois de trocar de modo, rótulos e selos entram deslizando 4px. */
+.or-side-nav[data-motion]:not(.or-side-nav--collapsed) :is(.or-side-nav__label, .or-side-nav__badge, .or-side-nav__section-title) {
+  animation: or-side-nav-label-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+@keyframes or-side-nav-label-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+/* Modo recolhido --------------------------------------------------------- */
+
+.or-side-nav--collapsed .or-side-nav__header {
+  padding-inline: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Rótulos e paineis precisam escapar do trilho. */
+.or-side-nav--collapsed .or-side-nav__body {
+  overflow: visible;
+}
+
+.or-side-nav--collapsed .or-side-nav__item[data-level='0'] {
+  justify-content: center;
+  padding-inline: 0;
+  min-height: var(--or-control-lg);
+}
+
+.or-side-nav--collapsed .or-side-nav__item[data-level='0'] .or-side-nav__chevron {
+  display: none;
+}
+
+/* O rótulo vira uma dica ao lado do ícone — continua na árvore de acessibilidade. */
+.or-side-nav--collapsed .or-side-nav__item[data-level='0'] > .or-side-nav__label {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--or-space-2));
+  z-index: var(--or-z-tooltip);
+  flex: none;
+  overflow: visible;
+  padding: var(--or-space-1) var(--or-space-2);
+  background: var(--or-color-surface-inverse);
+  color: var(--or-color-text-inverse);
+  font-size: var(--or-text-xs);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-side-nav--collapsed .or-side-nav__item[data-level='0']:is(:hover, :focus-visible):not([aria-expanded='true'])
+  > .or-side-nav__label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.or-side-nav--collapsed .or-side-nav__item[data-level='0'] > .or-side-nav__badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.875rem;
+  min-width: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: var(--or-color-accent);
+  color: transparent;
+  font-size: 0;
+}
+
+.or-side-nav--collapsed .or-side-nav__section-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.or-side-nav--collapsed .or-side-nav__section + .or-side-nav__section,
+.or-side-nav--collapsed .or-side-nav__entry + .or-side-nav__section {
+  margin-top: var(--or-space-2);
+  padding-top: var(--or-space-2);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Grupo recolhido: os itens abrem em um painel ao lado do trilho. */
+.or-side-nav--collapsed .or-side-nav__group {
+  position: relative;
+}
+
+.or-side-nav--collapsed .or-side-nav__group > .or-side-nav__panel {
+  position: absolute;
+  top: 0;
+  left: calc(100% + var(--or-space-2));
+  z-index: var(--or-z-popover);
+  min-width: 13rem;
+  padding: var(--or-space-2) 0;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-overlay);
+  display: block;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out),
+    display var(--or-duration-medium) allow-discrete;
+}
+
+/* Saída mais curta que a entrada. */
+.or-side-nav--collapsed .or-side-nav__group > .or-side-nav__panel[hidden] {
+  display: none;
+  opacity: 0;
+  transform: translateX(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out),
+    display var(--or-duration-fast) allow-discrete;
+}
+
+@starting-style {
+  .or-side-nav--collapsed .or-side-nav__group > .or-side-nav__panel:not([hidden]) {
+    opacity: 0;
+    transform: translateX(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+.or-side-nav--collapsed .or-side-nav__panel-inner {
+  overflow: visible;
+}
+
+.or-side-nav--collapsed .or-side-nav__panel-title {
+  display: block;
+  margin: 0;
+  padding: var(--or-space-1) var(--or-space-4) var(--or-space-2);
+  color: var(--or-color-text-subtle);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+}
+
+.or-side-nav--collapsed .or-side-nav__panel .or-side-nav__item[data-level='1'] {
+  --_indent: 0px;
+  padding-inline: var(--or-space-4);
+}
+
+.or-side-nav--collapsed .or-side-nav__panel .or-side-nav__sublist {
+  padding-bottom: 0;
+}
+
+/* No quadro em que o modo muda, nada de transição nos painéis. */
+.or-side-nav[data-switching] .or-side-nav__panel,
+.or-side-nav[data-switching] .or-side-nav__group > .or-side-nav__panel[hidden] {
+  transition: none;
+}
+
+@media (forced-colors: active) {
+  .or-side-nav__item[aria-current='page']::before {
+    background: Highlight;
+  }
+}

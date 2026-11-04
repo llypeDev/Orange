@@ -1,0 +1,202 @@
+/* ---------------------------------------------------------------------------
+ * Tag — rótulo estático com marcador quadrado
+ * ------------------------------------------------------------------------- */
+
+.or-tag {
+  --_c: var(--or-color-text-subtle);
+  --_bg: var(--or-color-surface-hover);
+  --_fg: var(--or-color-text);
+  --_h: 1.75rem;
+  --_pad: 0.5rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  max-width: 100%;
+  height: var(--_h);
+  padding: 0 var(--_pad);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-medium);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Remoção: a tag encolhe e some antes de sair da lista. */
+.or-tag[data-leaving] {
+  animation: or-tag-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-tag-out {
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.or-tag--sm {
+  --_h: 1.375rem;
+  --_pad: 0.375rem;
+  gap: 0.3125rem;
+  font-size: var(--or-text-2xs);
+}
+
+.or-tag--lg {
+  --_h: 2rem;
+  --_pad: 0.625rem;
+  gap: var(--or-space-2);
+  font-size: var(--or-text-sm);
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-tag--accent {
+  --_c: var(--or-color-accent);
+  --_bg: var(--or-color-accent-subtle);
+  --_fg: var(--or-color-accent-text);
+}
+.or-tag--success {
+  --_c: var(--or-color-success);
+  --_bg: var(--or-color-success-subtle);
+  --_fg: var(--or-color-success-text);
+}
+.or-tag--warning {
+  --_c: var(--or-color-warning);
+  --_bg: var(--or-color-warning-subtle);
+  --_fg: var(--or-color-warning-text);
+}
+.or-tag--danger {
+  --_c: var(--or-color-danger);
+  --_bg: var(--or-color-danger-subtle);
+  --_fg: var(--or-color-danger-text);
+}
+.or-tag--info {
+  --_c: var(--or-color-info);
+  --_bg: var(--or-color-info-subtle);
+  --_fg: var(--or-color-info-text);
+}
+
+/* Variantes ---------------------------------------------------------------- */
+
+.or-tag--solid {
+  border-color: transparent;
+  background: var(--_bg);
+  color: var(--_fg);
+}
+
+/* Partes ------------------------------------------------------------------- */
+
+.or-tag__marker {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--_c);
+}
+
+.or-tag--sm .or-tag__marker {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+.or-tag__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--_c);
+}
+
+.or-tag--solid .or-tag__icon {
+  color: currentColor;
+}
+
+.or-tag__icon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.or-tag__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.or-tag--removable {
+  padding-inline-end: 0;
+}
+
+.or-tag__remove {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: calc(var(--_h) - 2px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-tag--solid .or-tag__remove {
+  border-inline-start-color: color-mix(in srgb, currentColor 18%, transparent);
+  color: inherit;
+}
+
+.or-tag__remove:hover:not(:disabled) {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-tag--solid .or-tag__remove:hover:not(:disabled) {
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  color: inherit;
+}
+
+.or-tag__remove svg {
+  transition: transform var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+/* Pressionar: o "x" encolhe e volta com --or-ease-bounce. */
+.or-tag__remove:active:not(:disabled) svg {
+  transform: scale(0.75);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-tag__remove:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 0;
+}
+
+.or-tag__remove:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.or-tag[data-disabled] {
+  color: var(--or-color-text-disabled);
+}
+
+@media (forced-colors: active) {
+  .or-tag {
+    border-color: CanvasText;
+  }
+  .or-tag__marker {
+    forced-color-adjust: none;
+  }
+}

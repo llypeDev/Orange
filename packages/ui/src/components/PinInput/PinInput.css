@@ -1,0 +1,135 @@
+/* ---------------------------------------------------------------------------
+ * PinInput — campos de um caractere para códigos (OTP/PIN)
+ * ------------------------------------------------------------------------- */
+
+.or-pin-input {
+  --_size: var(--or-control-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2);
+}
+
+.or-pin-input--sm {
+  --_size: var(--or-control-sm);
+  gap: var(--or-space-1);
+}
+
+.or-pin-input--lg {
+  --_size: var(--or-control-lg);
+}
+
+.or-pin-input__field {
+  width: var(--_size);
+  height: var(--_size);
+  padding: 0;
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: calc(var(--_size) * 0.45);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+  caret-color: var(--or-color-accent);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-pin-input__field::placeholder {
+  color: var(--or-color-text-disabled);
+  opacity: 1;
+}
+
+.or-pin-input__field::selection {
+  background: transparent;
+}
+
+.or-pin-input__field:hover:not(:disabled, :focus) {
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-pin-input__field[data-filled] {
+  border-color: var(--or-color-text-muted);
+}
+
+.or-pin-input__field:focus,
+.or-pin-input__field:focus-visible {
+  outline: none;
+  border-color: var(--or-color-accent);
+  box-shadow: 0 0 0 1px var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+}
+
+.or-pin-input[data-invalid] .or-pin-input__field {
+  border-color: var(--or-color-danger);
+}
+
+.or-pin-input[data-invalid] .or-pin-input__field:focus {
+  box-shadow: 0 0 0 1px var(--or-color-danger);
+  background: var(--or-color-danger-subtle);
+}
+
+.or-pin-input__field:disabled {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Movimento ----------------------------------------------------------------
+ * - cada caractere digitado faz um pop (escala com bounce); ao colar, os
+ *   campos entram em onda (atraso por posição);
+ * - ao completar, a borda passa a success em onda;
+ * - ao surgir um erro, o grupo treme uma vez.
+ * ------------------------------------------------------------------------- */
+
+.or-pin-input__field[data-pop='a'] {
+  animation: or-pin-input-pop-a var(--or-duration-medium) var(--or-ease-bounce) backwards;
+  animation-delay: calc(var(--_pop-order, 0) * var(--or-stagger) / 2);
+}
+
+.or-pin-input__field[data-pop='b'] {
+  animation: or-pin-input-pop-b var(--or-duration-medium) var(--or-ease-bounce) backwards;
+  animation-delay: calc(var(--_pop-order, 0) * var(--or-stagger) / 2);
+}
+
+/* Duas keyframes idênticas: alternar o nome reinicia o pop ao substituir um caractere. */
+@keyframes or-pin-input-pop-a {
+  from {
+    transform: scale(0.86);
+  }
+}
+
+@keyframes or-pin-input-pop-b {
+  from {
+    transform: scale(0.86);
+  }
+}
+
+.or-pin-input[data-complete] .or-pin-input__field:not(:focus) {
+  border-color: var(--or-color-success);
+  transition-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+.or-pin-input[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+/* Separador visual entre grupos (ex.: 123 — 456). */
+.or-pin-input__separator {
+  width: 0.625rem;
+  height: 2px;
+  margin: 0 var(--or-space-1);
+  background: var(--or-color-border-strong);
+}
+
+@media (forced-colors: active) {
+  .or-pin-input__field:focus {
+    outline: 2px solid Highlight;
+  }
+}

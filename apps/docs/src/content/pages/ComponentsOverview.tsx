@@ -1,4 +1,4 @@
-import { Icon } from '@orange/ui'
+import { Icon, Reveal } from '@orange/ui'
 import { useId, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../i18n'
@@ -42,6 +42,14 @@ export default function ComponentsOverview() {
         en: `${componentMetas.length} accessible React components, tested with axe-core and documented in Portuguese and English.`,
       }}
       toc={false}
+      hero={{
+        stats: [
+          { value: componentMetas.length, label: { pt: 'componentes', en: 'components' } },
+          { value: counts.size, label: { pt: 'categorias', en: 'categories' } },
+          { value: 'AA', label: { pt: 'WCAG 2.2 em todos', en: 'WCAG 2.2 across the board' } },
+          { value: 'PT·EN', label: { pt: 'documentação bilíngue', en: 'bilingual docs' } },
+        ],
+      }}
     >
       <div className="ov-filters">
         <div className="ov-search">
@@ -73,7 +81,7 @@ export default function ComponentsOverview() {
       <p className="or-visually-hidden" role="status">
         {t({ pt: `${filtered.length} componentes encontrados`, en: `${filtered.length} components found` })}
       </p>
-      <ul className="ov-grid">
+      <Reveal as="ul" stagger appear className="ov-grid" key={category}>
         {filtered.map((m) => (
           <li key={m.slug}>
             <Link to={to(`/components/${m.slug}`)} className="ov-card">
@@ -81,12 +89,12 @@ export default function ComponentsOverview() {
               <span className="ov-card__name">{m.name}</span>
               <span className="ov-card__desc">{t(m.description)}</span>
               <span className="ov-card__more" aria-hidden="true">
-                {t({ pt: 'Ver documentação', en: 'View docs' })} →
+                {t({ pt: 'Ver documentação', en: 'View docs' })} <span className="or-nudge__icon">→</span>
               </span>
             </Link>
           </li>
         ))}
-      </ul>
+      </Reveal>
       {filtered.length === 0 && (
         <p className="ov-empty">{t({ pt: 'Nenhum componente encontrado.', en: 'No components found.' })}</p>
       )}

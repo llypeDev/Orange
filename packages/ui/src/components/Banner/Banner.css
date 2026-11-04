@@ -1,0 +1,235 @@
+/* Presença ----------------------------------------------------------------
+ * Entrada (live ou reaberto): desce 8px do topo + fade, --or-duration-medium.
+ * Saída: esmaece e sobe 4px (--or-duration-fast) enquanto a faixa recolhe a
+ * altura (grid 1fr → 0fr, --or-duration-medium) — a página sobe suave.
+ */
+.or-banner-presence {
+  display: grid;
+  grid-template-rows: 1fr;
+  /* a faixa é de largura total também quando está num contêiner flex */
+  width: 100%;
+}
+
+.or-banner-presence__inner {
+  min-width: 0;
+  min-height: 0;
+}
+
+.or-banner-presence[data-state='closed'] {
+  grid-template-rows: 0fr;
+  pointer-events: none;
+  transition: grid-template-rows var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-banner-presence[data-state='closed'] > .or-banner-presence__inner {
+  overflow: hidden;
+}
+
+.or-banner-presence[data-state='closed'] .or-banner {
+  opacity: 0;
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+@keyframes or-banner-enter {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-md) * -1));
+  }
+}
+
+.or-banner--enter {
+  animation: or-banner-enter var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-banner {
+  --_tone: var(--or-color-info);
+  --_tone-text: var(--or-color-info-text);
+  --_tone-bg: var(--or-color-info-subtle);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2) var(--or-space-4);
+  width: 100%;
+  padding: var(--or-space-3) var(--or-space-6) var(--or-space-3) var(--or-space-5);
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-left: var(--or-border-accent) solid var(--_tone);
+  border-radius: var(--or-radius-none);
+  background: linear-gradient(var(--_tone-bg), var(--_tone-bg)), var(--or-color-surface);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-tight);
+}
+
+.or-banner:has(> .or-banner__close) {
+  padding-right: var(--or-space-2);
+}
+
+.or-banner__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--_tone-text);
+}
+
+/* "Ao vivo": anel quadrado pulsando em volta do ícone (or-pulse, 2.4s). */
+.or-banner__icon--pulse {
+  --_pulse-color: var(--_tone);
+  padding: 0.125rem;
+  margin: -0.125rem;
+}
+
+.or-banner__icon > svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-banner__content {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--or-space-1) var(--or-space-2);
+  min-width: 0;
+  /* mantém o texto alinhado mesmo quando ação e fechar quebram de linha */
+  padding-block: var(--or-space-1);
+}
+
+.or-banner__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text);
+}
+
+.or-banner__body > :first-child {
+  margin-top: 0;
+}
+
+.or-banner__body > :last-child {
+  margin-bottom: 0;
+}
+
+.or-banner__body a,
+.or-banner__action a:not([class]) {
+  color: var(--or-color-text);
+  font-weight: var(--or-weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-banner__body a:hover,
+.or-banner__body a:focus-visible,
+.or-banner__action a:not([class]):hover,
+.or-banner__action a:not([class]):focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+.or-banner__action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2);
+  flex-shrink: 0;
+}
+
+.or-banner__close {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-banner--neutral {
+  --_tone: var(--or-color-border-control);
+  --_tone-text: var(--or-color-text-muted);
+  --_tone-bg: var(--or-color-bg-subtle);
+}
+
+.or-banner--success {
+  --_tone: var(--or-color-success);
+  --_tone-text: var(--or-color-success-text);
+  --_tone-bg: var(--or-color-success-subtle);
+}
+
+.or-banner--warning {
+  --_tone: var(--or-color-warning);
+  --_tone-text: var(--or-color-warning-text);
+  --_tone-bg: var(--or-color-warning-subtle);
+}
+
+.or-banner--danger {
+  --_tone: var(--or-color-danger);
+  --_tone-text: var(--or-color-danger-text);
+  --_tone-bg: var(--or-color-danger-subtle);
+}
+
+/* Variante accent (chamada) ------------------------------------------------ */
+
+.or-banner--accent {
+  --_tone: var(--or-color-accent);
+  --_tone-text: var(--or-color-accent-text);
+
+  align-items: center;
+  gap: var(--or-space-6);
+  padding: var(--or-space-8) var(--or-space-8) var(--or-space-8) var(--or-space-8);
+  border-color: var(--or-color-border-strong);
+  border-left-color: var(--or-color-accent);
+  background: var(--or-color-surface);
+}
+
+.or-banner--accent:has(> .or-banner__close) {
+  padding-right: var(--or-space-4);
+}
+
+.or-banner--accent .or-banner__icon > svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.or-banner--accent .or-banner__content {
+  flex-direction: column;
+  align-items: flex-start;
+  flex-basis: 24rem;
+  gap: var(--or-space-3);
+  padding-block: 0;
+}
+
+.or-banner--accent .or-banner__title {
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+  letter-spacing: -0.035em;
+  line-height: var(--or-leading-heading);
+}
+
+.or-banner--accent .or-banner__body {
+  max-width: 58ch;
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+}
+
+.or-banner--accent .or-banner__close {
+  align-self: flex-start;
+}
+
+@media (max-width: 40rem) {
+  .or-banner {
+    padding-left: var(--or-space-4);
+  }
+
+  .or-banner--accent {
+    padding: var(--or-space-6) var(--or-space-5);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-banner {
+    border-color: CanvasText;
+  }
+}

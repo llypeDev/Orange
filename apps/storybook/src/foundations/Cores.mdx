@@ -1,0 +1,132 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { primitives, themes } from '@orange/tokens'
+import { contrastRatio } from '@orange/tokens/contrast'
+import { Eyebrow, Icon, Text } from '@orange/ui'
+
+<Meta title="Fundamentos/Cores" />
+
+export const ink = (hex) => (contrastRatio('#0f0f12', hex) >= contrastRatio('#f0ebdb', hex) ? '#0f0f12' : '#f0ebdb')
+
+export const Palette = ({ name }) => (
+  <div style={{ marginBottom: 24 }}>
+    <Text as="p" font="display" weight="bold" style={{ marginBottom: 8 }}>
+      {name}
+    </Text>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(13, minmax(0, 1fr))' }}>
+      {Object.entries(primitives[name]).map(([step, hex]) => (
+        <div
+          key={step}
+          title={`--or-palette-${name}-${step}`}
+          style={{ aspectRatio: '1 / 1', background: hex, color: ink(hex), padding: 6, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', fontFamily: 'var(--or-font-mono)', fontSize: 10 }}
+        >
+          <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 12 }}>{step}</strong>
+          {hex}
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
+export const Swatch = ({ value, bg }) => (
+  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--or-font-mono)', fontSize: 12 }}>
+    <span style={{ width: 16, height: 16, border: '1px solid var(--or-color-border-strong)', background: `linear-gradient(${value}, ${value}), ${bg}` }} />
+    {value}
+  </span>
+)
+
+export const SemanticTable = () => (
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <thead>
+      <tr>
+        <th style={{ textAlign: 'left', padding: 8 }}>Token</th>
+        <th style={{ textAlign: 'left', padding: 8 }}>Escuro</th>
+        <th style={{ textAlign: 'left', padding: 8 }}>Claro</th>
+      </tr>
+    </thead>
+    <tbody>
+      {Object.keys(themes.dark).map((token) => (
+        <tr key={token} style={{ borderTop: '1px solid var(--or-color-border)' }}>
+          <td style={{ padding: 8, fontFamily: 'var(--or-font-mono)' }}>--or-color-{token}</td>
+          <td style={{ padding: 8 }}>
+            <Swatch value={themes.dark[token]} bg={themes.dark.bg} />
+          </td>
+          <td style={{ padding: 8 }}>
+            <Swatch value={themes.light[token]} bg={themes.light.bg} />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)
+
+export const Status = ({ tone, icon, title, text }) => (
+  <div style={{ display: 'flex', gap: 12, padding: 16, border: '1px solid var(--or-color-border)', borderLeft: `3px solid var(--or-color-${tone})`, background: `var(--or-color-${tone}-subtle)` }}>
+    <span style={{ color: `var(--or-color-${tone}-text)` }}>
+      <Icon name={icon} />
+    </span>
+    <div>
+      <Text weight="bold" font="display" tone={tone === 'danger' ? 'danger' : tone}>
+        {title}
+      </Text>
+      <Text size="sm">{text}</Text>
+    </div>
+  </div>
+)
+
+<div className="sb-unstyled">
+  <Eyebrow marker>Fundamentos</Eyebrow>
+</div>
+
+# Cores
+
+Carvão, creme e um único laranja. As cores do Orange existem em duas camadas: **paletas primitivas**
+(`--or-palette-*`, valores crus) e **tokens semânticos** (`--or-color-*`, que mudam com o tema).
+Componentes usam apenas os semânticos — por isso o tema claro, o escuro e um tema da sua marca funcionam
+sem tocar em nenhum componente.
+
+## Paletas primitivas
+
+Alimentam os temas e casos especiais, como gráficos. Não use diretamente em componentes.
+
+<div className="sb-unstyled">
+  <Palette name="carbon" />
+  <Palette name="paper" />
+  <Palette name="orange" />
+  <Palette name="green" />
+  <Palette name="blue" />
+  <Palette name="red" />
+  <Palette name="amber" />
+</div>
+
+## Tokens semânticos
+
+Os mesmos nomes nos dois temas; valores com transparência são compostos sobre o fundo de cada tema.
+
+<div className="sb-unstyled">
+  <SemanticTable />
+</div>
+
+## Um único acento
+
+O laranja aponta para o que importa agora: a ação principal, o item selecionado, o foco do teclado.
+
+- No máximo uma ação primária (fundo laranja) por contexto.
+- Texto em laranja só com `--or-color-accent-text`, que garante 4.5:1 nos dois temas.
+- Hierarquia vem de tamanho, peso e espaço — não de cor.
+- Precisa de uma ação forte sem laranja? Use `--or-color-neutral` (botão `secondary`).
+
+## Cores de status
+
+Verde, âmbar, vermelho e azul comunicam estado. Cada um tem a cor plena (`success`), o fundo suave
+(`success-subtle`) e o texto (`success-text`, ≥ 4.5:1). Status sempre leva ícone e texto — cor nunca é o
+único sinal (WCAG 1.4.1).
+
+<div className="sb-unstyled" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+  <Status tone="success" icon="check-circle" title="Pagamento confirmado" text="O pedido #4821 foi enviado para separação." />
+  <Status tone="warning" icon="alert-triangle" title="Estoque baixo" text="Restam 3 unidades do tênis Corrida 42." />
+  <Status tone="danger" icon="alert-circle" title="Falha na sincronização" text="Não foi possível conectar ao ERP." />
+  <Status tone="info" icon="info" title="Nova versão disponível" text="A versão 0.2 traz filtros salvos." />
+</div>
+
+A matriz de contraste completa e o gerador de temas estão na documentação: **Design guidelines → Cor** e
+**Usando → Tema**.

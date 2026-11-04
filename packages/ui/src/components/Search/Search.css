@@ -1,0 +1,120 @@
+/* ---------------------------------------------------------------------------
+ * Search — campo de busca com lupa e botão de limpar
+ * ------------------------------------------------------------------------- */
+
+.or-search {
+  width: 100%;
+  margin: 0;
+}
+
+.or-search__frame {
+  cursor: text;
+}
+
+.or-search__icon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-search__frame:focus-within .or-search__icon {
+  color: var(--or-color-accent-text);
+}
+
+.or-search__frame[data-disabled] .or-search__icon {
+  color: var(--or-color-text-disabled);
+}
+
+/* Lupa ⇄ spinner: ficam empilhados (mesma célula) e trocam com fade + escala (spring). */
+.or-search__glyph,
+.or-search__spinner {
+  grid-area: 1 / 1;
+}
+
+.or-search__glyph {
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-search__icon[data-loading] .or-search__glyph {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.or-search__spinner {
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+  opacity: 0;
+  scale: 0.6;
+  animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
+  animation-play-state: paused;
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    scale var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-search__icon[data-loading] .or-search__spinner {
+  opacity: 1;
+  scale: 1;
+  animation-play-state: running;
+}
+
+.or-search__input {
+  appearance: none;
+  -webkit-appearance: none;
+  text-overflow: ellipsis;
+}
+
+/* Remove os adornos nativos — o Orange tem o próprio botão de limpar. */
+.or-search__input::-webkit-search-cancel-button,
+.or-search__input::-webkit-search-decoration,
+.or-search__input::-webkit-search-results-button,
+.or-search__input::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.or-search__input::-ms-clear {
+  display: none;
+}
+
+.or-search__clear {
+  border-left-color: transparent;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Aparece com fade + escala (bounce) e some mais rápido. */
+.or-search__clear[data-state='open'] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-search__clear[data-state='closed'] {
+  animation: or-search-clear-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-search-clear-out {
+  to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+.or-search__clear:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-search__frame:focus-within .or-search__clear {
+  border-left-color: var(--or-color-border);
+}

@@ -1,0 +1,110 @@
+/* ---------------------------------------------------------------------------
+ * Combobox — campo de texto + listbox de sugestões
+ * (o popup e as opções ficam em ListboxPopup.css)
+ * ------------------------------------------------------------------------- */
+
+.or-combobox {
+  position: relative;
+  cursor: text;
+}
+
+.or-combobox[data-disabled] {
+  cursor: not-allowed;
+}
+
+.or-combobox__input {
+  text-overflow: ellipsis;
+}
+
+.or-combobox__clear {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: var(--or-space-1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-combobox__clear:hover {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+/* Aparece com pop (escala + opacidade) e some mais rápido. */
+.or-combobox__clear[data-state='open'] {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) backwards;
+}
+
+.or-combobox__clear[data-state='closed'] {
+  animation: or-combobox-clear-out calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes or-combobox-clear-out {
+  to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Botões internos "afundam" no clique (press). */
+.or-combobox__clear:active,
+.or-combobox__toggle:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-combobox__toggle {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-combobox__clear:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-control-frame--sm .or-combobox__clear {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.or-combobox__spinner {
+  animation:
+    or-spin 0.7s linear infinite,
+    or-fade-in var(--or-duration-fast) var(--or-ease-out) backwards;
+  flex-shrink: 0;
+  align-self: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: var(--or-space-2);
+  border: 2px solid var(--or-color-text-subtle);
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+}
+
+.or-combobox__chevron {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-combobox[data-open] .or-combobox__chevron {
+  transform: rotate(180deg);
+}
+
+.or-combobox[data-open] .or-combobox__toggle {
+  color: var(--or-color-text);
+}

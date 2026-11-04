@@ -1,0 +1,305 @@
+/* Toast (visual) ------------------------------------------------------------ */
+
+.or-toast {
+  --_tone: var(--or-color-border-control);
+  --_tone-text: var(--or-color-text-muted);
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--or-space-3);
+  width: 100%;
+  padding: var(--or-space-4) var(--or-space-5) var(--or-space-4) var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-left: var(--or-border-accent) solid var(--_tone);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-overlay);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-tight);
+}
+
+.or-toast:not(.or-toast--closable) {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.or-toast--closable {
+  padding-right: var(--or-space-2);
+}
+
+.or-toast__icon {
+  display: inline-flex;
+  color: var(--_tone-text);
+}
+
+.or-toast__icon > svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.or-toast__main:first-child {
+  grid-column: 1 / 3;
+}
+
+.or-toast__main {
+  min-width: 0;
+  /* alinha a primeira linha ao ícone de 20px */
+  padding-top: 0.0625rem;
+}
+
+.or-toast__title {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-md);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: var(--or-tracking-body);
+  color: var(--or-color-text);
+}
+
+.or-toast__title + .or-toast__description {
+  margin-top: var(--or-space-1);
+}
+
+.or-toast__description > :first-child {
+  margin-top: 0;
+}
+
+.or-toast__description > :last-child {
+  margin-bottom: 0;
+}
+
+.or-toast__action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-2);
+  margin-top: var(--or-space-3);
+}
+
+.or-toast__close {
+  margin-top: -0.375rem;
+}
+
+.or-toast--info {
+  --_tone: var(--or-color-info);
+  --_tone-text: var(--or-color-info-text);
+}
+
+.or-toast--success {
+  --_tone: var(--or-color-success);
+  --_tone-text: var(--or-color-success-text);
+}
+
+.or-toast--warning {
+  --_tone: var(--or-color-warning);
+  --_tone-text: var(--or-color-warning-text);
+}
+
+.or-toast--danger {
+  --_tone: var(--or-color-danger);
+  --_tone-text: var(--or-color-danger-text);
+}
+
+/* Região (pilha) ------------------------------------------------------------
+ * Movimento:
+ * - entrada: o toast desliza a partir da borda da `position` (direita → vem
+ *   da direita; bottom-center → sobe) com fade, em --or-duration-medium;
+ * - a linha do item cresce (grid 0fr → 1fr), então os outros toasts se
+ *   reacomodam suavemente em vez de pular;
+ * - saída (mais curta): o toast volta para a borda e esmaece em
+ *   --or-duration-fast enquanto a linha recolhe (1fr → 0fr). O usePresence
+ *   espera o fim dessa animação para desmontar.
+ * ------------------------------------------------------------------------- */
+
+.or-toast-region {
+  --_gap: var(--or-space-6);
+  --_stack-gap: var(--or-space-3);
+  --_enter: translateX(calc(100% + var(--_gap)));
+  --_exit: translateX(calc(100% + var(--_gap)));
+
+  position: fixed;
+  z-index: var(--or-z-toast);
+  width: min(26rem, calc(100vw - var(--_gap) * 2));
+  /* a região não bloqueia cliques na página — só os toasts recebem ponteiro */
+  pointer-events: none;
+}
+
+.or-toast-region--top-left,
+.or-toast-region--top-center,
+.or-toast-region--top-right {
+  top: var(--_gap);
+}
+
+.or-toast-region--bottom-left,
+.or-toast-region--bottom-center,
+.or-toast-region--bottom-right {
+  bottom: var(--_gap);
+}
+
+.or-toast-region--top-left,
+.or-toast-region--bottom-left {
+  --_enter: translateX(calc(-100% - var(--_gap)));
+  --_exit: translateX(calc(-100% - var(--_gap)));
+
+  left: var(--_gap);
+}
+
+.or-toast-region--top-right,
+.or-toast-region--bottom-right {
+  right: var(--_gap);
+}
+
+.or-toast-region--top-center,
+.or-toast-region--bottom-center {
+  left: 50%;
+  translate: -50% 0;
+}
+
+/* no topo, desce da borda; embaixo, sobe da borda */
+.or-toast-region--top-center {
+  --_enter: translateY(calc(var(--or-distance-lg) * -1));
+  --_exit: translateY(calc(var(--or-distance-md) * -1));
+}
+
+.or-toast-region--bottom-center {
+  --_enter: translateY(var(--or-distance-lg));
+  --_exit: translateY(var(--or-distance-md));
+}
+
+.or-toast-region__list {
+  display: flex;
+  flex-direction: column;
+  /* o espaçamento fica dentro de cada item (meia distância em cima e embaixo)
+     para recolher junto com ele — sem "pulo" no fim da saída */
+  margin: calc(var(--_stack-gap) / -2) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-toast-region__item {
+  display: grid;
+  grid-template-rows: 1fr;
+  pointer-events: auto;
+  animation: or-toast-grow var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-toast-region__collapse {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* embaixo, o toast se ancora na borda inferior da linha enquanto ela cresce */
+.or-toast-region[data-position^='bottom'] .or-toast-region__collapse {
+  justify-content: flex-end;
+}
+
+.or-toast-region__toast {
+  position: relative;
+  margin: calc(var(--_stack-gap) / 2) 0;
+  animation: or-toast-enter var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-toast-region__item[data-state='closed'] {
+  pointer-events: none;
+  animation: or-toast-shrink var(--or-duration-medium) var(--or-ease-in-out) both;
+}
+
+.or-toast-region__item[data-state='closed'] .or-toast-region__toast {
+  animation: or-toast-exit var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+@keyframes or-toast-grow {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes or-toast-shrink {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+
+@keyframes or-toast-enter {
+  from {
+    opacity: 0;
+    transform: var(--_enter);
+  }
+}
+
+@keyframes or-toast-exit {
+  to {
+    opacity: 0;
+    transform: var(--_exit);
+  }
+}
+
+/* Barra de tempo restante (showProgress): or-fill-x ao contrário, pausa com a pilha. */
+.or-toast-region__timer {
+  --_timer-color: var(--or-color-border-control);
+
+  position: absolute;
+  right: var(--or-border-thin);
+  bottom: var(--or-border-thin);
+  left: var(--or-border-accent);
+  height: 2px;
+  background: var(--_timer-color);
+  transform-origin: left center;
+  animation: or-fill-x var(--_timer-duration) linear reverse both;
+}
+
+.or-toast-region[data-paused] .or-toast-region__timer {
+  animation-play-state: paused;
+}
+
+.or-toast-region__toast--info .or-toast-region__timer {
+  --_timer-color: var(--or-color-info);
+}
+
+.or-toast-region__toast--success .or-toast-region__timer {
+  --_timer-color: var(--or-color-success);
+}
+
+.or-toast-region__toast--warning .or-toast-region__timer {
+  --_timer-color: var(--or-color-warning);
+}
+
+.or-toast-region__toast--danger .or-toast-region__timer {
+  --_timer-color: var(--or-color-danger);
+}
+
+/* Movimento reduzido: sem deslocamento (só aparece/some) e sem barra animada. */
+@media (prefers-reduced-motion: reduce) {
+  .or-toast-region {
+    --_enter: none;
+    --_exit: none;
+  }
+
+  .or-toast-region__timer {
+    display: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .or-toast-region {
+    --_gap: var(--or-space-3);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-toast {
+    border-color: CanvasText;
+  }
+
+  .or-toast-region__timer {
+    background: CanvasText;
+  }
+}

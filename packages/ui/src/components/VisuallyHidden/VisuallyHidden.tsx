@@ -1,7 +1,9 @@
-import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
+import { forwardRef, type AnchorHTMLAttributes, type ElementType, type HTMLAttributes } from 'react'
 import { cx } from '../../utils'
 
-export interface VisuallyHiddenProps extends HTMLAttributes<HTMLElement> {
+export interface VisuallyHiddenProps
+  extends HTMLAttributes<HTMLElement>,
+    Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel'> {
   /** Elemento renderizado. Padrão: `span`. */
   as?: ElementType
   /** Torna-se visível quando recebe foco (útil para links de atalho). */

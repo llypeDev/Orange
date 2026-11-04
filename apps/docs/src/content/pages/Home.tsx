@@ -1,10 +1,23 @@
-import { Button, Icon, useClipboard } from '@orange/ui'
-import { useEffect, useId, useState, type ReactNode } from 'react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  Icon,
+  Reveal,
+  useClipboard,
+  useCountUp,
+  useInView,
+  useReducedMotion,
+} from '@orange/ui'
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLang, type Localized } from '../../i18n'
 import { CodeBlock } from '../../kit'
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import '../../styles/home.css'
+import { Showcase } from './home/Showcase'
 
 function Marquee({ items, tone = 'paper' }: { items: Localized<string>[]; tone?: 'paper' | 'ink' }) {
   const { t } = useLang()
@@ -93,21 +106,54 @@ const layers: { n: string; title: Localized<string>; text: Localized<string>; pa
   },
 ]
 
-function Layers() {
+const LAYER_MS = 3600
+
+/**
+ * Camadas 01–05 que avançam sozinhas, com barra de progresso temporizada
+ * (como os passos do zop.dev). Pausa no hover/foco, fora da tela, com
+ * movimento reduzido ou pelo botão "Pausar animações".
+ */
+function Layers({ paused: pausedByUser }: { paused: boolean }) {
   const { t, to } = useLang()
   const [active, setActive] = useState(0)
+  const [hovering, setHovering] = useState(false)
+  const reduced = useReducedMotion()
+  const [viewRef, inView] = useInView<HTMLOListElement>({ once: false, threshold: 0.35, rootMargin: '0px' })
+  const playing = inView && !hovering && !reduced && !pausedByUser
+
+  useEffect(() => {
+    if (!playing) return
+    const id = window.setTimeout(() => setActive((a) => (a + 1) % layers.length), LAYER_MS)
+    return () => window.clearTimeout(id)
+  }, [playing, active])
+
   return (
-    <ol className="home-layers">
+    <ol
+      ref={viewRef}
+      className="home-layers"
+      data-playing={playing || undefined}
+      style={{ '--home-layer-ms': `${LAYER_MS}ms` } as CSSProperties}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      onFocus={() => setHovering(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setHovering(false)
+      }}
+    >
       {layers.map((layer, i) => {
+        const state = i === active ? 'on' : i < active ? 'done' : 'idle'
         const content = (
           <>
+            <span className="home-layers__track" aria-hidden="true">
+              <i key={state === 'on' ? `on-${active}` : state} />
+            </span>
             <span className="home-layers__n">{layer.n}</span>
             <span className="home-layers__title">{t(layer.title)}</span>
             <span className="home-layers__text">{t(layer.text)}</span>
           </>
         )
         return (
-          <li key={layer.n} data-active={active === i || undefined} onMouseEnter={() => setActive(i)}>
+          <li key={layer.n} data-state={state} data-active={i === active || undefined} onMouseEnter={() => setActive(i)}>
             {layer.path === 'storybook' ? (
               <a href={STORYBOOK_URL} onFocus={() => setActive(i)} target="_blank" rel="noreferrer">
                 {content}
@@ -194,9 +240,23 @@ function CodeTabs() {
     document.getElementById(`${baseId}-tab-${codeTabs[next].id}`)?.focus()
   }
 
+  const listRef = useRef<HTMLDivElement>(null)
+  const [indicator, setIndicator] = useState<{ x: number; w: number } | null>(null)
+  useLayoutEffect(() => {
+    const tab = listRef.current?.querySelector<HTMLElement>('[aria-selected="true"]')
+    if (tab) setIndicator({ x: tab.offsetLeft, w: tab.offsetWidth })
+  }, [active])
+
   return (
     <div className="home-tabs">
-      <div role="tablist" aria-label="Exemplo de código" className="home-tabs__list">
+      <div role="tablist" aria-label="Exemplo de código" className="home-tabs__list" ref={listRef}>
+        {indicator && (
+          <span
+            className="home-tabs__indicator"
+            aria-hidden="true"
+            style={{ transform: `translateX(${indicator.x}px)`, width: indicator.w }}
+          />
+        )}
         {codeTabs.map((tab) => (
           <button
             key={tab.id}
@@ -214,7 +274,9 @@ function CodeTabs() {
         ))}
       </div>
       <div role="tabpanel" id={`${baseId}-panel`} aria-labelledby={`${baseId}-tab-${active}`} className="home-tabs__panel">
-        <CodeBlock code={current.code} language={current.language} title={current.language} />
+        <div key={current.id} className="home-tabs__fade">
+          <CodeBlock code={current.code} language={current.language} title={current.language} />
+        </div>
       </div>
     </div>
   )
@@ -319,51 +381,50 @@ const faqs: { q: Localized<string>; a: Localized<ReactNode> }[] = [
 function Faq() {
   const { t } = useLang()
   return (
-    <div className="home-faq">
+    <Accordion type="single" collapsible headingLevel={3} className="home-faq">
       {faqs.map((item, i) => (
-        <details key={i} className="home-faq__item">
-          <summary>
-            <span>{t(item.q)}</span>
-            <span className="home-faq__icon" aria-hidden="true" />
-          </summary>
-          <div className="home-faq__answer">{t(item.a)}</div>
-        </details>
+        <AccordionItem key={i} value={`faq-${i}`}>
+          <AccordionTrigger>{t(item.q)}</AccordionTrigger>
+          <AccordionContent>{t(item.a)}</AccordionContent>
+        </AccordionItem>
       ))}
-    </div>
+    </Accordion>
   )
 }
 
-function useCountUp(target: number, duration = 900) {
-  const [value, setValue] = useState(0)
-  useEffect(() => {
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-      setValue(target)
-      return
-    }
-    let raf = 0
-    const start = performance.now()
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration)
-      setValue(Math.round(target * (1 - Math.pow(1 - p, 3))))
-      if (p < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [target, duration])
-  return value
+/** Número que conta ao entrar na tela; leitores de tela recebem só o valor final. */
+function CountValue({ value }: { value: number }) {
+  const [ref, inView] = useInView<HTMLSpanElement>()
+  const n = useCountUp(inView ? value : 0, { duration: 1100 })
+  return (
+    <span ref={ref}>
+      <span aria-hidden="true">{Math.round(n)}</span>
+      <span className="or-visually-hidden">{value}</span>
+    </span>
+  )
 }
 
 export default function Home() {
   const { t, to } = useLang()
   const navigate = useNavigate()
-  const count = useCountUp(componentMetas.length)
+  const [motionPaused, setMotionPaused] = useState(false)
 
   useEffect(() => {
     document.title = 'Orange Design System'
   }, [])
 
   return (
-    <div className="home">
+    <div className="home" data-paused={motionPaused || undefined}>
+      {/* WCAG 2.2.2: conteúdo que se move sozinho por mais de 5s precisa de controle de pausa. */}
+      <button
+        type="button"
+        className="home-motion-toggle"
+        aria-pressed={motionPaused}
+        onClick={() => setMotionPaused((v) => !v)}
+      >
+        <Icon name={motionPaused ? 'play' : 'pause'} size="xs" />
+        {motionPaused ? t({ pt: 'Retomar animações', en: 'Resume animations' }) : t({ pt: 'Pausar animações', en: 'Pause animations' })}
+      </button>
       <Marquee
         items={[
           { pt: 'WCAG 2.2 AA em todos os componentes', en: 'WCAG 2.2 AA in every component' },
@@ -407,10 +468,12 @@ export default function Home() {
       </section>
 
       <section className="home-section" aria-label={t({ pt: 'Números', en: 'Numbers' })}>
-        <dl className="home-stats">
+        <Reveal as="dl" stagger className="home-stats">
           <div>
             <dt>{t({ pt: 'Componentes acessíveis e documentados', en: 'Accessible, documented components' })}</dt>
-            <dd>{count}</dd>
+            <dd>
+              <CountValue value={componentMetas.length} />
+            </dd>
           </div>
           <div>
             <dt>{t({ pt: 'Nível de conformidade WCAG 2.2', en: 'WCAG 2.2 conformance level' })}</dt>
@@ -418,24 +481,43 @@ export default function Home() {
           </div>
           <div>
             <dt>{t({ pt: 'Temas prontos, claro e escuro', en: 'Ready-made themes, light and dark' })}</dt>
-            <dd>2</dd>
+            <dd>
+              <CountValue value={2} />
+            </dd>
           </div>
           <div>
             <dt>{t({ pt: 'Idiomas na documentação e nos componentes', en: 'Languages in docs and components' })}</dt>
             <dd>PT·EN</dd>
           </div>
-        </dl>
+        </Reveal>
       </section>
 
       <section className="home-section" aria-labelledby="home-layers-title">
         <h2 id="home-layers-title" className="or-eyebrow home-eyebrow">
           {t({ pt: 'Um sistema, não cinco ferramentas separadas.', en: 'One system, not five separate tools.' })}
         </h2>
-        <Layers />
+        <Reveal>
+          <Layers paused={motionPaused} />
+        </Reveal>
+      </section>
+
+      <section className="home-section" aria-labelledby="home-showcase-title">
+        <Reveal className="home-section__head">
+          <h2 id="home-showcase-title" className="home-h2">
+            {t({ pt: 'Componentes de verdade, aqui mesmo.', en: 'Real components, right here.' })}
+          </h2>
+          <p className="home-section__aside">
+            {t({
+              pt: 'Tudo abaixo é a biblioteca rodando ao vivo. Use o teclado: Tab, setas e Espaço funcionam como esperado.',
+              en: 'Everything below is the library running live. Try the keyboard: Tab, arrows and Space work as expected.',
+            })}
+          </p>
+        </Reveal>
+        <Showcase />
       </section>
 
       <section className="home-section">
-        <div className="home-cta-band">
+        <Reveal className="home-cta-band">
           <div>
             <h2 className="home-cta-band__title">
               {t({ pt: 'Do zero ao primeiro componente. Em 5 minutos.', en: 'From zero to your first component. In 5 minutes.' })}
@@ -450,11 +532,11 @@ export default function Home() {
           <Button endIcon={<Icon name="arrow-right" />} onClick={() => navigate(to('/getting-started'))}>
             {t({ pt: 'Ler o guia', en: 'Read the guide' })}
           </Button>
-        </div>
+        </Reveal>
       </section>
 
       <section className="home-section" aria-labelledby="home-code-title">
-        <div className="home-section__head">
+        <Reveal className="home-section__head">
           <h2 id="home-code-title" className="home-h2">
             {t({ pt: 'Do token ao componente.', en: 'From token to component.' })}
           </h2>
@@ -464,8 +546,8 @@ export default function Home() {
               en: 'A predictable API across every component: variants, sizes and states with the same names.',
             })}
           </p>
-        </div>
-        <div className="home-split">
+        </Reveal>
+        <Reveal className="home-split">
           <CodeTabs />
           <div className="home-panel">
             <p className="or-eyebrow">{t({ pt: 'Depois, é só compor', en: 'Then just compose' })}</p>
@@ -482,8 +564,8 @@ export default function Home() {
               })}
             </p>
           </div>
-        </div>
-        <div className="home-rules">
+        </Reveal>
+        <Reveal stagger className="home-rules">
           <div>
             <span className="home-rules__label home-rules__label--yes">
               <span className="home-rules__sq" aria-hidden="true" />
@@ -508,11 +590,11 @@ export default function Home() {
               })}
             </span>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="home-section" aria-labelledby="home-pillars-title">
-        <div className="home-section__head">
+        <Reveal className="home-section__head">
           <h2 id="home-pillars-title" className="home-h2">
             {t({ pt: 'Feito para durar.', en: 'Built to last.' })}
           </h2>
@@ -522,8 +604,8 @@ export default function Home() {
               en: 'Three commitments behind every decision: accessible, open and adaptable to your brand.',
             })}
           </p>
-        </div>
-        <div className="home-pillars">
+        </Reveal>
+        <Reveal stagger className="home-pillars">
           {pillars.map((p) => (
             <article key={p.color} className={`home-pillar home-pillar--${p.color}`}>
               <span className="home-pillar__icon" aria-hidden="true">
@@ -537,21 +619,26 @@ export default function Home() {
                   <li key={i}>{t(b)}</li>
                 ))}
               </ul>
-              <Link to={to(p.path)} className="home-pillar__link">
-                {t({ pt: 'Explorar', en: 'Explore' })} <span className="or-visually-hidden">{t(p.title)}</span> →
+              <Link to={to(p.path)} className="home-pillar__link or-nudge">
+                {t({ pt: 'Explorar', en: 'Explore' })} <span className="or-visually-hidden">{t(p.title)}</span>{' '}
+                <span className="or-nudge__icon" aria-hidden="true">
+                  →
+                </span>
               </Link>
             </article>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section className="home-section" aria-labelledby="home-faq-title">
-        <div className="home-section__head">
+        <Reveal className="home-section__head">
           <h2 id="home-faq-title" className="home-h2">
             {t({ pt: 'Perguntas frequentes.', en: 'Frequently asked questions.' })}
           </h2>
-        </div>
-        <Faq />
+        </Reveal>
+        <Reveal>
+          <Faq />
+        </Reveal>
       </section>
 
       <section className="home-section home-final" aria-labelledby="home-final-title">
@@ -583,7 +670,7 @@ export default function Home() {
             <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
           </a>
         </div>
-        <dl className="home-final__facts">
+        <Reveal as="dl" stagger className="home-final__facts">
           <div>
             <dt>{t({ pt: 'para instalar e configurar', en: 'to install and configure' })}</dt>
             <dd>5 min</dd>
@@ -596,7 +683,7 @@ export default function Home() {
             <dt>{t({ pt: 'licença, para sempre', en: 'license, forever' })}</dt>
             <dd>MIT</dd>
           </div>
-        </dl>
+        </Reveal>
       </section>
 
       <Marquee

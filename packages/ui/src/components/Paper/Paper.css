@@ -1,0 +1,138 @@
+.or-paper {
+  --_pad: var(--or-space-6);
+  --_border-color: var(--or-color-border);
+
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--_pad);
+  border: var(--or-border-thin) solid var(--_border-color);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text);
+}
+
+/* Espaçamento -------------------------------------------------------------- */
+
+.or-paper--padding-0 { --_pad: 0; }
+.or-paper--padding-1 { --_pad: var(--or-space-1); }
+.or-paper--padding-2 { --_pad: var(--or-space-2); }
+.or-paper--padding-3 { --_pad: var(--or-space-3); }
+.or-paper--padding-4 { --_pad: var(--or-space-4); }
+.or-paper--padding-5 { --_pad: var(--or-space-5); }
+.or-paper--padding-6 { --_pad: var(--or-space-6); }
+.or-paper--padding-8 { --_pad: var(--or-space-8); }
+.or-paper--padding-10 { --_pad: var(--or-space-10); }
+.or-paper--padding-12 { --_pad: var(--or-space-12); }
+
+/* Bordas ------------------------------------------------------------------- */
+
+.or-paper--border-none {
+  border-color: transparent;
+}
+
+.or-paper--border-strong {
+  --_border-color: var(--or-color-border-strong);
+}
+
+.or-paper--border-accent-top {
+  border-top: var(--or-border-accent) solid var(--or-color-accent);
+}
+
+.or-paper--border-accent-left {
+  border-left: var(--or-border-accent) solid var(--or-color-accent);
+}
+
+/* Tons --------------------------------------------------------------------- */
+
+.or-paper--tone-subtle {
+  background: var(--or-color-bg-subtle);
+}
+
+/* Antes de o tema invertido ser aplicado (SSR), usa os tokens "inverse". */
+.or-paper--tone-inverse {
+  background: var(--or-color-surface-inverse);
+  color: var(--or-color-text-inverse);
+}
+
+/* Com `data-theme` invertido no próprio elemento, os tokens já são do tema oposto. */
+.or-paper--tone-inverse[data-theme] {
+  background: var(--or-color-bg);
+  color: var(--or-color-text);
+}
+
+/* Elevação ----------------------------------------------------------------- */
+
+.or-paper--raised {
+  box-shadow:
+    0 1px 0 0 var(--or-color-border-strong),
+    0 18px 40px -28px color-mix(in srgb, var(--or-palette-carbon-0) 70%, transparent);
+}
+
+.or-paper--raised.or-paper--tone-default {
+  background: var(--or-color-surface-raised);
+}
+
+.or-paper--overlay {
+  box-shadow: var(--or-shadow-overlay);
+}
+
+.or-paper--overlay.or-paper--tone-default {
+  background: var(--or-color-surface-raised);
+}
+
+/* Interativa ---------------------------------------------------------------
+ * Elevação no hover/foco (or-lift): sobe 4px com sombra deslocada laranja;
+ * pressionar afunda. Hover e foco visível têm a mesma resposta. */
+
+.or-paper {
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-paper--interactive {
+  --_lift-color: var(--or-color-accent);
+  cursor: pointer;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+:is(a, button).or-paper {
+  display: block;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+}
+
+button.or-paper {
+  width: 100%;
+}
+
+.or-paper--interactive:hover,
+.or-paper--interactive:focus-visible,
+.or-paper--interactive:has(:focus-visible) {
+  transform: translateY(var(--or-distance-lift));
+  box-shadow: 0 8px 0 -4px var(--_lift-color);
+  border-color: var(--or-color-border-strong);
+}
+
+.or-paper--interactive:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow: 0 2px 0 -1px var(--_lift-color);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-paper--interactive:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .or-paper {
+    border-color: CanvasText;
+  }
+}

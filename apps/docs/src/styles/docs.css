@@ -493,12 +493,15 @@ a {
 .doc-import {
   display: inline-flex;
   align-items: stretch;
+  max-width: 100%;
   border: 1px solid var(--or-color-border);
   background: var(--or-color-code-bg);
 }
 
 .doc-import code {
   display: inline-block;
+  min-width: 0;
+  overflow-x: auto;
   line-height: 2.25rem;
   padding: 0 var(--or-space-3);
   font-family: var(--or-font-mono);
@@ -1190,25 +1193,43 @@ a {
 }
 
 .doc-footer__top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--or-space-8);
-  padding-bottom: var(--or-space-8);
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 3.2fr);
+  gap: var(--or-space-10);
+  padding-bottom: var(--or-space-10);
   border-bottom: 1px solid var(--or-color-border);
 }
 
 .doc-footer__tagline {
-  max-width: 36ch;
+  max-width: 30ch;
   margin: var(--or-space-3) 0 0;
   color: var(--or-color-text-subtle);
   font-size: var(--or-text-sm);
 }
 
+/* Mapa do site em colunas, como o rodapé do zop.dev: rótulo em caixa alta
+   discreto e a lista de links logo abaixo. */
+.doc-footer__sitemap {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--or-space-8) var(--or-space-6);
+}
+
+.doc-footer__heading {
+  margin: 0 0 var(--or-space-4);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
 .doc-footer__links {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--or-space-2) var(--or-space-6);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--or-space-3);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1222,8 +1243,18 @@ a {
 
 .doc-footer__links a:hover {
   color: var(--or-color-text);
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+}
+
+/* Externos: o ↗ acompanha a última palavra quando o rótulo quebra linha. */
+.doc-footer__link.doc-footer__link--external {
+  display: inline-block;
+}
+
+.doc-footer__ext {
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: -0.15em;
+  color: var(--or-color-text-subtle);
 }
 
 .doc-footer__bottom {
@@ -1246,6 +1277,13 @@ a {
   }
   .doc-toc {
     display: none;
+  }
+  .doc-footer__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--or-space-8);
+  }
+  .doc-footer__sitemap {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1288,7 +1326,12 @@ a {
     inset: var(--or-layout-header-height) 0 0 0;
     z-index: calc(var(--or-z-overlay) - 1);
     background: var(--or-color-overlay);
-    animation: or-fade-in var(--or-duration-fast) var(--or-ease-out);
+  }
+  .doc-backdrop[data-state='open'] {
+    animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+  }
+  .doc-backdrop[data-state='closed'] {
+    animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
   }
   .doc-page {
     padding: var(--or-space-8) var(--or-space-5) var(--or-space-12);
@@ -1301,6 +1344,9 @@ a {
 @media (max-width: 640px) {
   .doc-logo__tag {
     display: none;
+  }
+  .doc-footer__sitemap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .doc-dodont,
   .doc-pager {
@@ -1478,4 +1524,492 @@ a {
   border: 1px dashed var(--or-color-border-strong);
   text-align: center;
   color: var(--or-color-text-subtle);
+}
+
+/* ===========================================================================
+ * Motion do site (linguagem do zop.dev — ver /design-guidelines/motion)
+ * ========================================================================= */
+
+/* Entrada de página: só o conteúdo troca e entra com fade + 8px. */
+.doc-route {
+  animation: or-page-enter var(--or-duration-slow) var(--or-ease-out) both;
+}
+
+/* Troca de tema com cross-fade (View Transitions API, quando disponível). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--or-duration-slow);
+  animation-timing-function: var(--or-ease-in-out);
+}
+
+/* Cabeçalho que se esconde ao rolar para baixo e volta ao rolar para cima. */
+.doc-header {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-in-out),
+    background-color var(--or-duration-slow) var(--or-ease-in-out);
+}
+
+.doc-header[data-hidden] {
+  transform: translateY(-110%);
+}
+
+.doc-sidebar-wrap {
+  transition:
+    top var(--or-duration-medium) var(--or-ease-in-out),
+    height var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+@media (min-width: 1024px) {
+  .doc-shell:has(.doc-header[data-hidden]) .doc-sidebar-wrap {
+    top: 0;
+    height: 100vh;
+  }
+}
+
+/* Links do cabeçalho: sublinhado que cresce da esquerda; ↗ desliza na diagonal. */
+.doc-header__link {
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.doc-header__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--or-color-accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--or-duration-slow) var(--or-ease-out);
+}
+
+.doc-header__link:hover::after,
+.doc-header__link:focus-visible::after,
+.doc-header__link.active::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.doc-header__link.active {
+  color: var(--or-color-text);
+}
+
+.doc-header__ext {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-header__link:hover .doc-header__ext {
+  transform: translate(2px, -2px);
+}
+
+/* Botões de ícone, idioma e chips "afundam" no clique. */
+.doc-icon-button,
+.doc-lang__item,
+.doc-chip-link,
+.doc-code__copy,
+.doc-import__copy,
+.doc-example__tool,
+.doc-example__toggle,
+.ov-cats button,
+.home-install__copy {
+  transition-property: transform, background-color, border-color, color, box-shadow;
+  transition-duration: var(--or-duration-fast);
+  transition-timing-function: var(--or-ease-out);
+}
+
+.doc-icon-button:active,
+.doc-lang__item:active,
+.doc-chip-link:active,
+.doc-code__copy:active,
+.doc-import__copy:active,
+.doc-example__tool:active,
+.doc-example__toggle:active,
+.ov-cats button:active,
+.home-install__copy:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* Ícone do tema gira ao trocar. */
+.doc-theme-toggle__icon {
+  animation: doc-icon-swap var(--or-duration-slow) var(--or-ease-bounce) both;
+}
+
+@keyframes doc-icon-swap {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+}
+
+/* Marca: as peças "caem" no lugar (piece-drop do zop.dev). */
+.doc-logo__mark--animated .doc-logo__piece {
+  transform-box: fill-box;
+  animation: or-piece-drop var(--or-duration-slower) var(--or-ease-out) both;
+}
+
+.doc-logo__mark--animated .doc-logo__piece--2 {
+  animation-delay: 90ms;
+}
+
+.doc-logo__mark--animated .doc-logo__piece--3 {
+  animation-delay: 180ms;
+}
+
+/* Chips com ↗: desliza na diagonal. */
+.doc-chip-link .or-icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-chip-link:hover .or-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Copiar: confirmação em verde com um pop. */
+.doc-code__copy[data-copied] {
+  border-color: var(--or-palette-green-500);
+  color: var(--or-palette-green-300);
+  animation: doc-pop var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+@keyframes doc-pop {
+  40% {
+    transform: scale(1.06);
+  }
+}
+
+/* Menu lateral */
+.doc-nav__collapse {
+  transition:
+    grid-template-rows var(--or-duration-slow) var(--or-ease-out),
+    opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-nav__item.active::before,
+.doc-nav__group[data-active] > .doc-nav__toggle::before {
+  animation: doc-bar-in var(--or-duration-medium) var(--or-ease-spring) both;
+  transform-origin: top;
+}
+
+@keyframes doc-bar-in {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.doc-nav__sublink {
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.doc-nav__sublink:hover {
+  transform: translateX(2px);
+}
+
+.doc-nav__sublink.active::before {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Índice "Nesta página": marcador ativo com transição. */
+.doc-toc a {
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-medium) var(--or-ease-out),
+    padding-left var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-toc a[aria-current] {
+  padding-left: calc(var(--or-space-4) + 4px);
+}
+
+/* Links no texto: espessura do sublinhado cresce. */
+.doc-prose a,
+.doc-section p a,
+.doc-bullets a,
+.doc-table a,
+.doc-callout a {
+  transition:
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Exemplo: troca de tema da prévia suave; código recolhe com altura. */
+.doc-example__preview {
+  transition:
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    color var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-example__code {
+  transition:
+    grid-template-rows var(--or-duration-slow) var(--or-ease-out),
+    opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-example__toggle span {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.doc-example__toggle[aria-expanded='true'] span {
+  transform: rotate(180deg);
+}
+
+/* Paginação entre componentes: cartão sobe 4px e a seta desliza. */
+.doc-pager__link {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out);
+}
+
+.doc-pager__link:hover,
+.doc-pager__link:focus-visible {
+  transform: translateY(var(--or-distance-lift));
+}
+
+/* Visão geral: seta do cartão empurra, clique afunda. */
+.ov-card .or-nudge__icon {
+  display: inline-block;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.ov-card:hover .or-nudge__icon,
+.ov-card:focus-visible .or-nudge__icon {
+  transform: translateX(4px);
+}
+
+.ov-card:active {
+  transform: translateY(1px);
+}
+
+/* Rodapé: link desliza 2px e a seta laranja aparece (como no zop.dev). */
+.doc-footer__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.doc-footer__link::after {
+  content: '→';
+  position: absolute;
+  left: 100%;
+  margin-left: 6px;
+  color: var(--or-color-accent-text);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.doc-footer__links a.doc-footer__link:hover {
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+.doc-footer__link--external::after {
+  content: none;
+}
+
+.doc-footer__link:hover::after,
+.doc-footer__link:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+.doc-footer__heart {
+  animation: doc-heart 1.8s var(--or-ease-in-out) infinite;
+}
+
+@keyframes doc-heart {
+  0%,
+  40%,
+  100% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.25);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-footer__heart,
+  .doc-route {
+    animation: none;
+  }
+}
+
+/* Recolhido de verdade: o padding vai para os itens (dentro do trilho 0fr). */
+.doc-nav__collapse > .doc-nav__sublist {
+  padding: 0;
+}
+
+.doc-nav__collapse > .doc-nav__sublist > li:first-child {
+  margin-top: 0.25rem;
+}
+
+.doc-nav__collapse > .doc-nav__sublist > li:last-child {
+  margin-bottom: 0.75rem;
+}
+
+/* Espaço para o botão "voltar ao topo" não cobrir o rodapé. */
+.doc-footer {
+  padding-bottom: calc(var(--or-space-6) + 4.5rem);
+}
+
+/* ===========================================================================
+ * Hero de página (padrão das páginas de topo do zop.dev: /about, /changelog,
+ * /integrations, /resources/blogs) — título display sobre linhas de grade.
+ * ========================================================================= */
+
+.doc-page__header--hero {
+  position: relative;
+  isolation: isolate;
+  margin: calc(var(--or-space-12) * -1) calc(var(--or-space-14) * -1) var(--or-space-6);
+  padding: var(--or-space-16) var(--or-space-14) var(--or-space-12);
+}
+
+.doc-hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(90deg, var(--or-color-border-subtle) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  animation: or-fade-in var(--or-duration-slower) var(--or-ease-out) both;
+}
+
+.doc-page__header--hero .doc-h1 {
+  max-width: 16ch;
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.doc-page__header--hero .doc-lead {
+  max-width: 58ch;
+  margin-top: var(--or-space-6);
+  font-size: var(--or-text-lg);
+}
+
+.doc-page__header--center {
+  text-align: center;
+}
+
+.doc-page__header--center .doc-page__eyebrow,
+.doc-page__header--center .doc-h1,
+.doc-page__header--center .doc-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.doc-page__header--center .doc-hero__actions {
+  justify-content: center;
+}
+
+.doc-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-3);
+  margin-top: var(--or-space-8);
+}
+
+/* Grade de números do hero (como o /integrations do zop.dev). */
+.doc-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: var(--or-space-10) 0 0;
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
+}
+
+.doc-hero__stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: var(--or-space-2);
+  padding: var(--or-space-6) var(--or-space-5);
+}
+
+.doc-hero__stats > div + div {
+  border-left: 1px solid var(--or-color-border-strong);
+}
+
+.doc-hero__stats dd {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: var(--or-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--or-color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.doc-hero__stats dt {
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+/* Entrada em sequência, como o hero da home. */
+.doc-page__header--hero > :not(.doc-hero__grid) {
+  animation: or-reveal-up var(--or-duration-reveal) var(--or-ease-out) both;
+}
+.doc-page__header--hero > :nth-child(3) { animation-delay: 70ms; }
+.doc-page__header--hero > :nth-child(4) { animation-delay: 140ms; }
+.doc-page__header--hero > :nth-child(5) { animation-delay: 210ms; }
+.doc-page__header--hero > :nth-child(6) { animation-delay: 280ms; }
+
+/* Filtros em chips (como os filtros do blog do zop.dev): caixa alta, ativo em creme. */
+.ov-cats button {
+  height: 2.25rem;
+  padding: 0 var(--or-space-4);
+  border-color: var(--or-color-border-strong);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ov-cats button[aria-pressed='true'] {
+  border-color: var(--or-color-neutral);
+  background: var(--or-color-neutral);
+  color: var(--or-color-text-on-neutral);
+}
+
+.ov-cats button[aria-pressed='true'] span {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-page__header--hero > *,
+  .doc-hero__grid {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .doc-page__header--hero {
+    margin: calc(var(--or-space-8) * -1) calc(var(--or-space-5) * -1) var(--or-space-6);
+    padding: var(--or-space-12) var(--or-space-5) var(--or-space-10);
+  }
+  .doc-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .doc-hero__stats > div:nth-child(3) {
+    border-left: 0;
+  }
+  .doc-hero__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--or-color-border-strong);
+  }
 }

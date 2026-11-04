@@ -1,0 +1,57 @@
+/* Casca compartilhada dos diálogos modais (Modal, Drawer, ConfirmDialog, CommandPalette). */
+
+.or-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--or-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--or-space-6);
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+  letter-spacing: var(--or-tracking-body);
+}
+
+.or-dialog[data-state='closed'] {
+  pointer-events: none;
+}
+
+.or-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--or-color-overlay);
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+/* Saída mais curta que a entrada; o painel sai junto (mesma duração). */
+.or-dialog__backdrop[data-state='closed'] {
+  animation: or-fade-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+.or-dialog__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-height: 100%;
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+  box-shadow: var(--or-shadow-overlay);
+  outline: none;
+}
+
+@media (max-width: 40rem) {
+  .or-dialog {
+    padding: var(--or-space-3);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-dialog__panel {
+    border: 1px solid CanvasText;
+  }
+}

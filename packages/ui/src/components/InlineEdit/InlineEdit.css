@@ -1,0 +1,207 @@
+/* ---------------------------------------------------------------------------
+ * InlineEdit — edição no lugar
+ * ------------------------------------------------------------------------- */
+
+.or-inline-edit {
+  --_height: var(--or-control-md);
+  --_font-size: var(--or-text-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.or-inline-edit--sm {
+  --_height: var(--or-control-sm);
+  --_font-size: var(--or-text-sm);
+}
+
+.or-inline-edit--lg {
+  --_height: var(--or-control-lg);
+  --_font-size: var(--or-text-lg);
+}
+
+.or-inline-edit__label {
+  display: block;
+}
+
+/* Modo leitura ------------------------------------------------------------ */
+
+.or-inline-edit__display {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  align-self: flex-start;
+  /* a margem negativa alinha o texto ao conteúdo ao redor */
+  max-width: calc(100% + var(--or-space-3));
+  min-height: var(--_height);
+  margin-left: calc(var(--or-space-3) * -1);
+  padding: 0 var(--or-space-3);
+  border: var(--or-border-thin) solid transparent;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+  font-size: var(--_font-size);
+  text-align: left;
+  cursor: text;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-inline-edit__display:hover:not(:disabled) {
+  border-color: var(--or-color-border-strong);
+  background: var(--or-color-surface-hover);
+}
+
+.or-inline-edit__display:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 0;
+}
+
+.or-inline-edit__value {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.or-inline-edit__value[data-empty] {
+  color: var(--or-color-text-subtle);
+  font-style: italic;
+}
+
+.or-inline-edit__icon {
+  flex-shrink: 0;
+  color: var(--or-color-text-subtle);
+  opacity: 0;
+  transform: translateX(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-inline-edit__display:hover .or-inline-edit__icon,
+.or-inline-edit__display:focus-visible .or-inline-edit__icon {
+  opacity: 1;
+  color: var(--or-color-accent-text);
+  transform: none;
+}
+
+.or-inline-edit__display:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-inline-edit__display:disabled {
+  color: var(--or-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Modo edição ------------------------------------------------------------- */
+
+.or-inline-edit__editor {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  margin-left: calc(var(--or-space-3) * -1);
+}
+
+.or-inline-edit__frame {
+  position: relative;
+  flex: 1;
+  min-width: 12rem;
+  font-size: var(--_font-size);
+}
+
+.or-inline-edit__input[aria-busy='true'] {
+  color: var(--or-color-text-muted);
+  cursor: progress;
+}
+
+.or-inline-edit__actions {
+  display: flex;
+  gap: var(--or-space-1);
+}
+
+.or-inline-edit__spinner {
+  align-self: center;
+  width: 1rem;
+  height: 1rem;
+  margin-right: var(--or-space-3);
+  border: 2px solid var(--or-color-accent);
+  border-right-color: transparent;
+  border-radius: var(--or-radius-full);
+  animation: or-spin calc(var(--or-duration-loop) / 3) linear infinite;
+}
+
+.or-inline-edit__error {
+  margin-top: var(--or-space-1);
+  animation: or-slide-down-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+/* Motion ------------------------------------------------------------------
+ * Depois da primeira interação, a troca leitura ↔ edição faz fade + slide
+ * curto; salvar acende um flash verde sutil; erro faz o campo tremer.
+ * ------------------------------------------------------------------------- */
+
+.or-inline-edit--animated .or-inline-edit__editor {
+  animation: or-inline-edit-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-inline-edit--animated .or-inline-edit__display {
+  animation: or-fade-in var(--or-duration-fast) var(--or-ease-out) both;
+}
+
+.or-inline-edit--animated .or-inline-edit__display--saved {
+  animation:
+    or-fade-in var(--or-duration-fast) var(--or-ease-out) both,
+    or-inline-edit-saved var(--or-duration-reveal) var(--or-ease-out);
+}
+
+.or-inline-edit__frame[data-shake='a'] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-inline-edit__frame[data-shake='b'] {
+  animation: or-inline-edit-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+@keyframes or-inline-edit-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -0.5));
+  }
+}
+
+@keyframes or-inline-edit-saved {
+  from {
+    border-color: var(--or-color-success);
+    background-color: var(--or-color-success-subtle);
+  }
+}
+
+/* Cópia local de or-shake: alternar o nome reinicia a animação. */
+@keyframes or-inline-edit-shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-3px);
+  }
+  40%,
+  60% {
+    transform: translateX(3px);
+  }
+}

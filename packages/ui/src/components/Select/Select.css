@@ -1,0 +1,100 @@
+/* ---------------------------------------------------------------------------
+ * Select — <select> nativo com a aparência dos controles do Orange
+ * ------------------------------------------------------------------------- */
+
+.or-select {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.or-select__control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: calc(var(--or-space-3) + 1.5rem);
+  text-overflow: ellipsis;
+  cursor: pointer;
+  /* Borda, anel de foco, fundo e cor do texto mudam com transição (nada "pisca"). */
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Hover: além da borda (Field), o fundo clareia levemente — é um alvo clicável. */
+.or-select__control:hover:not(:disabled, :focus) {
+  background-color: var(--or-color-bg-subtle);
+}
+
+.or-select__control:disabled {
+  cursor: not-allowed;
+}
+
+/* Texto do placeholder em tom secundário enquanto nada foi escolhido. */
+.or-select__control[data-placeholder-shown] {
+  color: var(--or-color-text-subtle);
+}
+
+.or-select__control[data-placeholder-shown]:disabled {
+  color: var(--or-color-text-disabled);
+}
+
+/* As opções do menu nativo usam as cores do tema. */
+.or-select__control option,
+.or-select__control optgroup {
+  background-color: var(--or-color-surface-raised);
+  color: var(--or-color-text);
+}
+
+.or-select__control option:disabled {
+  color: var(--or-color-text-disabled);
+}
+
+.or-select__chevron {
+  position: absolute;
+  top: 0;
+  right: var(--or-space-3);
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  color: var(--or-color-text-muted);
+  pointer-events: none;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+/* Hover e foco: o chevron escurece e "empurra" 2px para baixo (mesma resposta nos dois). */
+.or-select:hover:not([data-disabled]) .or-select__chevron,
+.or-select__control:focus-visible + .or-select__chevron,
+.or-select__control:focus + .or-select__chevron {
+  color: var(--or-color-text);
+  transform: translateY(2px);
+}
+
+/* No clique, o chevron volta e o campo "afunda" junto com ele. */
+.or-select__control:active:not(:disabled) + .or-select__chevron {
+  transform: translateY(3px);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-select[data-disabled] .or-select__chevron {
+  color: var(--or-color-text-disabled);
+}
+
+.or-select--lg .or-select__control {
+  padding-right: calc(var(--or-space-3) + 1.75rem);
+}
+
+/* Navegadores com :open em <select> (Chromium recente): o chevron gira 180° com a lista aberta.
+ * Regra isolada para não invalidar as demais onde o seletor não existe. */
+.or-select__control:open + .or-select__chevron {
+  transform: rotate(180deg);
+}
+
+@media (forced-colors: active) {
+  .or-select__chevron {
+    color: ButtonText;
+  }
+}
