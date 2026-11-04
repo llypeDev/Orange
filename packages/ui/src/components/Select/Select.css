@@ -93,6 +93,25 @@
   transform: rotate(180deg);
 }
 
+/* Select customizável (lista no visual do Orange, ver styles/controls.css):
+ * o Select já desenha o próprio chevron, então a seta padrão sai; e a opção
+ * de placeholder aparece na lista em tom secundário. */
+@supports (appearance: base-select) {
+  .or-select__control::picker-icon {
+    display: none;
+  }
+
+  /* Especificidade acima da regra geral de opções em controls.css. */
+  select.or-control.or-select__control option.or-select__placeholder {
+    color: var(--or-color-text-subtle);
+    font-weight: var(--or-weight-regular);
+  }
+
+  select.or-control.or-select__control option.or-select__placeholder::checkmark {
+    display: none;
+  }
+}
+
 @media (forced-colors: active) {
   .or-select__chevron {
     color: ButtonText;

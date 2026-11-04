@@ -360,8 +360,8 @@ export default function StylesPage() {
                   [
                     '.or-control',
                     {
-                      pt: 'Aparência de campo (borda, altura, foco) para <input>, <select> e <textarea> nativos.',
-                      en: 'Field look (border, height, focus) for native <input>, <select> and <textarea>.',
+                      pt: 'Aparência de campo (borda, altura, foco) para <input>, <select> e <textarea> nativos. Em <select>, onde há suporte a appearance: base-select, a lista aberta também ganha o visual do Orange.',
+                      en: 'Field look (border, height, focus) for native <input>, <select> and <textarea>. On <select>, where appearance: base-select is supported, the open list gets the Orange look too.',
                     },
                   ],
                   [

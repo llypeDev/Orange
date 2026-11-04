@@ -157,8 +157,10 @@ function SelectControl({
 
 /**
  * Lista suspensa baseada no `<select>` nativo: teclado, leitores de tela e
- * seletor do sistema (inclusive no celular) vêm prontos. Use para escolher uma
- * opção entre poucas (até ~15). Para listas longas com busca, use `Combobox`.
+ * foco vêm prontos. Onde o navegador suporta o select customizável
+ * (`appearance: base-select`), a lista aberta também ganha o visual do Orange;
+ * nos demais, abre o seletor do sistema. Use para escolher uma opção entre
+ * poucas (até ~15). Para listas longas com busca, use `Combobox`.
  */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
   { label, hideLabel, description, error, required, disabled, id, className, ...rest },

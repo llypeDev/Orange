@@ -76,8 +76,8 @@ export default function PaginatorPage() {
         <Example
           title={{ pt: 'Com tabela e itens por página', en: 'With a table and page size' }}
           description={{
-            pt: 'totalItems habilita o texto de intervalo; pageSizeOptions mostra um select nativo. Ao trocar o tamanho, o primeiro item continua visível.',
-            en: 'totalItems enables the range text; pageSizeOptions shows a native select. When the size changes, the first item stays visible.',
+            pt: 'totalItems habilita o texto de intervalo; pageSizeOptions mostra um select nativo (com a lista no visual do Orange onde há select customizável). Ao trocar o tamanho, o primeiro item continua visível.',
+            en: 'totalItems enables the range text; pageSizeOptions shows a native select (with the list in the Orange look where customizable select is supported). When the size changes, the first item stays visible.',
           }}
           code={WithTableCode}
           align="stretch"
