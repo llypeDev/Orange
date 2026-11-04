@@ -161,3 +161,235 @@ textarea.or-control {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+/* ---------------------------------------------------------------------------
+ * Select customizável (appearance: base-select)
+ *
+ * Onde o navegador suporta, todo <select class="or-control"> — o Select, o
+ * seletor de itens por página do Paginator e selects nativos com a classe —
+ * abre uma lista no visual do Orange (a mesma do Combobox): borda de 1px,
+ * cantos retos, sombra de sobreposição, marca laranja na opção ativa e check
+ * na escolhida, com entrada e saída animadas. Teclado, leitor de tela, envio
+ * de formulário e foco continuam nativos; o markup não muda (sem <button> nem
+ * <selectedcontent>), então nada muda no React nem no SSR.
+ *
+ * Sem suporte, o @supports deixa o select clássico exatamente como antes.
+ * Selects em modo lista (`multiple` ou `size`) ficam de fora: têm outro
+ * comportamento e não abrem um picker.
+ * ------------------------------------------------------------------------- */
+
+@supports (appearance: base-select) {
+  select.or-control:not([multiple], [size]),
+  select.or-control:not([multiple], [size])::picker(select) {
+    appearance: base-select;
+  }
+
+  /* Campo fechado: uma linha só. No base-select o rótulo escolhido fica num
+     elemento interno do navegador: sem isso ele quebraria em várias linhas
+     (aumentando o campo) e, com overflow comum, invadiria o padding onde fica
+     o chevron. O corte é na caixa de conteúdo (overflow-clip-margin). A
+     lista aberta não é afetada: ela fica na camada superior. */
+  select.or-control:not([multiple], [size]) {
+    align-items: center;
+    gap: var(--or-space-2);
+    overflow: clip;
+    overflow-clip-margin: content-box;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  /* Seta (selects sem chevron próprio, como o do Paginator): o mesmo chevron
+     de linha do ícone "chevron-down" da biblioteca — e não o triângulo padrão
+     —, na cor do texto secundário e girando 180° com a lista aberta. */
+  select.or-control:not([multiple], [size])::picker-icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    content: '';
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.75' stroke-linecap='square'%3E%3Cpath d='M6 9.5l6 6 6-6'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    color: var(--or-color-text-muted);
+    transition:
+      rotate var(--or-duration-medium) var(--or-ease-spring),
+      color var(--or-duration-fast) var(--or-ease-out);
+  }
+
+  select.or-control:not([multiple], [size]):is(:hover, :focus-visible)::picker-icon {
+    color: var(--or-color-text);
+  }
+
+  select.or-control:not([multiple], [size]):open::picker-icon {
+    rotate: 180deg;
+  }
+
+  /* A lista ---------------------------------------------------------------- */
+
+  /* Fechada: o estado de saída — some em 120ms recuando 4px em direção ao
+     campo (como o popup do Combobox). Aberta: entra em 160ms descendo 6px. */
+  select.or-control:not([multiple], [size])::picker(select) {
+    box-sizing: border-box;
+    min-inline-size: anchor-size(self-inline);
+    max-block-size: min(20rem, 60vh);
+    margin-block: var(--or-space-1);
+    padding: var(--or-space-1) 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: var(--or-border-thin) solid var(--or-color-border-strong);
+    border-radius: var(--or-radius-none);
+    background: var(--or-color-surface-raised);
+    box-shadow: var(--or-shadow-overlay);
+    /* A cor vem explícita: o select pode estar em tom secundário (placeholder)
+       e a lista herdaria essa cor. */
+    color: var(--or-color-text);
+    font-family: var(--or-font-body);
+    font-size: var(--or-text-sm);
+    font-weight: var(--or-weight-regular);
+    line-height: var(--or-leading-tight);
+    opacity: 0;
+    translate: 0 calc(var(--or-distance-sm) * -1);
+    transition:
+      opacity calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out),
+      translate calc(var(--or-duration-fast) * 0.75) var(--or-ease-in-out),
+      display calc(var(--or-duration-fast) * 0.75) allow-discrete,
+      overlay calc(var(--or-duration-fast) * 0.75) allow-discrete;
+  }
+
+  select.or-control:not([multiple], [size]):open::picker(select) {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--or-duration-fast) var(--or-ease-out),
+      translate var(--or-duration-fast) var(--or-ease-out),
+      display var(--or-duration-fast) allow-discrete,
+      overlay var(--or-duration-fast) allow-discrete;
+  }
+
+  @starting-style {
+    select.or-control:not([multiple], [size]):open::picker(select) {
+      opacity: 0;
+      translate: 0 calc(var(--or-distance-sm) * -1.5);
+    }
+  }
+
+  /* Opções ------------------------------------------------------------------ */
+
+  select.or-control:not([multiple], [size]) option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--or-space-3);
+    min-block-size: 2.25rem;
+    padding: var(--or-space-2) var(--or-space-3);
+    border: 0;
+    background: transparent;
+    color: var(--or-color-text);
+    cursor: pointer;
+    outline: none;
+    transition:
+      background-color var(--or-duration-fast) var(--or-ease-out),
+      color var(--or-duration-fast) var(--or-ease-out);
+  }
+
+  /* Marca lateral laranja na opção ativa (mouse ou teclado): cresce do centro
+     com spring, como no Combobox. */
+  select.or-control:not([multiple], [size]) option::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--or-border-accent);
+    background: var(--or-color-accent);
+    transform: scaleY(0);
+    transition: transform var(--or-duration-medium) var(--or-ease-spring);
+  }
+
+  select.or-control:not([multiple], [size]) option:not(:disabled):is(:hover, :focus-visible) {
+    background: var(--or-color-surface-hover);
+  }
+
+  select.or-control:not([multiple], [size]) option:not(:disabled):is(:hover, :focus-visible)::before {
+    transform: scaleY(1);
+  }
+
+  select.or-control:not([multiple], [size]) option:checked {
+    font-weight: var(--or-weight-semibold);
+  }
+
+  /* Check da opção escolhida: no fim da linha, em laranja, com o mesmo traço
+     do ícone "check" da biblioteca (o ✓ de texto cairia numa fonte do
+     sistema). */
+  select.or-control:not([multiple], [size]) option::checkmark {
+    order: 1;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-inline-start: auto;
+    content: '';
+    background: var(--or-color-accent);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M4.5 12.5l5 5 10-10'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+
+  select.or-control:not([multiple], [size]) option:disabled {
+    color: var(--or-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Grupos: o rótulo vira um "eyebrow" (caixa alta, pequeno, espaçado) e as
+     opções voltam ao texto normal. O rótulo interno do navegador tem ~0,5em
+     de recuo: o grupo anda o resto até alinhar o rótulo com o texto das
+     opções (12px), e as opções devolvem esse deslocamento. */
+  select.or-control:not([multiple], [size]) optgroup {
+    --_label-shift: calc(var(--or-space-3) - 0.5 * var(--or-text-2xs));
+    padding-block-start: var(--or-space-2);
+    padding-inline-start: var(--_label-shift);
+    color: var(--or-color-text-subtle);
+    font-family: var(--or-font-display);
+    font-size: var(--or-text-2xs);
+    font-weight: var(--or-weight-medium);
+    letter-spacing: var(--or-tracking-meta);
+    text-transform: uppercase;
+  }
+
+  select.or-control:not([multiple], [size]) optgroup + optgroup {
+    margin-block-start: var(--or-space-1);
+    border-block-start: var(--or-border-thin) solid var(--or-color-border);
+  }
+
+  select.or-control:not([multiple], [size]) optgroup option {
+    margin-block-start: var(--or-space-1);
+    margin-inline-start: calc(var(--_label-shift) * -1);
+    color: var(--or-color-text);
+    font-family: var(--or-font-body);
+    font-size: var(--or-text-sm);
+    font-weight: var(--or-weight-regular);
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  select.or-control:not([multiple], [size]) optgroup option:checked {
+    font-weight: var(--or-weight-semibold);
+  }
+
+  select.or-control:not([multiple], [size]) optgroup:disabled option {
+    color: var(--or-color-text-disabled);
+  }
+}
+
+@media (forced-colors: active) {
+  @supports (appearance: base-select) {
+    select.or-control:not([multiple], [size])::picker(select) {
+      border-color: CanvasText;
+    }
+
+    select.or-control:not([multiple], [size]) option:is(:hover, :focus-visible) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+
+    select.or-control:not([multiple], [size]) option::checkmark {
+      background: CanvasText;
+    }
+  }
+}

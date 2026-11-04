@@ -313,8 +313,8 @@ export default function SelectPage() {
             {
               term: { pt: 'Lista aberta', en: 'List open' },
               description: {
-                pt: 'Em navegadores com :open em <select>, o chevron gira 180° em 250ms, spring. A lista em si é a nativa do sistema.',
-                en: 'In browsers with :open on <select>, the chevron rotates 180° in 250ms, spring. The list itself is the native system one.',
+                pt: 'Com select customizável (appearance: base-select, Chrome e Edge recentes), a lista entra descendo 6px com fade em 160ms (ease-out) e sai recuando 4px em 120ms; o chevron gira 180° em 250ms, spring. A opção ativa ganha fundo e a barra laranja à esquerda, que cresce do centro com spring. Sem suporte, a lista é a nativa do sistema.',
+                en: 'With customizable select (appearance: base-select, recent Chrome and Edge), the list drops 6px with a fade in 160ms (ease-out) and leaves pulling back 4px in 120ms; the chevron rotates 180° in 250ms, spring. The active option gets a background and the orange bar on the left, which grows from the center with spring. Without support, the list is the native system one.',
               },
             },
             {
@@ -334,15 +334,23 @@ export default function SelectPage() {
             pt={
               <>
                 Renderiza um <Code>&lt;select&gt;</Code> nativo: leitores de tela anunciam rótulo,
-                valor e posição da opção, e no celular abre o seletor do sistema. Só a aparência é
-                personalizada — o chevron é decorativo (<Code>aria-hidden</Code>).
+                valor e posição da opção. Só a aparência é personalizada — o chevron é decorativo (
+                <Code>aria-hidden</Code>). Onde o navegador suporta o select customizável (
+                <Code>appearance: base-select</Code>), a lista aberta também ganha o visual do
+                Orange, com o mesmo teclado, foco e anúncios do select nativo; nos demais, abre o
+                seletor do sistema. Rótulos muito longos são cortados no campo fechado — mantenha-os
+                curtos.
               </>
             }
             en={
               <>
                 Renders a native <Code>&lt;select&gt;</Code>: screen readers announce label, value
-                and option position, and on mobile the system picker opens. Only the appearance is
-                customized — the chevron is decorative (<Code>aria-hidden</Code>).
+                and option position. Only the appearance is customized — the chevron is decorative (
+                <Code>aria-hidden</Code>). Where the browser supports customizable select (
+                <Code>appearance: base-select</Code>), the open list also gets the Orange look, with
+                the same keyboard, focus and announcements as the native select; elsewhere the
+                system picker opens. Very long labels are clipped in the closed field — keep them
+                short.
               </>
             }
           />

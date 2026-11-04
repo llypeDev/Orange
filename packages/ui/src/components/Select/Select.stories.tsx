@@ -18,7 +18,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Lista suspensa baseada no `<select>` nativo: teclado, leitores de tela e seletor do sistema prontos. Use para escolher uma opção entre poucas; para listas longas com busca, use `Combobox`.',
+          'Lista suspensa baseada no `<select>` nativo: teclado, leitores de tela e foco prontos. Onde o navegador suporta o select customizável (`appearance: base-select`), a lista aberta também ganha o visual do Orange; nos demais, abre o seletor do sistema. Use para escolher uma opção entre poucas; para listas longas com busca, use `Combobox`.',
       },
     },
   },
