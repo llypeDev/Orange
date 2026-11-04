@@ -327,6 +327,9 @@ function MultiSelectControl({
       ref={mergeRefs(frameEl, refs.setReference)}
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-multi-select')}
       data-invalid={controlProps['aria-invalid'] || undefined}
+      // Expõe o estado inativo do conjunto (chips + campo) — o contraste reduzido
+      // dos itens desabilitados é isento pela WCAG 1.4.3.
+      aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
       data-open={isOpen || undefined}
       onMouseDown={(event) => {

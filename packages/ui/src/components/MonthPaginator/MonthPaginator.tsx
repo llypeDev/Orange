@@ -134,6 +134,7 @@ export const MonthPaginator = forwardRef<HTMLDivElement, MonthPaginatorProps>(
         role="group"
         aria-label={ariaLabel ?? t('monthNavigation')}
         className={cx('or-month-paginator', `or-month-paginator--${size}`, className)}
+        aria-disabled={disabled || undefined}
         data-disabled={disabled || undefined}
         {...rest}
       >

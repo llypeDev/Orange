@@ -3307,3 +3307,8 @@
   color: var(--or-color-text);
   font-variant-numeric: tabular-nums;
 }
+
+/* Amostra "Aa" da matriz de contraste: conteúdo gerado (decorativo). */
+.guide-matrix__sample::before {
+  content: attr(data-sample);
+}

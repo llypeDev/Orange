@@ -335,13 +335,14 @@ function ContrastMatrix() {
                       className="guide-matrix__cell"
                       style={{ background: themeValue(theme, bg) }}
                     >
+                      {/* Amostra decorativa desenhada por CSS (::before): a matriz mostra de
+                          propósito pares que reprovam; a razão e o nível ficam no selo ao lado. */}
                       <span
                         className="guide-matrix__sample"
+                        data-sample="Aa"
                         style={{ color: themeValue(theme, fg) }}
                         aria-hidden="true"
-                      >
-                        Aa
-                      </span>
+                      />
                       <ContrastBadge ratio={ratio} />
                     </td>
                   )

@@ -173,6 +173,9 @@ function TagInputControl({
     <div
       className={cx('or-control-frame', `or-control-frame--${size}`, 'or-tag-input')}
       data-invalid={controlProps['aria-invalid'] || undefined}
+      // Expõe o estado inativo do conjunto (tags + campo) — o contraste reduzido
+      // dos itens desabilitados é isento pela WCAG 1.4.3.
+      aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
       {...frameMotion}
       onMouseDown={(event) => {
