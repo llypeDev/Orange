@@ -112,6 +112,20 @@ describe('Search', () => {
     expect(screen.queryByRole('button', { name: 'Limpar' })).not.toBeInTheDocument()
   })
 
+  it('movimento: o botão limpar só anima quando aparece depois da montagem', async () => {
+    const user = userEvent.setup()
+    render(
+      <>
+        <Search label="Com texto" defaultValue="mesa" />
+        <Search label="Vazio" />
+      </>,
+    )
+    expect(screen.getByRole('button', { name: 'Limpar' })).not.toHaveAttribute('data-state')
+    await user.type(screen.getByRole('searchbox', { name: 'Vazio' }), 'a')
+    const buttons = screen.getAllByRole('button', { name: 'Limpar' })
+    expect(buttons[1]).toHaveAttribute('data-state', 'open')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

@@ -241,6 +241,18 @@ describe('Combobox', () => {
     expect(screen.getByText('No results found')).toBeInTheDocument()
   })
 
+  it('movimento: o popup expõe data-state e o lado em que abriu', async () => {
+    const { user, input } = setup()
+    input.focus()
+    await user.keyboard('{ArrowDown}')
+    const popup = document.querySelector('.or-combobox-popup')!
+    expect(popup).toHaveAttribute('data-state', 'open')
+    expect(popup).toHaveAttribute('data-side', 'bottom')
+    await user.keyboard('{Escape}')
+    // sem CSS (jsdom), a saída termina na hora
+    expect(document.querySelector('.or-combobox-popup')).toBeNull()
+  })
+
   it('não possui violações de acessibilidade (fechado e aberto)', async () => {
     const user = userEvent.setup()
     const { container } = render(

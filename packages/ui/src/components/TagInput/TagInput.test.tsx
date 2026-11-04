@@ -133,6 +133,17 @@ describe('TagInput', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
+  it('movimento: tag nova anima a entrada e recusa faz o campo tremer', async () => {
+    const { user, input } = setup({ defaultValue: ['ux'] })
+    const frame = input.closest('.or-tag-input')!
+    expect(screen.getByText('ux').closest('li')).not.toHaveAttribute('data-enter')
+    expect(frame).not.toHaveAttribute('data-shake')
+    await user.type(input, 'ui{Enter}')
+    expect(screen.getByText('ui').closest('li')).toHaveAttribute('data-enter')
+    await user.type(input, 'UX{Enter}')
+    expect(frame).toHaveAttribute('data-shake')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

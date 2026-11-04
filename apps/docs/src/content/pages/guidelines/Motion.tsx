@@ -669,15 +669,15 @@ export default function MotionPage() {
           description={{
             pt: (
               <>
-                Ao surgir um erro de validação, o campo treme uma vez (<Code>or-shake</Code>,
-                360ms). A mensagem e o <Code>aria-invalid</Code> continuam sendo a informação — o
+                Ao surgir um erro de validação, o campo treme uma vez (<Code>or-shake</Code>,{' '}
+                <Code>--or-duration-slow</Code>). A mensagem e o <Code>aria-invalid</Code> continuam sendo a informação — o
                 tremor só chama o olhar.
               </>
             ),
             en: (
               <>
-                When a validation error appears, the field shakes once (<Code>or-shake</Code>,
-                360ms). The message and <Code>aria-invalid</Code> remain the information — the shake
+                When a validation error appears, the field shakes once (<Code>or-shake</Code>,{' '}
+                <Code>--or-duration-slow</Code>). The message and <Code>aria-invalid</Code> remain the information — the shake
                 only draws the eye.
               </>
             ),
@@ -851,7 +851,7 @@ export default function MotionPage() {
                     'or-pulse + --_pulse-color',
                     'loop',
                   ],
-                  [{ pt: 'Erro', en: 'Error' }, 'or-shake (uma vez)', '360ms'],
+                  [{ pt: 'Erro', en: 'Error' }, 'or-shake (uma vez)', 'slow · 400ms'],
                   [{ pt: 'Progresso', en: 'Progress' }, 'or-fill-x · transform', 'linear'],
                   [
                     { pt: 'Check e linhas', en: 'Check and lines' },

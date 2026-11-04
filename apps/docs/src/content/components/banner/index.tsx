@@ -333,6 +333,15 @@ export default function BannerPage() {
               description: { pt: 'Visibilidade controlada.', en: 'Controlled visibility.' },
             },
             {
+              name: 'pulse',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Indicador "ao vivo": anel pulsando em volta do ícone, na cor do tom.',
+                en: '"Live" indicator: a ring pulsing around the icon, in the tone color.',
+              },
+            },
+            {
               name: 'live',
               type: 'boolean',
               default: 'false',

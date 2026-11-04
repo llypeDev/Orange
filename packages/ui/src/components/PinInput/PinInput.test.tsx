@@ -163,6 +163,27 @@ describe('PinInput', () => {
     expect(digits()[1]).toHaveAccessibleName('Digit 2 of 4')
   })
 
+  it('movimento: pop ao digitar, data-complete ao completar e tremor quando o erro surge', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<PinInput label="Código" length={3} defaultValue="1" />)
+    const group = screen.getByRole('group')
+    expect(digits()[0]).not.toHaveAttribute('data-pop')
+    await user.click(digits()[1])
+    await user.keyboard('2')
+    expect(digits()[1]).toHaveAttribute('data-pop', 'a')
+    await user.keyboard('3')
+    expect(group).toHaveAttribute('data-complete')
+    expect(group).not.toHaveAttribute('data-shake')
+    rerender(<PinInput label="Código" length={3} defaultValue="1" error="Código incorreto" />)
+    expect(group).toHaveAttribute('data-shake')
+    expect(group).not.toHaveAttribute('data-complete')
+  })
+
+  it('movimento: erro presente na montagem não treme', () => {
+    render(<PinInput label="Código" length={3} error="Expirado" />)
+    expect(screen.getByRole('group')).not.toHaveAttribute('data-shake')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

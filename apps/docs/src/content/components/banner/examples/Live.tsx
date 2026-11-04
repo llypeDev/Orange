@@ -7,7 +7,8 @@ export default function Live() {
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%' }}>
       {online === false && (
-        <Banner live tone="danger" title="Sem conexão">
+        // pulse: a situação está em andamento — o título diz isso, o anel só reforça
+        <Banner live pulse tone="danger" title="Sem conexão agora">
           Suas alterações ficam salvas neste dispositivo e serão enviadas quando a conexão voltar.
         </Banner>
       )}

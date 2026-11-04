@@ -14,6 +14,8 @@ import { T } from '../../../i18n'
 import { Button, EmptyState } from '@orange/ui'
 import Compact from './examples/Compact'
 import CompactCode from './examples/Compact?raw'
+import Entrance from './examples/Entrance'
+import EntranceCode from './examples/Entrance?raw'
 import Filtered from './examples/Filtered'
 import FilteredCode from './examples/Filtered?raw'
 import FirstUse from './examples/FirstUse'
@@ -139,6 +141,17 @@ export default function EmptyStatePage() {
         </Example>
         <Example title={{ pt: 'Filtros', en: 'Filters' }} code={FilteredCode} align="stretch">
           <Filtered />
+        </Example>
+        <Example
+          title={{ pt: 'Entrada', en: 'Entrance' }}
+          description={{
+            pt: 'Ao montar, os quadrados caem no lugar um depois do outro e o marcador laranja estala por último.',
+            en: 'On mount, the squares drop into place one after the other and the orange marker pops last.',
+          }}
+          code={EntranceCode}
+          align="stretch"
+        >
+          <Entrance />
         </Example>
         <Example
           title={{ pt: 'Compacta', en: 'Compact' }}
@@ -312,6 +325,15 @@ export default function EmptyStatePage() {
               description: {
                 pt: 'Centralizada ou compacta (horizontal).',
                 en: 'Centered or compact (horizontal).',
+              },
+            },
+            {
+              name: 'animated',
+              type: 'boolean',
+              default: 'true',
+              description: {
+                pt: 'Entrada ao montar: quadrados caem no lugar e o texto sobe.',
+                en: 'Entrance on mount: squares drop into place and the text rises.',
               },
             },
             {

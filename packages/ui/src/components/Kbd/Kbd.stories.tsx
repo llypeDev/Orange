@@ -68,15 +68,16 @@ export const LivePractice: Story = {
   render: (args) => {
     const [down, setDown] = useState<string[]>([])
     return (
-      <div
-        tabIndex={0}
-        role="group"
-        aria-label="Área de teste: pressione Shift + K"
-        style={{ padding: 16, border: '1px dashed var(--or-color-border-strong)' }}
-        onKeyDown={(e) => setDown((d) => Array.from(new Set([...d, e.key.toLowerCase()])))}
-        onKeyUp={(e) => setDown((d) => d.filter((k) => k !== e.key.toLowerCase()))}
-        onBlur={() => setDown([])}
-      >
+      <div style={{ display: 'grid', gap: 12, maxWidth: 320 }}>
+        <input
+          readOnly
+          aria-label="Campo de teste de atalho"
+          placeholder="Clique aqui e pressione Shift + K"
+          style={{ padding: 8, border: '1px solid var(--or-color-border-strong)', background: 'transparent', color: 'inherit' }}
+          onKeyDown={(e) => setDown((d) => Array.from(new Set([...d, e.key.toLowerCase()])))}
+          onKeyUp={(e) => setDown((d) => d.filter((k) => k !== e.key.toLowerCase()))}
+          onBlur={() => setDown([])}
+        />
         <Kbd {...args} keys={['Shift', 'K']} pressed={down} />
       </div>
     )

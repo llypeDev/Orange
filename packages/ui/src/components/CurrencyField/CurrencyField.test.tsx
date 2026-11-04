@@ -147,6 +147,14 @@ describe('CurrencyField', () => {
     expect(input).toHaveAccessibleDescription('Moeda: Real brasileiro Informe um valor')
   })
 
+  it('movimento: treme quando o erro surge, não na montagem', () => {
+    const { rerender, container } = render(<CurrencyField label="Valor" error="Já inválido" />)
+    const frame = container.querySelector('.or-currency-field__frame')!
+    expect(frame).not.toHaveAttribute('data-shake')
+    rerender(<CurrencyField label="Valor" error="Acima do limite" />)
+    expect(frame).toHaveAttribute('data-shake')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

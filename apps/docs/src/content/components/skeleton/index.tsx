@@ -16,6 +16,8 @@ import CardCode from './examples/Card?raw'
 import Loading from './examples/Loading'
 import LoadingCode from './examples/Loading?raw'
 import Paragraph from './examples/Paragraph'
+import Swap from './examples/Swap'
+import SwapCode from './examples/Swap?raw'
 import ParagraphCode from './examples/Paragraph?raw'
 import Variants from './examples/Variants'
 import VariantsCode from './examples/Variants?raw'
@@ -103,6 +105,16 @@ export default function SkeletonPage() {
         </Example>
         <Example title={{ pt: 'Cartão', en: 'Card' }} code={CardCode}>
           <Card />
+        </Example>
+        <Example
+          title={{ pt: 'Troca pelo conteúdo (loaded)', en: 'Swap to content (loaded)' }}
+          description={{
+            pt: 'Com loaded, o Skeleton envolve o conteúdo real e faz crossfade quando ele chega — sem "pulo". Clique em Recarregar perfil para repetir.',
+            en: 'With loaded, Skeleton wraps the real content and crossfades when it arrives — no "jump". Click Reload profile to repeat.',
+          }}
+          code={SwapCode}
+        >
+          <Swap />
         </Example>
         <Example
           title={{ pt: 'Lista carregando', en: 'Loading list' }}
@@ -203,8 +215,36 @@ export default function SkeletonPage() {
               },
             },
             {
+              name: 'loaded',
+              type: 'boolean',
+              description: {
+                pt: (
+                  <>
+                    Modo de troca: envolve <Code>children</Code> e faz crossfade do placeholder para
+                    o conteúdo quando vira <Code>true</Code>. Enquanto <Code>false</Code>, o
+                    contêiner recebe <Code>aria-busy</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    Swap mode: wraps <Code>children</Code> and crossfades from the placeholder to
+                    the content when it becomes <Code>true</Code>. While <Code>false</Code>, the
+                    container gets <Code>aria-busy</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              name: 'children',
+              type: 'ReactNode',
+              description: {
+                pt: 'Conteúdo real (com loaded).',
+                en: 'Real content (with loaded).',
+              },
+            },
+            {
               name: '...rest',
-              type: 'HTMLAttributes<HTMLSpanElement>',
+              type: 'HTMLAttributes<HTMLElement>',
               description: { pt: 'Atributos nativos.', en: 'Native attributes.' },
             },
           ]}
@@ -234,6 +274,14 @@ export default function SkeletonPage() {
               type: 'boolean',
               default: 'true',
               description: { pt: 'Brilho animado.', en: 'Animated shimmer.' },
+            },
+            {
+              name: 'loaded',
+              type: 'boolean',
+              description: {
+                pt: 'Modo de troca: crossfade das linhas para children.',
+                en: 'Swap mode: crossfade from the lines to children.',
+              },
             },
           ]}
         />

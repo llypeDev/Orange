@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -162,6 +162,37 @@ describe('Slider', () => {
   it('respeita disabled', () => {
     render(<Slider label="Volume" disabled defaultValue={10} />)
     expect(screen.getByRole('slider')).toBeDisabled()
+  })
+
+  it('movimento: saltos animam (data-animate) e o arraste não', async () => {
+    const user = userEvent.setup()
+    render(
+      <Slider
+        label="Plano"
+        min={0}
+        max={100}
+        step={50}
+        defaultValue={0}
+        marks={[
+          { value: 0, label: 'Básico' },
+          { value: 100, label: 'Empresa' },
+        ]}
+      />,
+    )
+    const root = document.querySelector('.or-slider')!
+    expect(root).not.toHaveAttribute('data-animate')
+    await user.click(screen.getByText('Empresa'))
+    expect(root).toHaveAttribute('data-animate')
+    const slider = screen.getByRole('slider')
+    // jsdom não tem PointerEvent com `buttons`: um MouseEvent do tipo pointermove simula o arraste.
+    act(() => {
+      slider.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, buttons: 1 }))
+    })
+    expect(root).not.toHaveAttribute('data-animate')
+    fireEvent.keyDown(slider, { key: 'ArrowLeft' })
+    expect(root).toHaveAttribute('data-animate')
+    // polegar visual decorativo posicionado pelo valor
+    expect(document.querySelector('.or-slider__thumb-pos')).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('não possui violações de acessibilidade', async () => {

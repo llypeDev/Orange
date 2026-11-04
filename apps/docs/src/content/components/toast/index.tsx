@@ -17,6 +17,8 @@ import { Toast, ToastProvider } from '@orange/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Positions from './examples/Positions'
+import Progress from './examples/Progress'
+import ProgressCode from './examples/Progress?raw'
 import PositionsCode from './examples/Positions?raw'
 import Update from './examples/Update'
 import UpdateCode from './examples/Update?raw'
@@ -160,6 +162,16 @@ export default function ToastPage() {
             code={UpdateCode}
           >
             <Update />
+          </Example>
+          <Example
+            title={{ pt: 'Barra de tempo restante', en: 'Time-left bar' }}
+            description={{
+              pt: 'showProgress mostra quanto falta para o toast fechar. Passe o mouse sobre ele: a barra e o timer pausam juntos.',
+              en: 'showProgress shows how long until the toast closes. Hover it: the bar and the timer pause together.',
+            }}
+            code={ProgressCode}
+          >
+            <Progress />
           </Example>
           <Example
             title={{ pt: 'Posições', en: 'Positions' }}
@@ -315,6 +327,15 @@ export default function ToastPage() {
                 default: 'document.body',
                 description: { pt: 'Destino do portal.', en: 'Portal target.' },
               },
+              {
+                name: 'showProgress',
+                type: 'boolean',
+                default: 'false',
+                description: {
+                  pt: 'Barra de tempo restante nos toasts que fecham sozinhos. Pausa com o timer.',
+                  en: 'Time-left bar on toasts that close on their own. Pauses with the timer.',
+                },
+              },
             ]}
           />
           <PropsTable
@@ -402,6 +423,14 @@ export default function ToastPage() {
                 description: {
                   pt: 'Chamado quando o toast fecha.',
                   en: 'Called when the toast closes.',
+                },
+              },
+              {
+                name: 'showProgress',
+                type: 'boolean',
+                description: {
+                  pt: 'Mostra (ou esconde) a barra de tempo só neste toast.',
+                  en: 'Shows (or hides) the time bar for this toast only.',
                 },
               },
             ]}

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import { PinInput } from './PinInput'
 
 const meta = {
@@ -69,4 +70,25 @@ export const Invalid: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+}
+
+/** Movimento: pop a cada dígito, borda success em onda ao completar e tremor no erro (use 123456 para acertar). */
+export const MotionVerification: Story = {
+  render: function MotionVerification(args) {
+    const [code, setCode] = useState('')
+    const [error, setError] = useState<string>()
+    return (
+      <PinInput
+        {...args}
+        description="Digite 123456 para acertar; qualquer outro código treme o grupo."
+        value={code}
+        onChange={(value) => {
+          setCode(value)
+          if (value.length < (args.length ?? 6)) setError(undefined)
+        }}
+        onComplete={(value) => setError(value === '123456' ? undefined : 'Código incorreto.')}
+        error={error}
+      />
+    )
+  },
 }
