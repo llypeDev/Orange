@@ -1490,20 +1490,20 @@ a {
   color: var(--or-color-text);
 }
 
+/* Cartões clicáveis separados, cada um com a própria borda, e o hover de
+   elevação do zop.dev (utilitário or-lift: sobe 4px, sombra sólida na base e
+   barra de acento descendo pela borda esquerda). */
 .ov-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--or-space-4);
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--or-color-border);
-  border-left: 1px solid var(--or-color-border);
 }
 
 .ov-grid > li {
   display: flex;
-  border-right: 1px solid var(--or-color-border);
-  border-bottom: 1px solid var(--or-color-border);
 }
 
 .ov-card {
@@ -1513,35 +1513,14 @@ a {
   gap: var(--or-space-2);
   width: 100%;
   padding: var(--or-space-5);
+  border: 1px solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
   color: inherit;
   text-decoration: none;
-  transition: background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.ov-card::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  height: 2px;
-  background: var(--or-color-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--or-duration-medium) var(--or-ease-out);
-}
-
-.ov-card:hover {
-  background: var(--or-color-surface-raised);
-}
-
-.ov-card:hover::before,
-.ov-card:focus-visible::before {
-  transform: scaleX(1);
-}
-
-.ov-card:focus-visible {
-  outline-offset: -2px;
+.ov-card:is(:hover, :focus-visible) {
+  border-color: var(--or-color-border);
 }
 
 .ov-card__name {
@@ -1564,11 +1543,13 @@ a {
   font-family: var(--or-font-display);
   font-size: var(--or-text-xs);
   font-weight: var(--or-weight-semibold);
-  color: var(--or-color-text-muted);
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.ov-card:hover .ov-card__more {
-  color: var(--or-color-accent-text);
+/* "Ver documentação →" clareia com o hover do cartão (como o "Explore →"). */
+.ov-card:is(:hover, :focus-visible) .ov-card__more {
+  color: var(--or-color-text);
 }
 
 .ov-empty {
@@ -1811,7 +1792,7 @@ a {
   transform: rotate(180deg);
 }
 
-/* Visão geral: seta do cartão empurra, clique afunda. */
+/* Visão geral: seta do cartão empurra (o clique afunda pelo or-lift). */
 .ov-card .or-nudge__icon {
   display: inline-block;
   transition: transform var(--or-duration-medium) var(--or-ease-out);
@@ -1819,11 +1800,7 @@ a {
 
 .ov-card:hover .or-nudge__icon,
 .ov-card:focus-visible .or-nudge__icon {
-  transform: translateX(4px);
-}
-
-.ov-card:active {
-  transform: translateY(1px);
+  transform: translateX(var(--or-distance-sm));
 }
 
 /* Rodapé: link desliza 2px e a seta laranja aparece (como no zop.dev). */
@@ -1836,12 +1813,18 @@ a {
     transform var(--or-duration-fast) var(--or-ease-out);
 }
 
+/* Seta desenhada com o traço do ícone "arrow-right" da biblioteca: o "→" de
+   texto não existe no subconjunto das fontes e caía numa fonte do sistema. */
 .doc-footer__link::after {
-  content: '→';
+  content: '';
   position: absolute;
   left: 100%;
+  width: 0.875em;
+  height: 0.875em;
   margin-left: 6px;
-  color: var(--or-color-accent-text);
+  background: var(--or-color-accent-text);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M4.5 12h15M13 5.5l6.5 6.5-6.5 6.5'/%3E%3C/svg%3E")
+    center / contain no-repeat;
   opacity: 0;
   transform: translateX(-4px);
   transition:

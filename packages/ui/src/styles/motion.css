@@ -240,6 +240,15 @@
   bottom: -12px;
 }
 
+/* Pressionar: o bloco "afunda" metade da elevação e a sombra encolhe junto
+   (o mesmo do Card interactive). Vale também quando o alvo do clique é um
+   link esticado dentro do bloco (:active chega aos ancestrais). */
+.or-lift:active {
+  transform: translateY(calc(var(--or-distance-lift) / 2));
+  box-shadow: 0 4px 0 -2px var(--or-lift-shadow, var(--or-color-text));
+  transition-duration: var(--or-duration-press);
+}
+
 @media (forced-colors: active) {
   .or-lift::after {
     background: Highlight;

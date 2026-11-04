@@ -110,6 +110,14 @@
   select.or-control.or-select__control option.or-select__placeholder::checkmark {
     display: none;
   }
+
+  /* Campo obrigatório: o placeholder é uma opção desabilitada que não pode ser
+     escolhida de volta — na lista aberta ele só ocuparia espaço. No campo
+     fechado continua aparecendo enquanto nada foi escolhido. Sem `required`,
+     ele fica na lista como a opção de "limpar". */
+  select.or-control.or-select__control option.or-select__placeholder:disabled {
+    display: none;
+  }
 }
 
 @media (forced-colors: active) {

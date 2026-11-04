@@ -99,7 +99,10 @@ export interface CardItem {
   meta?: ReactNode
 }
 
-/** Grade de cartões com bordas compartilhadas (estilo do Orange). */
+/**
+ * Grade de cartões. Só informativos: bordas compartilhadas (grade explícita
+ * do Orange). Com links: cartões separados com o hover de elevação (or-lift).
+ */
 export function Cards({ items, columns = 3 }: { items: CardItem[]; columns?: 2 | 3 | 4 }) {
   const { t, to } = useLang()
   return (
@@ -130,7 +133,7 @@ export function Cards({ items, columns = 3 }: { items: CardItem[]; columns?: 2 |
           <li key={i}>
             {item.href ? (
               <a
-                className="guide-card guide-card--link"
+                className="guide-card guide-card--link or-lift"
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
@@ -141,7 +144,7 @@ export function Cards({ items, columns = 3 }: { items: CardItem[]; columns?: 2 |
                 </span>
               </a>
             ) : item.to ? (
-              <Link className="guide-card guide-card--link" to={to(item.to)}>
+              <Link className="guide-card guide-card--link or-lift" to={to(item.to)}>
                 {body}
               </Link>
             ) : (

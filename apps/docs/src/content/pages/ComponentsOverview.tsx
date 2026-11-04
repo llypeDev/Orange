@@ -84,7 +84,7 @@ export default function ComponentsOverview() {
       <Reveal as="ul" stagger appear className="ov-grid" key={category}>
         {filtered.map((m) => (
           <li key={m.slug}>
-            <Link to={to(`/components/${m.slug}`)} className="ov-card">
+            <Link to={to(`/components/${m.slug}`)} className="ov-card or-lift">
               <span className="or-eyebrow">{t(categoryLabels[m.category])}</span>
               <span className="ov-card__name">{m.name}</span>
               <span className="ov-card__desc">{t(m.description)}</span>
