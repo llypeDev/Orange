@@ -1,5 +1,5 @@
 import { useTheme } from '@orange/ui'
-import { primitives, themes, type ThemeName } from '@orange/tokens'
+import { themes, vizPalettes, vizThemes, type ThemeName, type VizColorTokens } from '@orange/tokens'
 import {
   useEffect,
   useId,
@@ -23,42 +23,46 @@ import {
 import { ContrastBadge, Segmented, TableWrap } from '../_shared/Blocks'
 import { contrastRatio, inkOn } from '../_shared/color'
 
-const { orange, blue, green, amber, red, carbon, paper } = primitives
-
 /* ---------------------------------------------------------------------------
- * Paletas por tema. A ordem categórica foi validada para daltonismo
+ * Paletas por tema, lidas dos tokens (`vizPalettes` → `--or-color-viz-*` em
+ * @orange/tokens). A ordem categórica foi validada para daltonismo
  * (protanopia/deuteranopia) entre vizinhos e tem ≥ 3:1 contra o fundo.
  * ------------------------------------------------------------------------- */
 
-const categorical: Record<ThemeName, { colors: string[]; other: string; names: string[] }> = {
-  dark: {
-    colors: [green[500], blue[400], amber[500], orange[600], red[300]],
-    other: carbon[500],
-    names: ['green-500', 'blue-400', 'amber-500', 'orange-600', 'red-300'],
-  },
-  light: {
-    colors: [green[700], blue[500], amber[700], orange[550], red[700]],
-    other: paper[600],
-    names: ['green-700', 'blue-500', 'amber-700', 'orange-550', 'red-700'],
-  },
+const vizKey = (key: string) => key as keyof VizColorTokens
+
+function paletteFor(theme: ThemeName) {
+  const tokens = vizThemes[theme]
+  const palette = vizPalettes[theme]
+  const steps = (prefix: string) =>
+    [1, 2, 3, 4, 5, 6, 7].map((i) => tokens[vizKey(`${prefix}${i}`)])
+  return {
+    categorical: {
+      colors: palette.categorical.map((_, i) => tokens[vizKey(`viz-${i + 1}`)]),
+      other: tokens['viz-other'],
+      names: [...palette.categorical] as string[],
+      otherName: palette.other as string,
+    },
+    sequential: steps('viz-seq-'),
+    diverging: steps('viz-div-'),
+  }
+}
+
+const palettes = { dark: paletteFor('dark'), light: paletteFor('light') }
+
+const categorical: Record<ThemeName, ReturnType<typeof paletteFor>['categorical']> = {
+  dark: palettes.dark.categorical,
+  light: palettes.light.categorical,
 }
 
 const sequential: Record<ThemeName, string[]> = {
-  light: [
-    orange[100],
-    orange[200],
-    orange[300],
-    orange[500],
-    orange[600],
-    orange[800],
-    orange[900],
-  ],
-  dark: [orange[900], orange[800], orange[700], orange[600], orange[500], orange[300], orange[100]],
+  dark: palettes.dark.sequential,
+  light: palettes.light.sequential,
 }
 
 const diverging: Record<ThemeName, string[]> = {
-  light: [blue[700], blue[500], blue[300], paper[400], orange[300], orange[550], orange[800]],
-  dark: [blue[300], blue[400], blue[700], carbon[400], orange[800], orange[600], orange[300]],
+  dark: palettes.dark.diverging,
+  light: palettes.light.diverging,
 }
 
 const months: Localized<string>[] = [
@@ -901,7 +905,7 @@ export default function DataVisualizationPage() {
                   </span>
                 </td>
                 <td>
-                  <Code>--or-palette-{theme === 'dark' ? 'carbon-500' : 'paper-600'}</Code>
+                  <Code>--or-palette-{cat.otherName}</Code>
                 </td>
                 <td>
                   <ContrastBadge ratio={contrastRatio(cat.other, bg)} kind="ui" />

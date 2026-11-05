@@ -16,6 +16,7 @@ import {
   space,
   themes,
   typography,
+  vizThemes,
   zIndex,
 } from '../src/index'
 
@@ -49,7 +50,12 @@ const staticTokens: [string, string][] = [
   ...prefixed('control', controlSize),
 ]
 
-const themeBlock = (name: keyof typeof themes) => block(prefixed('color', themes[name] as never))
+const themeBlock = (name: keyof typeof themes) =>
+  [
+    block(prefixed('color', themes[name] as never)),
+    '  /* Visualização de dados: categórica, "outros", sequencial e divergente */',
+    block(prefixed('color', vizThemes[name])),
+  ].join('\n')
 
 const css = `/**
  * Orange design tokens — arquivo gerado por packages/tokens/scripts/build.ts.

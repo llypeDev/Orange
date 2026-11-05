@@ -26,8 +26,28 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-05',
-    version: 'v0.3.0',
+    version: 'v0.4.0',
     unreleased: true,
+    title: {
+      pt: 'Gráficos, reordenação, tour guiado, painéis redimensionáveis e Listbox',
+      en: 'Charts, reordering, guided tours, resizable panels and Listbox',
+    },
+    summary: {
+      pt: 'A segunda leva da pesquisa comparativa: os padrões que ficaram de fora da v0.3.0, todos operáveis sem mouse e sem depender só de cor.',
+      en: 'The second batch from the comparative research: the patterns left out of v0.3.0, all operable without a mouse and never relying on color alone.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'BarChart, LineChart e Sparkline em SVG puro, com tabela de dados alternativa e exploração por teclado.', en: 'BarChart, LineChart and Sparkline in plain SVG, with an alternative data table and keyboard exploration.' } },
+      { kind: 'new', text: { pt: 'Tokens de visualização de dados (categórico, sequencial e divergente) nos dois temas, com contraste testado.', en: 'Data-visualization tokens (categorical, sequential and diverging) in both themes, with tested contrast.' } },
+      { kind: 'new', text: { pt: 'SortableList: reordene arrastando, pelo teclado ou com os botões "Mover para cima/baixo" (WCAG 2.5.7).', en: 'SortableList: reorder by dragging, by keyboard or with "Move up/down" buttons (WCAG 2.5.7).' } },
+      { kind: 'new', text: { pt: 'Tour: passo a passo com destaque no elemento, foco gerenciado e painel inferior no celular.', en: 'Tour: step-by-step walkthrough with a spotlight on the element, managed focus and a bottom sheet on phones.' } },
+      { kind: 'new', text: { pt: 'Splitter: painéis redimensionáveis no padrão APG Window Splitter, com recolher pelo Enter.', en: 'Splitter: resizable panels following the APG Window Splitter pattern, with Enter to collapse.' } },
+      { kind: 'new', text: { pt: 'Listbox: lista de seleção única ou múltipla, com grupos, busca ao digitar e integração com o Form.', en: 'Listbox: single or multiple selection list, with groups, type-ahead and Form integration.' } },
+    ],
+  },
+  {
+    date: '2026-11-05',
+    version: 'v0.3.0',
     title: {
       pt: 'Dez componentes que faltavam: layout, estrutura de página, formulários e mídia',
       en: 'Ten missing components: layout, page structure, forms and media',

@@ -204,6 +204,27 @@
   --or-color-code-bg: #0a0a0d;
   --or-color-code-text: #d4cdb5;
   --or-color-selection: rgba(245, 133, 73, 0.32);
+  /* Visualização de dados: categórica, "outros", sequencial e divergente */
+  --or-color-viz-1: #7fb236;
+  --or-color-viz-2: #6b85e0;
+  --or-color-viz-3: #e8c15a;
+  --or-color-viz-4: #d4622a;
+  --or-color-viz-5: #f79a8f;
+  --or-color-viz-other: #75757f;
+  --or-color-viz-seq-1: #6b2e0e;
+  --or-color-viz-seq-2: #9c4416;
+  --or-color-viz-seq-3: #b85a24;
+  --or-color-viz-seq-4: #d4622a;
+  --or-color-viz-seq-5: #f58549;
+  --or-color-viz-seq-6: #f8a675;
+  --or-color-viz-seq-7: #fde2cf;
+  --or-color-viz-div-1: #8da2ea;
+  --or-color-viz-div-2: #6b85e0;
+  --or-color-viz-div-3: #2a4494;
+  --or-color-viz-div-4: #55555e;
+  --or-color-viz-div-5: #9c4416;
+  --or-color-viz-div-6: #d4622a;
+  --or-color-viz-div-7: #f8a675;
 }
 
 /* Tema claro */
@@ -256,6 +277,27 @@
   --or-color-code-bg: #0f0f12;
   --or-color-code-text: #d4cdb5;
   --or-color-selection: rgba(245, 133, 73, 0.28);
+  /* Visualização de dados: categórica, "outros", sequencial e divergente */
+  --or-color-viz-1: #3d6614;
+  --or-color-viz-2: #4a66d4;
+  --or-color-viz-3: #8a5a00;
+  --or-color-viz-4: #e06a2c;
+  --or-color-viz-5: #b42318;
+  --or-color-viz-other: #8a8478;
+  --or-color-viz-seq-1: #fde2cf;
+  --or-color-viz-seq-2: #fbc6a2;
+  --or-color-viz-seq-3: #f8a675;
+  --or-color-viz-seq-4: #f58549;
+  --or-color-viz-seq-5: #d4622a;
+  --or-color-viz-seq-6: #9c4416;
+  --or-color-viz-seq-7: #6b2e0e;
+  --or-color-viz-div-1: #2a4494;
+  --or-color-viz-div-2: #4a66d4;
+  --or-color-viz-div-3: #8da2ea;
+  --or-color-viz-div-4: #d9d3bf;
+  --or-color-viz-div-5: #f8a675;
+  --or-color-viz-div-6: #e06a2c;
+  --or-color-viz-div-7: #9c4416;
 }
 
 /* Movimento reduzido: anula durações para quem prefere menos animação */

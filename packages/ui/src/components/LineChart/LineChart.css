@@ -1,0 +1,128 @@
+/* ===========================================================================
+ * LineChart — linhas de 2px, marcadores de ≥ 8px com anel de 2px no fundo,
+ * cada série com traço e forma próprios. Moldura, eixos e dica em ChartFrame.css.
+ * ========================================================================= */
+
+.or-line-chart__series {
+  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-line-chart__series[data-emphasis='muted'] {
+  opacity: 0.35;
+}
+
+.or-line-chart__line {
+  fill: none;
+  stroke: var(--_color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.or-line-chart__marker {
+  fill: var(--_color);
+  stroke: var(--_surface);
+  stroke-width: 4;
+  paint-order: stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Área de uma série: um véu da cor da série, nunca um bloco saturado. */
+.or-line-chart__area {
+  fill: var(--_color);
+  fill-opacity: 0.14;
+}
+
+.or-line-chart__crosshair {
+  stroke: var(--or-color-border-strong);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  pointer-events: none;
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-line-chart__crosshair[data-state='closed'] {
+  opacity: 0;
+}
+
+/* --- Entrada --------------------------------------------------------------
+ * Cada linha se desenha uma vez ao entrar na tela: uma máscara com o mesmo
+ * traçado (pathLength=1) anima stroke-dashoffset 1 → 0. Os marcadores surgem
+ * quando a linha passa por eles. Em movimento reduzido o estado é `static`:
+ * sem máscara, tudo desenhado.
+ * ------------------------------------------------------------------------- */
+
+.or-line-chart__draw {
+  fill: none;
+  /* Máscara: branco = visível (luminância, não é uma cor da interface). */
+  stroke: white;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 0;
+}
+
+.or-line-chart[data-motion='pending'] .or-line-chart__draw {
+  stroke-dashoffset: 1;
+}
+
+.or-line-chart[data-motion='enter'] .or-line-chart__draw {
+  animation: or-line-chart-draw calc(var(--or-duration-reveal) * 1.5) var(--or-ease-in-out) both;
+  animation-delay: calc(var(--_s, 0) * var(--or-stagger));
+}
+
+.or-line-chart[data-motion='pending'] .or-line-chart__marker,
+.or-line-chart[data-motion='pending'] .or-line-chart__area,
+.or-line-chart[data-motion='pending'] .or-line-chart__end-label {
+  opacity: 0;
+}
+
+.or-line-chart[data-motion='enter'] .or-line-chart__marker {
+  animation: or-line-chart-pop var(--or-duration-medium) var(--or-ease-bounce) both;
+  animation-delay: calc(
+    var(--_t, 0) * var(--or-duration-reveal) * 1.5 + var(--_s, 0) * var(--or-stagger)
+  );
+}
+
+.or-line-chart[data-motion='enter'] .or-line-chart__area {
+  animation: or-line-chart-fade var(--or-duration-reveal) var(--or-ease-out) both;
+  animation-delay: var(--or-duration-medium);
+}
+
+.or-line-chart[data-motion='enter'] .or-line-chart__end-label {
+  animation: or-line-chart-fade var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--or-duration-reveal) * 1.5);
+}
+
+@keyframes or-line-chart-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes or-line-chart-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes or-line-chart-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

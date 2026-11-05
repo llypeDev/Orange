@@ -1,0 +1,93 @@
+/* ===========================================================================
+ * BarChart — barras retas (sem cantos arredondados), 2px de fundo entre marcas,
+ * crescem a partir da base. Moldura, eixos e dica em ChartFrame.css.
+ * ========================================================================= */
+
+.or-bar-chart__bar {
+  fill: var(--_color);
+  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Destaque (teclado ou ponteiro): o resto recua, a marca ativa fica inteira. */
+.or-bar-chart__bar[data-emphasis='muted'] {
+  opacity: 0.4;
+}
+
+.or-bar-chart__bar[data-emphasis='related'] {
+  opacity: 0.72;
+}
+
+.or-bar-chart__cursor {
+  fill: var(--or-color-surface-hover);
+  opacity: 0.6;
+  pointer-events: none;
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-bar-chart__cursor[data-state='closed'] {
+  opacity: 0;
+}
+
+/* --- Entrada --------------------------------------------------------------
+ * Cada categoria cresce da base (transform-origin na linha do zero, posto inline),
+ * escalonada com --or-stagger. Em movimento reduzido o estado é `static`: nada anima.
+ * ------------------------------------------------------------------------- */
+
+.or-bar-chart__group {
+  transform-box: view-box;
+}
+
+.or-bar-chart[data-motion='pending'] .or-bar-chart__group {
+  transform: scaleY(0);
+}
+
+.or-bar-chart--horizontal[data-motion='pending'] .or-bar-chart__group {
+  transform: scaleX(0);
+}
+
+.or-bar-chart[data-motion='enter'] .or-bar-chart__group {
+  animation: or-bar-chart-grow-y var(--or-duration-reveal) var(--or-ease-out) both;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger));
+}
+
+.or-bar-chart--horizontal[data-motion='enter'] .or-bar-chart__group {
+  animation-name: or-bar-chart-grow-x;
+}
+
+.or-bar-chart[data-motion='pending'] .or-chart__value {
+  opacity: 0;
+}
+
+.or-bar-chart[data-motion='enter'] .or-chart__value {
+  animation: or-bar-chart-fade-in var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: calc(var(--or-duration-medium) + var(--_i, 0) * var(--or-stagger));
+}
+
+@keyframes or-bar-chart-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes or-bar-chart-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes or-bar-chart-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
