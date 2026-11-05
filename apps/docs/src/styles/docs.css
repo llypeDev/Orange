@@ -957,7 +957,8 @@ a {
   display: inline-block;
   width: 2.5em;
   margin-right: 1em;
-  color: #55555e;
+  /* ≥ 4.5:1 sobre o fundo de código em todos os temas, ainda mais apagado que o código. */
+  color: var(--or-palette-carbon-600);
   text-align: right;
   user-select: none;
 }

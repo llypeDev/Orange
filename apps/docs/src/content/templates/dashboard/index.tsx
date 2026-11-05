@@ -141,36 +141,6 @@ export default function DashboardTemplatePage() {
           en: 'Switch to Tablet or Phone: the sidebar becomes a panel opened by the menu button, KPIs reflow and the table scrolls inside its own frame.',
         },
       ]}
-      docsAdjustments={[
-        {
-          pt: (
-            <>
-              <Code>{'<AppShell mainElement="div">'}</Code>: a documentação já tem o seu <Code>&lt;main&gt;</Code>. Em um
-              app, remova a prop.
-            </>
-          ),
-          en: (
-            <>
-              <Code>{'<AppShell mainElement="div">'}</Code>: the docs already have their own <Code>&lt;main&gt;</Code>. In
-              an app, remove the prop.
-            </>
-          ),
-        },
-        {
-          pt: (
-            <>
-              <Code>{'<PageHeader headingLevel={2}>'}</Code> e seções em <Code>h3</Code>; em um app, o título é{' '}
-              <Code>h1</Code> (o padrão) e as seções, <Code>h2</Code>.
-            </>
-          ),
-          en: (
-            <>
-              <Code>{'<PageHeader headingLevel={2}>'}</Code> and sections in <Code>h3</Code>; in an app, the title is{' '}
-              <Code>h1</Code> (the default) and sections are <Code>h2</Code>.
-            </>
-          ),
-        },
-      ]}
       files={[
         { name: 'Dashboard.tsx', code: DashboardCode, language: 'tsx' },
         { name: 'data.ts', code: DataCode, language: 'ts' },

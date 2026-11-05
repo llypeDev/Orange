@@ -19,14 +19,14 @@ export default function SettingsTemplatePage() {
         pt: (
           <p>
             Configurações costumam ser formulários longos, editados aos poucos. Este modelo divide a página em seções com
-            título (<Code>Fieldset</Code> com um <Code>h3</Code> na legenda), mostra se há alterações não salvas, mantém
+            título (<Code>Fieldset</Code> com um <Code>h2</Code> na legenda), mostra se há alterações não salvas, mantém
             Salvar sempre à mão e separa as ações destrutivas do resto — cada uma com a sua confirmação.
           </p>
         ),
         en: (
           <p>
             Settings are usually long forms, edited bit by bit. This template splits the page into titled sections (
-            <Code>Fieldset</Code> with an <Code>h3</Code> in the legend), shows whether there are unsaved changes, keeps
+            <Code>Fieldset</Code> with an <Code>h2</Code> in the legend), shows whether there are unsaved changes, keeps
             Save always at hand and separates destructive actions from the rest — each with its own confirmation.
           </p>
         ),
@@ -136,21 +136,6 @@ export default function SettingsTemplatePage() {
         },
       ]}
       docsAdjustments={[
-        {
-          pt: (
-            <>
-              <Code>{'<AppShell mainElement="div">'}</Code> e <Code>{'<PageHeader headingLevel={2}>'}</Code>, com as seções
-              em <Code>h3</Code>; em um app, <Code>&lt;main&gt;</Code>, <Code>h1</Code> e seções em <Code>h2</Code>.
-            </>
-          ),
-          en: (
-            <>
-              <Code>{'<AppShell mainElement="div">'}</Code> and <Code>{'<PageHeader headingLevel={2}>'}</Code>, with
-              sections in <Code>h3</Code>; in an app, <Code>&lt;main&gt;</Code>, <Code>h1</Code> and sections in{' '}
-              <Code>h2</Code>.
-            </>
-          ),
-        },
         {
           pt: (
             <>

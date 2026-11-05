@@ -185,6 +185,10 @@ export interface ColorTokens {
   'danger-subtle': string
   'danger-text': string
   'text-on-danger': string
+  /** Texto sobre os preenchimentos de status (Badge). */
+  'text-on-success': string
+  'text-on-warning': string
+  'text-on-info': string
   info: string
   'info-subtle': string
   'info-text': string
@@ -246,6 +250,9 @@ export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
     'danger-subtle': 'rgba(239, 106, 90, 0.14)',
     'danger-text': 'red-300',
     'text-on-danger': 'carbon-50',
+    'text-on-success': 'carbon-50',
+    'text-on-warning': 'carbon-50',
+    'text-on-info': 'paper-0',
     info: 'blue-500',
     'info-subtle': 'rgba(74, 102, 212, 0.16)',
     'info-text': 'blue-300',
@@ -298,6 +305,9 @@ export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
     'danger-subtle': 'rgba(180, 35, 24, 0.1)',
     'danger-text': 'red-700',
     'text-on-danger': '#ffffff',
+    'text-on-success': 'carbon-50',
+    'text-on-warning': 'carbon-50',
+    'text-on-info': 'paper-0',
     info: 'blue-700',
     'info-subtle': 'rgba(42, 68, 148, 0.1)',
     'info-text': 'blue-700',
@@ -355,8 +365,11 @@ export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
     'danger-subtle': 'rgba(239, 106, 90, 0.16)',
     'danger-text': 'red-300',
     'text-on-danger': 'carbon-0',
+    'text-on-success': 'carbon-0',
+    'text-on-warning': 'carbon-0',
+    'text-on-info': 'carbon-0',
     // Azul pleno fica no 500: mais claro, o texto claro do Badge informativo cairia abaixo de 4.5:1.
-    info: 'blue-500',
+    info: 'blue-300',
     'info-subtle': 'rgba(74, 102, 212, 0.16)',
     'info-text': 'blue-300',
     focus: 'orange-300',
@@ -397,10 +410,10 @@ export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
     'text-on-neutral': 'paper-0',
     // Plenos de sucesso e atenção no meio-termo: ≥ 3:1 sobre o papel (ícones, bordas)
     // sem derrubar o texto carvão do Badge abaixo de 4.5:1.
-    success: 'green-600',
+    success: 'green-900',
     'success-subtle': 'rgba(61, 102, 20, 0.1)',
     'success-text': 'green-900',
-    warning: 'amber-600',
+    warning: 'amber-900',
     'warning-subtle': 'rgba(165, 124, 16, 0.14)',
     'warning-text': 'amber-900',
     danger: 'red-800',
@@ -408,6 +421,9 @@ export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
     'danger-subtle': 'rgba(150, 29, 19, 0.08)',
     'danger-text': 'red-800',
     'text-on-danger': 'paper-0',
+    'text-on-success': 'paper-0',
+    'text-on-warning': 'paper-0',
+    'text-on-info': 'paper-0',
     info: 'blue-700',
     'info-subtle': 'rgba(42, 68, 148, 0.08)',
     'info-text': 'blue-700',

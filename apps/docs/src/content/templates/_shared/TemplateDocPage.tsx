@@ -45,7 +45,8 @@ export interface TemplateDocPageProps {
   /** O que experimentar na prévia. */
   tryIt: Localized<ReactNode>[]
   /** Diferenças entre a versão da documentação e a de um app. */
-  docsAdjustments: Localized<ReactNode>[]
+  /** Diferenças entre o modelo na documentação e num app real (opcional). */
+  docsAdjustments?: Localized<ReactNode>[]
   files: TemplateFile[]
   a11y: TemplateA11yItem[]
 }
@@ -146,23 +147,11 @@ function TemplateDocContent({
         <TemplatePreview path={path} name={title} />
         <SubHeading title={{ pt: 'Experimente', en: 'Try it' }} id="experimente" />
         <Bullets items={tryIt} />
-        <Callout title={{ pt: 'Ajustes para a documentação', en: 'Adjustments for the docs' }}>
-          <Bullets items={docsAdjustments} />
-          <p>
-            <T
-              pt={
-                <>
-                  Em um app, use os padrões: um <Code>&lt;main&gt;</Code> e um <Code>h1</Code> por página.
-                </>
-              }
-              en={
-                <>
-                  In an app, use the defaults: one <Code>&lt;main&gt;</Code> and one <Code>h1</Code> per page.
-                </>
-              }
-            />
-          </p>
-        </Callout>
+        {docsAdjustments && docsAdjustments.length > 0 && (
+          <Callout title={{ pt: 'Ajustes para a documentação', en: 'Adjustments for the docs' }}>
+            <Bullets items={docsAdjustments} />
+          </Callout>
+        )}
       </Section>
 
       <Section title={{ pt: 'Código-fonte', en: 'Source code' }} id="codigo-fonte">

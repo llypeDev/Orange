@@ -162,10 +162,9 @@ function SettingsScreen() {
   }
 
   return (
-    // Na documentação: mainElement="div" e headingLevel={2}. Em um app, use os padrões (<main> e h1).
+    // O AppShell cria o <main> e o link "Pular para o conteúdo principal".
     <AppShell
       className="aurora-settings"
-      mainElement="div"
       navBreakpoint="md"
       header={
         <AppHeader
@@ -208,7 +207,6 @@ function SettingsScreen() {
       }
     >
       <PageHeader
-        headingLevel={2}
         eyebrow="Configurações"
         title="Loja"
         description="Dados da loja Aurora Centro, canais de venda e avisos para a equipe."
@@ -237,7 +235,7 @@ function SettingsScreen() {
               <>
                 <Fieldset
                   legend={
-                    <Heading level={3} size="lg">
+                    <Heading level={2} size="lg">
                       Identidade da loja
                     </Heading>
                   }
@@ -304,7 +302,7 @@ function SettingsScreen() {
 
                 <Fieldset
                   legend={
-                    <Heading level={3} size="lg">
+                    <Heading level={2} size="lg">
                       Vendas e estoque
                     </Heading>
                   }
@@ -355,7 +353,7 @@ function SettingsScreen() {
 
                 <Fieldset
                   legend={
-                    <Heading level={3} size="lg">
+                    <Heading level={2} size="lg">
                       Avisos por e-mail
                     </Heading>
                   }
@@ -419,7 +417,7 @@ function SettingsScreen() {
         </div>
 
         <section className="aurora-settings__danger" aria-labelledby={perigoId}>
-          <Heading level={3} size="lg" id={perigoId}>
+          <Heading level={2} size="lg" id={perigoId}>
             Zona de perigo
           </Heading>
           <ul className="aurora-settings__danger-list">

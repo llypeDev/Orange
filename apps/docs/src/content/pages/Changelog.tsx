@@ -25,9 +25,32 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-06',
+    version: 'v0.5.0',
+    unreleased: true,
+    title: {
+      pt: 'Roadmap 0.2 e 0.3 concluídos: alto contraste, modelos de página e publicação no npm',
+      en: 'Roadmap 0.2 and 0.3 done: high contrast, page templates and npm publishing',
+    },
+    summary: {
+      pt: 'Tudo o que a página Sobre prometia para as versões 0.2 e 0.3, mais a base da 1.0: política de depreciação e relatório de conformidade para a auditoria externa.',
+      en: 'Everything the About page promised for versions 0.2 and 0.3, plus the groundwork for 1.0: a deprecation policy and a conformance report for the external audit.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'Temas de alto contraste dark-hc e light-hc (AAA), com o modo Auto seguindo prefers-contrast: more.', en: 'High-contrast themes dark-hc and light-hc (AAA), with Auto following prefers-contrast: more.' } },
+      { kind: 'new', text: { pt: 'Modelos de página inteira: Entrar, Painel e Configurações, com prévia em três larguras.', en: 'Full-page templates: Sign in, Dashboard and Settings, previewed at three widths.' } },
+      { kind: 'new', text: { pt: 'Tokens no formato DTCG por modo e o script figma:sync para as variáveis do Figma.', en: 'Per-mode DTCG tokens and the figma:sync script for Figma variables.' } },
+      { kind: 'new', text: { pt: 'Publicação no npm com changesets e changelog automático; regressão visual dos dois temas no CI.', en: 'npm publishing with changesets and an automated changelog; visual regression for both themes in CI.' } },
+      { kind: 'new', text: { pt: 'Política de versionamento e depreciação, e relatório de conformidade WCAG 2.2 para auditores.', en: 'Versioning and deprecation policy, and a WCAG 2.2 conformance report for auditors.' } },
+      { kind: 'improved', text: { pt: 'forced-colors (contraste do Windows) em todos os componentes, com teste que impede regressões.', en: 'forced-colors (Windows contrast themes) in every component, with a test that prevents regressions.' } },
+      { kind: 'fixed', text: { pt: 'SortableList: o arraste agora alcança a última posição.', en: 'SortableList: dragging now reaches the last position.' } },
+      { kind: 'fixed', text: { pt: 'AppShell: o cabeçalho fixo não esconde mais o elemento em foco ao rolar.', en: 'AppShell: the sticky header no longer hides the focused element when scrolling.' } },
+      { kind: 'fixed', text: { pt: 'OrangeProvider aninhado só para o idioma agora herda o tema de fora.', en: 'A nested OrangeProvider used only for the locale now inherits the outer theme.' } },
+    ],
+  },
+  {
     date: '2026-11-05',
     version: 'v0.4.0',
-    unreleased: true,
     title: {
       pt: 'Gráficos, reordenação, tour guiado, painéis redimensionáveis e Listbox',
       en: 'Charts, reordering, guided tours, resizable panels and Listbox',

@@ -158,7 +158,7 @@ export default function GettingStarted() {
         stats: [
           { value: '5 min', label: { pt: 'para instalar e configurar', en: 'to install and configure' } },
           { value: '2', label: { pt: 'pacotes: tokens e ui', en: 'packages: tokens and ui' } },
-          { value: 'React 19', label: { pt: 'ou 18.2+, com TypeScript', en: 'or 18.2+, with TypeScript' } },
+          { value: 'React 19', label: { pt: 'ou 18.2, com TypeScript', en: 'or 18.2, with TypeScript' } },
           { value: 'MIT', label: { pt: 'licença open source', en: 'open source license' } },
         ],
       }}
@@ -177,13 +177,13 @@ export default function GettingStarted() {
               description: {
                 pt: (
                   <>
-                    18.2 ou superior (desenvolvido e testado com React 19). <Code>react</Code> e{' '}
+                    18.2 ou 19 (desenvolvido e testado com React 19). <Code>react</Code> e{' '}
                     <Code>react-dom</Code> são peer dependencies.
                   </>
                 ),
                 en: (
                   <>
-                    18.2 or later (developed and tested with React 19). <Code>react</Code> and{' '}
+                    18.2 or 19 (developed and tested with React 19). <Code>react</Code> and{' '}
                     <Code>react-dom</Code> are peer dependencies.
                   </>
                 ),

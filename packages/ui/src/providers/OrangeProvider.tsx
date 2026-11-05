@@ -43,9 +43,10 @@ const LocaleContext = createContext<LocaleContextValue | null>(null)
 export interface OrangeProviderProps {
   children: ReactNode
   /**
-   * Tema inicial (não controlado). Padrão: `dark`. `system` segue
-   * `prefers-color-scheme` e, com `prefers-contrast: more`, usa o tema de alto
-   * contraste do mesmo esquema (`dark-hc`/`light-hc`).
+   * Tema inicial (não controlado). Padrão: `dark` — ou, num provider aninhado
+   * sem `theme`/`defaultTheme` (ex.: só para trocar o idioma), o tema do provider
+   * de fora. `system` segue `prefers-color-scheme` e, com `prefers-contrast: more`,
+   * usa o tema de alto contraste do mesmo esquema (`dark-hc`/`light-hc`).
    */
   defaultTheme?: ThemeSetting
   /** Tema controlado: `dark`, `light`, `dark-hc`, `light-hc` ou `system`. */
@@ -68,26 +69,30 @@ export interface OrangeProviderProps {
  */
 export function OrangeProvider({
   children,
-  defaultTheme = 'dark',
+  defaultTheme,
   theme: themeProp,
   onThemeChange,
   themeTarget = 'document',
   locale = 'pt-BR',
   messages: overrides,
 }: OrangeProviderProps) {
-  const [internalTheme, setInternalTheme] = useState<ThemeSetting>(defaultTheme)
-  const theme = themeProp ?? internalTheme
+  const parent = useContext(ThemeContext)
+  // Aninhado sem tema próprio: segue o tema de fora, em vez de voltar ao escuro.
+  const inherits = parent !== null && themeProp === undefined && defaultTheme === undefined
+  const [internalTheme, setInternalTheme] = useState<ThemeSetting>(defaultTheme ?? 'dark')
+  const theme = inherits ? parent.theme : (themeProp ?? internalTheme)
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
   const prefersMoreContrast = useMediaQuery('(prefers-contrast: more)')
   const resolvedTheme = resolveTheme(theme, { prefersLight, prefersMoreContrast })
 
-  const setTheme = useCallback(
+  const ownSetTheme = useCallback(
     (next: ThemeSetting) => {
       if (themeProp === undefined) setInternalTheme(next)
       onThemeChange?.(next)
     },
     [themeProp, onThemeChange],
   )
+  const setTheme = inherits ? parent.setTheme : ownSetTheme
 
   useEffect(() => {
     if (themeTarget !== 'document') return

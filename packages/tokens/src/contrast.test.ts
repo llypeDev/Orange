@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
   primitive,
-  primitives,
   themeMeta,
   themeNames,
   themes,
@@ -24,6 +23,9 @@ const textPairs: [fg: string, bg: string][] = [
   ['text-on-accent', 'accent-hover'],
   ['text-on-neutral', 'neutral'],
   ['text-on-danger', 'danger'],
+  ['text-on-success', 'success'],
+  ['text-on-warning', 'warning'],
+  ['text-on-info', 'info'],
   ['accent-text', 'bg'],
   ['success-text', 'bg'],
   ['warning-text', 'bg'],
@@ -190,6 +192,9 @@ describe.each(highContrastThemes)('alto contraste, tema %s', (name) => {
   it.each([
     ['text-on-danger', 'danger'],
     ['text-on-danger', 'danger-hover'],
+    ['text-on-success', 'success'],
+    ['text-on-warning', 'warning'],
+    ['text-on-info', 'info'],
     ['text-on-neutral', 'neutral'],
     ['text-on-neutral', 'neutral-hover'],
     ['text-inverse', 'surface-inverse'],
@@ -200,15 +205,6 @@ describe.each(highContrastThemes)('alto contraste, tema %s', (name) => {
 
   it.each(pairs(statuses, ['bg', 'surface']))('cor plena %s sobre %s ≥ 3:1 (ícones, bordas)', (fg, bg) => {
     expect(ratio(fg, bg)).toBeGreaterThanOrEqual(3)
-  })
-
-  // O Badge pinta o texto dos tons success/warning/info com primitivas fixas.
-  it.each([
-    ['success', primitives.carbon[50]],
-    ['warning', primitives.carbon[50]],
-    ['info', primitives.paper[0]],
-  ])('cor plena %s mantém o texto fixo do Badge (%s) ≥ 4.5:1', (status, ink) => {
-    expect(contrastRatio(ink, solid(status))).toBeGreaterThanOrEqual(4.5)
   })
 
   it('visualização: categóricas e "outros" ≥ 4.5:1 sobre os fundos dos gráficos', () => {

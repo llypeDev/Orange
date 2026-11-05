@@ -308,6 +308,12 @@
   border-top: var(--or-border-thin) solid var(--or-color-border);
 }
 
+/* Recolhida, a tabela não aparece na tela (segue na árvore de acessibilidade):
+   sem rolagem, não sobra uma região rolável fora da ordem de foco. */
+.or-chart__data[data-state='closed'] .or-chart__table-scroll {
+  overflow-x: hidden;
+}
+
 .or-chart__table-scroll:focus-visible {
   outline: 2px solid var(--or-color-focus);
   outline-offset: -2px;

@@ -125,10 +125,8 @@ export default function Dashboard() {
       : 'Escolha o período para atualizar o painel.'
 
   return (
-    // Na documentação: mainElement="div" e headingLevel={2}. Em um app, use os
-    // padrões (<main> e h1) — o AppShell já cria o link "Pular para o conteúdo".
+    // O AppShell cria o <main> e o link "Pular para o conteúdo principal".
     <AppShell
-      mainElement="div"
       header={
         <AppHeader
           brand={
@@ -178,7 +176,6 @@ export default function Dashboard() {
       }
     >
       <PageHeader
-        headingLevel={2}
         eyebrow="Loja Aurora Centro"
         title="Visão geral"
         description={resumoPeriodo}
@@ -203,7 +200,7 @@ export default function Dashboard() {
 
       <div className="aurora-dash">
         <section className="aurora-dash__section" aria-labelledby={indicadoresId}>
-          <Heading level={3} size="lg" id={indicadoresId}>
+          <Heading level={2} size="lg" id={indicadoresId}>
             Indicadores
           </Heading>
           <Grid as="ul" variant="bordered" minItemWidth="14rem" gap={6}>
@@ -224,7 +221,7 @@ export default function Dashboard() {
         </section>
 
         <section className="aurora-dash__section" aria-labelledby={vendasId}>
-          <Heading level={3} size="lg" id={vendasId}>
+          <Heading level={2} size="lg" id={vendasId}>
             Vendas
           </Heading>
           <Grid columns={{ base: 1, xl: 2 }} gap={4}>
@@ -252,7 +249,7 @@ export default function Dashboard() {
 
         <section className="aurora-dash__section" aria-labelledby={pedidosId}>
           <div className="aurora-dash__section-head">
-            <Heading level={3} size="lg" id={pedidosId}>
+            <Heading level={2} size="lg" id={pedidosId}>
               Pedidos recentes
             </Heading>
             <Text size="sm" tone="muted" aria-live="polite">

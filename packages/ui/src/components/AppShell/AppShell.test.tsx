@@ -171,6 +171,28 @@ describe('AppShell', () => {
     await expectNoA11yViolations(document.body)
   })
 
+  it('cabeçalho fixo reserva a altura dele na rolagem da página e restaura ao sair', () => {
+    mockViewport(1440)
+    const height = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(64)
+    try {
+      document.documentElement.style.scrollPaddingTop = '8px'
+      const { unmount } = render(<AppShell header={<span>Aurora</span>}>Pedidos</AppShell>)
+      expect(document.documentElement.style.scrollPaddingTop).toBe('64px')
+      unmount()
+      expect(document.documentElement.style.scrollPaddingTop).toBe('8px')
+      // Sem cabeçalho fixo (ou em modo contido) não mexe na página.
+      render(
+        <AppShell header={<span>Aurora</span>} stickyHeader={false}>
+          Pedidos
+        </AppShell>,
+      )
+      expect(document.documentElement.style.scrollPaddingTop).toBe('8px')
+    } finally {
+      height.mockRestore()
+      document.documentElement.style.scrollPaddingTop = ''
+    }
+  })
+
   it('não duplica landmarks de AppHeader, SideNav e Footer', () => {
     mockViewport(1440)
     render(<OrdersShell />)

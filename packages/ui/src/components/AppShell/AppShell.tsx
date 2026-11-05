@@ -241,6 +241,25 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     return () => observer.disconnect()
   }, [hasHeader])
 
+  // Cabeçalho fixo na página inteira: reserva a altura dele na rolagem do
+  // documento, para que o foco nunca fique escondido sob ele (WCAG 2.4.11).
+  useIsomorphicLayoutEffect(() => {
+    const headerNode = headerRef.current
+    if (!fullHeight || !stickyHeader || !headerNode || typeof document === 'undefined') return
+    const html = document.documentElement
+    const previous = html.style.scrollPaddingTop
+    const update = () => {
+      if (headerNode.offsetHeight > 0) html.style.scrollPaddingTop = `${headerNode.offsetHeight}px`
+    }
+    update()
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
+    observer?.observe(headerNode)
+    return () => {
+      observer?.disconnect()
+      html.style.scrollPaddingTop = previous
+    }
+  }, [hasHeader, fullHeight, stickyHeader])
+
   const label = navLabel ?? t('mainNavigation')
 
   /**

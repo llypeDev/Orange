@@ -119,34 +119,6 @@ export default function SignInTemplatePage() {
           en: 'Switch to Phone: the brand panel disappears and the screen becomes a single column.',
         },
       ]}
-      docsAdjustments={[
-        {
-          pt: (
-            <>
-              A raiz é uma <Code>&lt;div&gt;</Code>; em um app, use <Code>&lt;main className="aurora-signin"&gt;</Code>.
-            </>
-          ),
-          en: (
-            <>
-              The root is a <Code>&lt;div&gt;</Code>; in an app, use <Code>&lt;main className="aurora-signin"&gt;</Code>.
-            </>
-          ),
-        },
-        {
-          pt: (
-            <>
-              O título "Entrar na sua loja" é <Code>{'<Heading level={2}>'}</Code>; em um app, use{' '}
-              <Code>level={'{1}'}</Code>.
-            </>
-          ),
-          en: (
-            <>
-              The "Entrar na sua loja" title is <Code>{'<Heading level={2}>'}</Code>; in an app, use{' '}
-              <Code>level={'{1}'}</Code>.
-            </>
-          ),
-        },
-      ]}
       files={[
         { name: 'SignIn.tsx', code: SignInCode, language: 'tsx' },
         { name: 'SignIn.css', code: SignInCss, language: 'css' },

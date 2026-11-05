@@ -59,8 +59,7 @@ export default function SignIn() {
   }
 
   return (
-    // Em um app: <main className="aurora-signin"> e o título em h1.
-    <div className="aurora-signin">
+    <main className="aurora-signin">
       <div className="aurora-signin__main">
         <div className="aurora-signin__card">
           <p className="aurora-signin__logo">
@@ -68,7 +67,7 @@ export default function SignIn() {
           </p>
 
           <div className="aurora-signin__intro">
-            <Heading level={2} size="3xl" id={titleId}>
+            <Heading level={1} size="3xl" id={titleId}>
               Entrar na sua loja
             </Heading>
             <Text tone="muted">Use o e-mail de trabalho cadastrado pela sua equipe.</Text>
@@ -164,6 +163,6 @@ export default function SignIn() {
           </ul>
         </div>
       </Paper>
-    </div>
+    </main>
   )
 }

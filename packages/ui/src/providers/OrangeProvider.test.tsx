@@ -192,6 +192,31 @@ describe('OrangeProvider + useTheme', () => {
     expect(htmlTheme()).toBe('dark')
   })
 
+  it('provider aninhado só para o idioma herda o tema de fora (inclusive no escopo)', () => {
+    mockMedia()
+    render(
+      <OrangeProvider theme="light">
+        <OrangeProvider locale="en-US" themeTarget="scoped">
+          <ThemeProbe />
+        </OrangeProvider>
+      </OrangeProvider>,
+    )
+    expect(state()).toBe('light|light|light|false')
+    expect(screen.getByTestId('state').closest('[data-theme]')).toHaveAttribute('data-theme', 'light')
+  })
+
+  it('provider aninhado com tema próprio não herda', () => {
+    mockMedia()
+    render(
+      <OrangeProvider theme="light">
+        <OrangeProvider defaultTheme="dark-hc" themeTarget="scoped">
+          <ThemeProbe />
+        </OrangeProvider>
+      </OrangeProvider>,
+    )
+    expect(screen.getByTestId('state').closest('[data-theme]')).toHaveAttribute('data-theme', 'dark-hc')
+  })
+
   it('fora do provider, useTheme devolve o escuro padrão', () => {
     render(<ThemeProbe />)
     expect(state()).toBe('dark|dark|dark|false')

@@ -200,6 +200,9 @@
   --or-color-danger-subtle: rgba(239, 106, 90, 0.14);
   --or-color-danger-text: #f79a8f;
   --or-color-text-on-danger: #0f0f12;
+  --or-color-text-on-success: #0f0f12;
+  --or-color-text-on-warning: #0f0f12;
+  --or-color-text-on-info: #fffdf6;
   --or-color-info: #4a66d4;
   --or-color-info-subtle: rgba(74, 102, 212, 0.16);
   --or-color-info-text: #8da2ea;
@@ -273,6 +276,9 @@
   --or-color-danger-subtle: rgba(180, 35, 24, 0.1);
   --or-color-danger-text: #b42318;
   --or-color-text-on-danger: #ffffff;
+  --or-color-text-on-success: #0f0f12;
+  --or-color-text-on-warning: #0f0f12;
+  --or-color-text-on-info: #fffdf6;
   --or-color-info: #2a4494;
   --or-color-info-subtle: rgba(42, 68, 148, 0.1);
   --or-color-info-text: #2a4494;
@@ -346,7 +352,10 @@
   --or-color-danger-subtle: rgba(239, 106, 90, 0.16);
   --or-color-danger-text: #f79a8f;
   --or-color-text-on-danger: #0a0a0d;
-  --or-color-info: #4a66d4;
+  --or-color-text-on-success: #0a0a0d;
+  --or-color-text-on-warning: #0a0a0d;
+  --or-color-text-on-info: #0a0a0d;
+  --or-color-info: #8da2ea;
   --or-color-info-subtle: rgba(74, 102, 212, 0.16);
   --or-color-info-text: #8da2ea;
   --or-color-focus: #f8a675;
@@ -408,10 +417,10 @@
   --or-color-neutral: #0f0f12;
   --or-color-neutral-hover: #2a2a2a;
   --or-color-text-on-neutral: #fffdf6;
-  --or-color-success: #5f8f22;
+  --or-color-success: #22390b;
   --or-color-success-subtle: rgba(61, 102, 20, 0.1);
   --or-color-success-text: #22390b;
-  --or-color-warning: #a57c10;
+  --or-color-warning: #4d3200;
   --or-color-warning-subtle: rgba(165, 124, 16, 0.14);
   --or-color-warning-text: #4d3200;
   --or-color-danger: #961d13;
@@ -419,6 +428,9 @@
   --or-color-danger-subtle: rgba(150, 29, 19, 0.08);
   --or-color-danger-text: #961d13;
   --or-color-text-on-danger: #fffdf6;
+  --or-color-text-on-success: #fffdf6;
+  --or-color-text-on-warning: #fffdf6;
+  --or-color-text-on-info: #fffdf6;
   --or-color-info: #2a4494;
   --or-color-info-subtle: rgba(42, 68, 148, 0.08);
   --or-color-info-text: #2a4494;
@@ -498,7 +510,10 @@
     --or-color-danger-subtle: rgba(239, 106, 90, 0.16);
     --or-color-danger-text: #f79a8f;
     --or-color-text-on-danger: #0a0a0d;
-    --or-color-info: #4a66d4;
+    --or-color-text-on-success: #0a0a0d;
+    --or-color-text-on-warning: #0a0a0d;
+    --or-color-text-on-info: #0a0a0d;
+    --or-color-info: #8da2ea;
     --or-color-info-subtle: rgba(74, 102, 212, 0.16);
     --or-color-info-text: #8da2ea;
     --or-color-focus: #f8a675;

@@ -756,6 +756,50 @@
   background: var(--or-color-text-subtle);
 }
 
+.guide-roadmap__items li[data-state='done']::before {
+  background: var(--or-color-success);
+}
+
+.guide-roadmap__items li[data-state='external']::before {
+  border: 1px solid var(--or-color-warning);
+  background: transparent;
+}
+
+/* Situação de cada item, sempre escrita (a cor nunca é a única pista). */
+.guide-roadmap__item-state {
+  margin-left: var(--or-space-2);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.guide-roadmap__item-state--done {
+  color: var(--or-color-success-text);
+}
+
+.guide-roadmap__item-state--external {
+  color: var(--or-color-warning-text);
+}
+
+.guide-roadmap__note {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+@media (forced-colors: active) {
+  .guide-roadmap__items li[data-state='done']::before {
+    background: CanvasText;
+  }
+  .guide-roadmap__items li[data-state='external']::before {
+    border-color: CanvasText;
+  }
+}
+
 /* --- Downloads ------------------------------------------------------------ */
 
 .guide-download {
