@@ -1,5 +1,12 @@
 # @orangesys/ui
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`bf03fa2`](https://github.com/llypeDev/Orange/commit/bf03fa2e0dab23ac28c4440488106bd15d8b0f75)]:
+  - @orangesys/tokens@0.5.1
+
 ## 0.5.0
 
 ### Minor Changes
