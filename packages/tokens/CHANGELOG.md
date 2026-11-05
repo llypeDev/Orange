@@ -1,5 +1,11 @@
 # @orangesys/tokens
 
+## 0.5.1
+
+### Patch Changes
+
+- [#14](https://github.com/llypeDev/Orange/pull/14) [`bf03fa2`](https://github.com/llypeDev/Orange/commit/bf03fa2e0dab23ac28c4440488106bd15d8b0f75) Thanks [@llypeDev](https://github.com/llypeDev)! - `@orangesys/tokens` passa a ser publicado também em CommonJS. `require('@orangesys/tokens')`, `/contrast` e `/dtcg` agora funcionam em projetos CommonJS — arquivos de configuração, Jest em modo CJS, Node sem `require` de ESM e TypeScript com `module: node16` (antes dava `ERR_REQUIRE_ESM` ou o erro TS1479). Quem usa `import` continua recebendo a versão ESM.
+
 ## 0.5.0
 
 ### Minor Changes
