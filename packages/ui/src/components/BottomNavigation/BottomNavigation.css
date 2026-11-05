@@ -175,8 +175,29 @@
   padding: 0;
 }
 
+/* Alto contraste: o destino atual vira Highlight/HighlightText (o indicador de
+   2px sozinho era fraco); o anel de foco sobre ele usa HighlightText. */
 @media (forced-colors: active) {
   .or-bottom-nav__indicator::before {
     background: Highlight;
+  }
+
+  .or-bottom-nav__item[aria-current='page'] {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-bottom-nav__item[aria-current='page'] .or-bottom-nav__icon {
+    color: HighlightText;
+  }
+
+  .or-bottom-nav__item[aria-current='page']:focus-visible {
+    outline-color: HighlightText;
+  }
+
+  .or-bottom-nav__badge {
+    border-color: Canvas;
+    background: CanvasText;
+    color: Canvas;
   }
 }

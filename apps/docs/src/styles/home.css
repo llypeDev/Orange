@@ -101,7 +101,8 @@
   color: var(--or-palette-carbon-50);
 }
 
-[data-theme='light'] .home-marquee--paper {
+[data-theme='light'] .home-marquee--paper,
+[data-theme='light-hc'] .home-marquee--paper {
   --_marquee-bg: var(--or-palette-carbon-50);
   color: var(--or-palette-carbon-900);
 }

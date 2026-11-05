@@ -1,13 +1,20 @@
 import {
   BackToTop,
   buttonClassName,
+  Dropdown,
+  DropdownRadioGroup,
+  DropdownRadioItem,
   Icon,
+  isThemeSetting,
+  resolveTheme,
   useEscapeKey,
   useFocusTrap,
   useLockBodyScroll,
   usePresence,
   useScrollDirection,
   useTheme,
+  type IconName,
+  type ThemeSetting,
 } from '@orange/ui'
 import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
@@ -43,38 +50,61 @@ function LangSwitch() {
 
 type ViewTransitionDocument = Document & { startViewTransition?: (cb: () => void) => unknown }
 
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme()
-  const { t } = useLang()
-  const next = resolvedTheme === 'dark' ? 'light' : 'dark'
+const themeOptions: { value: ThemeSetting; label: Localized<string>; icon: IconName }[] = [
+  { value: 'system', label: { pt: 'Automático (sistema)', en: 'Auto (system)' }, icon: 'monitor' },
+  { value: 'dark', label: { pt: 'Escuro', en: 'Dark' }, icon: 'moon' },
+  { value: 'light', label: { pt: 'Claro', en: 'Light' }, icon: 'sun' },
+  { value: 'dark-hc', label: { pt: 'Escuro (alto contraste)', en: 'Dark (high contrast)' }, icon: 'accessibility' },
+  { value: 'light-hc', label: { pt: 'Claro (alto contraste)', en: 'Light (high contrast)' }, icon: 'accessibility' },
+]
 
-  const toggle = () => {
+const prefers = (query: string) => window.matchMedia?.(query)?.matches ?? false
+
+/**
+ * Menu de tema (menu button do WAI-ARIA, com opções exclusivas): Automático segue
+ * prefers-color-scheme e prefers-contrast; os demais fixam o tema.
+ */
+function ThemeMenu() {
+  const { theme, resolvedTheme, setTheme } = useTheme()
+  const { t } = useLang()
+  const current = themeOptions.find((option) => option.value === theme) ?? themeOptions[0]
+  const label = t({ pt: 'Tema', en: 'Theme' })
+
+  const choose = (value: string) => {
+    if (!isThemeSetting(value) || value === theme) return
+    const next = resolveTheme(value, {
+      prefersLight: prefers('(prefers-color-scheme: light)'),
+      prefersMoreContrast: prefers('(prefers-contrast: more)'),
+    })
     const doc = document as ViewTransitionDocument
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     // Cross-fade da página inteira na troca de tema (View Transitions), quando disponível.
-    if (doc.startViewTransition && !reduced) {
+    if (doc.startViewTransition && !prefers('(prefers-reduced-motion: reduce)') && next !== resolvedTheme) {
       doc.startViewTransition(() => {
-        flushSync(() => setTheme(next))
+        flushSync(() => setTheme(value))
         document.documentElement.setAttribute('data-theme', next)
       })
     } else {
-      setTheme(next)
+      setTheme(value)
     }
   }
 
   return (
-    <button
-      type="button"
-      className="doc-icon-button doc-theme-toggle"
-      onClick={toggle}
-      aria-label={
-        next === 'light'
-          ? t({ pt: 'Ativar tema claro', en: 'Switch to light theme' })
-          : t({ pt: 'Ativar tema escuro', en: 'Switch to dark theme' })
+    <Dropdown
+      placement="bottom-end"
+      trigger={
+        <button type="button" className="doc-icon-button doc-theme-toggle" aria-label={`${label}: ${t(current.label)}`}>
+          <Icon key={current.value} name={current.icon} size="md" className="doc-theme-toggle__icon" />
+        </button>
       }
     >
-      <Icon key={resolvedTheme} name={resolvedTheme === 'dark' ? 'sun' : 'moon'} size="md" className="doc-theme-toggle__icon" />
-    </button>
+      <DropdownRadioGroup label={label} value={theme} onValueChange={choose}>
+        {themeOptions.map((option) => (
+          <DropdownRadioItem key={option.value} value={option.value}>
+            {t(option.label)}
+          </DropdownRadioItem>
+        ))}
+      </DropdownRadioGroup>
+    </Dropdown>
   )
 }
 
@@ -132,7 +162,7 @@ function Header({ menuOpen, onMenu }: { menuOpen: boolean; onMenu: () => void })
       <div className="doc-header__end">
         <LangSwitch />
         <span className="doc-header__divider" aria-hidden="true" />
-        <ThemeToggle />
+        <ThemeMenu />
         {/* buttonClassName importa o módulo do Button — e com ele o CSS — no chunk principal. */}
         <Link to={to('/getting-started')} className={`${buttonClassName({ variant: 'primary', size: 'sm' })} doc-header__cta`}>
           <span className="or-button__label">{t({ pt: 'Começar', en: 'Get started' })}</span>
@@ -181,6 +211,7 @@ function Footer() {
       title: { pt: 'Componentes', en: 'Components' },
       links: [
         internal('/components/overview', { pt: 'Visão geral', en: 'Overview' }),
+        internal('/templates/dashboard', { pt: 'Modelos de página', en: 'Page templates' }),
         internal('/components/button', { pt: 'Button', en: 'Button' }),
         internal('/components/text-field', { pt: 'TextField', en: 'TextField' }),
         internal('/components/date-picker', { pt: 'DatePicker', en: 'DatePicker' }),

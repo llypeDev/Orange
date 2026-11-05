@@ -360,9 +360,49 @@
   }
 }
 
+/* Alto contraste: a seleção vira uma barra em Highlight (indicador, sublinhado
+   ou traço da aba enclosed) e o contorno fica livre para o foco — assim foco e
+   seleção continuam distinguíveis na mesma aba. */
 @media (forced-colors: active) {
-  .or-tabs__tab[aria-selected='true'] {
-    outline: 2px solid Highlight;
-    outline-offset: -2px;
+  .or-tabs__indicator {
+    background: Highlight;
+  }
+
+  .or-tabs--line .or-tabs__tab::after {
+    background: CanvasText;
+  }
+
+  .or-tabs--line .or-tabs__list:not([data-indicator]) .or-tabs__tab[aria-selected='true']::after {
+    background: Highlight;
+  }
+
+  .or-tabs--enclosed .or-tabs__tab[aria-selected='true']::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    left: -1px;
+    height: 2px;
+    background: Highlight;
+  }
+
+  .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true']::after {
+    right: auto;
+    bottom: -1px;
+    width: 2px;
+    height: auto;
+  }
+
+  /* A aba enclosed selecionada continua "aberta" para o painel. */
+  .or-tabs--enclosed.or-tabs--horizontal .or-tabs__tab[aria-selected='true'] {
+    border-bottom-color: Canvas;
+  }
+
+  .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true'] {
+    border-right-color: Canvas;
+  }
+
+  .or-tabs__tab:disabled {
+    color: GrayText;
   }
 }

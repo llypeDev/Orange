@@ -110,11 +110,44 @@
   z-index: 1;
 }
 
+/* Alto contraste: pressionado = Highlight/HighlightText (cobre hover e clique,
+   que têm seletores mais específicos no Button). Sem forced-color-adjust: none,
+   o foco e os ícones seguem as cores do sistema. */
 @media (forced-colors: active) {
-  .or-toggle-button[aria-pressed='true'] {
+  .or-button.or-toggle-button[aria-pressed='true'],
+  .or-button.or-toggle-button[aria-pressed='true']:hover:not(:disabled, [aria-disabled='true']),
+  .or-button.or-toggle-button[aria-pressed='true']:active:not(:disabled, [aria-disabled='true']) {
     border-color: Highlight;
     background: Highlight;
     color: HighlightText;
-    forced-color-adjust: none;
+  }
+
+  /* Ícones são SVG (preservam a cor do autor): cores do sistema explícitas. */
+  .or-toggle-button > .or-button__icon > svg,
+  .or-toggle-button__check-off,
+  .or-toggle-button:hover:not(:disabled) .or-toggle-button__check-off,
+  .or-toggle-button:focus-visible .or-toggle-button__check-off {
+    color: ButtonText;
+  }
+
+  .or-toggle-button[aria-pressed='true'] > .or-button__icon > svg,
+  .or-toggle-button__check-on {
+    color: HighlightText;
+  }
+
+  .or-button.or-toggle-button[aria-pressed='true']:disabled {
+    border-color: GrayText;
+    background: GrayText;
+    color: Canvas;
+  }
+
+  .or-toggle-button[aria-pressed='true']:disabled > .or-button__icon > svg,
+  .or-toggle-button[aria-pressed='true']:disabled .or-toggle-button__check-on {
+    color: Canvas;
+  }
+
+  .or-toggle-button:disabled > .or-button__icon > svg,
+  .or-toggle-button:disabled .or-toggle-button__check-off {
+    color: GrayText;
   }
 }

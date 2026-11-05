@@ -29,3 +29,28 @@ jobs:
         with:
           name: docs-site
           path: apps/docs/dist
+
+  changeset:
+    name: Changeset (aviso)
+    # Só em PRs. O PR "Versionar pacotes" (changeset-release/*) consome os changesets e fica de fora.
+    if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Não bloqueia o PR: sem changeset, só deixa um aviso na execução.
+      - name: Verificar changeset
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if pnpm changeset status --since="origin/$BASE_REF"; then
+            exit 0
+          fi
+          echo "::warning title=Changeset ausente::Este PR muda @orange/tokens ou @orange/ui sem changeset. Rode 'pnpm changeset' e faça commit do arquivo gerado (ou 'pnpm changeset --empty' se não precisa de release). Veja CONTRIBUTING.md, seção Versionamento."

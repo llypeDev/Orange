@@ -1,0 +1,104 @@
+/*
+ * Configurações — página "Loja" da área de configurações da Aurora.
+ * A estrutura vem do AppShell; aqui ficam a coluna do formulário, a barra de
+ * salvar presa ao rodapé e a zona de perigo. Só tokens do Orange.
+ */
+
+/* O cabeçalho fixo e a barra de salvar não podem cobrir o campo em foco (WCAG 2.4.11):
+   ao navegar com Tab, o navegador rola deixando essa folga em cima e embaixo. */
+:root:has(.aurora-settings) {
+  scroll-padding-block: calc(var(--or-layout-header-height) + var(--or-space-4)) calc(var(--or-space-24) + var(--or-space-4));
+}
+
+.aurora-settings__content {
+  display: grid;
+  gap: var(--or-space-12);
+  max-width: 46rem;
+  margin-top: var(--or-space-8);
+}
+
+.aurora-settings__editor {
+  display: grid;
+  gap: var(--or-space-8);
+  min-width: 0;
+}
+
+/* Seções separadas por uma linha de 1px. */
+.aurora-settings__editor .or-form > .or-fieldset + .or-fieldset {
+  padding-top: var(--or-space-8);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* O título da seção mora dentro da <legend>: herda o tamanho dela. */
+.aurora-settings__editor .or-fieldset__legend > .or-heading {
+  font-size: inherit;
+}
+
+/* Barra de salvar: presa ao rodapé da janela enquanto o formulário está à vista. */
+.aurora-settings__savebar {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--or-z-sticky);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-3) var(--or-space-4);
+  padding: var(--or-space-4) 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-bg);
+}
+
+.aurora-settings__status {
+  margin: 0;
+}
+
+.aurora-settings__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-3);
+  margin-left: auto;
+}
+
+/* Zona de perigo ------------------------------------------------------------- */
+
+.aurora-settings__danger {
+  display: grid;
+  gap: var(--or-space-4);
+}
+
+.aurora-settings__danger-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--or-border-thin) solid var(--or-color-danger);
+}
+
+.aurora-settings__danger-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-3) var(--or-space-6);
+  padding: var(--or-space-5);
+}
+
+.aurora-settings__danger-list > li + li {
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.aurora-settings__danger-list > li > div {
+  display: grid;
+  flex: 1 1 18rem;
+  gap: var(--or-space-1);
+}
+
+.aurora-settings__danger-list .or-text {
+  margin: 0;
+}
+
+@media (forced-colors: active) {
+  .aurora-settings__danger-list {
+    border-color: CanvasText;
+  }
+}

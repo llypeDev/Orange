@@ -232,3 +232,20 @@
     transform: var(--_from) scale(0.98);
   }
 }
+
+/* Alto contraste: o atalho atual (fundo + quadrado de acento) e os desabilitados
+   passam para cores do sistema. */
+@media (forced-colors: active) {
+  .or-date-range-picker__preset[aria-current='true'] {
+    border-color: Highlight;
+  }
+
+  .or-date-range-picker__preset[aria-current='true']::before {
+    background: Highlight;
+  }
+
+  .or-date-range-picker__preset[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
+  }
+}

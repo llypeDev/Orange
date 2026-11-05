@@ -174,8 +174,20 @@
   animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
 }
 
+/* Alto contraste: borda e desabilitado em cores do sistema; o arco do
+   carregamento precisa de uma "falha" em ButtonFace (transparent vira texto). */
 @media (forced-colors: active) {
   .or-button {
     border-color: ButtonText;
+  }
+
+  .or-button:disabled,
+  .or-button[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .or-button__spinner {
+    border-right-color: ButtonFace;
   }
 }

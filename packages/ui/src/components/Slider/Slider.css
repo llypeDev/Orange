@@ -331,21 +331,57 @@
   color: var(--or-color-text-subtle);
 }
 
+/* Alto contraste: trilho vazado (contorno em CanvasText), preenchimento em
+   Highlight — "cheio × vazio" não depende de Highlight contrastar com o texto.
+   Repete os seletores de inválido/desabilitado, senão a cor de token vence e
+   o navegador apaga o preenchimento. */
 @media (forced-colors: active) {
-  .or-slider__track {
-    background: GrayText;
+  .or-slider__track,
+  .or-slider[data-disabled] .or-slider__track {
+    background: Canvas;
+    outline: 1px solid CanvasText;
   }
+
   .or-slider__fill,
-  .or-slider__cap {
+  .or-slider__cap,
+  .or-slider[data-invalid] .or-slider__fill,
+  .or-slider[data-invalid] .or-slider__cap {
     background: Highlight;
   }
+
+  .or-slider__tick {
+    background: CanvasText;
+  }
+
+  .or-slider__tick[data-active] {
+    background: Canvas;
+  }
+
   .or-slider__thumb {
     border-color: ButtonText;
     background: ButtonFace;
   }
+
+  .or-slider__input:active:not(:disabled) + .or-slider__thumb-pos .or-slider__thumb {
+    background: Highlight;
+  }
+
   /* box-shadow some em alto contraste: o foco usa outline. */
   .or-slider__input:focus-visible + .or-slider__thumb-pos .or-slider__thumb {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+
+  .or-slider[data-disabled] .or-slider__track {
+    outline-color: GrayText;
+  }
+
+  .or-slider[data-disabled] .or-slider__fill,
+  .or-slider[data-disabled] .or-slider__cap {
+    background: GrayText;
+  }
+
+  .or-slider[data-disabled] .or-slider__thumb {
+    border-color: GrayText;
   }
 }

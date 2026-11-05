@@ -118,3 +118,11 @@
 .or-search__frame:focus-within .or-search__clear {
   border-left-color: var(--or-color-border);
 }
+
+/* Alto contraste: a "falha" do anel de carregamento é `transparent`, que
+   viraria texto (anel completo, parado) — usa Canvas. */
+@media (forced-colors: active) {
+  .or-search__spinner {
+    border-right-color: Canvas;
+  }
+}

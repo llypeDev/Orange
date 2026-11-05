@@ -1,5 +1,5 @@
 import '@orange/ui/styles.css'
-import { OrangeProvider } from '@orange/ui'
+import { isThemeSetting, OrangeProvider, themeNames } from '@orange/ui'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import type { Decorator, Preview } from '@storybook/react-vite'
 import { orangeTheme } from './theme'
@@ -7,8 +7,9 @@ import { orangeTheme } from './theme'
 const withOrangeProvider: Decorator = (Story, context) => {
   const locale = (context.globals.locale as string) ?? 'pt-BR'
   const motion = (context.globals.motion as string) ?? 'full'
+  const theme = isThemeSetting(context.globals.theme) ? context.globals.theme : 'dark'
   return (
-    <OrangeProvider locale={locale} themeTarget="scoped" theme={(context.globals.theme as 'dark' | 'light') ?? 'dark'}>
+    <OrangeProvider locale={locale} themeTarget="scoped" theme={theme}>
       <div style={{ padding: 4 }} data-motion={motion}>
         <Story />
       </div>
@@ -49,8 +50,9 @@ const preview: Preview = {
   },
   decorators: [
     withOrangeProvider,
+    // Toolbar de tema: escuro, claro e os dois de alto contraste (dark-hc, light-hc).
     withThemeByDataAttribute({
-      themes: { dark: 'dark', light: 'light' },
+      themes: Object.fromEntries(themeNames.map((name) => [name, name])),
       defaultTheme: 'dark',
       attributeName: 'data-theme',
     }),

@@ -3,7 +3,7 @@ import { useEffect, useId, useMemo, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { componentMetas, STORYBOOK_URL } from '../content/registry'
 import { useLang, type Localized } from '../i18n'
-import { guidelinePages, navIcons, usagePages } from '../nav'
+import { guidelinePages, navIcons, templatePages, usagePages } from '../nav'
 
 interface LinkItem {
   label: string
@@ -84,6 +84,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     [t, to],
   )
   const usage = useMemo(() => usagePages.map((p) => ({ label: t(p.label), path: to(p.path) })), [t, to])
+  const templates = useMemo(() => templatePages.map((p) => ({ label: t(p.label), path: to(p.path) })), [t, to])
   const components = useMemo(
     () => [
       { label: t({ pt: 'Visão geral', en: 'Overview' }), path: to('/components/overview') },
@@ -150,6 +151,14 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           label={t({ pt: 'Componentes', en: 'Components' })}
           items={filteredComponents}
           basePath="/components/"
+          forceOpen={!!q}
+          onNavigate={onNavigate}
+        />
+        <Group
+          icon={navIcons.templates}
+          label={t({ pt: 'Modelos', en: 'Templates' })}
+          items={filter(templates)}
+          basePath="/templates/"
           forceOpen={!!q}
           onNavigate={onNavigate}
         />

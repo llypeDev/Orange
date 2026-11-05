@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "baseBranch": "main",
+  "access": "public",
+  "format": "prettier",
+  "changelog": ["@changesets/changelog-github", { "repo": "llypeDev/Orange" }],
+  "commit": false,
+  "ignore": ["@orange/docs", "@orange/storybook"],
+  "fixed": [["@orange/tokens", "@orange/ui"]],
+  "linked": [],
+  "updateInternalDependencies": "patch",
+  "privatePackages": { "version": false, "tag": false },
+  "changedFilePatterns": [
+    "**",
+    "!**/*.test.{ts,tsx}",
+    "!**/*.stories.{ts,tsx}",
+    "!src/test/**",
+    "!vitest.config.ts"
+  ]
+}

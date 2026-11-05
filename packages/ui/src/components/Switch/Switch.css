@@ -166,17 +166,51 @@
   cursor: not-allowed;
 }
 
+/* Alto contraste: os seletores repetem os de hover/foco/desabilitado acima —
+   senão a regra mais específica (com cor de token) vence e o navegador a
+   descarta, apagando trilho e polegar. */
 @media (forced-colors: active) {
-  .or-switch__control {
+  .or-switch__control,
+  .or-switch__control:hover:not(:disabled),
+  .or-switch__control:focus-visible {
     border-color: ButtonText;
+    background: ButtonFace;
   }
-  .or-switch__thumb {
+
+  .or-switch__thumb,
+  .or-switch__control:hover:not(:disabled) .or-switch__thumb,
+  .or-switch__control:focus-visible .or-switch__thumb {
     background: ButtonText;
   }
-  .or-switch__control[aria-checked='true'] {
+
+  .or-switch__control[aria-checked='true'],
+  .or-switch__control[aria-checked='true']:hover:not(:disabled),
+  .or-switch__control[aria-checked='true']:focus-visible {
+    border-color: Highlight;
     background: Highlight;
   }
-  .or-switch__control[aria-checked='true'] .or-switch__thumb {
+
+  .or-switch__control[aria-checked='true'] .or-switch__thumb,
+  .or-switch__control[aria-checked='true']:hover:not(:disabled) .or-switch__thumb,
+  .or-switch__control[aria-checked='true']:focus-visible .or-switch__thumb {
     background: HighlightText;
+  }
+
+  .or-switch__control:disabled,
+  .or-switch__control[aria-checked='true']:disabled {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  .or-switch__control:disabled .or-switch__thumb,
+  .or-switch__control[aria-checked='true']:disabled .or-switch__thumb {
+    background: GrayText;
+  }
+
+  .or-switch[data-disabled] .or-switch__label,
+  .or-switch[data-disabled] .or-switch__description,
+  .or-switch:has(.or-switch__control:disabled) .or-switch__label,
+  .or-switch:has(.or-switch__control:disabled) .or-switch__description {
+    color: GrayText;
   }
 }

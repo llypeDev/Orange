@@ -108,8 +108,11 @@
   font-weight: var(--or-weight-medium);
 }
 
+/* Alto contraste: o marcador deslizante e a barra da seção atual (sem
+   marcador) são fundos — passam para Highlight. */
 @media (forced-colors: active) {
-  .or-toc__marker {
+  .or-toc__marker,
+  .or-toc__link::before {
     background: Highlight;
   }
 }

@@ -1,4 +1,4 @@
-import { OrangeProvider, type ThemeSetting } from '@orange/ui'
+import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orange/ui'
 import { lazy, useCallback, useState } from 'react'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { getComponentMeta, getComponentPage } from './content/registry'
@@ -14,7 +14,7 @@ const THEME_KEY = 'orange-docs-theme'
 function readTheme(): ThemeSetting {
   try {
     const saved = localStorage.getItem(THEME_KEY)
-    if (saved === 'light' || saved === 'dark') return saved
+    if (isThemeSetting(saved)) return saved
   } catch {
     /* armazenamento indisponível */
   }

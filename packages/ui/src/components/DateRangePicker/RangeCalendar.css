@@ -160,20 +160,55 @@
   }
 }
 
+/* Alto contraste: a faixa do período vira Mark/MarkText (a borda superior e
+   inferior se confundia com a grade), as pontas Highlight/HighlightText e os
+   triângulos de forma usam Highlight no lugar de `transparent` (que viraria
+   uma caixa em CanvasText). */
 @media (forced-colors: active) {
-  .or-range-calendar__day--in-range::before {
-    border-block: var(--or-border-thin) solid CanvasText;
+  .or-range-calendar__mark {
+    border-color: Canvas;
   }
+
+  .or-range-calendar__day--in-range {
+    color: MarkText;
+  }
+
+  .or-range-calendar__day--in-range::before {
+    background: Mark;
+  }
+
+  .or-range-calendar__day--in-range .or-range-calendar__mark {
+    border-color: Mark;
+  }
+
+  .or-range-calendar__day--preview::before {
+    border-block-color: CanvasText;
+  }
+
   .or-range-calendar__day--start .or-range-calendar__mark,
-  .or-range-calendar__day--end .or-range-calendar__mark {
-    forced-color-adjust: none;
+  .or-range-calendar__day--end .or-range-calendar__mark,
+  .or-range-calendar__day--start:hover .or-range-calendar__mark,
+  .or-range-calendar__day--end:hover .or-range-calendar__mark {
+    border-color: Highlight;
     background: Highlight;
     color: HighlightText;
   }
+
   .or-range-calendar__day--start .or-range-calendar__mark::before {
-    border-top-color: HighlightText;
+    border-color: HighlightText Highlight Highlight Highlight;
   }
+
   .or-range-calendar__day--end .or-range-calendar__mark::after {
-    border-bottom-color: HighlightText;
+    border-color: Highlight Highlight HighlightText Highlight;
+  }
+
+  .or-range-calendar__day--preview-edge .or-range-calendar__mark {
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+
+  .or-range-calendar__day--start.or-calendar__day--today::after,
+  .or-range-calendar__day--end.or-calendar__day--today::after {
+    background: HighlightText;
   }
 }

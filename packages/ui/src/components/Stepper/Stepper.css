@@ -286,13 +286,25 @@ button.or-stepper__trigger:focus-visible {
   padding-left: calc(var(--_marker) + var(--_gap));
 }
 
+/* Alto contraste: marcador atual em Highlight (também no hover/foco, que tem
+   seletor mais específico) e conectores — fundos — em cores do sistema. */
 @media (forced-colors: active) {
   .or-stepper__marker {
     border-color: CanvasText;
   }
 
-  .or-stepper__step[data-status='current'] .or-stepper__marker {
+  .or-stepper__step[data-status='current'] .or-stepper__marker,
+  button.or-stepper__trigger:is(:hover, :focus-visible) .or-stepper__marker {
+    border-color: Highlight;
     background: Highlight;
     color: HighlightText;
+  }
+
+  .or-stepper__step:not(:last-child)::after {
+    background: CanvasText;
+  }
+
+  .or-stepper__step:not(:last-child)::before {
+    background: Highlight;
   }
 }

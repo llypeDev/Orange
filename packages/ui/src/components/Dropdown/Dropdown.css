@@ -171,9 +171,44 @@
   user-select: none;
 }
 
+/* Alto contraste: o ponto do item de rádio, a barra do item ativo e os
+   separadores são fundos — passam para cores do sistema. */
 @media (forced-colors: active) {
   .or-menu__item:focus {
     outline: 2px solid Highlight;
     outline-offset: -2px;
+  }
+
+  .or-menu__item::before,
+  .or-menu__item--danger::before {
+    background: Highlight;
+  }
+
+  .or-menu__item[aria-disabled='true'] {
+    color: GrayText;
+  }
+
+  .or-menu__item[aria-disabled='true']::before {
+    background: GrayText;
+  }
+
+  .or-menu__indicator {
+    color: CanvasText;
+  }
+
+  .or-menu__indicator--radio {
+    border-color: CanvasText;
+  }
+
+  .or-menu__item[aria-checked='true'] .or-menu__indicator--radio {
+    border-color: Highlight;
+  }
+
+  .or-menu__dot {
+    background: Highlight;
+  }
+
+  .or-menu__separator {
+    background: CanvasText;
   }
 }

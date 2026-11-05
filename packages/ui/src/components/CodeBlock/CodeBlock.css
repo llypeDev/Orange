@@ -215,13 +215,20 @@ mark.or-code-block__line-text {
   overflow-wrap: anywhere;
 }
 
+/* Alto contraste: linha destacada em Mark/MarkText. Sem forced-color-adjust:
+   none, as cores da sintaxe (pensadas para o fundo escuro) não vazam sobre o
+   Mark — os trechos herdam MarkText. */
 @media (forced-colors: active) {
   .or-code-block {
     border-color: CanvasText;
   }
+
   .or-code-block__line--highlighted {
-    forced-color-adjust: none;
     background: Mark;
+    color: MarkText;
+  }
+
+  .or-code-block__line--highlighted .or-code-block__line-number {
     color: MarkText;
   }
 }

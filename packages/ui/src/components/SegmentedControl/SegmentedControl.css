@@ -194,18 +194,46 @@
   height: 1.25rem;
 }
 
+/* Alto contraste: o indicador vira Highlight e a opção marcada, HighlightText
+   (cores do sistema são respeitadas sem forced-color-adjust: none, que vazaria
+   o laranja do foco e dos ícones). */
 @media (forced-colors: active) {
   .or-segmented-control__track {
     border-color: ButtonText;
   }
 
-  .or-segmented-control__indicator {
+  .or-segmented-control__indicator,
+  .or-segmented-control__track:not([data-ready]) .or-segmented-control__option[data-checked] {
     background: Highlight;
-    forced-color-adjust: none;
   }
 
-  .or-segmented-control__option[data-checked] {
+  .or-segmented-control__option[data-checked],
+  .or-segmented-control__option[data-checked] .or-segmented-control__icon {
     color: HighlightText;
-    forced-color-adjust: none;
+  }
+
+  /* O anel de foco fica fora da opção: no texto do sistema (currentColor seria
+     HighlightText, invisível sobre o fundo). */
+  .or-segmented-control__option:has(.or-segmented-control__input:focus-visible) {
+    outline-color: CanvasText;
+  }
+
+  .or-segmented-control__option[data-disabled],
+  .or-segmented-control--disabled .or-segmented-control__option {
+    color: GrayText;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__track {
+    border-color: GrayText;
+    opacity: 1;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__indicator {
+    background: GrayText;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__option[data-checked],
+  .or-segmented-control--disabled .or-segmented-control__option[data-checked] .or-segmented-control__icon {
+    color: Canvas;
   }
 }

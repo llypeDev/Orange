@@ -317,13 +317,39 @@
   }
 }
 
+/* Alto contraste: a borda `transparent` dos dias viraria uma grade em
+   CanvasText e esconderia o "hoje" — as células ficam em Canvas, hoje ganha
+   borda + marcador no texto do sistema e o dia escolhido, Highlight. */
 @media (forced-colors: active) {
-  .or-calendar__day--selected {
-    forced-color-adjust: none;
+  .or-calendar__day {
+    border-color: Canvas;
+  }
+
+  .or-calendar__day--today {
+    border-color: CanvasText;
+  }
+
+  .or-calendar__day--today::after {
+    background: CanvasText;
+  }
+
+  .or-calendar__day--selected,
+  .or-calendar__day--selected:hover {
+    border-color: Highlight;
     background: Highlight;
     color: HighlightText;
   }
-  .or-calendar__day--today {
-    border-color: CanvasText;
+
+  .or-calendar__day--selected.or-calendar__day--today::after {
+    background: HighlightText;
+  }
+
+  .or-calendar__day--disabled {
+    color: GrayText;
+  }
+
+  .or-calendar__today[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
   }
 }

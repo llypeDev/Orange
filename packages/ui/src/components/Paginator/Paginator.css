@@ -209,8 +209,22 @@
   }
 }
 
+/* Alto contraste: página atual em Highlight/HighlightText (o contorno fica
+   para o foco); desabilitados em GrayText, inclusive links com aria-disabled. */
 @media (forced-colors: active) {
   .or-paginator__button[aria-current='page'] {
-    outline: 2px solid Highlight;
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-paginator__button--page::after {
+    background: Highlight;
+  }
+
+  .or-paginator__button:disabled,
+  .or-paginator__button[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
   }
 }

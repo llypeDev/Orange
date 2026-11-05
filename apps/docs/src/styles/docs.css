@@ -493,6 +493,35 @@ a {
   text-transform: uppercase;
 }
 
+.doc-status--deprecated {
+  border-color: var(--or-color-warning);
+  background: var(--or-color-warning-subtle);
+  color: var(--or-color-warning-text);
+}
+
+/* Aviso de componente depreciado: ocupa a linha inteira abaixo da importação e dos links. */
+.doc-deprecation {
+  flex-basis: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  padding: var(--or-space-3) var(--or-space-4);
+  border: 1px solid var(--or-color-border);
+  border-left: 4px solid var(--or-color-warning);
+  background: var(--or-color-warning-subtle);
+  font-size: var(--or-text-sm);
+}
+
+.doc-deprecation > .or-icon {
+  flex: none;
+  margin-top: 0.2em;
+  color: var(--or-color-warning-text);
+}
+
+.doc-deprecation p {
+  margin: 0;
+}
+
 .doc-import {
   display: inline-flex;
   align-items: stretch;
@@ -750,6 +779,7 @@ a {
 
 .doc-example__toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--or-space-3);

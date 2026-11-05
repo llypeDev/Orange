@@ -10,7 +10,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '../../apps/storybook
 const port = Number(process.argv[2] ?? process.env.VISUAL_PORT ?? 6007)
 
 if (!existsSync(join(root, 'index.json'))) {
-  console.error(`Storybook estático não encontrado em ${root}. Rode \`pnpm build:storybook\` antes.`)
+  console.error(
+    `Storybook estático não encontrado em ${root}. Rode \`pnpm build:storybook\` antes.`,
+  )
   process.exit(1)
 }
 

@@ -1,0 +1,131 @@
+name: Release
+
+# Versiona e publica @orange/tokens e @orange/ui com Changesets (ver CONTRIBUTING.md → Publicação).
+#
+# 1. Push em main com changesets pendentes → abre ou atualiza o PR "Versionar pacotes"
+#    (versões novas + CHANGELOG.md de cada pacote).
+# 2. Merge desse PR → não há mais changesets e a versão nova não está no npm → publica
+#    com provenance, cria as tags e as GitHub Releases.
+#
+# A publicação só roda se o secret NPM_TOKEN existir. Sem ele o workflow termina com
+# sucesso e deixa um aviso no resumo da execução.
+#
+# changesets/action: `v2` é um branch nesse repositório (não uma tag), por isso a
+# versão fica fixada na tag de release.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  # Nunca interromper uma publicação no meio.
+  cancel-in-progress: false
+
+jobs:
+  select-mode:
+    name: Escolher etapa
+    # Forks não versionam nem publicam.
+    if: github.repository == 'llypeDev/Orange'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      mode: ${{ steps.select-mode.outputs.mode }}
+      npm-token: ${{ steps.npm-token.outputs.available }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      # version: há changesets · publish: há versão local que não está no npm · none: nada a fazer
+      - id: select-mode
+        uses: changesets/action/select-mode@v2.1.2
+      - id: npm-token
+        name: Verificar o secret NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          MODE: ${{ steps.select-mode.outputs.mode }}
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "available=false" >> "$GITHUB_OUTPUT"
+          case "$MODE" in
+            publish) msg="Há versões novas de @orange/tokens e @orange/ui prontas, mas a publicação no npm foi pulada porque o secret NPM_TOKEN não está configurado. Veja CONTRIBUTING.md, seção Publicação." ;;
+            version) msg="O secret NPM_TOKEN não está configurado: o PR \"Versionar pacotes\" será aberto ou atualizado, mas o merge dele não publicará no npm. Veja CONTRIBUTING.md, seção Publicação." ;;
+            *) exit 0 ;;
+          esac
+          echo "::notice title=Publicação no npm desativada::$msg"
+          {
+            echo "### Publicação no npm desativada"
+            echo
+            echo "$msg"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  version:
+    name: Versionar pacotes (PR)
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'version'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit das versões no branch do PR
+      pull-requests: write # abrir/atualizar o PR "Versionar pacotes"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Histórico completo: o changelog liga cada entrada ao commit e ao PR de origem.
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      - name: Abrir ou atualizar o PR "Versionar pacotes"
+        uses: changesets/action/version@v2.1.2
+        with:
+          script: pnpm version-packages
+          commit-message: Versiona pacotes
+          pr-title: Versionar pacotes
+        env:
+          # @changesets/changelog-github consulta PRs e autores na API do GitHub.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publicar no npm
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'publish' && needs.select-mode.outputs.npm-token == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # tags e GitHub Releases
+      id-token: write # provenance (atestado assinado do build)
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      - name: Publicar @orange/tokens e @orange/ui
+        uses: changesets/action/publish@v2.1.2
+        with:
+          # gen + build dos pacotes + changeset publish (usa pnpm publish: aplica publishConfig e troca workspace:*)
+          script: pnpm release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

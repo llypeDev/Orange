@@ -218,13 +218,36 @@
   background: transparent;
 }
 
+/* Alto contraste: item selecionado em Highlight/HighlightText (sem
+   forced-color-adjust: none, que vazava o laranja do foco e da caixa); o anel
+   de foco sobre a seleção usa HighlightText para não sumir no mesmo fundo. */
 @media (forced-colors: active) {
   .or-tree__item[aria-selected='true'] {
-    forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
   }
-  .or-tree__item[aria-selected='true'] * {
+
+  .or-tree__item[aria-selected='true'] .or-tree__label,
+  .or-tree__item[aria-selected='true'] .or-tree__icon,
+  .or-tree__item[aria-selected='true'] .or-tree__toggle {
     color: HighlightText;
+  }
+
+  .or-tree__item[aria-selected='true']:focus-visible {
+    outline-color: HighlightText;
+  }
+
+  .or-tree__checkbox {
+    border-color: CanvasText;
+  }
+
+  .or-tree__item[aria-selected='true'] .or-tree__checkbox {
+    border-color: HighlightText;
+    background: HighlightText;
+    color: Highlight;
+  }
+
+  .or-tree__item--disabled {
+    color: GrayText;
   }
 }

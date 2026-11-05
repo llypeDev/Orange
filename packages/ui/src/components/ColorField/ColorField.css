@@ -190,8 +190,26 @@
   }
 }
 
+/* Alto contraste: a cor da amostra É o conteúdo — o chip e a prévia não deixam
+   o navegador trocá-la (forced-color-adjust: none, só nesses dois elementos);
+   molduras, seleção e foco usam cores do sistema. A amostra marcada mantém o
+   check e ganha borda em Highlight; o contorno fica para o foco. */
 @media (forced-colors: active) {
+  .or-color-field__chip,
+  .or-color-field__preview {
+    forced-color-adjust: none;
+  }
+
+  .or-color-field__preview {
+    border-color: CanvasText;
+  }
+
+  .or-color-field__swatch,
+  .or-color-field__swatch:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) {
+    border-color: ButtonText;
+  }
+
   .or-color-field__swatch[aria-checked='true'] {
-    outline: 2px solid Highlight;
+    border-color: Highlight;
   }
 }

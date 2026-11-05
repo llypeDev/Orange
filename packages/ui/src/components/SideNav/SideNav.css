@@ -443,8 +443,43 @@
   transition: none;
 }
 
+/* Alto contraste: a página atual (fundo de acento + barra de 2px) vira
+   Highlight/HighlightText — a barra sozinha era fraca demais; o rótulo flutuante
+   e o ponto de aviso do modo recolhido também passam para cores do sistema. */
 @media (forced-colors: active) {
-  .or-side-nav__item[aria-current='page']::before {
+  .or-side-nav__item::before {
+    background: Highlight;
+  }
+
+  .or-side-nav__item[aria-current='page'] {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-side-nav__item[aria-current='page'] .or-side-nav__icon {
+    color: HighlightText;
+  }
+
+  .or-side-nav__item[aria-current='page']:focus-visible {
+    outline-color: HighlightText;
+  }
+
+  .or-side-nav__item[aria-current='page'] .or-side-nav__badge {
+    border-color: HighlightText;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-side-nav__item:disabled,
+  .or-side-nav__item[aria-disabled='true'] {
+    color: GrayText;
+  }
+
+  .or-side-nav--collapsed .or-side-nav__item[data-level='0'] > .or-side-nav__label {
+    outline: 1px solid CanvasText;
+  }
+
+  .or-side-nav--collapsed .or-side-nav__item[data-level='0'] > .or-side-nav__badge {
     background: Highlight;
   }
 }
