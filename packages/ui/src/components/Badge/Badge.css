@@ -53,11 +53,11 @@
 }
 .or-badge--success {
   --_bg: var(--or-color-success);
-  --_fg: var(--or-palette-carbon-50);
+  --_fg: var(--or-color-text-on-success);
 }
 .or-badge--warning {
   --_bg: var(--or-color-warning);
-  --_fg: var(--or-palette-carbon-50);
+  --_fg: var(--or-color-text-on-warning);
 }
 .or-badge--danger {
   --_bg: var(--or-color-danger);
@@ -65,7 +65,7 @@
 }
 .or-badge--info {
   --_bg: var(--or-color-info);
-  --_fg: var(--or-palette-paper-0);
+  --_fg: var(--or-color-text-on-info);
 }
 
 /* Sobreposto --------------------------------------------------------------- */

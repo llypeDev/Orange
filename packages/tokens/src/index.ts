@@ -1,9 +1,11 @@
 /**
  * Orange design tokens — fonte única da verdade.
  *
- * `primitives` são valores crus (paletas). `themes` mapeiam esses valores para
- * tokens semânticos (`--or-color-*`) usados por todos os componentes.
- * O script `scripts/build.ts` gera `css/tokens.css` a partir deste arquivo.
+ * `primitives` são valores crus (paletas). `themeDefinitions` mapeiam essas
+ * primitivas (por nome) para tokens semânticos (`--or-color-*`) usados por
+ * todos os componentes; `themes` traz os mesmos tokens já resolvidos em cor.
+ * O script `scripts/build.ts` gera `css/tokens.css` e os arquivos DTCG
+ * (`dist/tokens.dtcg.json`) a partir deste arquivo.
  */
 
 export const primitives = {
@@ -47,12 +49,16 @@ export const primitives = {
     600: '#d4622a',
     700: '#b85a24',
     800: '#9c4416',
+    /** Acento do tema claro de alto contraste: ≥ 7:1 com o papel dos dois lados. */
+    850: '#8a3a10',
     900: '#6b2e0e',
   },
   green: {
     100: '#e4f1d1',
     300: '#a6d16a',
     500: '#7fb236',
+    /** Sucesso pleno no claro de alto contraste: ≥ 3:1 sobre o papel e ≥ 4.5:1 com texto carvão. */
+    600: '#5f8f22',
     700: '#3d6614',
     900: '#22390b',
   },
@@ -69,18 +75,73 @@ export const primitives = {
     300: '#f79a8f',
     500: '#ef6a5a',
     700: '#b42318',
+    /** Erro no claro de alto contraste: ≥ 7:1 sobre o papel e com texto claro por cima. */
+    800: '#961d13',
     900: '#6e140d',
   },
   amber: {
     100: '#faefcd',
     300: '#efd27f',
     500: '#e8c15a',
+    /** Atenção plena no claro de alto contraste: ≥ 3:1 sobre o papel e ≥ 4.5:1 com texto carvão. */
+    600: '#a57c10',
     700: '#8a5a00',
     900: '#4d3200',
   },
 } as const
 
-export type ThemeName = 'dark' | 'light'
+type Primitives = typeof primitives
+
+/** Nome de uma primitiva no formato `família-passo` (ex.: `green-500`), como em `--or-palette-*`. */
+export type PrimitiveName = {
+  [F in keyof Primitives]: `${F}-${Extract<keyof Primitives[F], string | number>}`
+}[keyof Primitives]
+
+/** `true` quando `name` é uma primitiva existente (`orange-500`, `carbon-0`…). */
+export function isPrimitiveName(name: string): name is PrimitiveName {
+  const at = name.lastIndexOf('-')
+  if (at <= 0) return false
+  const family = (primitives as Record<string, Record<string, string>>)[name.slice(0, at)]
+  return family !== undefined && Object.hasOwn(family, name.slice(at + 1))
+}
+
+/** Valor de uma primitiva pelo nome: `primitive('green-500')` → `#7fb236`. */
+export function primitive(name: PrimitiveName): string {
+  const at = name.lastIndexOf('-')
+  const family = primitives[name.slice(0, at) as keyof Primitives] as Record<string, string>
+  return family[name.slice(at + 1)]
+}
+
+/* ---------------------------------------------------------------------------
+ * Temas
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Temas prontos, na ordem dos seletores. Cada um vira um bloco
+ * `[data-theme='<nome>']` em `tokens.css` e um modo no Figma.
+ */
+export const themeNames = ['dark', 'light', 'dark-hc', 'light-hc'] as const
+
+export type ThemeName = (typeof themeNames)[number]
+
+/** Esquema de cor de um tema (`color-scheme` de controles nativos e barras de rolagem). */
+export type ColorScheme = 'dark' | 'light'
+
+export interface ThemeMeta {
+  colorScheme: ColorScheme
+  /**
+   * Tema de alto contraste (WCAG AAA): texto ≥ 7:1, bordas e foco ≥ 4.5:1.
+   * Em modo automático, `prefers-contrast: more` troca o tema padrão por ele.
+   */
+  highContrast: boolean
+}
+
+export const themeMeta: Record<ThemeName, ThemeMeta> = {
+  dark: { colorScheme: 'dark', highContrast: false },
+  light: { colorScheme: 'light', highContrast: false },
+  'dark-hc': { colorScheme: 'dark', highContrast: true },
+  'light-hc': { colorScheme: 'light', highContrast: true },
+}
 
 /** Tokens semânticos de cor. As chaves viram `--or-color-<chave>`. */
 export interface ColorTokens {
@@ -124,6 +185,10 @@ export interface ColorTokens {
   'danger-subtle': string
   'danger-text': string
   'text-on-danger': string
+  /** Texto sobre os preenchimentos de status (Badge). */
+  'text-on-success': string
+  'text-on-warning': string
+  'text-on-info': string
   info: string
   'info-subtle': string
   'info-text': string
@@ -134,111 +199,258 @@ export interface ColorTokens {
   selection: string
 }
 
-const { carbon, paper, orange, green, blue, red, amber } = primitives
+/**
+ * Valor de um token semântico na definição de um tema: o nome de uma primitiva
+ * (vira alias no DTCG e no Figma) ou uma cor crua quando nenhuma primitiva serve
+ * (transparências e alguns ajustes finos).
+ */
+export type ColorValue = PrimitiveName | `#${string}` | `rgba(${string})`
 
-export const themes: Record<ThemeName, ColorTokens> = {
+export type ThemeDefinition = { [K in keyof ColorTokens]: ColorValue }
+
+export const themeDefinitions: Record<ThemeName, ThemeDefinition> = {
   dark: {
-    bg: carbon[50],
-    'bg-subtle': carbon[100],
-    surface: carbon[50],
-    'surface-raised': carbon[150],
-    'surface-hover': carbon[200],
-    'surface-active': carbon[300],
-    'surface-inverse': carbon[900],
+    bg: 'carbon-50',
+    'bg-subtle': 'carbon-100',
+    surface: 'carbon-50',
+    'surface-raised': 'carbon-150',
+    'surface-hover': 'carbon-200',
+    'surface-active': 'carbon-300',
+    'surface-inverse': 'carbon-900',
     overlay: 'rgba(5, 5, 7, 0.72)',
     shadow: 'rgba(0, 0, 0, 0.55)',
-    text: carbon[900],
-    'text-muted': carbon[700],
-    'text-subtle': carbon[600],
+    text: 'carbon-900',
+    'text-muted': 'carbon-700',
+    'text-subtle': 'carbon-600',
     // ~3.4:1 sobre o fundo: legível para baixa visão, mas claramente inativo.
     'text-disabled': '#6b6b74',
-    'text-inverse': carbon[50],
-    'text-on-accent': carbon[50],
-    border: carbon[200],
+    'text-inverse': 'carbon-50',
+    'text-on-accent': 'carbon-50',
+    border: 'carbon-200',
     'border-subtle': '#1f1f26',
-    'border-strong': carbon[300],
-    'border-control': carbon[500],
-    accent: orange[500],
-    'accent-hover': orange[400],
-    'accent-active': orange[550],
+    'border-strong': 'carbon-300',
+    'border-control': 'carbon-500',
+    accent: 'orange-500',
+    'accent-hover': 'orange-400',
+    'accent-active': 'orange-550',
     'accent-subtle': 'rgba(245, 133, 73, 0.12)',
-    'accent-text': orange[500],
+    'accent-text': 'orange-500',
     'accent-border': 'rgba(245, 133, 73, 0.45)',
-    neutral: carbon[900],
-    'neutral-hover': carbon[950],
-    'text-on-neutral': carbon[50],
-    success: green[500],
+    neutral: 'carbon-900',
+    'neutral-hover': 'carbon-950',
+    'text-on-neutral': 'carbon-50',
+    success: 'green-500',
     'success-subtle': 'rgba(127, 178, 54, 0.14)',
-    'success-text': green[300],
-    warning: amber[500],
+    'success-text': 'green-300',
+    warning: 'amber-500',
     'warning-subtle': 'rgba(232, 193, 90, 0.14)',
-    'warning-text': amber[300],
-    danger: red[500],
-    'danger-hover': red[300],
+    'warning-text': 'amber-300',
+    danger: 'red-500',
+    'danger-hover': 'red-300',
     'danger-subtle': 'rgba(239, 106, 90, 0.14)',
-    'danger-text': red[300],
-    'text-on-danger': carbon[50],
-    info: blue[500],
+    'danger-text': 'red-300',
+    'text-on-danger': 'carbon-50',
+    'text-on-success': 'carbon-50',
+    'text-on-warning': 'carbon-50',
+    'text-on-info': 'paper-0',
+    info: 'blue-500',
     'info-subtle': 'rgba(74, 102, 212, 0.16)',
-    'info-text': blue[300],
-    focus: orange[400],
+    'info-text': 'blue-300',
+    focus: 'orange-400',
     'grid-line': 'rgba(240, 235, 219, 0.045)',
-    'code-bg': carbon[0],
-    'code-text': carbon[800],
+    'code-bg': 'carbon-0',
+    'code-text': 'carbon-800',
     selection: 'rgba(245, 133, 73, 0.32)',
   },
   light: {
-    bg: paper[50],
-    'bg-subtle': paper[100],
-    surface: paper[0],
-    'surface-raised': paper[0],
-    'surface-hover': paper[200],
-    'surface-active': paper[300],
-    'surface-inverse': paper[950],
+    bg: 'paper-50',
+    'bg-subtle': 'paper-100',
+    surface: 'paper-0',
+    'surface-raised': 'paper-0',
+    'surface-hover': 'paper-200',
+    'surface-active': 'paper-300',
+    'surface-inverse': 'paper-950',
     overlay: 'rgba(15, 15, 18, 0.48)',
     // Bem mais leve que no escuro: a mesma sombra virava um halo cinza pesado sobre o papel.
     shadow: 'rgba(15, 15, 18, 0.14)',
-    text: paper[950],
-    'text-muted': paper[800],
-    'text-subtle': paper[700],
-    'text-disabled': paper[600],
-    'text-inverse': paper[50],
-    'text-on-accent': paper[950],
-    border: paper[400],
-    'border-subtle': paper[300],
-    'border-strong': paper[500],
+    text: 'paper-950',
+    'text-muted': 'paper-800',
+    'text-subtle': 'paper-700',
+    'text-disabled': 'paper-600',
+    'text-inverse': 'paper-50',
+    'text-on-accent': 'paper-950',
+    border: 'paper-400',
+    'border-subtle': 'paper-300',
+    'border-strong': 'paper-500',
     'border-control': '#7a7468',
     // Laranja mais fechado no tema claro: ≥ 3:1 contra o papel (WCAG 1.4.11)
     // e ≥ 4.5:1 para o texto escuro sobre ele.
-    accent: orange[600],
-    'accent-hover': orange[550],
-    'accent-active': orange[700],
+    accent: 'orange-600',
+    'accent-hover': 'orange-550',
+    'accent-active': 'orange-700',
     'accent-subtle': 'rgba(212, 98, 42, 0.12)',
-    'accent-text': orange[800],
+    'accent-text': 'orange-800',
     'accent-border': 'rgba(184, 90, 36, 0.5)',
-    neutral: paper[950],
+    neutral: 'paper-950',
     'neutral-hover': '#2b2b2c',
-    'text-on-neutral': paper[50],
-    success: green[500],
+    'text-on-neutral': 'paper-50',
+    success: 'green-500',
     'success-subtle': 'rgba(127, 178, 54, 0.16)',
-    'success-text': green[700],
-    warning: amber[500],
+    'success-text': 'green-700',
+    warning: 'amber-500',
     'warning-subtle': 'rgba(232, 193, 90, 0.22)',
-    'warning-text': amber[700],
-    danger: red[700],
+    'warning-text': 'amber-700',
+    danger: 'red-700',
     'danger-hover': '#c9301f',
     'danger-subtle': 'rgba(180, 35, 24, 0.1)',
-    'danger-text': red[700],
+    'danger-text': 'red-700',
     'text-on-danger': '#ffffff',
-    info: blue[700],
+    'text-on-success': 'carbon-50',
+    'text-on-warning': 'carbon-50',
+    'text-on-info': 'paper-0',
+    info: 'blue-700',
     'info-subtle': 'rgba(42, 68, 148, 0.1)',
-    'info-text': blue[700],
-    focus: orange[700],
+    'info-text': 'blue-700',
+    focus: 'orange-700',
     'grid-line': 'rgba(15, 15, 18, 0.05)',
-    'code-bg': carbon[50],
-    'code-text': carbon[800],
+    'code-bg': 'carbon-50',
+    'code-text': 'carbon-800',
     selection: 'rgba(245, 133, 73, 0.28)',
   },
+  /*
+   * Alto contraste (WCAG AAA). Mesma identidade — carvão, creme e laranja —, com:
+   * texto ≥ 7:1 sobre fundos e superfícies, bordas e foco ≥ 4.5:1, pares de acento
+   * ≥ 7:1 e textos de status ≥ 7:1. Validado em `contrast.test.ts`.
+   */
+  'dark-hc': {
+    // Fundo mais fundo que o escuro padrão; superfícies separadas por borda, não por cinza.
+    bg: 'carbon-0',
+    'bg-subtle': 'carbon-50',
+    surface: 'carbon-0',
+    'surface-raised': 'carbon-50',
+    'surface-hover': 'carbon-150',
+    'surface-active': 'carbon-200',
+    'surface-inverse': 'carbon-950',
+    overlay: 'rgba(0, 0, 0, 0.8)',
+    shadow: 'rgba(0, 0, 0, 0.7)',
+    text: 'carbon-950',
+    'text-muted': 'carbon-800',
+    'text-subtle': 'carbon-700',
+    // ≥ 4.5:1: legível, mas um degrau abaixo do texto sutil (≥ 7:1).
+    'text-disabled': '#85858e',
+    'text-inverse': 'carbon-0',
+    'text-on-accent': 'carbon-0',
+    // Todas as bordas ≥ 4.5:1 — a mais fraca já supera a border-strong do tema padrão.
+    border: 'carbon-600',
+    'border-subtle': '#85858e',
+    'border-strong': 'carbon-700',
+    'border-control': 'carbon-700',
+    accent: 'orange-500',
+    'accent-hover': 'orange-400',
+    'accent-active': 'orange-300',
+    'accent-subtle': 'rgba(245, 133, 73, 0.16)',
+    'accent-text': 'orange-400',
+    'accent-border': 'orange-500',
+    neutral: 'carbon-950',
+    'neutral-hover': 'carbon-900',
+    'text-on-neutral': 'carbon-0',
+    success: 'green-500',
+    'success-subtle': 'rgba(127, 178, 54, 0.16)',
+    'success-text': 'green-300',
+    warning: 'amber-500',
+    'warning-subtle': 'rgba(232, 193, 90, 0.16)',
+    'warning-text': 'amber-300',
+    danger: 'red-300',
+    'danger-hover': 'red-100',
+    'danger-subtle': 'rgba(239, 106, 90, 0.16)',
+    'danger-text': 'red-300',
+    'text-on-danger': 'carbon-0',
+    'text-on-success': 'carbon-0',
+    'text-on-warning': 'carbon-0',
+    'text-on-info': 'carbon-0',
+    // Azul pleno fica no 500: mais claro, o texto claro do Badge informativo cairia abaixo de 4.5:1.
+    info: 'blue-300',
+    'info-subtle': 'rgba(74, 102, 212, 0.16)',
+    'info-text': 'blue-300',
+    focus: 'orange-300',
+    'grid-line': 'rgba(250, 247, 236, 0.08)',
+    'code-bg': 'carbon-50',
+    'code-text': 'carbon-900',
+    selection: 'rgba(245, 133, 73, 0.4)',
+  },
+  'light-hc': {
+    bg: 'paper-0',
+    'bg-subtle': 'paper-50',
+    surface: 'paper-0',
+    'surface-raised': 'paper-0',
+    'surface-hover': 'paper-200',
+    'surface-active': 'paper-300',
+    'surface-inverse': 'paper-950',
+    overlay: 'rgba(15, 15, 18, 0.64)',
+    shadow: 'rgba(15, 15, 18, 0.28)',
+    text: 'paper-950',
+    'text-muted': 'paper-900',
+    'text-subtle': 'paper-800',
+    'text-disabled': 'paper-700',
+    'text-inverse': 'paper-0',
+    // O acento escurece (laranja 850) para o texto claro por cima passar de 7:1.
+    'text-on-accent': 'paper-0',
+    border: 'paper-800',
+    'border-subtle': 'paper-700',
+    'border-strong': 'paper-900',
+    'border-control': 'paper-900',
+    accent: 'orange-850',
+    'accent-hover': 'orange-900',
+    'accent-active': 'orange-900',
+    'accent-subtle': 'rgba(138, 58, 16, 0.08)',
+    'accent-text': 'orange-900',
+    'accent-border': 'orange-850',
+    neutral: 'paper-950',
+    'neutral-hover': 'paper-900',
+    'text-on-neutral': 'paper-0',
+    // Plenos de sucesso e atenção no meio-termo: ≥ 3:1 sobre o papel (ícones, bordas)
+    // sem derrubar o texto carvão do Badge abaixo de 4.5:1.
+    success: 'green-900',
+    'success-subtle': 'rgba(61, 102, 20, 0.1)',
+    'success-text': 'green-900',
+    warning: 'amber-900',
+    'warning-subtle': 'rgba(165, 124, 16, 0.14)',
+    'warning-text': 'amber-900',
+    danger: 'red-800',
+    'danger-hover': 'red-900',
+    'danger-subtle': 'rgba(150, 29, 19, 0.08)',
+    'danger-text': 'red-800',
+    'text-on-danger': 'paper-0',
+    'text-on-success': 'paper-0',
+    'text-on-warning': 'paper-0',
+    'text-on-info': 'paper-0',
+    info: 'blue-700',
+    'info-subtle': 'rgba(42, 68, 148, 0.08)',
+    'info-text': 'blue-700',
+    focus: 'orange-900',
+    'grid-line': 'rgba(15, 15, 18, 0.08)',
+    'code-bg': 'carbon-0',
+    'code-text': 'carbon-900',
+    selection: 'rgba(138, 58, 16, 0.24)',
+  },
+}
+
+/** Cor final de um valor de tema: primitivas viram hex; cores cruas passam direto. */
+export function resolveColor(value: ColorValue): string {
+  return isPrimitiveName(value) ? primitive(value) : value
+}
+
+function resolveTheme(definition: ThemeDefinition): ColorTokens {
+  const entries = Object.entries(definition) as [keyof ColorTokens, ColorValue][]
+  return Object.fromEntries(entries.map(([key, value]) => [key, resolveColor(value)])) as unknown as ColorTokens
+}
+
+/** Tokens semânticos de cada tema, já resolvidos em cor (hex ou rgba). */
+export const themes: Record<ThemeName, ColorTokens> = {
+  dark: resolveTheme(themeDefinitions.dark),
+  light: resolveTheme(themeDefinitions.light),
+  'dark-hc': resolveTheme(themeDefinitions['dark-hc']),
+  'light-hc': resolveTheme(themeDefinitions['light-hc']),
 }
 
 /* ---------------------------------------------------------------------------
@@ -249,26 +461,13 @@ export const themes: Record<ThemeName, ColorTokens> = {
  * "Visualização de dados" e dos componentes BarChart, LineChart e Sparkline.
  * ------------------------------------------------------------------------- */
 
-type Primitives = typeof primitives
-
-/** Nome de uma primitiva no formato `família-passo` (ex.: `green-500`), como em `--or-palette-*`. */
-export type PrimitiveName = {
-  [F in keyof Primitives]: `${F}-${Extract<keyof Primitives[F], string | number>}`
-}[keyof Primitives]
-
-/** Valor de uma primitiva pelo nome: `primitive('green-500')` → `#7fb236`. */
-export function primitive(name: PrimitiveName): string {
-  const at = name.lastIndexOf('-')
-  const family = primitives[name.slice(0, at) as keyof Primitives] as Record<string, string>
-  return family[name.slice(at + 1)]
-}
-
 type Seven<T> = readonly [T, T, T, T, T, T, T]
 
 export interface VizPalette {
   /**
    * Cinco matizes para identificar séries, em ordem fixa: verde, âmbar e vermelho ficam quase
-   * iguais com protanopia/deuteranopia, então nunca são vizinhos. ≥ 3:1 contra o fundo.
+   * iguais com protanopia/deuteranopia, então nunca são vizinhos. ≥ 3:1 contra o fundo
+   * (≥ 4.5:1 nos temas de alto contraste).
    */
   categorical: readonly [PrimitiveName, PrimitiveName, PrimitiveName, PrimitiveName, PrimitiveName]
   /** Neutro para "Outros" (e para o resto quando uma marca está em destaque com o acento). */
@@ -324,6 +523,54 @@ export const vizPalettes: Record<ThemeName, VizPalette> = {
       'orange-800',
     ],
   },
+  // Mesma ordem e famílias do escuro; azul e "outros" sobem um degrau para passar de 4.5:1, e a
+  // sequencial começa no 800 (o 900 sumia no fundo).
+  'dark-hc': {
+    categorical: ['green-500', 'blue-300', 'amber-500', 'orange-600', 'red-300'],
+    other: 'carbon-600',
+    sequential: [
+      'orange-800',
+      'orange-700',
+      'orange-600',
+      'orange-500',
+      'orange-400',
+      'orange-300',
+      'orange-100',
+    ],
+    diverging: [
+      'blue-300',
+      'blue-400',
+      'blue-500',
+      'carbon-400',
+      'orange-700',
+      'orange-500',
+      'orange-300',
+    ],
+  },
+  // Sobre o papel claro, 4.5:1 só sobra para tons escuros: laranja e vermelho se separam pela
+  // luminosidade (laranja 900, bem mais escuro que o vermelho 700), não só pelo matiz.
+  'light-hc': {
+    categorical: ['green-700', 'blue-500', 'amber-700', 'orange-900', 'red-700'],
+    other: 'paper-700',
+    sequential: [
+      'orange-300',
+      'orange-500',
+      'orange-550',
+      'orange-700',
+      'orange-800',
+      'orange-850',
+      'orange-900',
+    ],
+    diverging: [
+      'blue-900',
+      'blue-700',
+      'blue-500',
+      'paper-500',
+      'orange-550',
+      'orange-800',
+      'orange-900',
+    ],
+  },
 }
 
 type VizStep = 1 | 2 | 3 | 4 | 5 | 6 | 7
@@ -334,14 +581,20 @@ export type VizColorTokens = Record<
   string
 >
 
-function vizTokens(palette: VizPalette): VizColorTokens {
-  const entries: [string, string][] = [
-    ...palette.categorical.map((name, i): [string, string] => [`viz-${i + 1}`, primitive(name)]),
-    ['viz-other', primitive(palette.other)],
-    ...palette.sequential.map((name, i): [string, string] => [`viz-seq-${i + 1}`, primitive(name)]),
-    ...palette.diverging.map((name, i): [string, string] => [`viz-div-${i + 1}`, primitive(name)]),
+/** Primitiva de cada token `viz-*` de uma paleta, na ordem de `--or-color-viz-*`. */
+export function vizDefinition(palette: VizPalette): Record<keyof VizColorTokens, PrimitiveName> {
+  const entries: [string, PrimitiveName][] = [
+    ...palette.categorical.map((name, i): [string, PrimitiveName] => [`viz-${i + 1}`, name]),
+    ['viz-other', palette.other],
+    ...palette.sequential.map((name, i): [string, PrimitiveName] => [`viz-seq-${i + 1}`, name]),
+    ...palette.diverging.map((name, i): [string, PrimitiveName] => [`viz-div-${i + 1}`, name]),
   ]
-  return Object.fromEntries(entries) as VizColorTokens
+  return Object.fromEntries(entries) as Record<keyof VizColorTokens, PrimitiveName>
+}
+
+function vizTokens(palette: VizPalette): VizColorTokens {
+  const entries = Object.entries(vizDefinition(palette)) as [string, PrimitiveName][]
+  return Object.fromEntries(entries.map(([key, name]) => [key, primitive(name)])) as VizColorTokens
 }
 
 /**
@@ -352,6 +605,8 @@ function vizTokens(palette: VizPalette): VizColorTokens {
 export const vizThemes: Record<ThemeName, VizColorTokens> = {
   dark: vizTokens(vizPalettes.dark),
   light: vizTokens(vizPalettes.light),
+  'dark-hc': vizTokens(vizPalettes['dark-hc']),
+  'light-hc': vizTokens(vizPalettes['light-hc']),
 }
 
 export const typography = {

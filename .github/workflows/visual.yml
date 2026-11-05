@@ -1,0 +1,76 @@
+name: Regressão visual
+
+# Compara screenshots das stories (temas dark e light) com as baselines em
+# tests/visual/__screenshots__. Roda no contêiner oficial do Playwright, na mesma
+# versão do @playwright/test do package.json: as baselines são geradas nesse mesmo
+# ambiente pelo workflow "Atualizar baselines visuais" (visual-update.yml).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  baselines:
+    name: Verificar baselines
+    runs-on: ubuntu-latest
+    outputs:
+      present: ${{ steps.check.outputs.present }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: tests/visual
+      - id: check
+        shell: bash
+        run: |
+          if compgen -G 'tests/visual/__screenshots__/*/*.png' > /dev/null; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            msg='Ainda não há baselines em tests/visual/__screenshots__, então a comparação foi pulada. Para criá-las: Actions → "Atualizar baselines visuais" → Run workflow neste branch.'
+            echo "::notice title=Regressão visual::$msg"
+            echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  visual:
+    name: Comparar screenshots (dark + light)
+    needs: baselines
+    if: needs.baselines.outputs.present == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm gen && pnpm build:tokens && pnpm build:storybook
+      - run: pnpm test:visual
+      - name: Resumo da falha
+        if: failure()
+        run: |
+          {
+            echo '### Diferenças visuais'
+            echo 'Baixe o artefato **relatorio-visual** (Playwright HTML report com expected/actual/diff).'
+            echo 'Se a mudança é intencional: Actions → "Atualizar baselines visuais" → Run workflow neste branch.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: relatorio-visual
+          path: tests/visual/playwright-report
+          retention-days: 14

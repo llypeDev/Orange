@@ -96,3 +96,11 @@
     flex: 1;
   }
 }
+
+/* Alto contraste: a faixa de perigo no topo era um box-shadow (some) — vira
+   uma borda superior grossa no texto do sistema. */
+@media (forced-colors: active) {
+  .or-confirm-dialog.or-confirm-dialog--danger {
+    border-top: var(--or-border-accent) solid CanvasText;
+  }
+}

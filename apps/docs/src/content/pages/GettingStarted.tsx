@@ -70,8 +70,9 @@ import { Providers } from './providers'
 // Aplica o tema salvo antes da hidratação — evita o "flash" de tema errado.
 const themeScript = \`try {
   var t = localStorage.getItem('tema');
-  if (t !== 'light' && t !== 'dark') {
-    t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  if (!/^(dark|light)(-hc)?$/.test(t || '')) {
+    t = (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') +
+      (matchMedia('(prefers-contrast: more)').matches ? '-hc' : '');
   }
   document.documentElement.setAttribute('data-theme', t);
 } catch (e) {}\`
@@ -157,7 +158,7 @@ export default function GettingStarted() {
         stats: [
           { value: '5 min', label: { pt: 'para instalar e configurar', en: 'to install and configure' } },
           { value: '2', label: { pt: 'pacotes: tokens e ui', en: 'packages: tokens and ui' } },
-          { value: 'React 19', label: { pt: 'ou 18.2+, com TypeScript', en: 'or 18.2+, with TypeScript' } },
+          { value: 'React 19', label: { pt: 'ou 18.2, com TypeScript', en: 'or 18.2, with TypeScript' } },
           { value: 'MIT', label: { pt: 'licença open source', en: 'open source license' } },
         ],
       }}
@@ -176,13 +177,13 @@ export default function GettingStarted() {
               description: {
                 pt: (
                   <>
-                    18.2 ou superior (desenvolvido e testado com React 19). <Code>react</Code> e{' '}
+                    18.2 ou 19 (desenvolvido e testado com React 19). <Code>react</Code> e{' '}
                     <Code>react-dom</Code> são peer dependencies.
                   </>
                 ),
                 en: (
                   <>
-                    18.2 or later (developed and tested with React 19). <Code>react</Code> and{' '}
+                    18.2 or 19 (developed and tested with React 19). <Code>react</Code> and{' '}
                     <Code>react-dom</Code> are peer dependencies.
                   </>
                 ),
@@ -366,7 +367,7 @@ export default function GettingStarted() {
           rows={[
             {
               name: 'defaultTheme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               default: "'dark'",
               description: {
                 pt: 'Tema inicial (não controlado).',
@@ -375,7 +376,7 @@ export default function GettingStarted() {
             },
             {
               name: 'theme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               description: {
                 pt: 'Tema controlado. Use com onThemeChange.',
                 en: 'Controlled theme. Use with onThemeChange.',

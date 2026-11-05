@@ -215,13 +215,23 @@ mark.or-code-block__line-text {
   overflow-wrap: anywhere;
 }
 
+/* Alto contraste: linha destacada em Mark/MarkText. A linha usa
+   forced-color-adjust: none (sem ele o Chromium pinta a placa de leitura em
+   Canvas atrás de cada trecho); por isso todos os trechos de sintaxe dela —
+   cores pensadas para o fundo escuro — recebem MarkText explicitamente. */
 @media (forced-colors: active) {
   .or-code-block {
     border-color: CanvasText;
   }
+
   .or-code-block__line--highlighted {
     forced-color-adjust: none;
     background: Mark;
+    box-shadow: none;
+    color: MarkText;
+  }
+
+  .or-code-block__line--highlighted * {
     color: MarkText;
   }
 }

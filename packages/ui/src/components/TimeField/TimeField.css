@@ -88,3 +88,15 @@
 .or-time-field__input:disabled::-webkit-datetime-edit {
   color: var(--or-color-text-disabled);
 }
+
+/* Alto contraste: o segmento focado (hora, minuto…) era só um fundo de acento
+   com `outline: none` — vira Highlight/HighlightText. */
+@media (forced-colors: active) {
+  .or-time-field__input::-webkit-datetime-edit-hour-field:focus,
+  .or-time-field__input::-webkit-datetime-edit-minute-field:focus,
+  .or-time-field__input::-webkit-datetime-edit-second-field:focus,
+  .or-time-field__input::-webkit-datetime-edit-ampm-field:focus {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

@@ -308,6 +308,12 @@
   border-top: var(--or-border-thin) solid var(--or-color-border);
 }
 
+/* Recolhida, a tabela não aparece na tela (segue na árvore de acessibilidade):
+   sem rolagem, não sobra uma região rolável fora da ordem de foco. */
+.or-chart__data[data-state='closed'] .or-chart__table-scroll {
+  overflow-x: hidden;
+}
+
 .or-chart__table-scroll:focus-visible {
   outline: 2px solid var(--or-color-focus);
   outline-offset: -2px;
@@ -383,5 +389,55 @@
 
   .or-chart__toggle {
     display: none;
+  }
+}
+
+/* --- Alto contraste (forced-colors) -----------------------------------------
+ * O SVG não deixa o navegador trocar as cores: as séries são dados e precisam
+ * continuar distinguíveis (a forma/traço de cada série e a tabela "Ver dados"
+ * também carregam a informação). Toda a tinta que não é dado — texto, grade,
+ * base, foco, molduras — passa explicitamente para cores do sistema.
+ * ------------------------------------------------------------------------- */
+@media (forced-colors: active) {
+  .or-chart__svg,
+  .or-chart__swatch,
+  .or-chart__tooltip-key {
+    forced-color-adjust: none;
+  }
+
+  .or-chart__svg:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .or-chart__grid {
+    stroke: CanvasText;
+    stroke-dasharray: 2 4;
+  }
+
+  .or-chart__baseline {
+    stroke: CanvasText;
+  }
+
+  .or-chart__tick,
+  .or-chart__value {
+    fill: CanvasText;
+  }
+
+  .or-chart__swatch-fill {
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+
+  .or-chart__swatch-marker {
+    stroke: Canvas;
+  }
+
+  .or-chart__tooltip,
+  .or-chart__empty {
+    border-color: CanvasText;
+  }
+
+  .or-chart__tooltip-key {
+    outline: 1px solid CanvasText;
   }
 }

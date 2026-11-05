@@ -384,18 +384,37 @@
   }
 }
 
+/* Alto contraste: o véu (overlay) mantém a transparência sobre Canvas e o
+   recorte ganha o anel em Highlight; os pontos de progresso — fundos — viram
+   vazado (próximos), cheio (concluídos) e Highlight (atual). */
 @media (forced-colors: active) {
   .or-tour__dialog {
     border: 1px solid CanvasText;
   }
+
   .or-tour__ring {
     background: Highlight;
-    forced-color-adjust: none;
   }
+
+  .or-tour__label::before {
+    background: CanvasText;
+  }
+
+  .or-tour__dot {
+    background: Canvas;
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
+  }
+
+  .or-tour__dot[data-state='complete'] {
+    background: CanvasText;
+  }
+
   .or-tour__dot[data-state='current'] {
     background: Highlight;
-    forced-color-adjust: none;
+    outline-color: Highlight;
   }
+
   .or-tour__arrow {
     display: none;
   }

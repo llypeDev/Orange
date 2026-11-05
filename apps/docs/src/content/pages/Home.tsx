@@ -336,8 +336,8 @@ const pillars: {
     title: { pt: 'Customizável', en: 'Customizable' },
     tagline: { pt: 'Temas por tokens', en: 'Token-driven themes' },
     text: {
-      pt: 'Temas claro e escuro prontos. Crie o seu sobrescrevendo variáveis CSS, sem recompilar nada.',
-      en: 'Light and dark themes out of the box. Build yours by overriding CSS variables — no rebuild.',
+      pt: 'Temas escuro, claro e de alto contraste prontos. Crie o seu sobrescrevendo variáveis CSS, sem recompilar nada.',
+      en: 'Dark, light and high-contrast themes out of the box. Build yours by overriding CSS variables — no rebuild.',
     },
     bullets: [
       { pt: 'Tokens semânticos --or-*', en: 'Semantic --or-* tokens' },
@@ -427,7 +427,7 @@ export default function Home() {
       <Marquee
         items={[
           { pt: 'WCAG 2.2 AA em todos os componentes', en: 'WCAG 2.2 AA in every component' },
-          { pt: 'Temas claro e escuro', en: 'Light and dark themes' },
+          { pt: 'Temas claro, escuro e alto contraste', en: 'Light, dark and high-contrast themes' },
           { pt: 'Documentação PT · EN', en: 'PT · EN documentation' },
           { pt: 'Storybook interativo', en: 'Interactive Storybook' },
           { pt: 'Open source · MIT', en: 'Open source · MIT' },
@@ -449,7 +449,7 @@ export default function Home() {
         <div className="home-grid-lines" aria-hidden="true" />
         <Link to={to('/components/overview')} className="home-chip">
           <span className="doc-square" aria-hidden="true" />
-          <span className="home-chip__version">v0.1.0</span>
+          <span className="home-chip__version">v0.5.0</span>
           <span className="home-chip__sep" aria-hidden="true" />
           <span className="home-chip__text">
             {t({ pt: `${componentMetas.length} componentes prontos para usar.`, en: `${componentMetas.length} components ready to use.` })}

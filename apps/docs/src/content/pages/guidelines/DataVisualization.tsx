@@ -1,5 +1,12 @@
 import { useTheme } from '@orange/ui'
-import { themes, vizPalettes, vizThemes, type ThemeName, type VizColorTokens } from '@orange/tokens'
+import {
+  themeNames,
+  themes,
+  vizPalettes,
+  vizThemes,
+  type ThemeName,
+  type VizColorTokens,
+} from '@orange/tokens'
 import {
   useEffect,
   useId,
@@ -48,21 +55,24 @@ function paletteFor(theme: ThemeName) {
   }
 }
 
-const palettes = { dark: paletteFor('dark'), light: paletteFor('light') }
+type ThemePalette = ReturnType<typeof paletteFor>
 
-const categorical: Record<ThemeName, ReturnType<typeof paletteFor>['categorical']> = {
-  dark: palettes.dark.categorical,
-  light: palettes.light.categorical,
-}
+/** Uma parte da paleta para cada tema (inclusive os de alto contraste). */
+const byTheme = <K extends keyof ThemePalette>(key: K) =>
+  Object.fromEntries(themeNames.map((name) => [name, paletteFor(name)[key]])) as Record<
+    ThemeName,
+    ThemePalette[K]
+  >
 
-const sequential: Record<ThemeName, string[]> = {
-  dark: palettes.dark.sequential,
-  light: palettes.light.sequential,
-}
+const categorical = byTheme('categorical')
+const sequential = byTheme('sequential')
+const diverging = byTheme('diverging')
 
-const diverging: Record<ThemeName, string[]> = {
-  dark: palettes.dark.diverging,
-  light: palettes.light.diverging,
+const themeLabel: Record<ThemeName, Localized<string>> = {
+  dark: { pt: 'escuro', en: 'dark' },
+  light: { pt: 'claro', en: 'light' },
+  'dark-hc': { pt: 'escuro de alto contraste', en: 'dark high contrast' },
+  'light-hc': { pt: 'claro de alto contraste', en: 'light high contrast' },
 }
 
 const months: Localized<string>[] = [
@@ -839,9 +849,7 @@ export default function DataVisualizationPage() {
                   próprios tons, validados contra o próprio fundo (a tabela abaixo mostra o tema
                   atual:{' '}
                   <strong>
-                    {theme === 'dark'
-                      ? t({ pt: 'escuro', en: 'dark' })
-                      : t({ pt: 'claro', en: 'light' })}
+                    {t(themeLabel[theme])}
                   </strong>
                   ).
                 </>

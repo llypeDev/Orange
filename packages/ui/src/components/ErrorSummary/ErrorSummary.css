@@ -116,4 +116,9 @@
   .or-error-summary {
     border-left-color: CanvasText;
   }
+
+  /* Marcador dos itens: fundo de perigo. */
+  .or-error-summary__list li::before {
+    background: CanvasText;
+  }
 }

@@ -8,10 +8,14 @@ import {
   Text,
   useFieldControlProps,
   useMediaQuery,
+  resolveTheme,
   useTheme,
+  type IconName,
+  type ThemeSetting,
 } from '@orange/ui'
 import { primitives, themes, type ThemeName } from '@orange/tokens'
 import { useId, useMemo, useState, type CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
 import { T, useLang } from '../../../i18n'
 import {
   Bullets,
@@ -65,8 +69,16 @@ function MiniUI({ name }: { name: string }) {
 
 /* --- useTheme ao vivo --------------------------------------------------- */
 
+const themeOptions: { value: ThemeSetting; icon: IconName; label: { pt: string; en: string } }[] = [
+  { value: 'dark', icon: 'moon', label: { pt: 'Escuro', en: 'Dark' } },
+  { value: 'light', icon: 'sun', label: { pt: 'Claro', en: 'Light' } },
+  { value: 'dark-hc', icon: 'accessibility', label: { pt: 'Escuro (alto contraste)', en: 'Dark (high contrast)' } },
+  { value: 'light-hc', icon: 'accessibility', label: { pt: 'Claro (alto contraste)', en: 'Light (high contrast)' } },
+  { value: 'system', icon: 'monitor', label: { pt: 'Sistema', en: 'System' } },
+]
+
 function ThemeControls() {
-  const { theme, resolvedTheme, setTheme } = useTheme()
+  const { theme, resolvedTheme, colorScheme, highContrast, setTheme } = useTheme()
   const { t } = useLang()
   return (
     <div className="guide-theme-scope">
@@ -79,31 +91,30 @@ function ThemeControls() {
         <dd>
           <Code>'{resolvedTheme}'</Code>
         </dd>
+        <dt>colorScheme</dt>
+        <dd>
+          <Code>'{colorScheme}'</Code>
+        </dd>
+        <dt>highContrast</dt>
+        <dd>
+          <Code>{String(highContrast)}</Code>
+        </dd>
       </dl>
       <div
         className="guide-row"
         role="group"
         aria-label={t({ pt: 'Tema da seção', en: 'Section theme' })}
       >
-        {(['dark', 'light', 'system'] as const).map((value) => (
+        {themeOptions.map((option) => (
           <Button
-            key={value}
+            key={option.value}
             size="sm"
-            variant={theme === value ? 'primary' : 'outline'}
-            aria-pressed={theme === value}
-            onClick={() => setTheme(value)}
-            startIcon={
-              <Icon
-                name={value === 'dark' ? 'moon' : value === 'light' ? 'sun' : 'layout'}
-                size="sm"
-              />
-            }
+            variant={theme === option.value ? 'primary' : 'outline'}
+            aria-pressed={theme === option.value}
+            onClick={() => setTheme(option.value)}
+            startIcon={<Icon name={option.icon} size="sm" />}
           >
-            {value === 'dark'
-              ? t({ pt: 'Escuro', en: 'Dark' })
-              : value === 'light'
-                ? t({ pt: 'Claro', en: 'Light' })
-                : t({ pt: 'Sistema', en: 'System' })}
+            {t(option.label)}
           </Button>
         ))}
       </div>
@@ -114,11 +125,13 @@ function ThemeControls() {
 const useThemeCode = `import { Button, OrangeProvider, useTheme } from '@orange/ui'
 
 function SeletorDeTema() {
-  const { theme, resolvedTheme, setTheme } = useTheme()
+  const { theme, resolvedTheme, highContrast, setTheme } = useTheme()
   return (
     <div role="group" aria-label="Tema">
-      <p>theme: {theme} · resolvedTheme: {resolvedTheme}</p>
-      {(['dark', 'light', 'system'] as const).map((valor) => (
+      <p>
+        theme: {theme} · resolvedTheme: {resolvedTheme} · alto contraste: {highContrast ? 'sim' : 'não'}
+      </p>
+      {(['dark', 'light', 'dark-hc', 'light-hc', 'system'] as const).map((valor) => (
         <Button
           key={valor}
           variant={theme === valor ? 'primary' : 'outline'}
@@ -291,16 +304,17 @@ function ThemeBuilder() {
 }
 
 export default function ThemePage() {
-  const { t, uiLocale } = useLang()
+  const { t, to, uiLocale } = useLang()
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
+  const prefersMoreContrast = useMediaQuery('(prefers-contrast: more)')
 
   return (
     <DocPage
       eyebrow={{ pt: 'Usando', en: 'Usage' }}
       title={{ pt: 'Tema', en: 'Theme' }}
       lead={{
-        pt: 'Dois temas prontos — escuro (padrão) e claro — trocados por um único atributo data-theme. Os componentes só leem tokens, então qualquer tema novo é questão de sobrescrever variáveis CSS.',
-        en: 'Two ready-made themes — dark (default) and light — switched by a single data-theme attribute. Components only read tokens, so any new theme is a matter of overriding CSS variables.',
+        pt: 'Quatro temas prontos — escuro (padrão), claro e a versão de alto contraste de cada um — trocados por um único atributo data-theme. Os componentes só leem tokens, então qualquer tema novo é questão de sobrescrever variáveis CSS.',
+        en: 'Four ready-made themes — dark (default), light and a high contrast version of each — switched by a single data-theme attribute. Components only read tokens, so any new theme is a matter of overriding CSS variables.',
       }}
     >
       <Section title={{ pt: 'Temas claro e escuro', en: 'Light and dark themes' }}>
@@ -334,6 +348,91 @@ export default function ThemePage() {
         </div>
       </Section>
 
+      <Section title={{ pt: 'Alto contraste', en: 'High contrast' }} id="alto-contraste">
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  <Code>dark-hc</Code> e <Code>light-hc</Code> são as versões de alto contraste
+                  (WCAG AAA) dos dois temas: texto ≥ 7:1, bordas e foco ≥ 4.5:1, pares de acento e
+                  textos de status ≥ 7:1. Mesmos tokens, mesma identidade — carvão, creme e laranja
+                  —, só mais fortes. Os valores e o menor contraste de cada regra estão em{' '}
+                  <Link to={to('/design-guidelines/color')}>Cor → Alto contraste</Link>.
+                </>
+              }
+              en={
+                <>
+                  <Code>dark-hc</Code> and <Code>light-hc</Code> are the high contrast (WCAG AAA)
+                  versions of both themes: text ≥ 7:1, borders and focus ≥ 4.5:1, accent pairs and
+                  status text ≥ 7:1. Same tokens, same identity — charcoal, cream and orange — only
+                  stronger. Values and the lowest ratio for each rule are in{' '}
+                  <Link to={to('/design-guidelines/color')}>Color → High contrast</Link>.
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <div className="guide-theme-pair">
+          <div data-theme="dark-hc" className="guide-theme-pair__pane">
+            <MiniUI name={t({ pt: 'Escuro (alto contraste)', en: 'Dark (high contrast)' })} />
+          </div>
+          <div data-theme="light-hc" className="guide-theme-pair__pane">
+            <MiniUI name={t({ pt: 'Claro (alto contraste)', en: 'Light (high contrast)' })} />
+          </div>
+        </div>
+        <CodeBlock
+          language="tsx"
+          title="AltoContraste.tsx"
+          code={`// Fixo: a pessoa escolheu alto contraste
+<OrangeProvider theme="dark-hc">…</OrangeProvider>
+
+// Automático: segue prefers-color-scheme e prefers-contrast: more
+<OrangeProvider theme="system">…</OrangeProvider>
+
+// Só CSS, sem React
+<html data-theme="light-hc">`}
+        />
+        <Bullets
+          items={[
+            {
+              pt: 'Ofereça o alto contraste como escolha explícita no seletor de tema, ao lado de escuro, claro e automático — como no menu de tema desta documentação.',
+              en: 'Offer high contrast as an explicit choice in the theme picker, next to dark, light and automatic — like the theme menu in these docs.',
+            },
+            {
+              pt: (
+                <>
+                  <Code>useTheme()</Code> expõe <Code>highContrast</Code> e{' '}
+                  <Code>colorScheme</Code> (<Code>dark-hc</Code> → <Code>dark</Code>) para quem
+                  precisa decidir algo pelo esquema, como um gráfico desenhado em canvas.
+                </>
+              ),
+              en: (
+                <>
+                  <Code>useTheme()</Code> exposes <Code>highContrast</Code> and{' '}
+                  <Code>colorScheme</Code> (<Code>dark-hc</Code> → <Code>dark</Code>) for code
+                  that decides by scheme, such as a chart drawn on canvas.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  Tema próprio? Sobrescreva também <Code>[data-theme='dark-hc']</Code> e{' '}
+                  <Code>[data-theme='light-hc']</Code>, mirando 7:1 para texto.
+                </>
+              ),
+              en: (
+                <>
+                  Custom theme? Also override <Code>[data-theme='dark-hc']</Code> and{' '}
+                  <Code>[data-theme='light-hc']</Code>, aiming for 7:1 on text.
+                </>
+              ),
+            },
+          ]}
+        />
+      </Section>
+
       <Section title="OrangeProvider" id="orange-provider">
         <Prose>
           <p>
@@ -341,7 +440,8 @@ export default function ThemePage() {
               pt={
                 <>
                   O provider guarda a preferência de tema, resolve <Code>system</Code> com{' '}
-                  <Code>prefers-color-scheme</Code> e aplica <Code>data-theme</Code> no{' '}
+                  <Code>prefers-color-scheme</Code> e <Code>prefers-contrast</Code> e aplica{' '}
+                  <Code>data-theme</Code> no{' '}
                   <Code>&lt;html&gt;</Code> (ou em um <Code>&lt;div&gt;</Code>, com{' '}
                   <Code>themeTarget="scoped"</Code>).
                 </>
@@ -349,7 +449,8 @@ export default function ThemePage() {
               en={
                 <>
                   The provider stores the theme preference, resolves <Code>system</Code> with{' '}
-                  <Code>prefers-color-scheme</Code> and sets <Code>data-theme</Code> on{' '}
+                  <Code>prefers-color-scheme</Code> and <Code>prefers-contrast</Code> and sets{' '}
+                  <Code>data-theme</Code> on{' '}
                   <Code>&lt;html&gt;</Code> (or on a <Code>&lt;div&gt;</Code>, with{' '}
                   <Code>themeTarget="scoped"</Code>).
                 </>
@@ -361,7 +462,7 @@ export default function ThemePage() {
           rows={[
             {
               name: 'defaultTheme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               default: "'dark'",
               description: {
                 pt: 'Tema inicial, não controlado.',
@@ -370,7 +471,7 @@ export default function ThemePage() {
             },
             {
               name: 'theme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               description: {
                 pt: 'Tema controlado — você guarda o estado (ex.: localStorage).',
                 en: 'Controlled theme — you own the state (e.g. localStorage).',
@@ -408,7 +509,7 @@ export default function ThemePage() {
         <CodeBlock
           language="tsx"
           title="App.tsx"
-          code={`import { OrangeProvider, type ThemeSetting } from '@orange/ui'
+          code={`import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orange/ui'
 import { useState } from 'react'
 
 const CHAVE = 'tema'
@@ -416,7 +517,7 @@ const CHAVE = 'tema'
 function lerTema(): ThemeSetting {
   try {
     const salvo = localStorage.getItem(CHAVE)
-    if (salvo === 'light' || salvo === 'dark') return salvo
+    if (isThemeSetting(salvo)) return salvo // dark, light, dark-hc, light-hc ou system
   } catch {}
   return 'system'
 }
@@ -446,16 +547,20 @@ export function App() {
                 <>
                   Qualquer componente dentro do provider lê e altera o tema com{' '}
                   <Code>useTheme()</Code>: <Code>theme</Code> é a preferência (pode ser{' '}
-                  <Code>system</Code>), <Code>resolvedTheme</Code> é o tema aplicado de fato. Fora
-                  de um provider, o hook devolve <Code>dark</Code>.
+                  <Code>system</Code>), <Code>resolvedTheme</Code> é o tema aplicado de fato,{' '}
+                  <Code>colorScheme</Code> é o esquema dele (<Code>dark</Code> ou{' '}
+                  <Code>light</Code>) e <Code>highContrast</Code> diz se é um tema de alto
+                  contraste. Fora de um provider, o hook devolve <Code>dark</Code>.
                 </>
               }
               en={
                 <>
                   Any component inside the provider reads and changes the theme with{' '}
                   <Code>useTheme()</Code>: <Code>theme</Code> is the preference (may be{' '}
-                  <Code>system</Code>), <Code>resolvedTheme</Code> is the theme actually applied.
-                  Outside a provider the hook returns <Code>dark</Code>.
+                  <Code>system</Code>), <Code>resolvedTheme</Code> is the theme actually applied,{' '}
+                  <Code>colorScheme</Code> is its scheme (<Code>dark</Code> or <Code>light</Code>)
+                  and <Code>highContrast</Code> tells whether it is a high contrast theme. Outside a
+                  provider the hook returns <Code>dark</Code>.
                 </>
               }
             />
@@ -483,16 +588,18 @@ export function App() {
             <T
               pt={
                 <>
-                  Como os tokens semânticos são definidos em <Code>[data-theme='dark']</Code> e{' '}
-                  <Code>[data-theme='light']</Code>, basta o atributo em qualquer elemento para
+                  Como os tokens semânticos são definidos em <Code>[data-theme='dark']</Code>,{' '}
+                  <Code>[data-theme='light']</Code> e nos dois de alto contraste
+                  (<Code>dark-hc</Code>, <Code>light-hc</Code>), basta o atributo em qualquer elemento para
                   inverter aquela região — útil para um rodapé escuro numa página clara ou para
                   prévias, como as desta documentação.
                 </>
               }
               en={
                 <>
-                  Since semantic tokens are defined under <Code>[data-theme='dark']</Code> and{' '}
-                  <Code>[data-theme='light']</Code>, the attribute on any element flips that region
+                  Since semantic tokens are defined under <Code>[data-theme='dark']</Code>,{' '}
+                  <Code>[data-theme='light']</Code> and the two high contrast ones (
+                  <Code>dark-hc</Code>, <Code>light-hc</Code>), the attribute on any element flips that region
                   — handy for a dark footer on a light page, or for previews like the ones in these
                   docs.
                 </>
@@ -561,14 +668,59 @@ export function App() {
             />
           </p>
         </Prose>
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  O modo automático também lê <Code>prefers-contrast: more</Code> (a opção "aumentar
+                  contraste" do macOS, iOS e Android, ou o alto contraste do navegador): com ela
+                  ativa, <Code>dark</Code> vira <Code>dark-hc</Code> e <Code>light</Code> vira{' '}
+                  <Code>light-hc</Code>. Uma escolha explícita (<Code>theme="light"</Code>) sempre
+                  vence. Sem provider, o <Code>tokens.css</Code> faz o mesmo para o tema padrão:
+                  sem <Code>data-theme</Code> no <Code>&lt;html&gt;</Code>,{' '}
+                  <Code>prefers-contrast: more</Code> aplica o <Code>dark-hc</Code>.
+                </>
+              }
+              en={
+                <>
+                  Automatic mode also reads <Code>prefers-contrast: more</Code> (the "increase
+                  contrast" setting on macOS, iOS and Android, or the browser's high contrast): when
+                  it is on, <Code>dark</Code> becomes <Code>dark-hc</Code> and <Code>light</Code>{' '}
+                  becomes <Code>light-hc</Code>. An explicit choice (<Code>theme="light"</Code>)
+                  always wins. Without the provider, <Code>tokens.css</Code> does the same for the
+                  default theme: with no <Code>data-theme</Code> on <Code>&lt;html&gt;</Code>,{' '}
+                  <Code>prefers-contrast: more</Code> applies <Code>dark-hc</Code>.
+                </>
+              }
+            />
+          </p>
+        </Prose>
         <p className="guide-live" role="status">
-          prefers-color-scheme: <strong>{prefersLight ? 'light' : 'dark'}</strong>
+          prefers-color-scheme: <strong>{prefersLight ? 'light' : 'dark'}</strong> ·
+          prefers-contrast: <strong>{prefersMoreContrast ? 'more' : 'no-preference'}</strong> →{' '}
+          <Code>system</Code> = <strong>{resolveTheme('system', { prefersLight, prefersMoreContrast })}</strong>
         </p>
+        <CodeBlock
+          language="html"
+          title="index.html"
+          code={`<script>
+  // Antes da primeira pintura: tema salvo ou o do sistema (com alto contraste).
+  try {
+    var salvo = localStorage.getItem('tema')
+    var tema = /^(dark|light)(-hc)?$/.test(salvo || '')
+      ? salvo
+      : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') +
+        (matchMedia('(prefers-contrast: more)').matches ? '-hc' : '')
+    document.documentElement.setAttribute('data-theme', tema)
+  } catch (e) {}
+</script>`}
+        />
         <Bullets
           items={[
             {
-              pt: 'Ofereça três opções — claro, escuro e sistema — e lembre a escolha.',
-              en: 'Offer three options — light, dark and system — and remember the choice.',
+              pt: 'Ofereça as opções — automático, escuro, claro e os dois de alto contraste — e lembre a escolha.',
+              en: 'Offer the options — automatic, dark, light and both high contrast themes — and remember the choice.',
             },
             {
               pt: (

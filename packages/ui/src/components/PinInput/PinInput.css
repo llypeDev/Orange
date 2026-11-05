@@ -128,8 +128,20 @@
   background: var(--or-color-border-strong);
 }
 
+/* Alto contraste: o foco era box-shadow + fundo (somem) — vira contorno; o
+   separador entre grupos é um fundo e passa para o texto do sistema. */
 @media (forced-colors: active) {
-  .or-pin-input__field:focus {
+  .or-pin-input__field:focus,
+  .or-pin-input__field:focus-visible {
     outline: 2px solid Highlight;
+  }
+
+  .or-pin-input__separator {
+    background: CanvasText;
+  }
+
+  .or-pin-input__field:disabled {
+    border-color: GrayText;
+    color: GrayText;
   }
 }

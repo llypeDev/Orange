@@ -317,13 +317,46 @@
   }
 }
 
+/* Alto contraste: a borda `transparent` dos dias viraria uma grade em
+   CanvasText e esconderia o "hoje" — as células ficam em Canvas, hoje ganha
+   borda + marcador no texto do sistema e o dia escolhido, Highlight. O dia
+   escolhido usa forced-color-adjust: none (sem ele o Chromium pinta a placa de
+   leitura em Canvas atrás do número), com as cores dele explícitas. */
 @media (forced-colors: active) {
-  .or-calendar__day--selected {
+  .or-calendar__day {
+    border-color: Canvas;
+  }
+
+  .or-calendar__day--today {
+    border-color: CanvasText;
+  }
+
+  .or-calendar__day--today::after {
+    background: CanvasText;
+  }
+
+  .or-calendar__day--selected,
+  .or-calendar__day--selected:hover {
     forced-color-adjust: none;
+    border-color: Highlight;
     background: Highlight;
     color: HighlightText;
   }
-  .or-calendar__day--today {
-    border-color: CanvasText;
+
+  .or-calendar__day--selected:focus-visible {
+    outline-color: CanvasText;
+  }
+
+  .or-calendar__day--selected.or-calendar__day--today::after {
+    background: HighlightText;
+  }
+
+  .or-calendar__day--disabled {
+    color: GrayText;
+  }
+
+  .or-calendar__today[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
   }
 }

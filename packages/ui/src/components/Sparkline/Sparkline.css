@@ -110,3 +110,28 @@
     stroke-dashoffset: 0 !important;
   }
 }
+
+/* Alto contraste: série única — linha no texto do sistema e ponto final em
+   Highlight (o acento), com anel na cor do fundo. */
+@media (forced-colors: active) {
+  .or-sparkline__svg {
+    forced-color-adjust: none;
+  }
+
+  .or-sparkline__line {
+    stroke: CanvasText;
+  }
+
+  .or-sparkline__area {
+    fill: CanvasText;
+  }
+
+  .or-sparkline__dot {
+    fill: CanvasText;
+    stroke: Canvas;
+  }
+
+  .or-sparkline__dot--end {
+    fill: Highlight;
+  }
+}

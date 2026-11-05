@@ -10,7 +10,13 @@ import {
   type RefObject,
 } from 'react'
 import { useIsomorphicLayoutEffect } from '../../hooks'
-import { useTheme, type ResolvedTheme } from '../../providers'
+import {
+  getColorScheme,
+  isHighContrastTheme,
+  isThemeName,
+  useTheme,
+  type ResolvedTheme,
+} from '../../providers'
 import { cx, mergeRefs } from '../../utils'
 import './Paper.css'
 
@@ -62,12 +68,16 @@ function useInverseTheme(ref: RefObject<HTMLElement | null>, enabled: boolean): 
     const update = () => {
       const parent = el.parentElement
       const scheme = parent ? (getComputedStyle(parent).colorScheme ?? '') : ''
-      const current: ResolvedTheme = scheme.includes('light')
+      // O tema do escopo diz se é alto contraste: o inverso de dark-hc é light-hc.
+      const scope = parent?.closest('[data-theme]')?.getAttribute('data-theme')
+      const context: ResolvedTheme = isThemeName(scope) ? scope : resolvedTheme
+      const current = scheme.includes('light')
         ? 'light'
         : scheme.includes('dark')
           ? 'dark'
-          : resolvedTheme
-      setTheme(current === 'light' ? 'dark' : 'light')
+          : getColorScheme(context)
+      const inverse = current === 'light' ? 'dark' : 'light'
+      setTheme(isHighContrastTheme(context) ? `${inverse}-hc` : inverse)
     }
     update()
     if (typeof MutationObserver === 'undefined') return

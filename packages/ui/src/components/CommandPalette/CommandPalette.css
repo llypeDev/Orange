@@ -265,9 +265,23 @@
   }
 }
 
+/* Alto contraste: a opção ativa ganha contorno; a linha de foco da busca
+   (box-shadow) vira uma borda inferior em Highlight. */
 @media (forced-colors: active) {
   .or-command-palette__option[data-active] {
     outline: 2px solid Highlight;
     outline-offset: -2px;
+  }
+
+  .or-command-palette__highlight::before {
+    background: Highlight;
+  }
+
+  .or-command-palette__search:focus-within {
+    border-bottom-color: Highlight;
+  }
+
+  .or-command-palette__option[aria-disabled='true'] {
+    color: GrayText;
   }
 }

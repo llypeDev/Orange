@@ -10,10 +10,12 @@ const paletteCount = Object.values(primitives).reduce(
   0,
 )
 
+type RoadmapItemState = 'done' | 'external'
+
 const roadmap: {
   version: string
   status: 'done' | 'now' | 'next' | 'later'
-  items: { pt: string; en: string }[]
+  items: { pt: string; en: string; state?: RoadmapItemState; note?: { pt: string; en: string } }[]
 }[] = [
   {
     version: '0.1',
@@ -22,69 +24,112 @@ const roadmap: {
       {
         pt: 'Tokens com temas claro e escuro e testes de contraste',
         en: 'Tokens with light and dark themes and contrast tests',
+        state: 'done',
       },
       {
         pt: 'Componentes base, hooks, ícones e OrangeProvider',
         en: 'Base components, hooks, icons and OrangeProvider',
+        state: 'done',
       },
       {
         pt: 'Documentação bilíngue e Storybook com painel a11y',
         en: 'Bilingual docs and Storybook with a11y panel',
+        state: 'done',
       },
     ],
   },
   {
     version: '0.2',
-    status: 'now',
+    status: 'done',
     items: [
       {
         pt: 'Biblioteca completa de formulários, sobreposições e navegação',
         en: 'Full set of form, overlay and navigation components',
+        state: 'done',
       },
       {
         pt: 'Exemplos de páginas inteiras (login, painel, configurações)',
         en: 'Full-page examples (sign-in, dashboard, settings)',
+        state: 'done',
+        note: { pt: 'Seção Modelos da documentação.', en: 'Templates section of the docs.' },
       },
       {
         pt: 'Publicação dos pacotes no npm com changelog automatizado',
         en: 'npm publishing with an automated changelog',
+        state: 'done',
+        note: {
+          pt: 'Changesets + workflow de release; a primeira publicação sai quando o token do npm for configurado.',
+          en: 'Changesets + release workflow; the first publish runs once the npm token is configured.',
+        },
       },
     ],
   },
   {
     version: '0.3',
-    status: 'next',
+    status: 'done',
     items: [
       {
         pt: 'Tema de alto contraste e suporte a forced-colors',
         en: 'High-contrast theme and forced-colors support',
+        state: 'done',
+        note: {
+          pt: 'Temas dark-hc e light-hc (AAA) e forced-colors em todos os componentes.',
+          en: 'dark-hc and light-hc themes (AAA) and forced-colors in every component.',
+        },
       },
       {
         pt: 'Sincronização dos tokens com variáveis do Figma',
         en: 'Token sync with Figma variables',
+        state: 'done',
+        note: { pt: 'Exportação DTCG por modo e o script figma:sync.', en: 'Per-mode DTCG export and the figma:sync script.' },
       },
       {
         pt: 'Testes de regressão visual dos dois temas',
         en: 'Visual regression tests for both themes',
+        state: 'done',
+        note: { pt: 'Playwright no CI, com baselines geradas no próprio CI.', en: 'Playwright in CI, with baselines generated in CI itself.' },
       },
     ],
   },
   {
     version: '1.0',
-    status: 'later',
+    status: 'now',
     items: [
       {
         pt: 'API estável com política formal de depreciação',
         en: 'Stable API with a formal deprecation policy',
+        state: 'done',
+        note: {
+          pt: 'Política e ferramentas prontas; a API é congelada no lançamento da 1.0.',
+          en: 'Policy and tooling in place; the API freezes when 1.0 ships.',
+        },
       },
       {
         pt: 'Auditoria externa de acessibilidade (WCAG 2.2 AA)',
         en: 'External accessibility audit (WCAG 2.2 AA)',
+        state: 'external',
+        note: {
+          pt: 'Relatório de conformidade pronto para os auditores; a auditoria depende de contratação.',
+          en: 'Conformance report ready for auditors; the audit itself needs to be commissioned.',
+        },
       },
-      { pt: 'Kit de design espelhando os tokens', en: 'Design kit mirroring the tokens' },
+      {
+        pt: 'Kit de design espelhando os tokens',
+        en: 'Design kit mirroring the tokens',
+        state: 'external',
+        note: {
+          pt: 'As variáveis já chegam ao Figma; os componentes do kit são desenhados no próprio Figma.',
+          en: 'The variables already reach Figma; the kit components are drawn in Figma itself.',
+        },
+      },
     ],
   },
 ]
+
+const itemStateLabel: Record<RoadmapItemState, { pt: string; en: string }> = {
+  done: { pt: 'Pronto', en: 'Done' },
+  external: { pt: 'Depende de terceiros', en: 'Depends on third parties' },
+}
 
 const statusLabel = {
   done: { pt: 'Lançado', en: 'Shipped' },
@@ -102,7 +147,7 @@ export default function About() {
           { value: componentMetas.length, label: { pt: 'componentes documentados', en: 'documented components' } },
           { value: iconNames.length, label: { pt: 'ícones na mesma grade', en: 'icons on the same grid' } },
           { value: Object.keys(ptBR).length, label: { pt: 'mensagens traduzidas PT/EN', en: 'translated PT/EN messages' } },
-          { value: Object.keys(themes).length, label: { pt: 'temas, claro e escuro', en: 'themes, light and dark' } },
+          { value: Object.keys(themes).length, label: { pt: 'temas, com alto contraste', en: 'themes, high contrast included' } },
         ],
       }}
       eyebrow={{ pt: 'Orange', en: 'Orange' }}
@@ -415,16 +460,16 @@ export default function About() {
               description: {
                 pt: (
                   <>
-                    <Code>contrast.test.ts</Code> verifica, nos dois temas, 15 pares de texto (≥
-                    4.5:1) e 4 pares de elementos de interface (≥ 3:1). Mudar um token que quebre o
-                    contraste quebra o build.
+                    <Code>contrast.test.ts</Code> verifica, nos quatro temas, os pares de texto (≥
+                    4.5:1; ≥ 7:1 nos de alto contraste) e de elementos de interface (≥ 3:1). Mudar
+                    um token que quebre o contraste quebra o build.
                   </>
                 ),
                 en: (
                   <>
-                    <Code>contrast.test.ts</Code> checks, in both themes, 15 text pairs (≥ 4.5:1)
-                    and 4 UI pairs (≥ 3:1). Changing a token in a way that breaks contrast breaks
-                    the build.
+                    <Code>contrast.test.ts</Code> checks, in all four themes, the text pairs (≥
+                    4.5:1; ≥ 7:1 in the high-contrast ones) and UI pairs (≥ 3:1). Changing a token
+                    in a way that breaks contrast breaks the build.
                   </>
                 ),
               },
@@ -738,7 +783,15 @@ export default function About() {
                   <td>
                     <ul className="guide-roadmap__items">
                       {row.items.map((item) => (
-                        <li key={item.pt}>{t(item)}</li>
+                        <li key={item.pt} data-state={item.state}>
+                          <span>{t(item)}</span>
+                          {item.state && (
+                            <span className={`guide-roadmap__item-state guide-roadmap__item-state--${item.state}`}>
+                              {t(itemStateLabel[item.state])}
+                            </span>
+                          )}
+                          {item.note && <span className="guide-roadmap__note">{t(item.note)}</span>}
+                        </li>
                       ))}
                     </ul>
                   </td>

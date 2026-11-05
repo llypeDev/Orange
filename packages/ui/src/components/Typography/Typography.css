@@ -94,3 +94,10 @@
   height: 0.5rem;
   background: var(--or-color-accent);
 }
+
+/* Alto contraste: o marcador quadrado do eyebrow é um fundo de acento. */
+@media (forced-colors: active) {
+  .or-eyebrow-text__marker {
+    background: CanvasText;
+  }
+}

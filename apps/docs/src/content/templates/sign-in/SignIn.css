@@ -1,0 +1,208 @@
+/*
+ * Entrar — tela de login da Aurora.
+ * Uma coluna no celular; a partir de 1024px, formulário à esquerda e painel da
+ * marca à direita (a ordem visual é a ordem do DOM). Só tokens do Orange.
+ */
+
+.aurora-signin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--or-color-bg);
+  color: var(--or-color-text);
+}
+
+.aurora-signin__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--or-space-10) var(--or-space-5);
+}
+
+.aurora-signin__card {
+  display: grid;
+  gap: var(--or-space-6);
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  animation: aurora-signin-rise var(--or-duration-reveal) var(--or-ease-out) both;
+}
+
+.aurora-signin__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xl);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: var(--or-tracking-heading);
+}
+
+.aurora-signin__logo .or-icon {
+  color: var(--or-color-accent);
+}
+
+.aurora-signin__intro {
+  display: grid;
+  gap: var(--or-space-2);
+}
+
+.aurora-signin__intro .or-text {
+  margin: 0;
+}
+
+/* "Manter conectado" e "Esqueci a senha" na mesma linha; quebram quando falta espaço. */
+.aurora-signin__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--or-space-3) var(--or-space-6);
+}
+
+.aurora-signin__row > .or-checkbox {
+  flex: 1 1 14rem;
+}
+
+/* Painel da marca ------------------------------------------------------------ */
+
+.aurora-signin > .aurora-signin__brand {
+  display: none;
+}
+
+.aurora-signin__pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--or-color-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--or-color-grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: -1px -1px;
+  pointer-events: none;
+}
+
+/* Composição de quadrados alinhada à grade de 48px (um só acento laranja). */
+.aurora-signin__pattern span {
+  position: absolute;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  animation: aurora-signin-fade var(--or-duration-reveal) var(--or-ease-out) both;
+}
+
+.aurora-signin__pattern span:nth-child(1) {
+  top: 96px;
+  right: 96px;
+  width: 144px;
+  height: 144px;
+  border: 0;
+  background: var(--or-color-accent);
+  animation-delay: calc(var(--or-stagger) * 2);
+}
+
+.aurora-signin__pattern span:nth-child(2) {
+  top: 240px;
+  right: 240px;
+  width: 96px;
+  height: 96px;
+  animation-delay: calc(var(--or-stagger) * 3);
+}
+
+.aurora-signin__pattern span:nth-child(3) {
+  top: 48px;
+  right: 288px;
+  width: 48px;
+  height: 48px;
+  animation-delay: calc(var(--or-stagger) * 4);
+}
+
+.aurora-signin__pattern span:nth-child(4) {
+  top: 336px;
+  right: 48px;
+  width: 48px;
+  height: 48px;
+  background: var(--or-color-text);
+  border: 0;
+  animation-delay: calc(var(--or-stagger) * 5);
+}
+
+.aurora-signin__pitch {
+  position: relative;
+  display: grid;
+  gap: var(--or-space-5);
+  max-width: 30rem;
+  animation: aurora-signin-rise var(--or-duration-reveal) var(--or-ease-out) both;
+  animation-delay: var(--or-stagger);
+}
+
+.aurora-signin__pitch .or-eyebrow-text {
+  margin: 0;
+}
+
+.aurora-signin__tagline {
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-4xl);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: var(--or-tracking-heading);
+  text-wrap: balance;
+}
+
+.aurora-signin__facts {
+  display: grid;
+  gap: var(--or-space-2);
+  margin: 0;
+  padding: var(--or-space-5) 0 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border-strong);
+  list-style: none;
+  color: var(--or-color-text-muted);
+}
+
+.aurora-signin__facts strong {
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-bold);
+  color: var(--or-color-text);
+}
+
+@media (min-width: 1024px) {
+  .aurora-signin {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+
+  .aurora-signin__main {
+    padding: var(--or-space-12) var(--or-space-10);
+  }
+
+  .aurora-signin > .aurora-signin__brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-width: 0;
+    padding: var(--or-space-12);
+    overflow: hidden;
+  }
+}
+
+@keyframes aurora-signin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--or-distance-lg));
+  }
+}
+
+@keyframes aurora-signin-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@media (forced-colors: active) {
+  .aurora-signin__pattern span {
+    border: 1px solid CanvasText;
+    background: none;
+  }
+}

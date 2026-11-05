@@ -39,10 +39,12 @@
   --or-palette-orange-600: #d4622a;
   --or-palette-orange-700: #b85a24;
   --or-palette-orange-800: #9c4416;
+  --or-palette-orange-850: #8a3a10;
   --or-palette-orange-900: #6b2e0e;
   --or-palette-green-100: #e4f1d1;
   --or-palette-green-300: #a6d16a;
   --or-palette-green-500: #7fb236;
+  --or-palette-green-600: #5f8f22;
   --or-palette-green-700: #3d6614;
   --or-palette-green-900: #22390b;
   --or-palette-blue-100: #dfe5f8;
@@ -55,10 +57,12 @@
   --or-palette-red-300: #f79a8f;
   --or-palette-red-500: #ef6a5a;
   --or-palette-red-700: #b42318;
+  --or-palette-red-800: #961d13;
   --or-palette-red-900: #6e140d;
   --or-palette-amber-100: #faefcd;
   --or-palette-amber-300: #efd27f;
   --or-palette-amber-500: #e8c15a;
+  --or-palette-amber-600: #a57c10;
   --or-palette-amber-700: #8a5a00;
   --or-palette-amber-900: #4d3200;
   --or-font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -196,6 +200,9 @@
   --or-color-danger-subtle: rgba(239, 106, 90, 0.14);
   --or-color-danger-text: #f79a8f;
   --or-color-text-on-danger: #0f0f12;
+  --or-color-text-on-success: #0f0f12;
+  --or-color-text-on-warning: #0f0f12;
+  --or-color-text-on-info: #fffdf6;
   --or-color-info: #4a66d4;
   --or-color-info-subtle: rgba(74, 102, 212, 0.16);
   --or-color-info-text: #8da2ea;
@@ -269,6 +276,9 @@
   --or-color-danger-subtle: rgba(180, 35, 24, 0.1);
   --or-color-danger-text: #b42318;
   --or-color-text-on-danger: #ffffff;
+  --or-color-text-on-success: #0f0f12;
+  --or-color-text-on-warning: #0f0f12;
+  --or-color-text-on-info: #fffdf6;
   --or-color-info: #2a4494;
   --or-color-info-subtle: rgba(42, 68, 148, 0.1);
   --or-color-info-text: #2a4494;
@@ -298,6 +308,241 @@
   --or-color-viz-div-5: #f8a675;
   --or-color-viz-div-6: #e06a2c;
   --or-color-viz-div-7: #9c4416;
+}
+
+/* Tema escuro de alto contraste (WCAG AAA) */
+[data-theme='dark-hc'] {
+  color-scheme: dark;
+  --or-color-bg: #0a0a0d;
+  --or-color-bg-subtle: #0f0f12;
+  --or-color-surface: #0a0a0d;
+  --or-color-surface-raised: #0f0f12;
+  --or-color-surface-hover: #1c1c21;
+  --or-color-surface-active: #2a2a30;
+  --or-color-surface-inverse: #faf7ec;
+  --or-color-overlay: rgba(0, 0, 0, 0.8);
+  --or-color-shadow: rgba(0, 0, 0, 0.7);
+  --or-color-text: #faf7ec;
+  --or-color-text-muted: #d4cdb5;
+  --or-color-text-subtle: #b8b0a0;
+  --or-color-text-disabled: #85858e;
+  --or-color-text-inverse: #0a0a0d;
+  --or-color-text-on-accent: #0a0a0d;
+  --or-color-border: #9c9588;
+  --or-color-border-subtle: #85858e;
+  --or-color-border-strong: #b8b0a0;
+  --or-color-border-control: #b8b0a0;
+  --or-color-accent: #f58549;
+  --or-color-accent-hover: #f6945f;
+  --or-color-accent-active: #f8a675;
+  --or-color-accent-subtle: rgba(245, 133, 73, 0.16);
+  --or-color-accent-text: #f6945f;
+  --or-color-accent-border: #f58549;
+  --or-color-neutral: #faf7ec;
+  --or-color-neutral-hover: #f0ebdb;
+  --or-color-text-on-neutral: #0a0a0d;
+  --or-color-success: #7fb236;
+  --or-color-success-subtle: rgba(127, 178, 54, 0.16);
+  --or-color-success-text: #a6d16a;
+  --or-color-warning: #e8c15a;
+  --or-color-warning-subtle: rgba(232, 193, 90, 0.16);
+  --or-color-warning-text: #efd27f;
+  --or-color-danger: #f79a8f;
+  --or-color-danger-hover: #fde4e1;
+  --or-color-danger-subtle: rgba(239, 106, 90, 0.16);
+  --or-color-danger-text: #f79a8f;
+  --or-color-text-on-danger: #0a0a0d;
+  --or-color-text-on-success: #0a0a0d;
+  --or-color-text-on-warning: #0a0a0d;
+  --or-color-text-on-info: #0a0a0d;
+  --or-color-info: #8da2ea;
+  --or-color-info-subtle: rgba(74, 102, 212, 0.16);
+  --or-color-info-text: #8da2ea;
+  --or-color-focus: #f8a675;
+  --or-color-grid-line: rgba(250, 247, 236, 0.08);
+  --or-color-code-bg: #0f0f12;
+  --or-color-code-text: #f0ebdb;
+  --or-color-selection: rgba(245, 133, 73, 0.4);
+  /* Visualização de dados: categórica, "outros", sequencial e divergente */
+  --or-color-viz-1: #7fb236;
+  --or-color-viz-2: #8da2ea;
+  --or-color-viz-3: #e8c15a;
+  --or-color-viz-4: #d4622a;
+  --or-color-viz-5: #f79a8f;
+  --or-color-viz-other: #9c9588;
+  --or-color-viz-seq-1: #9c4416;
+  --or-color-viz-seq-2: #b85a24;
+  --or-color-viz-seq-3: #d4622a;
+  --or-color-viz-seq-4: #f58549;
+  --or-color-viz-seq-5: #f6945f;
+  --or-color-viz-seq-6: #f8a675;
+  --or-color-viz-seq-7: #fde2cf;
+  --or-color-viz-div-1: #8da2ea;
+  --or-color-viz-div-2: #6b85e0;
+  --or-color-viz-div-3: #4a66d4;
+  --or-color-viz-div-4: #55555e;
+  --or-color-viz-div-5: #b85a24;
+  --or-color-viz-div-6: #f58549;
+  --or-color-viz-div-7: #f8a675;
+}
+
+/* Tema claro de alto contraste (WCAG AAA) */
+[data-theme='light-hc'] {
+  color-scheme: light;
+  --or-color-bg: #fffdf6;
+  --or-color-bg-subtle: #faf7ec;
+  --or-color-surface: #fffdf6;
+  --or-color-surface-raised: #fffdf6;
+  --or-color-surface-hover: #ece7d7;
+  --or-color-surface-active: #e2ddcd;
+  --or-color-surface-inverse: #0f0f12;
+  --or-color-overlay: rgba(15, 15, 18, 0.64);
+  --or-color-shadow: rgba(15, 15, 18, 0.28);
+  --or-color-text: #0f0f12;
+  --or-color-text-muted: #2a2a2a;
+  --or-color-text-subtle: #525252;
+  --or-color-text-disabled: #666057;
+  --or-color-text-inverse: #fffdf6;
+  --or-color-text-on-accent: #fffdf6;
+  --or-color-border: #525252;
+  --or-color-border-subtle: #666057;
+  --or-color-border-strong: #2a2a2a;
+  --or-color-border-control: #2a2a2a;
+  --or-color-accent: #8a3a10;
+  --or-color-accent-hover: #6b2e0e;
+  --or-color-accent-active: #6b2e0e;
+  --or-color-accent-subtle: rgba(138, 58, 16, 0.08);
+  --or-color-accent-text: #6b2e0e;
+  --or-color-accent-border: #8a3a10;
+  --or-color-neutral: #0f0f12;
+  --or-color-neutral-hover: #2a2a2a;
+  --or-color-text-on-neutral: #fffdf6;
+  --or-color-success: #22390b;
+  --or-color-success-subtle: rgba(61, 102, 20, 0.1);
+  --or-color-success-text: #22390b;
+  --or-color-warning: #4d3200;
+  --or-color-warning-subtle: rgba(165, 124, 16, 0.14);
+  --or-color-warning-text: #4d3200;
+  --or-color-danger: #961d13;
+  --or-color-danger-hover: #6e140d;
+  --or-color-danger-subtle: rgba(150, 29, 19, 0.08);
+  --or-color-danger-text: #961d13;
+  --or-color-text-on-danger: #fffdf6;
+  --or-color-text-on-success: #fffdf6;
+  --or-color-text-on-warning: #fffdf6;
+  --or-color-text-on-info: #fffdf6;
+  --or-color-info: #2a4494;
+  --or-color-info-subtle: rgba(42, 68, 148, 0.08);
+  --or-color-info-text: #2a4494;
+  --or-color-focus: #6b2e0e;
+  --or-color-grid-line: rgba(15, 15, 18, 0.08);
+  --or-color-code-bg: #0a0a0d;
+  --or-color-code-text: #f0ebdb;
+  --or-color-selection: rgba(138, 58, 16, 0.24);
+  /* Visualização de dados: categórica, "outros", sequencial e divergente */
+  --or-color-viz-1: #3d6614;
+  --or-color-viz-2: #4a66d4;
+  --or-color-viz-3: #8a5a00;
+  --or-color-viz-4: #6b2e0e;
+  --or-color-viz-5: #b42318;
+  --or-color-viz-other: #666057;
+  --or-color-viz-seq-1: #f8a675;
+  --or-color-viz-seq-2: #f58549;
+  --or-color-viz-seq-3: #e06a2c;
+  --or-color-viz-seq-4: #b85a24;
+  --or-color-viz-seq-5: #9c4416;
+  --or-color-viz-seq-6: #8a3a10;
+  --or-color-viz-seq-7: #6b2e0e;
+  --or-color-viz-div-1: #18275a;
+  --or-color-viz-div-2: #2a4494;
+  --or-color-viz-div-3: #4a66d4;
+  --or-color-viz-div-4: #c9c4b5;
+  --or-color-viz-div-5: #e06a2c;
+  --or-color-viz-div-6: #9c4416;
+  --or-color-viz-div-7: #6b2e0e;
+}
+
+/*
+ * Alto contraste automático: sem tema escolhido (nenhum data-theme no <html>),
+ * quem pede mais contraste ao sistema recebe o dark-hc no lugar do dark.
+ * Com o OrangeProvider em theme="system", o provider faz a mesma troca para os
+ * dois esquemas (dark → dark-hc, light → light-hc). Um data-theme explícito vence.
+ */
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --or-color-bg: #0a0a0d;
+    --or-color-bg-subtle: #0f0f12;
+    --or-color-surface: #0a0a0d;
+    --or-color-surface-raised: #0f0f12;
+    --or-color-surface-hover: #1c1c21;
+    --or-color-surface-active: #2a2a30;
+    --or-color-surface-inverse: #faf7ec;
+    --or-color-overlay: rgba(0, 0, 0, 0.8);
+    --or-color-shadow: rgba(0, 0, 0, 0.7);
+    --or-color-text: #faf7ec;
+    --or-color-text-muted: #d4cdb5;
+    --or-color-text-subtle: #b8b0a0;
+    --or-color-text-disabled: #85858e;
+    --or-color-text-inverse: #0a0a0d;
+    --or-color-text-on-accent: #0a0a0d;
+    --or-color-border: #9c9588;
+    --or-color-border-subtle: #85858e;
+    --or-color-border-strong: #b8b0a0;
+    --or-color-border-control: #b8b0a0;
+    --or-color-accent: #f58549;
+    --or-color-accent-hover: #f6945f;
+    --or-color-accent-active: #f8a675;
+    --or-color-accent-subtle: rgba(245, 133, 73, 0.16);
+    --or-color-accent-text: #f6945f;
+    --or-color-accent-border: #f58549;
+    --or-color-neutral: #faf7ec;
+    --or-color-neutral-hover: #f0ebdb;
+    --or-color-text-on-neutral: #0a0a0d;
+    --or-color-success: #7fb236;
+    --or-color-success-subtle: rgba(127, 178, 54, 0.16);
+    --or-color-success-text: #a6d16a;
+    --or-color-warning: #e8c15a;
+    --or-color-warning-subtle: rgba(232, 193, 90, 0.16);
+    --or-color-warning-text: #efd27f;
+    --or-color-danger: #f79a8f;
+    --or-color-danger-hover: #fde4e1;
+    --or-color-danger-subtle: rgba(239, 106, 90, 0.16);
+    --or-color-danger-text: #f79a8f;
+    --or-color-text-on-danger: #0a0a0d;
+    --or-color-text-on-success: #0a0a0d;
+    --or-color-text-on-warning: #0a0a0d;
+    --or-color-text-on-info: #0a0a0d;
+    --or-color-info: #8da2ea;
+    --or-color-info-subtle: rgba(74, 102, 212, 0.16);
+    --or-color-info-text: #8da2ea;
+    --or-color-focus: #f8a675;
+    --or-color-grid-line: rgba(250, 247, 236, 0.08);
+    --or-color-code-bg: #0f0f12;
+    --or-color-code-text: #f0ebdb;
+    --or-color-selection: rgba(245, 133, 73, 0.4);
+    /* Visualização de dados: categórica, "outros", sequencial e divergente */
+    --or-color-viz-1: #7fb236;
+    --or-color-viz-2: #8da2ea;
+    --or-color-viz-3: #e8c15a;
+    --or-color-viz-4: #d4622a;
+    --or-color-viz-5: #f79a8f;
+    --or-color-viz-other: #9c9588;
+    --or-color-viz-seq-1: #9c4416;
+    --or-color-viz-seq-2: #b85a24;
+    --or-color-viz-seq-3: #d4622a;
+    --or-color-viz-seq-4: #f58549;
+    --or-color-viz-seq-5: #f6945f;
+    --or-color-viz-seq-6: #f8a675;
+    --or-color-viz-seq-7: #fde2cf;
+    --or-color-viz-div-1: #8da2ea;
+    --or-color-viz-div-2: #6b85e0;
+    --or-color-viz-div-3: #4a66d4;
+    --or-color-viz-div-4: #55555e;
+    --or-color-viz-div-5: #b85a24;
+    --or-color-viz-div-6: #f58549;
+    --or-color-viz-div-7: #f8a675;
+  }
 }
 
 /* Movimento reduzido: anula durações para quem prefere menos animação */

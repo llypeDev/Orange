@@ -79,13 +79,54 @@ export function range(start: number, end: number): number[] {
 const warned = new Set<string>()
 
 /**
+ * Verdadeiro fora de produção. Bundlers (Vite, webpack, Next…) substituem
+ * `process.env.NODE_ENV` por uma string, então a checagem vira constante e o
+ * código de aviso some do bundle de produção. Sem bundler e sem `process`
+ * (ex.: `<script type="module">` direto no navegador), fica em silêncio.
+ */
+function isDevelopment(): boolean {
+  try {
+    return process.env.NODE_ENV !== 'production'
+  } catch {
+    return false
+  }
+}
+
+/** Escreve `[Orange] mensagem` no console uma única vez por chave. */
+function warnOnce(key: string, message: string) {
+  if (warned.has(key)) return
+  warned.add(key)
+  console.warn(`[Orange] ${message}`)
+}
+
+/**
  * Emite um aviso de uso incorreto apenas em desenvolvimento (uma vez por
  * mensagem). Em produção, bundlers substituem `process.env.NODE_ENV` e o
  * código é eliminado.
  */
 export function devWarning(condition: boolean, message: string) {
-  if (typeof process === 'undefined' || process.env.NODE_ENV === 'production') return
-  if (!condition || warned.has(message)) return
-  warned.add(message)
-  console.warn(`[Orange] ${message}`)
+  if (!condition || !isDevelopment()) return
+  warnOnce(message, message)
+}
+
+/**
+ * Avisa, só em desenvolvimento e uma única vez por `id`, que uma API pública
+ * está depreciada. Chame quando a API antiga for **usada** — não no import:
+ *
+ * ```ts
+ * if (variant === 'ghost') {
+ *   deprecate(
+ *     'Button: `variant="ghost"` está depreciado e sai na v1.0. Use `variant="text"`.',
+ *     'button.variant.ghost',
+ *   )
+ * }
+ * ```
+ *
+ * A mensagem diz o que trocar e em qual versão a API sai. `id` estável
+ * (`componente.prop.valor`) evita repetir o aviso a cada render; sem ele, a
+ * própria mensagem vira o id. Política completa: /usage/versioning.
+ */
+export function deprecate(message: string, id: string = message) {
+  if (!isDevelopment()) return
+  warnOnce(`deprecate:${id}`, `Depreciado: ${message}`)
 }

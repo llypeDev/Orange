@@ -1,0 +1,52 @@
+/*
+ * Painel — visão geral da loja na Aurora.
+ * A estrutura (cabeçalho, barra lateral, painel no celular) vem do AppShell;
+ * aqui só o ritmo vertical das seções e os detalhes dos cartões. Só tokens.
+ */
+
+.aurora-dash {
+  display: grid;
+  gap: var(--or-space-10);
+  margin-top: var(--or-space-8);
+}
+
+.aurora-dash__section {
+  display: grid;
+  gap: var(--or-space-4);
+  min-width: 0;
+}
+
+.aurora-dash__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--or-space-2) var(--or-space-4);
+}
+
+.aurora-dash__section-head .or-text {
+  margin: 0;
+}
+
+/* Respiro para o contador de notificações, que sai do canto do botão. */
+.aurora-dash__avatar {
+  margin-left: var(--or-space-2);
+}
+
+/* Cartão de indicador: número em cima, tendência embaixo. */
+.aurora-dash__kpi {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--or-space-4);
+  /* A sparkline desenha o anel do ponto final com a cor da superfície. */
+  --or-chart-surface: var(--or-color-bg);
+}
+
+/* Status: ponto colorido + texto (a cor nunca é a única pista). */
+.aurora-dash__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  white-space: nowrap;
+}

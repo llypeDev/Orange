@@ -181,6 +181,46 @@ function ComponentPager({ slug }: { slug: string }) {
   )
 }
 
+const statusLabels: Record<Exclude<NonNullable<ComponentMeta['status']>, 'stable'>, Localized<string>> = {
+  new: { pt: 'Novo', en: 'New' },
+  beta: { pt: 'Beta', en: 'Beta' },
+  deprecated: { pt: 'Depreciado', en: 'Deprecated' },
+}
+
+/** Aviso no cabeçalho de um componente depreciado: substituto, versões e política. */
+function DeprecationNotice({ meta }: { meta: ComponentMeta }) {
+  const { t, to, lang } = useLang()
+  const { replacement, since, removal, note } = meta.deprecation ?? {}
+  const replacementName = replacement ? (componentMetas.find((m) => m.slug === replacement)?.name ?? replacement) : undefined
+  const replacementLink = replacement && (
+    <Link to={to(`/components/${replacement}`)}>
+      <code>{replacementName}</code>
+    </Link>
+  )
+  const removalText =
+    lang === 'pt' ? (removal ? `na v${removal}` : 'na próxima major') : removal ? `in v${removal}` : 'in the next major'
+  return (
+    <div className="doc-deprecation" role="note">
+      <Icon name="alert-triangle" size="sm" />
+      <p>
+        {lang === 'pt' ? (
+          <>
+            <strong>{meta.name}</strong> está depreciado{since && ` desde a v${since}`} e sai {removalText}.
+            {replacementLink && <> Use {replacementLink}.</>}
+          </>
+        ) : (
+          <>
+            <strong>{meta.name}</strong> is deprecated{since && ` since v${since}`} and will be removed {removalText}.
+            {replacementLink && <> Use {replacementLink} instead.</>}
+          </>
+        )}
+        {note && <> {t(note)}</>}{' '}
+        <Link to={to('/usage/versioning')}>{t({ pt: 'Política de depreciação', en: 'Deprecation policy' })}</Link>
+      </p>
+    </div>
+  )
+}
+
 /**
  * Página padrão de componente: cabeçalho com categoria, nome, descrição,
  * importação, links para Storybook e código-fonte; índice automático e
@@ -206,11 +246,10 @@ export function ComponentPage({ meta, children }: { meta: ComponentMeta; childre
               <span className="or-visually-hidden">{t({ pt: '(abre em nova aba)', en: '(opens in a new tab)' })}</span>
             </a>
             {meta.status && meta.status !== 'stable' && (
-              <span className={`doc-status doc-status--${meta.status}`}>
-                {meta.status === 'new' ? t({ pt: 'Novo', en: 'New' }) : 'Beta'}
-              </span>
+              <span className={`doc-status doc-status--${meta.status}`}>{t(statusLabels[meta.status])}</span>
             )}
           </div>
+          {meta.status === 'deprecated' && <DeprecationNotice meta={meta} />}
         </div>
       }
       footer={<ComponentPager slug={meta.slug} />}

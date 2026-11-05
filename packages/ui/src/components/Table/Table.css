@@ -377,18 +377,37 @@
   opacity: 0.42;
 }
 
+/* Alto contraste: caixas de seleção e linha selecionada em Highlight; a seta
+   de ordenação é SVG (preservaria o laranja) e passa para o texto do sistema;
+   a barra de hover/foco da linha clicável vira contorno. */
 @media (forced-colors: active) {
   .or-table__check-box {
     border-color: ButtonText;
   }
+
   .or-table__check-input:checked + .or-table__check-box,
   .or-table__check-input:indeterminate + .or-table__check-box {
     background: Highlight;
     border-color: Highlight;
     color: HighlightText;
   }
+
+  .or-table__check-input:disabled + .or-table__check-box {
+    border-color: GrayText;
+  }
+
   .or-table__row[data-selected] {
     outline: 1px solid Highlight;
     outline-offset: -1px;
+  }
+
+  .or-table__sort-arrow {
+    color: CanvasText;
+  }
+
+  .or-table--clickable .or-table__row:hover,
+  .or-table--clickable .or-table__row:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }

@@ -194,18 +194,54 @@
   height: 1.25rem;
 }
 
+/* Alto contraste: o indicador vira Highlight e a opção marcada, HighlightText.
+   A opção marcada precisa de forced-color-adjust: none — senão o Chromium pinta
+   a "placa de leitura" (Canvas) atrás do texto e o rótulo some no Highlight —;
+   por isso texto, ícone e anel de foco dela recebem cores do sistema explícitas. */
 @media (forced-colors: active) {
   .or-segmented-control__track {
     border-color: ButtonText;
   }
 
-  .or-segmented-control__indicator {
+  .or-segmented-control__indicator,
+  .or-segmented-control__track:not([data-ready]) .or-segmented-control__option[data-checked] {
     background: Highlight;
-    forced-color-adjust: none;
+    box-shadow: none;
   }
 
   .or-segmented-control__option[data-checked] {
-    color: HighlightText;
     forced-color-adjust: none;
+  }
+
+  .or-segmented-control__option[data-checked],
+  .or-segmented-control__option[data-checked] .or-segmented-control__icon {
+    color: HighlightText;
+  }
+
+  /* O anel de foco fica fora da opção: no texto do sistema (currentColor seria
+     HighlightText, invisível sobre o fundo). */
+  .or-segmented-control__option:has(.or-segmented-control__input:focus-visible) {
+    outline-color: CanvasText;
+  }
+
+  .or-segmented-control__option[data-disabled],
+  .or-segmented-control--disabled .or-segmented-control__option {
+    color: GrayText;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__track {
+    border-color: GrayText;
+    opacity: 1;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__indicator {
+    background: GrayText;
+  }
+
+  .or-segmented-control--disabled .or-segmented-control__option[data-checked],
+  .or-segmented-control--disabled
+    .or-segmented-control__option[data-checked]
+    .or-segmented-control__icon {
+    color: Canvas;
   }
 }

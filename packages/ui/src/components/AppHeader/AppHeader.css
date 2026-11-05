@@ -515,3 +515,19 @@
     padding: 0 var(--or-space-4);
   }
 }
+
+/* Alto contraste: fundos e sombras somem — o sublinhado da página atual e o
+   painel recolhido precisam de cores do sistema. */
+@media (forced-colors: active) {
+  .or-app-header__link::after {
+    background: CanvasText;
+  }
+
+  .or-app-header__link[aria-current='page']::after {
+    background: Highlight;
+  }
+
+  .or-app-header__nav {
+    border-bottom-color: CanvasText;
+  }
+}

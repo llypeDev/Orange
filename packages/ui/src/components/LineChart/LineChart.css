@@ -126,3 +126,15 @@
     opacity: 1;
   }
 }
+
+/* Alto contraste: linhas e marcadores mantêm a cor e a forma da série (ver
+   ChartFrame.css); o anel dos marcadores e a mira usam cores do sistema. */
+@media (forced-colors: active) {
+  .or-line-chart__marker {
+    stroke: Canvas;
+  }
+
+  .or-line-chart__crosshair {
+    stroke: CanvasText;
+  }
+}

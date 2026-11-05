@@ -1,7 +1,7 @@
 # Orange Design System
 
-Design system open source, **acessível** (WCAG 2.2 AA), **customizável** (temas claro e escuro por
-tokens) e **bilíngue** (PT/EN), feito com React 19 e TypeScript.
+Design system open source, **acessível** (WCAG 2.2 AA), **customizável** (temas escuro, claro e de
+alto contraste por tokens) e **bilíngue** (PT/EN), feito com React 19 e TypeScript.
 
 Linguagem visual geométrica: fundo carvão, texto creme, um único acento laranja, cantos retos,
 bordas de 1px e grade explícita.
@@ -55,9 +55,10 @@ O Orange se move como o zop.dev: **rápido, funcional e geométrico** — e tudo
 
 Mesma organização do [Lemonade UI](https://lemonade-ui.llypedev.com.br/pt/): **Começando**,
 **Sobre**, **Design Guidelines** (acessibilidade, cor, visualização de dados, grid, iconografia,
-movimento, tipografia), **Usando** (estilos, tema, i18n, hooks), **Componentes** (visão geral +
-uma página por componente), **Recursos** e **Storybook** — em português e inglês, com temas claro e
-escuro.
+movimento, tipografia e o relatório de conformidade WCAG 2.2), **Usando** (estilos, tema, i18n,
+hooks, Figma, versionamento), **Componentes** (visão geral + uma página por componente),
+**Modelos** (páginas inteiras: entrar, painel, configurações), **Recursos** e **Storybook** — em
+português e inglês, nos temas escuro, claro e de alto contraste.
 
 ## Começando
 
@@ -89,6 +90,8 @@ export function App() {
 | `pnpm typecheck` | TypeScript em todos os pacotes                             |
 | `pnpm lint`      | ESLint com `jsx-a11y` e `react-hooks`                      |
 | `pnpm build`     | tokens → biblioteca → Storybook → docs (Storybook em `/storybook`) |
+| `pnpm test:visual` | Regressão visual dos dois temas (baselines geradas no CI)  |
+| `pnpm changeset` | Registra uma mudança para o próximo release no npm         |
 
 ## Contribuindo
 

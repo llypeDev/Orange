@@ -155,9 +155,18 @@ label.or-rating__star {
   }
 }
 
+/* Alto contraste: estrelas cheias (e a prévia do hover) em Highlight; as
+   desabilitadas em GrayText — sem repetir o seletor, a regra de desabilitado
+   (cor de token) caía no texto do sistema e parecia ativa. */
 @media (forced-colors: active) {
   .or-rating__star[data-filled],
+  .or-rating--preview .or-rating__star[data-filled],
   .or-rating__partial {
     color: Highlight;
+  }
+
+  .or-rating__input:disabled + .or-rating__star,
+  .or-rating__input:disabled + .or-rating__star[data-filled] {
+    color: GrayText;
   }
 }

@@ -298,11 +298,49 @@
   .or-listbox {
     border-color: CanvasText;
   }
+
   .or-listbox-option[data-active] {
     outline: 2px solid Highlight;
     outline-offset: -2px;
   }
-  .or-listbox-option[aria-selected='true'] .or-listbox-option__box {
+
+  .or-listbox-option[data-active]::before {
     background: Highlight;
+  }
+
+  /* O check é um SVG (preserva a cor do autor): força o texto do sistema. */
+  .or-listbox-option__check {
+    color: CanvasText;
+  }
+
+  .or-listbox-option__box {
+    border-color: CanvasText;
+  }
+
+  .or-listbox-option[aria-selected='true'] .or-listbox-option__box {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  /* Desabilitado: GrayText no texto, no check e na caixa. */
+  .or-listbox-option[aria-disabled='true'],
+  .or-listbox[aria-disabled='true'] .or-listbox-option,
+  .or-listbox[aria-disabled='true'] .or-listbox-option__check {
+    color: GrayText;
+  }
+
+  .or-listbox-option[aria-disabled='true'] .or-listbox-option__box,
+  .or-listbox[aria-disabled='true'] .or-listbox-option__box {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  .or-listbox-option[aria-disabled='true'][aria-selected='true'] .or-listbox-option__box,
+  .or-listbox[aria-disabled='true']
+    .or-listbox-option[aria-selected='true']
+    .or-listbox-option__box {
+    background: GrayText;
+    color: Canvas;
   }
 }

@@ -203,13 +203,44 @@
   cursor: not-allowed;
 }
 
+/* Alto contraste: repete os seletores de hover/foco/desabilitado — senão a
+   regra mais específica (cor de token) vence e o navegador a descarta,
+   deixando a caixa marcada branca sobre branco. */
 @media (forced-colors: active) {
-  .or-checkbox__box {
+  .or-checkbox__box,
+  .or-checkbox:hover .or-checkbox__input:not(:disabled) + .or-checkbox__box,
+  .or-checkbox__input:focus-visible + .or-checkbox__box {
     border-color: CanvasText;
   }
+
   .or-checkbox__input:checked + .or-checkbox__box,
-  .or-checkbox__input:indeterminate + .or-checkbox__box {
+  .or-checkbox__input:indeterminate + .or-checkbox__box,
+  .or-checkbox:hover .or-checkbox__input:checked:not(:disabled) + .or-checkbox__box,
+  .or-checkbox:hover .or-checkbox__input:indeterminate:not(:disabled) + .or-checkbox__box,
+  .or-checkbox__input:checked:focus-visible + .or-checkbox__box,
+  .or-checkbox__input:indeterminate:focus-visible + .or-checkbox__box {
+    border-color: Highlight;
     background: Highlight;
     color: HighlightText;
+  }
+
+  .or-checkbox__input:disabled + .or-checkbox__box {
+    border-color: GrayText;
+    background: Canvas;
+    color: GrayText;
+  }
+
+  .or-checkbox__input:disabled:checked + .or-checkbox__box,
+  .or-checkbox__input:disabled:indeterminate + .or-checkbox__box {
+    border-color: GrayText;
+    background: GrayText;
+    color: Canvas;
+  }
+
+  .or-checkbox[data-disabled] .or-checkbox__label,
+  .or-checkbox:has(.or-checkbox__input:disabled) .or-checkbox__label,
+  .or-checkbox[data-disabled] .or-checkbox__description,
+  .or-checkbox:has(.or-checkbox__input:disabled) .or-checkbox__description {
+    color: GrayText;
   }
 }

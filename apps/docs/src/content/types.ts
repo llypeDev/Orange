@@ -21,6 +21,18 @@ export const categoryLabels: Record<ComponentCategory, Localized<string>> = {
   utilities: { pt: 'Utilitários', en: 'Utilities' },
 }
 
+/** Detalhes de um componente depreciado, exibidos no cabeçalho da página. */
+export interface ComponentDeprecation {
+  /** Slug da página do componente que o substitui (`text-field`). */
+  replacement?: string
+  /** Versão que marcou a depreciação: `0.5.0`. */
+  since?: string
+  /** Major em que o componente será removido: `1.0.0`. */
+  removal?: string
+  /** Nota curta de migração, quando trocar não é só renomear. */
+  note?: Localized<string>
+}
+
 /**
  * Metadados de uma página de componente. Cada pasta em
  * `src/content/components/<slug>/` exporta `meta` em `meta.ts`.
@@ -33,7 +45,13 @@ export interface ComponentMeta {
   category: ComponentCategory
   /** Uma frase descrevendo para que serve. */
   description: Localized<string>
-  status?: 'stable' | 'beta' | 'new'
+  /**
+   * `deprecated`: ainda funciona, mas sai na próxima major (ver /usage/versioning).
+   * Preencha também `deprecation` com o substituto.
+   */
+  status?: 'stable' | 'beta' | 'new' | 'deprecated'
+  /** Só com `status: 'deprecated'`: o que usar no lugar e quando sai. */
+  deprecation?: ComponentDeprecation
   /**
    * Id da story principal no Storybook (`componentes-button--docs`).
    * Padrão: `componentes-<name em minúsculas>--docs`.

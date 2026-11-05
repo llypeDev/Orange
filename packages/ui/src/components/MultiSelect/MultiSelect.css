@@ -228,4 +228,9 @@
   .or-multi-select__chip {
     border-color: CanvasText;
   }
+
+  /* `transparent` viraria texto: a falha do anel de carregamento usa Canvas. */
+  .or-multi-select__spinner {
+    border-right-color: Canvas;
+  }
 }

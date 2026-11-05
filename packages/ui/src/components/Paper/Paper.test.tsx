@@ -63,6 +63,25 @@ describe('Paper', () => {
     expect(screen.getByTestId('paper')).toHaveAttribute('data-theme', 'dark')
   })
 
+  it('tom inverse mantém o alto contraste (dark-hc ↔ light-hc)', () => {
+    const { rerender } = render(
+      <OrangeProvider theme="dark-hc" themeTarget="scoped">
+        <Paper tone="inverse" data-testid="paper">
+          x
+        </Paper>
+      </OrangeProvider>,
+    )
+    expect(screen.getByTestId('paper')).toHaveAttribute('data-theme', 'light-hc')
+    rerender(
+      <OrangeProvider theme="light-hc" themeTarget="scoped">
+        <Paper tone="inverse" data-testid="paper">
+          x
+        </Paper>
+      </OrangeProvider>,
+    )
+    expect(screen.getByTestId('paper')).toHaveAttribute('data-theme', 'dark-hc')
+  })
+
   it('remove o tema invertido quando o tom deixa de ser inverse', () => {
     const { rerender } = render(
       <Paper tone="inverse" data-testid="paper">

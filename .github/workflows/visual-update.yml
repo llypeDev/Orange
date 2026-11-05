@@ -1,0 +1,67 @@
+name: Atualizar baselines visuais
+
+# Gera/atualiza as baselines da regressão visual (tests/visual/__screenshots__) e
+# faz commit delas no branch em que o workflow foi disparado (Actions → este
+# workflow → Run workflow → escolha o branch). Roda no mesmo contêiner do
+# visual.yml, porque os pixels dependem do ambiente (fontes, Chromium).
+#
+# `--update-snapshots` (modo "changed") reescreve só as imagens que mudaram além da
+# tolerância e cria as que faltam; o próprio spec apaga as órfãs.
+# Commits feitos com o GITHUB_TOKEN não disparam outros workflows: depois de rodar,
+# faça `git pull` e siga com o próximo push para o CI comparar de novo.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visual-update-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Gerar baselines (dark + light)
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm gen && pnpm build:tokens && pnpm build:storybook
+      - run: pnpm test:visual:update
+      - name: Commit das baselines
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A tests/visual/__screenshots__
+          if git diff --cached --quiet; then
+            echo 'Baselines já estavam atualizadas; nada a commitar.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          {
+            echo '### Baselines atualizadas'
+            echo '```'
+            git diff --cached --stat
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git commit -m 'Atualiza baselines visuais'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: relatorio-visual-update
+          path: tests/visual/playwright-report
+          retention-days: 7

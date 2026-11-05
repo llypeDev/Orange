@@ -14,12 +14,14 @@
     />
     <title>Orange Design System</title>
     <script>
-      // Aplica o tema salvo antes da renderização para evitar flash.
+      // Aplica o tema salvo antes da renderização para evitar flash. Sem escolha salva
+      // (ou com "system"), segue o sistema — e prefers-contrast: more pede o alto contraste.
       try {
         var saved = localStorage.getItem('orange-docs-theme')
-        var theme = saved === 'light' || saved === 'dark'
+        var theme = /^(dark|light)(-hc)?$/.test(saved || '')
           ? saved
-          : window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+          : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') +
+            (window.matchMedia('(prefers-contrast: more)').matches ? '-hc' : '')
         document.documentElement.setAttribute('data-theme', theme)
       } catch (e) {}
     </script>

@@ -23,7 +23,7 @@ import {
   slugify,
   WcagList,
 } from '../../../kit'
-import { Cards, Checklist, ContrastBadge, TableWrap } from '../_shared/Blocks'
+import { Cards, Checklist, ContrastBadge, Steps, TableWrap } from '../_shared/Blocks'
 import { ratioOf } from '../_shared/color'
 
 const textPairs: [string, string][] = [
@@ -249,6 +249,52 @@ export function Convite() {
   )
 }`
 
+/** Papéis das cores do sistema nos blocos `@media (forced-colors: active)` dos componentes. */
+const forcedColorRoles: { color: string; use: Localized<string> }[] = [
+  {
+    color: 'Canvas / CanvasText',
+    use: {
+      pt: 'Fundo e texto da página; bordas, separadores, eixos de gráfico e “vazios” (a falha do anel de carregamento, células do calendário).',
+      en: 'Page background and text; borders, separators, chart axes and “gaps” (the loading ring gap, calendar cells).',
+    },
+  },
+  {
+    color: 'Highlight / HighlightText',
+    use: {
+      pt: 'Tudo que está selecionado, marcado, atual ou preenchido: caixas, switches, rádios, abas, opções, dias, estrelas, barras de progresso e a página atual.',
+      en: 'Everything selected, checked, current or filled: boxes, switches, radios, tabs, options, days, stars, progress bars and the current page.',
+    },
+  },
+  {
+    color: 'ButtonText / ButtonFace',
+    use: {
+      pt: 'Botões, chips, trilho do Switch e polegar do Slider.',
+      en: 'Buttons, chips, the Switch track and the Slider thumb.',
+    },
+  },
+  {
+    color: 'LinkText',
+    use: {
+      pt: 'Links, inclusive o SkipLink e as setas do Footer.',
+      en: 'Links, including SkipLink and the Footer arrows.',
+    },
+  },
+  {
+    color: 'GrayText',
+    use: {
+      pt: 'Estados desabilitados: rótulos, caixas, trilhos, estrelas, opções e botões.',
+      en: 'Disabled states: labels, boxes, tracks, stars, options and buttons.',
+    },
+  },
+  {
+    color: 'Mark / MarkText',
+    use: {
+      pt: 'Trechos destacados: termos encontrados (Highlight), linhas em destaque do CodeBlock e os dias entre o início e o fim no RangeCalendar.',
+      en: 'Marked passages: matched terms (Highlight), highlighted CodeBlock lines and the days between start and end in RangeCalendar.',
+    },
+  },
+]
+
 const principles: { letter: string; title: Localized<string>; text: Localized<string> }[] = [
   {
     letter: 'P',
@@ -287,6 +333,9 @@ const principles: { letter: string; title: Localized<string>; text: Localized<st
 export default function AccessibilityPage() {
   const { t, to } = useLang()
   const reduced = useReducedMotion()
+  const forcedTestId = slugify(
+    t({ pt: 'Como testar o alto contraste', en: 'How to test high contrast' }),
+  )
   const sizes = Object.entries(controlSize).map(([name, rem]) => ({
     name,
     px: parseFloat(rem) * 16,
@@ -352,6 +401,24 @@ export default function AccessibilityPage() {
             />
           </p>
         </Callout>
+        <p className="guide-muted guide-note">
+          <T
+            pt={
+              <>
+                Critério por critério, o que o Orange cobre e como foi verificado está no{' '}
+                <Link to={to('/design-guidelines/conformance')}>Relatório de conformidade</Link>{' '}
+                (autoavaliação; a auditoria externa está prevista para a 1.0).
+              </>
+            }
+            en={
+              <>
+                Criterion by criterion, what Orange covers and how it was verified is in the{' '}
+                <Link to={to('/design-guidelines/conformance')}>Conformance report</Link>{' '}
+                (self-assessment; the external audit is planned for 1.0).
+              </>
+            }
+          />
+        </p>
       </Section>
 
       <Section title={{ pt: 'Princípios POUR', en: 'POUR principles' }}>
@@ -727,6 +794,271 @@ export default function AccessibilityPage() {
                 <Link to={to('/design-guidelines/color')}>Color</Link>.
               </>
             }
+          />
+        </p>
+      </Section>
+
+      <Section
+        title={{ pt: 'Alto contraste (forced-colors)', en: 'High contrast (forced-colors)' }}
+      >
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  Nos temas de contraste do Windows (o antigo “Alto contraste”) o navegador entra em{' '}
+                  <Code>forced-colors: active</Code>: troca as cores da página pela paleta escolhida
+                  pela pessoa. Fundos viram <Code>Canvas</Code>, textos e bordas viram{' '}
+                  <Code>CanvasText</Code>, e <Code>box-shadow</Code>, <Code>text-shadow</Code> e
+                  gradientes somem. Tudo o que comunica estado só com fundo ou sombra — a caixa
+                  marcada, a aba ativa, o dia escolhido, o anel de foco — desaparece se não houver
+                  um plano B.
+                </>
+              }
+              en={
+                <>
+                  In Windows contrast themes (formerly “High Contrast”) the browser switches to{' '}
+                  <Code>forced-colors: active</Code>: it replaces the page colors with the palette
+                  the person chose. Backgrounds become <Code>Canvas</Code>, text and borders become{' '}
+                  <Code>CanvasText</Code>, and <Code>box-shadow</Code>, <Code>text-shadow</Code> and
+                  gradients are dropped. Anything that conveys state with only a background or a
+                  shadow — the checked box, the active tab, the chosen date, the focus ring —
+                  disappears without a fallback.
+                </>
+              }
+            />
+          </p>
+          <p>
+            <T
+              pt={
+                <>
+                  Todo componente do Orange que desenha estado assim tem um bloco{' '}
+                  <Code>@media (forced-colors: active)</Code> que repinta esse estado com{' '}
+                  <strong>cores do sistema</strong> — e elas seguem a paleta da pessoa, seja ela
+                  clara, escura ou colorida.
+                </>
+              }
+              en={
+                <>
+                  Every Orange component that draws state this way has an{' '}
+                  <Code>@media (forced-colors: active)</Code> block that repaints that state with{' '}
+                  <strong>system colors</strong> — which follow the person's palette, whether light,
+                  dark or colorful.
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <TableWrap label={{ pt: 'Cores do sistema no Orange', en: 'System colors in Orange' }}>
+          <table className="doc-table">
+            <thead>
+              <tr>
+                <th scope="col">{t({ pt: 'Cor do sistema', en: 'System color' })}</th>
+                <th scope="col">{t({ pt: 'Onde o Orange usa', en: 'Where Orange uses it' })}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {forcedColorRoles.map((row) => (
+                <tr key={row.color}>
+                  <th scope="row">
+                    <span className="guide-mono">{row.color}</span>
+                  </th>
+                  <td>{t(row.use)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableWrap>
+        <Bullets
+          items={[
+            {
+              pt: (
+                <>
+                  <strong>Selecionado, marcado, atual:</strong> <Code>Highlight</Code> com{' '}
+                  <Code>HighlightText</Code> — Switch, Checkbox, Radio, SegmentedControl, abas,
+                  Listbox, Combobox, TreeView, dias do calendário, estrelas do Rating, página atual
+                  do SideNav, BottomNavigation e Paginator.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Selected, checked, current:</strong> <Code>Highlight</Code> with{' '}
+                  <Code>HighlightText</Code> — Switch, Checkbox, Radio, SegmentedControl, tabs,
+                  Listbox, Combobox, TreeView, calendar days, Rating stars, the current page in
+                  SideNav, BottomNavigation and Paginator.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Foco:</strong> sempre <Code>outline</Code> (nunca só sombra). Quando o
+                  elemento já está em <Code>Highlight</Code>, o anel usa <Code>HighlightText</Code>{' '}
+                  ou <Code>CanvasText</Code> para não sumir no mesmo fundo — e a seleção nunca ocupa
+                  o contorno, que fica livre para o foco.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Focus:</strong> always an <Code>outline</Code> (never just a shadow). When
+                  the element is already <Code>Highlight</Code>, the ring uses{' '}
+                  <Code>HighlightText</Code> or <Code>CanvasText</Code> so it doesn't vanish on the
+                  same background — and selection never takes over the outline, which stays free for
+                  focus.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>Progresso e trilhos:</strong> preenchimento em <Code>Highlight</Code>{' '}
+                  sobre trilho vazado (contorno) ou pontilhado — “cheio × vazio” não depende de duas
+                  cores do sistema contrastarem entre si.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>Progress and tracks:</strong> a <Code>Highlight</Code> fill over a hollow
+                  (outlined) or dotted track — “full vs. empty” doesn't depend on two system colors
+                  contrasting with each other.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <strong>
+                    <Code>forced-color-adjust: none</Code> com cuidado:
+                  </strong>{' '}
+                  só quando a cor é o conteúdo (séries de um gráfico, a cor escolhida no ColorField)
+                  ou quando há texto sobre <Code>Highlight</Code>/<Code>Mark</Code> — com{' '}
+                  <Code>auto</Code>, o Chromium pinta uma “placa de leitura” em <Code>Canvas</Code>{' '}
+                  atrás do texto e o rótulo some no fundo da seleção. Nesses elementos todas as
+                  cores (texto, ícones, borda, foco) são definidas explicitamente; no gráfico,
+                  texto, grade, eixos e foco continuam em cores do sistema e a tabela “Ver dados”
+                  traz os mesmos números.
+                </>
+              ),
+              en: (
+                <>
+                  <strong>
+                    <Code>forced-color-adjust: none</Code>, with care:
+                  </strong>{' '}
+                  only when the color is the content (chart series, the color picked in ColorField)
+                  or when text sits on <Code>Highlight</Code>/<Code>Mark</Code> — with{' '}
+                  <Code>auto</Code>, Chromium paints a <Code>Canvas</Code> “readability backplate”
+                  behind the text and the label vanishes into the selection background. On those
+                  elements every color (text, icons, border, focus) is set explicitly; in charts,
+                  text, grid, axes and focus stay in system colors and the “View data” table carries
+                  the same numbers.
+                </>
+              ),
+            },
+          ]}
+        />
+        <CodeBlock
+          language="css"
+          title={t({ pt: 'O padrão (Switch.css)', en: 'The pattern (Switch.css)' })}
+          code={`@media (forced-colors: active) {
+  /* Repita os seletores de hover/foco: senão a regra mais específica,
+     com cor de token, vence — e o navegador a descarta. */
+  .or-switch__control[aria-checked='true'],
+  .or-switch__control[aria-checked='true']:focus-visible {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .or-switch__control[aria-checked='true'] .or-switch__thumb {
+    background: HighlightText;
+  }
+
+  .or-switch__control:disabled .or-switch__thumb {
+    background: GrayText;
+  }
+}`}
+        />
+        <h3 id={forcedTestId} className="doc-h3">
+          {t({ pt: 'Como testar', en: 'How to test' })}
+        </h3>
+        <Steps
+          items={[
+            {
+              title: { pt: 'Chrome ou Edge (DevTools)', en: 'Chrome or Edge (DevTools)' },
+              content: (
+                <p>
+                  <T
+                    pt={
+                      <>
+                        DevTools → menu <Code>⋮</Code> → <em>More tools</em> → <em>Rendering</em> →{' '}
+                        <em>Emulate CSS media feature forced-colors</em> → <Code>active</Code>.
+                        Combine com <Code>prefers-color-scheme: dark</Code> para ver a paleta
+                        escura.
+                      </>
+                    }
+                    en={
+                      <>
+                        DevTools → <Code>⋮</Code> menu → <em>More tools</em> → <em>Rendering</em> →{' '}
+                        <em>Emulate CSS media feature forced-colors</em> → <Code>active</Code>.
+                        Combine it with <Code>prefers-color-scheme: dark</Code> to see the dark
+                        palette.
+                      </>
+                    }
+                  />
+                </p>
+              ),
+            },
+            {
+              title: { pt: 'Windows de verdade', en: 'Real Windows' },
+              content: (
+                <p>
+                  <T
+                    pt="Configurações → Acessibilidade → Temas de contraste (Aquático, Deserto, Crepúsculo, Céu noturno). Atalho: Alt esquerdo + Shift esquerdo + Print Screen."
+                    en="Settings → Accessibility → Contrast themes (Aquatic, Desert, Dusk, Night sky). Shortcut: left Alt + left Shift + Print Screen."
+                  />
+                </p>
+              ),
+            },
+            {
+              title: { pt: 'Automatizado', en: 'Automated' },
+              content: (
+                <p>
+                  <T
+                    pt={
+                      <>
+                        O teste <Code>packages/ui/src/test/forcedColors.test.ts</Code> lê o CSS de
+                        todos os componentes e falha se um estado ou foco desenhado com fundo ou
+                        sombra não tiver bloco forced-colors, se um bloco usar cor de token ou se{' '}
+                        <Code>forced-color-adjust: none</Code> aparecer fora da lista revisada. Para
+                        capturas, o Playwright emula o modo com{' '}
+                        <Code>
+                          browser.newContext({'{'} forcedColors: 'active' {'}'})
+                        </Code>
+                        .
+                      </>
+                    }
+                    en={
+                      <>
+                        The <Code>packages/ui/src/test/forcedColors.test.ts</Code> test reads every
+                        component's CSS and fails if a state or focus drawn with a background or
+                        shadow has no forced-colors block, if a block uses a token color, or if{' '}
+                        <Code>forced-color-adjust: none</Code> shows up outside the reviewed list.
+                        For screenshots, Playwright emulates the mode with{' '}
+                        <Code>
+                          browser.newContext({'{'} forcedColors: 'active' {'}'})
+                        </Code>
+                        .
+                      </>
+                    }
+                  />
+                </p>
+              ),
+            },
+          ]}
+        />
+        <p className="guide-muted guide-note">
+          <T
+            pt="Um tema de alto contraste escolhido dentro do produto é outra coisa: ele usa tokens e vale quando a pessoa o seleciona na interface. O forced-colors vale quando o sistema operacional impõe as cores — e passa por cima de qualquer tema."
+            en="A high-contrast theme picked inside the product is a different thing: it uses tokens and applies when the person selects it in the interface. Forced colors apply when the operating system imposes the colors — overriding any theme."
           />
         </p>
       </Section>

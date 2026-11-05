@@ -378,6 +378,15 @@ textarea.or-control {
 }
 
 @media (forced-colors: active) {
+  /* O foco dos campos é borda + box-shadow com `outline: none`: em alto
+     contraste a sombra some e a borda vira texto — sem isto, não há foco visível. */
+  .or-control:focus-visible,
+  .or-control:focus,
+  .or-control-frame:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 0;
+  }
+
   @supports (appearance: base-select) {
     select.or-control:not([multiple], [size])::picker(select) {
       border-color: CanvasText;

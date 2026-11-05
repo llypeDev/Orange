@@ -1,3 +1,4 @@
+import { useTheme } from '@orange/ui'
 import { useState, type ReactNode } from 'react'
 import { useLang, type Localized } from '../i18n'
 import { CodeBlock } from './CodeBlock'
@@ -22,11 +23,17 @@ export interface ExampleProps {
 
 /**
  * Bloco de exemplo: prévia ao vivo + código. A prévia pode ser alternada
- * entre os temas claro e escuro, independente do tema da página.
+ * entre os temas claro e escuro — e o alto contraste de cada um —,
+ * independente do tema da página.
  */
 export function Example({ title, description, code, children, align = 'start', minHeight, collapsed = false }: ExampleProps) {
   const { t } = useLang()
+  const { colorScheme } = useTheme()
   const [theme, setTheme] = useState<'inherit' | 'dark' | 'light'>('inherit')
+  // Alto contraste é um modificador: vale para o esquema escolhido (ou o da página, em Auto).
+  const [highContrast, setHighContrast] = useState(false)
+  const scheme = theme === 'inherit' ? colorScheme : theme
+  const previewTheme = highContrast ? `${scheme}-hc` : theme === 'inherit' ? undefined : theme
   const [showCode, setShowCode] = useState(!collapsed)
   const heading = title ? t(title) : undefined
   // Prefixo evita colisão com o id da Section de mesmo título (ex.: seção "Tons" e exemplo "Tons").
@@ -61,11 +68,19 @@ export function Example({ title, description, code, children, align = 'start', m
                     : t({ pt: 'Claro', en: 'Light' })}
               </button>
             ))}
+            <button
+              type="button"
+              className="doc-example__tool"
+              aria-pressed={highContrast}
+              onClick={() => setHighContrast((v) => !v)}
+            >
+              {t({ pt: 'Alto contraste', en: 'High contrast' })}
+            </button>
           </div>
         </div>
         <div
           className={`doc-example__preview doc-example__preview--${align}`}
-          data-theme={theme === 'inherit' ? undefined : theme}
+          data-theme={previewTheme}
           style={{ minHeight }}
         >
           {children}

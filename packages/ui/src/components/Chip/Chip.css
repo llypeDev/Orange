@@ -124,12 +124,35 @@
   color: var(--or-color-text-subtle);
 }
 
+/* Alto contraste: selecionado = Highlight/HighlightText (o contorno fica livre
+   para o anel de foco, que antes era substituído pela marcação). O chip marcado
+   usa forced-color-adjust: none — senão o Chromium pinta a placa de leitura
+   (Canvas) atrás do texto —, com todas as cores dele explícitas abaixo. */
 @media (forced-colors: active) {
   .or-chip {
     border-color: ButtonText;
   }
-  .or-chip[aria-pressed='true'] {
+
+  .or-chip[aria-pressed='true'],
+  .or-chip[aria-pressed='true']:hover:not(:disabled) {
+    forced-color-adjust: none;
     border-color: Highlight;
-    outline: 1px solid Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-chip[aria-pressed='true']:focus-visible {
+    outline-color: CanvasText;
+  }
+
+  .or-chip[aria-pressed='true'] .or-chip__icon--check,
+  .or-chip[aria-pressed='true'] .or-chip__count {
+    border-inline-start-color: HighlightText;
+    color: HighlightText;
+  }
+
+  .or-chip:disabled {
+    border-color: GrayText;
+    color: GrayText;
   }
 }

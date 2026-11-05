@@ -108,3 +108,11 @@
 .or-combobox[data-open] .or-combobox__toggle {
   color: var(--or-color-text);
 }
+
+/* Alto contraste: a "falha" do anel de carregamento é `transparent`, que
+   viraria texto (anel completo, parado) — usa Canvas. */
+@media (forced-colors: active) {
+  .or-combobox__spinner {
+    border-right-color: Canvas;
+  }
+}

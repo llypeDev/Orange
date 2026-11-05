@@ -84,3 +84,11 @@
 .or-avatar-group__more[title] {
   cursor: default;
 }
+
+/* Alto contraste: o anel na cor do fundo que separa avatares sobrepostos é um
+   box-shadow (some) — vira um contorno em Canvas. */
+@media (forced-colors: active) {
+  .or-avatar-group .or-avatar__frame {
+    outline: 2px solid Canvas;
+  }
+}

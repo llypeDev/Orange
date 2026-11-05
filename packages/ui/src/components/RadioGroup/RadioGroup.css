@@ -216,14 +216,48 @@
   box-shadow: none;
 }
 
+/* Alto contraste: repete os seletores de hover/foco/desabilitado para a cor
+   do sistema vencer; o ponto e a borda do cartão marcado usam Highlight. */
 @media (forced-colors: active) {
-  .or-radio__indicator {
+  .or-radio__indicator,
+  .or-radio:hover .or-radio__input:not(:disabled) + .or-radio__indicator,
+  .or-radio__input:focus-visible + .or-radio__indicator {
     border-color: CanvasText;
   }
+
+  .or-radio__input:checked + .or-radio__indicator,
+  .or-radio:hover .or-radio__input:checked:not(:disabled) + .or-radio__indicator {
+    border-color: Highlight;
+  }
+
   .or-radio__indicator::after {
     background: Highlight;
   }
+
+  .or-radio__input:disabled + .or-radio__indicator {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  .or-radio__input:disabled + .or-radio__indicator::after {
+    background: GrayText;
+  }
+
+  .or-radio[data-disabled] .or-radio__label,
+  .or-radio[data-disabled] .or-radio__description,
+  .or-radio:has(.or-radio__input:disabled) .or-radio__label,
+  .or-radio:has(.or-radio__input:disabled) .or-radio__description {
+    color: GrayText;
+  }
+
   .or-radio--card[data-checked] {
+    border-color: Highlight;
     outline: 2px solid Highlight;
+  }
+
+  /* Foco do cartão: anel no texto do sistema, distinto do Highlight da seleção. */
+  .or-radio--card:has(.or-radio__input:focus-visible) {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
   }
 }

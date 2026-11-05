@@ -283,9 +283,11 @@
   }
 }
 
+/* Alto contraste: a linha é um fundo — CanvasText em repouso, Highlight em
+   hover/foco/arraste. Sem forced-color-adjust: none, o anel de foco não vaza o
+   laranja e usa CanvasText (fica distinto da linha em Highlight). */
 @media (forced-colors: active) {
   .or-splitter__handle {
-    forced-color-adjust: none;
     background: CanvasText;
   }
 
@@ -293,6 +295,10 @@
   .or-splitter__handle:focus-visible,
   .or-splitter__handle[data-dragging] {
     background: Highlight;
+  }
+
+  .or-splitter__handle:focus-visible {
+    outline-color: CanvasText;
   }
 
   .or-splitter__grip {

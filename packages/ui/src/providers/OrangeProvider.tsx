@@ -9,15 +9,25 @@ import {
 } from 'react'
 import { useMediaQuery } from '../hooks'
 import { builtInMessages, interpolate, ptBR, type Locale, type MessageKey, type Messages } from './messages'
+import {
+  getColorScheme,
+  isHighContrastTheme,
+  resolveTheme,
+  type ColorScheme,
+  type ResolvedTheme,
+  type ThemeSetting,
+} from './theme'
 
-export type ThemeSetting = 'dark' | 'light' | 'system'
-export type ResolvedTheme = 'dark' | 'light'
 
-interface ThemeContextValue {
+export interface ThemeContextValue {
   /** Preferência escolhida (pode ser `system`). */
   theme: ThemeSetting
-  /** Tema efetivamente aplicado. */
+  /** Tema efetivamente aplicado (valor de `data-theme`). */
   resolvedTheme: ResolvedTheme
+  /** Esquema de cor do tema aplicado: `dark-hc` → `dark`. */
+  colorScheme: ColorScheme
+  /** `true` com `dark-hc`/`light-hc` (escolhidos ou vindos de `prefers-contrast: more`). */
+  highContrast: boolean
   setTheme: (theme: ThemeSetting) => void
 }
 
@@ -32,9 +42,14 @@ const LocaleContext = createContext<LocaleContextValue | null>(null)
 
 export interface OrangeProviderProps {
   children: ReactNode
-  /** Tema inicial (não controlado). Padrão: `dark`. */
+  /**
+   * Tema inicial (não controlado). Padrão: `dark` — ou, num provider aninhado
+   * sem `theme`/`defaultTheme` (ex.: só para trocar o idioma), o tema do provider
+   * de fora. `system` segue `prefers-color-scheme` e, com `prefers-contrast: more`,
+   * usa o tema de alto contraste do mesmo esquema (`dark-hc`/`light-hc`).
+   */
   defaultTheme?: ThemeSetting
-  /** Tema controlado. */
+  /** Tema controlado: `dark`, `light`, `dark-hc`, `light-hc` ou `system`. */
   theme?: ThemeSetting
   onThemeChange?: (theme: ThemeSetting) => void
   /**
@@ -49,37 +64,51 @@ export interface OrangeProviderProps {
 }
 
 /**
- * Provedor raiz do Orange: aplica o tema (claro/escuro) e fornece as
- * mensagens internas traduzidas para os componentes.
+ * Provedor raiz do Orange: aplica o tema (escuro, claro ou um dos de alto
+ * contraste) e fornece as mensagens internas traduzidas para os componentes.
  */
 export function OrangeProvider({
   children,
-  defaultTheme = 'dark',
+  defaultTheme,
   theme: themeProp,
   onThemeChange,
   themeTarget = 'document',
   locale = 'pt-BR',
   messages: overrides,
 }: OrangeProviderProps) {
-  const [internalTheme, setInternalTheme] = useState<ThemeSetting>(defaultTheme)
-  const theme = themeProp ?? internalTheme
+  const parent = useContext(ThemeContext)
+  // Aninhado sem tema próprio: segue o tema de fora, em vez de voltar ao escuro.
+  const inherits = parent !== null && themeProp === undefined && defaultTheme === undefined
+  const [internalTheme, setInternalTheme] = useState<ThemeSetting>(defaultTheme ?? 'dark')
+  const theme = inherits ? parent.theme : (themeProp ?? internalTheme)
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
-  const resolvedTheme: ResolvedTheme = theme === 'system' ? (prefersLight ? 'light' : 'dark') : theme
+  const prefersMoreContrast = useMediaQuery('(prefers-contrast: more)')
+  const resolvedTheme = resolveTheme(theme, { prefersLight, prefersMoreContrast })
 
-  const setTheme = useCallback(
+  const ownSetTheme = useCallback(
     (next: ThemeSetting) => {
       if (themeProp === undefined) setInternalTheme(next)
       onThemeChange?.(next)
     },
     [themeProp, onThemeChange],
   )
+  const setTheme = inherits ? parent.setTheme : ownSetTheme
 
   useEffect(() => {
     if (themeTarget !== 'document') return
     document.documentElement.setAttribute('data-theme', resolvedTheme)
   }, [resolvedTheme, themeTarget])
 
-  const themeValue = useMemo(() => ({ theme, resolvedTheme, setTheme }), [theme, resolvedTheme, setTheme])
+  const themeValue = useMemo<ThemeContextValue>(
+    () => ({
+      theme,
+      resolvedTheme,
+      colorScheme: getColorScheme(resolvedTheme),
+      highContrast: isHighContrastTheme(resolvedTheme),
+      setTheme,
+    }),
+    [theme, resolvedTheme, setTheme],
+  )
 
   const localeValue = useMemo<LocaleContextValue>(() => {
     const base = builtInMessages[locale] ?? builtInMessages[locale.split('-')[0]] ?? ptBR
@@ -109,15 +138,17 @@ const fallbackLocale: LocaleContextValue = {
   t: (key, vars) => interpolate(ptBR[key] ?? key, vars),
 }
 
+const fallbackTheme: ThemeContextValue = {
+  theme: 'dark',
+  resolvedTheme: 'dark',
+  colorScheme: 'dark',
+  highContrast: false,
+  setTheme: () => {},
+}
+
 /** Acessa o tema atual. Funciona fora do provider (retorna `dark`). */
 export function useTheme(): ThemeContextValue {
-  return (
-    useContext(ThemeContext) ?? {
-      theme: 'dark',
-      resolvedTheme: 'dark',
-      setTheme: () => {},
-    }
-  )
+  return useContext(ThemeContext) ?? fallbackTheme
 }
 
 /** Acessa idioma e mensagens. Funciona fora do provider (usa pt-BR). */

@@ -220,11 +220,43 @@
   .or-combobox-popup {
     border-color: CanvasText;
   }
+
   .or-combobox-option[data-active] {
     outline: 2px solid Highlight;
     outline-offset: -2px;
   }
-  .or-combobox-option[aria-selected='true'] .or-combobox-option__checkbox {
+
+  .or-combobox-option[data-active]::before {
     background: Highlight;
+  }
+
+  /* O check é um SVG (preserva a cor do autor): força o texto do sistema. */
+  .or-combobox-option__check {
+    color: CanvasText;
+  }
+
+  .or-combobox-option__checkbox {
+    border-color: CanvasText;
+  }
+
+  .or-combobox-option[aria-selected='true'] .or-combobox-option__checkbox {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-combobox-option[aria-disabled='true'],
+  .or-combobox-option[aria-disabled='true'] .or-combobox-option__description {
+    color: GrayText;
+  }
+
+  .or-combobox-option[aria-disabled='true'] .or-combobox-option__checkbox {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  /* `transparent` viraria texto: a falha do anel de carregamento usa Canvas. */
+  .or-combobox-popup__spinner {
+    border-right-color: Canvas;
   }
 }

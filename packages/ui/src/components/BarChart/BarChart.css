@@ -91,3 +91,17 @@
     opacity: 1;
   }
 }
+
+/* Alto contraste: as barras mantêm a cor da série (ver ChartFrame.css) e ganham
+   contorno no texto do sistema, para não sumirem em paletas escuras ou claras. */
+@media (forced-colors: active) {
+  .or-bar-chart__bar {
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+
+  .or-bar-chart__cursor {
+    fill: Highlight;
+    opacity: 0.25;
+  }
+}

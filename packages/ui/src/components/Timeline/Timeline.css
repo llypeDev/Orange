@@ -252,15 +252,37 @@
 .or-timeline > .or-timeline__item:nth-child(8) { --_i: 7; }
 .or-timeline > .or-timeline__item:nth-child(n + 9) { --_i: 8; }
 
+/* Alto contraste: marcadores em cores do sistema (sem forced-color-adjust:
+   none, que deixava o fundo escuro do tema nos marcadores com ícone); o item
+   atual usa Highlight no preenchimento e no anel. */
 @media (forced-colors: active) {
   .or-timeline__marker {
-    forced-color-adjust: none;
     border-color: CanvasText;
     background: CanvasText;
   }
+
   .or-timeline__item--neutral .or-timeline__marker {
     background: Canvas;
   }
+
+  .or-timeline__item--current .or-timeline__marker {
+    border-color: Highlight;
+    background: Highlight;
+    outline-color: Highlight;
+  }
+
+  .or-timeline__item--with-icon .or-timeline__marker,
+  .or-timeline__item--with-icon.or-timeline__item--neutral .or-timeline__marker {
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .or-timeline__item--with-icon.or-timeline__item--current .or-timeline__marker {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
   .or-timeline__item:not(:last-child)::before {
     border-color: CanvasText;
   }

@@ -88,8 +88,22 @@
   }
 }
 
+/* Alto contraste: bordas `transparent` viram CanvasText e o arco viraria um
+   anel completo (parado). As partes "vazias" do arco usam Canvas; o trilho
+   (::before, por cima) continua visível. */
 @media (forced-colors: active) {
   .or-spinner {
     --_color: CanvasText;
+  }
+
+  .or-spinner__ring {
+    border-color: Canvas;
+    border-top-color: currentColor;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .or-spinner__ring {
+      border-color: currentColor;
+    }
   }
 }
