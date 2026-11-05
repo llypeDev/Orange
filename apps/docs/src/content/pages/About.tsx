@@ -58,8 +58,8 @@ const roadmap: {
         en: 'npm publishing with an automated changelog',
         state: 'done',
         note: {
-          pt: 'Changesets + workflow de release; a primeira publicação sai quando o token do npm for configurado.',
-          en: 'Changesets + release workflow; the first publish runs once the npm token is configured.',
+          pt: '@orangesys/tokens e @orangesys/ui, publicados pelo CI com Changesets, provenance e trusted publishing.',
+          en: '@orangesys/tokens and @orangesys/ui, published from CI with Changesets, provenance and trusted publishing.',
         },
       },
     ],

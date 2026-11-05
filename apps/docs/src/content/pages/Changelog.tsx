@@ -25,9 +25,8 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
-    date: '2026-11-06',
+    date: '2026-11-05',
     version: 'v0.5.0',
-    unreleased: true,
     title: {
       pt: 'Roadmap 0.2 e 0.3 concluídos: alto contraste, modelos de página e publicação no npm',
       en: 'Roadmap 0.2 and 0.3 done: high contrast, page templates and npm publishing',
@@ -40,7 +39,7 @@ const entries: Entry[] = [
       { kind: 'new', text: { pt: 'Temas de alto contraste dark-hc e light-hc (AAA), com o modo Auto seguindo prefers-contrast: more.', en: 'High-contrast themes dark-hc and light-hc (AAA), with Auto following prefers-contrast: more.' } },
       { kind: 'new', text: { pt: 'Modelos de página inteira: Entrar, Painel e Configurações, com prévia em três larguras.', en: 'Full-page templates: Sign in, Dashboard and Settings, previewed at three widths.' } },
       { kind: 'new', text: { pt: 'Tokens no formato DTCG por modo e o script figma:sync para as variáveis do Figma.', en: 'Per-mode DTCG tokens and the figma:sync script for Figma variables.' } },
-      { kind: 'new', text: { pt: 'Publicação no npm com changesets e changelog automático; regressão visual dos dois temas no CI.', en: 'npm publishing with changesets and an automated changelog; visual regression for both themes in CI.' } },
+      { kind: 'new', text: { pt: 'Pacotes @orangesys/tokens e @orangesys/ui no npm, publicados pelo CI com changesets, changelog automático e provenance; regressão visual dos dois temas no CI.', en: '@orangesys/tokens and @orangesys/ui on npm, published from CI with changesets, an automated changelog and provenance; visual regression for both themes in CI.' } },
       { kind: 'new', text: { pt: 'Política de versionamento e depreciação, e relatório de conformidade WCAG 2.2 para auditores.', en: 'Versioning and deprecation policy, and a WCAG 2.2 conformance report for auditors.' } },
       { kind: 'improved', text: { pt: 'forced-colors (contraste do Windows) em todos os componentes, com teste que impede regressões.', en: 'forced-colors (Windows contrast themes) in every component, with a test that prevents regressions.' } },
       { kind: 'fixed', text: { pt: 'SortableList: o arraste agora alcança a última posição.', en: 'SortableList: dragging now reaches the last position.' } },
