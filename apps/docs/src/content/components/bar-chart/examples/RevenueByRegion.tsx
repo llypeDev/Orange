@@ -18,9 +18,18 @@ export default function RevenueByRegion() {
           { key: 'outras', label: 'Outras', color: 'var(--or-color-viz-other)' },
         ]}
         data={[
-          { label: '1º tri', values: { sudeste: 412000, sul: 168000, nordeste: 121000, outras: 64000 } },
-          { label: '2º tri', values: { sudeste: 438000, sul: 175000, nordeste: 139000, outras: 71000 } },
-          { label: '3º tri', values: { sudeste: 451000, sul: 182000, nordeste: 152000, outras: 69000 } },
+          {
+            label: '1º tri',
+            values: { sudeste: 412000, sul: 168000, nordeste: 121000, outras: 64000 },
+          },
+          {
+            label: '2º tri',
+            values: { sudeste: 438000, sul: 175000, nordeste: 139000, outras: 71000 },
+          },
+          {
+            label: '3º tri',
+            values: { sudeste: 451000, sul: 182000, nordeste: 152000, outras: 69000 },
+          },
         ]}
       />
     </div>

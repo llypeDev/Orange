@@ -57,9 +57,10 @@ export const AreaSingleSeries: Story = {
     area: true,
     valueFormat: { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 },
     series: [{ key: 'receita', label: 'Receita' }],
-    data: [184000, 176500, 195300, 201800, 188900, 214600, 221300, 219800, 232400, 241100, 255900, 268700].map(
-      (receita, i) => ({ label: meses[i], values: { receita } }),
-    ),
+    data: [
+      184000, 176500, 195300, 201800, 188900, 214600, 221300, 219800, 232400, 241100, 255900,
+      268700,
+    ].map((receita, i) => ({ label: meses[i], values: { receita } })),
   },
 }
 

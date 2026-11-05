@@ -54,8 +54,12 @@ describe('Sparkline', () => {
   })
 
   it('cor e área opcionais', () => {
-    const { container } = render(<Sparkline data={week} label={label} color="var(--or-color-viz-2)" area />)
-    expect(screen.getByRole('img').getAttribute('style')).toContain('--_color: var(--or-color-viz-2)')
+    const { container } = render(
+      <Sparkline data={week} label={label} color="var(--or-color-viz-2)" area />,
+    )
+    expect(screen.getByRole('img').getAttribute('style')).toContain(
+      '--_color: var(--or-color-viz-2)',
+    )
     expect(container.querySelector('.or-sparkline__area')).toBeInTheDocument()
   })
 
@@ -80,7 +84,10 @@ describe('Sparkline', () => {
     })
 
     it('movimento reduzido: desenhada direto', () => {
-      window.matchMedia = ((q: string) => ({ ...original(q), matches: q.includes('reduce') })) as typeof window.matchMedia
+      window.matchMedia = ((q: string) => ({
+        ...original(q),
+        matches: q.includes('reduce'),
+      })) as typeof window.matchMedia
       render(<Sparkline data={week} label={label} />)
       expect(screen.getByRole('img')).toHaveAttribute('data-motion', 'static')
     })

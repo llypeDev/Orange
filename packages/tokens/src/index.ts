@@ -330,10 +330,7 @@ type VizStep = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 /** Tokens semânticos de visualização de dados. As chaves viram `--or-color-<chave>`. */
 export type VizColorTokens = Record<
-  | `viz-${1 | 2 | 3 | 4 | 5}`
-  | 'viz-other'
-  | `viz-seq-${VizStep}`
-  | `viz-div-${VizStep}`,
+  `viz-${1 | 2 | 3 | 4 | 5}` | 'viz-other' | `viz-seq-${VizStep}` | `viz-div-${VizStep}`,
   string
 >
 

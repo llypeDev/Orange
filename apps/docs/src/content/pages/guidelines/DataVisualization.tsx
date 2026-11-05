@@ -1,11 +1,5 @@
 import { useTheme } from '@orange/ui'
-import {
-  themes,
-  vizPalettes,
-  vizThemes,
-  type ThemeName,
-  type VizColorTokens,
-} from '@orange/tokens'
+import { themes, vizPalettes, vizThemes, type ThemeName, type VizColorTokens } from '@orange/tokens'
 import {
   useEffect,
   useId,
@@ -40,7 +34,8 @@ const vizKey = (key: string) => key as keyof VizColorTokens
 function paletteFor(theme: ThemeName) {
   const tokens = vizThemes[theme]
   const palette = vizPalettes[theme]
-  const steps = (prefix: string) => [1, 2, 3, 4, 5, 6, 7].map((i) => tokens[vizKey(`${prefix}${i}`)])
+  const steps = (prefix: string) =>
+    [1, 2, 3, 4, 5, 6, 7].map((i) => tokens[vizKey(`${prefix}${i}`)])
   return {
     categorical: {
       colors: palette.categorical.map((_, i) => tokens[vizKey(`viz-${i + 1}`)]),

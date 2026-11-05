@@ -12,7 +12,12 @@ export default function InText() {
       {produtos.map((p) => (
         <li key={p.nome} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <span style={{ minWidth: 140 }}>{p.nome}</span>
-          <Sparkline data={p.vendas} label={`Vendas de ${p.nome}: ${p.resumo}`} width={80} height={24} />
+          <Sparkline
+            data={p.vendas}
+            label={`Vendas de ${p.nome}: ${p.resumo}`}
+            width={80}
+            height={24}
+          />
           <span style={{ color: 'var(--or-color-text-subtle)', fontSize: 'var(--or-text-sm)' }}>
             {p.resumo}
           </span>

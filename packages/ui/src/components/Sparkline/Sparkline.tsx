@@ -75,7 +75,13 @@ export const Sparkline = forwardRef<HTMLSpanElement, SparklineProps>(function Sp
       style={{ width, height, '--_color': color, ...style } as CSSProperties}
       {...rest}
     >
-      <svg className="or-sparkline__svg" width={width} height={height} aria-hidden="true" focusable="false">
+      <svg
+        className="or-sparkline__svg"
+        width={width}
+        height={height}
+        aria-hidden="true"
+        focusable="false"
+      >
         {area && n > 1 && (
           <path
             className="or-sparkline__area or-chart__anim"
@@ -85,12 +91,27 @@ export const Sparkline = forwardRef<HTMLSpanElement, SparklineProps>(function Sp
         {n > 1 && <path className="or-sparkline__line or-chart__anim" d={d} pathLength={1} />}
         {showMinMax && n > 1 && span > 0 && (
           <g className="or-sparkline__extremes">
-            <circle className="or-sparkline__dot or-sparkline__dot--min or-chart__anim" cx={x(minIndex)} cy={y(min)} r={2.5} />
-            <circle className="or-sparkline__dot or-sparkline__dot--max or-chart__anim" cx={x(maxIndex)} cy={y(max)} r={2.5} />
+            <circle
+              className="or-sparkline__dot or-sparkline__dot--min or-chart__anim"
+              cx={x(minIndex)}
+              cy={y(min)}
+              r={2.5}
+            />
+            <circle
+              className="or-sparkline__dot or-sparkline__dot--max or-chart__anim"
+              cx={x(maxIndex)}
+              cy={y(max)}
+              r={2.5}
+            />
           </g>
         )}
         {showEndPoint && n > 0 && (
-          <circle className="or-sparkline__dot or-sparkline__dot--end or-chart__anim" cx={x(lastIndex)} cy={y(values[lastIndex])} r={3} />
+          <circle
+            className="or-sparkline__dot or-sparkline__dot--end or-chart__anim"
+            cx={x(lastIndex)}
+            cy={y(values[lastIndex])}
+            r={3}
+          />
         )}
       </svg>
     </span>

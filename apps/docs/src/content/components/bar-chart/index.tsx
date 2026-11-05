@@ -62,7 +62,8 @@ export default function BarChartPage() {
               en: (
                 <>
                   Up to five series, colored <Code>--or-color-viz-1…5</Code> in order. A sixth
-                  doesn’t get a new color: group it into “Other” with <Code>--or-color-viz-other</Code>.
+                  doesn’t get a new color: group it into “Other” with{' '}
+                  <Code>--or-color-viz-other</Code>.
                 </>
               ),
             },
@@ -76,9 +77,9 @@ export default function BarChartPage() {
               ),
               en: (
                 <>
-                  <Code>title</Code> says what, <Code>description</Code> says when and in which unit,{' '}
-                  <Code>source</Code> says where from. Write the takeaway in <Code>summary</Code>:
-                  it’s what screen readers hear first.
+                  <Code>title</Code> says what, <Code>description</Code> says when and in which
+                  unit, <Code>source</Code> says where from. Write the takeaway in{' '}
+                  <Code>summary</Code>: it’s what screen readers hear first.
                 </>
               ),
             },
@@ -263,29 +264,179 @@ export default function BarChartPage() {
       <Section title="Props" id="props">
         <PropsTable
           rows={[
-            { name: 'title', type: 'string', required: true, description: { pt: 'O que o gráfico mostra. Vira o <figcaption> e o nome do gráfico.', en: 'What the chart shows. Becomes the <figcaption> and the chart’s name.' } },
-            { name: 'data', type: '{ label: string; values: Record<string, number | null> }[]', required: true, description: { pt: 'Uma entrada por categoria, com o valor de cada série pela key.', en: 'One entry per category, with each series’ value by key.' } },
-            { name: 'series', type: '{ key: string; label: string; color?: string }[]', required: true, description: { pt: 'Séries na ordem da legenda. color sobrescreve o token viz da posição.', en: 'Series in legend order. color overrides the viz token for that position.' } },
-            { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: { pt: 'Colunas ou barras deitadas (rótulos longos).', en: 'Columns or lying bars (long labels).' } },
-            { name: 'layout', type: "'grouped' | 'stacked'", default: "'grouped'", description: { pt: 'Lado a lado ou empilhadas (com total).', en: 'Side by side or stacked (with total).' } },
-            { name: 'showValues', type: 'boolean', default: 'false', description: { pt: 'Valor na ponta de cada barra (ou total da pilha), quando couber.', en: 'Value at the tip of each bar (or stack total), when it fits.' } },
-            { name: 'highlight', type: 'string', description: { pt: 'label da categoria em destaque (acento); as demais no neutro. Uma série.', en: 'label of the highlighted category (accent); the rest neutral. Single series.' } },
-            { name: 'valueFormat', type: '((n: number) => string) | Intl.NumberFormatOptions', description: { pt: <>Formato dos números no idioma do <Code>OrangeProvider</Code>. Ex.: <Code>{"{ style: 'currency', currency: 'BRL' }"}</Code>.</>, en: <>Number format in the <Code>OrangeProvider</Code> locale. E.g. <Code>{"{ style: 'currency', currency: 'BRL' }"}</Code>.</> } },
-            { name: 'description', type: 'ReactNode', description: { pt: 'Subtítulo: período e unidade.', en: 'Subtitle: period and unit.' } },
-            { name: 'summary', type: 'string', description: { pt: 'Conclusão para leitores de tela. Padrão: séries, maior e menor valor.', en: 'Takeaway for screen readers. Default: series, highest and lowest value.' } },
-            { name: 'source', type: 'ReactNode', description: { pt: 'Fonte dos dados, abaixo do gráfico.', en: 'Data source, below the chart.' } },
-            { name: 'height', type: 'number', default: '280', description: { pt: 'Altura em px, incluindo os rótulos do eixo. Na horizontal, padrão automático pelo número de categorias.', en: 'Height in px, axis labels included. Horizontal defaults to an automatic height from the category count.' } },
-            { name: 'categoryLabel', type: 'string', default: "'Categoria'", description: { pt: 'Cabeçalho da primeira coluna da tabela (ex.: “Mês”).', en: 'Header of the table’s first column (e.g. “Month”).' } },
-            { name: 'hideCaption', type: 'boolean', default: 'false', description: { pt: 'Esconde título e subtítulo só visualmente.', en: 'Hides title and subtitle visually only.' } },
-            { name: 'variant', type: "'outline' | 'plain'", default: "'outline'", description: { pt: 'Com moldura de 1px ou sem moldura (dentro de cartões).', en: 'With a 1px frame or frameless (inside cards).' } },
-            { name: 'defaultShowData', type: 'boolean', default: 'false', description: { pt: 'Começa com a tabela visível.', en: 'Starts with the table visible.' } },
-            { name: '...rest', type: 'HTMLAttributes<HTMLElement>', description: { pt: 'Repassado ao <figure> (ref também).', en: 'Passed to the <figure> (ref too).' } },
+            {
+              name: 'title',
+              type: 'string',
+              required: true,
+              description: {
+                pt: 'O que o gráfico mostra. Vira o <figcaption> e o nome do gráfico.',
+                en: 'What the chart shows. Becomes the <figcaption> and the chart’s name.',
+              },
+            },
+            {
+              name: 'data',
+              type: '{ label: string; values: Record<string, number | null> }[]',
+              required: true,
+              description: {
+                pt: 'Uma entrada por categoria, com o valor de cada série pela key.',
+                en: 'One entry per category, with each series’ value by key.',
+              },
+            },
+            {
+              name: 'series',
+              type: '{ key: string; label: string; color?: string }[]',
+              required: true,
+              description: {
+                pt: 'Séries na ordem da legenda. color sobrescreve o token viz da posição.',
+                en: 'Series in legend order. color overrides the viz token for that position.',
+              },
+            },
+            {
+              name: 'orientation',
+              type: "'vertical' | 'horizontal'",
+              default: "'vertical'",
+              description: {
+                pt: 'Colunas ou barras deitadas (rótulos longos).',
+                en: 'Columns or lying bars (long labels).',
+              },
+            },
+            {
+              name: 'layout',
+              type: "'grouped' | 'stacked'",
+              default: "'grouped'",
+              description: {
+                pt: 'Lado a lado ou empilhadas (com total).',
+                en: 'Side by side or stacked (with total).',
+              },
+            },
+            {
+              name: 'showValues',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Valor na ponta de cada barra (ou total da pilha), quando couber.',
+                en: 'Value at the tip of each bar (or stack total), when it fits.',
+              },
+            },
+            {
+              name: 'highlight',
+              type: 'string',
+              description: {
+                pt: 'label da categoria em destaque (acento); as demais no neutro. Uma série.',
+                en: 'label of the highlighted category (accent); the rest neutral. Single series.',
+              },
+            },
+            {
+              name: 'valueFormat',
+              type: '((n: number) => string) | Intl.NumberFormatOptions',
+              description: {
+                pt: (
+                  <>
+                    Formato dos números no idioma do <Code>OrangeProvider</Code>. Ex.:{' '}
+                    <Code>{"{ style: 'currency', currency: 'BRL' }"}</Code>.
+                  </>
+                ),
+                en: (
+                  <>
+                    Number format in the <Code>OrangeProvider</Code> locale. E.g.{' '}
+                    <Code>{"{ style: 'currency', currency: 'BRL' }"}</Code>.
+                  </>
+                ),
+              },
+            },
+            {
+              name: 'description',
+              type: 'ReactNode',
+              description: {
+                pt: 'Subtítulo: período e unidade.',
+                en: 'Subtitle: period and unit.',
+              },
+            },
+            {
+              name: 'summary',
+              type: 'string',
+              description: {
+                pt: 'Conclusão para leitores de tela. Padrão: séries, maior e menor valor.',
+                en: 'Takeaway for screen readers. Default: series, highest and lowest value.',
+              },
+            },
+            {
+              name: 'source',
+              type: 'ReactNode',
+              description: {
+                pt: 'Fonte dos dados, abaixo do gráfico.',
+                en: 'Data source, below the chart.',
+              },
+            },
+            {
+              name: 'height',
+              type: 'number',
+              default: '280',
+              description: {
+                pt: 'Altura em px, incluindo os rótulos do eixo. Na horizontal, padrão automático pelo número de categorias.',
+                en: 'Height in px, axis labels included. Horizontal defaults to an automatic height from the category count.',
+              },
+            },
+            {
+              name: 'categoryLabel',
+              type: 'string',
+              default: "'Categoria'",
+              description: {
+                pt: 'Cabeçalho da primeira coluna da tabela (ex.: “Mês”).',
+                en: 'Header of the table’s first column (e.g. “Month”).',
+              },
+            },
+            {
+              name: 'hideCaption',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Esconde título e subtítulo só visualmente.',
+                en: 'Hides title and subtitle visually only.',
+              },
+            },
+            {
+              name: 'variant',
+              type: "'outline' | 'plain'",
+              default: "'outline'",
+              description: {
+                pt: 'Com moldura de 1px ou sem moldura (dentro de cartões).',
+                en: 'With a 1px frame or frameless (inside cards).',
+              },
+            },
+            {
+              name: 'defaultShowData',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Começa com a tabela visível.',
+                en: 'Starts with the table visible.',
+              },
+            },
+            {
+              name: '...rest',
+              type: 'HTMLAttributes<HTMLElement>',
+              description: {
+                pt: 'Repassado ao <figure> (ref também).',
+                en: 'Passed to the <figure> (ref too).',
+              },
+            },
           ]}
         />
         <p>
           <T
-            pt={<>Em cartões, defina <Code>--or-chart-surface</Code> com o fundo do cartão para o anel de 2px das marcas acompanhar.</>}
-            en={<>Inside cards, set <Code>--or-chart-surface</Code> to the card background so the marks’ 2px ring matches it.</>}
+            pt={
+              <>
+                Em cartões, defina <Code>--or-chart-surface</Code> com o fundo do cartão para o anel
+                de 2px das marcas acompanhar.
+              </>
+            }
+            en={
+              <>
+                Inside cards, set <Code>--or-chart-surface</Code> to the card background so the
+                marks’ 2px ring matches it.
+              </>
+            }
           />
         </p>
       </Section>
@@ -296,9 +447,9 @@ export default function BarChartPage() {
             pt={
               <>
                 Renderiza um <Code>&lt;figure&gt;</Code> nomeado pelo título. O SVG tem{' '}
-                <Code>role="img"</Code> e um <Code>aria-label</Code> com o título e o resumo (como na
-                diretriz). A tabela de dados fica sempre na árvore de acessibilidade — o botão “Ver
-                dados” só a mostra na tela. Ao explorar pelo teclado, uma região{' '}
+                <Code>role="img"</Code> e um <Code>aria-label</Code> com o título e o resumo (como
+                na diretriz). A tabela de dados fica sempre na árvore de acessibilidade — o botão
+                “Ver dados” só a mostra na tela. Ao explorar pelo teclado, uma região{' '}
                 <Code>role="status"</Code> anuncia “mar · Site: R$ 52.700”. A dica é visual (
                 <Code>aria-hidden</Code>) e nunca é o único caminho para um valor.
               </>
@@ -306,10 +457,10 @@ export default function BarChartPage() {
             en={
               <>
                 Renders a <Code>&lt;figure&gt;</Code> named by its title. The SVG has{' '}
-                <Code>role="img"</Code> and an <Code>aria-label</Code> with the title and the summary
-                (as in the guideline). The data table always stays in the accessibility tree — the
-                “Show data” button only shows it on screen. While exploring with the keyboard, a{' '}
-                <Code>role="status"</Code> region announces “mar · Site: R$52,700”. The tooltip is
+                <Code>role="img"</Code> and an <Code>aria-label</Code> with the title and the
+                summary (as in the guideline). The data table always stays in the accessibility tree
+                — the “Show data” button only shows it on screen. While exploring with the keyboard,
+                a <Code>role="status"</Code> region announces “mar · Site: R$52,700”. The tooltip is
                 visual (<Code>aria-hidden</Code>) and never the only way to a value.
               </>
             }
@@ -317,23 +468,98 @@ export default function BarChartPage() {
         </p>
         <KeyboardTable
           rows={[
-            { keys: ['Tab'], description: { pt: 'Foca a área do gráfico (e depois o botão Ver dados).', en: 'Focuses the chart area (then the Show data button).' } },
-            { keys: ['←', '→'], description: { pt: 'Categoria anterior/próxima (na horizontal: ↑ ↓).', en: 'Previous/next category (horizontal: ↑ ↓).' } },
-            { keys: ['↑', '↓'], description: { pt: 'Troca a série dentro da categoria (na horizontal: ← →).', en: 'Switches the series within the category (horizontal: ← →).' } },
-            { keys: ['Home', 'End'], description: { pt: 'Primeira/última categoria.', en: 'First/last category.' } },
-            { keys: ['Esc'], description: { pt: 'Limpa o destaque e fecha a dica (também a do mouse).', en: 'Clears the highlight and closes the tooltip (the hover one too).' } },
+            {
+              keys: ['Tab'],
+              description: {
+                pt: 'Foca a área do gráfico (e depois o botão Ver dados).',
+                en: 'Focuses the chart area (then the Show data button).',
+              },
+            },
+            {
+              keys: ['←', '→'],
+              description: {
+                pt: 'Categoria anterior/próxima (na horizontal: ↑ ↓).',
+                en: 'Previous/next category (horizontal: ↑ ↓).',
+              },
+            },
+            {
+              keys: ['↑', '↓'],
+              description: {
+                pt: 'Troca a série dentro da categoria (na horizontal: ← →).',
+                en: 'Switches the series within the category (horizontal: ← →).',
+              },
+            },
+            {
+              keys: ['Home', 'End'],
+              description: { pt: 'Primeira/última categoria.', en: 'First/last category.' },
+            },
+            {
+              keys: ['Esc'],
+              description: {
+                pt: 'Limpa o destaque e fecha a dica (também a do mouse).',
+                en: 'Clears the highlight and closes the tooltip (the hover one too).',
+              },
+            },
           ]}
         />
         <WcagList
           items={[
-            { criterion: '1.1.1', description: { pt: 'Texto alternativo: título + resumo no SVG e a tabela com os dados completos.', en: 'Text alternative: title + summary on the SVG and the table with the full data.' } },
-            { criterion: '1.3.1', description: { pt: 'Tabela com <caption> e cabeçalhos de linha e coluna.', en: 'Table with <caption> and row and column headers.' } },
-            { criterion: '1.4.1', description: { pt: 'Cor nunca sozinha: legenda com nome, posição fixa das séries, dica e tabela.', en: 'Never color alone: legend with names, fixed series position, tooltip and table.' } },
-            { criterion: '1.4.11', description: { pt: 'Cores categóricas com ≥ 3:1 contra o fundo nos dois temas (testado nos tokens).', en: 'Categorical colors at ≥ 3:1 against the background in both themes (tested in tokens).' } },
-            { criterion: '1.4.13', description: { pt: 'A dica não bloqueia o ponteiro e fecha com Esc.', en: 'The tooltip doesn’t block the pointer and closes with Esc.' } },
-            { criterion: '2.1.1', description: { pt: 'Todos os valores são alcançáveis pelo teclado.', en: 'Every value is reachable by keyboard.' } },
-            { criterion: '2.3.3', description: { pt: 'Sem animação com prefers-reduced-motion.', en: 'No animation with prefers-reduced-motion.' } },
-            { criterion: '4.1.3', description: { pt: 'Valor em destaque anunciado por role="status".', en: 'Highlighted value announced through role="status".' } },
+            {
+              criterion: '1.1.1',
+              description: {
+                pt: 'Texto alternativo: título + resumo no SVG e a tabela com os dados completos.',
+                en: 'Text alternative: title + summary on the SVG and the table with the full data.',
+              },
+            },
+            {
+              criterion: '1.3.1',
+              description: {
+                pt: 'Tabela com <caption> e cabeçalhos de linha e coluna.',
+                en: 'Table with <caption> and row and column headers.',
+              },
+            },
+            {
+              criterion: '1.4.1',
+              description: {
+                pt: 'Cor nunca sozinha: legenda com nome, posição fixa das séries, dica e tabela.',
+                en: 'Never color alone: legend with names, fixed series position, tooltip and table.',
+              },
+            },
+            {
+              criterion: '1.4.11',
+              description: {
+                pt: 'Cores categóricas com ≥ 3:1 contra o fundo nos dois temas (testado nos tokens).',
+                en: 'Categorical colors at ≥ 3:1 against the background in both themes (tested in tokens).',
+              },
+            },
+            {
+              criterion: '1.4.13',
+              description: {
+                pt: 'A dica não bloqueia o ponteiro e fecha com Esc.',
+                en: 'The tooltip doesn’t block the pointer and closes with Esc.',
+              },
+            },
+            {
+              criterion: '2.1.1',
+              description: {
+                pt: 'Todos os valores são alcançáveis pelo teclado.',
+                en: 'Every value is reachable by keyboard.',
+              },
+            },
+            {
+              criterion: '2.3.3',
+              description: {
+                pt: 'Sem animação com prefers-reduced-motion.',
+                en: 'No animation with prefers-reduced-motion.',
+              },
+            },
+            {
+              criterion: '4.1.3',
+              description: {
+                pt: 'Valor em destaque anunciado por role="status".',
+                en: 'Highlighted value announced through role="status".',
+              },
+            },
           ]}
         />
       </Section>

@@ -51,8 +51,8 @@ export default function LineChartPage() {
             {
               pt: (
                 <>
-                  Dado ausente é <Code>null</Code>: a linha se interrompe em vez de inventar um valor
-                  — e a tabela mostra “sem dados”.
+                  Dado ausente é <Code>null</Code>: a linha se interrompe em vez de inventar um
+                  valor — e a tabela mostra “sem dados”.
                 </>
               ),
               en: (
@@ -208,18 +208,107 @@ export default function LineChartPage() {
       <Section title="Props" id="props">
         <PropsTable
           rows={[
-            { name: 'title', type: 'string', required: true, description: { pt: 'O que o gráfico mostra. Vira o <figcaption> e o nome do gráfico.', en: 'What the chart shows. Becomes the <figcaption> and the chart’s name.' } },
-            { name: 'data', type: '{ label: string; values: Record<string, number | null> }[]', required: true, description: { pt: 'Um ponto do eixo X por entrada (mês, data em texto). null interrompe a linha.', en: 'One X-axis point per entry (month, date as text). null breaks the line.' } },
-            { name: 'series', type: '{ key: string; label: string; color?: string }[]', required: true, description: { pt: 'Séries na ordem da legenda; cada uma ganha traço e marcador.', en: 'Series in legend order; each gets a dash and a marker.' } },
-            { name: 'area', type: 'boolean', default: 'false', description: { pt: 'Preenche a área sob a linha (só com uma série).', en: 'Fills the area under the line (single series only).' } },
-            { name: 'endLabels', type: 'boolean', default: 'true', description: { pt: 'Último valor no fim de cada linha.', en: 'Last value at the end of each line.' } },
-            { name: 'includeZero', type: 'boolean', default: 'area', description: { pt: 'Começa o eixo de valores em zero.', en: 'Starts the value axis at zero.' } },
-            { name: 'valueFormat', type: '((n: number) => string) | Intl.NumberFormatOptions', description: { pt: 'Formato dos números no idioma do OrangeProvider.', en: 'Number format in the OrangeProvider locale.' } },
-            { name: 'description / summary / source', type: 'ReactNode / string / ReactNode', description: { pt: 'Subtítulo, conclusão para leitores de tela e fonte (como no BarChart).', en: 'Subtitle, takeaway for screen readers and source (as in BarChart).' } },
-            { name: 'height', type: 'number', default: '280', description: { pt: 'Altura em px, incluindo os rótulos do eixo.', en: 'Height in px, axis labels included.' } },
-            { name: 'categoryLabel', type: 'string', default: "'Categoria'", description: { pt: 'Cabeçalho da primeira coluna da tabela.', en: 'Header of the table’s first column.' } },
-            { name: 'hideCaption / variant / defaultShowData', type: "boolean / 'outline' | 'plain' / boolean", description: { pt: 'Como no BarChart.', en: 'As in BarChart.' } },
-            { name: '...rest', type: 'HTMLAttributes<HTMLElement>', description: { pt: 'Repassado ao <figure> (ref também).', en: 'Passed to the <figure> (ref too).' } },
+            {
+              name: 'title',
+              type: 'string',
+              required: true,
+              description: {
+                pt: 'O que o gráfico mostra. Vira o <figcaption> e o nome do gráfico.',
+                en: 'What the chart shows. Becomes the <figcaption> and the chart’s name.',
+              },
+            },
+            {
+              name: 'data',
+              type: '{ label: string; values: Record<string, number | null> }[]',
+              required: true,
+              description: {
+                pt: 'Um ponto do eixo X por entrada (mês, data em texto). null interrompe a linha.',
+                en: 'One X-axis point per entry (month, date as text). null breaks the line.',
+              },
+            },
+            {
+              name: 'series',
+              type: '{ key: string; label: string; color?: string }[]',
+              required: true,
+              description: {
+                pt: 'Séries na ordem da legenda; cada uma ganha traço e marcador.',
+                en: 'Series in legend order; each gets a dash and a marker.',
+              },
+            },
+            {
+              name: 'area',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Preenche a área sob a linha (só com uma série).',
+                en: 'Fills the area under the line (single series only).',
+              },
+            },
+            {
+              name: 'endLabels',
+              type: 'boolean',
+              default: 'true',
+              description: {
+                pt: 'Último valor no fim de cada linha.',
+                en: 'Last value at the end of each line.',
+              },
+            },
+            {
+              name: 'includeZero',
+              type: 'boolean',
+              default: 'area',
+              description: {
+                pt: 'Começa o eixo de valores em zero.',
+                en: 'Starts the value axis at zero.',
+              },
+            },
+            {
+              name: 'valueFormat',
+              type: '((n: number) => string) | Intl.NumberFormatOptions',
+              description: {
+                pt: 'Formato dos números no idioma do OrangeProvider.',
+                en: 'Number format in the OrangeProvider locale.',
+              },
+            },
+            {
+              name: 'description / summary / source',
+              type: 'ReactNode / string / ReactNode',
+              description: {
+                pt: 'Subtítulo, conclusão para leitores de tela e fonte (como no BarChart).',
+                en: 'Subtitle, takeaway for screen readers and source (as in BarChart).',
+              },
+            },
+            {
+              name: 'height',
+              type: 'number',
+              default: '280',
+              description: {
+                pt: 'Altura em px, incluindo os rótulos do eixo.',
+                en: 'Height in px, axis labels included.',
+              },
+            },
+            {
+              name: 'categoryLabel',
+              type: 'string',
+              default: "'Categoria'",
+              description: {
+                pt: 'Cabeçalho da primeira coluna da tabela.',
+                en: 'Header of the table’s first column.',
+              },
+            },
+            {
+              name: 'hideCaption / variant / defaultShowData',
+              type: "boolean / 'outline' | 'plain' / boolean",
+              description: { pt: 'Como no BarChart.', en: 'As in BarChart.' },
+            },
+            {
+              name: '...rest',
+              type: 'HTMLAttributes<HTMLElement>',
+              description: {
+                pt: 'Repassado ao <figure> (ref também).',
+                en: 'Passed to the <figure> (ref too).',
+              },
+            },
           ]}
         />
       </Section>
@@ -229,8 +318,8 @@ export default function LineChartPage() {
           <T
             pt={
               <>
-                Mesma estrutura do BarChart: <Code>&lt;figure&gt;</Code> nomeado pelo título, SVG com{' '}
-                <Code>role="img"</Code> e resumo (período, séries, maior e menor valor ou o seu{' '}
+                Mesma estrutura do BarChart: <Code>&lt;figure&gt;</Code> nomeado pelo título, SVG
+                com <Code>role="img"</Code> e resumo (período, séries, maior e menor valor ou o seu{' '}
                 <Code>summary</Code>), tabela sempre presente para leitores de tela e anúncio em{' '}
                 <Code>role="status"</Code> ao explorar pelo teclado: “mar · App: R$ 141,00”.
               </>
@@ -238,9 +327,9 @@ export default function LineChartPage() {
             en={
               <>
                 Same structure as BarChart: a <Code>&lt;figure&gt;</Code> named by its title, an SVG
-                with <Code>role="img"</Code> and a summary (period, series, highest and lowest value,
-                or your <Code>summary</Code>), a table always present for screen readers and a{' '}
-                <Code>role="status"</Code> announcement while exploring by keyboard: “mar · App:
+                with <Code>role="img"</Code> and a summary (period, series, highest and lowest
+                value, or your <Code>summary</Code>), a table always present for screen readers and
+                a <Code>role="status"</Code> announcement while exploring by keyboard: “mar · App:
                 R$141.00”.
               </>
             }
@@ -248,21 +337,81 @@ export default function LineChartPage() {
         </p>
         <KeyboardTable
           rows={[
-            { keys: ['Tab'], description: { pt: 'Foca a área do gráfico.', en: 'Focuses the chart area.' } },
-            { keys: ['←', '→'], description: { pt: 'Ponto anterior/próximo no eixo X.', en: 'Previous/next point on the X axis.' } },
-            { keys: ['↑', '↓'], description: { pt: 'Série anterior/próxima no mesmo ponto.', en: 'Previous/next series at the same point.' } },
-            { keys: ['Home', 'End'], description: { pt: 'Primeiro/último ponto.', en: 'First/last point.' } },
-            { keys: ['Esc'], description: { pt: 'Limpa o destaque e fecha a dica.', en: 'Clears the highlight and closes the tooltip.' } },
+            {
+              keys: ['Tab'],
+              description: { pt: 'Foca a área do gráfico.', en: 'Focuses the chart area.' },
+            },
+            {
+              keys: ['←', '→'],
+              description: {
+                pt: 'Ponto anterior/próximo no eixo X.',
+                en: 'Previous/next point on the X axis.',
+              },
+            },
+            {
+              keys: ['↑', '↓'],
+              description: {
+                pt: 'Série anterior/próxima no mesmo ponto.',
+                en: 'Previous/next series at the same point.',
+              },
+            },
+            {
+              keys: ['Home', 'End'],
+              description: { pt: 'Primeiro/último ponto.', en: 'First/last point.' },
+            },
+            {
+              keys: ['Esc'],
+              description: {
+                pt: 'Limpa o destaque e fecha a dica.',
+                en: 'Clears the highlight and closes the tooltip.',
+              },
+            },
           ]}
         />
         <WcagList
           items={[
-            { criterion: '1.1.1', description: { pt: 'Resumo no SVG e tabela com os dados completos.', en: 'Summary on the SVG and a table with the full data.' } },
-            { criterion: '1.4.1', description: { pt: 'Séries distinguidas por cor, traço e forma do marcador.', en: 'Series told apart by color, dash and marker shape.' } },
-            { criterion: '1.4.11', description: { pt: 'Linhas com ≥ 3:1 contra o fundo nos dois temas.', en: 'Lines at ≥ 3:1 against the background in both themes.' } },
-            { criterion: '1.4.13', description: { pt: 'A dica não bloqueia o ponteiro e fecha com Esc.', en: 'The tooltip doesn’t block the pointer and closes with Esc.' } },
-            { criterion: '2.1.1', description: { pt: 'Todos os pontos alcançáveis pelo teclado.', en: 'Every point reachable by keyboard.' } },
-            { criterion: '4.1.3', description: { pt: 'Ponto em destaque anunciado por role="status".', en: 'Highlighted point announced through role="status".' } },
+            {
+              criterion: '1.1.1',
+              description: {
+                pt: 'Resumo no SVG e tabela com os dados completos.',
+                en: 'Summary on the SVG and a table with the full data.',
+              },
+            },
+            {
+              criterion: '1.4.1',
+              description: {
+                pt: 'Séries distinguidas por cor, traço e forma do marcador.',
+                en: 'Series told apart by color, dash and marker shape.',
+              },
+            },
+            {
+              criterion: '1.4.11',
+              description: {
+                pt: 'Linhas com ≥ 3:1 contra o fundo nos dois temas.',
+                en: 'Lines at ≥ 3:1 against the background in both themes.',
+              },
+            },
+            {
+              criterion: '1.4.13',
+              description: {
+                pt: 'A dica não bloqueia o ponteiro e fecha com Esc.',
+                en: 'The tooltip doesn’t block the pointer and closes with Esc.',
+              },
+            },
+            {
+              criterion: '2.1.1',
+              description: {
+                pt: 'Todos os pontos alcançáveis pelo teclado.',
+                en: 'Every point reachable by keyboard.',
+              },
+            },
+            {
+              criterion: '4.1.3',
+              description: {
+                pt: 'Ponto em destaque anunciado por role="status".',
+                en: 'Highlighted point announced through role="status".',
+              },
+            },
           ]}
         />
       </Section>

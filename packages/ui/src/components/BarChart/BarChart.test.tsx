@@ -54,7 +54,11 @@ function renderChart(props: Partial<BarChartProps> = {}) {
 
 const plot = () => screen.getByRole('img', { name: /^Gráfico de barras: Vendas por canal/ })
 const bars = (container: HTMLElement, key?: string) =>
-  Array.from(container.querySelectorAll<SVGRectElement>(`.or-bar-chart__bar${key ? `[data-series="${key}"]` : ''}`))
+  Array.from(
+    container.querySelectorAll<SVGRectElement>(
+      `.or-bar-chart__bar${key ? `[data-series="${key}"]` : ''}`,
+    ),
+  )
 const num = (el: Element, attr: string) => Number(el.getAttribute(attr))
 
 describe('BarChart', () => {
@@ -63,7 +67,9 @@ describe('BarChart', () => {
       renderChart()
       const figure = screen.getByRole('figure', { name: 'Vendas por canal' })
       expect(figure.querySelector('figcaption')).toHaveTextContent('Vendas por canal')
-      expect(figure.querySelector('figcaption')).toHaveTextContent('R$ por mês · 1º trimestre de 2026')
+      expect(figure.querySelector('figcaption')).toHaveTextContent(
+        'R$ por mês · 1º trimestre de 2026',
+      )
       const svg = plot()
       expect(svg.tagName.toLowerCase()).toBe('svg')
       const name = svg.getAttribute('aria-label')!.replace(/\s/g, ' ')
@@ -74,12 +80,17 @@ describe('BarChart', () => {
 
     it('usa o `summary` informado no lugar do resumo automático', () => {
       renderChart({ summary: 'O site lidera em todos os meses.' })
-      expect(plot()).toHaveAttribute('aria-label', 'Gráfico de barras: Vendas por canal. O site lidera em todos os meses.')
+      expect(plot()).toHaveAttribute(
+        'aria-label',
+        'Gráfico de barras: Vendas por canal. O site lidera em todos os meses.',
+      )
     })
 
     it('hideCaption esconde o título só visualmente', () => {
       renderChart({ hideCaption: true })
-      const caption = screen.getByRole('figure', { name: 'Vendas por canal' }).querySelector('figcaption')
+      const caption = screen
+        .getByRole('figure', { name: 'Vendas por canal' })
+        .querySelector('figcaption')
       expect(caption).toHaveClass('or-visually-hidden')
     })
 
@@ -95,7 +106,9 @@ describe('BarChart', () => {
     it('existe para leitores de tela mesmo recolhida, com os mesmos dados formatados', () => {
       renderChart()
       const table = screen.getByRole('table', { name: 'Dados: Vendas por canal' })
-      const headers = within(table).getAllByRole('columnheader').map((th) => th.textContent)
+      const headers = within(table)
+        .getAllByRole('columnheader')
+        .map((th) => th.textContent)
       expect(headers).toEqual(['Mês', 'Site', 'App', 'Loja física'])
       const rows = within(table).getAllByRole('row').slice(1)
       expect(rows).toHaveLength(3)
@@ -118,7 +131,10 @@ describe('BarChart', () => {
       expect(toggle).toHaveAccessibleName('Ocultar dados')
       const region = screen.getByRole('region', { name: 'Dados: Vendas por canal' })
       expect(region).toHaveAttribute('tabindex', '0')
-      expect(document.getElementById(toggle.getAttribute('aria-controls')!)).toHaveAttribute('data-state', 'open')
+      expect(document.getElementById(toggle.getAttribute('aria-controls')!)).toHaveAttribute(
+        'data-state',
+        'open',
+      )
     })
 
     it('empilhado ganha a coluna Total', () => {
@@ -131,7 +147,9 @@ describe('BarChart', () => {
 
   describe('legenda e cores', () => {
     it('lista as séries na ordem, com marca e texto, e usa os tokens viz na ordem', () => {
-      const { container } = renderChart({ series: [...series.slice(0, 2), { ...series[2], color: 'var(--or-color-accent)' }] })
+      const { container } = renderChart({
+        series: [...series.slice(0, 2), { ...series[2], color: 'var(--or-color-accent)' }],
+      })
       const legend = screen.getByRole('list', { name: 'Legenda' })
       const items = within(legend).getAllByRole('listitem')
       expect(items.map((li) => li.textContent)).toEqual(['Site', 'App', 'Loja física'])
@@ -212,7 +230,10 @@ describe('BarChart', () => {
     it('o ponteiro sobre uma barra mostra a mesma dica, sem anunciar', () => {
       const { container } = renderChart()
       const target = bars(container, 'app')[1]
-      fireEvent.pointerMove(plot(), { clientX: num(target, 'x') + 2, clientY: num(target, 'y') + 2 })
+      fireEvent.pointerMove(plot(), {
+        clientX: num(target, 'x') + 2,
+        clientY: num(target, 'y') + 2,
+      })
       const tooltip = container.querySelector('.or-chart__tooltip')!
       expect(tooltip).toHaveAttribute('data-state', 'open')
       expect(tooltip).toHaveTextContent('fev')
@@ -226,7 +247,10 @@ describe('BarChart', () => {
       const user = userEvent.setup()
       const { container } = renderChart()
       const target = bars(container, 'site')[0]
-      fireEvent.pointerMove(plot(), { clientX: num(target, 'x') + 2, clientY: num(target, 'y') + 2 })
+      fireEvent.pointerMove(plot(), {
+        clientX: num(target, 'x') + 2,
+        clientY: num(target, 'y') + 2,
+      })
       await user.keyboard('{Escape}')
       expect(container.querySelector('.or-chart__tooltip')).toHaveAttribute('data-state', 'closed')
     })
@@ -236,9 +260,9 @@ describe('BarChart', () => {
     it('pt-BR: moeda e eixo compacto no idioma', () => {
       const { container } = renderChart()
       expect(screen.getByRole('table')).toHaveTextContent('R$ 13.900')
-      const ticks = Array.from(container.querySelectorAll('.or-bar-chart__axis .or-chart__tick')).map((el) =>
-        el.textContent!.replace(/\s/g, ' '),
-      )
+      const ticks = Array.from(
+        container.querySelectorAll('.or-bar-chart__axis .or-chart__tick'),
+      ).map((el) => el.textContent!.replace(/\s/g, ' '))
       expect(ticks).toContain('R$ 10 mil')
     })
 
@@ -248,11 +272,19 @@ describe('BarChart', () => {
           <BarChart title="Sales by channel" valueFormat={brl} series={series} data={data} />
         </OrangeProvider>,
       )
-      expect(screen.getByRole('table', { name: 'Data: Sales by channel' })).toHaveTextContent('R$12,400')
-      const ticks = Array.from(container.querySelectorAll('.or-bar-chart__axis .or-chart__tick')).map((el) => el.textContent)
+      expect(screen.getByRole('table', { name: 'Data: Sales by channel' })).toHaveTextContent(
+        'R$12,400',
+      )
+      const ticks = Array.from(
+        container.querySelectorAll('.or-bar-chart__axis .or-chart__tick'),
+      ).map((el) => el.textContent)
       expect(ticks).toContain('R$10K')
       expect(screen.getByRole('button', { name: 'Show data' })).toBeInTheDocument()
-      expect(screen.getByRole('img', { name: /^Bar chart: Sales by channel\. Series: Site, App, and Loja física\./ })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', {
+          name: /^Bar chart: Sales by channel\. Series: Site, App, and Loja física\./,
+        }),
+      ).toBeInTheDocument()
     })
 
     it('valueFormat como função', () => {
@@ -296,7 +328,9 @@ describe('BarChart', () => {
         series: [ab[0]],
         valueFormat: undefined,
       })
-      const ticks = Array.from(container.querySelectorAll('.or-bar-chart__axis .or-chart__tick')).map((el) => el.textContent)
+      const ticks = Array.from(
+        container.querySelectorAll('.or-bar-chart__axis .or-chart__tick'),
+      ).map((el) => el.textContent)
       expect(ticks[0]).toBe('0')
       const [a, b] = bars(container)
       expect(num(a, 'height') / num(b, 'height')).toBeCloseTo(0.9, 2)
@@ -307,7 +341,12 @@ describe('BarChart', () => {
         { label: 'A', values: { a: 100, b: 100 } },
         { label: 'B', values: { a: 300, b: 100 } },
       ]
-      const { container } = renderChart({ data: data2, series: ab, layout: 'stacked', valueFormat: undefined })
+      const { container } = renderChart({
+        data: data2,
+        series: ab,
+        layout: 'stacked',
+        valueFormat: undefined,
+      })
       const [a1, a2] = bars(container, 'a')
       const [b1, b2] = bars(container, 'b')
       expect(num(a1, 'x')).toBe(num(b1, 'x'))
@@ -317,7 +356,12 @@ describe('BarChart', () => {
     })
 
     it('horizontal: larguras proporcionais e barras de no máximo 24px de espessura', () => {
-      const { container } = renderChart({ data: simple.map((d) => ({ ...d, values: { a: d.values.a } })), series: [ab[0]], orientation: 'horizontal', valueFormat: undefined })
+      const { container } = renderChart({
+        data: simple.map((d) => ({ ...d, values: { a: d.values.a } })),
+        series: [ab[0]],
+        orientation: 'horizontal',
+        valueFormat: undefined,
+      })
       const [a1, a2] = bars(container)
       expect(num(a2, 'width') / num(a1, 'width')).toBeCloseTo(2, 1)
       expect(num(a1, 'height')).toBeLessThanOrEqual(24)
@@ -327,7 +371,9 @@ describe('BarChart', () => {
 
     it('rótulos de valor (showValues) na ponta das barras', () => {
       const { container } = renderChart({ series: [series[0]], showValues: true })
-      const labels = Array.from(container.querySelectorAll('.or-chart__value')).map((el) => el.textContent!.replace(/\s/g, ' '))
+      const labels = Array.from(container.querySelectorAll('.or-chart__value')).map((el) =>
+        el.textContent!.replace(/\s/g, ' '),
+      )
       expect(labels).toEqual(['R$ 12.400', 'R$ 13.900', 'R$ 15.200'])
     })
   })
@@ -348,7 +394,10 @@ describe('BarChart', () => {
     })
 
     it('com movimento reduzido tudo fica desenhado, sem animação', () => {
-      window.matchMedia = ((q: string) => ({ ...original(q), matches: q.includes('reduce') })) as typeof window.matchMedia
+      window.matchMedia = ((q: string) => ({
+        ...original(q),
+        matches: q.includes('reduce'),
+      })) as typeof window.matchMedia
       renderChart()
       expect(screen.getByRole('figure')).toHaveAttribute('data-motion', 'static')
     })
@@ -365,8 +414,20 @@ describe('BarChart', () => {
     const { container } = render(
       <div>
         <BarChart title="Vendas por canal" valueFormat={brl} series={series} data={data} />
-        <BarChart title="Receita por região" layout="stacked" series={series} data={data} showValues />
-        <BarChart title="Pedidos por categoria" orientation="horizontal" series={[series[0]]} data={data} highlight="mar" />
+        <BarChart
+          title="Receita por região"
+          layout="stacked"
+          series={series}
+          data={data}
+          showValues
+        />
+        <BarChart
+          title="Pedidos por categoria"
+          orientation="horizontal"
+          series={[series[0]]}
+          data={data}
+          highlight="mar"
+        />
       </div>,
     )
     await user.click(screen.getAllByRole('button', { name: 'Ver dados' })[0])

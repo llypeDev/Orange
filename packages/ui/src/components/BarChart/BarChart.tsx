@@ -105,10 +105,15 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
     'BarChart: a paleta categórica tem 5 cores. Agrupe a partir da sexta série em "Outros" ou divida o gráfico.',
   )
 
-  const highlightIndex = highlight !== undefined && k === 1 ? data.findIndex((d) => d.label === highlight) : -1
+  const highlightIndex =
+    highlight !== undefined && k === 1 ? data.findIndex((d) => d.label === highlight) : -1
   const colors = series.map((s, i) => seriesColor(s, i))
   const barColor = (index: number, si: number) =>
-    highlightIndex >= 0 ? (index === highlightIndex ? 'var(--or-color-accent)' : 'var(--or-color-viz-other)') : colors[si]
+    highlightIndex >= 0
+      ? index === highlightIndex
+        ? 'var(--or-color-accent)'
+        : 'var(--or-color-viz-other)'
+      : colors[si]
 
   // Segmentos por categoria (em unidades de valor). Pilhas positivas e negativas crescem a partir de zero.
   const segments: Segment[][] = data.map((datum) => {
@@ -145,7 +150,10 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
   // --- Geometria ---------------------------------------------------------
   const [plotRef, width] = useElementWidth<HTMLDivElement>()
   const rowHeight = stacked || k === 1 ? 36 : Math.max(36, k * 12 + (k - 1) * GAP + 16)
-  const height = Math.max(120, heightProp ?? (horizontal ? n * rowHeight + AXIS_BAND + 8 : DEFAULT_HEIGHT))
+  const height = Math.max(
+    120,
+    heightProp ?? (horizontal ? n * rowHeight + AXIS_BAND + 8 : DEFAULT_HEIGHT),
+  )
 
   let top: number
   let left: number
@@ -165,7 +173,7 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
     left = Math.min(Math.max(...categoryWidths, 0) + 12, Math.round(width * 0.38))
     right = anyLabels ? maxValueLabel + 10 : 16
     plotW = Math.max(0, width - left - right)
-    scale = niceScale(domainMin, domainMax, tickTarget(plotW * 0.8))
+    scale = niceScale(domainMin, domainMax, tickTarget(plotW))
     // O último rótulo do eixo é centralizado no fim: garante espaço para a metade dele.
     const axisProbe = createAxisFormatter(locale, valueFormat, scale.ticks, scale.step)
     const lastHalf = Math.ceil(textWidth(axisProbe(scale.max)) / 2)
@@ -195,7 +203,9 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
 
   /** Posição (px) de um valor no eixo de valores. */
   const pos = (value: number) =>
-    horizontal ? left + ((value - scale.min) / span) * plotW : top + ((scale.max - value) / span) * plotH
+    horizontal
+      ? left + ((value - scale.min) / span) * plotW
+      : top + ((scale.max - value) / span) * plotH
   /** Início (px) da categoria no eixo de categorias. */
   const bandStart = (index: number) => (horizontal ? top : left) + index * band
   const baseline = pos(0)
@@ -215,7 +225,7 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
       const slot = stacked ? 0 : seg.series
       const cross = bandStart(index) + offset + slot * (thickness + GAP)
       let a = pos(seg.start)
-      let b = pos(seg.end)
+      const b = pos(seg.end)
       // 2px de fundo entre segmentos empilhados (o lado voltado para a base recua).
       if (stacked && seg.start !== 0) {
         const towardBase = Math.sign(a - b) || 1
@@ -225,8 +235,22 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
       const length = Math.max(Math.abs(b - a), 1)
       return [
         horizontal
-          ? { key: `${index}-${seg.series}`, series: seg.series, x: lo, y: cross, w: length, h: thickness }
-          : { key: `${index}-${seg.series}`, series: seg.series, x: cross, y: lo, w: thickness, h: length },
+          ? {
+              key: `${index}-${seg.series}`,
+              series: seg.series,
+              x: lo,
+              y: cross,
+              w: length,
+              h: thickness,
+            }
+          : {
+              key: `${index}-${seg.series}`,
+              series: seg.series,
+              x: cross,
+              y: lo,
+              w: thickness,
+              h: length,
+            },
       ]
     }),
   )
@@ -254,10 +278,20 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
 
   const segmentAt = (index: number, value: number) => {
     const segs = segments[index]
-    const hit = segs.find((seg) => seg.value !== null && value >= Math.min(seg.start, seg.end) && value <= Math.max(seg.start, seg.end))
+    const hit = segs.find(
+      (seg) =>
+        seg.value !== null &&
+        value >= Math.min(seg.start, seg.end) &&
+        value <= Math.max(seg.start, seg.end),
+    )
     if (hit) return hit.series
-    const sameSide = segs.filter((seg) => seg.value !== null && Math.sign(seg.value) === (value < 0 ? -1 : 1))
-    return (sameSide[sameSide.length - 1] ?? segs.find((seg) => seg.value !== null) ?? segs[0])?.series ?? 0
+    const sameSide = segs.filter(
+      (seg) => seg.value !== null && Math.sign(seg.value) === (value < 0 ? -1 : 1),
+    )
+    return (
+      (sameSide[sameSide.length - 1] ?? segs.find((seg) => seg.value !== null) ?? segs[0])
+        ?.series ?? 0
+    )
   }
 
   const onPointer = (event: PointerEvent<SVGSVGElement>) => {
@@ -295,15 +329,32 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
   // --- Textos acessíveis -------------------------------------------------
   const autoSummary = () => {
     const parts: string[] = []
-    if (k > 1) parts.push(t('chartSeries', { series: formatList(locale, series.map((s) => s.label)) }))
+    if (k > 1)
+      parts.push(
+        t('chartSeries', {
+          series: formatList(
+            locale,
+            series.map((s) => s.label),
+          ),
+        }),
+      )
     if (stacked && k > 1) {
-      const valid = totals.map((total, index) => ({ total, index })).filter((x): x is { total: number; index: number } => x.total !== null)
+      const valid = totals
+        .map((total, index) => ({ total, index }))
+        .filter((x): x is { total: number; index: number } => x.total !== null)
       if (valid.length) {
         const max = valid.reduce((a, b) => (b.total > a.total ? b : a))
         const min = valid.reduce((a, b) => (b.total < a.total ? b : a))
         const point = (x: { total: number; index: number }) =>
-          t('chartPoint', { category: data[x.index].label, series: t('chartTotal'), value: format(x.total) })
-        parts.push(t('chartHighest', { value: point(max) }), t('chartLowest', { value: point(min) }))
+          t('chartPoint', {
+            category: data[x.index].label,
+            series: t('chartTotal'),
+            value: format(x.total),
+          })
+        parts.push(
+          t('chartHighest', { value: point(max) }),
+          t('chartLowest', { value: point(min) }),
+        )
       }
     } else {
       const ext = extremes(data, series)
@@ -337,12 +388,20 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
     tooltip = (
       <ChartTooltip
         open={active !== null}
-        x={horizontal ? Math.min(left + plotW, Math.max(left, pos(outer))) : bandStart(index) + band / 2}
+        x={
+          horizontal
+            ? Math.min(left + plotW, Math.max(left, pos(outer)))
+            : bandStart(index) + band / 2
+        }
         y={horizontal ? bandStart(index) + offset : Math.min(pos(outer), baseline)}
         width={width}
         title={data[index].label}
         rows={rows}
-        footer={stacked && k > 1 && total !== null ? { label: t('chartTotal'), value: format(total) } : undefined}
+        footer={
+          stacked && k > 1 && total !== null
+            ? { label: t('chartTotal'), value: format(total) }
+            : undefined
+        }
       />
     )
   }
@@ -350,9 +409,20 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
   // --- Eixos ----------------------------------------------------------------
   const tickLabels = scale.ticks.map(axisFormat)
   const tickSpacing = scale.ticks.length > 1 ? plotW / (scale.ticks.length - 1) : plotW
-  const tickEvery = horizontal ? Math.max(1, Math.ceil((Math.max(...tickLabels.map((l) => textWidth(l))) + 8) / (tickSpacing || 1))) : 1
-  const categoryEvery = horizontal ? 1 : Math.max(1, Math.ceil((Math.max(0, ...categoryWidths) + 8) / (band || 1)))
-  const categorySpace = horizontal ? left - 10 : band * categoryEvery - 4
+  const tickEvery = horizontal
+    ? Math.max(
+        1,
+        Math.ceil((Math.max(...tickLabels.map((l) => textWidth(l))) + 8) / (tickSpacing || 1)),
+      )
+    : 1
+  // Rótulos de categoria: inteiros quando cabem; senão encurtados (…) se ainda sobrarem ~4
+  // letras por barra; só em faixas estreitas demais (muitos meses) eles se alternam.
+  const widestCategory = Math.max(0, ...categoryWidths)
+  const categoryEvery =
+    horizontal || widestCategory + 8 <= band || band - 6 >= 30
+      ? 1
+      : Math.max(1, Math.ceil((widestCategory + 8) / (band || 1)))
+  const categorySpace = horizontal ? left - 10 : band * categoryEvery - 6
 
   const emphasis = (index: number, si: number) => {
     if (!active) return undefined
@@ -369,13 +439,20 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
       hideCaption={hideCaption}
       variant={variant}
       motion={motion}
-      legend={highlightIndex >= 0 ? undefined : series.map((s, i) => ({ label: s.label, color: colors[i], mark: 'bar' as const }))}
+      legend={
+        highlightIndex >= 0
+          ? undefined
+          : series.map((s, i) => ({ label: s.label, color: colors[i], mark: 'bar' as const }))
+      }
       table={{
         categoryLabel: categoryLabel ?? t('chartCategory'),
         columns: [...series.map((s) => s.label), ...(stacked && k > 1 ? [t('chartTotal')] : [])],
         rows: data.map((datum, index) => ({
           label: datum.label,
-          cells: [...series.map((s) => valueOf(datum, s.key)), ...(stacked && k > 1 ? [totals[index]] : [])],
+          cells: [
+            ...series.map((s) => valueOf(datum, s.key)),
+            ...(stacked && k > 1 ? [totals[index]] : []),
+          ],
         })),
         format,
       }}
@@ -393,7 +470,6 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
         ) : (
           // O SVG é a imagem do gráfico (role="img" + resumo, como na diretriz) e também a área
           // explorável pelo teclado: Tab foca, setas movem o destaque, Escape limpa.
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex, jsx-a11y/no-noninteractive-element-interactions
           <svg
             className="or-chart__svg"
             width={width}
@@ -418,15 +494,32 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
                       (horizontal ? (
                         <line className="or-chart__grid" x1={p} x2={p} y1={top} y2={top + plotH} />
                       ) : (
-                        <line className="or-chart__grid" x1={left} x2={left + plotW} y1={p} y2={p} />
+                        <line
+                          className="or-chart__grid"
+                          x1={left}
+                          x2={left + plotW}
+                          y1={p}
+                          y2={p}
+                        />
                       ))}
                     {i % tickEvery === 0 &&
                       (horizontal ? (
-                        <text className="or-chart__tick" x={px(pos(tick))} y={px(top + plotH + 18)} textAnchor="middle">
+                        <text
+                          className="or-chart__tick"
+                          x={px(pos(tick))}
+                          y={px(top + plotH + 18)}
+                          textAnchor="middle"
+                        >
                           {tickLabels[i]}
                         </text>
                       ) : (
-                        <text className="or-chart__tick" x={left - 8} y={px(pos(tick))} textAnchor="end" dominantBaseline="middle">
+                        <text
+                          className="or-chart__tick"
+                          x={left - 8}
+                          y={px(pos(tick))}
+                          textAnchor="end"
+                          dominantBaseline="middle"
+                        >
                           {tickLabels[i]}
                         </text>
                       ))}
@@ -480,9 +573,21 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
 
             {/* Base (zero) por cima das barras */}
             {horizontal ? (
-              <line className="or-chart__baseline" x1={crisp(baseline)} x2={crisp(baseline)} y1={top} y2={top + plotH} />
+              <line
+                className="or-chart__baseline"
+                x1={crisp(baseline)}
+                x2={crisp(baseline)}
+                y1={top}
+                y2={top + plotH}
+              />
             ) : (
-              <line className="or-chart__baseline" x1={left} x2={left + plotW} y1={crisp(baseline)} y2={crisp(baseline)} />
+              <line
+                className="or-chart__baseline"
+                x1={left}
+                x2={left + plotW}
+                y1={crisp(baseline)}
+                y2={crisp(baseline)}
+              />
             )}
 
             {/* Rótulos das categorias */}
@@ -520,12 +625,26 @@ export const BarChart = forwardRef<HTMLElement, BarChartProps>(function BarChart
               <g className="or-bar-chart__values">
                 {data.map((_, index) => {
                   if (!labelled(index)) return null
-                  const items = stacked && k > 1 ? [{ si: -1, slot: 0, value: totals[index] }] : series.map((__, si) => ({ si, slot: stacked ? 0 : si, value: segments[index][si].value }))
+                  const items =
+                    stacked && k > 1
+                      ? [{ si: -1, slot: 0, value: totals[index] }]
+                      : series.map((__, si) => ({
+                          si,
+                          slot: stacked ? 0 : si,
+                          value: segments[index][si].value,
+                        }))
                   return items.map(({ si, slot, value }) => {
                     if (value === null) return null
                     const text = format(value)
-                    const end = pos(stacked && k > 1 ? (value >= 0 ? Math.max(0, ...segments[index].map((s) => s.end)) : Math.min(0, ...segments[index].map((s) => s.end))) : value)
-                    const center = bandStart(index) + offset + slot * (thickness + GAP) + thickness / 2
+                    const end = pos(
+                      stacked && k > 1
+                        ? value >= 0
+                          ? Math.max(0, ...segments[index].map((s) => s.end))
+                          : Math.min(0, ...segments[index].map((s) => s.end))
+                        : value,
+                    )
+                    const center =
+                      bandStart(index) + offset + slot * (thickness + GAP) + thickness / 2
                     const room = k > 1 && !stacked ? thickness + GAP * 2 : band - 4
                     if (!horizontal && textWidth(text) > room) return null
                     return horizontal ? (

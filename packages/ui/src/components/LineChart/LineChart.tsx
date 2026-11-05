@@ -95,7 +95,10 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
   const format = createValueFormatter(locale, valueFormat)
   const filled = area && k === 1
 
-  devWarning(area && k > 1, 'LineChart: `area` só vale para uma série — áreas sobrepostas escondem umas às outras.')
+  devWarning(
+    area && k > 1,
+    'LineChart: `area` só vale para uma série — áreas sobrepostas escondem umas às outras.',
+  )
   devWarning(
     k > VIZ_CATEGORICAL_COUNT && series.slice(VIZ_CATEGORICAL_COUNT).some((s) => !s.color),
     'LineChart: a paleta categórica tem 5 cores. Agrupe a partir da sexta série em "Outros" ou use pequenos múltiplos.',
@@ -140,7 +143,9 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
   const baseValue = scale.min <= 0 && scale.max >= 0 ? 0 : scale.min
 
   const points: (Point | null)[][] = values.map((row) =>
-    row.map((value, index) => (value === null ? null : { index, value, x: px(x(index)), y: px(y(value)) })),
+    row.map((value, index) =>
+      value === null ? null : { index, value, x: px(x(index)), y: px(y(value)) },
+    ),
   )
   /** Trechos contínuos de cada série (`null` interrompe). */
   const runs = points.map((row) => {
@@ -186,7 +191,8 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
       return
     }
     // A cruz encontra o X: o ponteiro só precisa estar perto da data, não da linha.
-    const index = n > 1 ? Math.max(0, Math.min(n - 1, Math.round((cx0 - left - INSET) / (step || 1)))) : 0
+    const index =
+      n > 1 ? Math.max(0, Math.min(n - 1, Math.round((cx0 - left - INSET) / (step || 1)))) : 0
     let si = 0
     let best = Infinity
     points.forEach((row, s) => {
@@ -207,7 +213,15 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
   // --- Textos acessíveis -------------------------------------------------
   const autoSummary = () => {
     const parts = [t('chartRange', { first: data[0].label, last: data[n - 1].label })]
-    if (k > 1) parts.push(t('chartSeries', { series: formatList(locale, series.map((s) => s.label)) }))
+    if (k > 1)
+      parts.push(
+        t('chartSeries', {
+          series: formatList(
+            locale,
+            series.map((s) => s.label),
+          ),
+        }),
+      )
     const ext = extremes(data, series)
     if (ext) {
       parts.push(t('chartHighest', { value: describe(ext.max.index, ext.max.series) }))
@@ -244,7 +258,8 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
         rows={series.map((s, si) => ({
           key: s.key,
           label: s.label,
-          value: values[si][index] === null ? t('chartNoData') : format(values[si][index] as number),
+          value:
+            values[si][index] === null ? t('chartNoData') : format(values[si][index] as number),
           color: colors[si],
           active: k > 1 && si === last.series,
         }))}
@@ -255,7 +270,8 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
   // --- Eixo X: rótulos espaçados para não se encostarem.
   const maxCategory = Math.max(0, ...data.map((d) => textWidth(d.label)))
   const every = n > 1 ? Math.max(1, Math.ceil((maxCategory + 10) / (step || 1))) : 1
-  const showCategory = (index: number) => index % every === 0 || (index === n - 1 && (n - 1) % every >= every / 2)
+  // O ritmo parte do último ponto (o período mais recente sempre tem rótulo).
+  const showCategory = (index: number) => (n - 1 - index) % every === 0
 
   return (
     <ChartFigure
@@ -266,11 +282,20 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
       hideCaption={hideCaption}
       variant={variant}
       motion={motion}
-      legend={series.map((s, i) => ({ label: s.label, color: colors[i], mark: 'line' as const, dash: dashes[i], shape: shapes[i] }))}
+      legend={series.map((s, i) => ({
+        label: s.label,
+        color: colors[i],
+        mark: 'line' as const,
+        dash: dashes[i],
+        shape: shapes[i],
+      }))}
       table={{
         categoryLabel: categoryLabel ?? t('chartCategory'),
         columns: series.map((s) => s.label),
-        rows: data.map((datum, index) => ({ label: datum.label, cells: values.map((row) => row[index]) })),
+        rows: data.map((datum, index) => ({
+          label: datum.label,
+          cells: values.map((row) => row[index]),
+        })),
         format,
       }}
       announcement={explorer.announcement}
@@ -285,7 +310,6 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
         ) : (
           // O SVG é a imagem do gráfico (role="img" + resumo, como na diretriz) e também a área
           // explorável pelo teclado: Tab foca, setas movem o destaque, Escape limpa.
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex, jsx-a11y/no-noninteractive-element-interactions
           <svg
             className="or-chart__svg"
             width={width}
@@ -335,7 +359,13 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
                     y1={crisp(y(tick))}
                     y2={crisp(y(tick))}
                   />
-                  <text className="or-chart__tick" x={left - 8} y={px(y(tick))} textAnchor="end" dominantBaseline="middle">
+                  <text
+                    className="or-chart__tick"
+                    x={left - 8}
+                    y={px(y(tick))}
+                    textAnchor="end"
+                    dominantBaseline="middle"
+                  >
                     {tickLabels[i]}
                   </text>
                 </g>
@@ -373,7 +403,14 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
               runs[0].map((run, ri) => {
                 const base = px(y(baseValue))
                 const d = `${pathOf(run)}L${run[run.length - 1].x} ${base}L${run[0].x} ${base}Z`
-                return <path key={ri} className="or-line-chart__area or-chart__anim" d={d} style={colorStyle(colors[0])} />
+                return (
+                  <path
+                    key={ri}
+                    className="or-line-chart__area or-chart__anim"
+                    d={d}
+                    style={colorStyle(colors[0])}
+                  />
+                )
               })}
 
             {/* Linhas e marcadores */}
@@ -382,7 +419,9 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
                 key={s.key}
                 className="or-line-chart__series"
                 data-series={s.key}
-                data-emphasis={active && k > 1 ? (si === active.series ? 'active' : 'muted') : undefined}
+                data-emphasis={
+                  active && k > 1 ? (si === active.series ? 'active' : 'muted') : undefined
+                }
                 style={{ ...colorStyle(colors[si]), '--_s': si } as CSSProperties}
               >
                 {runs[si].map((run, ri) =>
@@ -408,7 +447,11 @@ export const LineChart = forwardRef<HTMLElement, LineChartProps>(function LineCh
                       className="or-line-chart__marker or-chart__anim"
                       data-active={isActive || undefined}
                       d={markerPath(shapes[si], p.x, p.y, isActive ? MARKER_R + 1.5 : MARKER_R)}
-                      style={{ '--_t': n > 1 ? Math.round((index / (n - 1)) * 100) / 100 : 0 } as CSSProperties}
+                      style={
+                        {
+                          '--_t': n > 1 ? Math.round((index / (n - 1)) * 100) / 100 : 0,
+                        } as CSSProperties
+                      }
                     />
                   )
                 })}

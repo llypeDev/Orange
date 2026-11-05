@@ -67,8 +67,12 @@ describe.each(Object.keys(vizThemes) as ThemeName[])('visualização de dados, t
       ['viz-1', 'viz-2', 'viz-3', 'viz-4', 'viz-5'].map((k) => viz[k]),
     )
     expect(viz['viz-other']).toBe(primitive(palette.other))
-    expect(palette.sequential.map(primitive)).toEqual([1, 2, 3, 4, 5, 6, 7].map((i) => viz[`viz-seq-${i}`]))
-    expect(palette.diverging.map(primitive)).toEqual([1, 2, 3, 4, 5, 6, 7].map((i) => viz[`viz-div-${i}`]))
+    expect(palette.sequential.map(primitive)).toEqual(
+      [1, 2, 3, 4, 5, 6, 7].map((i) => viz[`viz-seq-${i}`]),
+    )
+    expect(palette.diverging.map(primitive)).toEqual(
+      [1, 2, 3, 4, 5, 6, 7].map((i) => viz[`viz-div-${i}`]),
+    )
   })
 
   it('cores categóricas são distintas entre si', () => {

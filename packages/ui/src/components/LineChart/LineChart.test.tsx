@@ -75,7 +75,10 @@ describe('LineChart', () => {
 
     it('aceita um resumo próprio', () => {
       renderChart({ summary: 'O app encosta no site em maio.' })
-      expect(plot()).toHaveAttribute('aria-label', 'Gráfico de linhas: Ticket médio por canal. O app encosta no site em maio.')
+      expect(plot()).toHaveAttribute(
+        'aria-label',
+        'Gráfico de linhas: Ticket médio por canal. O app encosta no site em maio.',
+      )
     })
   })
 
@@ -83,12 +86,19 @@ describe('LineChart', () => {
     const user = userEvent.setup()
     renderChart()
     const table = screen.getByRole('table', { name: 'Dados: Ticket médio por canal' })
-    expect(within(table).getAllByRole('columnheader').map((th) => th.textContent)).toEqual(['Mês', 'Site', 'App'])
+    expect(
+      within(table)
+        .getAllByRole('columnheader')
+        .map((th) => th.textContent),
+    ).toEqual(['Mês', 'Site', 'App'])
     const mar = within(table).getAllByRole('row')[3]
     expect(mar).toHaveTextContent('R$ 149,70')
     expect(mar).toHaveTextContent('sem dados')
     await user.click(screen.getByRole('button', { name: 'Ver dados' }))
-    expect(screen.getByRole('button', { name: 'Ocultar dados' })).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'Ocultar dados' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
   })
 
   describe('séries: cor, traço e marcador', () => {
@@ -106,7 +116,9 @@ describe('LineChart', () => {
       expect(lines(container, 'app')[0]).toHaveAttribute('stroke-dasharray', '6 5')
       expect(markers(container, 'site')[0].getAttribute('d')).toContain('a4.5') // círculo
       expect(markers(container, 'app')[0].getAttribute('d')).toContain('h8.1') // quadrado
-      expect(container.querySelector('[data-series="app"]')!.getAttribute('style')).toContain('var(--or-color-viz-2)')
+      expect(container.querySelector('[data-series="app"]')!.getAttribute('style')).toContain(
+        'var(--or-color-viz-2)',
+      )
     })
 
     it('uma série não tem legenda', () => {
@@ -170,7 +182,10 @@ describe('LineChart', () => {
 
       await user.keyboard('{ArrowRight}{ArrowRight}{ArrowDown}')
       expect(status).toHaveTextContent('mar · App: sem dados')
-      expect(container.querySelector('[data-series="site"]')).toHaveAttribute('data-emphasis', 'muted')
+      expect(container.querySelector('[data-series="site"]')).toHaveAttribute(
+        'data-emphasis',
+        'muted',
+      )
       // Marcador ativo (r = 6): o `d` do círculo começa em cx - r.
       const x = markerX(markers(container, 'site')[2]) + 6
       expect(crosshair.style.transform).toBe(`translateX(${Math.round(x)}px)`)
@@ -211,8 +226,12 @@ describe('LineChart', () => {
           <LineChart title="Average order value" valueFormat={brl} series={series} data={data} />
         </OrangeProvider>,
       )
-      expect(screen.getByRole('table', { name: 'Data: Average order value' })).toHaveTextContent('R$158.10')
-      expect(screen.getByRole('img', { name: /^Line chart: Average order value\. From jan to mai\./ })).toBeInTheDocument()
+      expect(screen.getByRole('table', { name: 'Data: Average order value' })).toHaveTextContent(
+        'R$158.10',
+      )
+      expect(
+        screen.getByRole('img', { name: /^Line chart: Average order value\. From jan to mai\./ }),
+      ).toBeInTheDocument()
       expect(screen.getByRole('table')).toHaveTextContent('no data')
     })
   })
@@ -225,7 +244,9 @@ describe('LineChart', () => {
   it('area preenche uma série e leva o eixo ao zero', () => {
     const { container } = renderChart({ series: [series[0]], area: true, valueFormat: undefined })
     expect(container.querySelector('.or-line-chart__area')).toBeInTheDocument()
-    const ticks = Array.from(container.querySelectorAll('.or-line-chart__axis .or-chart__tick')).map((el) => el.textContent)
+    const ticks = Array.from(
+      container.querySelectorAll('.or-line-chart__axis .or-chart__tick'),
+    ).map((el) => el.textContent)
     expect(ticks[0]).toBe('0')
     // Com duas séries a área é ignorada (esconderia a outra).
     const two = renderChart({ area: true })
@@ -249,7 +270,10 @@ describe('LineChart', () => {
     })
 
     it('movimento reduzido: sem máscara, tudo desenhado', () => {
-      window.matchMedia = ((q: string) => ({ ...original(q), matches: q.includes('reduce') })) as typeof window.matchMedia
+      window.matchMedia = ((q: string) => ({
+        ...original(q),
+        matches: q.includes('reduce'),
+      })) as typeof window.matchMedia
       const { container } = renderChart()
       expect(screen.getByRole('figure')).toHaveAttribute('data-motion', 'static')
       expect(container.querySelector('mask')).toBeNull()

@@ -18,7 +18,12 @@ export default function StatCards() {
             value="R$ 215 mil"
             delta="18%"
             trend="increase"
-            help={<Sparkline data={[182, 176, 195, 201, 188, 214, 215]} label="Vendas subiram 18% em 7 dias" />}
+            help={
+              <Sparkline
+                data={[182, 176, 195, 201, 188, 214, 215]}
+                label="Vendas subiram 18% em 7 dias"
+              />
+            }
           />
         </CardBody>
       </Card>

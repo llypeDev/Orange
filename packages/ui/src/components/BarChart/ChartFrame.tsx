@@ -10,13 +10,18 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type FocusEvent,
   type HTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
   type RefCallback,
 } from 'react'
-import { useEscapeKey, useId, useInView, useIsomorphicLayoutEffect, useReducedMotion } from '../../hooks'
+import {
+  useEscapeKey,
+  useId,
+  useInView,
+  useIsomorphicLayoutEffect,
+  useReducedMotion,
+} from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx } from '../../utils'
@@ -28,7 +33,13 @@ import './ChartFrame.css'
 export type ChartMarkerShape = 'circle' | 'square' | 'triangle' | 'diamond' | 'triangle-down'
 
 /** Marcador de cada série, na ordem: a forma reforça a cor (nunca só a cor). */
-export const MARKER_SHAPES: ChartMarkerShape[] = ['circle', 'square', 'triangle', 'diamond', 'triangle-down']
+export const MARKER_SHAPES: ChartMarkerShape[] = [
+  'circle',
+  'square',
+  'triangle',
+  'diamond',
+  'triangle-down',
+]
 
 /** Traço de cada série de linha, na ordem (a primeira é contínua). Pontas redondas: `0.1` vira um ponto. */
 export const LINE_DASHES = ['', '6 5', '0.1 4.5', '10 5 0.1 5', '14 6']
@@ -130,7 +141,11 @@ export function useChartExplorer({ count, seriesCount, keys, describe }: ChartEx
   const [last, setLast] = useState<ChartActive | null>(null)
   const [announcement, setAnnouncement] = useState('')
 
+  // Espelho síncrono: teclas repetidas (tecla segurada) no mesmo quadro partem do valor mais novo.
+  const activeRef = useRef<ChartActive | null>(null)
+
   const setActive = useCallback((next: ChartActive | null) => {
+    activeRef.current = next
     setActiveState(next)
     if (next) setLast(next)
   }, [])
@@ -147,8 +162,9 @@ export function useChartExplorer({ count, seriesCount, keys, describe }: ChartEx
 
   const onKeyDown = (event: KeyboardEvent<Element>) => {
     if (count === 0) return
-    const index = active?.index
-    const series = active?.series ?? 0
+    const current = activeRef.current
+    const index = current?.index
+    const series = current?.series ?? 0
     const lastIndex = count - 1
     switch (event.key) {
       case keys.next:
@@ -158,10 +174,10 @@ export function useChartExplorer({ count, seriesCount, keys, describe }: ChartEx
         move(index === undefined ? lastIndex : Math.max(0, index - 1), series)
         break
       case keys.seriesNext:
-        move(index ?? 0, active ? Math.min(seriesCount - 1, series + 1) : 0)
+        move(index ?? 0, current ? Math.min(seriesCount - 1, series + 1) : 0)
         break
       case keys.seriesPrev:
-        move(index ?? 0, active ? Math.max(0, series - 1) : 0)
+        move(index ?? 0, current ? Math.max(0, series - 1) : 0)
         break
       case 'Home':
         move(0, series)
@@ -170,7 +186,7 @@ export function useChartExplorer({ count, seriesCount, keys, describe }: ChartEx
         move(lastIndex, series)
         break
       case 'Escape':
-        if (!active) return
+        if (!current) return
         setActive(null)
         setAnnouncement('')
         // Não fecha também o diálogo/painel em volta.
@@ -182,8 +198,8 @@ export function useChartExplorer({ count, seriesCount, keys, describe }: ChartEx
     event.preventDefault()
   }
 
-  const onBlur = (_event: FocusEvent<Element>) => {
-    if (active?.source === 'keyboard') setActive(null)
+  const onBlur = () => {
+    if (activeRef.current?.source === 'keyboard') setActive(null)
   }
 
   const onPointerLeave = () => {
@@ -217,14 +233,42 @@ export function ChartLegend({ items }: { items: ChartLegendItem[] }) {
   return (
     <ul className="or-chart__legend" role="list" aria-label={t('chartLegend')}>
       {items.map((item, i) => (
-        <li key={`${item.label}-${i}`} className="or-chart__legend-item" style={colorStyle(item.color)}>
+        <li
+          key={`${item.label}-${i}`}
+          className="or-chart__legend-item"
+          style={colorStyle(item.color)}
+        >
           {item.mark === 'line' ? (
-            <svg className="or-chart__swatch" width="28" height="14" viewBox="0 0 28 14" aria-hidden="true" focusable="false">
-              <line className="or-chart__swatch-line" x1="1" x2="27" y1="7" y2="7" strokeDasharray={item.dash || undefined} />
-              <path className="or-chart__swatch-marker" d={markerPath(item.shape ?? 'circle', 14, 7, 4)} />
+            <svg
+              className="or-chart__swatch"
+              width="28"
+              height="14"
+              viewBox="0 0 28 14"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <line
+                className="or-chart__swatch-line"
+                x1="1"
+                x2="27"
+                y1="7"
+                y2="7"
+                strokeDasharray={item.dash || undefined}
+              />
+              <path
+                className="or-chart__swatch-marker"
+                d={markerPath(item.shape ?? 'circle', 14, 7, 4)}
+              />
             </svg>
           ) : (
-            <svg className="or-chart__swatch" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+            <svg
+              className="or-chart__swatch"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+              focusable="false"
+            >
               <rect className="or-chart__swatch-fill" width="12" height="12" />
             </svg>
           )}
@@ -414,7 +458,11 @@ export const ChartFigure = forwardRef<HTMLElement, ChartFigureProps>(function Ch
         <Icon name="chevron-down" size={16} className="or-chart__toggle-icon" />
       </button>
       {/* Recolhida, a tabela fica com altura 0 mas continua na árvore de acessibilidade. */}
-      <div id={dataId} className="or-collapse or-chart__data" data-state={showData ? 'open' : 'closed'}>
+      <div
+        id={dataId}
+        className="or-collapse or-chart__data"
+        data-state={showData ? 'open' : 'closed'}
+      >
         <div>
           <div
             className="or-chart__table-scroll"

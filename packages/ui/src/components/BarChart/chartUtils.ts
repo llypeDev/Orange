@@ -30,7 +30,9 @@ export const VIZ_CATEGORICAL_COUNT = 5
 /** Cor da série na posição `index`: a da própria série ou o token categórico. */
 export function seriesColor(series: Pick<ChartSeries, 'color'>, index: number): string {
   if (series.color) return series.color
-  return index < VIZ_CATEGORICAL_COUNT ? `var(--or-color-viz-${index + 1})` : 'var(--or-color-viz-other)'
+  return index < VIZ_CATEGORICAL_COUNT
+    ? `var(--or-color-viz-${index + 1})`
+    : 'var(--or-color-viz-other)'
 }
 
 /** Número finito ou `null` (ausente, `NaN`, `Infinity`). */
@@ -48,7 +50,10 @@ function numberFormat(locale: string, options?: Intl.NumberFormatOptions): Intl.
 }
 
 /** Formata valores completos (dica, tabela, anúncios). */
-export function createValueFormatter(locale: string, format?: ChartValueFormat): (value: number) => string {
+export function createValueFormatter(
+  locale: string,
+  format?: ChartValueFormat,
+): (value: number) => string {
   if (typeof format === 'function') return format
   const formatter = numberFormat(locale, format)
   return (value) => formatter.format(value)
@@ -119,12 +124,17 @@ export function niceScale(min: number, max: number, target = 4): NiceScale {
   const rough = (hi - lo) / Math.max(1, target)
   const magnitude = 10 ** Math.floor(Math.log10(rough))
   const normalized = rough / magnitude
-  const nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 2.5 ? 2.5 : normalized <= 5 ? 5 : 10
+  const nice =
+    normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 2.5 ? 2.5 : normalized <= 5 ? 5 : 10
   const step = round(nice * magnitude)
   const start = round(Math.floor(round(lo / step)) * step)
   const end = round(Math.ceil(round(hi / step)) * step)
   const ticks: number[] = []
-  for (let i = 0, value = start; value <= end + step / 2 && i < 50; i++, value = round(start + i * step)) {
+  for (
+    let i = 0, value = start;
+    value <= end + step / 2 && i < 50;
+    i++, value = round(start + i * step)
+  ) {
     ticks.push(value)
   }
   return { min: start, max: end, step, ticks }
@@ -169,7 +179,10 @@ export interface ChartPoint {
 }
 
 /** Maior e menor valor entre todas as séries (ignora vazios). */
-export function extremes(data: ChartDatum[], series: ChartSeries[]): { max: ChartPoint; min: ChartPoint } | null {
+export function extremes(
+  data: ChartDatum[],
+  series: ChartSeries[],
+): { max: ChartPoint; min: ChartPoint } | null {
   let max: ChartPoint | null = null
   let min: ChartPoint | null = null
   for (let index = 0; index < data.length; index++) {

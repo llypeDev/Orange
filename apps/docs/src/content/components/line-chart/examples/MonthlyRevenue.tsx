@@ -1,7 +1,9 @@
 import { LineChart } from '@orange/ui'
 
 const meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
-const receita = [184000, 176500, 195300, 201800, 188900, 214600, 221300, 219800, 232400, 241100, 255900, 268700]
+const receita = [
+  184000, 176500, 195300, 201800, 188900, 214600, 221300, 219800, 232400, 241100, 255900, 268700,
+]
 
 export default function MonthlyRevenue() {
   return (
