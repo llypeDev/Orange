@@ -902,11 +902,15 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--or-space-3);
   padding: var(--or-space-2) var(--or-space-2) var(--or-space-2) var(--or-space-4);
   border-bottom: 1px solid #1f1f26;
 }
 
 .doc-code__lang {
+  /* Caminhos longos (packages/ui/src/…) quebram em vez de empurrar o botão para fora. */
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--or-font-display);
   font-size: var(--or-text-2xs);
   letter-spacing: var(--or-tracking-meta);
@@ -915,6 +919,7 @@ a {
 }
 
 .doc-code__copy {
+  flex-shrink: 0;
   padding: 0.3125rem 0.75rem;
   border: 1px solid #3a3a42;
   background: transparent;
