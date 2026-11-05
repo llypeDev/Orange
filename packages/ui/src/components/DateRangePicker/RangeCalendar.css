@@ -139,6 +139,13 @@
   outline-offset: 2px;
 }
 
+/* Telas muito estreitas (320px): células de 36px para o mês caber sem rolagem horizontal. */
+@media (max-width: 24rem) {
+  .or-range-calendar {
+    --_cell: 2.25rem;
+  }
+}
+
 @media (forced-colors: active) {
   .or-range-calendar__day--in-range::before {
     border-block: var(--or-border-thin) solid CanvasText;
