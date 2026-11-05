@@ -48,22 +48,41 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/cjs/index.d.ts",
     "exports": {
       ".": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/index.js"
+        },
+        "require": {
+          "types": "./dist/cjs/index.d.ts",
+          "default": "./dist/cjs/index.js"
+        }
       },
       "./contrast": {
-        "types": "./dist/contrast.d.ts",
-        "default": "./dist/contrast.js"
+        "import": {
+          "types": "./dist/contrast.d.ts",
+          "default": "./dist/contrast.js"
+        },
+        "require": {
+          "types": "./dist/cjs/contrast.d.ts",
+          "default": "./dist/cjs/contrast.js"
+        }
       },
       "./tokens.css": "./css/tokens.css",
       "./package.json": "./package.json",
       "./dtcg": {
-        "types": "./dist/dtcg.d.ts",
-        "default": "./dist/dtcg.js"
+        "import": {
+          "types": "./dist/dtcg.d.ts",
+          "default": "./dist/dtcg.js"
+        },
+        "require": {
+          "types": "./dist/cjs/dtcg.d.ts",
+          "default": "./dist/cjs/dtcg.js"
+        }
       },
       "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
     }
@@ -76,7 +95,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsx scripts/build.ts && tsc -p tsconfig.build.json",
+    "build": "tsx scripts/build.ts && tsc -p tsconfig.build.json && tsc -p tsconfig.build.cjs.json && node scripts/check-dist.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "figma:sync": "tsx scripts/figma-sync.ts"
