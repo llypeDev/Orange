@@ -1,0 +1,48 @@
+/* Container — largura máxima + margens laterais da página.
+ *
+ * A largura máxima vale para o conteúdo: o gutter é somado por fora, então
+ * `xl` mostra exatamente 1200px de conteúdo, como na grade do Orange.
+ * Gutter responsivo (guia de Grid): 16px → 24px (md) → 32px (lg). */
+
+.or-container {
+  --_container-max: var(--or-layout-max-width);
+  --_container-gutter: var(--or-space-4);
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--_container-max) + 2 * var(--_container-gutter));
+  margin-inline: auto;
+  padding-inline: var(--_container-gutter);
+}
+
+/* Tamanhos ----------------------------------------------------------------- */
+
+.or-container--sm {
+  --_container-max: 640px;
+}
+.or-container--md {
+  --_container-max: 768px;
+}
+.or-container--lg {
+  --_container-max: 1024px;
+}
+.or-container--xl {
+  --_container-max: var(--or-layout-max-width);
+}
+.or-container--full {
+  max-width: none;
+}
+
+/* Gutter responsivo (breakpoints md 768 e lg 1024 de @orange/tokens) -------- */
+
+@media (min-width: 768px) {
+  .or-container {
+    --_container-gutter: var(--or-space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .or-container {
+    --_container-gutter: var(--or-layout-gutter);
+  }
+}

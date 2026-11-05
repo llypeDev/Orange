@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------
+ * Form — coluna de campos com espaçamento padrão e linha de ações.
+ * O movimento fica com os filhos: ErrorSummary (entrada/saída) e campos
+ * (or-shake + mensagem de erro). O Form não anima nada por conta própria.
+ * ------------------------------------------------------------------------- */
+
+.or-form {
+  --_gap: var(--or-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+  min-width: 0;
+  margin: 0;
+}
+
+.or-form--gap-sm {
+  --_gap: var(--or-space-3);
+}
+
+.or-form--gap-lg {
+  --_gap: var(--or-space-8);
+}
+
+/* Envio em andamento: o cursor indica a espera (o botão mostra o spinner). */
+.or-form[aria-busy='true'] {
+  cursor: progress;
+}
+
+.or-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-3);
+}
+
+.or-form-actions--end {
+  justify-content: flex-end;
+}
+
+.or-form-actions--between {
+  justify-content: space-between;
+}

@@ -1,0 +1,195 @@
+.or-page-header {
+  --_title-size: var(--or-text-3xl);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-4);
+  min-width: 0;
+  padding-bottom: var(--or-space-6);
+  color: var(--or-color-text);
+}
+
+.or-page-header--h2 {
+  --_title-size: var(--or-text-2xl);
+}
+
+.or-page-header--h3 {
+  --_title-size: var(--or-text-xl);
+}
+
+.or-page-header--divider {
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Com abas, elas encostam na base: o sublinhado da aba ativa cobre a linha. */
+.or-page-header--with-navigation {
+  padding-bottom: 0;
+}
+
+/* Contexto: trilha e link de volta ------------------------------------------ */
+
+.or-page-header__context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2) var(--or-space-6);
+  min-width: 0;
+}
+
+.or-page-header__breadcrumbs {
+  min-width: 0;
+}
+
+.or-page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-height: 1.5rem;
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-page-header__back:is(:hover, :focus-visible) {
+  color: var(--or-color-text);
+}
+
+.or-page-header__back:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* A seta "empurra" para trás (4px à esquerda) no hover/foco. */
+.or-page-header__back-icon {
+  flex-shrink: 0;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-page-header__back:is(:hover, :focus-visible) .or-page-header__back-icon {
+  transform: translateX(calc(var(--or-distance-sm) * -1));
+}
+
+/* Título, descrição e ações -------------------------------------------------- */
+
+/* Ações ao lado do título; sem espaço (≈ 20rem para o título), quebram para baixo. */
+.or-page-header__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--or-space-4) var(--or-space-6);
+  min-width: 0;
+}
+
+.or-page-header__heading {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.or-page-header__eyebrow {
+  margin: 0 0 var(--or-space-3);
+}
+
+.or-page-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2) var(--or-space-3);
+  min-width: 0;
+}
+
+.or-page-header__title {
+  min-width: 0;
+  margin: 0;
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--_title-size);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: var(--or-tracking-heading);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.or-page-header__meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-2);
+}
+
+.or-page-header__description {
+  max-width: 68ch;
+  margin-top: var(--or-space-2);
+  color: var(--or-color-text-muted);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-body);
+}
+
+.or-page-header__description > :first-child {
+  margin-top: 0;
+}
+
+.or-page-header__description > :last-child {
+  margin-bottom: 0;
+}
+
+.or-page-header__actions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-3);
+  min-width: 0;
+}
+
+/* Navegação local (abas) ----------------------------------------------------- */
+
+.or-page-header__navigation {
+  min-width: 0;
+  margin-top: var(--or-space-2);
+}
+
+/* Com divider, as abas descem 1px e pintam por cima da linha: o sublinhado
+   laranja da aba ativa fica sobre a borda, sem duas linhas empilhadas. */
+.or-page-header--divider .or-page-header__navigation {
+  position: relative;
+  margin-bottom: -1px;
+}
+
+/* Revelação ------------------------------------------------------------------ */
+
+/* Entrada em sequência, como o hero do zop.dev: cada parte sobe 24px com fade,
+   80ms (--or-stagger) depois da anterior. Só roda ao montar. */
+.or-page-header--reveal
+  :is(
+    .or-page-header__eyebrow,
+    .or-page-header__title-row,
+    .or-page-header__description,
+    .or-page-header__actions
+  ) {
+  animation: or-reveal-up var(--or-duration-reveal) var(--or-ease-out) both;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-page-header--reveal
+    :is(
+      .or-page-header__eyebrow,
+      .or-page-header__title-row,
+      .or-page-header__description,
+      .or-page-header__actions
+    ) {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-page-header--divider {
+    border-bottom-color: CanvasText;
+  }
+}

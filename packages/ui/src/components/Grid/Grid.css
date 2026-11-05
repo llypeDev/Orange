@@ -1,0 +1,147 @@
+/* Grid — layout em duas dimensões.
+ *
+ * Responsividade só com CSS: o valor base vem em --_grid-cols / --_grid-row-gap
+ * / --_grid-col-gap (inline) e cada breakpoint em --_grid-<prop>-<bp> + a
+ * classe .or-grid--<prop>-<bp>, que liga a media query correspondente. As
+ * variáveis base são resetadas na raiz para não herdar de uma Grid ancestral.
+ * --_grid-template / --_grid-rg / --_grid-cg guardam o valor efetivo do
+ * breakpoint atual (as células da variante bordered leem os dois últimos). */
+
+.or-grid {
+  --_grid-cols: initial;
+  --_grid-min: initial;
+  --_grid-row-gap: initial;
+  --_grid-col-gap: initial;
+  --_grid-template: repeat(var(--_grid-cols, 1), minmax(0, 1fr));
+  --_grid-rg: var(--_grid-row-gap, var(--or-space-4));
+  --_grid-cg: var(--_grid-col-gap, var(--or-space-4));
+
+  display: grid;
+  grid-template-columns: var(--_grid-template);
+  row-gap: var(--_grid-rg);
+  column-gap: var(--_grid-cg);
+  min-width: 0;
+}
+
+/* Listas e listas de definição: sem marcadores, recuo nem margens. */
+:is(ul, ol, menu, dl).or-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Itens podem encolher até a largura da trilha (texto longo, tabelas com
+   rolagem) em vez de estourar a coluna. Especificidade zero: o item manda. */
+:where(.or-grid) > * {
+  min-width: 0;
+}
+
+/* Colunas automáticas: quantas couberem com a largura mínima; min(…, 100%)
+   evita rolagem horizontal quando o contêiner é mais estreito que o mínimo. */
+.or-grid--auto {
+  --_grid-template: repeat(auto-fit, minmax(min(var(--_grid-min), 100%), 1fr));
+}
+
+/* Com bordas ----------------------------------------------------------------
+ * As células encostam com um vão de 1px; o contorno (outline) de 1px de cada
+ * célula cai exatamente nesse vão — os contornos vizinhos se sobrepõem e viram
+ * uma linha só — e o das células da borda cai sobre a moldura da grade. Funciona
+ * com qualquer número de colunas, spans e linhas incompletas (a célula vazia
+ * fica fechada pela moldura), e o fundo de um item nunca cobre a linha. */
+
+.or-grid--bordered {
+  row-gap: var(--or-border-thin);
+  column-gap: var(--or-border-thin);
+  border: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-grid--bordered > * {
+  outline: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* O gap vira o respiro interno das células (especificidade zero: o padding
+   do próprio item prevalece). */
+:where(.or-grid--bordered) > * {
+  padding: var(--_grid-rg) var(--_grid-cg);
+}
+
+/* GridItem ------------------------------------------------------------------ */
+
+.or-grid-item {
+  --_grid-span: initial;
+
+  grid-column: var(--_grid-span, auto);
+  min-width: 0;
+}
+
+/* Breakpoints (os mesmos de @orange/tokens: sm 640, md 768, lg 1024, xl 1280) */
+
+@media (min-width: 640px) {
+  .or-grid--cols-sm {
+    --_grid-template: repeat(var(--_grid-cols-sm), minmax(0, 1fr));
+  }
+  .or-grid--row-gap-sm {
+    --_grid-rg: var(--_grid-row-gap-sm);
+  }
+  .or-grid--col-gap-sm {
+    --_grid-cg: var(--_grid-col-gap-sm);
+  }
+  .or-grid-item--span-sm {
+    grid-column: var(--_grid-span-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .or-grid--cols-md {
+    --_grid-template: repeat(var(--_grid-cols-md), minmax(0, 1fr));
+  }
+  .or-grid--row-gap-md {
+    --_grid-rg: var(--_grid-row-gap-md);
+  }
+  .or-grid--col-gap-md {
+    --_grid-cg: var(--_grid-col-gap-md);
+  }
+  .or-grid-item--span-md {
+    grid-column: var(--_grid-span-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .or-grid--cols-lg {
+    --_grid-template: repeat(var(--_grid-cols-lg), minmax(0, 1fr));
+  }
+  .or-grid--row-gap-lg {
+    --_grid-rg: var(--_grid-row-gap-lg);
+  }
+  .or-grid--col-gap-lg {
+    --_grid-cg: var(--_grid-col-gap-lg);
+  }
+  .or-grid-item--span-lg {
+    grid-column: var(--_grid-span-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .or-grid--cols-xl {
+    --_grid-template: repeat(var(--_grid-cols-xl), minmax(0, 1fr));
+  }
+  .or-grid--row-gap-xl {
+    --_grid-rg: var(--_grid-row-gap-xl);
+  }
+  .or-grid--col-gap-xl {
+    --_grid-cg: var(--_grid-col-gap-xl);
+  }
+  .or-grid-item--span-xl {
+    grid-column: var(--_grid-span-xl);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-grid--bordered {
+    border-color: CanvasText;
+  }
+
+  .or-grid--bordered > * {
+    outline-color: CanvasText;
+  }
+}

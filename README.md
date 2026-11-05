@@ -15,7 +15,7 @@ bordas de 1px e grade explícita.
 
 ## Componentes
 
-86 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
+96 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
 Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
 critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
 (`Heading`, `Text`, `Eyebrow`), 20 hooks, 90 ícones e o `OrangeProvider` (tema + idioma).
@@ -23,12 +23,12 @@ critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
 | Categoria | Componentes |
 | --- | --- |
 | Ações (8) | Button, ButtonGroup, CopyButton, IconButton, SegmentedControl, SplitButton, ToggleButton, Toolbar |
-| Formulários (23) | Checkbox, ColorField, Combobox, CurrencyField, DatePicker, ErrorSummary, Fieldset, FileUploader, InlineEdit, MultiSelect, NumberField, PasswordField, PinInput, RadioGroup, Rating, Search, Select, Slider, Switch, TagInput, TextArea, TextField, TimeField |
+| Formulários (25) | Checkbox, ColorField, Combobox, CurrencyField, DatePicker, DateRangePicker, ErrorSummary, Fieldset, FileUploader, Form, InlineEdit, MultiSelect, NumberField, PasswordField, PinInput, RadioGroup, Rating, Search, Select, Slider, Switch, TagInput, TextArea, TextField, TimeField |
 | Feedback (10) | Alert, Banner, EmptyState, LoadingOverlay, Meter, ProgressBar, ProgressCircle, Skeleton, Spinner, Toast |
 | Sobreposições (10) | CommandPalette, ConfirmDialog, ContextMenu, Drawer, Dropdown, HoverCard, Modal, Popover, Toggletip, Tooltip |
 | Navegação (12) | AppHeader, BackToTop, BottomNavigation, Breadcrumb, Link, MonthPaginator, Paginator, SideNav, SkipLink, Stepper, TableOfContents, Tabs |
-| Exibição de dados (15) | Accordion, Avatar, AvatarGroup, Badge, Card, Chip, CodeBlock, DescriptionList, Kbd, List, Stat, Table, Tag, Timeline, TreeView |
-| Layout (2) | Divider, Paper |
+| Exibição de dados (17) | Accordion, Avatar, AvatarGroup, Badge, Card, Carousel, Chip, CodeBlock, DescriptionList, Image, Kbd, List, Stat, Table, Tag, Timeline, TreeView |
+| Layout (8) | AppShell, Container, Divider, Footer, Grid, PageHeader, Paper, Stack |
 | Utilitários (6) | ExpandableText, Highlight, RelativeTime, Reveal, TruncatedText, VisuallyHidden |
 
 ## Motion

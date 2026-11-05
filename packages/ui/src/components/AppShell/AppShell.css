@@ -1,0 +1,296 @@
+/*
+ * AppShell — cabeçalho, barra lateral, conteúdo, painel complementar e rodapé.
+ *
+ *   ┌──────────── header ────────────┐
+ *   │ nav │ main          │ aside    │  ← aside empilha abaixo do main quando falta espaço
+ *   │     ├───────── footer ─────────┤
+ *   └─────┴──────────────────────────┘
+ *
+ * A barra lateral recolhe animando grid-template-columns (--or-duration-slow,
+ * --or-ease-in-out); com movimento reduzido os tokens zeram e a troca é instantânea.
+ */
+.or-app-shell {
+  --or-app-shell-nav-width: var(--or-layout-sidebar-width);
+  --or-app-shell-nav-collapsed-width: 4rem;
+  --or-app-shell-aside-width: 20rem;
+  --or-app-shell-padding: clamp(var(--or-space-5), 3vw, var(--or-space-8));
+  /* Altura real do cabeçalho (medida via ResizeObserver; o token é o padrão). */
+  --_header-height: var(--or-layout-header-height);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--or-color-bg);
+  color: var(--or-color-text);
+}
+
+.or-app-shell--full-height {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Contido: ocupa a altura do pai e rola o conteúdo por dentro. */
+.or-app-shell--contained {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Contido, o atalho aparece no canto do próprio AppShell (não no da janela). */
+.or-app-shell--contained > .or-skip-link {
+  position: absolute;
+}
+
+/* Cabeçalho ------------------------------------------------------------------ */
+
+.or-app-shell__header {
+  position: relative;
+  z-index: var(--or-z-header);
+  flex-shrink: 0;
+  min-width: 0;
+  background: var(--or-color-bg);
+}
+
+/* Conteúdo próprio (não um AppHeader, que já tem borda): linha de 1px na base. */
+header.or-app-shell__header {
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-app-shell--full-height.or-app-shell--sticky-header > .or-app-shell__header {
+  position: sticky;
+  top: 0;
+}
+
+/* Corpo: barra lateral + conteúdo ------------------------------------------- */
+
+.or-app-shell__body {
+  display: grid;
+  flex: 1 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+.or-app-shell--contained > .or-app-shell__body {
+  flex: 1 1 auto;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+}
+
+.or-app-shell[data-has-nav] > .or-app-shell__body {
+  grid-template-columns: var(--or-app-shell-nav-width) minmax(0, 1fr);
+  /* Recolher/expandir: só a trilha da grade anima — nada de width no conteúdo. */
+  transition: grid-template-columns var(--or-duration-slow) var(--or-ease-in-out);
+}
+
+.or-app-shell[data-has-nav][data-collapsed] > .or-app-shell__body {
+  grid-template-columns: var(--or-app-shell-nav-collapsed-width) minmax(0, 1fr);
+}
+
+/* Barra lateral -------------------------------------------------------------- */
+
+.or-app-shell__nav {
+  position: relative;
+  z-index: var(--or-z-sticky);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-right: var(--or-border-thin) solid var(--or-color-border);
+  background: var(--or-color-bg);
+  scrollbar-width: thin;
+}
+
+.or-app-shell--full-height.or-app-shell--sticky-nav .or-app-shell__nav {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.or-app-shell--full-height.or-app-shell--sticky-nav.or-app-shell--sticky-header .or-app-shell__nav {
+  top: var(--_header-height);
+  height: calc(100vh - var(--_header-height));
+  height: calc(100dvh - var(--_header-height));
+}
+
+/* Recolhida: rótulos e grupos do SideNav saem do trilho como dicas/painéis. */
+.or-app-shell[data-collapsed] .or-app-shell__nav {
+  overflow: visible;
+}
+
+/* SideNav dentro do AppShell ocupa a trilha inteira; a borda é da barra. */
+.or-app-shell__nav > .or-side-nav {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  border-right: 0;
+}
+
+/* Conteúdo: main + aside + rodapé ------------------------------------------ */
+
+.or-app-shell__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.or-app-shell--contained .or-app-shell__content {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* main e aside lado a lado enquanto o main tiver ≥ 60% da largura; senão o aside
+   quebra para baixo e ocupa a linha inteira (sem media query: responde ao espaço). */
+.or-app-shell__columns {
+  display: flex;
+  flex: 1 0 auto;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.or-app-shell__main {
+  flex: 999 1 0%;
+  min-width: 60%;
+  padding: var(--or-app-shell-padding);
+}
+
+/* Alvo do SkipLink: recebe foco por script, sem contorno em volta da página. */
+.or-app-shell__main:focus,
+.or-app-shell__main:focus-visible {
+  outline: none;
+}
+
+.or-app-shell__aside {
+  position: relative;
+  flex: 1 0 var(--or-app-shell-aside-width);
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--or-app-shell-padding);
+  background: var(--or-color-bg-subtle);
+}
+
+/* Linha de 1px à esquerda (lado a lado) e no topo (empilhado). A que não é
+   necessária cai sobre uma borda vizinha (cabeçalho ou barra lateral). */
+.or-app-shell__aside::before,
+.or-app-shell__aside::after {
+  content: '';
+  position: absolute;
+  background: var(--or-color-border);
+  pointer-events: none;
+}
+
+.or-app-shell__aside::before {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--or-border-thin) * -1);
+  width: var(--or-border-thin);
+}
+
+.or-app-shell__aside::after {
+  top: calc(var(--or-border-thin) * -1);
+  right: 0;
+  left: 0;
+  height: var(--or-border-thin);
+}
+
+.or-app-shell__footer {
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+/* Um Footer no slot alinha suas margens às do conteúdo. */
+.or-app-shell__footer > .or-footer {
+  --or-footer-gutter: var(--or-app-shell-padding);
+}
+
+footer.or-app-shell__footer {
+  padding: var(--or-space-5) var(--or-app-shell-padding);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  color: var(--or-color-text-subtle);
+  font-size: var(--or-text-sm);
+}
+
+/* Botão de navegação ---------------------------------------------------------- */
+
+.or-app-shell__toggle {
+  flex-shrink: 0;
+}
+
+/* Na marca do AppHeader, o botão encosta no início da barra e respira antes do logo. */
+.or-app-header__brand > .or-app-shell__toggle {
+  margin-right: var(--or-space-3);
+  margin-left: calc(var(--or-space-2) * -1);
+}
+
+/* Telas largas: os chevrons giram 180° quando a barra está recolhida. */
+.or-app-shell__toggle[data-mode='collapse'] svg {
+  transition: transform var(--or-duration-slow) var(--or-ease-in-out);
+}
+
+.or-app-shell__toggle[data-mode='collapse'][aria-expanded='false'] svg {
+  transform: rotate(180deg);
+}
+
+/* Painel (telas estreitas) ------------------------------------------------------ */
+
+.or-app-shell__drawer .or-drawer__body {
+  padding: 0;
+}
+
+.or-app-shell__drawer-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.or-app-shell__drawer-nav {
+  padding: var(--or-space-4) var(--or-space-6);
+}
+
+.or-app-shell__drawer .or-side-nav {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  border-right: 0;
+}
+
+/*
+ * Antes da hidratação (SSR) o estado assume tela larga: abaixo do ponto de
+ * quebra, o CSS já esconde a barra para não estourar a largura no celular.
+ */
+@media (max-width: 1023.98px) {
+  .or-app-shell[data-breakpoint='lg'] > .or-app-shell__body > .or-app-shell__nav {
+    display: none;
+  }
+
+  .or-app-shell[data-breakpoint='lg'][data-has-nav] > .or-app-shell__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .or-app-shell[data-breakpoint='md'] > .or-app-shell__body > .or-app-shell__nav {
+    display: none;
+  }
+
+  .or-app-shell[data-breakpoint='md'][data-has-nav] > .or-app-shell__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-app-shell__nav {
+    border-right-color: CanvasText;
+  }
+
+  .or-app-shell__aside::before,
+  .or-app-shell__aside::after {
+    background: CanvasText;
+  }
+}

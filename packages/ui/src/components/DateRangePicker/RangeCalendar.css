@@ -1,0 +1,179 @@
+/* ---------------------------------------------------------------------------
+ * RangeCalendar — calendário de período (reaproveita as classes .or-calendar)
+ *
+ * Camadas de cada dia: td::before = faixa do período · __mark = ponta
+ * preenchida (início/fim) · td::after = marcador de hoje (Calendar.css).
+ *
+ * Movimento: a faixa preenche célula a célula (scaleX a partir do início)
+ * enquanto a prévia acompanha o mouse/foco; as pontas entram com
+ * or-scale-in + --or-ease-bounce; troca de mês igual ao Calendar.
+ * ------------------------------------------------------------------------- */
+
+.or-range-calendar__months {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--or-space-6);
+}
+
+.or-range-calendar__month {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+}
+
+/* Ocupa o lugar dos botões de navegação para centralizar o título do mês. */
+.or-range-calendar__nav-spacer {
+  flex-shrink: 0;
+  width: 4rem;
+}
+
+.or-range-calendar__blank {
+  width: var(--_cell);
+  height: var(--_cell);
+  padding: 0;
+}
+
+/* Faixa -------------------------------------------------------------------- */
+
+.or-range-calendar__day::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--or-border-thin) * -1);
+  background: var(--or-color-accent-subtle);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Prévia para trás (fim antes do início): a faixa cresce da direita. */
+.or-range-calendar[data-preview='backward'] .or-range-calendar__day::before {
+  transform-origin: right center;
+}
+
+.or-range-calendar__day--in-range::before {
+  opacity: 1;
+  transform: none;
+}
+
+/* Prévia: bordas tracejadas — o período ainda não foi confirmado. */
+.or-range-calendar__day--preview::before {
+  border-block: var(--or-border-thin) dashed var(--or-color-accent-border);
+}
+
+/* Pontas ------------------------------------------------------------------- */
+
+.or-range-calendar__mark {
+  position: absolute;
+  inset: calc(var(--or-border-thin) * -1);
+  display: grid;
+  place-items: center;
+  border: var(--or-border-thin) solid transparent;
+  pointer-events: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-range-calendar__day--start .or-range-calendar__mark,
+.or-range-calendar__day--end .or-range-calendar__mark {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+  font-weight: var(--or-weight-bold);
+}
+
+.or-range-calendar__day--start:hover .or-range-calendar__mark,
+.or-range-calendar__day--end:hover .or-range-calendar__mark {
+  border-color: var(--or-color-accent-hover);
+  background: var(--or-color-accent-hover);
+}
+
+/* Forma, além da cor: canto superior esquerdo no início, inferior direito no fim. */
+.or-range-calendar__day--start .or-range-calendar__mark::before,
+.or-range-calendar__day--end .or-range-calendar__mark::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.or-range-calendar__day--start .or-range-calendar__mark::before {
+  top: 0;
+  left: 0;
+  border-width: 7px 7px 0 0;
+  border-color: var(--or-color-text-on-accent) transparent transparent transparent;
+}
+
+.or-range-calendar__day--end .or-range-calendar__mark::after {
+  right: 0;
+  bottom: 0;
+  border-width: 0 0 7px 7px;
+  border-color: transparent transparent var(--or-color-text-on-accent) transparent;
+}
+
+/* Ponta provisória da prévia: só contorno. */
+.or-range-calendar__day--preview-edge .or-range-calendar__mark {
+  border: var(--or-border-thin) dashed var(--or-color-accent);
+  color: var(--or-color-accent-text);
+  font-weight: var(--or-weight-bold);
+}
+
+/* Ponta recém-marcada: entra em escala com overshoot. */
+.or-range-calendar__mark--pop {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+.or-range-calendar__day--start.or-calendar__day--today::after,
+.or-range-calendar__day--end.or-calendar__day--today::after {
+  background: var(--or-color-text-on-accent);
+}
+
+.or-range-calendar__day--start:focus-visible,
+.or-range-calendar__day--end:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Telas muito estreitas (320px): células de 36px e navegação de 28px para o
+   mês caber sem rolagem horizontal (alvos continuam acima de 24px). */
+@media (max-width: 24rem) {
+  .or-range-calendar {
+    --_cell: 2.25rem;
+  }
+
+  .or-range-calendar .or-calendar__header {
+    gap: var(--or-space-1);
+  }
+
+  .or-range-calendar .or-calendar__nav {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .or-range-calendar__nav-spacer {
+    width: 3.5rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-range-calendar__day--in-range::before {
+    border-block: var(--or-border-thin) solid CanvasText;
+  }
+  .or-range-calendar__day--start .or-range-calendar__mark,
+  .or-range-calendar__day--end .or-range-calendar__mark {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  .or-range-calendar__day--start .or-range-calendar__mark::before {
+    border-top-color: HighlightText;
+  }
+  .or-range-calendar__day--end .or-range-calendar__mark::after {
+    border-bottom-color: HighlightText;
+  }
+}

@@ -1,0 +1,274 @@
+/* ---------------------------------------------------------------------------
+ * Carousel
+ *
+ * Trilho com scroll-snap nativo (swipe, trackpad e roda sem JS). Cada slide
+ * mede (100% − espaços) / slides por vista; frações deixam o próximo
+ * "espiando". A barra de controles vem antes dos slides no DOM (o botão de
+ * rotação é o primeiro controle) e é posicionada visualmente com `order`.
+ * ------------------------------------------------------------------------- */
+
+.or-carousel {
+  --_gap: var(--or-space-4);
+  --_per-view: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Trilho ------------------------------------------------------------------- */
+
+.or-carousel__viewport {
+  position: relative;
+  min-width: 0;
+}
+
+.or-carousel__track {
+  display: flex;
+  gap: var(--_gap);
+  /* Mouse e teclado navegam pelos controles (botões e abas); a rolagem nativa
+     do trilho fica só para o arraste em telas de toque. Assim o trilho não é
+     uma região rolável inalcançável pelo teclado (slides inativos são inert). */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  /* Respiro vertical para a elevação (-4px + sombra) e o foco do conteúdo não serem cortados. */
+  padding-block: var(--or-space-2);
+  margin-block: calc(var(--or-space-2) * -1);
+}
+
+.or-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Telas de toque (inclusive notebooks híbridos): arraste nativo com snap. */
+@media (any-pointer: coarse) {
+  .or-carousel__track {
+    overflow-x: auto;
+  }
+}
+
+.or-carousel__slide {
+  flex: 0 0 calc((100% - (var(--_per-view) - 1) * var(--_gap)) / var(--_per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+  transition: opacity var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Slides fora da posição atual (inertes) recuam — inclusive o que "espia" na borda. */
+.or-carousel__slide[data-state='inactive'] {
+  opacity: 0.5;
+}
+
+/* Controles ---------------------------------------------------------------- */
+
+.or-carousel__controls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-3);
+  min-width: 0;
+}
+
+.or-carousel--controls-bottom > .or-carousel__controls {
+  order: 1;
+  padding-top: var(--or-space-3);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-carousel--controls-top > .or-carousel__controls {
+  padding-bottom: var(--or-space-3);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-carousel__nav {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--or-space-2);
+  margin-inline-start: auto;
+}
+
+/* Anterior/próximo nas pontas (loop desligado): continuam focáveis, mas inertes ao clique. */
+.or-carousel__nav .or-button[aria-disabled='true'] {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* A seta "empurra" 2px na direção do movimento (hover e foco). */
+.or-carousel__nav .or-button__icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+.or-carousel__prev:is(:hover, :focus-visible):not([aria-disabled='true']) .or-button__icon {
+  transform: translateX(calc(var(--or-distance-sm) * -0.5));
+}
+
+.or-carousel__next:is(:hover, :focus-visible):not([aria-disabled='true']) .or-button__icon {
+  transform: translateX(calc(var(--or-distance-sm) * 0.5));
+}
+
+[dir='rtl'] .or-carousel__nav svg {
+  transform: scaleX(-1);
+}
+
+/* Ícone de pausar/iniciar entra com um pequeno pop a cada troca. */
+.or-carousel__rotation svg {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Seletor (abas) ----------------------------------------------------------- */
+
+.or-carousel__picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.or-carousel__picker::-webkit-scrollbar {
+  display: none;
+}
+
+.or-carousel__dot {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  cursor: pointer;
+}
+
+.or-carousel__dot:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-carousel__dot-mark {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: transparent;
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-carousel__dot:is(:hover, :focus-visible) .or-carousel__dot-mark {
+  border-color: var(--or-color-text-muted);
+  transform: scale(1.25);
+}
+
+/* Antes da medição (SSR, 1º quadro) o próprio ponto ativo se pinta. */
+.or-carousel__picker:not([data-indicator]) [aria-selected='true'] > .or-carousel__dot-mark {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+}
+
+/*
+ * Indicador único que DESLIZA entre os pontos com --or-ease-spring (só
+ * transform): 1px de largura escalado até o tamanho do ponto ativo.
+ */
+.or-carousel__dot-indicator {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  background: var(--or-color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.or-carousel__dot-indicator[data-visible] {
+  opacity: 1;
+}
+
+.or-carousel__dot-indicator[data-ready] {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Contador "02 / 05" ------------------------------------------------------- */
+
+.or-carousel__counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--or-space-1);
+  color: var(--or-color-text-subtle);
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--or-tracking-meta);
+}
+
+.or-carousel__counter-current {
+  color: var(--or-color-text);
+}
+
+/* Progresso da rotação ----------------------------------------------------- */
+
+/* Barra de 2px sobre a linha da barra de controles; pausa junto com a rotação. */
+.or-carousel__progress {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--or-color-accent);
+  pointer-events: none;
+  transform-origin: left center;
+  animation: or-fill-x var(--_interval) linear both;
+}
+
+.or-carousel--controls-bottom .or-carousel__progress {
+  top: -1px;
+}
+
+.or-carousel--controls-top .or-carousel__progress {
+  bottom: -1px;
+}
+
+[dir='rtl'] .or-carousel__progress {
+  transform-origin: right center;
+}
+
+.or-carousel[data-paused] .or-carousel__progress {
+  animation-play-state: paused;
+}
+
+/* Movimento reduzido: nada se move (a troca de slide também é instantânea, via JS). */
+@media (prefers-reduced-motion: reduce) {
+  .or-carousel__progress {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .or-carousel__dot-mark {
+    border-color: CanvasText;
+  }
+
+  .or-carousel__dot-indicator,
+  .or-carousel__progress {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+
+  .or-carousel__picker:not([data-indicator]) [aria-selected='true'] > .or-carousel__dot-mark {
+    background: Highlight;
+  }
+}
