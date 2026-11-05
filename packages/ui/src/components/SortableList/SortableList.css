@@ -1,0 +1,196 @@
+/* SortableList ---------------------------------------------------------------
+ * Lista reordenável: itens com borda de 1px compartilhada, alça à esquerda e
+ * controles de mover à direita. Durante o movimento, os itens irmãos deslizam
+ * via `--_shift-*` (definidos pelo componente) e o item arrastado segue o
+ * ponteiro via `--_drag-*`. Só transform e box-shadow são animados.
+ * ------------------------------------------------------------------------- */
+
+.or-sortable {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--or-color-text);
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-body);
+}
+
+.or-sortable--horizontal {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.or-sortable__item {
+  --_shift-x: 0px;
+  --_shift-y: 0px;
+  --_drag-x: 0px;
+  --_drag-y: 0px;
+  --_lift: 0px;
+
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-width: 0;
+  min-height: var(--or-control-lg);
+  padding: var(--or-space-2) var(--or-space-2) var(--or-space-2) var(--or-space-1);
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Bordas compartilhadas entre itens vizinhos. */
+.or-sortable--vertical > .or-sortable__item + .or-sortable__item {
+  margin-top: calc(var(--or-border-thin) * -1);
+}
+
+.or-sortable--horizontal > .or-sortable__item {
+  flex: 0 0 auto;
+}
+
+.or-sortable--horizontal > .or-sortable__item + .or-sortable__item {
+  margin-left: calc(var(--or-border-thin) * -1);
+}
+
+/* Barra de acento de 4px que desce pela borda esquerda do item levantado. */
+.or-sortable__item::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--or-border-thin) * -1);
+  bottom: calc(var(--or-border-thin) * -1);
+  left: calc(var(--or-border-thin) * -1);
+  width: var(--or-space-1);
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+  pointer-events: none;
+}
+
+/* Movimento em andamento ---------------------------------------------------- */
+
+.or-sortable[data-active] > .or-sortable__item {
+  transform: translate(
+    calc(var(--_shift-x) + var(--_drag-x)),
+    calc(var(--_shift-y) + var(--_drag-y) + var(--_lift))
+  );
+}
+
+/* O "lift" do zop: sobe 4px com a sombra sólida. */
+.or-sortable__item[data-dragging] {
+  --_lift: var(--or-distance-lift);
+
+  z-index: 1;
+  border-color: var(--or-color-accent);
+  box-shadow: var(--or-shadow-lift);
+}
+
+.or-sortable__item[data-dragging]::after {
+  transform: scaleY(1);
+}
+
+/* Com o ponteiro, o item segue o cursor sem atraso. */
+.or-sortable[data-active='pointer'] > .or-sortable__item[data-dragging] {
+  transition: box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Ao soltar, o item assenta no lugar com uma mola curta. */
+.or-sortable__item[data-settling] {
+  z-index: 1;
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Lugar onde o item arrastado vai cair. */
+.or-sortable__placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  border: var(--or-border-thin) dashed var(--or-color-accent-border);
+  background: var(--or-color-accent-subtle);
+  pointer-events: none;
+  transition: transform var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Partes ------------------------------------------------------------------- */
+
+.or-sortable__handle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--or-control-sm);
+  height: var(--or-control-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-muted);
+  cursor: grab;
+  /* O toque na alça arrasta o item em vez de rolar a página. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.or-sortable__handle:hover:not(:disabled),
+.or-sortable__handle:focus-visible {
+  background: var(--or-color-surface-hover);
+  color: var(--or-color-text);
+}
+
+.or-sortable__handle:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-sortable__handle:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.or-sortable__item[data-dragging] .or-sortable__handle {
+  color: var(--or-color-accent-text);
+  cursor: grabbing;
+}
+
+.or-sortable__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.or-sortable__item[data-disabled] > .or-sortable__content {
+  color: var(--or-color-text-muted);
+}
+
+.or-sortable__controls {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+@media (forced-colors: active) {
+  .or-sortable__item[data-dragging] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .or-sortable__item::after {
+    background: Highlight;
+  }
+
+  .or-sortable__placeholder {
+    border-color: Highlight;
+  }
+}

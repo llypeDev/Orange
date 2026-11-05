@@ -241,6 +241,122 @@ export const themes: Record<ThemeName, ColorTokens> = {
   },
 }
 
+/* ---------------------------------------------------------------------------
+ * Visualização de dados
+ *
+ * Paletas dos gráficos, por tema, como referências às primitivas. Viram tokens
+ * semânticos `--or-color-viz-*` (veja `vizThemes`) e são a fonte da página
+ * "Visualização de dados" e dos componentes BarChart, LineChart e Sparkline.
+ * ------------------------------------------------------------------------- */
+
+type Primitives = typeof primitives
+
+/** Nome de uma primitiva no formato `família-passo` (ex.: `green-500`), como em `--or-palette-*`. */
+export type PrimitiveName = {
+  [F in keyof Primitives]: `${F}-${Extract<keyof Primitives[F], string | number>}`
+}[keyof Primitives]
+
+/** Valor de uma primitiva pelo nome: `primitive('green-500')` → `#7fb236`. */
+export function primitive(name: PrimitiveName): string {
+  const at = name.lastIndexOf('-')
+  const family = primitives[name.slice(0, at) as keyof Primitives] as Record<string, string>
+  return family[name.slice(at + 1)]
+}
+
+type Seven<T> = readonly [T, T, T, T, T, T, T]
+
+export interface VizPalette {
+  /**
+   * Cinco matizes para identificar séries, em ordem fixa: verde, âmbar e vermelho ficam quase
+   * iguais com protanopia/deuteranopia, então nunca são vizinhos. ≥ 3:1 contra o fundo.
+   */
+  categorical: readonly [PrimitiveName, PrimitiveName, PrimitiveName, PrimitiveName, PrimitiveName]
+  /** Neutro para "Outros" (e para o resto quando uma marca está em destaque com o acento). */
+  other: PrimitiveName
+  /** Quantidade: um só matiz (laranja), do valor baixo ao alto — o alto é o que mais se destaca do fundo. */
+  sequential: Seven<PrimitiveName>
+  /** Dois lados de uma referência: azul abaixo, neutro no meio, laranja acima. */
+  diverging: Seven<PrimitiveName>
+}
+
+export const vizPalettes: Record<ThemeName, VizPalette> = {
+  dark: {
+    categorical: ['green-500', 'blue-400', 'amber-500', 'orange-600', 'red-300'],
+    other: 'carbon-500',
+    sequential: [
+      'orange-900',
+      'orange-800',
+      'orange-700',
+      'orange-600',
+      'orange-500',
+      'orange-300',
+      'orange-100',
+    ],
+    diverging: [
+      'blue-300',
+      'blue-400',
+      'blue-700',
+      'carbon-400',
+      'orange-800',
+      'orange-600',
+      'orange-300',
+    ],
+  },
+  light: {
+    categorical: ['green-700', 'blue-500', 'amber-700', 'orange-550', 'red-700'],
+    other: 'paper-600',
+    sequential: [
+      'orange-100',
+      'orange-200',
+      'orange-300',
+      'orange-500',
+      'orange-600',
+      'orange-800',
+      'orange-900',
+    ],
+    diverging: [
+      'blue-700',
+      'blue-500',
+      'blue-300',
+      'paper-400',
+      'orange-300',
+      'orange-550',
+      'orange-800',
+    ],
+  },
+}
+
+type VizStep = 1 | 2 | 3 | 4 | 5 | 6 | 7
+
+/** Tokens semânticos de visualização de dados. As chaves viram `--or-color-<chave>`. */
+export type VizColorTokens = Record<
+  | `viz-${1 | 2 | 3 | 4 | 5}`
+  | 'viz-other'
+  | `viz-seq-${VizStep}`
+  | `viz-div-${VizStep}`,
+  string
+>
+
+function vizTokens(palette: VizPalette): VizColorTokens {
+  const entries: [string, string][] = [
+    ...palette.categorical.map((name, i): [string, string] => [`viz-${i + 1}`, primitive(name)]),
+    ['viz-other', primitive(palette.other)],
+    ...palette.sequential.map((name, i): [string, string] => [`viz-seq-${i + 1}`, primitive(name)]),
+    ...palette.diverging.map((name, i): [string, string] => [`viz-div-${i + 1}`, primitive(name)]),
+  ]
+  return Object.fromEntries(entries) as VizColorTokens
+}
+
+/**
+ * Cores de gráficos por tema: `viz-1…5` (categórica, em ordem), `viz-other`,
+ * `viz-seq-1…7` (sequencial, do menor ao maior valor) e `viz-div-1…7`
+ * (divergente, de "abaixo" a "acima", com o neutro em `viz-div-4`).
+ */
+export const vizThemes: Record<ThemeName, VizColorTokens> = {
+  dark: vizTokens(vizPalettes.dark),
+  light: vizTokens(vizPalettes.light),
+}
+
 export const typography = {
   fontFamily: {
     display: '"Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif',
@@ -406,6 +522,7 @@ export const controlSize = {
 export const tokens = {
   primitives,
   themes,
+  viz: vizThemes,
   typography,
   space,
   radius,

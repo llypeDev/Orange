@@ -1,0 +1,387 @@
+/* ===========================================================================
+ * Moldura compartilhada dos gráficos (BarChart, LineChart): figura, legenda,
+ * eixos, dica, botão "Ver dados" e tabela alternativa.
+ *
+ * --or-chart-surface: cor do fundo sob o gráfico (anel de 2px dos marcadores).
+ * Padrão: --or-color-bg. Em cartões, use --or-color-surface-raised.
+ * ========================================================================= */
+
+.or-chart {
+  --_surface: var(--or-chart-surface, var(--or-color-bg));
+  --_pad: var(--or-space-5);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+}
+
+.or-chart--outline {
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+}
+
+.or-chart--plain {
+  --_pad: 0px;
+}
+
+.or-chart__caption {
+  display: grid;
+  gap: var(--or-space-1);
+  padding: var(--_pad) var(--_pad) 0;
+}
+
+.or-chart__title {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-lg);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.015em;
+  line-height: var(--or-leading-tight);
+}
+
+.or-chart__description {
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+}
+
+/* Legenda: acima do gráfico, na ordem das séries, marca + texto (nunca texto colorido). */
+.or-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-2) var(--or-space-5);
+  margin: var(--or-space-3) 0 0;
+  padding: 0 var(--_pad);
+  list-style: none;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-muted);
+}
+
+.or-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+}
+
+.or-chart__swatch {
+  flex: none;
+  overflow: visible;
+}
+
+.or-chart__swatch-fill {
+  fill: var(--_color);
+}
+
+.or-chart__swatch-line {
+  stroke: var(--_color);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.or-chart__swatch-marker {
+  fill: var(--_color);
+  stroke: var(--_surface);
+  stroke-width: 2;
+  paint-order: stroke;
+}
+
+.or-chart__body {
+  padding: var(--or-space-4) var(--_pad) 0;
+}
+
+/* A área é medida (ResizeObserver). O SVG fica absoluto: não impõe largura mínima ao layout. */
+.or-chart__plot {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.or-chart__svg {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: block;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.or-chart__svg:focus {
+  outline: none;
+}
+
+.or-chart__svg:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Eixos: grade de 1px em border, base em border-strong, números em mono xs. */
+.or-chart__grid {
+  stroke: var(--or-color-border);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.or-chart__baseline {
+  stroke: var(--or-color-border-strong);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.or-chart__tick {
+  fill: var(--or-color-text-subtle);
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Rótulo direto: na cor de texto, nunca na cor da série. */
+.or-chart__value {
+  fill: var(--or-color-text);
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.or-chart__empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  margin: 0;
+  border: var(--or-border-thin) dashed var(--or-color-border);
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+}
+
+/* --- Dica ----------------------------------------------------------------- */
+
+.or-chart__tooltip {
+  --_tx: -50%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--or-z-tooltip);
+  min-width: 8.5rem;
+  max-width: min(18rem, 80vw);
+  padding: var(--or-space-2) var(--or-space-3);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  background: var(--or-color-surface-raised);
+  box-shadow: 0 12px 32px -12px var(--or-color-shadow);
+  color: var(--or-color-text);
+  font-size: var(--or-text-xs);
+  line-height: var(--or-leading-tight);
+  pointer-events: none;
+  transform: translate(calc(var(--_x) + var(--_tx)), calc(var(--_y) - 100% - var(--or-space-2)));
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-chart__tooltip[data-align='start'] {
+  --_tx: calc(var(--or-space-4) * -1);
+}
+
+.or-chart__tooltip[data-align='end'] {
+  --_tx: calc(-100% + var(--or-space-4));
+}
+
+.or-chart__tooltip[data-state='closed'] {
+  opacity: 0;
+}
+
+.or-chart__tooltip-title {
+  margin: 0 0 var(--or-space-1);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  color: var(--or-color-text-muted);
+}
+
+.or-chart__tooltip-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-chart__tooltip-row {
+  display: grid;
+  grid-template-columns: 12px auto 1fr;
+  align-items: center;
+  gap: var(--or-space-2);
+  white-space: nowrap;
+}
+
+/* Valor primeiro (forte), rótulo depois (secundário). Chave: um traço da cor da série. */
+.or-chart__tooltip-key {
+  width: 12px;
+  height: 2px;
+  background: var(--_color);
+}
+
+.or-chart__tooltip-row--footer {
+  margin-top: 2px;
+  padding-top: var(--or-space-1);
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-chart__tooltip-row--footer .or-chart__tooltip-key {
+  background: transparent;
+}
+
+.or-chart__tooltip-value {
+  font-family: var(--or-font-mono);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.or-chart__tooltip-label {
+  overflow: hidden;
+  color: var(--or-color-text-subtle);
+  text-overflow: ellipsis;
+}
+
+.or-chart__tooltip-row[data-active] .or-chart__tooltip-label {
+  color: var(--or-color-text);
+}
+
+.or-chart__tooltip-row[data-active] .or-chart__tooltip-key {
+  height: 4px;
+}
+
+/* --- Fonte, botão e tabela ------------------------------------------------ */
+
+.or-chart__source {
+  margin: 0;
+  padding: var(--or-space-3) var(--_pad) 0;
+  font-size: var(--or-text-xs);
+  color: var(--or-color-text-subtle);
+}
+
+.or-chart__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  width: 100%;
+  min-height: var(--or-control-md);
+  margin-top: var(--or-space-4);
+  padding: 0 var(--_pad);
+  border: 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-muted);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-semibold);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-chart--plain .or-chart__toggle {
+  background: transparent;
+}
+
+.or-chart__toggle:hover {
+  color: var(--or-color-text);
+}
+
+.or-chart__toggle:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-chart__toggle-icon {
+  transition: transform var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-chart__toggle[aria-expanded='true'] .or-chart__toggle-icon {
+  transform: rotate(180deg);
+}
+
+.or-chart__table-scroll {
+  overflow-x: auto;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+.or-chart__table-scroll:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-chart__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--or-text-sm);
+}
+
+.or-chart__table th,
+.or-chart__table td {
+  padding: var(--or-space-2) var(--or-space-3);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.or-chart__table th:first-child,
+.or-chart__table td:first-child {
+  padding-inline-start: max(var(--_pad), var(--or-space-3));
+}
+
+.or-chart__table th:last-child,
+.or-chart__table td:last-child {
+  padding-inline-end: max(var(--_pad), var(--or-space-3));
+}
+
+.or-chart__table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.or-chart__table thead th {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  color: var(--or-color-text-subtle);
+}
+
+.or-chart__table tbody th {
+  font-weight: var(--or-weight-medium);
+}
+
+.or-chart__table .or-chart__num {
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.or-chart__table thead .or-chart__num {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+}
+
+@media (max-width: 480px) {
+  .or-chart--outline {
+    --_pad: var(--or-space-4);
+  }
+}
+
+/* Impressão: tudo desenhado, sem esperar a entrada na tela. */
+@media print {
+  .or-chart .or-chart__anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .or-chart__toggle {
+    display: none;
+  }
+}

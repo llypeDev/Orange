@@ -1,0 +1,112 @@
+/* ===========================================================================
+ * Sparkline — tendência em miniatura, em linha com o texto. Linha de 2px no
+ * neutro; ponto final no acento (o acento continua único); anel de 2px no fundo.
+ * ========================================================================= */
+
+.or-sparkline {
+  --_surface: var(--or-chart-surface, var(--or-color-bg));
+
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  line-height: 0;
+}
+
+.or-sparkline__svg {
+  display: block;
+  overflow: visible;
+}
+
+.or-sparkline__line {
+  fill: none;
+  stroke: var(--_color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.or-sparkline__area {
+  fill: var(--_color);
+  fill-opacity: 0.14;
+}
+
+.or-sparkline__dot {
+  fill: var(--_color);
+  stroke: var(--_surface);
+  stroke-width: 3;
+  paint-order: stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.or-sparkline__dot--end {
+  fill: var(--or-color-accent);
+}
+
+/* --- Entrada: a linha se desenha uma vez (stroke-dashoffset), os pontos surgem no fim. */
+
+.or-sparkline[data-motion='pending'] .or-sparkline__line,
+.or-sparkline[data-motion='enter'] .or-sparkline__line {
+  stroke-dasharray: 1 2;
+}
+
+.or-sparkline[data-motion='pending'] .or-sparkline__line {
+  stroke-dashoffset: 1;
+}
+
+.or-sparkline[data-motion='pending'] .or-sparkline__dot,
+.or-sparkline[data-motion='pending'] .or-sparkline__area {
+  opacity: 0;
+}
+
+.or-sparkline[data-motion='enter'] .or-sparkline__line {
+  animation: or-sparkline-draw var(--or-duration-reveal) var(--or-ease-in-out) both;
+}
+
+.or-sparkline[data-motion='enter'] .or-sparkline__area {
+  animation: or-sparkline-fade var(--or-duration-reveal) var(--or-ease-out) both;
+  animation-delay: var(--or-duration-fast);
+}
+
+.or-sparkline[data-motion='enter'] .or-sparkline__dot {
+  animation: or-sparkline-pop var(--or-duration-medium) var(--or-ease-bounce) both;
+  animation-delay: var(--or-duration-reveal);
+}
+
+@keyframes or-sparkline-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes or-sparkline-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes or-sparkline-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media print {
+  .or-sparkline .or-chart__anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

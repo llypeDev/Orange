@@ -1,0 +1,304 @@
+/*
+ * Splitter — painéis redimensionáveis (padrão Window Splitter do WAI-ARIA).
+ *
+ *   ┌─────────┬──────────────────┐
+ *   │ painel  ┆ painel           │   ┆ = separador: linha de 1px, área de toque de 24px
+ *   │ (30fr)  ┆ (70fr)           │       e marca de "pegar" no meio
+ *   └─────────┴──────────────────┘
+ *
+ * O layout é uma grade: o JS escreve as trilhas em --_tracks
+ * (`minmax(0, 30fr) 1px minmax(0, 70fr)`). Os painéis usam fr, então dividem o
+ * espaço que sobra dos separadores e acompanham o contêiner sem recalcular nada.
+ * Recolher/expandir, Home/End e o clique duplo animam grid-template-* em
+ * --or-duration-slow / --or-ease-in-out ([data-animate]); arrastar e as setas
+ * não animam. Com movimento reduzido os tokens zeram e tudo fica instantâneo.
+ */
+.or-splitter {
+  /* Área de toque do separador (WCAG 2.5.8: no mínimo 24px). A linha visível continua com 1px. */
+  --or-splitter-hit-area: var(--or-space-6);
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  /* A área de toque e a marca transbordam a linha: não deixe que gerem rolagem lateral. */
+  overflow: hidden;
+  /* O z-index dos separadores fica contido no Splitter. */
+  isolation: isolate;
+}
+
+.or-splitter--horizontal {
+  grid-template-columns: var(--_tracks);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.or-splitter--vertical {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--_tracks);
+}
+
+/* Saltos (recolher/expandir, Home/End, clique duplo): só as trilhas da grade animam. */
+.or-splitter[data-animate] {
+  transition:
+    grid-template-columns var(--or-duration-slow) var(--or-ease-in-out),
+    grid-template-rows var(--or-duration-slow) var(--or-ease-in-out);
+}
+
+/* Arrastando: cursor de redimensionar em toda parte e nada de seleção de texto. */
+.or-splitter[data-dragging] {
+  cursor: col-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.or-splitter--vertical[data-dragging] {
+  cursor: row-resize;
+}
+
+/* iframes e áreas roláveis dos painéis não "roubam" o ponteiro durante o arraste. */
+.or-splitter[data-dragging] > .or-splitter__panel {
+  pointer-events: none;
+}
+
+/* Painel ---------------------------------------------------------------------- */
+
+.or-splitter__panel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  transition:
+    opacity var(--or-duration-medium) var(--or-ease-out),
+    visibility 0s;
+}
+
+/*
+ * Recolhido em 0%: o conteúdo some (opacidade) enquanto a trilha fecha e, ao fim,
+ * sai do foco e da árvore de acessibilidade (visibility, sem animação própria).
+ */
+.or-splitter__panel[data-hidden] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    visibility 0s linear var(--or-duration-slow);
+}
+
+/* Separador ------------------------------------------------------------------- */
+
+.or-splitter__handle {
+  position: relative;
+  /* Acima do conteúdo dos painéis, para a área de toque funcionar sobre eles. */
+  z-index: var(--or-z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  background: var(--or-color-border);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-splitter--horizontal > .or-splitter__handle {
+  cursor: col-resize;
+}
+
+.or-splitter--vertical > .or-splitter__handle {
+  cursor: row-resize;
+}
+
+/* Área de toque invisível centrada na linha. */
+.or-splitter__handle::before {
+  content: '';
+  position: absolute;
+  touch-action: none;
+}
+
+.or-splitter--horizontal > .or-splitter__handle::before {
+  inset-block: 0;
+  inset-inline: calc((var(--or-splitter-hit-area) - var(--or-border-thin)) / -2);
+}
+
+.or-splitter--vertical > .or-splitter__handle::before {
+  inset-inline: 0;
+  inset-block: calc((var(--or-splitter-hit-area) - var(--or-border-thin)) / -2);
+}
+
+/* Com um painel recolhido na borda, a área de toque cresce só para dentro (não é cortada). */
+.or-splitter--horizontal > .or-splitter__handle[data-edge='start']::before {
+  inset-inline: 0 calc((var(--or-splitter-hit-area) - var(--or-border-thin)) * -1);
+}
+
+.or-splitter--horizontal > .or-splitter__handle[data-edge='end']::before {
+  inset-inline: calc((var(--or-splitter-hit-area) - var(--or-border-thin)) * -1) 0;
+}
+
+.or-splitter--vertical > .or-splitter__handle[data-edge='start']::before {
+  inset-block: 0 calc((var(--or-splitter-hit-area) - var(--or-border-thin)) * -1);
+}
+
+.or-splitter--vertical > .or-splitter__handle[data-edge='end']::before {
+  inset-block: calc((var(--or-splitter-hit-area) - var(--or-border-thin)) * -1) 0;
+}
+
+/* Marca de "pegar" no meio da linha. */
+.or-splitter__grip {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--or-space-3);
+  height: var(--or-space-6);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg);
+  color: var(--or-color-text-subtle);
+  pointer-events: none;
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-splitter__grip svg {
+  flex-shrink: 0;
+}
+
+.or-splitter--vertical > .or-splitter__handle > .or-splitter__grip {
+  width: var(--or-space-6);
+  height: var(--or-space-3);
+}
+
+.or-splitter--vertical > .or-splitter__handle > .or-splitter__grip svg {
+  transform: rotate(90deg);
+}
+
+/* Na borda (painel recolhido em 0%), a marca encosta para dentro e fica inteira à vista. */
+.or-splitter--horizontal > .or-splitter__handle[data-edge='start'] > .or-splitter__grip {
+  margin-inline-start: calc(var(--or-space-3) - var(--or-border-thin));
+}
+
+.or-splitter--horizontal > .or-splitter__handle[data-edge='end'] > .or-splitter__grip {
+  margin-inline-end: calc(var(--or-space-3) - var(--or-border-thin));
+}
+
+.or-splitter--vertical > .or-splitter__handle[data-edge='start'] > .or-splitter__grip {
+  margin-block-start: calc(var(--or-space-3) - var(--or-border-thin));
+}
+
+.or-splitter--vertical > .or-splitter__handle[data-edge='end'] > .or-splitter__grip {
+  margin-block-end: calc(var(--or-space-3) - var(--or-border-thin));
+}
+
+/* Hover, foco e arraste: mesma resposta — a linha e a marca viram acento. */
+.or-splitter__handle:hover,
+.or-splitter__handle:focus-visible,
+.or-splitter__handle[data-dragging] {
+  background: var(--or-color-accent);
+}
+
+.or-splitter__handle:hover > .or-splitter__grip,
+.or-splitter__handle:focus-visible > .or-splitter__grip,
+.or-splitter__handle[data-dragging] > .or-splitter__grip {
+  border-color: var(--or-color-accent);
+  color: var(--or-color-accent);
+}
+
+.or-splitter__handle:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Arrastando, a linha engrossa para 3px (box-shadow, sem mexer no layout). */
+.or-splitter__handle[data-dragging] {
+  box-shadow: 0 0 0 var(--or-border-thin) var(--or-color-accent);
+}
+
+/*
+ * Telas estreitas (stackBelow): os painéis empilham com a altura do conteúdo,
+ * sem separadores; uma altura fixa no Splitter vira rolagem vertical.
+ * Mesmos valores de `breakpoints` em @orange/tokens (sm 640px, md 768px).
+ */
+@media (max-width: 767.98px) {
+  .or-splitter[data-stack-below='md'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: none;
+  }
+
+  .or-splitter[data-stack-below='md'] > .or-splitter__handle {
+    display: none;
+  }
+
+  .or-splitter[data-stack-below='md'] > .or-splitter__panel {
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .or-splitter[data-stack-below='md'] > .or-splitter__panel ~ .or-splitter__panel {
+    border-top: var(--or-border-thin) solid var(--or-color-border);
+  }
+}
+
+@media (max-width: 639.98px) {
+  .or-splitter[data-stack-below='sm'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: none;
+  }
+
+  .or-splitter[data-stack-below='sm'] > .or-splitter__handle {
+    display: none;
+  }
+
+  .or-splitter[data-stack-below='sm'] > .or-splitter__panel {
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .or-splitter[data-stack-below='sm'] > .or-splitter__panel ~ .or-splitter__panel {
+    border-top: var(--or-border-thin) solid var(--or-color-border);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-splitter__handle {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .or-splitter__handle:hover,
+  .or-splitter__handle:focus-visible,
+  .or-splitter__handle[data-dragging] {
+    background: Highlight;
+  }
+
+  .or-splitter__grip {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .or-splitter__handle:hover > .or-splitter__grip,
+  .or-splitter__handle:focus-visible > .or-splitter__grip,
+  .or-splitter__handle[data-dragging] > .or-splitter__grip {
+    border-color: Highlight;
+    color: Highlight;
+  }
+}
