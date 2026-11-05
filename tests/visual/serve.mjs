@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 // Servidor estático mínimo (sem dependências) para o Storybook já construído.
-// Usado pelo `webServer` do Playwright: `node serve.mjs [porta]`.
+// Usado pelo `webServer` do Playwright: `node serve.mjs <porta> <pasta>`.
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { createServer } from 'node:http'
-import { dirname, extname, join, normalize, sep } from 'node:path'
+import { dirname, extname, join, normalize, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '../../apps/storybook/storybook-static')
-const port = Number(process.argv[2] ?? process.env.VISUAL_PORT ?? 6007)
+const root = process.argv[3]
+  ? resolve(process.argv[3])
+  : join(dirname(fileURLToPath(import.meta.url)), '../../apps/storybook/storybook-static')
+const port = Number(process.argv[2] ?? 6007)
 
 if (!existsSync(join(root, 'index.json'))) {
   console.error(

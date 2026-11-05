@@ -120,7 +120,8 @@ export default function Dashboard() {
   const visiveis = filtrados.slice((paginaAtual - 1) * POR_PAGINA, paginaAtual * POR_PAGINA)
   const resumoPeriodo =
     periodo.start && periodo.end
-      ? `Vendas e pedidos de ${dataCurta.format(periodo.start)} a ${dataCurta.format(periodo.end)}.`
+      ? // Sem ponto final: o mês abreviado ("nov.") já termina em ponto.
+        `Vendas e pedidos de ${dataCurta.format(periodo.start)} a ${dataCurta.format(periodo.end)}`
       : 'Escolha o período para atualizar o painel.'
 
   return (
@@ -143,7 +144,7 @@ export default function Dashboard() {
               <Badge count={3} label="3 notificações não lidas">
                 <IconButton icon="bell" label="Notificações" variant="ghost" />
               </Badge>
-              <Avatar name="Marina Costa" size="sm" />
+              <Avatar name="Marina Costa" size="sm" className="aurora-dash__avatar" />
             </>
           }
         />

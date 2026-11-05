@@ -1,5 +1,5 @@
 import { defineConfig } from '@playwright/test'
-import { PORT, SNAPSHOT_DIR } from './paths'
+import { PORT, SNAPSHOT_DIR, STORYBOOK_STATIC } from './paths'
 
 // Regressão visual das stories do Storybook nos temas dark e light.
 // As baselines só valem no ambiente em que foram geradas: o contêiner
@@ -48,7 +48,7 @@ export default defineConfig({
       : {},
   },
   webServer: {
-    command: `node serve.mjs ${PORT}`,
+    command: `node serve.mjs ${PORT} "${STORYBOOK_STATIC}"`,
     url: `http://127.0.0.1:${PORT}/iframe.html`,
     reuseExistingServer: !CI,
     timeout: 30_000,

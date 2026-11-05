@@ -1,11 +1,11 @@
 import { Button, Icon, useTheme, type IconName } from '@orange/ui'
-import { primitives, themes, type ThemeName } from '@orange/tokens'
+import { primitives, themeMeta, themes, vizThemes, type ThemeName } from '@orange/tokens'
 import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
 import { Bullets, Callout, Code, CodeBlock, DocPage, DoDont, Prose, Section } from '../../../kit'
 import { ColorChip, ContrastBadge, Segmented, TableWrap } from '../_shared/Blocks'
-import { inkOn, ratioOf } from '../_shared/color'
+import { contrastRatio, flatten, inkOn, ratioOf } from '../_shared/color'
 
 type Family = keyof typeof primitives
 
@@ -30,8 +30,8 @@ const families: { id: Family; name: Localized<string>; text: Localized<string> }
     id: 'orange',
     name: { pt: 'Orange', en: 'Orange' },
     text: {
-      pt: 'O acento. 500 no tema escuro, 600 no claro (≥ 3:1 sobre o papel).',
-      en: 'The accent. 500 on dark, 600 on light (≥ 3:1 on paper).',
+      pt: 'O acento. 500 no tema escuro, 600 no claro (≥ 3:1 sobre o papel) e 850 no claro de alto contraste (≥ 7:1).',
+      en: 'The accent. 500 on dark, 600 on light (≥ 3:1 on paper) and 850 on light high contrast (≥ 7:1).',
     },
   },
   {
@@ -229,16 +229,38 @@ function ThemeSwatch({ theme, token }: { theme: ThemeName; token: string }) {
   )
 }
 
+const themeLabels: Record<ThemeName, Localized<string>> = {
+  dark: { pt: 'Escuro', en: 'Dark' },
+  light: { pt: 'Claro', en: 'Light' },
+  'dark-hc': { pt: 'Escuro (alto contraste)', en: 'Dark (high contrast)' },
+  'light-hc': { pt: 'Claro (alto contraste)', en: 'Light (high contrast)' },
+}
+
 function SemanticTable() {
   const { t } = useLang()
+  const [contrast, setContrast] = useState<'standard' | 'high'>('standard')
+  const [darkTheme, lightTheme]: ThemeName[] = contrast === 'high' ? ['dark-hc', 'light-hc'] : ['dark', 'light']
   return (
+    <>
+      <div className="guide-toolbar">
+        <span className="or-eyebrow">{t({ pt: 'Valores por tema', en: 'Values per theme' })}</span>
+        <Segmented
+          label={{ pt: 'Temas da tabela', en: 'Table themes' }}
+          value={contrast}
+          onChange={setContrast}
+          options={[
+            { value: 'standard', label: { pt: 'Padrão', en: 'Standard' } },
+            { value: 'high', label: { pt: 'Alto contraste', en: 'High contrast' } },
+          ]}
+        />
+      </div>
     <TableWrap label={{ pt: 'Tokens semânticos de cor', en: 'Semantic color tokens' }}>
       <table className="doc-table guide-table-group">
         <thead>
           <tr>
             <th scope="col">Token</th>
-            <th scope="col">{t({ pt: 'Escuro', en: 'Dark' })}</th>
-            <th scope="col">{t({ pt: 'Claro', en: 'Light' })}</th>
+            <th scope="col">{t(themeLabels[darkTheme])}</th>
+            <th scope="col">{t(themeLabels[lightTheme])}</th>
             <th scope="col">{t({ pt: 'Uso', en: 'Usage' })}</th>
           </tr>
         </thead>
@@ -256,10 +278,10 @@ function SemanticTable() {
                     <Code>--or-color-{token}</Code>
                   </th>
                   <td>
-                    <ThemeSwatch theme="dark" token={token} />
+                    <ThemeSwatch theme={darkTheme} token={token} />
                   </td>
                   <td>
-                    <ThemeSwatch theme="light" token={token} />
+                    <ThemeSwatch theme={lightTheme} token={token} />
                   </td>
                   <td>{t(usage)}</td>
                 </tr>
@@ -269,6 +291,7 @@ function SemanticTable() {
         </tbody>
       </table>
     </TableWrap>
+    </>
   )
 }
 
@@ -297,18 +320,18 @@ function ContrastMatrix() {
           label={{ pt: 'Tema da matriz', en: 'Matrix theme' }}
           value={theme}
           onChange={setTheme}
-          options={[
-            { value: 'dark', label: { pt: 'Escuro', en: 'Dark' } },
-            { value: 'light', label: { pt: 'Claro', en: 'Light' } },
-          ]}
+          options={(Object.keys(themeLabels) as ThemeName[]).map((value) => ({
+            value,
+            label: themeLabels[value],
+          }))}
         />
       </div>
       <TableWrap label={{ pt: 'Matriz de contraste', en: 'Contrast matrix' }}>
         <table className="doc-table guide-matrix" data-theme={theme}>
           <caption className="or-visually-hidden">
             {t({
-              pt: `Contraste de cada token de texto sobre cada fundo, tema ${theme === 'dark' ? 'escuro' : 'claro'}`,
-              en: `Contrast of each text token on each background, ${theme} theme`,
+              pt: `Contraste de cada token de texto sobre cada fundo, tema ${themeLabels[theme].pt.toLowerCase()}`,
+              en: `Contrast of each text token on each background, ${themeLabels[theme].en.toLowerCase()} theme`,
             })}
           </caption>
           <thead>
@@ -353,22 +376,141 @@ function ContrastMatrix() {
         </table>
       </TableWrap>
       <p className="guide-muted guide-note">
-        <T
-          pt={
-            <>
-              <Code>text-disabled</Code> fica abaixo de 4.5:1 de propósito: a WCAG isenta
-              componentes desabilitados (1.4.3). Nunca use esse token para texto ativo.
-            </>
-          }
-          en={
-            <>
-              <Code>text-disabled</Code> is below 4.5:1 on purpose: WCAG exempts disabled components
-              (1.4.3). Never use this token for active text.
-            </>
-          }
-        />
+        {themeMeta[theme].highContrast ? (
+          <T
+            pt={
+              <>
+                No alto contraste, <Code>text-disabled</Code> sobe para ≥ 4.5:1 e todos os textos
+                ativos passam de 7:1 (AAA) sobre os fundos de página e de superfície.
+              </>
+            }
+            en={
+              <>
+                In high contrast, <Code>text-disabled</Code> rises to ≥ 4.5:1 and every active text
+                passes 7:1 (AAA) on page and surface backgrounds.
+              </>
+            }
+          />
+        ) : (
+          <T
+            pt={
+              <>
+                <Code>text-disabled</Code> fica abaixo de 4.5:1 de propósito: a WCAG isenta
+                componentes desabilitados (1.4.3). Nunca use esse token para texto ativo.
+              </>
+            }
+            en={
+              <>
+                <Code>text-disabled</Code> is below 4.5:1 on purpose: WCAG exempts disabled
+                components (1.4.3). Never use this token for active text.
+              </>
+            }
+          />
+        )}
       </p>
     </>
+  )
+}
+
+/* --- Alto contraste: regras e o menor contraste de cada uma ------------------ */
+
+const hcSurfaces = ['bg', 'bg-subtle', 'surface', 'surface-raised']
+const pairsOf = (fgs: string[], bgs: string[]) =>
+  fgs.flatMap((fg) => bgs.map((bg): [string, string] => [fg, bg]))
+
+const hcRules: { label: Localized<string>; min: number; pairs: [string, string][] }[] = [
+  {
+    label: { pt: 'Texto, texto suave e sutil', en: 'Text, muted and subtle text' },
+    min: 7,
+    pairs: pairsOf(['text', 'text-muted', 'text-subtle'], hcSurfaces),
+  },
+  {
+    label: { pt: 'Texto desabilitado', en: 'Disabled text' },
+    min: 4.5,
+    pairs: pairsOf(['text-disabled'], hcSurfaces),
+  },
+  {
+    label: { pt: 'Bordas e foco', en: 'Borders and focus' },
+    min: 4.5,
+    pairs: pairsOf(
+      ['border', 'border-subtle', 'border-strong', 'border-control', 'accent-border', 'focus'],
+      hcSurfaces,
+    ),
+  },
+  {
+    label: { pt: 'Pares de acento', en: 'Accent pairs' },
+    min: 7,
+    pairs: [
+      ['text-on-accent', 'accent'],
+      ['text-on-accent', 'accent-hover'],
+      ['text-on-accent', 'accent-active'],
+      ...pairsOf(['accent-text'], [...hcSurfaces, 'accent-subtle']),
+    ],
+  },
+  {
+    label: { pt: 'Texto de status', en: 'Status text' },
+    min: 7,
+    pairs: ['success', 'warning', 'danger', 'info'].flatMap((status) =>
+      pairsOf([`${status}-text`], [...hcSurfaces, `${status}-subtle`]),
+    ),
+  },
+  {
+    label: { pt: 'Gráficos: cores categóricas', en: 'Charts: categorical colors' },
+    min: 4.5,
+    pairs: pairsOf(
+      ['viz-1', 'viz-2', 'viz-3', 'viz-4', 'viz-5', 'viz-other'],
+      ['bg', 'bg-subtle', 'surface-raised'],
+    ),
+  },
+]
+
+/** O par com menor contraste de uma regra (transparências compostas sobre o fundo). */
+function lowestPair(theme: ThemeName, pairs: [string, string][]) {
+  const palette = { ...themes[theme], ...vizThemes[theme] } as Record<string, string>
+  const solid = (token: string) => flatten(palette[token], palette.bg)
+  return pairs
+    .map(([fg, bg]) => ({ fg, bg, ratio: contrastRatio(solid(fg), solid(bg)) }))
+    .reduce((low, pair) => (pair.ratio < low.ratio ? pair : low))
+}
+
+function HighContrastTable() {
+  const { t } = useLang()
+  const hcThemes: ThemeName[] = ['dark-hc', 'light-hc']
+  return (
+    <TableWrap label={{ pt: 'Regras do alto contraste', en: 'High contrast rules' }}>
+      <table className="doc-table">
+        <thead>
+          <tr>
+            <th scope="col">{t({ pt: 'Regra', en: 'Rule' })}</th>
+            <th scope="col">{t({ pt: 'Mínimo', en: 'Minimum' })}</th>
+            {hcThemes.map((theme) => (
+              <th scope="col" key={theme}>
+                {t({ pt: 'Menor par', en: 'Lowest pair' })} · <Code>{theme}</Code>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {hcRules.map((rule) => (
+            <tr key={rule.label.en}>
+              <th scope="row">{t(rule.label)}</th>
+              <td>{rule.min}:1</td>
+              {hcThemes.map((theme) => {
+                const low = lowestPair(theme, rule.pairs)
+                return (
+                  <td key={theme}>
+                    <span className="guide-token-cell">
+                      <ContrastBadge ratio={low.ratio} kind={rule.min < 7 ? 'ui' : 'text'} />
+                      <Code>{low.fg}</Code> / <Code>{low.bg}</Code>
+                    </span>
+                  </td>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </TableWrap>
   )
 }
 
@@ -504,15 +646,15 @@ export default function ColorPage() {
             <T
               pt={
                 <>
-                  Os {Object.keys(themes.dark).length} tokens abaixo existem nos dois temas com o
-                  mesmo nome. Valores com transparência (<Code>rgba</Code>) são compostos sobre o
+                  Os {Object.keys(themes.dark).length} tokens abaixo existem nos quatro temas
+                  (escuro, claro e os dois de alto contraste) com o mesmo nome. Valores com transparência (<Code>rgba</Code>) são compostos sobre o
                   fundo de cada tema.
                 </>
               }
               en={
                 <>
-                  The {Object.keys(themes.dark).length} tokens below exist in both themes under the
-                  same name. Values with transparency (<Code>rgba</Code>) are composited over each
+                  The {Object.keys(themes.dark).length} tokens below exist in all four themes (dark,
+                  light and the two high contrast ones) under the same name. Values with transparency (<Code>rgba</Code>) are composited over each
                   theme's background.
                 </>
               }
@@ -658,11 +800,79 @@ export default function ColorPage() {
         >
           <p>
             <T
-              pt="Todo status tem ícone e texto (WCAG 1.4.1). No tema claro, success e warning plenos ficam abaixo de 3:1 sobre o papel — por isso o ícone vem acompanhado de um título legível em *-text."
-              en="Every status has an icon and text (WCAG 1.4.1). On the light theme, full success and warning sit below 3:1 on paper — which is why the icon always comes with a readable *-text title."
+              pt="Todo status tem ícone e texto (WCAG 1.4.1). No tema claro, success e warning plenos ficam abaixo de 3:1 sobre o papel — por isso o ícone vem acompanhado de um título legível em *-text. No claro de alto contraste eles escurecem (green-600, amber-600) e passam de 3:1."
+              en="Every status has an icon and text (WCAG 1.4.1). On the light theme, full success and warning sit below 3:1 on paper — which is why the icon always comes with a readable *-text title. On light high contrast they darken (green-600, amber-600) and pass 3:1."
             />
           </p>
         </Callout>
+      </Section>
+
+      <Section title={{ pt: 'Alto contraste', en: 'High contrast' }} id="alto-contraste">
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  Dois temas a mais, <Code>dark-hc</Code> e <Code>light-hc</Code>, miram o nível AAA
+                  da WCAG sem perder a identidade: o mesmo carvão, o mesmo creme, o mesmo laranja.
+                  O que muda é a força de cada camada — fundos mais fundos (<Code>carbon-0</Code>,{' '}
+                  <Code>paper-0</Code>), texto secundário mais forte, todas as bordas visíveis e,
+                  no claro, um laranja mais fechado (<Code>orange-850</Code>) com texto claro por
+                  cima. Os nomes dos tokens são os mesmos: nenhum componente muda.
+                </>
+              }
+              en={
+                <>
+                  Two more themes, <Code>dark-hc</Code> and <Code>light-hc</Code>, target WCAG AAA
+                  without losing the identity: the same charcoal, the same cream, the same orange.
+                  What changes is the strength of each layer — deeper backgrounds (
+                  <Code>carbon-0</Code>, <Code>paper-0</Code>), stronger secondary text, every border
+                  visible and, on light, a deeper orange (<Code>orange-850</Code>) with light text on
+                  top. Token names are the same: no component changes.
+                </>
+              }
+            />
+          </p>
+          <p>
+            <T
+              pt={
+                <>
+                  Ative com <Code>data-theme="dark-hc"</Code> (ou <Code>light-hc</Code>). Em modo
+                  automático, quem pede mais contraste ao sistema (<Code>prefers-contrast: more</Code>)
+                  recebe o tema de alto contraste do mesmo esquema — veja{' '}
+                  <Link to={to('/usage/theme')}>Tema</Link>. A tabela abaixo é calculada ao vivo e
+                  as mesmas regras rodam em <Code>contrast.test.ts</Code>.
+                </>
+              }
+              en={
+                <>
+                  Turn it on with <Code>data-theme="dark-hc"</Code> (or <Code>light-hc</Code>). In
+                  automatic mode, people who ask their system for more contrast (
+                  <Code>prefers-contrast: more</Code>) get the high contrast theme of the same scheme
+                  — see <Link to={to('/usage/theme')}>Theme</Link>. The table below is computed live
+                  and the same rules run in <Code>contrast.test.ts</Code>.
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <HighContrastTable />
+        <Bullets
+          items={[
+            {
+              pt: 'Hierarquia continua existindo: texto (≥ 17:1), suave e sutil (≥ 7:1), desabilitado (≥ 4.5:1).',
+              en: 'Hierarchy still exists: text (≥ 17:1), muted and subtle (≥ 7:1), disabled (≥ 4.5:1).',
+            },
+            {
+              pt: 'Status plenos (ícones, barras, bordas) ficam ≥ 3:1 e mantêm o texto do Badge legível; o texto de status (*-text) passa de 7:1.',
+              en: 'Full status colors (icons, bars, borders) stay ≥ 3:1 and keep Badge text legible; status text (*-text) passes 7:1.',
+            },
+            {
+              pt: 'Nos gráficos, as cores categóricas passam de 4.5:1 e vizinhas diferem em matiz ou luminosidade.',
+              en: 'In charts, categorical colors pass 4.5:1 and neighbors differ in hue or lightness.',
+            },
+          ]}
+        />
       </Section>
 
       <Section title={{ pt: 'Matriz de contraste', en: 'Contrast matrix' }}>

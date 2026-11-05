@@ -70,8 +70,9 @@ import { Providers } from './providers'
 // Aplica o tema salvo antes da hidratação — evita o "flash" de tema errado.
 const themeScript = \`try {
   var t = localStorage.getItem('tema');
-  if (t !== 'light' && t !== 'dark') {
-    t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  if (!/^(dark|light)(-hc)?$/.test(t || '')) {
+    t = (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') +
+      (matchMedia('(prefers-contrast: more)').matches ? '-hc' : '');
   }
   document.documentElement.setAttribute('data-theme', t);
 } catch (e) {}\`
@@ -366,7 +367,7 @@ export default function GettingStarted() {
           rows={[
             {
               name: 'defaultTheme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               default: "'dark'",
               description: {
                 pt: 'Tema inicial (não controlado).',
@@ -375,7 +376,7 @@ export default function GettingStarted() {
             },
             {
               name: 'theme',
-              type: "'dark' | 'light' | 'system'",
+              type: "'dark' | 'light' | 'dark-hc' | 'light-hc' | 'system'",
               description: {
                 pt: 'Tema controlado. Use com onThemeChange.',
                 en: 'Controlled theme. Use with onThemeChange.',

@@ -28,6 +28,11 @@
   margin: 0;
 }
 
+/* Respiro para o contador de notificações, que sai do canto do botão. */
+.aurora-dash__avatar {
+  margin-left: var(--or-space-2);
+}
+
 /* Cartão de indicador: número em cima, tendência embaixo. */
 .aurora-dash__kpi {
   display: flex;

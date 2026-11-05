@@ -24,6 +24,7 @@ export const guidelinePages: StaticPage[] = [
 export const usagePages: StaticPage[] = [
   { path: '/usage/styles', label: { pt: 'Estilos', en: 'Styles' }, component: page(() => import('./content/pages/usage/Styles')) },
   { path: '/usage/theme', label: { pt: 'Tema', en: 'Theme' }, component: page(() => import('./content/pages/usage/Theme')) },
+  { path: '/usage/figma', label: { pt: 'Figma', en: 'Figma' }, component: page(() => import('./content/pages/usage/Figma')) },
   { path: '/usage/i18n', label: { pt: 'Internacionalização', en: 'Internationalization' }, component: page(() => import('./content/pages/usage/I18n')) },
   { path: '/usage/hooks', label: { pt: 'Hooks', en: 'Hooks' }, component: page(() => import('./content/pages/usage/Hooks')) },
   { path: '/usage/versioning', label: { pt: 'Versionamento e depreciação', en: 'Versioning and deprecation' }, component: page(() => import('./content/pages/usage/Versioning')) },
