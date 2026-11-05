@@ -120,7 +120,7 @@ export const Scrollable: Story = {
       title: `Tarefa ${i + 1} do backlog`,
       points: (i % 5) + 1,
     })),
-    style: { maxHeight: 280, overflowY: 'auto' },
+    style: { maxHeight: 280, overflowY: 'auto', paddingBlock: 'var(--or-space-2)' },
   },
 }
 

@@ -110,6 +110,8 @@ const DRAG_THRESHOLD = 5
 const SCROLL_EDGE = 48
 /** Velocidade máxima da rolagem automática (px por quadro). */
 const SCROLL_SPEED = 16
+/** Congela o transform durante as medições do FLIP sem cortar o esmaecer da sombra. */
+const FREEZE_TRANSFORM = 'box-shadow var(--or-duration-fast) var(--or-ease-out)'
 
 type AnnouncementKind = keyof SortableAnnouncements
 type Direction = 'prev' | 'next' | 'first' | 'last'
@@ -408,8 +410,8 @@ function SortableListInner<T>(
     const rects = new Map<SortableKey, DOMRect>()
     nodes.current.forEach((el, key) => {
       rects.set(key, el.getBoundingClientRect())
-      // Sem transição até o layout final ser medido no efeito abaixo.
-      el.style.transition = 'none'
+      // Sem transição de transform até o layout final ser medido no efeito abaixo.
+      el.style.transition = FREEZE_TRANSFORM
     })
     flipRef.current = { rects, settle }
   }
@@ -421,7 +423,7 @@ function SortableListInner<T>(
       flipRef.current = null
       const elements = Array.from(nodes.current.entries())
       const deltas = elements.map(([key, el]) => {
-        el.style.transition = 'none'
+        el.style.transition = FREEZE_TRANSFORM
         const before = flip.rects.get(key)
         if (!before) return null
         const after = el.getBoundingClientRect()

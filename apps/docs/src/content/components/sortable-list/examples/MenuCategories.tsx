@@ -30,7 +30,7 @@ export default function MenuCategories() {
         onReorder={setCategories}
         getItemLabel={(category) => category.name}
         moveControls="menu"
-        style={{ maxHeight: 300, overflowY: 'auto' }}
+        style={{ maxHeight: 320, overflowY: 'auto', paddingBlock: 'var(--or-space-2)' }}
         renderItem={(category, { disabled }) => (
           <div style={{ display: 'grid', gap: 2 }}>
             <span style={{ fontWeight: 500 }}>{category.name}</span>

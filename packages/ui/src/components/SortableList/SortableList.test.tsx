@@ -285,6 +285,33 @@ describe('SortableList', () => {
       expect(screen.getByRole('list')).not.toHaveAttribute('data-active')
     })
 
+    it('rola o contêiner sozinho quando o item arrastado chega perto da borda', () => {
+      mockLayout()
+      render(<Harness style={{ maxHeight: 200, overflowY: 'auto' }} />)
+      const list = screen.getByRole('list')
+      let scrollTop = 0
+      Object.defineProperty(list, 'scrollHeight', { configurable: true, value: 600 })
+      Object.defineProperty(list, 'clientHeight', { configurable: true, value: 200 })
+      Object.defineProperty(list, 'scrollTop', {
+        configurable: true,
+        get: () => scrollTop,
+        set: (value: number) => {
+          scrollTop = value
+        },
+      })
+      const grip = handle('Revisar checkout')
+
+      // A lista ocupa 100–300px na tela; 260px está na faixa de 48px junto à borda de baixo.
+      fireEvent.pointerDown(grip, { pointerId: 1, clientX: 20, clientY: 120 })
+      fireEvent.pointerMove(grip, { pointerId: 1, clientX: 20, clientY: 260 })
+
+      expect(scrollTop).toBeGreaterThan(0)
+      // O item acompanha a rolagem: deslocamento do ponteiro + quanto a lista rolou.
+      expect(itemOf('Revisar checkout').style.getPropertyValue('--_drag-y')).toBe(`${140 + scrollTop}px`)
+      fireEvent.pointerUp(grip, { pointerId: 1, clientX: 20, clientY: 260 })
+      expect(screen.getByRole('list')).not.toHaveAttribute('data-active')
+    })
+
     it('pointercancel cancela o arraste', () => {
       mockLayout()
       const onReorder = vi.fn()
@@ -309,7 +336,7 @@ describe('SortableList', () => {
       const moved = itemOf('Revisar checkout')
       expect(moved.style.transform).toBe('')
       expect(moved.style.transition).toBe('')
-      // Só o item movido pelo controle recebe a mola ao soltar com o teclado/ponteiro.
+      // Ao soltar (teclado ou ponteiro), o item solto assenta com a mola (data-settling).
       handle('Revisar checkout').focus()
       await user.keyboard(' {ArrowUp} ')
       expect(itemOf('Revisar checkout')).toHaveAttribute('data-settling')
