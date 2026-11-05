@@ -445,18 +445,22 @@
 
 /* Alto contraste: a página atual (fundo de acento + barra de 2px) vira
    Highlight/HighlightText — a barra sozinha era fraca demais; o rótulo flutuante
-   e o ponto de aviso do modo recolhido também passam para cores do sistema. */
+   e o ponto de aviso do modo recolhido também passam para cores do sistema.
+   O item atual usa forced-color-adjust: none (sem ele o Chromium pinta a placa
+   de leitura em Canvas atrás do texto), com as cores dele explícitas. */
 @media (forced-colors: active) {
   .or-side-nav__item::before {
     background: Highlight;
   }
 
   .or-side-nav__item[aria-current='page'] {
+    forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
   }
 
-  .or-side-nav__item[aria-current='page'] .or-side-nav__icon {
+  .or-side-nav__item[aria-current='page'] .or-side-nav__icon,
+  .or-side-nav__item[aria-current='page'] .or-side-nav__label {
     color: HighlightText;
   }
 

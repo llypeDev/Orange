@@ -111,15 +111,23 @@
 }
 
 /* Alto contraste: pressionado = Highlight/HighlightText (cobre hover e clique,
-   que têm seletores mais específicos no Button). Sem forced-color-adjust: none,
-   o foco e os ícones seguem as cores do sistema. */
+   que têm seletores mais específicos no Button). O botão pressionado precisa de
+   forced-color-adjust: none — senão o Chromium pinta a placa de leitura (Canvas)
+   atrás do rótulo —, então borda, barra, ícones e foco recebem cores do sistema
+   explícitas aqui. */
 @media (forced-colors: active) {
   .or-button.or-toggle-button[aria-pressed='true'],
   .or-button.or-toggle-button[aria-pressed='true']:hover:not(:disabled, [aria-disabled='true']),
   .or-button.or-toggle-button[aria-pressed='true']:active:not(:disabled, [aria-disabled='true']) {
+    forced-color-adjust: none;
     border-color: Highlight;
     background: Highlight;
+    box-shadow: none;
     color: HighlightText;
+  }
+
+  .or-button.or-toggle-button[aria-pressed='true']:focus-visible {
+    outline-color: CanvasText;
   }
 
   /* Ícones são SVG (preservam a cor do autor): cores do sistema explícitas. */

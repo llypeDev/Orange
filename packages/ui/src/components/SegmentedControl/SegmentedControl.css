@@ -194,9 +194,10 @@
   height: 1.25rem;
 }
 
-/* Alto contraste: o indicador vira Highlight e a opção marcada, HighlightText
-   (cores do sistema são respeitadas sem forced-color-adjust: none, que vazaria
-   o laranja do foco e dos ícones). */
+/* Alto contraste: o indicador vira Highlight e a opção marcada, HighlightText.
+   A opção marcada precisa de forced-color-adjust: none — senão o Chromium pinta
+   a "placa de leitura" (Canvas) atrás do texto e o rótulo some no Highlight —;
+   por isso texto, ícone e anel de foco dela recebem cores do sistema explícitas. */
 @media (forced-colors: active) {
   .or-segmented-control__track {
     border-color: ButtonText;
@@ -205,6 +206,11 @@
   .or-segmented-control__indicator,
   .or-segmented-control__track:not([data-ready]) .or-segmented-control__option[data-checked] {
     background: Highlight;
+    box-shadow: none;
+  }
+
+  .or-segmented-control__option[data-checked] {
+    forced-color-adjust: none;
   }
 
   .or-segmented-control__option[data-checked],
@@ -233,7 +239,9 @@
   }
 
   .or-segmented-control--disabled .or-segmented-control__option[data-checked],
-  .or-segmented-control--disabled .or-segmented-control__option[data-checked] .or-segmented-control__icon {
+  .or-segmented-control--disabled
+    .or-segmented-control__option[data-checked]
+    .or-segmented-control__icon {
     color: Canvas;
   }
 }

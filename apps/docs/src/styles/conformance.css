@@ -1,0 +1,95 @@
+/* ---------------------------------------------------------------------------
+ * Relatório de conformidade — tabela de 5 colunas (critério, nível, status,
+ * como atende, evidências). Larga, ela vira linhas empilhadas: critério, nível
+ * e status no topo, os dois textos embaixo, cada um com o rótulo da coluna.
+ * ------------------------------------------------------------------------- */
+
+.guide-conformance-wrap {
+  container-type: inline-size;
+}
+
+.guide-conformance tbody th {
+  white-space: normal;
+}
+
+.guide-conformance__criterion {
+  min-width: 11rem;
+}
+
+.guide-conformance__id {
+  display: block;
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-medium);
+  color: var(--or-color-text-subtle);
+}
+
+.guide-conformance__level,
+.guide-conformance__status {
+  white-space: nowrap;
+}
+
+.guide-conformance__group > th {
+  background: var(--or-color-bg-subtle);
+  font-family: var(--or-font-display);
+}
+
+@container (max-width: 60rem) {
+  .guide-conformance,
+  .guide-conformance tbody,
+  .guide-conformance__group,
+  .guide-conformance__group > th {
+    display: block;
+  }
+
+  /* Cabeçalho só para leitores de tela: os rótulos aparecem em cada texto. */
+  .guide-conformance thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .guide-conformance__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, auto);
+    align-items: start;
+    column-gap: var(--or-space-3);
+    padding: var(--or-space-3) 0;
+    border-bottom: 1px solid var(--or-color-border);
+  }
+
+  .guide-conformance tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .guide-conformance__row > th,
+  .guide-conformance__row > td {
+    min-width: 0;
+    padding: var(--or-space-1) var(--or-space-4);
+    border-bottom: 0;
+  }
+
+  .guide-conformance__row > .guide-conformance__status {
+    justify-self: end;
+  }
+
+  .guide-conformance__row > td[data-label] {
+    grid-column: 1 / -1;
+  }
+
+  .guide-conformance__row > td[data-label]::before {
+    /* Texto alternativo vazio: o leitor de tela já tem o cabeçalho da coluna. */
+    content: attr(data-label) / '';
+    display: block;
+    margin-bottom: 2px;
+    font-family: var(--or-font-display);
+    font-size: var(--or-text-2xs);
+    font-weight: var(--or-weight-medium);
+    letter-spacing: var(--or-tracking-meta);
+    text-transform: uppercase;
+    color: var(--or-color-text-subtle);
+  }
+}

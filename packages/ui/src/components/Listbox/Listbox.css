@@ -337,7 +337,9 @@
   }
 
   .or-listbox-option[aria-disabled='true'][aria-selected='true'] .or-listbox-option__box,
-  .or-listbox[aria-disabled='true'] .or-listbox-option[aria-selected='true'] .or-listbox-option__box {
+  .or-listbox[aria-disabled='true']
+    .or-listbox-option[aria-selected='true']
+    .or-listbox-option__box {
     background: GrayText;
     color: Canvas;
   }

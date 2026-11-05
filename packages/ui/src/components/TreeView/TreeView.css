@@ -218,19 +218,28 @@
   background: transparent;
 }
 
-/* Alto contraste: item selecionado em Highlight/HighlightText (sem
-   forced-color-adjust: none, que vazava o laranja do foco e da caixa); o anel
-   de foco sobre a seleção usa HighlightText para não sumir no mesmo fundo. */
+/* Alto contraste: item selecionado em Highlight/HighlightText; o anel de foco
+   sobre a seleção usa HighlightText para não sumir no mesmo fundo. O item usa
+   forced-color-adjust: none (sem ele o Chromium pinta a placa de leitura em
+   Canvas atrás do texto), então todas as cores dele — inclusive as do conteúdo
+   e das guias — são definidas aqui em cores do sistema. */
 @media (forced-colors: active) {
   .or-tree__item[aria-selected='true'] {
+    forced-color-adjust: none;
     background: Highlight;
+    box-shadow: none;
     color: HighlightText;
   }
 
+  .or-tree__item[aria-selected='true'] *,
   .or-tree__item[aria-selected='true'] .or-tree__label,
   .or-tree__item[aria-selected='true'] .or-tree__icon,
   .or-tree__item[aria-selected='true'] .or-tree__toggle {
     color: HighlightText;
+  }
+
+  .or-tree__item[aria-selected='true']::before {
+    background: none;
   }
 
   .or-tree__item[aria-selected='true']:focus-visible {
@@ -241,7 +250,8 @@
     border-color: CanvasText;
   }
 
-  .or-tree__item[aria-selected='true'] .or-tree__checkbox {
+  .or-tree__item[aria-selected='true'] .or-tree__checkbox,
+  .or-tree__item[aria-selected='true'] .or-tree__checkbox * {
     border-color: HighlightText;
     background: HighlightText;
     color: Highlight;

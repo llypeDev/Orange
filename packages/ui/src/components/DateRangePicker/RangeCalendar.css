@@ -163,22 +163,50 @@
 /* Alto contraste: a faixa do período vira Mark/MarkText (a borda superior e
    inferior se confundia com a grade), as pontas Highlight/HighlightText e os
    triângulos de forma usam Highlight no lugar de `transparent` (que viraria
-   uma caixa em CanvasText). */
+   uma caixa em CanvasText). Dias da faixa e pontas usam forced-color-adjust:
+   none (sem ele o Chromium pinta a placa de leitura em Canvas atrás do número),
+   com todas as cores explícitas aqui. */
 @media (forced-colors: active) {
   .or-range-calendar__mark {
     border-color: Canvas;
   }
 
-  .or-range-calendar__day--in-range {
+  .or-range-calendar__day--in-range,
+  .or-range-calendar__day--start,
+  .or-range-calendar__day--end {
+    forced-color-adjust: none;
+    border-color: Canvas;
+    background: Canvas;
+  }
+
+  .or-range-calendar__day--in-range,
+  .or-range-calendar__day--in-range .or-range-calendar__mark {
     color: MarkText;
+  }
+
+  .or-range-calendar .or-range-calendar__day--in-range:focus-visible,
+  .or-range-calendar .or-range-calendar__day--start:focus-visible,
+  .or-range-calendar .or-range-calendar__day--end:focus-visible {
+    outline-color: CanvasText;
   }
 
   .or-range-calendar__day--in-range::before {
     background: Mark;
   }
 
+  /* Nas pontas, a faixa por baixo acompanha a ponta (Highlight pode ter alfa). */
+  .or-range-calendar__day--start::before,
+  .or-range-calendar__day--end::before {
+    background: Highlight;
+  }
+
   .or-range-calendar__day--in-range .or-range-calendar__mark {
     border-color: Mark;
+  }
+
+  /* A ponta cobre a borda do dia: o "hoje" precisa dela na própria ponta. */
+  .or-calendar__day--today .or-range-calendar__mark {
+    border-color: CanvasText;
   }
 
   .or-range-calendar__day--preview::before {

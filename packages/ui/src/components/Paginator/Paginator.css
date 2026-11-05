@@ -210,12 +210,19 @@
 }
 
 /* Alto contraste: página atual em Highlight/HighlightText (o contorno fica
-   para o foco); desabilitados em GrayText, inclusive links com aria-disabled. */
+   para o foco); desabilitados em GrayText, inclusive links com aria-disabled.
+   A página atual usa forced-color-adjust: none (sem ele o Chromium pinta a placa
+   de leitura em Canvas atrás do número), com cores do sistema explícitas. */
 @media (forced-colors: active) {
   .or-paginator__button[aria-current='page'] {
+    forced-color-adjust: none;
     border-color: Highlight;
     background: Highlight;
     color: HighlightText;
+  }
+
+  .or-paginator__button[aria-current='page']:focus-visible {
+    outline-color: CanvasText;
   }
 
   .or-paginator__button--page::after {

@@ -176,18 +176,22 @@
 }
 
 /* Alto contraste: o destino atual vira Highlight/HighlightText (o indicador de
-   2px sozinho era fraco); o anel de foco sobre ele usa HighlightText. */
+   2px sozinho era fraco); o anel de foco sobre ele usa HighlightText. O item
+   atual usa forced-color-adjust: none (sem ele o Chromium pinta a placa de
+   leitura em Canvas atrás do rótulo), com as cores dele explícitas. */
 @media (forced-colors: active) {
   .or-bottom-nav__indicator::before {
     background: Highlight;
   }
 
   .or-bottom-nav__item[aria-current='page'] {
+    forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
   }
 
-  .or-bottom-nav__item[aria-current='page'] .or-bottom-nav__icon {
+  .or-bottom-nav__item[aria-current='page'] .or-bottom-nav__icon,
+  .or-bottom-nav__item[aria-current='page'] .or-bottom-nav__label {
     color: HighlightText;
   }
 

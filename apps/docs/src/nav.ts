@@ -14,6 +14,7 @@ const page = (loader: () => Promise<{ default: ComponentType }>) => lazy(loader)
 export const guidelinePages: StaticPage[] = [
   { path: '/design-guidelines/accessibility', label: { pt: 'Acessibilidade', en: 'Accessibility' }, component: page(() => import('./content/pages/guidelines/Accessibility')) },
   { path: '/design-guidelines/color', label: { pt: 'Cor', en: 'Color' }, component: page(() => import('./content/pages/guidelines/Color')) },
+  { path: '/design-guidelines/conformance', label: { pt: 'Relatório de conformidade', en: 'Conformance report' }, component: page(() => import('./content/pages/guidelines/Conformance')) },
   { path: '/design-guidelines/data-visualization', label: { pt: 'Visualização de dados', en: 'Data visualization' }, component: page(() => import('./content/pages/guidelines/DataVisualization')) },
   { path: '/design-guidelines/grid', label: { pt: 'Grid', en: 'Grid' }, component: page(() => import('./content/pages/guidelines/Grid')) },
   { path: '/design-guidelines/iconography', label: { pt: 'Iconografia', en: 'Iconography' }, component: page(() => import('./content/pages/guidelines/Iconography')) },
