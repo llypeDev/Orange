@@ -74,6 +74,12 @@
     visibility 0s;
 }
 
+/* Painel rolável sem conteúdo focável recebe foco (ver useScrollableRegion). */
+.or-splitter__panel:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
 /*
  * Recolhido em 0%: o conteúdo some (opacidade) enquanto a trilha fecha e, ao fim,
  * sai do foco e da árvore de acessibilidade (visibility, sem animação própria).

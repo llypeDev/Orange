@@ -539,6 +539,32 @@ describe('Splitter', () => {
     expect(screen.getByRole('group')).toHaveAttribute('data-stack-below', 'sm')
   })
 
+  it('painel que rola sem nada focável vira região focável; com foco interno, não', () => {
+    // jsdom não faz layout: simula um painel com conteúdo maior que a área visível.
+    const scroll = vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockReturnValue(400)
+    const client = vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(200)
+    try {
+      render(
+        <Splitter>
+          <SplitterPanel label="Chamados">
+            <p>Troca de tamanho — tênis de corrida</p>
+          </SplitterPanel>
+          <SplitterHandle />
+          <SplitterPanel label="Detalhe">
+            <button type="button">Responder</button>
+          </SplitterPanel>
+        </Splitter>,
+      )
+      const region = screen.getByRole('region', { name: 'Chamados' })
+      expect(region).toHaveAttribute('tabindex', '0')
+      // O painel com um botão já é alcançável pelo teclado: continua um div comum.
+      expect(screen.queryByRole('region', { name: 'Detalhe' })).not.toBeInTheDocument()
+    } finally {
+      scroll.mockRestore()
+      client.mockRestore()
+    }
+  })
+
   it('exige SplitterPanel e SplitterHandle como filhos diretos do Splitter', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<SplitterPanel />)).toThrow(/filho direto de <Splitter>/)

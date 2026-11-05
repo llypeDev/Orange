@@ -10,7 +10,7 @@ export default function InText() {
   return (
     <ul style={{ display: 'grid', gap: 12, margin: 0, padding: 0, listStyle: 'none' }}>
       {produtos.map((p) => (
-        <li key={p.nome} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <li key={p.nome} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 16px' }}>
           <span style={{ minWidth: 140 }}>{p.nome}</span>
           <Sparkline
             data={p.vendas}

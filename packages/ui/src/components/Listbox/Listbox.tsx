@@ -676,7 +676,8 @@ export const ListboxOption = forwardRef<HTMLDivElement, ListboxOptionProps>(func
       role="option"
       aria-selected={selected}
       aria-disabled={disabled || undefined}
-      aria-labelledby={`${id}-label`}
+      // Nome vem do conteúdo (só o rótulo: ícones e descrição são aria-hidden);
+      // a descrição chega por aria-describedby.
       aria-describedby={hasDescription ? `${id}-description` : undefined}
       data-value={value}
       data-active={context.activeValue === value || undefined}
@@ -697,7 +698,9 @@ export const ListboxOption = forwardRef<HTMLDivElement, ListboxOptionProps>(func
           {children}
         </span>
         {hasDescription && (
-          <span id={`${id}-description`} className="or-listbox-option__description">
+          // aria-hidden tira a descrição do nome calculado pelo conteúdo; ela
+          // continua sendo lida como descrição (aria-describedby lê conteúdo oculto).
+          <span id={`${id}-description`} className="or-listbox-option__description" aria-hidden="true">
             {description}
           </span>
         )}

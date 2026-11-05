@@ -19,7 +19,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { canUseDOM, clamp, composeEventHandlers, cx, devWarning, mergeRefs } from '../../utils'
+import { canUseDOM, clamp, composeEventHandlers, cx, devWarning, getFocusableElements, mergeRefs } from '../../utils'
 import './Splitter.css'
 
 export type SplitterOrientation = 'horizontal' | 'vertical'
@@ -678,6 +678,37 @@ export const Splitter = forwardRef<HTMLDivElement, SplitterProps>(function Split
 /* -------------------------------------------------------------------------- */
 
 /**
+ * Observa se o elemento rola e se tem algo focável dentro. Quando rola sem
+ * nenhum alvo de foco, o teclado não alcança o conteúdo escondido; nesse caso o
+ * próprio painel precisa entrar na ordem de foco.
+ */
+function useScrollableRegion() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [needed, setNeeded] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const check = () => {
+      const scrolls = el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1
+      // O próprio painel pode estar focável por causa deste hook: ignore-o.
+      const focusable = getFocusableElements(el).some((node) => node !== el)
+      setNeeded(scrolls && !focusable)
+    }
+    check()
+    const resize = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(check)
+    resize?.observe(el)
+    Array.from(el.children).forEach((child) => resize?.observe(child))
+    const mutation = typeof MutationObserver === 'undefined' ? null : new MutationObserver(check)
+    mutation?.observe(el, { childList: true, subtree: true })
+    return () => {
+      resize?.disconnect()
+      mutation?.disconnect()
+    }
+  }, [])
+  return { ref, needed }
+}
+
+/**
  * Painel do `Splitter`. Os limites (`minSize`, `maxSize`) e o recolhimento são
  * lidos pelo Splitter — o painel precisa ser filho direto dele.
  */
@@ -699,10 +730,18 @@ export const SplitterPanel = forwardRef<HTMLDivElement, SplitterPanelProps>(func
   const { ctx, index } = useSplitterItem('SplitterPanel')
   const panel = ctx.panels[index]
   const collapsed = isCollapsedAt(panel, ctx.sizes[index])
+  const scrollFocus = useScrollableRegion()
   return (
     <div
-      ref={ref}
+      ref={mergeRefs(ref, scrollFocus.ref)}
       id={panel?.id}
+      // Painel que rola sem nada focável dentro vira uma região focável, para que
+      // o teclado também consiga rolar o conteúdo (WCAG 2.1.1).
+      {...(scrollFocus.needed && {
+        tabIndex: 0,
+        role: 'region',
+        'aria-label': typeof panel?.label === 'string' ? panel.label : undefined,
+      })}
       className={cx('or-splitter__panel', className)}
       data-collapsed={collapsed || undefined}
       // Recolhido em 0%: o conteúdo sai da tela, do foco e da árvore de acessibilidade (CSS).
