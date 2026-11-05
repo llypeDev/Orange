@@ -1,6 +1,6 @@
 {
   "name": "@orange/tokens",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Design tokens do Orange Design System (cores, tipografia, espaçamento, movimento e visualização de dados) em TypeScript e CSS custom properties.",
   "keywords": [
     "design-tokens",
