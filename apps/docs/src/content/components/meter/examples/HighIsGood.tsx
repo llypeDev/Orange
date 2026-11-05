@@ -1,4 +1,4 @@
-import { Meter } from '@orange/ui'
+import { Meter } from '@orangesys/ui'
 
 export default function HighIsGood() {
   return (

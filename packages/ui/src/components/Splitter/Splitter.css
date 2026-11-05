@@ -231,7 +231,7 @@
 /*
  * Telas estreitas (stackBelow): os painéis empilham com a altura do conteúdo,
  * sem separadores; uma altura fixa no Splitter vira rolagem vertical.
- * Mesmos valores de `breakpoints` em @orange/tokens (sm 640px, md 768px).
+ * Mesmos valores de `breakpoints` em @orangesys/tokens (sm 640px, md 768px).
  */
 @media (max-width: 767.98px) {
   .or-splitter[data-stack-below='md'] {

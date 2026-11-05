@@ -1,4 +1,4 @@
-import { Chip, ChipGroup } from '@orange/ui'
+import { Chip, ChipGroup } from '@orangesys/ui'
 
 export default function Single() {
   return (

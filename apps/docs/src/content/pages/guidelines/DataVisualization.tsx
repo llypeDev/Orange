@@ -1,4 +1,4 @@
-import { useTheme } from '@orange/ui'
+import { useTheme } from '@orangesys/ui'
 import {
   themeNames,
   themes,
@@ -6,7 +6,7 @@ import {
   vizThemes,
   type ThemeName,
   type VizColorTokens,
-} from '@orange/tokens'
+} from '@orangesys/tokens'
 import {
   useEffect,
   useId,
@@ -32,7 +32,7 @@ import { contrastRatio, inkOn } from '../_shared/color'
 
 /* ---------------------------------------------------------------------------
  * Paletas por tema, lidas dos tokens (`vizPalettes` → `--or-color-viz-*` em
- * @orange/tokens). A ordem categórica foi validada para daltonismo
+ * @orangesys/tokens). A ordem categórica foi validada para daltonismo
  * (protanopia/deuteranopia) entre vizinhos e tem ≥ 3:1 contra o fundo.
  * ------------------------------------------------------------------------- */
 

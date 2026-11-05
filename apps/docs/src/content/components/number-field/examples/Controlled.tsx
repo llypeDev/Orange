@@ -1,4 +1,4 @@
-import { NumberField, Text } from '@orange/ui'
+import { NumberField, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 const unitPrice = 39.9

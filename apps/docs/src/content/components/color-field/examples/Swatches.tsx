@@ -1,4 +1,4 @@
-import { ColorField } from '@orange/ui'
+import { ColorField } from '@orangesys/ui'
 
 const etiquetas = [
   { value: '#f58549', label: 'Laranja' },

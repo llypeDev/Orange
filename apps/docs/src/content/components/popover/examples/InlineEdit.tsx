@@ -1,4 +1,4 @@
-import { Button, Field, Popover } from '@orange/ui'
+import { Button, Field, Popover } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function InlineEdit() {

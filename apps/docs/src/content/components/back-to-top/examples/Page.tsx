@@ -1,4 +1,4 @@
-import { BackToTop } from '@orange/ui'
+import { BackToTop } from '@orangesys/ui'
 
 export default function Page() {
   // Fixo no canto inferior direito da janela. Ao clicar, o foco vai para o <main>.

@@ -1,4 +1,4 @@
-import { Banner, Button } from '@orange/ui'
+import { Banner, Button } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Live() {

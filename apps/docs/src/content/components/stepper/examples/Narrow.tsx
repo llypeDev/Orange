@@ -1,4 +1,4 @@
-import { Stepper } from '@orange/ui'
+import { Stepper } from '@orangesys/ui'
 
 export default function Narrow() {
   return (

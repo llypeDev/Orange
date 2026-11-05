@@ -1,4 +1,4 @@
-import { RelativeTime } from '@orange/ui'
+import { RelativeTime } from '@orangesys/ui'
 
 const dias = (n: number) => new Date(Date.now() - n * 86_400_000)
 

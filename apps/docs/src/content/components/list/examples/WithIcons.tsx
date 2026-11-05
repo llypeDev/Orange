@@ -1,4 +1,4 @@
-import { Icon, List, ListItem } from '@orange/ui'
+import { Icon, List, ListItem } from '@orangesys/ui'
 
 export default function WithIcons() {
   return (

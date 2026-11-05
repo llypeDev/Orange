@@ -1,4 +1,4 @@
-import { Link } from '@orange/ui'
+import { Link } from '@orangesys/ui'
 
 const posts = [
   { title: 'Como reduzimos o tempo de checkout em 38%', href: '#checkout' },

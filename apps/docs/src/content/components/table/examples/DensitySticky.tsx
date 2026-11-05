@@ -1,4 +1,4 @@
-import { Table, type TableColumn } from '@orange/ui'
+import { Table, type TableColumn } from '@orangesys/ui'
 
 interface StockRow {
   sku: string

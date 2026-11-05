@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { PasswordField } from '@orange/ui'
+import { PasswordField } from '@orangesys/ui'
 import Confirm from './examples/Confirm'
 import ConfirmCode from './examples/Confirm?raw'
 import Requirements from './examples/Requirements'

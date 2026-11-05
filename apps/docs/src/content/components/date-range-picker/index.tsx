@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { DateRangePicker } from '@orange/ui'
+import { DateRangePicker } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import HotelBooking from './examples/HotelBooking'

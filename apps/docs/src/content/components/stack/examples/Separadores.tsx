@@ -1,4 +1,4 @@
-import { Link, Stack, Text } from '@orange/ui'
+import { Link, Stack, Text } from '@orangesys/ui'
 
 export default function Separadores() {
   return (

@@ -1,4 +1,4 @@
-import { Button, Icon, PageHeader } from '@orange/ui'
+import { Button, Icon, PageHeader } from '@orangesys/ui'
 
 export default function Basic() {
   return (

@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@orange/ui'
+import { SegmentedControl } from '@orangesys/ui'
 
 export default function Disabled() {
   return (

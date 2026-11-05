@@ -1,4 +1,4 @@
-import { DateRangePicker } from '@orange/ui'
+import { DateRangePicker } from '@orangesys/ui'
 
 export default function Basic() {
   return (

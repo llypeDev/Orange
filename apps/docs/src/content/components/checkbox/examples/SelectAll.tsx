@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@orange/ui'
+import { Checkbox, CheckboxGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 const permissions = [

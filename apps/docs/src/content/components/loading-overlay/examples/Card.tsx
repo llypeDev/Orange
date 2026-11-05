@@ -1,4 +1,4 @@
-import { LoadingOverlay } from '@orange/ui'
+import { LoadingOverlay } from '@orangesys/ui'
 
 export default function Card() {
   return (

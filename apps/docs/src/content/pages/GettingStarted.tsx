@@ -1,4 +1,4 @@
-import { Button, buttonClassName, Eyebrow, Heading, Icon, Text } from '@orange/ui'
+import { Button, buttonClassName, Eyebrow, Heading, Icon, Text } from '@orangesys/ui'
 import { Link } from 'react-router-dom'
 import { T, useLang } from '../../i18n'
 import {
@@ -25,8 +25,8 @@ const fontsHtml = `<!-- index.html, dentro de <head> -->
 <link rel="stylesheet" href="${FONTS_URL}" />`
 
 const mainTsx = `// src/main.tsx
-import '@orange/ui/styles.css'
-import { OrangeProvider } from '@orange/ui'
+import '@orangesys/ui/styles.css'
+import { OrangeProvider } from '@orangesys/ui'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
 
@@ -36,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
   </OrangeProvider>,
 )`
 
-const firstComponent = `import { Button, Eyebrow, Heading, Icon, Text } from '@orange/ui'
+const firstComponent = `import { Button, Eyebrow, Heading, Icon, Text } from '@orangesys/ui'
 
 export function BoasVindas() {
   return (
@@ -52,7 +52,7 @@ export function BoasVindas() {
 const nextProviders = `// app/providers.tsx
 'use client'
 
-import { OrangeProvider } from '@orange/ui'
+import { OrangeProvider } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -64,7 +64,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }`
 
 const nextLayout = `// app/layout.tsx
-import '@orange/ui/styles.css'
+import '@orangesys/ui/styles.css'
 import { Providers } from './providers'
 
 // Aplica o tema salvo antes da hidratação — evita o "flash" de tema errado.
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }`
 
 const tokensOnlyCss = `/* Qualquer stack: Vue, Svelte, Astro, HTML puro… */
-@import '@orange/tokens/tokens.css';
+@import '@orangesys/tokens/tokens.css';
 
 .cartao {
   padding: var(--or-space-6);
@@ -107,8 +107,8 @@ const tokensOnlyCss = `/* Qualquer stack: Vue, Svelte, Astro, HTML puro… */
   letter-spacing: var(--or-tracking-heading);
 }`
 
-const tokensOnlyTs = `import { breakpoints, motion, themes } from '@orange/tokens'
-import { contrastRatio } from '@orange/tokens/contrast'
+const tokensOnlyTs = `import { breakpoints, motion, themes } from '@orangesys/tokens'
+import { contrastRatio } from '@orangesys/tokens/contrast'
 
 themes.dark.accent            // '#f58549'
 breakpoints.lg                // '1024px'
@@ -117,11 +117,11 @@ contrastRatio(themes.light['text-on-accent'], themes.light.accent) // 5.08`
 
 const tree = `orange/
 ├── packages/
-│   ├── tokens/        @orange/tokens — fonte única dos tokens
+│   ├── tokens/        @orangesys/tokens — fonte única dos tokens
 │   │   ├── src/index.ts       primitives, themes, typography, space…
 │   │   ├── src/contrast.ts    contrastRatio(), wcagLevel()
 │   │   └── css/tokens.css     gerado — não edite à mão
-│   └── ui/            @orange/ui — componentes, hooks, ícones, providers
+│   └── ui/            @orangesys/ui — componentes, hooks, ícones, providers
 │       └── src/
 │           ├── components/<Nome>/   .tsx · .css · .test.tsx · .stories.tsx
 │           ├── hooks/               useDisclosure, useFocusTrap…
@@ -236,15 +236,15 @@ export default function GettingStarted() {
             <T
               pt={
                 <>
-                  O pacote <Code>@orange/ui</Code> traz os componentes, hooks, ícones e providers.
-                  Ele já depende de <Code>@orange/tokens</Code>, então não é preciso instalar os
+                  O pacote <Code>@orangesys/ui</Code> traz os componentes, hooks, ícones e providers.
+                  Ele já depende de <Code>@orangesys/tokens</Code>, então não é preciso instalar os
                   dois.
                 </>
               }
               en={
                 <>
-                  The <Code>@orange/ui</Code> package ships components, hooks, icons and providers.
-                  It already depends on <Code>@orange/tokens</Code>, so you don't need to install
+                  The <Code>@orangesys/ui</Code> package ships components, hooks, icons and providers.
+                  It already depends on <Code>@orangesys/tokens</Code>, so you don't need to install
                   both.
                 </>
               }
@@ -254,9 +254,9 @@ export default function GettingStarted() {
         <CodeTabs
           label={{ pt: 'Gerenciador de pacotes', en: 'Package manager' }}
           tabs={[
-            { id: 'pnpm', label: 'pnpm', code: 'pnpm add @orange/ui' },
-            { id: 'npm', label: 'npm', code: 'npm install @orange/ui' },
-            { id: 'yarn', label: 'yarn', code: 'yarn add @orange/ui' },
+            { id: 'pnpm', label: 'pnpm', code: 'pnpm add @orangesys/ui' },
+            { id: 'npm', label: 'npm', code: 'npm install @orangesys/ui' },
+            { id: 'yarn', label: 'yarn', code: 'yarn add @orangesys/ui' },
           ]}
         />
       </Section>
@@ -289,7 +289,7 @@ export default function GettingStarted() {
                     />
                   </p>
                   <CodeBlock
-                    code={`import '@orange/ui/styles.css'`}
+                    code={`import '@orangesys/ui/styles.css'`}
                     language="ts"
                     title="main.tsx"
                   />
@@ -346,13 +346,13 @@ export default function GettingStarted() {
                   <T
                     pt={
                       <>
-                        Importe pelo nome a partir de <Code>@orange/ui</Code>. Todos os exports são
+                        Importe pelo nome a partir de <Code>@orangesys/ui</Code>. Todos os exports são
                         nomeados e o pacote é tree-shakeable.
                       </>
                     }
                     en={
                       <>
-                        Import by name from <Code>@orange/ui</Code>. Every export is named and the
+                        Import by name from <Code>@orangesys/ui</Code>. Every export is named and the
                         package is tree-shakeable.
                       </>
                     }
@@ -517,7 +517,7 @@ export default function GettingStarted() {
             <T
               pt={
                 <>
-                  Não usa React? <Code>@orange/tokens</Code> funciona sozinho. O CSS expõe tudo como
+                  Não usa React? <Code>@orangesys/tokens</Code> funciona sozinho. O CSS expõe tudo como
                   custom properties <Code>--or-*</Code>, com os temas em{' '}
                   <Code>[data-theme='dark']</Code> e <Code>[data-theme='light']</Code>; o TypeScript
                   expõe os mesmos valores como objetos.
@@ -525,7 +525,7 @@ export default function GettingStarted() {
               }
               en={
                 <>
-                  Not using React? <Code>@orange/tokens</Code> works on its own. The CSS exposes
+                  Not using React? <Code>@orangesys/tokens</Code> works on its own. The CSS exposes
                   everything as <Code>--or-*</Code> custom properties, with themes under{' '}
                   <Code>[data-theme='dark']</Code> and <Code>[data-theme='light']</Code>; TypeScript
                   exposes the same values as objects.
@@ -548,7 +548,7 @@ export default function GettingStarted() {
             {
               id: 'install',
               label: t({ pt: 'Instalar', en: 'Install' }),
-              code: 'pnpm add @orange/tokens',
+              code: 'pnpm add @orangesys/tokens',
               language: 'bash',
             },
           ]}
@@ -614,8 +614,8 @@ export default function GettingStarted() {
                 [
                   'pnpm gen',
                   {
-                    pt: 'Regenera o índice de componentes de @orange/ui (rode após criar uma pasta).',
-                    en: 'Regenerates the @orange/ui component index (run after adding a folder).',
+                    pt: 'Regenera o índice de componentes de @orangesys/ui (rode após criar uma pasta).',
+                    en: 'Regenerates the @orangesys/ui component index (run after adding a folder).',
                   },
                 ],
                 [
@@ -681,13 +681,13 @@ export default function GettingStarted() {
             {
               pt: (
                 <>
-                  <code>@orange/ui/styles.css</code> importado uma única vez, antes do CSS da
+                  <code>@orangesys/ui/styles.css</code> importado uma única vez, antes do CSS da
                   aplicação.
                 </>
               ),
               en: (
                 <>
-                  <code>@orange/ui/styles.css</code> imported once, before your app CSS.
+                  <code>@orangesys/ui/styles.css</code> imported once, before your app CSS.
                 </>
               ),
             },

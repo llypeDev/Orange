@@ -1,4 +1,4 @@
-import { Paginator } from '@orange/ui'
+import { Paginator } from '@orangesys/ui'
 import type { AnchorHTMLAttributes } from 'react'
 
 // Em um app real: import { Link as RouterLink } from 'react-router-dom'

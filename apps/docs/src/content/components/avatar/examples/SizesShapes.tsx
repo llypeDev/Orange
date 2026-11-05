@@ -1,4 +1,4 @@
-import { Avatar } from '@orange/ui'
+import { Avatar } from '@orangesys/ui'
 import rafael from './photos/rafael.svg'
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const

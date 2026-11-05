@@ -1,4 +1,4 @@
-import { Sparkline } from '@orange/ui'
+import { Sparkline } from '@orangesys/ui'
 
 const visitas = [1820, 1764, 1953, 2018, 1889, 2146, 2213, 2198, 2324, 2411, 2302, 2559]
 

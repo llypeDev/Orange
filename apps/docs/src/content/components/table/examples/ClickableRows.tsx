@@ -1,4 +1,4 @@
-import { Chip, ChipGroup, Table, Tag, type TableColumn } from '@orange/ui'
+import { Chip, ChipGroup, Table, Tag, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Priority = 'Alta' | 'Média' | 'Baixa'

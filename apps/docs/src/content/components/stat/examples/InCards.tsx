@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Stat } from '@orange/ui'
+import { Card, CardBody, CardHeader, Stat } from '@orangesys/ui'
 
 export default function InCards() {
   return (

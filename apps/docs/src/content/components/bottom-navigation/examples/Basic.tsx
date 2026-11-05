@@ -1,4 +1,4 @@
-import { BottomNavigation, Icon } from '@orange/ui'
+import { BottomNavigation, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 const titles: Record<string, string> = {

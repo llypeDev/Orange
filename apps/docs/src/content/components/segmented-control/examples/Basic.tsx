@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@orange/ui'
+import { SegmentedControl } from '@orangesys/ui'
 import { useState } from 'react'
 
 const labels: Record<string, string> = {

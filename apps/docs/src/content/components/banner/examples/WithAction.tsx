@@ -1,4 +1,4 @@
-import { Banner, Button } from '@orange/ui'
+import { Banner, Button } from '@orangesys/ui'
 
 export default function WithAction() {
   return (

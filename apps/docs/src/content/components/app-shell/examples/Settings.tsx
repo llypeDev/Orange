@@ -9,7 +9,7 @@ import {
   SideNavSection,
   Switch,
   useAppShell,
-} from '@orange/ui'
+} from '@orangesys/ui'
 
 /** Cabeçalho próprio: o botão de menu só aparece quando a navegação vai para o painel. */
 function SettingsHeader() {

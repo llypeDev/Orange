@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@orange/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@orangesys/ui'
 import Checkout from './examples/Checkout'
 import CheckoutCode from './examples/Checkout?raw'
 import Faq from './examples/Faq'

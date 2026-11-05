@@ -1,5 +1,5 @@
-import '@orange/ui/styles.css'
-import { isThemeSetting, OrangeProvider, themeNames } from '@orange/ui'
+import '@orangesys/ui/styles.css'
+import { isThemeSetting, OrangeProvider, themeNames } from '@orangesys/ui'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import type { Decorator, Preview } from '@storybook/react-vite'
 import { orangeTheme } from './theme'

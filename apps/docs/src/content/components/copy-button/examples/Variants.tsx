@@ -1,4 +1,4 @@
-import { CopyButton } from '@orange/ui'
+import { CopyButton } from '@orangesys/ui'
 
 const pedido = 'PED-2026-048213'
 

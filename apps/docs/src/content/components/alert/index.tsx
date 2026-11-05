@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Alert } from '@orange/ui'
+import { Alert } from '@orangesys/ui'
 import Dismissible from './examples/Dismissible'
 import DismissibleCode from './examples/Dismissible?raw'
 import LiveRegion from './examples/LiveRegion'

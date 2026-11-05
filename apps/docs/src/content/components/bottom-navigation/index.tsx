@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { BottomNavigation, Icon } from '@orange/ui'
+import { BottomNavigation, Icon } from '@orangesys/ui'
 import Badges from './examples/Badges'
 import BadgesCode from './examples/Badges?raw'
 import Basic from './examples/Basic'

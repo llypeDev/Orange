@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { CodeBlock } from './CodeBlock'
 
-const component = `import { Button, OrangeProvider } from '@orange/ui'
-import '@orange/ui/styles.css'
+const component = `import { Button, OrangeProvider } from '@orangesys/ui'
+import '@orangesys/ui/styles.css'
 
 export function App() {
   return (
@@ -63,7 +63,7 @@ export const Snippet: Story = {
 }
 
 export const Terminal: Story = {
-  args: { title: undefined, language: 'bash', code: 'pnpm add @orange/ui @orange/tokens' },
+  args: { title: undefined, language: 'bash', code: 'pnpm add @orangesys/ui @orangesys/tokens' },
 }
 
 export const Wrap: Story = {

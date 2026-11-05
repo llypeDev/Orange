@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { SegmentedControl } from '@orange/ui'
+import { SegmentedControl } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Disabled from './examples/Disabled'

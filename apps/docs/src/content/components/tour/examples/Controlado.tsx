@@ -1,4 +1,4 @@
-import { Button, Icon, Search, Tour, type TourStep } from '@orange/ui'
+import { Button, Icon, Search, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlado() {

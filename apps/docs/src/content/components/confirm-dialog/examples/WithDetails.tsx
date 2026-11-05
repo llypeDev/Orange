@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@orange/ui'
+import { Button, ConfirmDialog } from '@orangesys/ui'
 
 const integracoes = [
   'Slack — canal #vendas',

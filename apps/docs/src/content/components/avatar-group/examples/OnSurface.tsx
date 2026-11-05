@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Button } from '@orange/ui'
+import { Avatar, AvatarGroup, Button } from '@orangesys/ui'
 import type { CSSProperties } from 'react'
 
 const editors = ['Mariana Lopes', 'Rafael Costa', 'Beatriz Nunes', 'Diego Almeida', 'Lívia Martins']

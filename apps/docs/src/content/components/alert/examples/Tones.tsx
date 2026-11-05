@@ -1,4 +1,4 @@
-import { Alert } from '@orange/ui'
+import { Alert } from '@orangesys/ui'
 
 export default function Tones() {
   return (

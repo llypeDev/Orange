@@ -1,4 +1,4 @@
-import { Grid, Paper, Reveal, Stack, Text } from '@orange/ui'
+import { Grid, Paper, Reveal, Stack, Text } from '@orangesys/ui'
 
 const colecoes = [
   { id: 'home-office', nome: 'Home office', itens: '48 produtos' },

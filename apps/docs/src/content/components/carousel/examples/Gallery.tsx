@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Carousel, CarouselSlide, Image, Text } from '@orange/ui'
+import { Carousel, CarouselSlide, Image, Text } from '@orangesys/ui'
 import fone from './media/fone.svg'
 import garrafa from './media/garrafa.svg'
 import mochila from './media/mochila.svg'

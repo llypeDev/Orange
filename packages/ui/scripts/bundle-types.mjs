@@ -5,10 +5,10 @@
  * Por quê: o `tsc` emite imports relativos sem extensão (`export * from './components'`)
  * e mantém `import './Button.css'` nas declarações. Isso funciona com
  * `moduleResolution: "bundler"`, mas quebra os tipos em `node16`/`nodenext` e faz
- * o `require('@orange/ui')` receber tipos ESM ("masquerading as ESM"). Um arquivo
+ * o `require('@orangesys/ui')` receber tipos ESM ("masquerading as ESM"). Um arquivo
  * único, sem imports relativos, resolve igual em todos os modos.
  *
- * Roda no fim de `pnpm --filter @orange/ui build`.
+ * Roda no fim de `pnpm --filter @orangesys/ui build`.
  */
 import { copyFile, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'

@@ -1,4 +1,4 @@
-import { Splitter, SplitterHandle, SplitterPanel } from '@orange/ui'
+import { Splitter, SplitterHandle, SplitterPanel } from '@orangesys/ui'
 import { useState } from 'react'
 
 const tickets = [

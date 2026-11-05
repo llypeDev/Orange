@@ -1,4 +1,4 @@
-import { Icon, SplitButton } from '@orange/ui'
+import { Icon, SplitButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Outline() {

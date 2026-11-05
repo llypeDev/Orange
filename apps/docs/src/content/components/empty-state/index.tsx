@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Button, EmptyState } from '@orange/ui'
+import { Button, EmptyState } from '@orangesys/ui'
 import Compact from './examples/Compact'
 import CompactCode from './examples/Compact?raw'
 import Entrance from './examples/Entrance'

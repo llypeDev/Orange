@@ -1,4 +1,4 @@
-import { Button, Field, useFieldControlProps } from '@orange/ui'
+import { Button, Field, useFieldControlProps } from '@orangesys/ui'
 import { useState } from 'react'
 
 function CampoCupom({ valor, onChange }: { valor: string; onChange: (v: string) => void }) {

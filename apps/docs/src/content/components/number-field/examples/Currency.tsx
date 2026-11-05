@@ -1,4 +1,4 @@
-import { NumberField } from '@orange/ui'
+import { NumberField } from '@orangesys/ui'
 
 export default function Currency() {
   return (

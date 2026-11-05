@@ -1,4 +1,4 @@
-import { SkipLink } from '@orange/ui'
+import { SkipLink } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 
 // Coloque o SkipLink como o PRIMEIRO elemento focável do layout e dê ao

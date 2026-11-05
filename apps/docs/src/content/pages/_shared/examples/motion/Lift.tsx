@@ -1,4 +1,4 @@
-import { Icon } from '@orange/ui'
+import { Icon } from '@orangesys/ui'
 
 const planos = [
   { nome: 'Starter', preco: 'R$ 0', texto: '1 loja, 100 pedidos por mês.' },

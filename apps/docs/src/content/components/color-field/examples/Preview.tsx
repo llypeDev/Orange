@@ -1,4 +1,4 @@
-import { ColorField } from '@orange/ui'
+import { ColorField } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Preview() {

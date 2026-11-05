@@ -2,8 +2,8 @@
  * Sincroniza os tokens do Orange com as variáveis de um arquivo do Figma pela
  * API REST de variáveis.
  *
- *   pnpm --filter @orange/tokens figma:sync --dry-run   # só mostra o payload
- *   FIGMA_TOKEN=… FIGMA_FILE_KEY=… pnpm --filter @orange/tokens figma:sync
+ *   pnpm --filter @orangesys/tokens figma:sync --dry-run   # só mostra o payload
+ *   FIGMA_TOKEN=… FIGMA_FILE_KEY=… pnpm --filter @orangesys/tokens figma:sync
  *
  * Nunca roda em CI por padrão (veja `requireSyncEnvironment`). A lógica fica em
  * `figma-variables.ts`; aqui só há argumentos, ambiente e rede.

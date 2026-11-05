@@ -5,7 +5,7 @@ import {
   ToggleButtonGroup,
   Toolbar,
   ToolbarSeparator,
-} from '@orange/ui'
+} from '@orangesys/ui'
 
 export default function Vertical() {
   return (

@@ -1,4 +1,4 @@
-import { Button, Tag } from '@orange/ui'
+import { Button, Tag } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 const initial = ['São Paulo', 'Até R$ 200', 'Frete grátis', 'Avaliação 4+']

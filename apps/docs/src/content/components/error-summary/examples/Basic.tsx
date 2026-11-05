@@ -1,4 +1,4 @@
-import { ErrorSummary, TextField } from '@orange/ui'
+import { ErrorSummary, TextField } from '@orangesys/ui'
 
 export default function Basic() {
   return (

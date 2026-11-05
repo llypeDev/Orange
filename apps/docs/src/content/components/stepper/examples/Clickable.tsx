@@ -1,4 +1,4 @@
-import { Stepper } from '@orange/ui'
+import { Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 const steps = [

@@ -1,4 +1,4 @@
-import { HoverCard } from '@orange/ui'
+import { HoverCard } from '@orangesys/ui'
 
 const pessoas = [
   { usuario: 'bruno', nome: 'Bruno Lima', cargo: 'Engenharia · Plataforma', status: 'Disponível' },

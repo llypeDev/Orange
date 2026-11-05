@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, Tabs } from '@orange/ui'
+import { Tab, TabList, TabPanel, Tabs } from '@orangesys/ui'
 import { useState } from 'react'
 
 const periods = { '7d': 'Últimos 7 dias', '30d': 'Últimos 30 dias', '90d': 'Últimos 90 dias', '12m': 'Últimos 12 meses' }

@@ -1,4 +1,4 @@
-import { Button, Divider } from '@orange/ui'
+import { Button, Divider } from '@orangesys/ui'
 
 export default function WithLabel() {
   return (

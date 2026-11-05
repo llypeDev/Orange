@@ -1,4 +1,4 @@
-import { TextField } from '@orange/ui'
+import { TextField } from '@orangesys/ui'
 import { useState } from 'react'
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)

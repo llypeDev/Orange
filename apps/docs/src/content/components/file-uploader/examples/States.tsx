@@ -1,4 +1,4 @@
-import { FileUploader, type FileUploaderItem } from '@orange/ui'
+import { FileUploader, type FileUploaderItem } from '@orangesys/ui'
 
 const arquivo = (nome: string, bytes: number, tipo: string) => {
   const file = new File([''], nome, { type: tipo })

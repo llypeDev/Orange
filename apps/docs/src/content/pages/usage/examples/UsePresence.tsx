@@ -1,4 +1,4 @@
-import { Button, Icon, usePresence } from '@orange/ui'
+import { Button, Icon, usePresence } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function AvisoDeSalvamento() {

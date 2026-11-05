@@ -1,4 +1,4 @@
-import { useTheme } from '@orange/ui'
+import { useTheme } from '@orangesys/ui'
 import { useState, type ReactNode } from 'react'
 import { useLang, type Localized } from '../i18n'
 import { CodeBlock } from './CodeBlock'

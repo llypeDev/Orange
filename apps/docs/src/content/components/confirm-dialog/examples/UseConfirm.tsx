@@ -1,4 +1,4 @@
-import { Button, Icon, useConfirm } from '@orange/ui'
+import { Button, Icon, useConfirm } from '@orangesys/ui'
 import { useState } from 'react'
 
 const membrosIniciais = ['Ana Souza', 'Bruno Lima', 'Carla Mendes']

@@ -15,7 +15,7 @@ interface LangContextValue {
   t: <T>(value: Localized<T>) => T
   /** Prefixa um caminho interno com o idioma: `to('/components/button')` → `/pt/components/button`. */
   to: (path: string) => string
-  /** Locale do `@orange/ui` correspondente. */
+  /** Locale do `@orangesys/ui` correspondente. */
   uiLocale: 'pt-BR' | 'en-US'
 }
 

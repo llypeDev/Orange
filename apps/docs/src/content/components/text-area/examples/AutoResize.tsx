@@ -1,4 +1,4 @@
-import { Button, TextArea } from '@orange/ui'
+import { Button, TextArea } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function AutoResize() {

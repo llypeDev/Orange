@@ -1,4 +1,4 @@
-import { Button, Icon, PasswordField, TextField } from '@orange/ui'
+import { Button, Icon, PasswordField, TextField } from '@orangesys/ui'
 
 export default function SignIn() {
   return (

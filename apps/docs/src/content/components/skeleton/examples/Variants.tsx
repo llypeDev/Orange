@@ -1,4 +1,4 @@
-import { Skeleton } from '@orange/ui'
+import { Skeleton } from '@orangesys/ui'
 
 export default function Variants() {
   return (

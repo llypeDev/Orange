@@ -1,4 +1,4 @@
-import { Button, Divider, Icon } from '@orange/ui'
+import { Button, Divider, Icon } from '@orangesys/ui'
 
 export default function Vertical() {
   return (

@@ -1,4 +1,4 @@
-import { Icon, ToggleButton, ToggleButtonGroup } from '@orange/ui'
+import { Icon, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Align = 'left' | 'center' | 'right'

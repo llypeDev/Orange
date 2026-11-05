@@ -13,7 +13,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Button, Stack } from '@orange/ui'
+import { Button, Stack } from '@orangesys/ui'
 import Alinhamento from './examples/Alinhamento'
 import AlinhamentoCode from './examples/Alinhamento?raw'
 import Configuracoes from './examples/Configuracoes'
@@ -24,7 +24,7 @@ import Separadores from './examples/Separadores'
 import SeparadoresCode from './examples/Separadores?raw'
 import { meta } from './meta'
 
-const revealCode = `import { Reveal, Stack } from '@orange/ui'
+const revealCode = `import { Reveal, Stack } from '@orangesys/ui'
 
 // Reveal com stagger escalona os filhos diretos DELE. Para escalonar os
 // itens de uma Stack, envolva cada item em um Reveal com index:

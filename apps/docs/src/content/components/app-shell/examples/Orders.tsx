@@ -10,7 +10,7 @@ import {
   SideNavGroup,
   SideNavItem,
   Tag,
-} from '@orange/ui'
+} from '@orangesys/ui'
 
 const orders = [
   {

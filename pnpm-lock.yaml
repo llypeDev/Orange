@@ -50,10 +50,10 @@ importers:
 
   apps/docs:
     dependencies:
-      '@orange/tokens':
+      '@orangesys/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@orange/ui':
+      '@orangesys/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       prism-react-renderer:
@@ -84,10 +84,10 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@orange/tokens':
+      '@orangesys/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@orange/ui':
+      '@orangesys/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       react:
@@ -136,7 +136,7 @@ importers:
       '@floating-ui/react-dom':
         specifier: ^2.1.6
         version: 2.1.9(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@orange/tokens':
+      '@orangesys/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:

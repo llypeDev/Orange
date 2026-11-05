@@ -1,4 +1,4 @@
-import { Rating } from '@orange/ui'
+import { Rating } from '@orangesys/ui'
 
 export default function Sizes() {
   return (

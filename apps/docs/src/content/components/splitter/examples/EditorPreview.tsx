@@ -1,4 +1,4 @@
-import { Splitter, SplitterHandle, SplitterPanel, TextArea } from '@orange/ui'
+import { Splitter, SplitterHandle, SplitterPanel, TextArea } from '@orangesys/ui'
 import { useState } from 'react'
 
 const initialText =

@@ -1,4 +1,4 @@
-import { Grid, GridItem, Heading, Paper, Stack, Text } from '@orange/ui'
+import { Grid, GridItem, Heading, Paper, Stack, Text } from '@orangesys/ui'
 
 export default function Painel() {
   return (

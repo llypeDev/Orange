@@ -1,4 +1,4 @@
-import { BottomNavigation, Icon } from '@orange/ui'
+import { BottomNavigation, Icon } from '@orangesys/ui'
 
 export default function Badges() {
   return (

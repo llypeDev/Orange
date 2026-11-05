@@ -1,4 +1,4 @@
-import { CodeBlock } from '@orange/ui'
+import { CodeBlock } from '@orangesys/ui'
 
 const excerpt = `  const { t } = useLocale()
   const [open, setOpen] = useState(false)

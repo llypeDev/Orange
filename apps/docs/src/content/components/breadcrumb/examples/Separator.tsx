@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, Icon } from '@orange/ui'
+import { Breadcrumb, BreadcrumbItem, Icon } from '@orangesys/ui'
 
 export default function Separator() {
   return (

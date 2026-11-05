@@ -1,4 +1,4 @@
-import { Button, Listbox, ListboxGroup, ListboxOption } from '@orange/ui'
+import { Button, Listbox, ListboxGroup, ListboxOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const grupos = [

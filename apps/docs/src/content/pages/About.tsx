@@ -1,5 +1,5 @@
-import { iconNames, ptBR } from '@orange/ui'
-import { primitives, themes } from '@orange/tokens'
+import { iconNames, ptBR } from '@orangesys/ui'
+import { primitives, themes } from '@orangesys/tokens'
 import { T, useLang } from '../../i18n'
 import { Bullets, Callout, Code, DefinitionTable, DocPage, Prose, Section } from '../../kit'
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
@@ -164,9 +164,9 @@ export default function About() {
               pt={
                 <>
                   O Orange reúne em um único repositório tudo o que uma equipe precisa para entregar
-                  telas consistentes: os <strong>tokens</strong> (<Code>@orange/tokens</Code>) que
+                  telas consistentes: os <strong>tokens</strong> (<Code>@orangesys/tokens</Code>) que
                   definem cor, tipografia, espaço e movimento; os <strong>componentes React</strong>{' '}
-                  (<Code>@orange/ui</Code>) que consomem esses tokens; os <strong>hooks</strong> de
+                  (<Code>@orangesys/ui</Code>) que consomem esses tokens; os <strong>hooks</strong> de
                   acessibilidade usados para construí-los; e esta documentação, que é escrita com os
                   próprios componentes.
                 </>
@@ -174,9 +174,9 @@ export default function About() {
               en={
                 <>
                   Orange brings into a single repository everything a team needs to ship consistent
-                  screens: the <strong>tokens</strong> (<Code>@orange/tokens</Code>) defining color,
+                  screens: the <strong>tokens</strong> (<Code>@orangesys/tokens</Code>) defining color,
                   type, space and motion; the <strong>React components</strong> (
-                  <Code>@orange/ui</Code>) that consume them; the accessibility{' '}
+                  <Code>@orangesys/ui</Code>) that consume them; the accessibility{' '}
                   <strong>hooks</strong> used to build them; and this documentation, written with
                   the components themselves.
                 </>

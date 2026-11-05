@@ -1,5 +1,5 @@
-import { primitives, themes, type ThemeName } from '@orange/tokens'
-import { contrastRatio, wcagLevel, type WcagLevel } from '@orange/tokens/contrast'
+import { primitives, themes, type ThemeName } from '@orangesys/tokens'
+import { contrastRatio, wcagLevel, type WcagLevel } from '@orangesys/tokens/contrast'
 
 /** Converte `rgba(r, g, b, a)` (ou hex) em hex opaco, compondo sobre `background`. */
 export function flatten(value: string, background: string): string {

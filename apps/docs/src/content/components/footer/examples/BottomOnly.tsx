@@ -1,4 +1,4 @@
-import { Footer } from '@orange/ui'
+import { Footer } from '@orangesys/ui'
 
 export default function BottomOnly() {
   // Telas internas (checkout, painel): só a barra inferior, sem mapa do site.

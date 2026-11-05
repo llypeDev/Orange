@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip } from '@orange/ui'
+import { Button, Icon, Tooltip } from '@orangesys/ui'
 
 export default function Shortcut() {
   return (

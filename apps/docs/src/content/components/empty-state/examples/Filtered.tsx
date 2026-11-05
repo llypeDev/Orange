@@ -1,4 +1,4 @@
-import { Button, EmptyState } from '@orange/ui'
+import { Button, EmptyState } from '@orangesys/ui'
 
 export default function Filtered() {
   return (

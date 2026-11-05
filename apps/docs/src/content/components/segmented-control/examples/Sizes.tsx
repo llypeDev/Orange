@@ -1,4 +1,4 @@
-import { SegmentedControl, type SegmentedControlOption } from '@orange/ui'
+import { SegmentedControl, type SegmentedControlOption } from '@orangesys/ui'
 
 const units: SegmentedControlOption[] = [
   { value: 'km', label: 'Quilômetros' },

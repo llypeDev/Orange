@@ -1,4 +1,4 @@
-import { Icon, Spinner, useTheme } from '@orange/ui'
+import { Icon, Spinner, useTheme } from '@orangesys/ui'
 import { useEffect, useRef, useState, type RefObject } from 'react'
 import { useHref } from 'react-router-dom'
 import { useLang, type Localized } from '../../../i18n'

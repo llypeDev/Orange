@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Sparkline, Stat } from '@orange/ui'
+import { Card, CardBody, CardHeader, Sparkline, Stat } from '@orangesys/ui'
 
 export default function StatCards() {
   return (

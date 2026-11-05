@@ -1,4 +1,4 @@
-import { Alert, Button } from '@orange/ui'
+import { Alert, Button } from '@orangesys/ui'
 
 export default function WithActions() {
   return (

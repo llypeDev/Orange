@@ -1,4 +1,4 @@
-import { TimeField } from '@orange/ui'
+import { TimeField } from '@orangesys/ui'
 
 export default function Basic() {
   return (

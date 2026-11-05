@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter } from '@orange/ui'
+import { Button, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
 
 const clausulas = [
   'Coletamos apenas os dados necessários para operar sua conta: nome, e-mail e informações de uso.',

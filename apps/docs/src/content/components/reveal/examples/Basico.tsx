@@ -1,4 +1,4 @@
-import { Reveal } from '@orange/ui'
+import { Reveal } from '@orangesys/ui'
 
 export default function Basico() {
   return (

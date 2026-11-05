@@ -33,7 +33,7 @@
   max-width: none;
 }
 
-/* Gutter responsivo (breakpoints md 768 e lg 1024 de @orange/tokens) -------- */
+/* Gutter responsivo (breakpoints md 768 e lg 1024 de @orangesys/tokens) -------- */
 
 @media (min-width: 768px) {
   .or-container {

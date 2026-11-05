@@ -1,4 +1,4 @@
-import { Button, Icon, Reveal, useReducedMotion } from '@orange/ui'
+import { Button, Icon, Reveal, useReducedMotion } from '@orangesys/ui'
 import { useRef } from 'react'
 
 const pedidos = [

@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter } from '@orange/ui'
+import { Button, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
 import {
   Bullets,
   Code,

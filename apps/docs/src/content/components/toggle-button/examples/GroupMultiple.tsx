@@ -1,4 +1,4 @@
-import { ToggleButton, ToggleButtonGroup } from '@orange/ui'
+import { ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function GroupMultiple() {

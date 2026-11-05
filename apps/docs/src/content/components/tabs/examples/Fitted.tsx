@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, Tabs } from '@orange/ui'
+import { Tab, TabList, TabPanel, Tabs } from '@orangesys/ui'
 
 export default function Fitted() {
   return (

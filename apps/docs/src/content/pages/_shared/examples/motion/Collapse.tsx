@@ -1,4 +1,4 @@
-import { Icon } from '@orange/ui'
+import { Icon } from '@orangesys/ui'
 import { useId, useState } from 'react'
 
 const perguntas = [

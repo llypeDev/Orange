@@ -1,4 +1,4 @@
-import { BarChart } from '@orange/ui'
+import { BarChart } from '@orangesys/ui'
 
 const canais = [
   { key: 'site', label: 'Site' },

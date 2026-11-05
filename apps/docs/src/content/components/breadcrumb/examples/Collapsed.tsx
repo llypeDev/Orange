@@ -1,4 +1,4 @@
-import { Breadcrumb, Icon } from '@orange/ui'
+import { Breadcrumb, Icon } from '@orangesys/ui'
 
 const path = [
   { label: 'Início', href: '#inicio', icon: <Icon name="home" /> },

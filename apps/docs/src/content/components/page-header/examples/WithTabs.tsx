@@ -1,4 +1,4 @@
-import { Button, PageHeader, Tab, TabList, TabPanel, Tabs } from '@orange/ui'
+import { Button, PageHeader, Tab, TabList, TabPanel, Tabs } from '@orangesys/ui'
 
 export default function WithTabs() {
   return (

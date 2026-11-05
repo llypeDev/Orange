@@ -1,4 +1,4 @@
-import { Meter } from '@orange/ui'
+import { Meter } from '@orangesys/ui'
 
 const gb = (value: number, { max }: { max: number }) => `${value} GB de ${max} GB`
 

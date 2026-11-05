@@ -1,4 +1,4 @@
-import { Sparkline } from '@orange/ui'
+import { Sparkline } from '@orangesys/ui'
 
 const produtos = [
   { nome: 'Fone sem fio', vendas: [42, 38, 51, 47, 55, 61, 66], resumo: 'subiu 57% na semana' },

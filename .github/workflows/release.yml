@@ -1,6 +1,6 @@
 name: Release
 
-# Versiona e publica @orange/tokens e @orange/ui com Changesets (ver CONTRIBUTING.md → Publicação).
+# Versiona e publica @orangesys/tokens e @orangesys/ui com Changesets (ver CONTRIBUTING.md → Publicação).
 #
 # 1. Push em main com changesets pendentes → abre ou atualiza o PR "Versionar pacotes"
 #    (versões novas + CHANGELOG.md de cada pacote).
@@ -61,7 +61,7 @@ jobs:
           fi
           echo "available=false" >> "$GITHUB_OUTPUT"
           case "$MODE" in
-            publish) msg="Há versões novas de @orange/tokens e @orange/ui prontas, mas a publicação no npm foi pulada porque o secret NPM_TOKEN não está configurado. Veja CONTRIBUTING.md, seção Publicação." ;;
+            publish) msg="Há versões novas de @orangesys/tokens e @orangesys/ui prontas, mas a publicação no npm foi pulada porque o secret NPM_TOKEN não está configurado. Veja CONTRIBUTING.md, seção Publicação." ;;
             version) msg="O secret NPM_TOKEN não está configurado: o PR \"Versionar pacotes\" será aberto ou atualizado, mas o merge dele não publicará no npm. Veja CONTRIBUTING.md, seção Publicação." ;;
             *) exit 0 ;;
           esac
@@ -121,7 +121,7 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
-      - name: Publicar @orange/tokens e @orange/ui
+      - name: Publicar @orangesys/tokens e @orangesys/ui
         uses: changesets/action/publish@v2.1.2
         with:
           # gen + build dos pacotes + changeset publish (usa pnpm publish: aplica publishConfig e troca workspace:*)

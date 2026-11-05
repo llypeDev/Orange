@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardHeader, CardMedia, Icon } from '@orange/ui'
+import { Button, Card, CardBody, CardHeader, CardMedia, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 import guia from './media/guia.svg'
 import integracao from './media/integracao.svg'

@@ -6,7 +6,7 @@ import {
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useState } from 'react'
 
 type Align = 'left' | 'center' | 'right'

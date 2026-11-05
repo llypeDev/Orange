@@ -1,4 +1,4 @@
-import { CopyButton } from '@orange/ui'
+import { CopyButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function OnCopy() {

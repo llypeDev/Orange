@@ -1,4 +1,4 @@
-import { Grid, Stat } from '@orange/ui'
+import { Grid, Stat } from '@orangesys/ui'
 
 export default function Metricas() {
   return (

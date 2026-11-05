@@ -1,4 +1,4 @@
-import { Button, Icon, useReducedMotion } from '@orange/ui'
+import { Button, Icon, useReducedMotion } from '@orangesys/ui'
 import { useState } from 'react'
 
 const passos = ['Conecte a loja', 'Importe os pedidos', 'Convide a equipe']

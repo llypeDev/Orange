@@ -1,4 +1,4 @@
-import { Icon, useDebouncedValue } from '@orange/ui'
+import { Icon, useDebouncedValue } from '@orangesys/ui'
 import { useMemo, useState } from 'react'
 
 const cidades = [

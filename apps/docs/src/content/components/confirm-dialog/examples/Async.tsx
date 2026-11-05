@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@orange/ui'
+import { Button, ConfirmDialog } from '@orangesys/ui'
 import { useState } from 'react'
 
 const encerrarSessoes = () => new Promise((resolve) => setTimeout(resolve, 1800))

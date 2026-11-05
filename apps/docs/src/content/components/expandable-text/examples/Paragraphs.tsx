@@ -1,4 +1,4 @@
-import { ExpandableText } from '@orange/ui'
+import { ExpandableText } from '@orangesys/ui'
 
 export default function Paragraphs() {
   return (

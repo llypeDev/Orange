@@ -1,4 +1,4 @@
-import { Eyebrow, Icon, Image, Text } from '@orange/ui'
+import { Eyebrow, Icon, Image, Text } from '@orangesys/ui'
 import reserva from './media/reserva.svg'
 
 export default function Fallbacks() {

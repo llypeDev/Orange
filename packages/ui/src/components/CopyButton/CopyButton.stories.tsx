@@ -20,7 +20,7 @@ const meta = {
     onCopy: { action: 'copy' },
   },
   args: {
-    value: 'pnpm add @orange/ui',
+    value: 'pnpm add @orangesys/ui',
   },
 } satisfies Meta<typeof CopyButton>
 

@@ -1,4 +1,4 @@
-import { Icon, useRovingFocus, type IconName } from '@orange/ui'
+import { Icon, useRovingFocus, type IconName } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 const ferramentas: { id: string; rotulo: string; icone: IconName }[] = [

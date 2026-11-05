@@ -1,4 +1,4 @@
-import { IconButton } from '@orange/ui'
+import { IconButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function States() {

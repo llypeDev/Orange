@@ -463,7 +463,7 @@ export function parseSyncArgs(argv: string[]): SyncOptions {
   }
 }
 
-export const usage = `Uso: pnpm --filter @orange/tokens figma:sync [--dry-run] [--allow-ci]
+export const usage = `Uso: pnpm --filter @orangesys/tokens figma:sync [--dry-run] [--allow-ci]
 
 Envia os tokens do Orange para as variáveis de um arquivo do Figma
 (coleções "${figmaCollections.primitives}" e "${figmaCollections.theme}").
@@ -499,7 +499,7 @@ export function requireSyncEnvironment(
         `Faltam variáveis de ambiente: ${missing.join(', ')}.`,
         '  FIGMA_TOKEN     token pessoal do Figma com os escopos file_variables:read e file_variables:write',
         '  FIGMA_FILE_KEY  chave do arquivo (o trecho depois de /design/ na URL do Figma)',
-        'Para ver o payload sem chamar a API: pnpm --filter @orange/tokens figma:sync --dry-run',
+        'Para ver o payload sem chamar a API: pnpm --filter @orangesys/tokens figma:sync --dry-run',
       ].join('\n'),
     )
   }

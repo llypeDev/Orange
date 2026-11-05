@@ -1,4 +1,4 @@
-import { Container, Paper, Stack, Text } from '@orange/ui'
+import { Container, Paper, Stack, Text } from '@orangesys/ui'
 
 const tamanhos = [
   { size: 'sm', uso: '640px — formulários e textos longos' },

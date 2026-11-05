@@ -1,4 +1,4 @@
-import { Button, Icon, Timeline, TimelineItem } from '@orange/ui'
+import { Button, Icon, Timeline, TimelineItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Animated() {

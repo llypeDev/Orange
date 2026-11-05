@@ -36,7 +36,7 @@ export type CarouselControlsPlacement = 'bottom' | 'top'
 export type CarouselPicker = 'dots' | 'counter' | 'none'
 export type CarouselAutoplay = boolean | { interval: number }
 
-/** Valores por breakpoint (largura mínima, mesmos de `@orange/tokens`). */
+/** Valores por breakpoint (largura mínima, mesmos de `@orangesys/tokens`). */
 export interface CarouselResponsiveValue {
   /** Abaixo de 640px. */
   base?: number
@@ -52,7 +52,7 @@ export interface CarouselResponsiveValue {
 
 export type CarouselSlidesPerView = number | CarouselResponsiveValue
 
-/* Espelha `breakpoints` de @orange/tokens (sm 640, md 768, lg 1024, xl 1280). */
+/* Espelha `breakpoints` de @orangesys/tokens (sm 640, md 768, lg 1024, xl 1280). */
 const MEDIA = {
   sm: '(min-width: 640px)',
   md: '(min-width: 768px)',

@@ -1,5 +1,5 @@
-import { useMediaQuery } from '@orange/ui'
-import { breakpoints, layout, space } from '@orange/tokens'
+import { useMediaQuery } from '@orangesys/ui'
+import { breakpoints, layout, space } from '@orangesys/tokens'
 import { T, useLang, type Localized } from '../../../i18n'
 import { Bullets, Code, CodeBlock, DocPage, DoDont, Prose, Section } from '../../../kit'
 import { TableWrap } from '../_shared/Blocks'
@@ -243,7 +243,7 @@ export default function GridPage() {
                 <>
                   Os breakpoints são <em>min-width</em> (mobile first). Custom properties não
                   funcionam dentro de <Code>@media</Code>, então em CSS os valores são repetidos; em
-                  JavaScript, importe <Code>breakpoints</Code> de <Code>@orange/tokens</Code> e use{' '}
+                  JavaScript, importe <Code>breakpoints</Code> de <Code>@orangesys/tokens</Code> e use{' '}
                   <Code>useMediaQuery</Code>.
                 </>
               }
@@ -251,7 +251,7 @@ export default function GridPage() {
                 <>
                   Breakpoints are <em>min-width</em> (mobile first). Custom properties don’t work
                   inside <Code>@media</Code>, so CSS repeats the values; in JavaScript, import{' '}
-                  <Code>breakpoints</Code> from <Code>@orange/tokens</Code> and use{' '}
+                  <Code>breakpoints</Code> from <Code>@orangesys/tokens</Code> and use{' '}
                   <Code>useMediaQuery</Code>.
                 </>
               }
@@ -299,8 +299,8 @@ export default function GridPage() {
         <CodeBlock
           language="tsx"
           title="responsivo.tsx"
-          code={`import { breakpoints } from '@orange/tokens'
-import { useMediaQuery } from '@orange/ui'
+          code={`import { breakpoints } from '@orangesys/tokens'
+import { useMediaQuery } from '@orangesys/ui'
 
 // CSS: @media (min-width: 1024px) { … }
 const desktop = useMediaQuery(\`(min-width: \${breakpoints.lg})\`)

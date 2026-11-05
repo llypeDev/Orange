@@ -1,4 +1,4 @@
-import { Link } from '@orange/ui'
+import { Link } from '@orangesys/ui'
 import { forwardRef, type AnchorHTMLAttributes } from 'react'
 
 // Em um app real, importe o link do seu roteador:

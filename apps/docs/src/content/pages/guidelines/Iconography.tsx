@@ -1,4 +1,4 @@
-import { Button, Icon, iconNames, useClipboard, useDebouncedValue, type IconName } from '@orange/ui'
+import { Button, Icon, iconNames, useClipboard, useDebouncedValue, type IconName } from '@orangesys/ui'
 import { useId, useMemo, useState } from 'react'
 import { T, useLang } from '../../../i18n'
 import {
@@ -259,7 +259,7 @@ export default function IconographyPage() {
           </p>
         </Prose>
         <Example
-          code={`import { Button, Icon } from '@orange/ui'
+          code={`import { Button, Icon } from '@orangesys/ui'
 
 {/* Decorativo: o texto já diz tudo */}
 <Button startIcon={<Icon name="download" />}>Exportar CSV</Button>

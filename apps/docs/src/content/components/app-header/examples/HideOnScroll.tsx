@@ -1,4 +1,4 @@
-import { AppHeader, Button, Icon } from '@orange/ui'
+import { AppHeader, Button, Icon } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 
 // No layout raiz: o cabeçalho sobe ao rolar para baixo (depois de 120px) e

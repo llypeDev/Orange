@@ -1,4 +1,4 @@
-import { Grid, Icon, Paper, Stack, Text } from '@orange/ui'
+import { Grid, Icon, Paper, Stack, Text } from '@orangesys/ui'
 
 const integracoes = [
   { id: 'email', icone: 'mail', nome: 'E-mail marketing' },

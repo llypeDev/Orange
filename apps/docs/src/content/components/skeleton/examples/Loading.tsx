@@ -1,4 +1,4 @@
-import { Button, Skeleton, VisuallyHidden } from '@orange/ui'
+import { Button, Skeleton, VisuallyHidden } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const orders = [

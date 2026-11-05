@@ -1,4 +1,4 @@
-import { Table, Tag, type TableColumn } from '@orange/ui'
+import { Table, Tag, type TableColumn } from '@orangesys/ui'
 
 interface Invoice {
   id: string

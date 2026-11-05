@@ -1,4 +1,4 @@
-import { buttonClassName } from '@orange/ui'
+import { buttonClassName } from '@orangesys/ui'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../i18n'
 import { DocPage } from '../../kit'

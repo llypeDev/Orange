@@ -1,4 +1,4 @@
-import { Icon } from '@orange/ui'
+import { Icon } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 import { useLang, type Localized } from '../../i18n'
 import { DocPage } from '../../kit'

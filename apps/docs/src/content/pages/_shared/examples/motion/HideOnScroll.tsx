@@ -1,4 +1,4 @@
-import { useScrollDirection } from '@orange/ui'
+import { useScrollDirection } from '@orangesys/ui'
 
 export default function CabecalhoQueSeEsconde() {
   const { direction, pastThreshold } = useScrollDirection({ threshold: 160 })

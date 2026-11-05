@@ -1,4 +1,4 @@
-import { FileUploader } from '@orange/ui'
+import { FileUploader } from '@orangesys/ui'
 
 export default function Basic() {
   return (

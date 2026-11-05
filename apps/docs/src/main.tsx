@@ -1,4 +1,4 @@
-import '@orange/ui/styles.css'
+import '@orangesys/ui/styles.css'
 import './styles/docs.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

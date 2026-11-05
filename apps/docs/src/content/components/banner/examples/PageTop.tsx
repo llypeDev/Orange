@@ -1,4 +1,4 @@
-import { Banner } from '@orange/ui'
+import { Banner } from '@orangesys/ui'
 
 export default function PageTop() {
   return (

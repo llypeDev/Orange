@@ -1,4 +1,4 @@
-import { Slider } from '@orange/ui'
+import { Slider } from '@orangesys/ui'
 
 const planos: Record<number, string> = {
   1: 'Individual',

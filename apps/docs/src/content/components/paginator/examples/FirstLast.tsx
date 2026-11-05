@@ -1,4 +1,4 @@
-import { Paginator } from '@orange/ui'
+import { Paginator } from '@orangesys/ui'
 
 export default function FirstLast() {
   return (

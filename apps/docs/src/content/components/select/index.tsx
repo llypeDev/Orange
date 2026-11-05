@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Select } from '@orange/ui'
+import { Select } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Groups from './examples/Groups'

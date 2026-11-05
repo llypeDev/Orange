@@ -1,4 +1,4 @@
-import { InlineEdit } from '@orange/ui'
+import { InlineEdit } from '@orangesys/ui'
 
 const campos = [
   { label: 'Nome completo', valor: 'Ana Beatriz Costa' },

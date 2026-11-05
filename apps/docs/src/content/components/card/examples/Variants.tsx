@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from '@orange/ui'
+import { Card, CardBody, CardHeader } from '@orangesys/ui'
 
 export default function Variants() {
   return (

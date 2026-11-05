@@ -1,6 +1,6 @@
-import { CopyButton } from '@orange/ui'
+import { CopyButton } from '@orangesys/ui'
 
-const command = 'pnpm add @orange/ui @orange/tokens'
+const command = 'pnpm add @orangesys/ui @orangesys/tokens'
 
 export default function Command() {
   return (

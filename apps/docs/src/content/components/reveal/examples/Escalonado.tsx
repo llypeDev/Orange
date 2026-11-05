@@ -1,4 +1,4 @@
-import { Icon, Reveal } from '@orange/ui'
+import { Icon, Reveal } from '@orangesys/ui'
 
 const recursos = [
   { icone: 'layers', titulo: 'Tokens', texto: 'Cor, tipo, espaço e movimento.' },

@@ -12,8 +12,8 @@ import {
   useTheme,
   type IconName,
   type ThemeSetting,
-} from '@orange/ui'
-import { primitives, themes, type ThemeName } from '@orange/tokens'
+} from '@orangesys/ui'
+import { primitives, themes, type ThemeName } from '@orangesys/tokens'
 import { useId, useMemo, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang } from '../../../i18n'
@@ -122,7 +122,7 @@ function ThemeControls() {
   )
 }
 
-const useThemeCode = `import { Button, OrangeProvider, useTheme } from '@orange/ui'
+const useThemeCode = `import { Button, OrangeProvider, useTheme } from '@orangesys/ui'
 
 function SeletorDeTema() {
   const { theme, resolvedTheme, highContrast, setTheme } = useTheme()
@@ -509,7 +509,7 @@ export default function ThemePage() {
         <CodeBlock
           language="tsx"
           title="App.tsx"
-          code={`import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orange/ui'
+          code={`import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orangesys/ui'
 import { useState } from 'react'
 
 const CHAVE = 'tema'
@@ -792,13 +792,13 @@ export function App() {
               pt: (
                 <>
                   Valide no seu CI com <Code>contrastRatio()</Code> de{' '}
-                  <Code>@orange/tokens/contrast</Code>, como em <Code>contrast.test.ts</Code>.
+                  <Code>@orangesys/tokens/contrast</Code>, como em <Code>contrast.test.ts</Code>.
                 </>
               ),
               en: (
                 <>
                   Validate in your CI with <Code>contrastRatio()</Code> from{' '}
-                  <Code>@orange/tokens/contrast</Code>, as in <Code>contrast.test.ts</Code>.
+                  <Code>@orangesys/tokens/contrast</Code>, as in <Code>contrast.test.ts</Code>.
                 </>
               ),
             },

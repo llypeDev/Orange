@@ -2,7 +2,7 @@
  * Dados fictícios do painel da Aurora. Em um app, venham da API — o formato
  * é o que os componentes esperam (Stat, Sparkline, BarChart, LineChart, Table).
  */
-import type { BarChartDatum, BarChartSeries, LineChartDatum, LineChartSeries, StatDeltaTone, StatTrend } from '@orange/ui'
+import type { BarChartDatum, BarChartSeries, LineChartDatum, LineChartSeries, StatDeltaTone, StatTrend } from '@orangesys/ui'
 
 export interface Indicador {
   id: string

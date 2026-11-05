@@ -1,4 +1,4 @@
-import { BottomNavigation, Icon } from '@orange/ui'
+import { BottomNavigation, Icon } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 
 // Em produção, use fixed e reserve espaço no fim da página para a barra.

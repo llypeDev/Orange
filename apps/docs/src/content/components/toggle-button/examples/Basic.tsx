@@ -1,4 +1,4 @@
-import { ToggleButton } from '@orange/ui'
+import { ToggleButton } from '@orangesys/ui'
 
 export default function Basic() {
   return (

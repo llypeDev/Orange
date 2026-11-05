@@ -1,4 +1,4 @@
-import { SplitButton } from '@orange/ui'
+import { SplitButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {

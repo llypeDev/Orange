@@ -16,7 +16,7 @@ import {
   Tabs,
   Tag,
   TextField,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang, type Localized } from '../../../i18n'

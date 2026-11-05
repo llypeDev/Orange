@@ -1,4 +1,4 @@
-import { Button, Icon, useDisclosure } from '@orange/ui'
+import { Button, Icon, useDisclosure } from '@orangesys/ui'
 
 export default function FiltrosAvancados() {
   const filtros = useDisclosure()

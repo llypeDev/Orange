@@ -1,4 +1,4 @@
-import { HoverCard } from '@orange/ui'
+import { HoverCard } from '@orangesys/ui'
 
 export default function LinkPreview() {
   return (

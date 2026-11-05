@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orange/ui'
+import { Button, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
 
 const arquivos = [
   { nome: 'proposta-comercial.pdf', detalhe: '2,4 MB · editado hoje' },

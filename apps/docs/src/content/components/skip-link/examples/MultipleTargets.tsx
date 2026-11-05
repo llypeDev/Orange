@@ -1,4 +1,4 @@
-import { SkipLink } from '@orange/ui'
+import { SkipLink } from '@orangesys/ui'
 
 export default function MultipleTargets() {
   return (

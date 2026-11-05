@@ -1,4 +1,4 @@
-import { Breadcrumb } from '@orange/ui'
+import { Breadcrumb } from '@orangesys/ui'
 import type { AnchorHTMLAttributes } from 'react'
 
 // Em um app real:

@@ -1,4 +1,4 @@
-import { Banner, Button, Icon } from '@orange/ui'
+import { Banner, Button, Icon } from '@orangesys/ui'
 
 export default function Accent() {
   return (

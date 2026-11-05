@@ -4,7 +4,7 @@
  * `LayoutGap` são públicos (via `Stack/index.ts`).
  */
 
-/** Breakpoints de `@orange/tokens` (`breakpoints`), do menor para o maior. */
+/** Breakpoints de `@orangesys/tokens` (`breakpoints`), do menor para o maior. */
 const BREAKPOINTS = ['sm', 'md', 'lg', 'xl'] as const
 
 /**

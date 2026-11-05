@@ -1,4 +1,4 @@
-import { Button, Icon, Popover, useClipboard } from '@orange/ui'
+import { Button, Icon, Popover, useClipboard } from '@orangesys/ui'
 
 export default function Share() {
   const { copy, copied } = useClipboard()

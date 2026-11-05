@@ -1,4 +1,4 @@
-import { Slider } from '@orange/ui'
+import { Slider } from '@orangesys/ui'
 import { useState } from 'react'
 
 const brl = (valor: number) =>

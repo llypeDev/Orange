@@ -1,4 +1,4 @@
-import { Button, EmptyState, Icon } from '@orange/ui'
+import { Button, EmptyState, Icon } from '@orangesys/ui'
 
 export default function FirstUse() {
   return (

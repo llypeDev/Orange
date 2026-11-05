@@ -1,4 +1,4 @@
-import { IconButton } from '@orange/ui'
+import { IconButton } from '@orangesys/ui'
 
 const files = [
   { name: 'Contrato de prestação.pdf', size: '284 KB' },

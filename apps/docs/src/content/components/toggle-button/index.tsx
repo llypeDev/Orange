@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Icon, ToggleButton } from '@orange/ui'
+import { Icon, ToggleButton } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Controlled from './examples/Controlled'

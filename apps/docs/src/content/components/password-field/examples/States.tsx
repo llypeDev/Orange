@@ -1,4 +1,4 @@
-import { PasswordField } from '@orange/ui'
+import { PasswordField } from '@orangesys/ui'
 
 export default function States() {
   return (

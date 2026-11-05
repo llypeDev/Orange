@@ -1,4 +1,4 @@
-import { TruncatedText } from '@orange/ui'
+import { TruncatedText } from '@orangesys/ui'
 
 const arquivos = [
   'Proposta comercial — Implantação do módulo de conciliação para as filiais do interior.pdf',

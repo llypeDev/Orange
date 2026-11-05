@@ -1,4 +1,4 @@
-import { IconButton } from '@orange/ui'
+import { IconButton } from '@orangesys/ui'
 
 export default function Variants() {
   return (

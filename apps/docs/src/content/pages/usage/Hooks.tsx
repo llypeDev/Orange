@@ -102,7 +102,7 @@ export default function HooksPage() {
             <T
               pt={
                 <>
-                  Importe de <Code>@orange/ui</Code>. Os exemplos abaixo rodam ao vivo — abra o
+                  Importe de <Code>@orangesys/ui</Code>. Os exemplos abaixo rodam ao vivo — abra o
                   código de cada um para copiar. <Code>useTheme</Code> e <Code>useLocale</Code>{' '}
                   estão em <Link to={to('/usage/theme')}>Tema</Link> e{' '}
                   <Link to={to('/usage/i18n')}>Internacionalização</Link>.
@@ -110,7 +110,7 @@ export default function HooksPage() {
               }
               en={
                 <>
-                  Import from <Code>@orange/ui</Code>. The examples below run live — open each one’s
+                  Import from <Code>@orangesys/ui</Code>. The examples below run live — open each one’s
                   code to copy it. <Code>useTheme</Code> and <Code>useLocale</Code> are covered in{' '}
                   <Link to={to('/usage/theme')}>Theme</Link> and{' '}
                   <Link to={to('/usage/i18n')}>Internationalization</Link>.
@@ -785,14 +785,14 @@ return <header data-hidden={escondido || undefined} className="cabecalho">…</h
               <>
                 Retorna se a media query corresponde e reage a mudanças. No servidor devolve{' '}
                 <Code>defaultValue</Code>. Para breakpoints, use os valores de{' '}
-                <Code>breakpoints</Code> de <Code>@orange/tokens</Code>.
+                <Code>breakpoints</Code> de <Code>@orangesys/tokens</Code>.
               </>
             ),
             en: (
               <>
                 Returns whether the media query matches and reacts to changes. On the server it
                 returns <Code>defaultValue</Code>. For breakpoints, use the values from{' '}
-                <Code>breakpoints</Code> in <Code>@orange/tokens</Code>.
+                <Code>breakpoints</Code> in <Code>@orangesys/tokens</Code>.
               </>
             ),
           }}

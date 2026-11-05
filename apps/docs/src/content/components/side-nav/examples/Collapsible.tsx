@@ -1,4 +1,4 @@
-import { Icon, SideNav, SideNavGroup, SideNavItem, SideNavSection } from '@orange/ui'
+import { Icon, SideNav, SideNavGroup, SideNavItem, SideNavSection } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Collapsible() {

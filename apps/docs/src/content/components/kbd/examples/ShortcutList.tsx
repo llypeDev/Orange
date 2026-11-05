@@ -1,4 +1,4 @@
-import { Chip, ChipGroup, Kbd, Table, type TableColumn } from '@orange/ui'
+import { Chip, ChipGroup, Kbd, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Shortcut {

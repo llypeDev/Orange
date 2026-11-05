@@ -1,4 +1,4 @@
-import { CurrencyField } from '@orange/ui'
+import { CurrencyField } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {

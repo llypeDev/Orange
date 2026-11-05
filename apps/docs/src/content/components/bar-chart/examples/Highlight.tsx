@@ -1,4 +1,4 @@
-import { BarChart } from '@orange/ui'
+import { BarChart } from '@orangesys/ui'
 
 const pedidos = [312, 348, 401, 377, 452, 518]
 const meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun']

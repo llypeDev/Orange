@@ -1,4 +1,4 @@
-import { Icon, Listbox, ListboxOption } from '@orange/ui'
+import { Icon, Listbox, ListboxOption } from '@orangesys/ui'
 
 export default function Warehouses() {
   return (

@@ -1,4 +1,4 @@
-import { TableOfContents } from '@orange/ui'
+import { TableOfContents } from '@orangesys/ui'
 import { useCallback, useState } from 'react'
 
 export default function ThisPage() {

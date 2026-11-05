@@ -1,4 +1,4 @@
-import { Avatar, type AvatarStatus } from '@orange/ui'
+import { Avatar, type AvatarStatus } from '@orangesys/ui'
 import beatriz from './photos/beatriz.svg'
 import mariana from './photos/mariana.svg'
 

@@ -8,8 +8,8 @@ bordas de 1px e grade explícita.
 
 | Pacote / app        | Descrição                                                        |
 | ------------------- | ---------------------------------------------------------------- |
-| `@orange/tokens`    | Tokens de design (cores, tipografia, espaço, movimento) → CSS     |
-| `@orange/ui`        | Componentes React acessíveis, hooks, ícones e providers          |
+| `@orangesys/tokens`    | Tokens de design (cores, tipografia, espaço, movimento) → CSS     |
+| `@orangesys/ui`        | Componentes React acessíveis, hooks, ícones e providers          |
 | `apps/docs`         | Site de documentação (PT/EN) com guidelines e páginas de componentes |
 | `apps/storybook`    | Storybook 9 com painel de acessibilidade, temas e idiomas        |
 
@@ -36,7 +36,7 @@ critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
 O Orange se move como o zop.dev: **rápido, funcional e geométrico** — e tudo desliga com
 `prefers-reduced-motion`.
 
-- **Tokens** (`@orange/tokens`): durações `press` (90ms) · `fast` · `medium` · `slow` · `reveal` ·
+- **Tokens** (`@orangesys/tokens`): durações `press` (90ms) · `fast` · `medium` · `slow` · `reveal` ·
   `loop`; curvas `out`, `in-out`, `spring`, `bounce`; distâncias `sm` · `md` · `lg` · `lift`; `stagger`.
 - **Utilitários** (`motion.css`): `or-press` (afundar no clique), `or-lift` (subir 4px com sombra sólida
   na base e barra de acento descendo pela borda esquerda, como os cartões do zop.dev), `or-nudge` (seta que desliza), `or-underline`, `or-collapse` (altura 0fr → 1fr),
@@ -69,8 +69,8 @@ pnpm storybook   # Storybook   → http://localhost:6006
 ```
 
 ```tsx
-import '@orange/ui/styles.css'
-import { Button, Icon, OrangeProvider } from '@orange/ui'
+import '@orangesys/ui/styles.css'
+import { Button, Icon, OrangeProvider } from '@orangesys/ui'
 
 export function App() {
   return (
@@ -85,7 +85,7 @@ export function App() {
 
 | Comando          | O que faz                                                  |
 | ---------------- | ---------------------------------------------------------- |
-| `pnpm gen`       | Regenera o índice de componentes de `@orange/ui`           |
+| `pnpm gen`       | Regenera o índice de componentes de `@orangesys/ui`           |
 | `pnpm test`      | Testes (Vitest + Testing Library + axe-core)               |
 | `pnpm typecheck` | TypeScript em todos os pacotes                             |
 | `pnpm lint`      | ESLint com `jsx-a11y` e `react-hooks`                      |

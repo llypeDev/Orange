@@ -1,4 +1,4 @@
-import { Eyebrow, Image } from '@orange/ui'
+import { Eyebrow, Image } from '@orangesys/ui'
 import logotipo from './media/logotipo.svg'
 import retrato from './media/retrato.svg'
 

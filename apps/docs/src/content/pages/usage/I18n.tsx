@@ -8,7 +8,7 @@ import {
   useLocale,
   useTheme,
   type MessageKey,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { Fragment, useId, useMemo, useState } from 'react'
 import { T, useLang } from '../../../i18n'
 import {
@@ -305,7 +305,7 @@ export default function I18nPage() {
         <CodeBlock
           language="tsx"
           title="main.tsx"
-          code={`import { OrangeProvider } from '@orange/ui'
+          code={`import { OrangeProvider } from '@orangesys/ui'
 
 const idioma = navigator.language.startsWith('en') ? 'en-US' : 'pt-BR'
 document.documentElement.lang = idioma
@@ -390,7 +390,7 @@ t('resultsCount', { count: 3 })         // "3 produtos encontrados"`}
               pt={
                 <>
                   Gerada a partir de <Code>ptBR</Code> e <Code>enUS</Code>, exportados por{' '}
-                  <Code>@orange/ui</Code> — esta tabela está sempre em dia com o código. Trechos
+                  <Code>@orangesys/ui</Code> — esta tabela está sempre em dia com o código. Trechos
                   entre chaves, como <span className="guide-var">{'{count}'}</span>, são
                   substituídos na interpolação.
                 </>
@@ -398,7 +398,7 @@ t('resultsCount', { count: 3 })         // "3 produtos encontrados"`}
               en={
                 <>
                   Generated from <Code>ptBR</Code> and <Code>enUS</Code>, exported by{' '}
-                  <Code>@orange/ui</Code> — this table is always in sync with the code. Segments in
+                  <Code>@orangesys/ui</Code> — this table is always in sync with the code. Segments in
                   braces, like <span className="guide-var">{'{count}'}</span>, are replaced during
                   interpolation.
                 </>
@@ -435,7 +435,7 @@ t('resultsCount', { count: 3 })         // "3 produtos encontrados"`}
         <CodeBlock
           language="ts"
           title="interpolate.ts"
-          code={`import { interpolate } from '@orange/ui'
+          code={`import { interpolate } from '@orangesys/ui'
 
 interpolate('Página {page} de {total}', { page: 2, total: 10 })
 // "${interpolate('Página {page} de {total}', { page: 2, total: 10 })}"
@@ -469,7 +469,7 @@ interpolate('Olá, {nome}! Você tem {n} pedidos.', { nome: 'Ana' })
         <CodeBlock
           language="tsx"
           title="Aviso.tsx"
-          code={`import { Button, Icon, useLocale } from '@orange/ui'
+          code={`import { Button, Icon, useLocale } from '@orangesys/ui'
 
 export function Aviso({ children, onDismiss }: { children: React.ReactNode; onDismiss: () => void }) {
   const { t } = useLocale()
@@ -530,7 +530,7 @@ export function Aviso({ children, onDismiss }: { children: React.ReactNode; onDi
         <CodeBlock
           language="tsx"
           title="es-ES.ts"
-          code={`import { enUS, OrangeProvider, type Messages } from '@orange/ui'
+          code={`import { enUS, OrangeProvider, type Messages } from '@orangesys/ui'
 
 export const esES: Messages = {
   ...enUS,
@@ -573,7 +573,7 @@ export const esES: Messages = {
         <CodeBlock
           language="tsx"
           title="Preco.tsx"
-          code={`import { useLocale } from '@orange/ui'
+          code={`import { useLocale } from '@orangesys/ui'
 
 export function Preco({ valor }: { valor: number }) {
   const { locale } = useLocale()

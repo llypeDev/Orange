@@ -1,4 +1,4 @@
-import { Button, Drawer, type DrawerSize } from '@orange/ui'
+import { Button, Drawer, type DrawerSize } from '@orangesys/ui'
 
 const tamanhos: { size: DrawerSize; label: string }[] = [
   { size: 'sm', label: 'sm · 360px' },

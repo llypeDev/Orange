@@ -1,4 +1,4 @@
-import { Chip, ChipGroup } from '@orange/ui'
+import { Chip, ChipGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories = [

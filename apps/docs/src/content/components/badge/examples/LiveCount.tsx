@@ -1,4 +1,4 @@
-import { Badge, Button, Icon } from '@orange/ui'
+import { Badge, Button, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function LiveCount() {

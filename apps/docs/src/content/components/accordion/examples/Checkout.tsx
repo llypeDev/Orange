@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button } from '@orange/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button } from '@orangesys/ui'
 import { useState } from 'react'
 
 const steps = [

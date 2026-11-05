@@ -7,7 +7,7 @@ import { CopyButton } from './CopyButton'
 
 describe('CopyButton', () => {
   it('somente ícone: usa t("copyToClipboard") como nome', () => {
-    render(<CopyButton value="pnpm add @orange/ui" />)
+    render(<CopyButton value="pnpm add @orangesys/ui" />)
     const button = screen.getByRole('button', { name: 'Copiar para a área de transferência' })
     expect(button).toHaveClass('or-button--icon-only', 'or-button--ghost')
   })
@@ -15,14 +15,14 @@ describe('CopyButton', () => {
   it('copia o valor, chama onCopy, troca o ícone e anuncia "Copiado!"', async () => {
     const user = userEvent.setup()
     const onCopy = vi.fn()
-    render(<CopyButton value="pnpm add @orange/ui" onCopy={onCopy} />)
+    render(<CopyButton value="pnpm add @orangesys/ui" onCopy={onCopy} />)
     const status = screen.getByRole('status')
     expect(status).toHaveAttribute('aria-live', 'polite')
     expect(status).toBeEmptyDOMElement()
     const button = screen.getByRole('button')
     await user.click(button)
-    expect(await navigator.clipboard.readText()).toBe('pnpm add @orange/ui')
-    expect(onCopy).toHaveBeenCalledWith('pnpm add @orange/ui')
+    expect(await navigator.clipboard.readText()).toBe('pnpm add @orangesys/ui')
+    expect(onCopy).toHaveBeenCalledWith('pnpm add @orangesys/ui')
     await waitFor(() => expect(status).toHaveTextContent('Copiado!'))
     expect(button).toHaveAttribute('data-copied')
   })
@@ -77,7 +77,7 @@ describe('CopyButton', () => {
     const user = userEvent.setup()
     const { container } = render(
       <div>
-        <CopyButton value="pnpm add @orange/ui" />
+        <CopyButton value="pnpm add @orangesys/ui" />
         <CopyButton value="https://orange.dev" variant="primary">
           Copiar link
         </CopyButton>

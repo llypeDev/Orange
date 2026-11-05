@@ -1,4 +1,4 @@
-import { Button, CommandPalette, type CommandGroup } from '@orange/ui'
+import { Button, CommandPalette, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 const clientes = [

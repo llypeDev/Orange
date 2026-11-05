@@ -1,4 +1,4 @@
-import { Button, Fieldset, TextField } from '@orange/ui'
+import { Button, Fieldset, TextField } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function GroupError() {

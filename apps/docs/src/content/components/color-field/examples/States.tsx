@@ -1,4 +1,4 @@
-import { ColorField } from '@orange/ui'
+import { ColorField } from '@orangesys/ui'
 
 export default function States() {
   return (

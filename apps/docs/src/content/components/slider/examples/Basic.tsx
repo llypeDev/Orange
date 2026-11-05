@@ -1,4 +1,4 @@
-import { Slider } from '@orange/ui'
+import { Slider } from '@orangesys/ui'
 
 export default function Basic() {
   return (

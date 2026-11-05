@@ -1,4 +1,4 @@
-import { Checkbox, Fieldset, TextField } from '@orange/ui'
+import { Checkbox, Fieldset, TextField } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function DisabledGroup() {

@@ -1,4 +1,4 @@
-import { Icon, useInView } from '@orange/ui'
+import { Icon, useInView } from '@orangesys/ui'
 
 function Linha({ rotulo }: { rotulo: string }) {
   // once: false → volta a false quando sai da área visível

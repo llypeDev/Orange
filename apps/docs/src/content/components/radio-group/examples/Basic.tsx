@@ -1,4 +1,4 @@
-import { RadioGroup } from '@orange/ui'
+import { RadioGroup } from '@orangesys/ui'
 
 export default function Basic() {
   return (

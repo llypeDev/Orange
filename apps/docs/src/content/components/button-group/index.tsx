@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Button, ButtonGroup } from '@orange/ui'
+import { Button, ButtonGroup } from '@orangesys/ui'
 import Attached from './examples/Attached'
 import AttachedCode from './examples/Attached?raw'
 import Basic from './examples/Basic'

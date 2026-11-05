@@ -1,4 +1,4 @@
-import { CodeBlock } from '@orange/ui'
+import { CodeBlock } from '@orangesys/ui'
 
 const log = `{
   "id": "evt_01J9Z4",

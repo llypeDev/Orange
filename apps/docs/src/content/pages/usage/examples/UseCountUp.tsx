@@ -1,4 +1,4 @@
-import { Button, Icon, useCountUp } from '@orange/ui'
+import { Button, Icon, useCountUp } from '@orangesys/ui'
 import { useState } from 'react'
 
 function Total({ valor }: { valor: number }) {

@@ -1,4 +1,4 @@
-import { TagInput } from '@orange/ui'
+import { TagInput } from '@orangesys/ui'
 
 export default function Basic() {
   return (

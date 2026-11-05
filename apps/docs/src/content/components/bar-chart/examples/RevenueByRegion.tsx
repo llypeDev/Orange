@@ -1,4 +1,4 @@
-import { BarChart } from '@orange/ui'
+import { BarChart } from '@orangesys/ui'
 
 export default function RevenueByRegion() {
   return (

@@ -1,4 +1,4 @@
-import { Badge, Button, Heading, Stack, Text } from '@orange/ui'
+import { Badge, Button, Heading, Stack, Text } from '@orangesys/ui'
 
 export default function DirecaoResponsiva() {
   return (

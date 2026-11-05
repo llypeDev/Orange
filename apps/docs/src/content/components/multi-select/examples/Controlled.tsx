@@ -1,4 +1,4 @@
-import { Button, MultiSelect } from '@orange/ui'
+import { Button, MultiSelect } from '@orangesys/ui'
 import { useState } from 'react'
 
 const status = [

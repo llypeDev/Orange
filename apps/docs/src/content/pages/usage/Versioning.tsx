@@ -28,14 +28,14 @@ const surfaces: {
     notes: {
       pt: (
         <>
-          Tudo o que sai de <Code>@orange/ui</Code>: nomes, props, valores aceitos (
+          Tudo o que sai de <Code>@orangesys/ui</Code>: nomes, props, valores aceitos (
           <Code>variant</Code>, <Code>size</Code>, <Code>tone</Code>), valores padrão, callbacks e
           suas assinaturas, tipos <Code>*Props</Code>.
         </>
       ),
       en: (
         <>
-          Everything exported by <Code>@orange/ui</Code>: names, props, accepted values (
+          Everything exported by <Code>@orangesys/ui</Code>: names, props, accepted values (
           <Code>variant</Code>, <Code>size</Code>, <Code>tone</Code>), defaults, callbacks and their
           signatures, <Code>*Props</Code> types.
         </>
@@ -79,17 +79,17 @@ const surfaces: {
     notes: {
       pt: (
         <>
-          <Code>@orange/ui</Code>, <Code>@orange/ui/styles.css</Code>, <Code>@orange/tokens</Code>,{' '}
-          <Code>@orange/tokens/contrast</Code> e <Code>@orange/tokens/tokens.css</Code>. Imports
-          profundos (<Code>@orange/ui/dist/…</Code>) não são suportados — o campo{' '}
+          <Code>@orangesys/ui</Code>, <Code>@orangesys/ui/styles.css</Code>, <Code>@orangesys/tokens</Code>,{' '}
+          <Code>@orangesys/tokens/contrast</Code> e <Code>@orangesys/tokens/tokens.css</Code>. Imports
+          profundos (<Code>@orangesys/ui/dist/…</Code>) não são suportados — o campo{' '}
           <Code>exports</Code> os bloqueia.
         </>
       ),
       en: (
         <>
-          <Code>@orange/ui</Code>, <Code>@orange/ui/styles.css</Code>, <Code>@orange/tokens</Code>,{' '}
-          <Code>@orange/tokens/contrast</Code> and <Code>@orange/tokens/tokens.css</Code>. Deep
-          imports (<Code>@orange/ui/dist/…</Code>) are not supported — the <Code>exports</Code>{' '}
+          <Code>@orangesys/ui</Code>, <Code>@orangesys/ui/styles.css</Code>, <Code>@orangesys/tokens</Code>,{' '}
+          <Code>@orangesys/tokens/contrast</Code> and <Code>@orangesys/tokens/tokens.css</Code>. Deep
+          imports (<Code>@orangesys/ui/dist/…</Code>) are not supported — the <Code>exports</Code>{' '}
           field blocks them.
         </>
       ),
@@ -97,8 +97,8 @@ const surfaces: {
   },
   {
     surface: {
-      pt: 'Tokens --or-* e exports de @orange/tokens',
-      en: '--or-* tokens and @orange/tokens exports',
+      pt: 'Tokens --or-* e exports de @orangesys/tokens',
+      en: '--or-* tokens and @orangesys/tokens exports',
     },
     isPublic: true,
     notes: {
@@ -308,7 +308,7 @@ const metaCode = `export const meta: ComponentMeta = {
 }`
 
 const changesetCode = `---
-'@orange/ui': minor
+'@orangesys/ui': minor
 ---
 
 Depreciado: a prop \`onDismiss\` do \`Foo\` — use \`onClose\` (mesma assinatura). Sai na v1.0.`
@@ -332,15 +332,15 @@ export default function VersioningPage() {
                 <>
                   O Orange segue o{' '}
                   <a href="https://semver.org/lang/pt-BR/">Versionamento Semântico</a>:{' '}
-                  <Code>MAJOR.MINOR.PATCH</Code>. <Code>@orange/tokens</Code> e{' '}
-                  <Code>@orange/ui</Code> saem sempre juntos, com o mesmo número de versão.
+                  <Code>MAJOR.MINOR.PATCH</Code>. <Code>@orangesys/tokens</Code> e{' '}
+                  <Code>@orangesys/ui</Code> saem sempre juntos, com o mesmo número de versão.
                 </>
               ),
               en: (
                 <>
                   Orange follows <a href="https://semver.org/">Semantic Versioning</a>:{' '}
-                  <Code>MAJOR.MINOR.PATCH</Code>. <Code>@orange/tokens</Code> and{' '}
-                  <Code>@orange/ui</Code> always ship together, with the same version number.
+                  <Code>MAJOR.MINOR.PATCH</Code>. <Code>@orangesys/tokens</Code> and{' '}
+                  <Code>@orangesys/ui</Code> always ship together, with the same version number.
                 </>
               ),
             },
@@ -653,7 +653,7 @@ export default function VersioningPage() {
             {
               pt: (
                 <>
-                  Cada PR que muda <Code>@orange/tokens</Code> ou <Code>@orange/ui</Code> traz um
+                  Cada PR que muda <Code>@orangesys/tokens</Code> ou <Code>@orangesys/ui</Code> traz um
                   changeset (<Code>pnpm changeset</Code>). Ao entrar em <Code>main</Code>, ele vai
                   para o PR "Versionar pacotes"; no merge, vira entrada no <Code>CHANGELOG.md</Code>{' '}
                   e na release do GitHub.
@@ -661,7 +661,7 @@ export default function VersioningPage() {
               ),
               en: (
                 <>
-                  Every PR that changes <Code>@orange/tokens</Code> or <Code>@orange/ui</Code>{' '}
+                  Every PR that changes <Code>@orangesys/tokens</Code> or <Code>@orangesys/ui</Code>{' '}
                   includes a changeset (<Code>pnpm changeset</Code>). Once on <Code>main</Code>, it
                   goes into the "Versionar pacotes" (Version packages) PR; on merge, it becomes an
                   entry in <Code>CHANGELOG.md</Code> and in the GitHub release.

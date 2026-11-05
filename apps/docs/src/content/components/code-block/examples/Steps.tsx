@@ -1,8 +1,8 @@
-import { Button, CodeBlock } from '@orange/ui'
+import { Button, CodeBlock } from '@orangesys/ui'
 import { useState } from 'react'
 
-const code = `import { OrangeProvider, Button } from '@orange/ui'
-import '@orange/ui/styles.css'
+const code = `import { OrangeProvider, Button } from '@orangesys/ui'
+import '@orangesys/ui/styles.css'
 
 export function App() {
   return (

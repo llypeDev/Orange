@@ -1,4 +1,4 @@
-import { Highlight } from '@orange/ui'
+import { Highlight } from '@orangesys/ui'
 
 export default function Literal() {
   return (

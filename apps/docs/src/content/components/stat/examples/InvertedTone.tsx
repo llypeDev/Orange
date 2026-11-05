@@ -1,4 +1,4 @@
-import { Stat, StatGroup } from '@orange/ui'
+import { Stat, StatGroup } from '@orangesys/ui'
 
 export default function InvertedTone() {
   return (

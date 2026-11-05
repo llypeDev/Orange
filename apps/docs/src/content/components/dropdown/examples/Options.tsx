@@ -6,7 +6,7 @@ import {
   DropdownRadioItem,
   DropdownSeparator,
   Icon,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useState } from 'react'
 
 const rotulos: Record<string, string> = { recentes: 'mais recentes', prazo: 'prazo', nome: 'nome' }

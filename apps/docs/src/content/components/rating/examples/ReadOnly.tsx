@@ -1,4 +1,4 @@
-import { Rating, Text } from '@orange/ui'
+import { Rating, Text } from '@orangesys/ui'
 
 const produtos = [
   { nome: 'Fone Orange Studio', nota: 4.5, avaliacoes: 128 },

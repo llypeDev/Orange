@@ -1,4 +1,4 @@
-import { Button, Drawer, Field } from '@orange/ui'
+import { Button, Drawer, Field } from '@orangesys/ui'
 import { useState } from 'react'
 
 const statusOpcoes = ['Pendente', 'Pago', 'Enviado', 'Cancelado']

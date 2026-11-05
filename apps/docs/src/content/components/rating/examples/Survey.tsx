@@ -1,4 +1,4 @@
-import { Button, Rating } from '@orange/ui'
+import { Button, Rating } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 const rotulos = ['Péssima', 'Ruim', 'Regular', 'Boa', 'Excelente']
