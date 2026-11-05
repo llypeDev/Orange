@@ -195,7 +195,8 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
 
   const ctx = useMemo<AppShellContextValue>(
     () => ({
-      navOpen,
+      // Acima do ponto de quebra não há painel: nunca informe "aberto".
+      navOpen: isCompact && navOpen,
       setNavOpen,
       toggleNav,
       navCollapsed,

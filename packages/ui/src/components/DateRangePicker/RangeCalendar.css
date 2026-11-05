@@ -139,10 +139,24 @@
   outline-offset: 2px;
 }
 
-/* Telas muito estreitas (320px): células de 36px para o mês caber sem rolagem horizontal. */
+/* Telas muito estreitas (320px): células de 36px e navegação de 28px para o
+   mês caber sem rolagem horizontal (alvos continuam acima de 24px). */
 @media (max-width: 24rem) {
   .or-range-calendar {
     --_cell: 2.25rem;
+  }
+
+  .or-range-calendar .or-calendar__header {
+    gap: var(--or-space-1);
+  }
+
+  .or-range-calendar .or-calendar__nav {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .or-range-calendar__nav-spacer {
+    width: 3.5rem;
   }
 }
 

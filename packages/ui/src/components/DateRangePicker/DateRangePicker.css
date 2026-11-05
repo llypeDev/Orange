@@ -213,6 +213,12 @@
   }
 }
 
+@media (max-width: 24rem) {
+  .or-date-range-picker__dialog {
+    padding: var(--or-space-3);
+  }
+}
+
 @keyframes or-date-range-picker-in {
   from {
     opacity: 0;

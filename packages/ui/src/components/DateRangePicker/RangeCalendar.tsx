@@ -137,6 +137,9 @@ export const RangeCalendar = forwardRef<HTMLDivElement, RangeCalendarProps>(
 
     const wide = useMediaQuery('(min-width: 48rem)')
     const monthCount = visibleMonths === 2 && wide ? 2 : 1
+    // Lido no updater de setView: girar a tela não recria updateView nem reinicia a seleção.
+    const monthCountRef = useRef(monthCount)
+    monthCountRef.current = monthCount
 
     const [value, setValue] = useControllableState<DateRange | null>({
       value: valueProp,
@@ -168,8 +171,9 @@ export const RangeCalendar = forwardRef<HTMLDivElement, RangeCalendarProps>(
     const updateView = useCallback(
       (next: Date, firstOverride?: Date) =>
         setView((prev) => {
-          const prevFirst = fitView(prev.first, prev.date, monthCount)
-          const nextFirst = fitView(firstOverride ?? prevFirst, next, monthCount)
+          const count = monthCountRef.current
+          const prevFirst = fitView(prev.first, prev.date, count)
+          const nextFirst = fitView(firstOverride ?? prevFirst, next, count)
           const diff = monthIndex(nextFirst) - monthIndex(prevFirst)
           if (diff === 0) {
             if (
@@ -186,7 +190,7 @@ export const RangeCalendar = forwardRef<HTMLDivElement, RangeCalendarProps>(
             from: prevFirst,
           }
         }),
-      [monthCount],
+      [],
     )
 
     // Valor alterado por fora (digitado no campo, atalho, controlado): acompanha.

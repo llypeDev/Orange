@@ -31,9 +31,15 @@
 
 /* Contido: ocupa a altura do pai e rola o conteúdo por dentro. */
 .or-app-shell--contained {
+  position: relative;
   height: 100%;
   min-height: 0;
   overflow: hidden;
+}
+
+/* Contido, o atalho aparece no canto do próprio AppShell (não no da janela). */
+.or-app-shell--contained > .or-skip-link {
+  position: absolute;
 }
 
 /* Cabeçalho ------------------------------------------------------------------ */
@@ -196,6 +202,11 @@ header.or-app-shell__header {
 .or-app-shell__footer {
   flex-shrink: 0;
   min-width: 0;
+}
+
+/* Um Footer no slot alinha suas margens às do conteúdo. */
+.or-app-shell__footer > .or-footer {
+  --or-footer-gutter: var(--or-app-shell-padding);
 }
 
 footer.or-app-shell__footer {

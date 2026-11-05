@@ -390,9 +390,8 @@ describe('Carousel', () => {
       expect(activeSlides()).toEqual([slide(2)])
     })
 
-    it('foco por clique dentro do carrossel só pausa (retoma quando o foco sai)', async () => {
-      vi.useFakeTimers({ shouldAdvanceTime: true })
-      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    it('foco por clique dentro do carrossel só pausa (retoma quando o foco sai)', () => {
+      vi.useFakeTimers()
       render(
         <>
           <button type="button">Fora</button>

@@ -6,7 +6,7 @@
  */
 .or-footer {
   --or-footer-gutter: clamp(var(--or-space-5), 4vw, var(--or-space-14));
-  --or-footer-column-min: 9rem;
+  --or-footer-column-min: 8rem;
 
   padding: var(--or-space-10) var(--or-footer-gutter) var(--or-space-6);
   border-top: var(--or-border-thin) solid var(--or-color-border);

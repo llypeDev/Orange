@@ -352,10 +352,11 @@ describe('AppShell', () => {
     await expectNoA11yViolations(container)
   })
 
-  it('não possui violações de acessibilidade (painel aberto)', async () => {
+  it('não possui violações de acessibilidade (painel fechado e aberto)', async () => {
     mockViewport(390)
     const user = userEvent.setup()
-    render(<OrdersShell />)
+    const { container } = render(<OrdersShell />)
+    await expectNoA11yViolations(container)
     await user.click(screen.getByRole('button', { name: 'Abrir navegação' }))
     await expectNoA11yViolations(document.body)
   })
