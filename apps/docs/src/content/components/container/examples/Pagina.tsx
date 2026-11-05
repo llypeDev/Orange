@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Heading, Icon, Stack, Stat, Text } from '@orange/ui'
+import { Button, Container, Grid, Heading, Icon, Stack, Stat, Text } from '@orangesys/ui'
 
 export default function Pagina() {
   return (

@@ -1,4 +1,4 @@
-import { Text, TimeField } from '@orange/ui'
+import { Text, TimeField } from '@orangesys/ui'
 import { useState } from 'react'
 
 const emMinutos = (hora: string) => {

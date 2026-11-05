@@ -5,7 +5,7 @@ import { expect } from 'vitest'
  * Roda o axe-core no container renderizado e falha o teste caso existam
  * violações de acessibilidade. Regras que dependem de layout real
  * (contraste de cor) são desativadas no jsdom — o contraste é coberto pelos
- * testes de tokens em `@orange/tokens`.
+ * testes de tokens em `@orangesys/tokens`.
  */
 export async function expectNoA11yViolations(container: Element) {
   const results = await axe.run(container, {

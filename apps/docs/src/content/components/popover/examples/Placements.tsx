@@ -1,4 +1,4 @@
-import { Button, Popover, type PopoverPlacement } from '@orange/ui'
+import { Button, Popover, type PopoverPlacement } from '@orangesys/ui'
 
 const posicoes: { placement: PopoverPlacement; label: string }[] = [
   { placement: 'top', label: 'Acima' },

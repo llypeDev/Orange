@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { IconButton } from '@orange/ui'
+import { IconButton } from '@orangesys/ui'
 import Comparison from './examples/Comparison'
 import ComparisonCode from './examples/Comparison?raw'
 import RowActions from './examples/RowActions'

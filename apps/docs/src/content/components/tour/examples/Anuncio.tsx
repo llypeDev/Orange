@@ -1,4 +1,4 @@
-import { Button, Icon, Tour } from '@orange/ui'
+import { Button, Icon, Tour } from '@orangesys/ui'
 import { useState } from 'react'
 
 /** Ilustração geométrica: semana com a segunda-feira em destaque. */

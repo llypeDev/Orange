@@ -1,4 +1,4 @@
-import { Button, useToast } from '@orange/ui'
+import { Button, useToast } from '@orangesys/ui'
 
 // O ToastProvider fica uma vez na raiz da aplicação (veja "Configuração").
 export default function Basic() {

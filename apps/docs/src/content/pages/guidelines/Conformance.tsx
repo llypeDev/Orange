@@ -1,4 +1,4 @@
-import { Tag, type TagTone } from '@orange/ui'
+import { Tag, type TagTone } from '@orangesys/ui'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
@@ -919,15 +919,15 @@ export default function ConformancePage() {
             {
               pt: (
                 <>
-                  <strong>Produto:</strong> <Code>@orange/ui</Code> no estado da v0.4.0 em
-                  desenvolvimento (103 componentes, hooks e estilos) com <Code>@orange/tokens</Code>
+                  <strong>Produto:</strong> <Code>@orangesys/ui</Code> no estado da v0.4.0 em
+                  desenvolvimento (103 componentes, hooks e estilos) com <Code>@orangesys/tokens</Code>
                   , nos temas escuro e claro. Avaliado em 5 de novembro de 2026.
                 </>
               ),
               en: (
                 <>
-                  <strong>Product:</strong> <Code>@orange/ui</Code> as of the in-progress v0.4.0
-                  (103 components, hooks and styles) with <Code>@orange/tokens</Code>, in the dark
+                  <strong>Product:</strong> <Code>@orangesys/ui</Code> as of the in-progress v0.4.0
+                  (103 components, hooks and styles) with <Code>@orangesys/tokens</Code>, in the dark
                   and light themes. Assessed on November 5, 2026.
                 </>
               ),

@@ -1,4 +1,4 @@
-import { Kbd } from '@orange/ui'
+import { Kbd } from '@orangesys/ui'
 import { useState, type KeyboardEvent } from 'react'
 
 export default function Pressed() {

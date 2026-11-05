@@ -1,4 +1,4 @@
-import { HoverCard } from '@orange/ui'
+import { HoverCard } from '@orangesys/ui'
 
 function Perfil() {
   return (

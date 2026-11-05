@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from '@orange/ui'
+import { Avatar, AvatarGroup } from '@orangesys/ui'
 
 // A API devolveu só os 5 primeiros participantes, mas o evento tem 128.
 const firstPage = ['Lívia Martins', 'Pedro Henrique', 'Sofia Ramos', 'Gustavo Lima', 'Helena Duarte']

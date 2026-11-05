@@ -1,4 +1,4 @@
-import { Eyebrow, Image } from '@orange/ui'
+import { Eyebrow, Image } from '@orangesys/ui'
 import vitrine from './media/vitrine.svg'
 
 const ratios = ['1/1', '4/3', '16/9', '21/9'] as const

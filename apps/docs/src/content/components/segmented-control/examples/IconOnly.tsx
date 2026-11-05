@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@orange/ui'
+import { SegmentedControl } from '@orangesys/ui'
 import { useState } from 'react'
 
 const projects = ['Portal do cliente', 'App de entregas', 'Painel financeiro', 'Site institucional']

@@ -1,4 +1,4 @@
-import { Button, Checkbox, ErrorSummary, RadioGroup, TextField, type ErrorSummaryItem } from '@orange/ui'
+import { Button, Checkbox, ErrorSummary, RadioGroup, TextField, type ErrorSummaryItem } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function SignUpForm() {

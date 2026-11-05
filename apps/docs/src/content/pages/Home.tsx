@@ -10,7 +10,7 @@ import {
   useCountUp,
   useInView,
   useReducedMotion,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLang, type Localized } from '../../i18n'
@@ -53,7 +53,7 @@ function Marquee({ items, tone = 'paper' }: { items: Localized<string>[]; tone?:
 function InstallCommand() {
   const { copy, copied } = useClipboard()
   const { t } = useLang()
-  const cmd = 'pnpm add @orange/ui'
+  const cmd = 'pnpm add @orangesys/ui'
   return (
     <div className="home-install">
       <span className="home-install__prompt" aria-hidden="true">
@@ -185,18 +185,18 @@ const codeTabs: { id: string; label: string; language: 'bash' | 'tsx' | 'css'; c
     label: 'Instalar',
     language: 'bash',
     code: `# pnpm
-pnpm add @orange/ui
+pnpm add @orangesys/ui
 
 # npm
-npm install @orange/ui`,
+npm install @orangesys/ui`,
   },
   {
     id: 'provider',
     label: 'Provider',
     language: 'tsx',
     code: `// main.tsx
-import '@orange/ui/styles.css'
-import { OrangeProvider } from '@orange/ui'
+import '@orangesys/ui/styles.css'
+import { OrangeProvider } from '@orangesys/ui'
 
 createRoot(root).render(
   <OrangeProvider defaultTheme="dark" locale="pt-BR">
@@ -208,7 +208,7 @@ createRoot(root).render(
     id: 'use',
     label: 'Usar',
     language: 'tsx',
-    code: `import { Button, Icon } from '@orange/ui'
+    code: `import { Button, Icon } from '@orangesys/ui'
 
 export function Hero() {
   return (
@@ -353,8 +353,8 @@ const faqs: { q: Localized<string>; a: Localized<ReactNode> }[] = [
   {
     q: { pt: 'Preciso usar React?', en: 'Do I need React?' },
     a: {
-      pt: 'Os componentes são React (18.2+ ou 19). Os tokens (@orange/tokens) são CSS puro e funcionam em qualquer stack.',
-      en: 'Components are React (18.2+ or 19). Tokens (@orange/tokens) are plain CSS and work with any stack.',
+      pt: 'Os componentes são React (18.2+ ou 19). Os tokens (@orangesys/tokens) são CSS puro e funcionam em qualquer stack.',
+      en: 'Components are React (18.2+ or 19). Tokens (@orangesys/tokens) are plain CSS and work with any stack.',
     },
   },
   {

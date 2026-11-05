@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orange/ui'
+import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function WithConfirm() {

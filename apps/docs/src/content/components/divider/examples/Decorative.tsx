@@ -1,4 +1,4 @@
-import { Divider } from '@orange/ui'
+import { Divider } from '@orangesys/ui'
 
 export default function Decorative() {
   return (

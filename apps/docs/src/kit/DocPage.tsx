@@ -1,4 +1,4 @@
-import { Icon, useClipboard } from '@orange/ui'
+import { Icon, useClipboard } from '@orangesys/ui'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { componentMetas, sourceUrl, storybookUrl } from '../content/registry'
@@ -128,7 +128,7 @@ export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, childre
 function ImportSnippet({ name }: { name: string }) {
   const { copy, copied } = useClipboard()
   const { t } = useLang()
-  const code = `import { ${name} } from '@orange/ui'`
+  const code = `import { ${name} } from '@orangesys/ui'`
   return (
     <div className="doc-import">
       <code>
@@ -137,7 +137,7 @@ function ImportSnippet({ name }: { name: string }) {
         <span className="doc-import__name">{name}</span>
         {' } '}
         <span className="doc-import__kw">from</span>{' '}
-        <span className="doc-import__str">'@orange/ui'</span>
+        <span className="doc-import__str">'@orangesys/ui'</span>
       </code>
       <button type="button" className="doc-import__copy" onClick={() => copy(code)}>
         <Icon name={copied ? 'check' : 'copy'} size="sm" />

@@ -1,4 +1,4 @@
-import { Kbd } from '@orange/ui'
+import { Kbd } from '@orangesys/ui'
 
 export default function MacSymbols() {
   return (

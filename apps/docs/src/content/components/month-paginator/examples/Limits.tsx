@@ -1,4 +1,4 @@
-import { MonthPaginator } from '@orange/ui'
+import { MonthPaginator } from '@orangesys/ui'
 
 const hoje = new Date()
 

@@ -26,7 +26,7 @@ import {
   type DateRange,
   type TableColumn,
   type TableSort,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useId, useMemo, useState } from 'react'
 import {
   canais,

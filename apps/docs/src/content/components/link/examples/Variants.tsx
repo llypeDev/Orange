@@ -1,4 +1,4 @@
-import { Link } from '@orange/ui'
+import { Link } from '@orangesys/ui'
 
 export default function Variants() {
   return (

@@ -1,4 +1,4 @@
-import { RangeCalendar, Text, type DateRange } from '@orange/ui'
+import { RangeCalendar, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000

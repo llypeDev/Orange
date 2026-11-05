@@ -1,4 +1,4 @@
-import { Select } from '@orange/ui'
+import { Select } from '@orangesys/ui'
 
 const ordenacao = [
   { value: 'relevancia', label: 'Mais relevantes' },

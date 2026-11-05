@@ -1,4 +1,4 @@
-import { Badge } from '@orange/ui'
+import { Badge } from '@orangesys/ui'
 
 const tones = ['accent', 'neutral', 'success', 'warning', 'danger', 'info'] as const
 

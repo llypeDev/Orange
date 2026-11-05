@@ -1,4 +1,4 @@
-import { Button, Tooltip, type TooltipPlacement } from '@orange/ui'
+import { Button, Tooltip, type TooltipPlacement } from '@orangesys/ui'
 
 const posicoes: { placement: TooltipPlacement; label: string }[] = [
   { placement: 'top', label: 'Acima' },

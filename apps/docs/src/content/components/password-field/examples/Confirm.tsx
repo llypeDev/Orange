@@ -1,4 +1,4 @@
-import { Button, PasswordField } from '@orange/ui'
+import { Button, PasswordField } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function Confirm() {

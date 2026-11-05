@@ -1,4 +1,4 @@
-import { Button, ProgressBar, VisuallyHidden } from '@orange/ui'
+import { Button, ProgressBar, VisuallyHidden } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const TOTAL_MB = 2.8

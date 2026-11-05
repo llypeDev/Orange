@@ -1,4 +1,4 @@
-import { Badge, Icon } from '@orange/ui'
+import { Badge, Icon } from '@orangesys/ui'
 
 const folders = [
   { name: 'Caixa de entrada', icon: 'inbox', count: 12, label: '12 não lidas', tone: 'accent' },

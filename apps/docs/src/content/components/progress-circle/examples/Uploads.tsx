@@ -1,4 +1,4 @@
-import { Icon, ProgressCircle } from '@orange/ui'
+import { Icon, ProgressCircle } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const files = [

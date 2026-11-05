@@ -1,4 +1,4 @@
-import { Button, Icon, Reveal, useReducedMotion } from '@orange/ui'
+import { Button, Icon, Reveal, useReducedMotion } from '@orangesys/ui'
 import { useRef } from 'react'
 
 const etapas = ['01 Tokens', '02 Fundamentos', '03 Componentes', '04 Storybook']

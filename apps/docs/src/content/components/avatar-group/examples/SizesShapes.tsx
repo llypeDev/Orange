@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from '@orange/ui'
+import { Avatar, AvatarGroup } from '@orangesys/ui'
 
 const team = ['Ana Souza', 'Bruno Lima', 'Carla Dias', 'Diego Alves', 'Elisa Prado']
 

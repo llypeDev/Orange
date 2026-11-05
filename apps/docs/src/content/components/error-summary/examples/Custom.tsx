@@ -1,4 +1,4 @@
-import { ErrorSummary } from '@orange/ui'
+import { ErrorSummary } from '@orangesys/ui'
 
 export default function Custom() {
   return (

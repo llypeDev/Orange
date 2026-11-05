@@ -1,4 +1,4 @@
-import { Icon, ToggleButton } from '@orange/ui'
+import { Icon, ToggleButton } from '@orangesys/ui'
 
 export default function WithIcons() {
   return (

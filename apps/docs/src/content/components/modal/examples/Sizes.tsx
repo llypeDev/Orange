@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter, type ModalSize } from '@orange/ui'
+import { Button, Modal, ModalBody, ModalFooter, type ModalSize } from '@orangesys/ui'
 
 const sizes: { size: ModalSize; label: string }[] = [
   { size: 'sm', label: 'Pequeno (400px)' },

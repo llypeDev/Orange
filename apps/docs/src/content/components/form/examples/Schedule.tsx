@@ -9,7 +9,7 @@ import {
   useToast,
   type FormErrors,
   type FormValues,
-} from '@orange/ui'
+} from '@orangesys/ui'
 
 const today = new Date()
 const isWeekend = (date: Date) => date.getDay() === 0 || date.getDay() === 6

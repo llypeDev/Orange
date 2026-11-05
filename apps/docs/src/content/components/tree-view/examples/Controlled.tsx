@@ -1,4 +1,4 @@
-import { Button, TreeView, type TreeViewItem } from '@orange/ui'
+import { Button, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const paginas: TreeViewItem[] = [

@@ -1,4 +1,4 @@
-import { Icon, ToggleButton } from '@orange/ui'
+import { Icon, ToggleButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {

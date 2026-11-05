@@ -1,4 +1,4 @@
-import { Button, PageHeader, Tag } from '@orange/ui'
+import { Button, PageHeader, Tag } from '@orangesys/ui'
 import type { AnchorHTMLAttributes } from 'react'
 
 // Em um app real:

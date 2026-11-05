@@ -1,4 +1,4 @@
-import { Button, Checkbox, CheckboxGroup } from '@orange/ui'
+import { Button, Checkbox, CheckboxGroup } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function Validation() {

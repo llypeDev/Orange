@@ -1,4 +1,4 @@
-import { Button, PinInput } from '@orange/ui'
+import { Button, PinInput } from '@orangesys/ui'
 import { useState } from 'react'
 
 const CODIGO_CORRETO = '274913'

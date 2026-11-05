@@ -1,4 +1,4 @@
-import { Button, CommandPalette, Icon, type CommandGroup } from '@orange/ui'
+import { Button, CommandPalette, Icon, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {

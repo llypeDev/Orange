@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@orange/ui'
+import { Button, ButtonGroup } from '@orangesys/ui'
 
 export default function GroupProps() {
   return (

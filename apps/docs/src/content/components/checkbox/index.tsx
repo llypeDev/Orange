@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Checkbox, Switch } from '@orange/ui'
+import { Checkbox, Switch } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Group from './examples/Group'

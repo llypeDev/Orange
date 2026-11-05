@@ -1,4 +1,4 @@
-import { DescriptionList } from '@orange/ui'
+import { DescriptionList } from '@orangesys/ui'
 
 export default function Horizontal() {
   return (

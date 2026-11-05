@@ -1,5 +1,5 @@
-import { Eyebrow, Heading, Icon, iconNames, Text } from '@orange/ui'
-import { themes, typography } from '@orange/tokens'
+import { Eyebrow, Heading, Icon, iconNames, Text } from '@orangesys/ui'
+import { themes, typography } from '@orangesys/tokens'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta = {

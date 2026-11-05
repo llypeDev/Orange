@@ -1,4 +1,4 @@
-import { Button, Table, type TableColumn } from '@orange/ui'
+import { Button, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Member {

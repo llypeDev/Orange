@@ -1,4 +1,4 @@
-import { Alert, Icon } from '@orange/ui'
+import { Alert, Icon } from '@orangesys/ui'
 
 export default function WithoutTitle() {
   return (

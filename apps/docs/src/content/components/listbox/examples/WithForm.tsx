@@ -7,7 +7,7 @@ import {
   ListboxOption,
   type FormErrors,
   type FormValues,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useState } from 'react'
 
 function validate(values: FormValues): FormErrors {

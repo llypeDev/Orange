@@ -1,4 +1,4 @@
-import { Button, Icon, PageHeader } from '@orange/ui'
+import { Button, Icon, PageHeader } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Reveal() {

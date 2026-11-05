@@ -1,4 +1,4 @@
-import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orange/ui'
+import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orangesys/ui'
 import bone from './media/bone.svg'
 import caneca from './media/caneca.svg'
 import fone from './media/fone.svg'

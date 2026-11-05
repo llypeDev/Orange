@@ -1,4 +1,4 @@
-import { VisuallyHidden } from '@orange/ui'
+import { VisuallyHidden } from '@orangesys/ui'
 
 const posts = ['Lançamento do Orange 0.1', 'Como testamos acessibilidade', 'Tokens na prática']
 

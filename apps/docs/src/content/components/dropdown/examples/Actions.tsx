@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon } from '@orange/ui'
+import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Actions() {

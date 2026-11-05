@@ -10,8 +10,8 @@ para agentes automatizados. O `Button` é a implementação de referência — l
 
 ```
 packages/
-  tokens/   @orange/tokens — tokens (TS) → css/tokens.css (gerado)
-  ui/       @orange/ui     — componentes React, hooks, ícones, providers
+  tokens/   @orangesys/tokens — tokens (TS) → css/tokens.css (gerado)
+  ui/       @orangesys/ui     — componentes React, hooks, ícones, providers
 apps/
   docs/       site de documentação (Vite + React Router), PT/EN
   storybook/  Storybook 9 (stories ficam junto dos componentes em packages/ui)
@@ -181,9 +181,9 @@ Os exemplos devem ser curtos, realistas e em português (conteúdo de produto, n
 
 ```bash
 pnpm gen
-pnpm --filter @orange/ui exec vitest run src/components/Foo
-pnpm --filter @orange/ui typecheck
-pnpm --filter @orange/docs typecheck
+pnpm --filter @orangesys/ui exec vitest run src/components/Foo
+pnpm --filter @orangesys/ui typecheck
+pnpm --filter @orangesys/docs typecheck
 ```
 
 ## Regressão visual
@@ -219,14 +219,14 @@ Mensagens no imperativo, em português: `Adiciona componente Tabs`, `Corrige foc
 A política completa está na documentação, em **Usando → Versionamento e depreciação**
 (`/usage/versioning`, fonte em `apps/docs/src/content/pages/usage/Versioning.tsx`). O essencial:
 
-- **SemVer** (`MAJOR.MINOR.PATCH`). `@orange/tokens` e `@orange/ui` formam um grupo **fixo** no
+- **SemVer** (`MAJOR.MINOR.PATCH`). `@orangesys/tokens` e `@orangesys/ui` formam um grupo **fixo** no
   Changesets: saem sempre juntos, com o mesmo número. Motivo: o `styles.css` do `ui` embute os tokens,
-  o `ui` depende da versão exata de `@orange/tokens`, e a página Novidades fala de uma versão do
+  o `ui` depende da versão exata de `@orangesys/tokens`, e a página Novidades fala de uma versão do
   sistema — não de duas.
-- **API pública:** tudo o que `@orange/ui` exporta (componentes, props, valores aceitos, padrões,
+- **API pública:** tudo o que `@orangesys/ui` exporta (componentes, props, valores aceitos, padrões,
   tipos, hooks, ícones, `MessageKey`), o comportamento de teclado/ARIA documentado, os pontos de
-  entrada (`@orange/ui`, `@orange/ui/styles.css`, `@orange/tokens`, `@orange/tokens/contrast`,
-  `@orange/tokens/tokens.css`), os **nomes** dos tokens `--or-*` e as classes utilitárias documentadas
+  entrada (`@orangesys/ui`, `@orangesys/ui/styles.css`, `@orangesys/tokens`, `@orangesys/tokens/contrast`,
+  `@orangesys/tokens/tokens.css`), os **nomes** dos tokens `--or-*` e as classes utilitárias documentadas
   (`.or-visually-hidden`, `.or-eyebrow`, `.or-control`, `.or-lift`…).
 - **Não é API:** classes `or-*` de componente (`.or-foo`, `.or-foo__parte`, `.or-foo--modificador`),
   variáveis privadas `--_*`, estrutura do DOM, `data-*` não documentados e nomes de keyframes.
@@ -294,7 +294,7 @@ Automatizada com [Changesets](https://changesets.dev) (`.changeset/config.json`)
    consumidos.
 3. Ao fazer merge desse PR, o workflow encontra versões que ainda não estão no npm e roda
    `pnpm release` (`pnpm gen` → build de tokens e ui → `changeset publish`): publica com
-   **provenance** e cria as tags (`@orange/ui@0.4.0`) e as GitHub Releases.
+   **provenance** e cria as tags (`@orangesys/ui@0.4.0`) e as GitHub Releases.
 
 O `changeset publish` usa `pnpm publish`, que aplica o `publishConfig` (exports, `main` e `types`
 apontando para `dist/`) e troca `workspace:*` pela versão real. **Nunca rode `npm publish` direto em
@@ -302,20 +302,19 @@ um pacote:** o npm ignora `publishConfig.exports` e publicaria caminhos de `src/
 tarball. Para conferir um pacote localmente:
 
 ```bash
-pnpm --filter @orange/tokens build && pnpm --filter @orange/ui build
+pnpm --filter @orangesys/tokens build && pnpm --filter @orangesys/ui build
 cd packages/ui && pnpm pack --dry-run   # lista o conteúdo do tarball
 npx publint --pack pnpm                 # valida exports, tipos e arquivos
 ```
 
 ### Antes da primeira publicação
 
-- **Escopo `@orange`.** Só quem é dono do escopo no npm (o usuário `orange` ou uma organização
-  `orange`) pode publicar `@orange/tokens` e `@orange/ui`. **Não conseguimos confirmar que ele é
-  nosso.** Confira em https://www.npmjs.com/org/orange; se pertencer a outra pessoa, troque o escopo
-  (abaixo) antes de publicar.
-- **Secret `NPM_TOKEN`.** Crie no npm um _granular access token_ com leitura e escrita no escopo (e
-  “bypass 2FA”, para o CI não pedir código) e cadastre em _Settings → Secrets and variables → Actions_
-  com o nome `NPM_TOKEN`. Tokens granulares expiram: renove o secret antes do vencimento. **Sem o
+- **Escopo `@orangesys`.** Os pacotes `@orangesys/tokens` e `@orangesys/ui` são publicados na
+  organização [`orangesys`](https://www.npmjs.com/org/orangesys) do npm. Só membros dela com permissão
+  de escrita publicam; o token do CI precisa ser de um desses membros.
+- **Secret `NPM_TOKEN`.** Crie no npm um _granular access token_ com leitura e escrita no escopo
+  `@orangesys` (e “bypass 2FA”, para o CI não pedir código) e cadastre em _Settings → Secrets and
+  variables → Actions → Repository secrets_ com o nome `NPM_TOKEN`. Tokens granulares expiram: renove o secret antes do vencimento. **Sem o
   secret o workflow não falha:** continua abrindo o PR “Versionar pacotes” e, na hora de publicar,
   pula a etapa e deixa o aviso “Publicação no npm desativada” no resumo da execução.
 - **Permissão para abrir PRs.** Em _Settings → Actions → General_, marque “Allow GitHub Actions to
@@ -329,14 +328,15 @@ npx publint --pack pnpm                 # valida exports, tipos e arquivos
 
 ### Trocando o escopo
 
-Se `@orange` não estiver disponível, escolha um escopo seu (ex.: `@llypedev`) e troque tudo de uma
-vez, antes da primeira publicação:
+Se o escopo precisar mudar (ex.: para `@llypedev`), troque tudo de uma vez. Depois da primeira
+publicação, o escopo novo cria pacotes novos: publique-os e marque os antigos com `npm deprecate`
+apontando para os novos.
 
 1. `name` em `packages/tokens/package.json` e `packages/ui/package.json` e a dependência
-   `@orange/tokens` do `ui`; as dependências `@orange/*` de `apps/docs` e `apps/storybook`.
-2. `fixed` e `ignore` em `.changeset/config.json`, os filtros `--filter @orange/...` dos scripts e os
+   `@orangesys/tokens` do `ui`; as dependências `@orangesys/*` de `apps/docs` e `apps/storybook`.
+2. `fixed` e `ignore` em `.changeset/config.json`, os filtros `--filter @orangesys/...` dos scripts e os
    cabeçalhos dos changesets pendentes em `.changeset/*.md`.
-3. Os imports e textos com `@orange/` no código, nos exemplos e páginas da documentação, no README e
+3. Os imports e textos com `@orangesys/` no código, nos exemplos e páginas da documentação, no README e
    neste guia (busca e troca global; revise o diff).
 4. `pnpm install` (atualiza o lockfile), depois `pnpm build:lib`, `pnpm test` e `npx publint --pack pnpm`
    em cada pacote.

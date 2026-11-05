@@ -1,4 +1,4 @@
-import { Button, Skeleton, SkeletonText } from '@orange/ui'
+import { Button, Skeleton, SkeletonText } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 export default function Swap() {

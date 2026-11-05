@@ -1,4 +1,4 @@
-import { Button, Icon, Stack, Text } from '@orange/ui'
+import { Button, Icon, Stack, Text } from '@orangesys/ui'
 
 export default function Alinhamento() {
   return (

@@ -1,4 +1,4 @@
-import { Paginator } from '@orange/ui'
+import { Paginator } from '@orangesys/ui'
 import { useState } from 'react'
 
 const customers = Array.from({ length: 87 }, (_, i) => ({

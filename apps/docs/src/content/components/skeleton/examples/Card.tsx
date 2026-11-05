@@ -1,4 +1,4 @@
-import { Skeleton, SkeletonText } from '@orange/ui'
+import { Skeleton, SkeletonText } from '@orangesys/ui'
 
 export default function Card() {
   return (

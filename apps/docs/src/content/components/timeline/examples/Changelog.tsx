@@ -1,4 +1,4 @@
-import { Icon, Timeline, TimelineItem } from '@orange/ui'
+import { Icon, Timeline, TimelineItem } from '@orangesys/ui'
 
 export default function Changelog() {
   return (

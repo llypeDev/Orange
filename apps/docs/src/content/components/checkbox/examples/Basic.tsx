@@ -1,4 +1,4 @@
-import { Checkbox } from '@orange/ui'
+import { Checkbox } from '@orangesys/ui'
 
 export default function Basic() {
   return (

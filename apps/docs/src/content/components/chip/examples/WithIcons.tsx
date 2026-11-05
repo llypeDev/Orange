@@ -1,4 +1,4 @@
-import { Chip, ChipGroup, Icon } from '@orange/ui'
+import { Chip, ChipGroup, Icon } from '@orangesys/ui'
 
 export default function WithIcons() {
   return (

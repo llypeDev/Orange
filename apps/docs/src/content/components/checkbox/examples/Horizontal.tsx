@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@orange/ui'
+import { Checkbox, CheckboxGroup } from '@orangesys/ui'
 
 export default function Horizontal() {
   return (

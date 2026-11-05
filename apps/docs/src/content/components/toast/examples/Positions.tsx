@@ -1,4 +1,4 @@
-import { Button, ToastProvider, useToast, type ToastPosition } from '@orange/ui'
+import { Button, ToastProvider, useToast, type ToastPosition } from '@orangesys/ui'
 import { useState } from 'react'
 
 const positions: ToastPosition[] = [

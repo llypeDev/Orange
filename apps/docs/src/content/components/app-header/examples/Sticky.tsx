@@ -1,4 +1,4 @@
-import { AppHeader, Button } from '@orange/ui'
+import { AppHeader, Button } from '@orangesys/ui'
 
 export default function Sticky() {
   return (

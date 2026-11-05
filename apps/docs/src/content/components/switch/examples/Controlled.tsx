@@ -1,4 +1,4 @@
-import { Switch, Text } from '@orange/ui'
+import { Switch, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {

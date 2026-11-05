@@ -15,7 +15,7 @@ import {
   useTheme,
   type IconName,
   type ThemeSetting,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'

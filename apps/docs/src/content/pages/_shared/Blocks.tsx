@@ -1,4 +1,4 @@
-import { Icon, useClipboard, type IconName } from '@orange/ui'
+import { Icon, useClipboard, type IconName } from '@orangesys/ui'
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang, type Localized } from '../../../i18n'

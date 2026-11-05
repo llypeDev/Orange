@@ -1,4 +1,4 @@
-import { RelativeTime } from '@orange/ui'
+import { RelativeTime } from '@orangesys/ui'
 
 const ontem = new Date(Date.now() - 26 * 3_600_000)
 const recente = new Date(Date.now() - 42 * 60_000)

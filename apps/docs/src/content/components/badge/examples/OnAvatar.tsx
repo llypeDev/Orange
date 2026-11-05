@@ -1,4 +1,4 @@
-import { Avatar, Badge } from '@orange/ui'
+import { Avatar, Badge } from '@orangesys/ui'
 
 const chats = [
   { name: 'Mariana Lopes', unread: 2 },

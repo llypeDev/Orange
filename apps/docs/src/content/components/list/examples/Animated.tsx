@@ -1,4 +1,4 @@
-import { Button, Icon, List, ListItem } from '@orange/ui'
+import { Button, Icon, List, ListItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Animated() {

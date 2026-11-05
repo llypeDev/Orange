@@ -14,7 +14,7 @@ import {
   TextField,
   type FormErrors,
   type FormValues,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useId, useState } from 'react'
 import './SignIn.css'
 

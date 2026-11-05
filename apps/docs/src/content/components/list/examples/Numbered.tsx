@@ -1,4 +1,4 @@
-import { List, ListItem } from '@orange/ui'
+import { List, ListItem } from '@orangesys/ui'
 
 export default function Numbered() {
   return (

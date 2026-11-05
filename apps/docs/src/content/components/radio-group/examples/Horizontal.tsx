@@ -1,4 +1,4 @@
-import { RadioGroup } from '@orange/ui'
+import { RadioGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Horizontal() {

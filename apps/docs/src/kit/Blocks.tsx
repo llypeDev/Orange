@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Icon } from '@orange/ui'
+import { Icon } from '@orangesys/ui'
 import { useLang, type Localized } from '../i18n'
 import { slugify } from './slugify'
 

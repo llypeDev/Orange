@@ -1,4 +1,4 @@
-import { Button, Icon, useClickOutside, useEscapeKey, useFocusTrap } from '@orange/ui'
+import { Button, Icon, useClickOutside, useEscapeKey, useFocusTrap } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function ConfirmarExclusao() {

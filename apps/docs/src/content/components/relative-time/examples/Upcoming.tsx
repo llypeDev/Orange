@@ -1,4 +1,4 @@
-import { RelativeTime } from '@orange/ui'
+import { RelativeTime } from '@orangesys/ui'
 
 const daqui = (horas: number) => new Date(Date.now() + horas * 3_600_000)
 

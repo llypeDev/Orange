@@ -1,4 +1,4 @@
-import { Icon, Tab, TabList, TabPanel, Tabs } from '@orange/ui'
+import { Icon, Tab, TabList, TabPanel, Tabs } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
@@ -160,13 +160,13 @@ function TemplateDocContent({
             <T
               pt={
                 <>
-                  Copie os arquivos para o seu projeto. Eles usam só componentes do <Code>@orange/ui</Code> e tokens{' '}
+                  Copie os arquivos para o seu projeto. Eles usam só componentes do <Code>@orangesys/ui</Code> e tokens{' '}
                   <Code>--or-*</Code>; o CSS próprio cuida apenas da disposição da página.
                 </>
               }
               en={
                 <>
-                  Copy the files into your project. They only use <Code>@orange/ui</Code> components and{' '}
+                  Copy the files into your project. They only use <Code>@orangesys/ui</Code> components and{' '}
                   <Code>--or-*</Code> tokens; the custom CSS only handles page layout.
                 </>
               }

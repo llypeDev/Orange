@@ -1,4 +1,4 @@
-import { Icon, SideNav, SideNavItem } from '@orange/ui'
+import { Icon, SideNav, SideNavItem } from '@orangesys/ui'
 import type { AnchorHTMLAttributes } from 'react'
 
 // Em um app real:

@@ -1,5 +1,5 @@
-import { Button, buttonClassName, Eyebrow, Icon } from '@orange/ui'
-import { borderWidth, radius, shadow, zIndex } from '@orange/tokens'
+import { Button, buttonClassName, Eyebrow, Icon } from '@orangesys/ui'
+import { borderWidth, radius, shadow, zIndex } from '@orangesys/tokens'
 import type { CSSProperties } from 'react'
 import { T, useLang, type Localized } from '../../../i18n'
 import { Bullets, Callout, Code, CodeBlock, DocPage, Example, Prose, Section } from '../../../kit'
@@ -134,9 +134,9 @@ export default function StylesPage() {
         />
         <CodeBlock
           language="css"
-          title="@orange/ui/styles.css"
+          title="@orangesys/ui/styles.css"
           code={`/* Ponto de entrada global — importe uma vez na raiz da aplicação */
-@import '@orange/tokens/tokens.css';
+@import '@orangesys/tokens/tokens.css';
 @import './base.css';`}
         />
       </Section>
@@ -459,7 +459,7 @@ export default function StylesPage() {
           </p>
         </Prose>
         <Example
-          code={`import { buttonClassName, Icon } from '@orange/ui'
+          code={`import { buttonClassName, Icon } from '@orangesys/ui'
 import { Link } from 'react-router-dom'
 
 <Link to="/precos" className={buttonClassName({ variant: 'primary' })}>

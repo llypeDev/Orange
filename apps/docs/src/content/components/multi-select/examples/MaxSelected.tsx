@@ -1,4 +1,4 @@
-import { MultiSelect } from '@orange/ui'
+import { MultiSelect } from '@orangesys/ui'
 
 const interesses = [
   { value: 'produto', label: 'Gestão de produto' },

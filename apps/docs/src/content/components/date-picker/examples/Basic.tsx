@@ -1,4 +1,4 @@
-import { DatePicker } from '@orange/ui'
+import { DatePicker } from '@orangesys/ui'
 
 export default function Basic() {
   return (

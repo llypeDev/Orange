@@ -1,4 +1,4 @@
-import { ExpandableText } from '@orange/ui'
+import { ExpandableText } from '@orangesys/ui'
 
 const notas = [
   {

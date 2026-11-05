@@ -1,4 +1,4 @@
-import { DatePicker } from '@orange/ui'
+import { DatePicker } from '@orangesys/ui'
 
 const hoje = new Date()
 const limite = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 60)

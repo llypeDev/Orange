@@ -1,4 +1,4 @@
-import { TreeView, type TreeViewItem } from '@orange/ui'
+import { TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const pastas: TreeViewItem[] = [

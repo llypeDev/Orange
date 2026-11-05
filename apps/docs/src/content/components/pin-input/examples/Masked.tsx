@@ -1,4 +1,4 @@
-import { PinInput } from '@orange/ui'
+import { PinInput } from '@orangesys/ui'
 
 export default function Masked() {
   return (

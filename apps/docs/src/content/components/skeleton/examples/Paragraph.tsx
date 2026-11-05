@@ -1,4 +1,4 @@
-import { SkeletonText } from '@orange/ui'
+import { SkeletonText } from '@orangesys/ui'
 
 export default function Paragraph() {
   return (

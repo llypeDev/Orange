@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@orange/ui'
+import { Button, Spinner } from '@orangesys/ui'
 import { useState } from 'react'
 
 const comments = [

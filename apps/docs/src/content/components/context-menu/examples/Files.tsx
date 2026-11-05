@@ -1,4 +1,4 @@
-import { ContextMenu, DropdownItem, DropdownSeparator, Icon } from '@orange/ui'
+import { ContextMenu, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 const arquivosIniciais = ['briefing-campanha.pdf', 'fotos-evento.zip', 'orcamento-2026.xlsx']

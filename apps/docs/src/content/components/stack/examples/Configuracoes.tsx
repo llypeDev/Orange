@@ -1,4 +1,4 @@
-import { Button, Heading, Stack, Switch, Text } from '@orange/ui'
+import { Button, Heading, Stack, Switch, Text } from '@orangesys/ui'
 
 const preferencias = [
   {

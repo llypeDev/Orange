@@ -1,4 +1,4 @@
-import { BottomNavigation, Icon } from '@orange/ui'
+import { BottomNavigation, Icon } from '@orangesys/ui'
 import type { AnchorHTMLAttributes } from 'react'
 
 // Em um app real: import { Link as RouterLink, useLocation } from 'react-router-dom'

@@ -9,7 +9,7 @@ import {
   useToast,
   type FormErrors,
   type FormValues,
-} from '@orange/ui'
+} from '@orangesys/ui'
 
 const text = (value: FormValues[string]) => String(value ?? '').trim()
 

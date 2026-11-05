@@ -1,4 +1,4 @@
-import { Tag } from '@orange/ui'
+import { Tag } from '@orangesys/ui'
 
 export default function SolidSizes() {
   return (

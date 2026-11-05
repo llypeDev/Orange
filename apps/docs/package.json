@@ -1,5 +1,5 @@
 {
-  "name": "@orange/docs",
+  "name": "@orangesys/docs",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -10,8 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@orange/tokens": "workspace:*",
-    "@orange/ui": "workspace:*",
+    "@orangesys/tokens": "workspace:*",
+    "@orangesys/ui": "workspace:*",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

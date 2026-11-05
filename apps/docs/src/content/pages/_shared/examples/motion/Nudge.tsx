@@ -1,4 +1,4 @@
-import { Icon } from '@orange/ui'
+import { Icon } from '@orangesys/ui'
 
 export default function SetaQueEmpurra() {
   return (

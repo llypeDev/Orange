@@ -5,7 +5,7 @@ import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { CodeBlock } from './CodeBlock'
 
-const sample = `import { Button } from '@orange/ui'
+const sample = `import { Button } from '@orangesys/ui'
 
 export function Salvar() {
   return <Button>Salvar</Button>
@@ -19,7 +19,7 @@ describe('CodeBlock', () => {
     expect(screen.getByRole('button', { name: 'Copiar' })).toHaveAccessibleDescription('Salvar.tsx')
     expect(region.tagName).toBe('PRE')
     expect(region).toHaveAttribute('tabindex', '0')
-    expect(region).toHaveTextContent("import { Button } from '@orange/ui'")
+    expect(region).toHaveTextContent("import { Button } from '@orangesys/ui'")
     expect(screen.getByText('Salvar.tsx')).toBeInTheDocument()
     expect(screen.getByText('tsx')).toHaveClass('or-code-block__language')
   })
@@ -32,7 +32,7 @@ describe('CodeBlock', () => {
   })
 
   it('usa um rótulo genérico quando não há título nem linguagem', () => {
-    render(<CodeBlock code="pnpm add @orange/ui" />)
+    render(<CodeBlock code="pnpm add @orangesys/ui" />)
     expect(screen.getByRole('group', { name: 'Bloco de código' })).toBeInTheDocument()
   })
 
@@ -47,13 +47,13 @@ describe('CodeBlock', () => {
     const user = userEvent.setup()
     const writeText = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
     const onCopy = vi.fn()
-    render(<CodeBlock code={'pnpm add @orange/ui\n\n'} language="bash" onCopy={onCopy} />)
+    render(<CodeBlock code={'pnpm add @orangesys/ui\n\n'} language="bash" onCopy={onCopy} />)
     const button = screen.getByRole('button', { name: 'Copiar' })
     expect(button).toHaveAccessibleDescription('bash')
 
     await user.click(button)
-    expect(writeText).toHaveBeenCalledWith('pnpm add @orange/ui')
-    expect(onCopy).toHaveBeenCalledWith('pnpm add @orange/ui')
+    expect(writeText).toHaveBeenCalledWith('pnpm add @orangesys/ui')
+    expect(onCopy).toHaveBeenCalledWith('pnpm add @orangesys/ui')
     expect(screen.getByRole('status')).toHaveTextContent('Copiado!')
     expect(screen.getByRole('button', { name: 'Copiado!' })).toBeInTheDocument()
     // o check entra com animação ("pop")
@@ -136,7 +136,7 @@ describe('CodeBlock', () => {
     const { container } = render(
       <div>
         <CodeBlock code={sample} title="Salvar.tsx" language="tsx" showLineNumbers highlightLines={[4]} />
-        <CodeBlock code="pnpm add @orange/ui" language="bash" wrap />
+        <CodeBlock code="pnpm add @orangesys/ui" language="bash" wrap />
       </div>,
     )
     await expectNoA11yViolations(container)

@@ -1,4 +1,4 @@
-import { Icon, Paper } from '@orange/ui'
+import { Icon, Paper } from '@orangesys/ui'
 
 const planos = [
   { nome: 'Essencial', resumo: 'Até 5 usuários e conciliação diária.', href: '#plano-essencial' },

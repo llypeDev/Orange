@@ -27,7 +27,7 @@ import './AppShell.css'
 
 export type AppShellBreakpoint = 'md' | 'lg'
 
-/** Mesmos valores de `breakpoints` em `@orange/tokens` (md 768px, lg 1024px). */
+/** Mesmos valores de `breakpoints` em `@orangesys/tokens` (md 768px, lg 1024px). */
 const BREAKPOINTS: Record<AppShellBreakpoint, string> = { md: '768px', lg: '1024px' }
 
 /** Estado da navegação, exposto por `useAppShell()`. */

@@ -12,7 +12,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { ToastProvider } from '@orange/ui'
+import { ToastProvider } from '@orangesys/ui'
 import Delivery from './examples/Delivery'
 import DeliveryCode from './examples/Delivery?raw'
 import Schedule from './examples/Schedule'
@@ -23,7 +23,7 @@ import SignUp from './examples/SignUp'
 import SignUpCode from './examples/SignUp?raw'
 import { meta } from './meta'
 
-const statusCode = `import { Alert, Button, Form, FormActions, TextField, useToast } from '@orange/ui'
+const statusCode = `import { Alert, Button, Form, FormActions, TextField, useToast } from '@orangesys/ui'
 
 // Toast: confirmação curta, a pessoa continua na mesma tela.
 function Perfil() {

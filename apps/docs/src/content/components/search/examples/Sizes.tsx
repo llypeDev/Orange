@@ -1,4 +1,4 @@
-import { Search } from '@orange/ui'
+import { Search } from '@orangesys/ui'
 
 export default function Sizes() {
   return (

@@ -29,7 +29,7 @@ import {
   type FileUploaderItem,
   type FormErrors,
   type FormValues,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useEffect, useId, useRef, useState } from 'react'
 import './Settings.css'
 

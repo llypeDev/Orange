@@ -1,4 +1,4 @@
-import { useId } from '@orange/ui'
+import { useId } from '@orangesys/ui'
 
 function CampoCep() {
   const id = useId('cep')

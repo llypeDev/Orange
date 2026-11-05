@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip, type IconName } from '@orange/ui'
+import { Button, Icon, Tooltip, type IconName } from '@orangesys/ui'
 
 const acoes: { icon: IconName; label: string; dica: string }[] = [
   { icon: 'edit', label: 'Editar', dica: 'Editar documento' },

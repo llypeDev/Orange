@@ -1,4 +1,4 @@
-import { Button, Stepper } from '@orange/ui'
+import { Button, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Vertical() {

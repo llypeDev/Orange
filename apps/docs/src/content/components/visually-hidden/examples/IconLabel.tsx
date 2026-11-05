@@ -1,4 +1,4 @@
-import { Icon, VisuallyHidden } from '@orange/ui'
+import { Icon, VisuallyHidden } from '@orangesys/ui'
 
 export default function IconLabel() {
   return (

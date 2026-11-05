@@ -1,4 +1,4 @@
-import { Icon, useScrollDirection } from '@orange/ui'
+import { Icon, useScrollDirection } from '@orangesys/ui'
 
 export default function DirecaoDaRolagem() {
   const { direction, pastThreshold } = useScrollDirection({ threshold: 120, tolerance: 6 })

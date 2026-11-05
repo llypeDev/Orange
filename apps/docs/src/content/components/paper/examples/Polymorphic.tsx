@@ -1,4 +1,4 @@
-import { Heading, Paper } from '@orange/ui'
+import { Heading, Paper } from '@orangesys/ui'
 
 const artigos = [
   { titulo: 'Como organizar o fechamento do mês', tempo: '6 min de leitura' },

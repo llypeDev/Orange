@@ -1,4 +1,4 @@
-import { MultiSelect } from '@orange/ui'
+import { MultiSelect } from '@orangesys/ui'
 
 const habilidades = [
   { value: 'react', label: 'React' },

@@ -1,4 +1,4 @@
-import { Switch } from '@orange/ui'
+import { Switch } from '@orangesys/ui'
 
 const settings = [
   { id: 'comentarios', label: 'Comentários', description: 'Quando alguém comentar nos seus projetos.', on: true },

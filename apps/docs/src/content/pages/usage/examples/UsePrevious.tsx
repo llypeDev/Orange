@@ -1,4 +1,4 @@
-import { Button, usePrevious } from '@orange/ui'
+import { Button, usePrevious } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Cotacao() {

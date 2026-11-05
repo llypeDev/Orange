@@ -1,6 +1,6 @@
 import { Bullets, Code, ComponentPage, DefinitionTable, DoDont, Example, PropsTable, Section, WcagList } from '../../../kit'
 import { T } from '../../../i18n'
-import { Badge, Button, Icon } from '@orange/ui'
+import { Badge, Button, Icon } from '@orangesys/ui'
 import Inline from './examples/Inline'
 import LiveCount from './examples/LiveCount'
 import LiveCountCode from './examples/LiveCount?raw'

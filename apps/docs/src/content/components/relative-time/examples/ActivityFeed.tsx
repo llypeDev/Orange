@@ -1,4 +1,4 @@
-import { RelativeTime } from '@orange/ui'
+import { RelativeTime } from '@orangesys/ui'
 
 const minutos = (n: number) => new Date(Date.now() - n * 60_000)
 

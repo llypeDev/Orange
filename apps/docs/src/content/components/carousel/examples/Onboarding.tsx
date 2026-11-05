@@ -1,4 +1,4 @@
-import { Carousel, CarouselSlide, Heading, Image, Text } from '@orange/ui'
+import { Carousel, CarouselSlide, Heading, Image, Text } from '@orangesys/ui'
 import alertas from './media/alertas.svg'
 import boasVindas from './media/boas-vindas.svg'
 import pedidos from './media/pedidos.svg'

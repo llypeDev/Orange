@@ -1,4 +1,4 @@
-import { Switch } from '@orange/ui'
+import { Switch } from '@orangesys/ui'
 
 export default function SizesStates() {
   return (

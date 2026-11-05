@@ -1,4 +1,4 @@
-import { Button, CopyButton, Icon, SplitButton, Toolbar, ToolbarSeparator } from '@orange/ui'
+import { Button, CopyButton, Icon, SplitButton, Toolbar, ToolbarSeparator } from '@orangesys/ui'
 
 export default function Actions() {
   return (

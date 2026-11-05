@@ -1,4 +1,4 @@
-import { Button, Icon, Stat, StatGroup } from '@orange/ui'
+import { Button, Icon, Stat, StatGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Dashboard() {

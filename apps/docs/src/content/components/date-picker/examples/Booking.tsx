@@ -1,4 +1,4 @@
-import { DatePicker, Text } from '@orange/ui'
+import { DatePicker, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000

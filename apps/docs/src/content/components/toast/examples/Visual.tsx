@@ -1,4 +1,4 @@
-import { Button, Toast } from '@orange/ui'
+import { Button, Toast } from '@orangesys/ui'
 
 export default function Visual() {
   return (

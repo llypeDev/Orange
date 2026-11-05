@@ -1,4 +1,4 @@
-import { LineChart } from '@orange/ui'
+import { LineChart } from '@orangesys/ui'
 
 export default function WithGaps() {
   return (

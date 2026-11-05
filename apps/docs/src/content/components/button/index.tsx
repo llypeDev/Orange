@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Button } from '@orange/ui'
+import { Button } from '@orangesys/ui'
 import Loading from './examples/Loading'
 import LoadingCode from './examples/Loading?raw'
 import Sizes from './examples/Sizes'

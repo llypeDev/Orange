@@ -1,4 +1,4 @@
-import { VisuallyHidden } from '@orange/ui'
+import { VisuallyHidden } from '@orangesys/ui'
 
 export default function Focusable() {
   return (

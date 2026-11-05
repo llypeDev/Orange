@@ -1,4 +1,4 @@
-import { MonthPaginator, Text, type YearMonth } from '@orange/ui'
+import { MonthPaginator, Text, type YearMonth } from '@orangesys/ui'
 import { useState } from 'react'
 
 // Dados de exemplo: entradas e saídas por mês (chave "ano-mês").

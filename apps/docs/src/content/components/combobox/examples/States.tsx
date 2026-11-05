@@ -1,4 +1,4 @@
-import { Combobox } from '@orange/ui'
+import { Combobox } from '@orangesys/ui'
 
 const bancos = [
   { value: '001', label: '001 — Banco do Brasil' },

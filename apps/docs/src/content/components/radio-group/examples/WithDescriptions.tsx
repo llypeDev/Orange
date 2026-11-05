@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from '@orange/ui'
+import { Radio, RadioGroup } from '@orangesys/ui'
 
 export default function WithDescriptions() {
   return (

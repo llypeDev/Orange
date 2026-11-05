@@ -1,4 +1,4 @@
-import { Button, Combobox, type ComboboxOption } from '@orange/ui'
+import { Button, Combobox, type ComboboxOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const fusos: ComboboxOption[] = [

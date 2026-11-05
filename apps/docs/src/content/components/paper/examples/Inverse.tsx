@@ -1,4 +1,4 @@
-import { Button, Heading, Icon, Paper } from '@orange/ui'
+import { Button, Heading, Icon, Paper } from '@orangesys/ui'
 
 export default function Inverse() {
   return (

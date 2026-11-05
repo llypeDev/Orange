@@ -1,5 +1,5 @@
 {
-  "name": "@orange/ui",
+  "name": "@orangesys/ui",
   "version": "0.5.0",
   "description": "Componentes React acessíveis (WCAG 2.2 AA) do Orange Design System: temas claro e escuro, PT/EN, hooks e ícones.",
   "keywords": [
@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.6",
-    "@orange/tokens": "workspace:*"
+    "@orangesys/tokens": "workspace:*"
   },
   "devDependencies": {
     "@storybook/react-vite": "^9.1.10",

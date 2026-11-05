@@ -1,4 +1,4 @@
-import { Spinner } from '@orange/ui'
+import { Spinner } from '@orangesys/ui'
 
 export default function Tones() {
   return (

@@ -1,4 +1,4 @@
-import { Alert, Button, Form, FormActions, TextField, type FormErrors, type FormValues } from '@orange/ui'
+import { Alert, Button, Form, FormActions, TextField, type FormErrors, type FormValues } from '@orangesys/ui'
 import { useState } from 'react'
 
 const text = (value: FormValues[string]) => String(value ?? '').trim()

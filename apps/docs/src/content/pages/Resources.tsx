@@ -1,6 +1,6 @@
-import { Button, buttonClassName, Icon } from '@orange/ui'
-import { motion, primitives, radius, space, themes, tokens, typography } from '@orange/tokens'
-import tokensCss from '@orange/tokens/tokens.css?raw'
+import { Button, buttonClassName, Icon } from '@orangesys/ui'
+import { motion, primitives, radius, space, themes, tokens, typography } from '@orangesys/tokens'
+import tokensCss from '@orangesys/tokens/tokens.css?raw'
 import { useMemo, useState } from 'react'
 import { T, useLang, type Localized } from '../../i18n'
 import { Callout, Code, CodeBlock, DocPage, Prose, Section } from '../../kit'
@@ -84,8 +84,8 @@ const formatInfo: Record<
     language: 'json',
     title: { pt: 'JSON (objeto tokens)', en: 'JSON (tokens object)' },
     text: {
-      pt: 'O mesmo objeto exportado por @orange/tokens: primitives, themes, typography, space, motion, zIndex, breakpoints…',
-      en: 'The same object exported by @orange/tokens: primitives, themes, typography, space, motion, zIndex, breakpoints…',
+      pt: 'O mesmo objeto exportado por @orangesys/tokens: primitives, themes, typography, space, motion, zIndex, breakpoints…',
+      en: 'The same object exported by @orangesys/tokens: primitives, themes, typography, space, motion, zIndex, breakpoints…',
     },
   },
   dtcg: {
@@ -274,28 +274,28 @@ export default function Resources() {
           items={[
             {
               eyebrow: { pt: 'v0.1.0 · MIT', en: 'v0.1.0 · MIT' },
-              title: { pt: '@orange/tokens', en: '@orange/tokens' },
+              title: { pt: '@orangesys/tokens', en: '@orangesys/tokens' },
               text: {
                 pt: (
                   <>
                     Fonte única dos tokens em TypeScript e o <code>tokens.css</code> gerado. Inclui{' '}
                     <code>contrastRatio()</code> e <code>wcagLevel()</code> em{' '}
-                    <code>@orange/tokens/contrast</code>. Funciona sem React.
+                    <code>@orangesys/tokens/contrast</code>. Funciona sem React.
                   </>
                 ),
                 en: (
                   <>
                     Single source of tokens in TypeScript plus the generated <code>tokens.css</code>
                     . Includes <code>contrastRatio()</code> and <code>wcagLevel()</code> in{' '}
-                    <code>@orange/tokens/contrast</code>. Works without React.
+                    <code>@orangesys/tokens/contrast</code>. Works without React.
                   </>
                 ),
               },
-              meta: 'pnpm add @orange/tokens',
+              meta: 'pnpm add @orangesys/tokens',
             },
             {
               eyebrow: { pt: 'v0.1.0 · MIT', en: 'v0.1.0 · MIT' },
-              title: { pt: '@orange/ui', en: '@orange/ui' },
+              title: { pt: '@orangesys/ui', en: '@orangesys/ui' },
               text: {
                 pt: (
                   <>
@@ -310,7 +310,7 @@ export default function Resources() {
                   </>
                 ),
               },
-              meta: 'pnpm add @orange/ui',
+              meta: 'pnpm add @orangesys/ui',
             },
           ]}
         />
@@ -324,13 +324,13 @@ export default function Resources() {
                 <>
                   Os arquivos são gerados aqui no navegador, a partir da mesma versão dos tokens que
                   esta documentação usa. Para manter tudo sincronizado em um projeto, prefira
-                  instalar <Code>@orange/tokens</Code>.
+                  instalar <Code>@orangesys/tokens</Code>.
                 </>
               }
               en={
                 <>
                   Files are generated right here in the browser, from the same token version these
-                  docs use. To keep a project in sync, prefer installing <Code>@orange/tokens</Code>
+                  docs use. To keep a project in sync, prefer installing <Code>@orangesys/tokens</Code>
                   .
                 </>
               }

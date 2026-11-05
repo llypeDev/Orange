@@ -1,4 +1,4 @@
-import { TextField } from '@orange/ui'
+import { TextField } from '@orangesys/ui'
 
 export default function Basic() {
   return (

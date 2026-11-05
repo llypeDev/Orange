@@ -1,5 +1,5 @@
-import { Button, Eyebrow, Heading, Text } from '@orange/ui'
-import { typography } from '@orange/tokens'
+import { Button, Eyebrow, Heading, Text } from '@orangesys/ui'
+import { typography } from '@orangesys/tokens'
 import { T, useLang, type Localized } from '../../../i18n'
 import {
   Bullets,
@@ -101,7 +101,7 @@ const tracking: Record<string, Localized<string>> = {
 // Espelha exatamente a prévia do exemplo "Heading" abaixo. Os níveis começam no h4 porque a
 // prévia fica dentro do <h3> do exemplo: usar h1/h2 ali quebraria o sumário de títulos da página.
 // Isso também é a lição do exemplo — o nível vem da estrutura, o tamanho vem do size.
-const headingCode = `import { Heading } from '@orange/ui'
+const headingCode = `import { Heading } from '@orangesys/ui'
 
 // level = semântica (h1–h6), definida pela estrutura do documento;
 // size = aparência. Aqui o exemplo está dentro de um h3, então começa no h4.
@@ -111,7 +111,7 @@ const headingCode = `import { Heading } from '@orange/ui'
 <Heading level={6} size="xl">Loja física</Heading>
 <Heading level={5} size="xl">Um h5 com tamanho de h4</Heading>`
 
-const textCode = `import { Text } from '@orange/ui'
+const textCode = `import { Text } from '@orangesys/ui'
 
 <Text size="lg" tone="muted">Lead: resumo do que a página entrega.</Text>
 <Text>Texto padrão: 15px, Inter, cor text.</Text>
@@ -122,7 +122,7 @@ const textCode = `import { Text } from '@orange/ui'
   Endereço: Rua Doutor Arnaldo de Carvalho, 1500 — São Paulo
 </Text>`
 
-const eyebrowCode = `import { Eyebrow, Heading } from '@orange/ui'
+const eyebrowCode = `import { Eyebrow, Heading } from '@orangesys/ui'
 
 <Eyebrow>Configurações</Eyebrow>
 <Eyebrow marker>Novo</Eyebrow>

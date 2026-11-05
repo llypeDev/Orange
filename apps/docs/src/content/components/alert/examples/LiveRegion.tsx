@@ -1,4 +1,4 @@
-import { Alert, Button } from '@orange/ui'
+import { Alert, Button } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function LiveRegion() {

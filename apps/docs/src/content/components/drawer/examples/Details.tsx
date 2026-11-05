@@ -1,4 +1,4 @@
-import { Button, Drawer } from '@orange/ui'
+import { Button, Drawer } from '@orangesys/ui'
 
 const itens = [
   { nome: 'Camiseta básica preta — M', qtd: 2, valor: 'R$ 119,80' },

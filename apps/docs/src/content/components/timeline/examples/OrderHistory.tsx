@@ -1,4 +1,4 @@
-import { Timeline, TimelineItem } from '@orange/ui'
+import { Timeline, TimelineItem } from '@orangesys/ui'
 
 export default function OrderHistory() {
   return (

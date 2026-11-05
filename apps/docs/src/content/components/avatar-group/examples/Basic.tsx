@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from '@orange/ui'
+import { Avatar, AvatarGroup } from '@orangesys/ui'
 
 const reviewers = ['Mariana Lopes', 'Rafael Costa', 'Beatriz Nunes', 'Diego Almeida', 'Lívia Martins', 'Thiago Rocha']
 

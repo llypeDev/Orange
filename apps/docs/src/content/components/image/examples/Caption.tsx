@@ -1,4 +1,4 @@
-import { Image } from '@orange/ui'
+import { Image } from '@orangesys/ui'
 import vitrine from './media/vitrine.svg'
 
 export default function Caption() {

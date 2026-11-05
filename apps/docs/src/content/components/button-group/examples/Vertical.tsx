@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon } from '@orange/ui'
+import { Button, ButtonGroup, Icon } from '@orangesys/ui'
 
 export default function Vertical() {
   return (

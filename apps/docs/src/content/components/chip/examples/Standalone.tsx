@@ -1,4 +1,4 @@
-import { Chip, Icon } from '@orange/ui'
+import { Chip, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Standalone() {

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader } from '@orange/ui'
+import { Button, Card, CardBody, CardFooter, CardHeader } from '@orangesys/ui'
 
 const price = {
   fontFamily: 'var(--or-font-display)',

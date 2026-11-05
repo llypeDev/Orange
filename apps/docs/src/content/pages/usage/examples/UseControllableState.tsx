@@ -1,4 +1,4 @@
-import { Button, Icon, useControllableState } from '@orange/ui'
+import { Button, Icon, useControllableState } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface QuantidadeProps {

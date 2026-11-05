@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Grid, Icon, Text } from '@orange/ui'
+import { Button, Card, CardBody, CardFooter, CardHeader, Grid, Icon, Text } from '@orangesys/ui'
 
 const produtos = [
   { id: 'flex', categoria: 'Cadeiras', nome: 'Cadeira ergonômica Flex', preco: 'R$ 1.289,90' },

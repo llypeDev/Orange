@@ -9,7 +9,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Divider } from '@orange/ui'
+import { Divider } from '@orangesys/ui'
 import Decorative from './examples/Decorative'
 import DecorativeCode from './examples/Decorative?raw'
 import Sections from './examples/Sections'

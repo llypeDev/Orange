@@ -1,4 +1,4 @@
-import { Combobox } from '@orange/ui'
+import { Combobox } from '@orangesys/ui'
 
 const cidades = [
   { value: 'bel', label: 'Belém', description: 'Pará' },

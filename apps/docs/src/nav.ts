@@ -1,4 +1,4 @@
-import type { IconName } from '@orange/ui'
+import type { IconName } from '@orangesys/ui'
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Localized } from './i18n'
 

@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Banner } from '@orange/ui'
+import { Banner } from '@orangesys/ui'
 import Accent from './examples/Accent'
 import AccentCode from './examples/Accent?raw'
 import Live from './examples/Live'

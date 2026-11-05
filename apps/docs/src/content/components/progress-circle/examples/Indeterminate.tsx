@@ -1,4 +1,4 @@
-import { ProgressCircle } from '@orange/ui'
+import { ProgressCircle } from '@orangesys/ui'
 
 export default function Indeterminate() {
   return (

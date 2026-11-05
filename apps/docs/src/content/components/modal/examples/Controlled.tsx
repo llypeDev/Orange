@@ -1,4 +1,4 @@
-import { Button, Field, Modal, ModalBody, ModalFooter } from '@orange/ui'
+import { Button, Field, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlled() {

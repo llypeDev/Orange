@@ -1,4 +1,4 @@
-import { CopyButton } from '@orange/ui'
+import { CopyButton } from '@orangesys/ui'
 
 const inviteLink = 'https://app.orange.dev/convite/equipe-produto'
 

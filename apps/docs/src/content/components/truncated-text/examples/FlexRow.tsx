@@ -1,4 +1,4 @@
-import { TruncatedText } from '@orange/ui'
+import { TruncatedText } from '@orangesys/ui'
 
 const conversas = [
   { nome: 'Equipe financeira', mensagem: 'Ana: O fechamento de outubro está pronto para revisão, falta só a conciliação bancária.', hora: '14:05' },

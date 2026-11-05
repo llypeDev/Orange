@@ -1,4 +1,4 @@
-import { Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orange/ui'
+import { Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orangesys/ui'
 import deploy from './media/deploy.svg'
 import equipes from './media/equipes.svg'
 import monitoramento from './media/monitoramento.svg'

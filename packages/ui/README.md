@@ -1,4 +1,4 @@
-# @orange/ui
+# @orangesys/ui
 
 Componentes React acessíveis do **Orange**, um design system open source: geométrico, de cantos retos,
 com um único acento laranja e WCAG 2.2 AA desde o primeiro componente.
@@ -13,7 +13,7 @@ com um único acento laranja e WCAG 2.2 AA desde o primeiro componente.
 ## Instalação
 
 ```bash
-pnpm add @orange/ui
+pnpm add @orangesys/ui
 ```
 
 Requer `react` e `react-dom` 18.2 ou 19.
@@ -21,8 +21,8 @@ Requer `react` e `react-dom` 18.2 ou 19.
 ## Uso
 
 ```tsx
-import '@orange/ui/styles.css'
-import { Button, OrangeProvider } from '@orange/ui'
+import '@orangesys/ui/styles.css'
+import { Button, OrangeProvider } from '@orangesys/ui'
 
 export function App() {
   return (

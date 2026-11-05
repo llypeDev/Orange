@@ -1,7 +1,7 @@
 /**
  * Gera `css/tokens.css` e os arquivos DTCG (`dist/tokens.dtcg.json` e
  * `dist/tokens/**`) a partir de `src/index.ts`.
- * Execute com `pnpm --filter @orange/tokens build`.
+ * Execute com `pnpm --filter @orangesys/tokens build`.
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'

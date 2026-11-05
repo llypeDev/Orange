@@ -1,4 +1,4 @@
-import { Breadcrumb } from '@orange/ui'
+import { Breadcrumb } from '@orangesys/ui'
 
 export default function Basic() {
   return (

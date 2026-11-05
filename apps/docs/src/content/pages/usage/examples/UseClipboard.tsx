@@ -1,4 +1,4 @@
-import { Button, Icon, useClipboard } from '@orange/ui'
+import { Button, Icon, useClipboard } from '@orangesys/ui'
 
 export default function Cupom() {
   const { copy, copied } = useClipboard(2000)

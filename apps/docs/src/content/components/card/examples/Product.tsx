@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Icon } from '@orange/ui'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Icon } from '@orangesys/ui'
 import cadeira from './media/cadeira.svg'
 
 export default function Product() {

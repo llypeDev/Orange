@@ -1,4 +1,4 @@
-import { useMediaQuery, useReducedMotion } from '@orange/ui'
+import { useMediaQuery, useReducedMotion } from '@orangesys/ui'
 
 export default function Ambiente() {
   const desktop = useMediaQuery('(min-width: 1024px)')

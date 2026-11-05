@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, IconButton, PageHeader, Tag } from '@orange/ui'
+import { Breadcrumb, Button, IconButton, PageHeader, Tag } from '@orangesys/ui'
 
 export default function Detail() {
   return (

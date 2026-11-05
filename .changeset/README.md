@@ -1,7 +1,7 @@
 # Changesets
 
 Esta pasta guarda os **changesets**: arquivos Markdown curtos que dizem quais pacotes publicados
-(`@orange/tokens`, `@orange/ui`) mudam, o tipo de versão (`patch`, `minor`, `major`) e o texto que
+(`@orangesys/tokens`, `@orangesys/ui`) mudam, o tipo de versão (`patch`, `minor`, `major`) e o texto que
 entra no `CHANGELOG.md` de cada pacote.
 
 ```bash

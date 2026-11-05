@@ -1,5 +1,5 @@
-import { Button, Icon, useReducedMotion } from '@orange/ui'
-import { motion } from '@orange/tokens'
+import { Button, Icon, useReducedMotion } from '@orangesys/ui'
+import { motion } from '@orangesys/tokens'
 import { useState, type CSSProperties } from 'react'
 import { T, useLang, type Localized } from '../../../i18n'
 import {
@@ -264,14 +264,14 @@ export default function MotionPage() {
             <T
               pt={
                 <>
-                  Gerada de <Code>motion.duration</Code> em <Code>@orange/tokens</Code>. Clique em ▶
+                  Gerada de <Code>motion.duration</Code> em <Code>@orangesys/tokens</Code>. Clique em ▶
                   para ver cada duração com <Code>--or-ease-out</Code>. Todas viram <Code>0ms</Code>{' '}
                   com movimento reduzido.
                 </>
               }
               en={
                 <>
-                  Generated from <Code>motion.duration</Code> in <Code>@orange/tokens</Code>. Click
+                  Generated from <Code>motion.duration</Code> in <Code>@orangesys/tokens</Code>. Click
                   ▶ to see each duration with <Code>--or-ease-out</Code>. They all become{' '}
                   <Code>0ms</Code> with reduced motion.
                 </>
@@ -1047,7 +1047,7 @@ export default function MotionPage() {
         <CodeBlock
           language="tsx"
           title="Galeria.tsx"
-          code={`import { useReducedMotion } from '@orange/ui'
+          code={`import { useReducedMotion } from '@orangesys/ui'
 
 export function Galeria({ slides }: { slides: Slide[] }) {
   const reduzido = useReducedMotion()

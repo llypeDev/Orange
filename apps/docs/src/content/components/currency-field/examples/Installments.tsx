@@ -1,4 +1,4 @@
-import { CurrencyField, Select } from '@orange/ui'
+import { CurrencyField, Select } from '@orangesys/ui'
 import { useState } from 'react'
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })

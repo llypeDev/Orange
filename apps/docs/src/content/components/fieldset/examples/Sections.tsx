@@ -1,4 +1,4 @@
-import { Fieldset, RadioGroup, Switch, TextField } from '@orange/ui'
+import { Fieldset, RadioGroup, Switch, TextField } from '@orangesys/ui'
 
 export default function Sections() {
   return (

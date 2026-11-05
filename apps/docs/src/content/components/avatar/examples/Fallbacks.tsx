@@ -1,4 +1,4 @@
-import { Avatar } from '@orange/ui'
+import { Avatar } from '@orangesys/ui'
 import mariana from './photos/mariana.svg'
 
 export default function Fallbacks() {

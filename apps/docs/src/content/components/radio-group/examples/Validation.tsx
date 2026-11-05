@@ -1,4 +1,4 @@
-import { Button, RadioGroup } from '@orange/ui'
+import { Button, RadioGroup } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function Validation() {

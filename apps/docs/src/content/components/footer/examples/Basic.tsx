@@ -1,4 +1,4 @@
-import { Footer, Icon } from '@orange/ui'
+import { Footer, Icon } from '@orangesys/ui'
 
 export default function Basic() {
   return (

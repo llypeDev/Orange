@@ -1,4 +1,4 @@
-import { FileUploader, type FileUploaderItem } from '@orange/ui'
+import { FileUploader, type FileUploaderItem } from '@orangesys/ui'
 import { useEffect, useRef, useState } from 'react'
 
 export default function UploadProgress() {

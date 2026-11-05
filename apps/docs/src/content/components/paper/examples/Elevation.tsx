@@ -1,4 +1,4 @@
-import { Paper } from '@orange/ui'
+import { Paper } from '@orangesys/ui'
 
 export default function Elevation() {
   return (

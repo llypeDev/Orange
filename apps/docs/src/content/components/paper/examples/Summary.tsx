@@ -1,4 +1,4 @@
-import { DescriptionList, Heading, Paper } from '@orange/ui'
+import { DescriptionList, Heading, Paper } from '@orangesys/ui'
 
 export default function Summary() {
   return (

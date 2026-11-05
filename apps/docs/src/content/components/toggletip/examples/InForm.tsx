@@ -1,4 +1,4 @@
-import { Field, Toggletip } from '@orange/ui'
+import { Field, Toggletip } from '@orangesys/ui'
 
 export default function InForm() {
   return (

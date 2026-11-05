@@ -1,4 +1,4 @@
-import { Button, useToast } from '@orange/ui'
+import { Button, useToast } from '@orangesys/ui'
 
 export default function Update() {
   const { toast } = useToast()

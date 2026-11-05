@@ -1,4 +1,4 @@
-import { useClipboard } from '@orange/ui'
+import { useClipboard } from '@orangesys/ui'
 import { Highlight, type PrismTheme } from 'prism-react-renderer'
 import { useLang } from '../i18n'
 

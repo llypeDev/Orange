@@ -1,4 +1,4 @@
-import { Icon, Tag } from '@orange/ui'
+import { Icon, Tag } from '@orangesys/ui'
 
 export default function WithIcons() {
   return (

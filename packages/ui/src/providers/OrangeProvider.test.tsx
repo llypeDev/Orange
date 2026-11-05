@@ -1,4 +1,4 @@
-import { themeMeta, themeNames as tokenThemeNames } from '@orange/tokens'
+import { themeMeta, themeNames as tokenThemeNames } from '@orangesys/tokens'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -69,7 +69,7 @@ afterEach(() => {
 })
 
 describe('temas', () => {
-  it('são os mesmos temas gerados por @orange/tokens', () => {
+  it('são os mesmos temas gerados por @orangesys/tokens', () => {
     expect([...themeNames]).toEqual([...tokenThemeNames])
     for (const name of themeNames) {
       expect(getColorScheme(name)).toBe(themeMeta[name].colorScheme)

@@ -1,4 +1,4 @@
-import { InlineEdit } from '@orange/ui'
+import { InlineEdit } from '@orangesys/ui'
 import { useState } from 'react'
 
 const nomesEmUso = ['financeiro', 'marketing']

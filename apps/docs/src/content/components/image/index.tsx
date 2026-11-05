@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Image } from '@orange/ui'
+import { Image } from '@orangesys/ui'
 import Caption from './examples/Caption'
 import CaptionCode from './examples/Caption?raw'
 import Fallbacks from './examples/Fallbacks'

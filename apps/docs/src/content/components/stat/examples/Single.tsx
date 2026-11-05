@@ -1,4 +1,4 @@
-import { Stat } from '@orange/ui'
+import { Stat } from '@orangesys/ui'
 
 export default function Single() {
   return (

@@ -1,4 +1,4 @@
-import { Icon, TreeView, type TreeViewItem } from '@orange/ui'
+import { Icon, TreeView, type TreeViewItem } from '@orangesys/ui'
 
 const categorias: TreeViewItem[] = [
   {

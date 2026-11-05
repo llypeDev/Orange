@@ -1,4 +1,4 @@
-import { SortableList } from '@orange/ui'
+import { SortableList } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Category {

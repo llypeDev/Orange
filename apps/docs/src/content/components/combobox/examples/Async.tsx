@@ -1,4 +1,4 @@
-import { Combobox, type ComboboxOption } from '@orange/ui'
+import { Combobox, type ComboboxOption } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const clientes: ComboboxOption[] = [

@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@orange/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@orangesys/ui'
 
 export default function Multiple() {
   return (

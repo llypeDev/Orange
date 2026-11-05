@@ -1,4 +1,4 @@
-import { Button, LoadingOverlay } from '@orange/ui'
+import { Button, LoadingOverlay } from '@orangesys/ui'
 import { useState } from 'react'
 
 const regions = [

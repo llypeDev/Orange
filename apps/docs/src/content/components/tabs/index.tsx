@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Tab, TabList, Tabs } from '@orange/ui'
+import { Tab, TabList, Tabs } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Enclosed from './examples/Enclosed'

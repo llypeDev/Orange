@@ -1,5 +1,5 @@
 /**
- * Temas do Orange: os mesmos `[data-theme]` gerados por `@orange/tokens`
+ * Temas do Orange: os mesmos `[data-theme]` gerados por `@orangesys/tokens`
  * (a lista é conferida contra os tokens em `OrangeProvider.test.tsx`).
  */
 

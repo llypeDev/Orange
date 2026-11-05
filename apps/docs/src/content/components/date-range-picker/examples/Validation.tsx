@@ -1,4 +1,4 @@
-import { Button, DateRangePicker, type DateRange } from '@orange/ui'
+import { Button, DateRangePicker, type DateRange } from '@orangesys/ui'
 import { useState, type FormEvent } from 'react'
 
 export default function Validation() {

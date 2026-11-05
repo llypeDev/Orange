@@ -1,4 +1,4 @@
-import { Button, TagInput } from '@orange/ui'
+import { Button, TagInput } from '@orangesys/ui'
 import { useState } from 'react'
 
 const emailValido = (texto: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texto)

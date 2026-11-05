@@ -1,4 +1,4 @@
-import { Button, Icon, Reveal } from '@orange/ui'
+import { Button, Icon, Reveal } from '@orangesys/ui'
 
 export default function Sequencia() {
   return (

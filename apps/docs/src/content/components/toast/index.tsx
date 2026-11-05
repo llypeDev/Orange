@@ -13,7 +13,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Toast, ToastProvider } from '@orange/ui'
+import { Toast, ToastProvider } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
 import Positions from './examples/Positions'
@@ -29,7 +29,7 @@ import WithActionCode from './examples/WithAction?raw'
 import { meta } from './meta'
 
 const setupCode = `// App.tsx
-import { OrangeProvider, ToastProvider } from '@orange/ui'
+import { OrangeProvider, ToastProvider } from '@orangesys/ui'
 
 export function App() {
   return (
@@ -42,7 +42,7 @@ export function App() {
 }
 
 // SaveButton.tsx — qualquer componente dentro do provider
-import { Button, useToast } from '@orange/ui'
+import { Button, useToast } from '@orangesys/ui'
 
 export function SaveButton() {
   const { toast } = useToast()

@@ -1,4 +1,4 @@
-import { Avatar } from '@orange/ui'
+import { Avatar } from '@orangesys/ui'
 
 const customers = [
   'Padaria Aurora',

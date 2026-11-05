@@ -1,4 +1,4 @@
-import { ProgressBar } from '@orange/ui'
+import { ProgressBar } from '@orangesys/ui'
 
 export default function TonesSizes() {
   return (

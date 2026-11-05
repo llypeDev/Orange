@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { CopyButton } from '@orange/ui'
+import { CopyButton } from '@orangesys/ui'
 import Command from './examples/Command'
 import CommandCode from './examples/Command?raw'
 import OnCopy from './examples/OnCopy'

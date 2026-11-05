@@ -1,4 +1,4 @@
-import { Highlight } from '@orange/ui'
+import { Highlight } from '@orangesys/ui'
 
 const busca = 'nota fiscal cancelar'
 const termos = busca.split(/\s+/)

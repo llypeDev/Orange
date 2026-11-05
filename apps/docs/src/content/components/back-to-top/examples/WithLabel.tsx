@@ -1,4 +1,4 @@
-import { BackToTop } from '@orange/ui'
+import { BackToTop } from '@orangesys/ui'
 import { useRef } from 'react'
 
 const sections = ['Introdução', 'Instalação', 'Configuração', 'Temas', 'Componentes', 'Publicação']

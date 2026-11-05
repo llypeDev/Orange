@@ -5,8 +5,8 @@ import {
   useFieldControlProps,
   useReducedMotion,
   VisuallyHidden,
-} from '@orange/ui'
-import { controlSize, themes, type ThemeName } from '@orange/tokens'
+} from '@orangesys/ui'
+import { controlSize, themes, type ThemeName } from '@orangesys/tokens'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
@@ -224,7 +224,7 @@ function EmailInput({
   )
 }
 
-const signupCode = `import { Button, Field, useFieldControlProps } from '@orange/ui'
+const signupCode = `import { Button, Field, useFieldControlProps } from '@orangesys/ui'
 import { useState } from 'react'
 
 function EmailInput(props: React.InputHTMLAttributes<HTMLInputElement>) {

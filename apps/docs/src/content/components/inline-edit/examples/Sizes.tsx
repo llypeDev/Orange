@@ -1,4 +1,4 @@
-import { InlineEdit } from '@orange/ui'
+import { InlineEdit } from '@orangesys/ui'
 
 export default function Sizes() {
   return (

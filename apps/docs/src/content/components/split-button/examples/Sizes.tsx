@@ -1,4 +1,4 @@
-import { SplitButton, type SplitButtonAction } from '@orange/ui'
+import { SplitButton, type SplitButtonAction } from '@orangesys/ui'
 
 const actions: SplitButtonAction[] = [
   { label: 'Duplicar', icon: 'copy', onSelect: () => {} },

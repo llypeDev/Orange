@@ -1,7 +1,7 @@
-import { CodeBlock } from '@orange/ui'
+import { CodeBlock } from '@orangesys/ui'
 
-const code = `import { OrangeProvider } from '@orange/ui'
-import '@orange/ui/styles.css'
+const code = `import { OrangeProvider } from '@orangesys/ui'
+import '@orangesys/ui/styles.css'
 
 export function App({ children }) {
   return (

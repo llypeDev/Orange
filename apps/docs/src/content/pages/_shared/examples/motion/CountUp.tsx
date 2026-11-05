@@ -1,4 +1,4 @@
-import { Button, Icon, useCountUp, useInView } from '@orange/ui'
+import { Button, Icon, useCountUp, useInView } from '@orangesys/ui'
 import { useState } from 'react'
 
 const formatar = (n: number, casas: number) =>

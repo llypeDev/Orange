@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { Link } from '@orange/ui'
+import { Link } from '@orangesys/ui'
 import External from './examples/External'
 import ExternalCode from './examples/External?raw'
 import Standalone from './examples/Standalone'

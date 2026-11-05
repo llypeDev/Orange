@@ -1,4 +1,4 @@
-import { Calendar, Text, useLocale } from '@orange/ui'
+import { Calendar, Text, useLocale } from '@orangesys/ui'
 import { useState } from 'react'
 
 const hoje = new Date()

@@ -1,5 +1,5 @@
-import { Button, Icon } from '@orange/ui'
-import { themeNames } from '@orange/tokens'
+import { Button, Icon } from '@orangesys/ui'
+import { themeNames } from '@orangesys/tokens'
 import {
   buildDtcgBundle,
   buildPrimitiveTokens,
@@ -7,7 +7,7 @@ import {
   figmaCollections,
   flattenTokens,
   primitivesMode,
-} from '@orange/tokens/dtcg'
+} from '@orangesys/tokens/dtcg'
 import { useMemo, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
@@ -147,22 +147,22 @@ export default function FigmaPage() {
             <T
               pt={
                 <>
-                  <Code>pnpm --filter @orange/tokens build</Code> gera, além do{' '}
+                  <Code>pnpm --filter @orangesys/tokens build</Code> gera, além do{' '}
                   <Code>tokens.css</Code>, o <Code>dist/tokens.dtcg.json</Code> (publicado como{' '}
-                  <Code>@orange/tokens/tokens.dtcg.json</Code>) e a pasta <Code>dist/tokens/</Code>{' '}
+                  <Code>@orangesys/tokens/tokens.dtcg.json</Code>) e a pasta <Code>dist/tokens/</Code>{' '}
                   com um arquivo por conjunto. São {stats.primitives} primitivas e{' '}
                   {stats.theme} tokens semânticos por tema. O builder também é público:{' '}
-                  <Code>buildDtcgBundle()</Code> em <Code>@orange/tokens/dtcg</Code>.
+                  <Code>buildDtcgBundle()</Code> em <Code>@orangesys/tokens/dtcg</Code>.
                 </>
               }
               en={
                 <>
-                  Besides <Code>tokens.css</Code>, <Code>pnpm --filter @orange/tokens build</Code>{' '}
+                  Besides <Code>tokens.css</Code>, <Code>pnpm --filter @orangesys/tokens build</Code>{' '}
                   writes <Code>dist/tokens.dtcg.json</Code> (published as{' '}
-                  <Code>@orange/tokens/tokens.dtcg.json</Code>) and the <Code>dist/tokens/</Code>{' '}
+                  <Code>@orangesys/tokens/tokens.dtcg.json</Code>) and the <Code>dist/tokens/</Code>{' '}
                   folder with one file per set. That is {stats.primitives} primitives and{' '}
                   {stats.theme} semantic tokens per theme. The builder is public too:{' '}
-                  <Code>buildDtcgBundle()</Code> in <Code>@orange/tokens/dtcg</Code>.
+                  <Code>buildDtcgBundle()</Code> in <Code>@orangesys/tokens/dtcg</Code>.
                 </>
               }
             />
@@ -420,10 +420,10 @@ export default function FigmaPage() {
           language="bash"
           title="Terminal"
           code={`# Só mostra o payload (como para um arquivo vazio) — nenhuma chamada à API
-pnpm --filter @orange/tokens figma:sync --dry-run
+pnpm --filter @orangesys/tokens figma:sync --dry-run
 
 # Sincroniza de verdade
-FIGMA_TOKEN=figd_… FIGMA_FILE_KEY=AbCdEf123 pnpm --filter @orange/tokens figma:sync`}
+FIGMA_TOKEN=figd_… FIGMA_FILE_KEY=AbCdEf123 pnpm --filter @orangesys/tokens figma:sync`}
         />
         <TableWrap label={{ pt: 'Variáveis de ambiente e opções', en: 'Environment variables and options' }}>
           <table className="doc-table">

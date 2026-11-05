@@ -1,4 +1,4 @@
-import { Alert, Button } from '@orange/ui'
+import { Alert, Button } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Dismissible() {

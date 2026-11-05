@@ -1,4 +1,4 @@
-import { Search } from '@orange/ui'
+import { Search } from '@orangesys/ui'
 import { useMemo, useState } from 'react'
 
 const artigos = [

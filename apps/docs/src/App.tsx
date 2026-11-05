@@ -1,4 +1,4 @@
-import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orange/ui'
+import { isThemeSetting, OrangeProvider, type ThemeSetting } from '@orangesys/ui'
 import { lazy, Suspense, useCallback, useState } from 'react'
 import { Navigate, Route, Routes, useParams, useSearchParams } from 'react-router-dom'
 import { getComponentMeta, getComponentPage } from './content/registry'

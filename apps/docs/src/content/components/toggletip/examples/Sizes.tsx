@@ -1,4 +1,4 @@
-import { Toggletip } from '@orange/ui'
+import { Toggletip } from '@orangesys/ui'
 
 export default function Sizes() {
   return (

@@ -1,4 +1,4 @@
-import { Listbox, ListboxOption } from '@orange/ui'
+import { Listbox, ListboxOption } from '@orangesys/ui'
 
 export default function Horizontal() {
   return (

@@ -1,4 +1,4 @@
-import { TextArea } from '@orange/ui'
+import { TextArea } from '@orangesys/ui'
 
 export default function States() {
   return (

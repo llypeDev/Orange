@@ -1,4 +1,4 @@
-import { Button, Icon } from '@orange/ui'
+import { Button, Icon } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function PecasQueCaem() {

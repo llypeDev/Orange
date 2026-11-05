@@ -1,4 +1,4 @@
-import { Icon, type IconName } from '@orange/ui'
+import { Icon, type IconName } from '@orangesys/ui'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { componentMetas, STORYBOOK_URL } from '../content/registry'

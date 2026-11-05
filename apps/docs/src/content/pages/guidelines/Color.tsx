@@ -1,5 +1,5 @@
-import { Button, Icon, useTheme, type IconName } from '@orange/ui'
-import { primitives, themeMeta, themes, vizThemes, type ThemeName } from '@orange/tokens'
+import { Button, Icon, useTheme, type IconName } from '@orangesys/ui'
+import { primitives, themeMeta, themes, vizThemes, type ThemeName } from '@orangesys/tokens'
 import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
@@ -882,14 +882,14 @@ export default function ColorPage() {
               pt={
                 <>
                   Calculada ao vivo com <Code>contrastRatio()</Code> e <Code>wcagLevel()</Code> de{' '}
-                  <Code>@orange/tokens/contrast</Code>. AA exige 4.5:1 para texto normal e 3:1 para
+                  <Code>@orangesys/tokens/contrast</Code>. AA exige 4.5:1 para texto normal e 3:1 para
                   texto grande (≥ 24px, ou ≥ 18.66px em negrito); AAA exige 7:1.
                 </>
               }
               en={
                 <>
                   Computed live with <Code>contrastRatio()</Code> and <Code>wcagLevel()</Code> from{' '}
-                  <Code>@orange/tokens/contrast</Code>. AA requires 4.5:1 for normal text and 3:1
+                  <Code>@orangesys/tokens/contrast</Code>. AA requires 4.5:1 for normal text and 3:1
                   for large text (≥ 24px, or ≥ 18.66px bold); AAA requires 7:1.
                 </>
               }

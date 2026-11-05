@@ -7,7 +7,7 @@ import {
   SideNav,
   SideNavItem,
   SideNavSection,
-} from '@orange/ui'
+} from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Collapsible() {

@@ -1,4 +1,4 @@
-import { CheckboxGroup } from '@orange/ui'
+import { CheckboxGroup } from '@orangesys/ui'
 
 export default function Group() {
   return (

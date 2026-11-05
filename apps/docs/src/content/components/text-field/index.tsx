@@ -11,7 +11,7 @@ import {
   WcagList,
 } from '../../../kit'
 import { T } from '../../../i18n'
-import { TextField } from '@orange/ui'
+import { TextField } from '@orangesys/ui'
 import Adornments from './examples/Adornments'
 import AdornmentsCode from './examples/Adornments?raw'
 import Basic from './examples/Basic'

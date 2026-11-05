@@ -1,4 +1,4 @@
-import { Badge, Button, Icon, SegmentedControl, Stat, StatGroup, Tour, type TourStep } from '@orange/ui'
+import { Badge, Button, Icon, SegmentedControl, Stat, StatGroup, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function PainelPedidos() {

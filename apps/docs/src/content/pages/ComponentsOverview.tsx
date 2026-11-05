@@ -1,4 +1,4 @@
-import { Icon, Reveal } from '@orange/ui'
+import { Icon, Reveal } from '@orangesys/ui'
 import { useId, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../i18n'

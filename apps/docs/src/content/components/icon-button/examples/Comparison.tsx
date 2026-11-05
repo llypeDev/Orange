@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton } from '@orange/ui'
+import { Button, Icon, IconButton } from '@orangesys/ui'
 
 export default function Comparison() {
   return (

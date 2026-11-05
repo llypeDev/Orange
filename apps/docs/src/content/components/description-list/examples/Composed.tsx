@@ -1,4 +1,4 @@
-import { DescriptionDetails, DescriptionGroup, DescriptionList, DescriptionTerm } from '@orange/ui'
+import { DescriptionDetails, DescriptionGroup, DescriptionList, DescriptionTerm } from '@orangesys/ui'
 
 export default function Composed() {
   return (

@@ -1,4 +1,4 @@
-import { Splitter, SplitterHandle, SplitterPanel, Tag } from '@orange/ui'
+import { Splitter, SplitterHandle, SplitterPanel, Tag } from '@orangesys/ui'
 import { useState } from 'react'
 
 const orders = [

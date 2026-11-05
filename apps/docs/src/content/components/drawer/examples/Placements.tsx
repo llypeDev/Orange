@@ -1,4 +1,4 @@
-import { Button, Drawer, type DrawerPlacement } from '@orange/ui'
+import { Button, Drawer, type DrawerPlacement } from '@orangesys/ui'
 
 const posicoes: { placement: DrawerPlacement; label: string; title: string }[] = [
   { placement: 'left', label: 'Esquerda', title: 'Painel à esquerda' },

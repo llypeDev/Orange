@@ -1,4 +1,4 @@
-import { TruncatedText } from '@orange/ui'
+import { TruncatedText } from '@orangesys/ui'
 
 const produtos = [
   {

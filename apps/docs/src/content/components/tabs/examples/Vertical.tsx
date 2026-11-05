@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, Tabs } from '@orange/ui'
+import { Tab, TabList, TabPanel, Tabs } from '@orangesys/ui'
 
 const sections = [
   { value: 'conta', label: 'Conta', text: 'Nome, e-mail e foto exibidos para a sua equipe.' },
