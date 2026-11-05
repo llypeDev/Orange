@@ -293,8 +293,9 @@ Automatizada com [Changesets](https://changesets.dev) (`.changeset/config.json`)
    `changeset-release/main`): aplica as versões, gera `packages/*/CHANGELOG.md` e apaga os changesets
    consumidos.
 3. Ao fazer merge desse PR, o workflow encontra versões que ainda não estão no npm e roda
-   `pnpm release` (`pnpm gen` → build de tokens e ui → `changeset publish`): publica com
-   **provenance** e cria as tags (`@orangesys/ui@0.4.0`) e as GitHub Releases.
+   `pnpm release` (`pnpm gen` → build de tokens e ui → `changeset publish`): publica por
+   **trusted publishing**, com **provenance**, e cria as tags (`@orangesys/ui@0.5.0`) e as GitHub
+   Releases.
 
 O `changeset publish` usa `pnpm publish`, que aplica o `publishConfig` (exports, `main` e `types`
 apontando para `dist/`) e troca `workspace:*` pela versão real. **Nunca rode `npm publish` direto em
@@ -307,24 +308,53 @@ cd packages/ui && pnpm pack --dry-run   # lista o conteúdo do tarball
 npx publint --pack pnpm                 # valida exports, tipos e arquivos
 ```
 
-### Antes da primeira publicação
+### Autenticação no npm: trusted publishing
 
-- **Escopo `@orangesys`.** Os pacotes `@orangesys/tokens` e `@orangesys/ui` são publicados na
-  organização [`orangesys`](https://www.npmjs.com/org/orangesys) do npm. Só membros dela com permissão
-  de escrita publicam; o token do CI precisa ser de um desses membros.
-- **Secret `NPM_TOKEN`.** Crie no npm um _granular access token_ com leitura e escrita no escopo
-  `@orangesys` (e “bypass 2FA”, para o CI não pedir código) e cadastre em _Settings → Secrets and
-  variables → Actions → Repository secrets_ com o nome `NPM_TOKEN`. Tokens granulares expiram: renove o secret antes do vencimento. **Sem o
-  secret o workflow não falha:** continua abrindo o PR “Versionar pacotes” e, na hora de publicar,
-  pula a etapa e deixa o aviso “Publicação no npm desativada” no resumo da execução.
+O workflow não guarda token do npm. Ele publica por **trusted publishing** (OIDC): o npm confia no
+`release.yml` deste repositório, emite uma credencial de uso único a cada publicação e gera o
+provenance automaticamente. Não há secret para renovar nem token para vazar.
+
+Cadastre uma vez **em cada pacote** (`@orangesys/tokens` e `@orangesys/ui`): npmjs.com → pacote →
+_Settings_ → _Trusted Publisher_ → **GitHub Actions**.
+
+| Campo                | Valor                                |
+| -------------------- | ------------------------------------ |
+| Organization or user | `llypeDev`                           |
+| Repository           | `Orange`                             |
+| Workflow filename    | `release.yml` (só o nome do arquivo) |
+| Environment name     | vazio                                |
+| Allowed actions      | marque **`npm publish`**             |
+
+- **`npm publish` precisa estar marcado.** Configurações novas vêm só com `npm stage publish`
+  (publicação em estágio, que espera aprovação manual no npmjs.com), e o workflow usa publicação direta.
+- **Os campos diferenciam maiúsculas** e o npm não valida nada ao salvar: um erro só aparece na hora de
+  publicar (`ENEEDAUTH`, `E401`, `E403` ou `E404`). O resumo da execução traz uma dica quando isso
+  acontece.
+- **Prazo de 2 dias.** Uma configuração nova expira se não tiver uma publicação bem-sucedida em até 2
+  dias, e configuração expirada não pode ser editada (apague e crie outra). Cadastre logo antes de
+  fazer merge do PR “Versionar pacotes”.
+- **Depois da primeira publicação por OIDC**, feche a porta dos tokens: em _Settings_ → _Publishing
+  access_ de cada pacote, escolha “Require two-factor authentication and disallow tokens”; revogue em
+  _Access Tokens_ os tokens de automação antigos e apague o secret `NPM_TOKEN` do repositório, se
+  ainda existir.
+- Requisitos que o workflow já cumpre: runner hospedado pelo GitHub (self-hosted não funciona),
+  permissão `id-token: write`, Node 24 e npm ≥ 11.5.1. O provenance só sai porque o repositório e os
+  pacotes são públicos.
+
+### Outras configurações
+
+- **Escopo `@orangesys`.** Os pacotes são publicados na organização
+  [`orangesys`](https://www.npmjs.com/org/orangesys) do npm. Quem cadastra o trusted publisher precisa
+  ser membro dela com permissão de escrita nos pacotes.
 - **Permissão para abrir PRs.** Em _Settings → Actions → General_, marque “Allow GitHub Actions to
   create and approve pull requests”.
 - O PR “Versionar pacotes” é aberto com o `GITHUB_TOKEN`, então o CI não roda nele sozinho (regra do
   GitHub). Rode manualmente ou passe um token de GitHub App em `github-token` na action.
 - `llypeDev/Orange` aparece em `release.yml` (forks não publicam), no `repo` do
-  `.changeset/config.json` e em `repository`/`bugs` dos `package.json`. Se o repositório mudar de dono
-  ou de nome, atualize os três: o provenance exige que `repository.url` aponte para o repositório que
-  publica.
+  `.changeset/config.json`, em `repository`/`bugs` dos `package.json` e no trusted publisher de cada
+  pacote. Se o repositório mudar de dono ou de nome, atualize todos: o npm só aceita a publicação se o
+  repositório bater com o trusted publisher e com o `repository.url`.
+- Se o arquivo `release.yml` mudar de nome, cadastre um trusted publisher novo com o nome novo.
 
 ### Trocando o escopo
 
@@ -340,3 +370,6 @@ apontando para os novos.
    neste guia (busca e troca global; revise o diff).
 4. `pnpm install` (atualiza o lockfile), depois `pnpm build:lib`, `pnpm test` e `npx publint --pack pnpm`
    em cada pacote.
+5. Cadastre o trusted publisher dos pacotes novos (seção acima). Se o npm só permitir isso depois que o
+   pacote existe, faça a primeira publicação com um token granular (em `NODE_AUTH_TOKEN` no passo de
+   publicação do `release.yml`), cadastre o trusted publisher e revogue o token.
