@@ -1,9 +1,28 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { BarChart, type BarChartProps } from './BarChart'
+
+// jsdom não implementa PointerEvent: um MouseEvent com pointerId/pointerType basta.
+const hadPointerEvent = 'PointerEvent' in window
+beforeAll(() => {
+  if (hadPointerEvent) return
+  class PointerEventPolyfill extends MouseEvent {
+    pointerId: number
+    pointerType: string
+    constructor(type: string, init: PointerEventInit = {}) {
+      super(type, init)
+      this.pointerId = init.pointerId ?? 1
+      this.pointerType = init.pointerType ?? 'mouse'
+    }
+  }
+  ;(window as unknown as { PointerEvent: unknown }).PointerEvent = PointerEventPolyfill
+})
+afterAll(() => {
+  if (!hadPointerEvent) delete (window as unknown as { PointerEvent?: unknown }).PointerEvent
+})
 
 const brl = { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 } as const
 
@@ -42,7 +61,7 @@ describe('BarChart', () => {
   describe('figura e resumo', () => {
     it('renderiza <figure> com figcaption (título + subtítulo) e o SVG como imagem com resumo', () => {
       renderChart()
-      const figure = screen.getByRole('figure', { name: /Vendas por canal/ })
+      const figure = screen.getByRole('figure', { name: 'Vendas por canal' })
       expect(figure.querySelector('figcaption')).toHaveTextContent('Vendas por canal')
       expect(figure.querySelector('figcaption')).toHaveTextContent('R$ por mês · 1º trimestre de 2026')
       const svg = plot()
@@ -60,7 +79,7 @@ describe('BarChart', () => {
 
     it('hideCaption esconde o título só visualmente', () => {
       renderChart({ hideCaption: true })
-      const caption = screen.getByRole('figure', { name: /Vendas por canal/ }).querySelector('figcaption')
+      const caption = screen.getByRole('figure', { name: 'Vendas por canal' }).querySelector('figcaption')
       expect(caption).toHaveClass('or-visually-hidden')
     })
 

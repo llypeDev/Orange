@@ -374,6 +374,7 @@ export const ChartFigure = forwardRef<HTMLElement, ChartFigureProps>(function Ch
 ) {
   const { t } = useLocale()
   const dataId = useId('or-chart-data')
+  const titleId = useId('or-chart-title')
   const [showData, setShowData] = useState(defaultShowData)
   const caption = t('chartDataCaption', { title })
 
@@ -382,10 +383,13 @@ export const ChartFigure = forwardRef<HTMLElement, ChartFigureProps>(function Ch
       ref={ref}
       className={cx('or-chart', `or-chart--${variant}`, className)}
       data-motion={motion}
+      aria-labelledby={titleId}
       {...rest}
     >
       <figcaption className={cx('or-chart__caption', hideCaption && 'or-visually-hidden')}>
-        <span className="or-chart__title">{title}</span>
+        <span id={titleId} className="or-chart__title">
+          {title}
+        </span>
         {description && <span className="or-chart__description">{description}</span>}
       </figcaption>
       {legend && legend.length > 1 && <ChartLegend items={legend} />}

@@ -377,6 +377,7 @@ export const Splitter = forwardRef<HTMLDivElement, SplitterProps>(function Split
     const stored = readStorage(storageKey, panelsRef.current.length)
     if (!stored) return
     if (stored.expanded) expandedRef.current = [...stored.expanded]
+    if (sameSizes(stored.sizes, sizesRef.current)) return
     sizesRef.current = stored.sizes
     setRawSizes(stored.sizes)
   }, [storageKey])
