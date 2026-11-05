@@ -22,7 +22,11 @@ function mockReducedMotion(reduced: boolean) {
 describe('PageHeader', () => {
   it('renderiza o título como h1 por padrão, com descrição e eyebrow', () => {
     const { container } = render(
-      <PageHeader eyebrow="Vendas" title="Pedidos" description="Acompanhe pagamentos, envios e devoluções." />,
+      <PageHeader
+        eyebrow="Vendas"
+        title="Pedidos"
+        description="Acompanhe pagamentos, envios e devoluções."
+      />,
     )
     const heading = screen.getByRole('heading', { level: 1, name: 'Pedidos' })
     expect(heading).toHaveClass('or-page-header__title')
@@ -66,11 +70,18 @@ describe('PageHeader', () => {
     expect(screen.getByRole('navigation', { name: 'Trilha de navegação' })).toBeInTheDocument()
     expect(screen.getByText('Pago')).toBeInTheDocument()
     const actions = container.querySelector('.or-page-header__actions') as HTMLElement
-    expect(within(actions).getAllByRole('button').map((b) => b.textContent)).toEqual(['Imprimir', 'Enviar pedido'])
+    expect(
+      within(actions)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['Imprimir', 'Enviar pedido'])
     expect(screen.getByRole('navigation', { name: 'Seções do pedido' }).parentElement).toHaveClass(
       'or-page-header__navigation',
     )
-    expect(container.firstChild).toHaveClass('or-page-header--divider', 'or-page-header--with-navigation')
+    expect(container.firstChild).toHaveClass(
+      'or-page-header--divider',
+      'or-page-header--with-navigation',
+    )
   })
 
   it('ações respondem a mouse e teclado', async () => {
@@ -94,8 +105,16 @@ describe('PageHeader', () => {
   })
 
   it('usa renderLink no link de volta', () => {
-    const renderLink = vi.fn(({ href, ...props }) => <a data-router="" href={`#${href}`} {...props} />)
-    render(<PageHeader title="Pedido #4821" back={{ href: '/pedidos', label: 'Pedidos' }} renderLink={renderLink} />)
+    const renderLink = vi.fn(({ href, ...props }) => (
+      <a data-router="" href={`#${href}`} {...props} />
+    ))
+    render(
+      <PageHeader
+        title="Pedido #4821"
+        back={{ href: '/pedidos', label: 'Pedidos' }}
+        renderLink={renderLink}
+      />,
+    )
     const back = screen.getByRole('link', { name: 'Pedidos' })
     expect(back).toHaveAttribute('href', '#/pedidos')
     expect(back).toHaveAttribute('data-router')
@@ -103,12 +122,24 @@ describe('PageHeader', () => {
   })
 
   it('reveal liga a entrada em sequência e é desligado por padrão', () => {
-    const { container, rerender } = render(<PageHeader eyebrow="Vendas" title="Pedidos" description="Resumo" />)
+    const { container, rerender } = render(
+      <PageHeader eyebrow="Vendas" title="Pedidos" description="Resumo" />,
+    )
     expect(container.firstChild).not.toHaveClass('or-page-header--reveal')
-    rerender(<PageHeader reveal eyebrow="Vendas" title="Pedidos" description="Resumo" actions={<Button>Novo</Button>} />)
+    rerender(
+      <PageHeader
+        reveal
+        eyebrow="Vendas"
+        title="Pedidos"
+        description="Resumo"
+        actions={<Button>Novo</Button>}
+      />,
+    )
     expect(container.firstChild).toHaveClass('or-page-header--reveal')
     const order = ['eyebrow', 'title-row', 'description', 'actions'].map((part) =>
-      (container.querySelector(`.or-page-header__${part}`) as HTMLElement).style.getPropertyValue('--_i'),
+      (container.querySelector(`.or-page-header__${part}`) as HTMLElement).style.getPropertyValue(
+        '--_i',
+      ),
     )
     expect(order).toEqual(['0', '1', '2', '3'])
   })
@@ -117,7 +148,9 @@ describe('PageHeader', () => {
     const restore = mockReducedMotion(true)
     const { container } = render(<PageHeader reveal eyebrow="Vendas" title="Pedidos" />)
     expect(container.firstChild).not.toHaveClass('or-page-header--reveal')
-    expect((container.querySelector('.or-page-header__eyebrow') as HTMLElement).getAttribute('style')).toBeNull()
+    expect(
+      (container.querySelector('.or-page-header__eyebrow') as HTMLElement).getAttribute('style'),
+    ).toBeNull()
     restore()
   })
 

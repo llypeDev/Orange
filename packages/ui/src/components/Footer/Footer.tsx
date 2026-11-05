@@ -62,7 +62,18 @@ function splitLastWord(label: string): [string, string] {
  * colunas com títulos em caixa alta e uma barra inferior.
  */
 export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
-  { brand, description, columns = [], bottom, navLabel, headingLevel = 2, renderLink, className, children, ...rest },
+  {
+    brand,
+    description,
+    columns = [],
+    bottom,
+    navLabel,
+    headingLevel = 2,
+    renderLink,
+    className,
+    children,
+    ...rest
+  },
   ref,
 ) {
   const { t } = useLocale()
@@ -132,7 +143,12 @@ function InternalLink({ link, renderLink }: { link: FooterLinkItem; renderLink?:
 function ExternalLink({ link, label }: { link: FooterLinkItem; label: string }) {
   const [start, lastWord] = splitLastWord(link.label)
   return (
-    <a href={link.href} target="_blank" rel="noopener noreferrer" className="or-footer__link or-footer__link--external">
+    <a
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="or-footer__link or-footer__link--external"
+    >
       {start}
       <span className="or-footer__nowrap">
         {lastWord}

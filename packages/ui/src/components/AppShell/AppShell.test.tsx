@@ -34,7 +34,8 @@ function mockViewport(initialWidth: number) {
       addListener: () => {},
       removeListener: () => {},
       addEventListener: (_type: string, listener: () => void) => entry.listeners.add(listener),
-      removeEventListener: (_type: string, listener: () => void) => entry.listeners.delete(listener),
+      removeEventListener: (_type: string, listener: () => void) =>
+        entry.listeners.delete(listener),
       dispatchEvent: () => false,
     }
   }) as unknown as typeof window.matchMedia
@@ -56,7 +57,10 @@ afterEach(() => {
 
 /* -------------------------------------------------------------------------- */
 
-function OrdersShell({ sideNavCollapsible = false, ...props }: Partial<AppShellProps> & { sideNavCollapsible?: boolean }) {
+function OrdersShell({
+  sideNavCollapsible = false,
+  ...props
+}: Partial<AppShellProps> & { sideNavCollapsible?: boolean }) {
   return (
     <AppShell
       header={
@@ -108,11 +112,15 @@ describe('AppShell', () => {
       </AppShell>,
     )
     expect(screen.getByRole('banner')).toHaveTextContent('Aurora')
-    expect(screen.getByRole('navigation', { name: 'Navegação principal' })).toHaveTextContent('Pedidos')
+    expect(screen.getByRole('navigation', { name: 'Navegação principal' })).toHaveTextContent(
+      'Pedidos',
+    )
     const main = screen.getByRole('main')
     expect(main).toHaveAttribute('tabindex', '-1')
     expect(main.id).not.toBe('')
-    expect(screen.getByRole('complementary', { name: 'Resumo do pedido' })).toHaveTextContent('Resumo')
+    expect(screen.getByRole('complementary', { name: 'Resumo do pedido' })).toHaveTextContent(
+      'Resumo',
+    )
     expect(screen.getByRole('contentinfo')).toHaveTextContent('© 2026 Aurora Commerce')
     const skip = screen.getByRole('link', { name: 'Pular para o conteúdo principal' })
     expect(skip).toHaveAttribute('href', `#${main.id}`)
@@ -137,7 +145,10 @@ describe('AppShell', () => {
       </AppShell>,
     )
     expect(screen.getByRole('main')).toHaveAttribute('id', 'conteudo')
-    expect(screen.getByRole('link', { name: 'Ir para os pedidos' })).toHaveAttribute('href', '#conteudo')
+    expect(screen.getByRole('link', { name: 'Ir para os pedidos' })).toHaveAttribute(
+      'href',
+      '#conteudo',
+    )
     rerender(<AppShell skipLink={false}>Pedidos</AppShell>)
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
@@ -188,9 +199,9 @@ describe('AppShell', () => {
     const sideNavButton = container.querySelector('.or-side-nav__collapse') as HTMLElement
     await user.click(sideNavButton)
     expect(container.firstChild).toHaveAttribute('data-collapsed')
-    expect(screen.getByRole('button', { name: 'Expandir menu lateral', expanded: false })).toHaveClass(
-      'or-app-shell__toggle',
-    )
+    expect(
+      screen.getByRole('button', { name: 'Expandir menu lateral', expanded: false }),
+    ).toHaveClass('or-app-shell__toggle')
   })
 
   it('navCollapsed controlado segue a prop', async () => {
@@ -205,7 +216,10 @@ describe('AppShell', () => {
     expect(container.firstChild).not.toHaveAttribute('data-collapsed')
     rerender(<OrdersShell navCollapsed onNavCollapsedChange={onNavCollapsedChange} />)
     expect(container.firstChild).toHaveAttribute('data-collapsed')
-    expect(screen.getByRole('button', { name: 'Expandir menu lateral' })).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.getByRole('button', { name: 'Expandir menu lateral' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
   })
 
   it('abaixo do ponto de quebra, o botão abre a navegação em um Drawer', async () => {
@@ -226,8 +240,13 @@ describe('AppShell', () => {
     const nav = within(dialog).getByRole('navigation', { name: 'Navegação da loja' })
     // No painel a navegação nunca fica recolhida nem mostra o botão de recolher.
     expect(nav).not.toHaveClass('or-side-nav--collapsed')
-    expect(within(dialog).queryByRole('button', { name: 'Recolher menu lateral' })).not.toBeInTheDocument()
-    expect(within(nav).getByRole('link', { name: 'Pedidos' })).toHaveAttribute('aria-current', 'page')
+    expect(
+      within(dialog).queryByRole('button', { name: 'Recolher menu lateral' }),
+    ).not.toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: 'Pedidos' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
   })
 
   it('Escape fecha o painel e devolve o foco ao botão', async () => {
@@ -332,10 +351,14 @@ describe('AppShell', () => {
         Conteúdo
       </AppShell>,
     )
-    const button = screen.getByRole('button', { name: 'compacto: true, aberto: false, recolhido: false' })
+    const button = screen.getByRole('button', {
+      name: 'compacto: true, aberto: false, recolhido: false',
+    })
     await user.click(button)
     expect(screen.getByRole('dialog', { name: 'Menu' })).toBeInTheDocument()
-    expect(within(screen.getByRole('dialog')).getByRole('navigation', { name: 'Navegação principal' })).toBeInTheDocument()
+    expect(
+      within(screen.getByRole('dialog')).getByRole('navigation', { name: 'Navegação principal' }),
+    ).toBeInTheDocument()
   })
 
   it('AppShellNavToggle não renderiza sem navegação e exige um AppShell', () => {

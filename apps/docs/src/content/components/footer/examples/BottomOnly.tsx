@@ -8,7 +8,8 @@ export default function BottomOnly() {
         <>
           <span>© 2026 Aurora Commerce</span>
           <span>
-            <a href="#termos">Termos de uso</a> · <a href="#privacidade">Privacidade</a> · <a href="#ajuda">Ajuda</a>
+            <a href="#termos">Termos de uso</a> · <a href="#privacidade">Privacidade</a> ·{' '}
+            <a href="#ajuda">Ajuda</a>
           </span>
         </>
       }

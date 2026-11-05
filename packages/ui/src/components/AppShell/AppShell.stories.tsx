@@ -10,10 +10,34 @@ import { Tag } from '../Tag'
 import { AppShell, AppShellNavToggle, useAppShell } from './AppShell'
 
 const orders = [
-  { id: '#4821', client: 'Mercearia Bom Grão', total: 'R$ 1.240,00', status: 'Pago', tone: 'success' as const },
-  { id: '#4820', client: 'Café Ponto Doce', total: 'R$ 318,90', status: 'Aguardando envio', tone: 'warning' as const },
-  { id: '#4819', client: 'Ateliê Fio de Linha', total: 'R$ 96,50', status: 'Em separação', tone: 'info' as const },
-  { id: '#4818', client: 'Livraria Página 9', total: 'R$ 452,00', status: 'Pago', tone: 'success' as const },
+  {
+    id: '#4821',
+    client: 'Mercearia Bom Grão',
+    total: 'R$ 1.240,00',
+    status: 'Pago',
+    tone: 'success' as const,
+  },
+  {
+    id: '#4820',
+    client: 'Café Ponto Doce',
+    total: 'R$ 318,90',
+    status: 'Aguardando envio',
+    tone: 'warning' as const,
+  },
+  {
+    id: '#4819',
+    client: 'Ateliê Fio de Linha',
+    total: 'R$ 96,50',
+    status: 'Em separação',
+    tone: 'info' as const,
+  },
+  {
+    id: '#4818',
+    client: 'Livraria Página 9',
+    total: 'R$ 452,00',
+    status: 'Pago',
+    tone: 'success' as const,
+  },
 ]
 
 function Header() {
@@ -96,7 +120,9 @@ function Orders() {
               borderBottom: '1px solid var(--or-color-border)',
             }}
           >
-            <strong style={{ fontFamily: 'var(--or-font-display)', minWidth: 64 }}>{order.id}</strong>
+            <strong style={{ fontFamily: 'var(--or-font-display)', minWidth: 64 }}>
+              {order.id}
+            </strong>
             <span style={{ flex: '1 1 10rem' }}>{order.client}</span>
             <Tag tone={order.tone}>{order.status}</Tag>
             <span style={{ fontVariantNumeric: 'tabular-nums' }}>{order.total}</span>
@@ -112,8 +138,12 @@ const summary = (
     <p className="or-eyebrow" style={{ margin: 0 }}>
       Resumo do dia
     </p>
-    <p style={{ margin: 0, fontFamily: 'var(--or-font-display)', fontSize: 32, fontWeight: 700 }}>R$ 8.420</p>
-    <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>37 pedidos · 5 aguardando envio</p>
+    <p style={{ margin: 0, fontFamily: 'var(--or-font-display)', fontSize: 32, fontWeight: 700 }}>
+      R$ 8.420
+    </p>
+    <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
+      37 pedidos · 5 aguardando envio
+    </p>
   </div>
 )
 
@@ -190,7 +220,9 @@ function ShellStatus() {
   const { isCompact, navCollapsed, navOpen } = useAppShell()
   return (
     <p style={{ color: 'var(--or-color-text-muted)' }}>
-      {isCompact ? `Tela estreita · painel ${navOpen ? 'aberto' : 'fechado'}` : `Tela larga · barra ${navCollapsed ? 'recolhida' : 'expandida'}`}
+      {isCompact
+        ? `Tela estreita · painel ${navOpen ? 'aberto' : 'fechado'}`
+        : `Tela larga · barra ${navCollapsed ? 'recolhida' : 'expandida'}`}
     </p>
   )
 }

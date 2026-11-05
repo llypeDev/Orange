@@ -13,9 +13,27 @@ import {
 } from '@orange/ui'
 
 const orders = [
-  { id: '#4821', store: 'Mercearia Bom Grão', total: 'R$ 1.240,00', status: 'Pago', tone: 'success' },
-  { id: '#4820', store: 'Café Ponto Doce', total: 'R$ 318,90', status: 'Aguardando envio', tone: 'warning' },
-  { id: '#4819', store: 'Ateliê Fio de Linha', total: 'R$ 96,50', status: 'Em separação', tone: 'info' },
+  {
+    id: '#4821',
+    store: 'Mercearia Bom Grão',
+    total: 'R$ 1.240,00',
+    status: 'Pago',
+    tone: 'success',
+  },
+  {
+    id: '#4820',
+    store: 'Café Ponto Doce',
+    total: 'R$ 318,90',
+    status: 'Aguardando envio',
+    tone: 'warning',
+  },
+  {
+    id: '#4819',
+    store: 'Ateliê Fio de Linha',
+    total: 'R$ 96,50',
+    status: 'Em separação',
+    tone: 'info',
+  },
 ] as const
 
 export default function Orders() {
@@ -62,8 +80,19 @@ export default function Orders() {
             <p className="or-eyebrow" style={{ margin: 0 }}>
               Resumo do dia
             </p>
-            <p style={{ margin: 0, fontFamily: 'var(--or-font-display)', fontSize: 28, fontWeight: 700 }}>R$ 8.420</p>
-            <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>37 pedidos · 5 aguardando envio</p>
+            <p
+              style={{
+                margin: 0,
+                fontFamily: 'var(--or-font-display)',
+                fontSize: 28,
+                fontWeight: 700,
+              }}
+            >
+              R$ 8.420
+            </p>
+            <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
+              37 pedidos · 5 aguardando envio
+            </p>
           </div>
         }
       >

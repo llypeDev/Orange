@@ -47,7 +47,11 @@ export default function Basic() {
           title: 'Desenvolvedores',
           links: [
             { label: 'Documentação da API', href: 'https://docs.example.com', external: true },
-            { label: 'Webhooks de pedidos', href: 'https://docs.example.com/webhooks', external: true },
+            {
+              label: 'Webhooks de pedidos',
+              href: 'https://docs.example.com/webhooks',
+              external: true,
+            },
           ],
         },
       ]}

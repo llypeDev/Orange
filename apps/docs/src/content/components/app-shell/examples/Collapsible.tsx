@@ -1,4 +1,13 @@
-import { AppHeader, AppShell, AppShellNavToggle, Icon, PageHeader, SideNav, SideNavItem, SideNavSection } from '@orange/ui'
+import {
+  AppHeader,
+  AppShell,
+  AppShellNavToggle,
+  Icon,
+  PageHeader,
+  SideNav,
+  SideNavItem,
+  SideNavSection,
+} from '@orange/ui'
 import { useState } from 'react'
 
 export default function Collapsible() {

@@ -33,15 +33,24 @@ describe('Footer', () => {
   it('aceita navLabel e headingLevel', () => {
     render(<Footer columns={columns} navLabel="Links da loja" headingLevel={3} />)
     expect(screen.getByRole('navigation', { name: 'Links da loja' })).toBeInTheDocument()
-    expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual(['Produto', 'Ajuda'])
+    expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual([
+      'Produto',
+      'Ajuda',
+    ])
   })
 
   it('cada coluna é uma lista nomeada pelo seu heading', () => {
     render(<Footer columns={columns} />)
-    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Produto', 'Ajuda'])
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
+      'Produto',
+      'Ajuda',
+    ])
     const product = screen.getByRole('list', { name: 'Produto' })
     expect(within(product).getAllByRole('listitem')).toHaveLength(2)
-    expect(within(product).getByRole('link', { name: 'Pedidos' })).toHaveAttribute('href', '/pedidos')
+    expect(within(product).getByRole('link', { name: 'Pedidos' })).toHaveAttribute(
+      'href',
+      '/pedidos',
+    )
   })
 
   it('links internos são <a> simples com seta decorativa', () => {
@@ -65,11 +74,15 @@ describe('Footer', () => {
   })
 
   it('renderLink é usado só nos links internos', () => {
-    const renderLink = vi.fn(({ href, ...props }) => <a data-router="" href={`#${href}`} {...props} />)
+    const renderLink = vi.fn(({ href, ...props }) => (
+      <a data-router="" href={`#${href}`} {...props} />
+    ))
     render(<Footer columns={columns} renderLink={renderLink} />)
     expect(renderLink).toHaveBeenCalledTimes(3)
     expect(screen.getByRole('link', { name: 'Pedidos' })).toHaveAttribute('href', '#/pedidos')
-    expect(screen.getByRole('link', { name: /Status do serviço/ })).not.toHaveAttribute('data-router')
+    expect(screen.getByRole('link', { name: /Status do serviço/ })).not.toHaveAttribute(
+      'data-router',
+    )
   })
 
   it('renderiza marca, descrição e barra inferior', () => {
@@ -81,9 +94,15 @@ describe('Footer', () => {
         bottom={<span>© 2026 Aurora Commerce</span>}
       />,
     )
-    expect(screen.getByRole('link', { name: 'Aurora Commerce' }).closest('.or-footer__logo')).toBeInTheDocument()
-    expect(screen.getByText('Gestão de pedidos para lojas independentes.')).toHaveClass('or-footer__description')
-    expect(screen.getByText('© 2026 Aurora Commerce').parentElement).toHaveClass('or-footer__bottom')
+    expect(
+      screen.getByRole('link', { name: 'Aurora Commerce' }).closest('.or-footer__logo'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Gestão de pedidos para lojas independentes.')).toHaveClass(
+      'or-footer__description',
+    )
+    expect(screen.getByText('© 2026 Aurora Commerce').parentElement).toHaveClass(
+      'or-footer__bottom',
+    )
   })
 
   it('sem colunas, não renderiza o <nav>', () => {

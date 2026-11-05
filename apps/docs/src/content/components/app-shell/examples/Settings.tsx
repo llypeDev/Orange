@@ -15,7 +15,9 @@ import {
 function SettingsHeader() {
   const { isCompact } = useAppShell()
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minHeight: 56, padding: '0 16px' }}>
+    <div
+      style={{ display: 'flex', alignItems: 'center', gap: 8, minHeight: 56, padding: '0 16px' }}
+    >
       {isCompact && <AppShellNavToggle />}
       <strong style={{ fontFamily: 'var(--or-font-display)' }}>Configurações da loja</strong>
     </div>

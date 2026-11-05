@@ -206,7 +206,17 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
       navId,
       drawerId,
     }),
-    [navOpen, setNavOpen, toggleNav, navCollapsed, setNavCollapsed, isCompact, hasNavigation, navId, drawerId],
+    [
+      navOpen,
+      setNavOpen,
+      toggleNav,
+      navCollapsed,
+      setNavCollapsed,
+      isCompact,
+      hasNavigation,
+      navId,
+      drawerId,
+    ],
   )
 
   // A barra lateral fixa fica logo abaixo do cabeçalho: mede a altura real dele.
@@ -215,7 +225,8 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     const headerNode = headerRef.current
     if (!root || !headerNode || typeof ResizeObserver === 'undefined') return
     const update = () => {
-      if (headerNode.offsetHeight > 0) root.style.setProperty('--_header-height', `${headerNode.offsetHeight}px`)
+      if (headerNode.offsetHeight > 0)
+        root.style.setProperty('--_header-height', `${headerNode.offsetHeight}px`)
     }
     update()
     const observer = new ResizeObserver(update)
@@ -333,7 +344,10 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                 {children}
               </main>
               {aside && (
-                <aside className="or-app-shell__aside" aria-label={asideLabel ?? t('appShellAside')}>
+                <aside
+                  className="or-app-shell__aside"
+                  aria-label={asideLabel ?? t('appShellAside')}
+                >
                   {aside}
                 </aside>
               )}
@@ -367,27 +381,30 @@ export interface AppShellNavToggleProps extends Omit<IconButtonProps, 'icon' | '
  * lateral (telas largas). Coloque-o onde quiser dentro do AppShell — em geral
  * na marca do `AppHeader`. Não renderiza nada sem `navigation`.
  */
-export const AppShellNavToggle = forwardRef<HTMLButtonElement, AppShellNavToggleProps>(function AppShellNavToggle(
-  { icon, label, className, onClick, ...rest },
-  ref,
-) {
-  const { t } = useLocale()
-  const shell = useAppShellContext('AppShellNavToggle')
-  if (!shell.hasNavigation) return null
-  const { isCompact, navOpen, navCollapsed } = shell
-  const defaultLabel = isCompact ? t('appShellOpenNav') : navCollapsed ? t('expandSidebar') : t('collapseSidebar')
-  return (
-    <IconButton
-      ref={ref}
-      icon={icon ?? (isCompact ? 'menu' : 'chevrons-left')}
-      label={label ?? defaultLabel}
-      className={cx('or-app-shell__toggle', className)}
-      data-mode={isCompact ? 'drawer' : 'collapse'}
-      aria-expanded={isCompact ? navOpen : !navCollapsed}
-      aria-controls={isCompact ? shell.drawerId : shell.navId}
-      aria-haspopup={isCompact ? 'dialog' : undefined}
-      onClick={composeEventHandlers(onClick, () => shell.toggleNav())}
-      {...rest}
-    />
-  )
-})
+export const AppShellNavToggle = forwardRef<HTMLButtonElement, AppShellNavToggleProps>(
+  function AppShellNavToggle({ icon, label, className, onClick, ...rest }, ref) {
+    const { t } = useLocale()
+    const shell = useAppShellContext('AppShellNavToggle')
+    if (!shell.hasNavigation) return null
+    const { isCompact, navOpen, navCollapsed } = shell
+    const defaultLabel = isCompact
+      ? t('appShellOpenNav')
+      : navCollapsed
+        ? t('expandSidebar')
+        : t('collapseSidebar')
+    return (
+      <IconButton
+        ref={ref}
+        icon={icon ?? (isCompact ? 'menu' : 'chevrons-left')}
+        label={label ?? defaultLabel}
+        className={cx('or-app-shell__toggle', className)}
+        data-mode={isCompact ? 'drawer' : 'collapse'}
+        aria-expanded={isCompact ? navOpen : !navCollapsed}
+        aria-controls={isCompact ? shell.drawerId : shell.navId}
+        aria-haspopup={isCompact ? 'dialog' : undefined}
+        onClick={composeEventHandlers(onClick, () => shell.toggleNav())}
+        {...rest}
+      />
+    )
+  },
+)

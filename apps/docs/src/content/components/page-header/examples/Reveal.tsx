@@ -15,7 +15,12 @@ export default function Reveal() {
         actions={<Button variant="outline">Compartilhar</Button>}
       />
       <div>
-        <Button variant="ghost" size="sm" startIcon={<Icon name="refresh" />} onClick={() => setRun((n) => n + 1)}>
+        <Button
+          variant="ghost"
+          size="sm"
+          startIcon={<Icon name="refresh" />}
+          onClick={() => setRun((n) => n + 1)}
+        >
           Repetir animação
         </Button>
       </div>

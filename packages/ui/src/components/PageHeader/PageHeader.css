@@ -165,7 +165,8 @@
 
 /* Entrada em sequência, como o hero do zop.dev: cada parte sobe 24px com fade,
    80ms (--or-stagger) depois da anterior. Só roda ao montar. */
-.or-page-header--reveal :is(
+.or-page-header--reveal
+  :is(
     .or-page-header__eyebrow,
     .or-page-header__title-row,
     .or-page-header__description,
@@ -176,7 +177,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .or-page-header--reveal :is(
+  .or-page-header--reveal
+    :is(
       .or-page-header__eyebrow,
       .or-page-header__title-row,
       .or-page-header__description,
