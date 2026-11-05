@@ -23,7 +23,7 @@ import {
   type ColorValue,
   type PrimitiveName,
   type ThemeName,
-} from './index'
+} from './index.js'
 
 /* -------------------------------------------------------------------------- */
 /* Tipos                                                                      */
