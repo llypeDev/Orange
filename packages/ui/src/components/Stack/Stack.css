@@ -1,0 +1,128 @@
+/* Stack — layout flex em uma dimensão.
+ *
+ * Responsividade só com CSS: o valor base vem em --_stack-dir / --_stack-gap
+ * (inline) e cada breakpoint em --_stack-<prop>-<bp> + a classe
+ * .or-stack--<prop>-<bp>, que liga a media query correspondente. As variáveis
+ * base são resetadas na raiz para não herdar valores de uma Stack ancestral. */
+
+.or-stack {
+  --_stack-dir: initial;
+  --_stack-gap: initial;
+
+  display: flex;
+  flex-direction: var(--_stack-dir, column);
+  gap: var(--_stack-gap, var(--or-space-4));
+  min-width: 0;
+}
+
+/* Listas e listas de definição: sem marcadores, recuo nem margens. */
+:is(ul, ol, menu, dl).or-stack {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-stack--wrap {
+  flex-wrap: wrap;
+}
+
+/* Alinhamento (eixo cruzado) ------------------------------------------------ */
+
+.or-stack--align-start {
+  align-items: flex-start;
+}
+.or-stack--align-center {
+  align-items: center;
+}
+.or-stack--align-end {
+  align-items: flex-end;
+}
+.or-stack--align-stretch {
+  align-items: stretch;
+}
+.or-stack--align-baseline {
+  align-items: baseline;
+}
+
+/* Distribuição (eixo principal) --------------------------------------------- */
+
+.or-stack--justify-start {
+  justify-content: flex-start;
+}
+.or-stack--justify-center {
+  justify-content: center;
+}
+.or-stack--justify-end {
+  justify-content: flex-end;
+}
+.or-stack--justify-between {
+  justify-content: space-between;
+}
+.or-stack--justify-around {
+  justify-content: space-around;
+}
+.or-stack--justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* Separadores ---------------------------------------------------------------
+ * Um elemento vazio entre os filhos, com `gap` de cada lado. Tamanho
+ * principal 0 e tamanho cruzado esticado; as bordas superior e esquerda
+ * desenham a linha certa nas duas direções (na coluna sobra só a de cima, na
+ * linha só a da esquerda) — por isso funciona com direção responsiva. */
+
+.or-stack__separator {
+  display: block;
+  flex: 0 0 0;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  border-left: var(--or-border-thin) solid var(--or-color-border);
+  list-style: none;
+}
+
+/* Breakpoints (os mesmos de @orange/tokens: sm 640, md 768, lg 1024, xl 1280) */
+
+@media (min-width: 640px) {
+  .or-stack--dir-sm {
+    flex-direction: var(--_stack-dir-sm);
+  }
+  .or-stack--gap-sm {
+    gap: var(--_stack-gap-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .or-stack--dir-md {
+    flex-direction: var(--_stack-dir-md);
+  }
+  .or-stack--gap-md {
+    gap: var(--_stack-gap-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .or-stack--dir-lg {
+    flex-direction: var(--_stack-dir-lg);
+  }
+  .or-stack--gap-lg {
+    gap: var(--_stack-gap-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .or-stack--dir-xl {
+    flex-direction: var(--_stack-dir-xl);
+  }
+  .or-stack--gap-xl {
+    gap: var(--_stack-gap-xl);
+  }
+}
+
+@media (forced-colors: active) {
+  .or-stack__separator {
+    border-color: CanvasText;
+  }
+}

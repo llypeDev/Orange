@@ -1,0 +1,228 @@
+/* ---------------------------------------------------------------------------
+ * DateRangePicker — duas datas num só controle + calendário de período em
+ * diálogo (mesmo diálogo e movimento do DatePicker) com atalhos opcionais.
+ * ------------------------------------------------------------------------- */
+
+.or-date-range-picker {
+  max-width: 100%;
+}
+
+.or-date-range-picker__frame {
+  max-width: 22rem;
+}
+
+/* Erro de validação: tremor curto quando a mensagem surge. */
+.or-date-range-picker__frame[data-shake] {
+  animation: or-shake var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-date-range-picker__input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.or-date-range-picker__input--start {
+  padding-right: var(--or-space-1);
+}
+
+.or-date-range-picker__input--end {
+  padding-left: var(--or-space-1);
+}
+
+.or-date-range-picker__separator {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--or-space-1);
+  color: var(--or-color-text-subtle);
+  user-select: none;
+}
+
+.or-control-frame[data-disabled] .or-date-range-picker__separator {
+  color: var(--or-color-text-disabled);
+}
+
+/* Botão do calendário: o ícone "afunda" no clique e acende quando aberto. */
+.or-date-range-picker__button .or-icon {
+  transition:
+    transform var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-date-range-picker__button:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+}
+
+.or-date-range-picker__button:active:not(:disabled) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-date-range-picker__button[aria-expanded='true'] {
+  background: var(--or-color-surface-active);
+  color: var(--or-color-accent-text);
+}
+
+/* Diálogo ------------------------------------------------------------------
+ * Igual ao DatePicker: opacidade + 4px vindos do lado do campo, saída mais
+ * curta e inerte. top/left (floating-ui com transform: false) deixam o
+ * transform livre para a animação.
+ * ------------------------------------------------------------------------- */
+
+.or-date-range-picker__dialog {
+  --_from: translateY(calc(var(--or-distance-sm) * -1));
+
+  z-index: var(--or-z-popover);
+  max-width: calc(100vw - var(--or-space-4));
+  padding: var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-top: var(--or-border-thick) solid var(--or-color-accent);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-overlay);
+  transform-origin: top left;
+}
+
+.or-date-range-picker__dialog[data-side='top'] {
+  --_from: translateY(var(--or-distance-sm));
+  transform-origin: bottom left;
+}
+
+.or-date-range-picker__dialog[data-side='left'] {
+  --_from: translateX(var(--or-distance-sm));
+}
+
+.or-date-range-picker__dialog[data-side='right'] {
+  --_from: translateX(calc(var(--or-distance-sm) * -1));
+}
+
+.or-date-range-picker__dialog[data-state='open'] {
+  animation: or-date-range-picker-in var(--or-duration-medium) var(--or-ease-out) both;
+}
+
+.or-date-range-picker__dialog[data-state='closed'] {
+  animation: or-date-range-picker-out var(--or-duration-fast) var(--or-ease-in-out) both;
+  pointer-events: none;
+}
+
+.or-date-range-picker__dialog:focus {
+  outline: none;
+}
+
+/* Atalhos ------------------------------------------------------------------
+ * Telas estreitas: linha que quebra acima do calendário (não alarga o
+ * diálogo). Telas largas: coluna à esquerda do calendário.
+ * ------------------------------------------------------------------------- */
+
+.or-date-range-picker__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-4);
+}
+
+.or-date-range-picker__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--or-space-2);
+  /* Não contribui para a largura do diálogo: quebra na largura do calendário. */
+  width: 0;
+  min-width: 100%;
+  margin: 0;
+  padding: 0 0 var(--or-space-4);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  list-style: none;
+}
+
+.or-date-range-picker__preset {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-height: var(--or-control-sm);
+  padding: 0 var(--or-space-3);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xs);
+  font-weight: var(--or-weight-bold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-date-range-picker__preset:is(:hover, :focus-visible):not([aria-disabled='true']) {
+  background: var(--or-color-surface-hover);
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-date-range-picker__preset:active:not([aria-disabled='true']) {
+  background: var(--or-color-surface-active);
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-date-range-picker__preset:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Atalho que corresponde ao período atual: borda laranja + quadrado marcador. */
+.or-date-range-picker__preset[aria-current='true'] {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+  color: var(--or-color-accent-text);
+}
+
+.or-date-range-picker__preset[aria-current='true']::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--or-color-accent);
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+.or-date-range-picker__preset[aria-disabled='true'] {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+@media (min-width: 60rem) {
+  .or-date-range-picker__panel {
+    flex-direction: row;
+  }
+
+  .or-date-range-picker__presets {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: auto;
+    min-width: 10rem;
+    padding: 0 var(--or-space-4) 0 0;
+    border-right: var(--or-border-thin) solid var(--or-color-border);
+    border-bottom: 0;
+  }
+
+  .or-date-range-picker__preset {
+    width: 100%;
+  }
+}
+
+@keyframes or-date-range-picker-in {
+  from {
+    opacity: 0;
+    transform: var(--_from) scale(0.98);
+  }
+}
+
+@keyframes or-date-range-picker-out {
+  to {
+    opacity: 0;
+    transform: var(--_from) scale(0.98);
+  }
+}
