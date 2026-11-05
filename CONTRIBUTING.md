@@ -317,13 +317,14 @@ provenance automaticamente. Não há secret para renovar nem token para vazar.
 Cadastre uma vez **em cada pacote** (`@orangesys/tokens` e `@orangesys/ui`): npmjs.com → pacote →
 _Settings_ → _Trusted Publisher_ → **GitHub Actions**.
 
-| Campo                | Valor                                |
-| -------------------- | ------------------------------------ |
-| Organization or user | `llypeDev`                           |
-| Repository           | `Orange`                             |
-| Workflow filename    | `release.yml` (só o nome do arquivo) |
-| Environment name     | vazio                                |
-| Allowed actions      | marque **`npm publish`**             |
+| Campo                | Valor                                          |
+| -------------------- | ---------------------------------------------- |
+| Label                | `GitHub Actions – Release` (opcional; só nome) |
+| Organization or user | `llypeDev`                                     |
+| Repository           | `Orange`                                       |
+| Workflow filename    | `release.yml` (só o nome do arquivo)           |
+| Environment name     | vazio                                          |
+| Allowed actions      | marque **`npm publish`**                       |
 
 - **`npm publish` precisa estar marcado.** Configurações novas vêm só com `npm stage publish`
   (publicação em estágio, que espera aprovação manual no npmjs.com), e o workflow usa publicação direta.
@@ -333,10 +334,11 @@ _Settings_ → _Trusted Publisher_ → **GitHub Actions**.
 - **Prazo de 2 dias.** Uma configuração nova expira se não tiver uma publicação bem-sucedida em até 2
   dias, e configuração expirada não pode ser editada (apague e crie outra). Cadastre logo antes de
   fazer merge do PR “Versionar pacotes”.
-- **Depois da primeira publicação por OIDC**, feche a porta dos tokens: em _Settings_ → _Publishing
-  access_ de cada pacote, escolha “Require two-factor authentication and disallow tokens”; revogue em
-  _Access Tokens_ os tokens de automação antigos e apague o secret `NPM_TOKEN` do repositório, se
-  ainda existir.
+- **Feche a porta dos tokens.** Em _Settings_ → _Publishing access_ de cada pacote, escolha “Require
+  two-factor authentication and disallow bypass 2fa tokens” (a opção recomendada; em versões antigas
+  da página, “… and disallow tokens”). O trusted publishing continua funcionando, porque usa OIDC e
+  não token; o que deixa de funcionar é publicar com token de automação. Depois, revogue em _Access
+  Tokens_ os tokens de automação antigos e apague o secret `NPM_TOKEN` do repositório, se ainda existir.
 - Requisitos que o workflow já cumpre: runner hospedado pelo GitHub (self-hosted não funciona),
   permissão `id-token: write`, Node 24 e npm ≥ 11.5.1. O provenance só sai porque o repositório e os
   pacotes são públicos.
