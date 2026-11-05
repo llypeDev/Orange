@@ -36,6 +36,13 @@ import { themes, primitives } from '@orangesys/tokens'
 themes.light.accent // valor resolvido do acento no tema claro
 ```
 
+O pacote traz ESM e CommonJS: `import` recebe a versão ESM e `require` a CommonJS, inclusive em
+`@orangesys/tokens/contrast` e `@orangesys/tokens/dtcg`.
+
+```js
+const { themes } = require('@orangesys/tokens')
+```
+
 ### Figma e outras ferramentas
 
 `@orangesys/tokens/tokens.dtcg.json` traz os tokens no formato W3C Design Tokens (DTCG), com um modo por

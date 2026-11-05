@@ -26,6 +26,23 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-05',
+    version: 'v0.5.1',
+    title: {
+      pt: '@orangesys/tokens também em CommonJS',
+      en: '@orangesys/tokens in CommonJS too',
+    },
+    summary: {
+      pt: 'Os tokens agora funcionam com require(), além de import — e é a primeira versão publicada pelo CI com trusted publishing, sem token do npm.',
+      en: 'The tokens now work with require() as well as import — and this is the first version published from CI with trusted publishing, with no npm token.',
+    },
+    items: [
+      { kind: 'fixed', text: { pt: "require('@orangesys/tokens'), /contrast e /dtcg funcionam em projetos CommonJS (configs, Jest, Node sem require de ESM, TypeScript com module node16), que antes davam ERR_REQUIRE_ESM ou TS1479.", en: "require('@orangesys/tokens'), /contrast and /dtcg work in CommonJS projects (configs, Jest, Node without require of ESM, TypeScript with module node16), which used to fail with ERR_REQUIRE_ESM or TS1479." } },
+      { kind: 'improved', text: { pt: 'O build dos tokens confere o pacote antes de publicar: arquivos de cada entrada, CommonJS de verdade e os mesmos exports em ESM e CJS.', en: 'The tokens build checks the package before publishing: files for every entry point, real CommonJS and the same exports in ESM and CJS.' } },
+      { kind: 'improved', text: { pt: 'Publicação no npm por trusted publishing (OIDC), com provenance e sem token guardado no repositório.', en: 'npm publishing through trusted publishing (OIDC), with provenance and no token stored in the repository.' } },
+    ],
+  },
+  {
+    date: '2026-11-05',
     version: 'v0.5.0',
     title: {
       pt: 'Roadmap 0.2 e 0.3 concluídos: alto contraste, modelos de página e publicação no npm',

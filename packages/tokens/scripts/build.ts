@@ -1,6 +1,6 @@
 /**
  * Gera `css/tokens.css` e os arquivos DTCG (`dist/tokens.dtcg.json` e
- * `dist/tokens/**`) a partir de `src/index.ts`.
+ * `dist/tokens/**`) a partir de `src/index.ts`, e marca `dist/cjs/` como CommonJS.
  * Execute com `pnpm --filter @orangesys/tokens build`.
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -140,3 +140,7 @@ console.log(`DTCG: ${Object.keys(files).length} arquivos em ${relative(root, dtc
 const bundle = resolve(root, 'dist/tokens.dtcg.json')
 write(bundle, json(buildDtcgBundle()))
 console.log(`DTCG: pacote único em ${relative(root, bundle)}`)
+
+// CommonJS: o `tsc -p tsconfig.build.cjs.json` gera `dist/cjs/*.js` com require/exports. Como o
+// pacote é "type": "module", este package.json faz o Node (e o TypeScript) lerem essa pasta como CJS.
+write(resolve(root, 'dist/cjs/package.json'), json({ type: 'commonjs' }))
