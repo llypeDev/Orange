@@ -590,10 +590,14 @@ function SortableListInner<T>(
     const from = d.from
     const lastEnd = Math.max(...starts.map((start, i) => start + sizes[i]))
     const raw = (V ? session.y - session.startY : session.x - session.startX) + scrolled
+    // O item arrastado não sai visualmente da lista…
     const offset = clamp(raw, starts[0] - starts[from], lastEnd - starts[from] - sizes[from])
     nodes.current.get(d.key)?.style.setProperty(V ? '--_drag-y' : '--_drag-x', `${offset}px`)
 
-    const center = starts[from] + offset + sizes[from] / 2
+    // …mas o destino segue o ponteiro, sem esse limite. Com o centro limitado, itens
+    // da mesma altura nunca passavam do meio do último e a última posição ficava
+    // inalcançável (arrastar o 4º para o 5º não mudava nada).
+    const center = starts[from] + raw + sizes[from] / 2
     let target = 0
     for (let i = 0; i < L.total; i++) if (i !== from && starts[i] + sizes[i] / 2 < center) target++
     const isLocked = (p: number) => L.locked[p]

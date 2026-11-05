@@ -253,6 +253,33 @@ describe('SortableList', () => {
       expect(handle('Revisar checkout')).toHaveFocus()
     })
 
+    it('com itens da mesma altura, o arraste alcança a última posição', () => {
+      // Regressão: o centro do item arrastado era limitado ao fim da lista e, com
+      // alturas iguais, nunca passava do meio do último item.
+      mockLayout()
+      const onReorder = vi.fn()
+      const { container } = render(<Harness onReorderSpy={onReorder} />)
+      const grip = handle('Atualizar dependências')
+
+      fireEvent.pointerDown(grip, { pointerId: 1, clientX: 20, clientY: 300 })
+      // +60px: o ponteiro passa do meio do último item (centro 174 → 184).
+      fireEvent.pointerMove(grip, { pointerId: 1, clientX: 20, clientY: 360 })
+      expect(container.querySelector('.or-sortable__placeholder')).toHaveStyle({ transform: 'translate(0px, 150px)' })
+      expect(status()).toHaveTextContent('Atualizar dependências movido para a posição 4 de 4.')
+      // O item não sai visualmente da lista, mesmo com o ponteiro além do fim.
+      fireEvent.pointerMove(grip, { pointerId: 1, clientX: 20, clientY: 500 })
+      expect(itemOf('Atualizar dependências').style.getPropertyValue('--_drag-y')).toBe('50px')
+
+      fireEvent.pointerUp(grip, { pointerId: 1, clientX: 20, clientY: 500 })
+      expect(onReorder).toHaveBeenCalledWith([checkout, busca, api, deps], { from: 2, to: 3, item: deps })
+      expect(order()).toEqual([
+        'Revisar checkout',
+        'Corrigir filtro de busca',
+        'Documentar API de pedidos',
+        'Atualizar dependências',
+      ])
+    })
+
     it('não arrasta em cliques simples (movimento abaixo do limiar)', () => {
       mockLayout()
       const onReorder = vi.fn()
