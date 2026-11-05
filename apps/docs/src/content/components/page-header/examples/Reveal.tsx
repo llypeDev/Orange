@@ -7,6 +7,7 @@ export default function Reveal() {
   return (
     <div style={{ display: 'grid', gap: 24 }}>
       <PageHeader
+        headingLevel={2}
         key={run}
         reveal
         eyebrow="Relatórios"

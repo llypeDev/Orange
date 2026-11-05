@@ -42,6 +42,7 @@ export default function Orders() {
     // Em um app, use <AppShell> direto na raiz da página.
     <div style={{ height: 560, border: '1px solid var(--or-color-border)' }}>
       <AppShell
+        mainElement="div"
         fullHeight={false}
         header={
           <AppHeader
@@ -97,6 +98,7 @@ export default function Orders() {
         }
       >
         <PageHeader
+          headingLevel={2}
           eyebrow="Vendas"
           title="Pedidos"
           description="Pedidos das últimas 24 horas."

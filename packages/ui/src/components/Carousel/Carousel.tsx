@@ -259,21 +259,26 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(function Carousel
   /* --- Navegação ----------------------------------------------------------- */
 
   const goTo = useCallback(
-    (target: number) => {
+    (target: number | ((current: number) => number)) => {
       // Toda navegação do usuário encerra a rotação (WCAG 2.2.2).
       stopRotation()
-      setIndex(clamp(target, 0, maxIndexRef.current))
+      setIndex((prev) => {
+        const max = maxIndexRef.current
+        const next = typeof target === 'function' ? target(clamp(Math.round(prev) || 0, 0, max)) : target
+        return clamp(next, 0, max)
+      })
     },
     [setIndex, stopRotation],
   )
 
   const canPrev = loop || index > 0
   const canNext = loop || index < maxIndex
+  // Atualização funcional: cliques rápidos em sequência não perdem passos.
   const goPrev = () => {
-    if (canPrev) goTo(index === 0 ? maxIndex : index - 1)
+    if (canPrev) goTo((current) => (current > 0 ? current - 1 : loop ? maxIndexRef.current : current))
   }
   const goNext = () => {
-    if (canNext) goTo(index >= maxIndex ? 0 : index + 1)
+    if (canNext) goTo((current) => (current < maxIndexRef.current ? current + 1 : loop ? 0 : current))
   }
 
   /* --- Trilho com scroll-snap ---------------------------------------------- */

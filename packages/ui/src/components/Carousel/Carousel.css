@@ -28,7 +28,10 @@
 .or-carousel__track {
   display: flex;
   gap: var(--_gap);
-  overflow-x: auto;
+  /* Mouse e teclado navegam pelos controles (botões e abas); a rolagem nativa
+     do trilho fica só para o arraste em telas de toque. Assim o trilho não é
+     uma região rolável inalcançável pelo teclado (slides inativos são inert). */
+  overflow-x: hidden;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -40,6 +43,13 @@
 
 .or-carousel__track::-webkit-scrollbar {
   display: none;
+}
+
+/* Telas de toque (inclusive notebooks híbridos): arraste nativo com snap. */
+@media (any-pointer: coarse) {
+  .or-carousel__track {
+    overflow-x: auto;
+  }
 }
 
 .or-carousel__slide {

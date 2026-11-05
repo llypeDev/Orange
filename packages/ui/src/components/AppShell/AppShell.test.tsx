@@ -153,6 +153,24 @@ describe('AppShell', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
+  it('mainElement="div" não cria um segundo landmark principal', async () => {
+    render(
+      <main>
+        <AppShell mainElement="div" mainId="previa" skipLinkLabel="Ir para a prévia">
+          Prévia do painel
+        </AppShell>
+      </main>,
+    )
+    expect(screen.getAllByRole('main')).toHaveLength(1)
+    const area = screen.getByText('Prévia do painel')
+    expect(area.tagName).toBe('DIV')
+    expect(area).toHaveAttribute('id', 'previa')
+    // O atalho continua apontando para a área principal, que segue focável.
+    expect(screen.getByRole('link', { name: 'Ir para a prévia' })).toHaveAttribute('href', '#previa')
+    expect(area).toHaveAttribute('tabindex', '-1')
+    await expectNoA11yViolations(document.body)
+  })
+
   it('não duplica landmarks de AppHeader, SideNav e Footer', () => {
     mockViewport(1440)
     render(<OrdersShell />)

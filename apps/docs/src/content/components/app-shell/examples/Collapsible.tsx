@@ -20,6 +20,7 @@ export default function Collapsible() {
       </p>
       <div style={{ height: 440, border: '1px solid var(--or-color-border)' }}>
         <AppShell
+          mainElement="div"
           fullHeight={false}
           navCollapsed={collapsed}
           onNavCollapsedChange={setCollapsed}
@@ -33,7 +34,7 @@ export default function Collapsible() {
               }
             />
           }
-          navLabel="Navegação do painel"
+          navLabel="Navegação dos relatórios"
           navigation={
             <SideNav currentHref="#relatorios" collapsible>
               <SideNavItem href="#inicio" icon={<Icon name="home" />}>
@@ -54,6 +55,7 @@ export default function Collapsible() {
           }
         >
           <PageHeader
+            headingLevel={2}
             title="Relatórios"
             description="Use o botão do cabeçalho ou o do rodapé da barra: os dois comandam o mesmo estado."
           />

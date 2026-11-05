@@ -28,6 +28,7 @@ export default function Settings() {
   return (
     <div style={{ height: 560, border: '1px solid var(--or-color-border)' }}>
       <AppShell
+        mainElement="div"
         fullHeight={false}
         navBreakpoint="md"
         header={<SettingsHeader />}
@@ -49,6 +50,7 @@ export default function Settings() {
         footer={<Footer bottom={<span>Alterações são salvas para todas as unidades.</span>} />}
       >
         <PageHeader
+          headingLevel={2}
           title="Notificações"
           description="Escolha quando a equipe recebe avisos por e-mail."
           divider

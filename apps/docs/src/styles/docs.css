@@ -427,6 +427,9 @@ a {
   letter-spacing: -0.045em;
   color: var(--or-color-text);
   text-wrap: balance;
+  /* Nomes longos de componente (DateRangePicker) quebram em 320px em vez de
+     estourar a página (WCAG 1.4.10). */
+  overflow-wrap: break-word;
 }
 
 .doc-lead {
@@ -1378,6 +1381,12 @@ a {
 @media (max-width: 640px) {
   .doc-logo__tag {
     display: none;
+  }
+  /* Em telas estreitas, código inline longo quebra em vez de estourar a página
+     (ex.: direction={{ base: 'vertical', md: 'horizontal' }}). */
+  .doc-inline-code {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .doc-footer__sitemap {
     grid-template-columns: repeat(2, minmax(0, 1fr));

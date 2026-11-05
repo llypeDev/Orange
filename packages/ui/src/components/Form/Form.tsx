@@ -53,7 +53,7 @@ export interface FormProps extends Omit<FormHTMLAttributes<HTMLFormElement>, 'on
    * formulário fica `aria-busy` e bloqueia novos envios até ela terminar. Sem
    * `onSubmit`, um envio válido segue o caminho nativo (`action`/`method`).
    */
-  onSubmit?: (values: FormValues, event: FormEvent<HTMLFormElement>) => void | Promise<void>
+  onSubmit?: (values: FormValues, event: FormEvent<HTMLFormElement>) => unknown
   /**
    * Erros externos (ex.: retornados pela API), somados aos de validação. Cada um
    * some quando o valor daquele campo muda e volta se `errors` mudar.

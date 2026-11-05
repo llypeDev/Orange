@@ -120,8 +120,8 @@ export default function CarouselPage() {
         <Example
           title={{ pt: 'Vitrine de produtos', en: 'Product rail' }}
           description={{
-            pt: 'slidesPerView responsivo ({ base: 1.4, sm: 2.4, lg: 3.2 }) deixa o próximo produto espiando. Controles no topo com contador. Arraste, use o trackpad ou as setas.',
-            en: 'Responsive slidesPerView ({ base: 1.4, sm: 2.4, lg: 3.2 }) lets the next product peek. Controls on top with a counter. Swipe, use the trackpad or the arrows.',
+            pt: 'slidesPerView responsivo ({ base: 1.4, sm: 2.4, lg: 3.2 }) deixa o próximo produto espiando. Controles no topo com contador. Arraste no toque ou use as setas e o seletor.',
+            en: 'Responsive slidesPerView ({ base: 1.4, sm: 2.4, lg: 3.2 }) lets the next product peek. Controls on top with a counter. Swipe on touch, or use the arrows and the picker.',
           }}
           code={ProductRailCode}
           align="stretch"

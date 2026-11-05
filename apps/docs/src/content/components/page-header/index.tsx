@@ -139,7 +139,7 @@ export default function PageHeaderPage() {
         <PropsTable
           rows={[
             { name: 'title', type: 'ReactNode', required: true, description: { pt: 'Título da página.', en: 'Page title.' } },
-            { name: 'headingLevel', type: '1 | 2 | 3', default: '1', description: { pt: 'Nível do heading do título.', en: 'Title heading level.' } },
+            { name: 'headingLevel', type: '1 | 2 | 3', default: '1', description: { pt: <>Nível do heading do título. Numa tela do seu app, o título da página é o <Code>h1</Code> (padrão). Os exemplos desta página usam <Code>2</Code> porque vivem dentro da documentação, que já tem o seu <Code>h1</Code>.</>, en: <>Title heading level. On a screen of your app, the page title is the <Code>h1</Code> (default). The examples on this page use <Code>2</Code> because they live inside the docs, which already has its own <Code>h1</Code>.</> } },
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto de apoio abaixo do título.', en: 'Supporting text below the title.' } },
             { name: 'eyebrow', type: 'ReactNode', description: { pt: 'Rótulo em caixa alta acima do título.', en: 'Uppercase label above the title.' } },
             { name: 'breadcrumbs', type: 'ReactNode', description: { pt: <>Trilha acima do título (normalmente <Code>&lt;Breadcrumb&gt;</Code>).</>, en: <>Breadcrumbs above the title (usually <Code>&lt;Breadcrumb&gt;</Code>).</> } },

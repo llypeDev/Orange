@@ -88,6 +88,12 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
   navTitle?: ReactNode
   /** `id` do `<main>` (destino do link de atalho). Padrão: gerado. */
   mainId?: string
+  /**
+   * Elemento da área principal. Use `'div'` quando o AppShell vive dentro de uma
+   * aplicação que já tem o seu `<main>` (micro-frontends, prévias embutidas):
+   * uma página só pode ter um landmark principal. Padrão: `'main'`.
+   */
+  mainElement?: 'main' | 'div'
   /** Renderiza o `SkipLink` "Pular para o conteúdo principal" como primeiro foco. */
   skipLink?: boolean
   /** Texto do link de atalho. Padrão: `t('skipToContent')`. */
@@ -140,6 +146,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     asideLabel,
     navTitle,
     mainId,
+    mainElement = 'main',
     skipLink = true,
     skipLinkLabel,
     navBreakpoint = 'lg',
@@ -311,6 +318,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
 
   // AppHeader e Footer já são <header>/<footer>: não aninhe landmarks iguais.
   const HeaderTag = isElementOfType(header, AppHeader) ? 'div' : 'header'
+  const MainTag = mainElement
   const FooterTag = isElementOfType(footer, Footer) ? 'div' : 'footer'
 
   return (
@@ -340,9 +348,9 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
           {sidebar}
           <div className="or-app-shell__content">
             <div className="or-app-shell__columns">
-              <main id={resolvedMainId} tabIndex={-1} className="or-app-shell__main">
+              <MainTag id={resolvedMainId} tabIndex={-1} className="or-app-shell__main">
                 {children}
-              </main>
+              </MainTag>
               {aside && (
                 <aside
                   className="or-app-shell__aside"

@@ -3,6 +3,7 @@ import { Breadcrumb, Button, IconButton, PageHeader, Tag } from '@orange/ui'
 export default function Detail() {
   return (
     <PageHeader
+      headingLevel={2}
       breadcrumbs={
         <Breadcrumb
           items={[

@@ -6,7 +6,7 @@ export default function Alinhamento() {
       {/* justify="between" afasta os grupos; align="center" alinha no eixo cruzado */}
       <Stack direction="horizontal" justify="between" align="center" wrap gap={3}>
         <Text weight="semibold">3 pedidos selecionados</Text>
-        <Stack direction="horizontal" gap={2}>
+        <Stack direction="horizontal" wrap gap={2}>
           <Button variant="ghost" size="sm" startIcon={<Icon name="download" />}>
             Exportar
           </Button>

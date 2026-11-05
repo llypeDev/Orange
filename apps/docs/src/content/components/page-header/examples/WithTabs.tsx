@@ -5,6 +5,7 @@ export default function WithTabs() {
     // O Tabs envolve o cabeçalho e os painéis: a TabList fica no slot navigation.
     <Tabs defaultValue="geral">
       <PageHeader
+        headingLevel={2}
         eyebrow="Configurações"
         title="Loja Aurora"
         description="Ajustes que valem para todas as unidades da loja."

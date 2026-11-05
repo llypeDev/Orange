@@ -8,6 +8,7 @@ export default function Basic() {
           <Icon name="layers" /> Aurora
         </a>
       }
+      navLabel="Mapa do site da Aurora"
       description="Gestão de pedidos, estoque e entregas para lojas independentes."
       columns={[
         {

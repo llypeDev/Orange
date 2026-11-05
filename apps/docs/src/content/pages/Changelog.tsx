@@ -25,9 +25,29 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-05',
+    version: 'v0.3.0',
+    unreleased: true,
+    title: {
+      pt: 'Dez componentes que faltavam: layout, estrutura de página, formulários e mídia',
+      en: 'Ten missing components: layout, page structure, forms and media',
+    },
+    summary: {
+      pt: 'Escolhidos por uma pesquisa comparativa: o catálogo do component.gallery (cerca de 100 design systems) cruzado com Primer, Atlassian e Carbon. Entraram os que quase todos têm e que o Orange não tinha.',
+      en: 'Chosen through comparative research: the component.gallery catalogue (around 100 design systems) cross-checked with Primer, Atlassian and Carbon. In came the ones nearly all of them ship and Orange lacked.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'Stack, Grid e Container: primitivas de layout responsivas só com CSS, incluindo a grade com linhas de 1px do zop.dev.', en: 'Stack, Grid and Container: CSS-only responsive layout primitives, including the zop.dev 1px-line grid.' } },
+      { kind: 'new', text: { pt: 'PageHeader, AppShell e Footer: título de página com trilha e ações, esqueleto de app com navegação recolhível que vira gaveta no celular, e rodapé em mapa do site.', en: 'PageHeader, AppShell and Footer: page title with breadcrumbs and actions, an app scaffold with collapsible navigation that becomes a drawer on phones, and a sitemap footer.' } },
+      { kind: 'new', text: { pt: 'Form: validação no envio com resumo de erros focado e links para os campos, no padrão do GOV.UK.', en: 'Form: submit-time validation with a focused error summary linking to each field, following the GOV.UK pattern.' } },
+      { kind: 'new', text: { pt: 'DateRangePicker e RangeCalendar: período com dois meses, atalhos como "Últimos 7 dias" e limites de duração.', en: 'DateRangePicker and RangeCalendar: date ranges across two months, presets such as "Last 7 days" and length limits.' } },
+      { kind: 'new', text: { pt: 'Carousel no padrão APG, com pausa como primeiro controle, e Image com proporção fixa, carregamento lento e fallback.', en: 'Carousel following the APG pattern, with pause as the first control, and Image with fixed aspect ratio, lazy loading and fallback.' } },
+      { kind: 'fixed', text: { pt: 'Títulos longos de página quebram em 320px em vez de estourar a largura da tela.', en: 'Long page titles wrap at 320px instead of overflowing the screen.' } },
+    ],
+  },
+  {
     date: '2026-11-04',
     version: 'v0.2.0',
-    unreleased: true,
     title: {
       pt: 'Motion em todo o sistema, com a linguagem do zop.dev',
       en: 'Motion across the system, in the zop.dev language',

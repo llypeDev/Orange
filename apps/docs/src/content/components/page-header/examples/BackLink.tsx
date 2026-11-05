@@ -10,6 +10,7 @@ function RouterLink({ to, ...props }: AnchorHTMLAttributes<HTMLAnchorElement> & 
 export default function BackLink() {
   return (
     <PageHeader
+      headingLevel={2}
       back={{ href: '/devolucoes', label: 'Devoluções' }}
       renderLink={({ href, ...props }) => <RouterLink to={href} {...props} />}
       title="Devolução #219"
