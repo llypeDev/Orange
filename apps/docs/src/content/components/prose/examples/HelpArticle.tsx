@@ -40,7 +40,8 @@ export default function HelpArticle() {
       </figure>
 
       <h3>Limites por formato</h3>
-      <table>
+      {/* tabIndex: em telas estreitas a tabela rola e precisa ser alcançável pelo teclado. */}
+      <table tabIndex={0}>
         <thead>
           <tr>
             <th scope="col">Formato</th>

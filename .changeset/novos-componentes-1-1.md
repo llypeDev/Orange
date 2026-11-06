@@ -12,4 +12,4 @@ Oito componentes novos, todos com teclado completo, WCAG 2.2 AA, temas de alto c
 - `Disclosure`: área única de mostrar/ocultar, variantes `inline` e `outline`.
 - `Prose` e `Blockquote`: tipografia para HTML de CMS/Markdown e citações.
 
-`CheckboxGroup` ganha `variant="card"`, igual ao do `RadioGroup`. Correções: o conteúdo do `Accordion` que fecha fica `inert` já durante a animação de saída (antes continuava focável por 250 ms); o `Calendar` (e o `DatePicker`) usa células menores em telas de até 24rem, como o `RangeCalendar`, e cabe em 320px.
+`CheckboxGroup` ganha `variant="card"`, igual ao do `RadioGroup`. Correções: o conteúdo do `Accordion` que fecha fica `inert` já durante a animação de saída (antes continuava focável por 250 ms); o `Calendar` (e o `DatePicker`) usa células menores em telas de até 24rem, como o `RangeCalendar`, e cabe em 320px; a `Table` vira região focável também quando rola na horizontal (telas estreitas), não só com `maxHeight`.
