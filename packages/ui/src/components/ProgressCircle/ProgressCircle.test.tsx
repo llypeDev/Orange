@@ -39,6 +39,19 @@ describe('ProgressCircle', () => {
     expect(screen.queryByText('68%')).not.toBeInTheDocument()
   })
 
+  it('só mostra 100% quando o valor chega ao máximo', () => {
+    const { rerender } = render(<ProgressCircle value={99.6} showValue label="Exportando" />)
+    const bar = screen.getByRole('progressbar', { name: 'Exportando' })
+    expect(bar).toHaveAttribute('aria-valuenow', '99.6')
+    expect(bar).toHaveAttribute('aria-valuetext', '99%')
+    expect(screen.getByText('99%')).toHaveAttribute('aria-hidden', 'true')
+    rerender(<ProgressCircle value={45} max={45.2} showValue label="Exportando" />)
+    expect(bar).toHaveAttribute('aria-valuetext', '99%')
+    rerender(<ProgressCircle value={45.2} max={45.2} showValue label="Exportando" />)
+    expect(bar).toHaveAttribute('aria-valuetext', '100%')
+    expect(screen.getByText('100%')).toBeInTheDocument()
+  })
+
   it('aceita formatação própria', () => {
     render(
       <ProgressCircle

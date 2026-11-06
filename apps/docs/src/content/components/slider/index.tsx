@@ -172,7 +172,10 @@ export default function SliderPage() {
               name: 'min / max / step',
               type: 'number',
               default: '0 / 100 / 1',
-              description: { pt: 'Faixa e incremento.', en: 'Scale and increment.' },
+              description: {
+                pt: 'Faixa e incremento. Como no input nativo, se step não divide max − min, o maior valor é o último passo antes de max (com aviso em desenvolvimento).',
+                en: 'Scale and increment. As with the native input, if step does not divide max − min, the highest value is the last step before max (with a development warning).',
+              },
             },
             {
               name: 'minDistance',

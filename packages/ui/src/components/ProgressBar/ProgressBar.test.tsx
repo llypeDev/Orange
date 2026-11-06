@@ -47,7 +47,30 @@ describe('ProgressBar', () => {
         <ProgressBar aria-label="Upload" value={12.6} />
       </OrangeProvider>,
     )
-    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuetext', '13%')
+    // arredonda para baixo: 12,6% → 12%
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuetext', '12%')
+  })
+
+  it('só mostra 100% quando o valor chega ao máximo', () => {
+    const { rerender } = render(<ProgressBar label="Sincronizando" value={45} max={45.2} />)
+    const bar = screen.getByRole('progressbar', { name: 'Sincronizando' })
+    expect(bar).toHaveAttribute('aria-valuenow', '45')
+    expect(bar).toHaveAttribute('aria-valuetext', '99%')
+    expect(screen.getByText('99%')).toHaveAttribute('aria-hidden', 'true')
+    rerender(<ProgressBar label="Sincronizando" value={99.5} />)
+    expect(bar).toHaveAttribute('aria-valuetext', '99%')
+    rerender(<ProgressBar label="Sincronizando" value={100} />)
+    expect(bar).toHaveAttribute('aria-valuetext', '100%')
+    // 0.29 × 100 = 28.999…96 em ponto flutuante: continua 29%
+    rerender(<ProgressBar label="Sincronizando" value={0.29} max={1} />)
+    expect(bar).toHaveAttribute('aria-valuetext', '29%')
+  })
+
+  it('formatValue recebe o percentual exato', () => {
+    const formatValue = vi.fn((v: number) => `${v} itens`)
+    render(<ProgressBar label="Itens" value={99.5} formatValue={formatValue} />)
+    expect(formatValue).toHaveBeenCalledWith(99.5, { min: 0, max: 100, percent: 99.5 })
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuetext', '99.5 itens')
   })
 
   it('sem valor fica indeterminada (sem aria-valuenow nem valor exibido)', () => {

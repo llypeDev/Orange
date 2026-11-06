@@ -195,6 +195,116 @@ describe('Slider', () => {
     expect(document.querySelector('.or-slider__thumb-pos')).toHaveAttribute('aria-hidden', 'true')
   })
 
+  describe('fim da faixa', () => {
+    const thumbPositions = () =>
+      Array.from(document.querySelectorAll<HTMLElement>('.or-slider__thumb-pos')).map((el) =>
+        el.style.getPropertyValue('--_p'),
+      )
+
+    it('range sem defaultValue e passo que não divide max − min: estado, saída, polegar e input concordam', () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const onChange = vi.fn()
+      render(<Slider range label="Lote" min={0} max={10} step={3} onChange={onChange} />)
+      const [lower, upper] = screen.getAllByRole('slider')
+      // como no input nativo, 10 não é alcançável com passo 3: o maior valor é 9
+      expect(upper).toHaveValue('9')
+      expect(screen.getByRole('status')).toHaveTextContent('0 – 9')
+      expect(thumbPositions()).toEqual(['0%', '90%'])
+      fireEvent.change(lower, { target: { value: '3' } })
+      expect(onChange).toHaveBeenLastCalledWith([3, 9])
+      // End no polegar máximo (o nativo vai a 9) não move nada nem emite 10
+      fireEvent.change(upper, { target: { value: '10' } })
+      expect(onChange).toHaveBeenCalledTimes(1)
+      expect(screen.getByRole('status')).toHaveTextContent('3 – 9')
+    })
+
+    it('limita valores fora de [min, max] como o input nativo, sem chamar onChange', () => {
+      const onChange = vi.fn()
+      const { rerender } = render(
+        <Slider label="Nível" min={0} max={10} defaultValue={15} onChange={onChange} />,
+      )
+      expect(screen.getByRole('slider')).toHaveValue('10')
+      expect(screen.getByRole('status')).toHaveTextContent('10')
+      expect(thumbPositions()).toEqual(['100%'])
+      rerender(<Slider range label="Nível" min={0} max={10} value={[-3, 20]} onChange={onChange} />)
+      expect(screen.getByRole('status')).toHaveTextContent('0 – 10')
+      expect(thumbPositions()).toEqual(['0%', '100%'])
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('valor controlado fora do passo é mostrado já arredondado', () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      render(<Slider label="Pacotes" min={0} max={10} step={3} value={10} onChange={() => {}} />)
+      expect(screen.getByRole('slider')).toHaveValue('9')
+      expect(screen.getByRole('status')).toHaveTextContent('9')
+      expect(thumbPositions()).toEqual(['90%'])
+    })
+
+    it('avisa em desenvolvimento quando step não divide max − min', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      render(<Slider label="Caixas" min={0} max={11} step={4} defaultValue={0} />)
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('Slider: `step` (4)'))
+      warn.mockClear()
+      render(<Slider label="Taxa" min={0} max={0.7} step={0.1} defaultValue={0} />)
+      expect(warn).not.toHaveBeenCalled()
+    })
+
+    it('a precisão considera min, não só step (min 0.5, step 1)', () => {
+      const onChange = vi.fn()
+      render(
+        <Slider
+          label="Nota"
+          min={0.5}
+          max={10.5}
+          step={1}
+          defaultValue={5.5}
+          onChange={onChange}
+        />,
+      )
+      const slider = screen.getByRole('slider')
+      fireEvent.change(slider, { target: { value: '0.5' } }) // Home
+      expect(onChange).toHaveBeenLastCalledWith(0.5)
+      expect(screen.getByRole('status')).toHaveTextContent('0.5')
+      fireEvent.change(slider, { target: { value: '1.5' } }) // ArrowRight
+      expect(onChange).toHaveBeenLastCalledWith(1.5)
+      fireEvent.change(slider, { target: { value: '10.5' } }) // End
+      fireEvent.change(slider, { target: { value: '9.5' } }) // ArrowLeft
+      expect(onChange).toHaveBeenLastCalledWith(9.5)
+      expect(slider).toHaveValue('9.5')
+    })
+
+    it('entende passos em notação exponencial (1e-7)', () => {
+      const onChange = vi.fn()
+      render(
+        <Slider
+          label="Tolerância"
+          min={0}
+          max={0.000001}
+          step={1e-7}
+          defaultValue={0}
+          onChange={onChange}
+        />,
+      )
+      fireEvent.change(screen.getByRole('slider'), { target: { value: '0.0000003' } })
+      expect(onChange).toHaveBeenLastCalledWith(3e-7)
+    })
+
+    it.each([
+      [0.7, 0.1, 8],
+      [0.3, 0.1, 4],
+      [0.6, 0.2, 4],
+      [2.3, 0.1, 24],
+    ])(
+      'marks={true} com max %s e step %s desenha %s marcas, a última no fim',
+      (max, step, count) => {
+        render(<Slider label="Opacidade" min={0} max={max} step={step} defaultValue={0} marks />)
+        const ticks = document.querySelectorAll<HTMLElement>('.or-slider__tick')
+        expect(ticks).toHaveLength(count)
+        expect(ticks[ticks.length - 1].style.left).toBe('100%')
+      },
+    )
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

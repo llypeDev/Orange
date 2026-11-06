@@ -1,6 +1,7 @@
 import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react'
 import { useLocale } from '../../providers'
 import { clamp, cx } from '../../utils'
+import { displayPercent } from '../ProgressBar/percent'
 import './ProgressCircle.css'
 
 export type ProgressCircleSize = 'sm' | 'md' | 'lg'
@@ -72,7 +73,7 @@ export const ProgressCircle = forwardRef<HTMLDivElement, ProgressCircleProps>(
       : formatValue
         ? formatValue(current, { min, max, percent })
         : new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 0 }).format(
-            percent / 100,
+            displayPercent(current, min, max) / 100,
           )
 
     const { size: px, stroke } = dimensions[size]

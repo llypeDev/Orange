@@ -222,8 +222,8 @@ export default function ProgressCirclePage() {
               name: 'formatValue',
               type: '(value, { min, max, percent }) => string',
               description: {
-                pt: 'Formata o valor exibido e o aria-valuetext.',
-                en: 'Formats the shown value and aria-valuetext.',
+                pt: 'Formata o valor exibido e o aria-valuetext. Padrão: percentual arredondado para baixo (100% só ao concluir).',
+                en: 'Formats the shown value and aria-valuetext. Default: percentage rounded down (100% only when complete).',
               },
             },
             {
