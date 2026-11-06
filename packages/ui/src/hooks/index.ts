@@ -413,10 +413,21 @@ export function usePresence<T extends HTMLElement = HTMLElement>(open: boolean, 
   }
 }
 
+/** `true` quando a margem inferior de um `rootMargin` (1 a 4 valores) é negativa. */
+function hasNegativeBottomMargin(rootMargin: string): boolean {
+  const parts = rootMargin.trim().split(/\s+/)
+  return Number.parseFloat(parts.length > 2 ? parts[2] : parts[0]) < 0
+}
+
 /**
  * `true` quando o elemento entra na viewport (IntersectionObserver).
  * Por padrão dispara uma vez (`once`) — ideal para revelações no scroll.
  * Sem suporte a IntersectionObserver, retorna `true`.
+ *
+ * Com margem inferior negativa (o padrão, `-60px`), um elemento nos últimos pixels da
+ * página nunca entraria na faixa observada — nem no fim da rolagem. Por isso, quando a
+ * rolagem chega ao fim (ou a página não rola), o que não ficou acima da área visível
+ * conta como visto.
  */
 export function useInView<T extends Element = HTMLElement>(
   options: { rootMargin?: string; threshold?: number | number[]; once?: boolean; root?: Element | null } = {},
@@ -432,19 +443,49 @@ export function useInView<T extends Element = HTMLElement>(
       setInView(true)
       return
     }
+    const checkEnd = hasNegativeBottomMargin(rootMargin)
+    let intersecting = false
+    let frame = 0
+    const reachedEnd = () => {
+      const box = root ?? document.scrollingElement ?? document.documentElement
+      const scrollTop = root ? root.scrollTop : window.scrollY
+      if (box.scrollHeight - scrollTop - box.clientHeight > 1) return false
+      const viewTop = root ? root.getBoundingClientRect().top : 0
+      return node.getBoundingClientRect().bottom > viewTop
+    }
+    const update = () => {
+      frame = 0
+      if (intersecting || (checkEnd && reachedEnd())) {
+        setInView(true)
+        if (once) stop()
+      } else if (!once) {
+        setInView(false)
+      }
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          setInView(true)
-          if (once) observer.disconnect()
-        } else if (!once) {
-          setInView(false)
-        }
+        intersecting = !!entry?.isIntersecting
+        update()
       },
       { rootMargin, threshold, root },
     )
     observer.observe(node)
-    return () => observer.disconnect()
+    if (checkEnd) {
+      window.addEventListener('scroll', schedule, { capture: true, passive: true })
+      window.addEventListener('resize', schedule)
+      schedule()
+    }
+    function stop() {
+      observer.disconnect()
+      if (frame) cancelAnimationFrame(frame)
+      frame = 0
+      window.removeEventListener('scroll', schedule, { capture: true })
+      window.removeEventListener('resize', schedule)
+    }
+    return stop
   }, [node, rootMargin, once, root, JSON.stringify(threshold)]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return [ref, inView]

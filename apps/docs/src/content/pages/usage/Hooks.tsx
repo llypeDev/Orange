@@ -608,8 +608,8 @@ export default function HooksPage() {
               type: 'string',
               default: "'0px 0px -60px 0px'",
               description: {
-                pt: 'Margem da área observada (negativa = dispara um pouco depois de entrar).',
-                en: 'Margin of the observed area (negative = fires a little after entering).',
+                pt: 'Margem da área observada (negativa = dispara um pouco depois de entrar). Com margem inferior negativa, no fim da rolagem o que está à vista conta como visto — senão os últimos pixels da página nunca disparariam.',
+                en: 'Margin of the observed area (negative = fires a little after entering). With a negative bottom margin, whatever is in view counts as seen at the end of the scroll — otherwise the last pixels of the page would never fire.',
               },
             },
             {

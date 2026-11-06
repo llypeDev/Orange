@@ -107,7 +107,7 @@ export default function TableOfContentsPage() {
             { name: 'headingSelector', type: 'string', default: "'h2, h3'", description: { pt: 'Seletor dos títulos coletados.', en: 'Selector for collected headings.' } },
             { name: 'title', type: 'ReactNode | null', default: "t('tableOfContents')", description: { pt: 'Título visível; null esconde (o nome vai para aria-label).', en: 'Visible title; null hides it (the name goes to aria-label).' } },
             { name: 'root', type: 'HTMLElement | RefObject', default: 'window', description: { pt: 'Contêiner rolável observado.', en: 'Observed scroll container.' } },
-            { name: 'rootMargin', type: 'string', default: "'-80px 0px -65% 0px'", description: { pt: 'Faixa da tela em que uma seção conta como visível.', en: 'Screen band where a section counts as visible.' } },
+            { name: 'rootMargin', type: 'string', default: "'-80px 0px -65% 0px'", description: { pt: 'Faixa da tela em que uma seção conta como visível (formato do rootMargin do IntersectionObserver). No fim da rolagem, a última seção à vista fica ativa mesmo fora da faixa.', en: 'Screen band where a section counts as visible (IntersectionObserver rootMargin format). At the end of the scroll, the last section in view becomes active even outside the band.' } },
             { name: 'onItemClick', type: '(id, event) => void', description: { pt: 'Chamado ao clicar; preventDefault cancela a navegação.', en: 'Called on click; preventDefault cancels navigation.' } },
           ]}
         />

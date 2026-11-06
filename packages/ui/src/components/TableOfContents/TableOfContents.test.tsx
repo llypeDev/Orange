@@ -29,14 +29,37 @@ class MockIntersectionObserver {
   }
 }
 
-function intersect(id: string, isIntersecting: boolean) {
-  const target = document.getElementById(id)!
-  act(() => {
-    observers.forEach((o) => {
-      if (o.targets.includes(target)) o.callback([{ target, isIntersecting }])
-    })
+/** Simula layout: `top` de cada título no conteúdo, altura visível e altura total. */
+function layout(
+  el: HTMLElement,
+  {
+    offsets,
+    height,
+    scrollHeight,
+  }: { offsets: Record<string, number>; height: number; scrollHeight: number },
+) {
+  let scrollTop = 0
+  Object.defineProperty(el, 'clientHeight', { configurable: true, get: () => height })
+  Object.defineProperty(el, 'scrollHeight', { configurable: true, get: () => scrollHeight })
+  Object.defineProperty(el, 'scrollTop', {
+    configurable: true,
+    get: () => scrollTop,
+    set: (v: number) => (scrollTop = v),
   })
+  el.getBoundingClientRect = () => new DOMRect(0, 0, 400, height)
+  for (const [id, offset] of Object.entries(offsets)) {
+    document.getElementById(id)!.getBoundingClientRect = () =>
+      new DOMRect(0, offset - scrollTop, 400, 20)
+  }
+  return (top: number) => {
+    scrollTop = top
+    act(() => {
+      el.dispatchEvent(new Event('scroll'))
+    })
+  }
 }
+
+const current = () => screen.queryByRole('link', { current: 'location' })?.textContent ?? null
 
 const items = [
   { id: 'instalacao', label: 'Instalação', level: 2 },
@@ -79,24 +102,112 @@ describe('TableOfContents', () => {
     expect(depths).toEqual(['0', '1', '0'])
   })
 
-  it('destaca com aria-current="location" a primeira seção visível', () => {
+  function Panel({ rootMargin = '0px 0px -70% 0px' }: { rootMargin?: string }) {
+    const ref = useRef<HTMLDivElement>(null)
+    return (
+      <>
+        <TableOfContents items={items} root={ref} rootMargin={rootMargin} />
+        <div ref={ref} data-testid="painel">
+          <Article />
+        </div>
+      </>
+    )
+  }
+
+  // Painel de 300px, faixa no topo (0–90px); títulos em 0, 200 e 900; rola até 700.
+  const panelLayout = {
+    offsets: { instalacao: 0, npm: 200, uso: 900 },
+    height: 300,
+    scrollHeight: 1000,
+  }
+
+  it('destaca com aria-current="location" o primeiro título dentro da faixa', async () => {
+    render(<Panel />)
+    const scrollTo = layout(screen.getByTestId('painel'), panelLayout)
+    scrollTo(0)
+    await waitFor(() => expect(current()).toBe('Instalação'))
+    scrollTo(150)
+    await waitFor(() => expect(current()).toBe('Com npm'))
+    expect(screen.getByRole('link', { name: 'Instalação' })).not.toHaveAttribute('aria-current')
+  })
+
+  it('entre dois títulos (nenhum na faixa), destaca o último que já passou — também ao subir', async () => {
+    render(<Panel />)
+    const scrollTo = layout(screen.getByTestId('painel'), panelLayout)
+    scrollTo(500)
+    await waitFor(() => expect(current()).toBe('Com npm'))
+    scrollTo(100)
+    await waitFor(() => expect(current()).toBe('Instalação'))
+  })
+
+  it('no fim da rolagem destaca o último título à vista, mesmo fora da faixa', async () => {
+    render(<Panel />)
+    const scrollTo = layout(screen.getByTestId('painel'), panelLayout)
+    scrollTo(650)
+    await waitFor(() => expect(current()).toBe('Com npm'))
+    scrollTo(700) // fim: "Uso" está a 200px do topo, abaixo da faixa
+    await waitFor(() => expect(current()).toBe('Uso'))
+  })
+
+  it('usa a janela como raiz por padrão e aplica a faixa do rootMargin (px e %)', async () => {
     render(
       <>
         <TableOfContents items={items} />
         <Article />
       </>,
     )
-    intersect('npm', true)
-    expect(screen.getByRole('link', { name: 'Com npm' })).toHaveAttribute('aria-current', 'location')
-    intersect('instalacao', true)
-    expect(screen.getByRole('link', { name: 'Instalação' })).toHaveAttribute('aria-current', 'location')
-    expect(screen.getByRole('link', { name: 'Com npm' })).not.toHaveAttribute('aria-current')
-    intersect('instalacao', false)
-    intersect('npm', false)
-    // Nenhuma visível: mantém a última destacada.
-    expect(screen.getByRole('link', { name: 'Com npm' })).toHaveAttribute('aria-current', 'location')
-    intersect('uso', true)
-    expect(screen.getByRole('link', { name: 'Uso' })).toHaveAttribute('aria-current', 'location')
+    // Viewport de 900px; faixa padrão '-80px 0px -65% 0px' = 80–315px.
+    const page = document.documentElement
+    let scrollY = 0
+    Object.defineProperty(page, 'clientHeight', { configurable: true, get: () => 900 })
+    Object.defineProperty(page, 'scrollHeight', { configurable: true, get: () => 3000 })
+    Object.defineProperty(window, 'scrollY', { configurable: true, get: () => scrollY })
+    const offsets: Record<string, number> = { instalacao: 100, npm: 1200, uso: 2800 }
+    for (const [id, offset] of Object.entries(offsets)) {
+      document.getElementById(id)!.getBoundingClientRect = () =>
+        new DOMRect(0, offset - scrollY, 400, 20)
+    }
+    const scrollTo = (y: number) => {
+      scrollY = y
+      act(() => {
+        window.dispatchEvent(new Event('scroll'))
+      })
+    }
+    try {
+      scrollTo(0)
+      await waitFor(() => expect(current()).toBe('Instalação'))
+      scrollTo(1000) // "Com npm" a 200px: dentro da faixa
+      await waitFor(() => expect(current()).toBe('Com npm'))
+      scrollTo(1950) // "Uso" a 850px: fora da faixa, "Com npm" já passou
+      await waitFor(() => expect(current()).toBe('Com npm'))
+      scrollTo(2100) // fim da página
+      await waitFor(() => expect(current()).toBe('Uso'))
+    } finally {
+      delete (page as unknown as Record<string, unknown>).clientHeight
+      delete (page as unknown as Record<string, unknown>).scrollHeight
+      delete (window as unknown as Record<string, unknown>).scrollY
+    }
+  })
+
+  it('o item clicado continua marcado durante o salto e até a próxima interação', async () => {
+    const user = userEvent.setup()
+    render(<Panel />)
+    const panel = screen.getByTestId('painel')
+    const scrollTo = layout(panel, panelLayout)
+    scrollTo(0)
+    await waitFor(() => expect(current()).toBe('Instalação'))
+    await user.click(screen.getByRole('link', { name: 'Com npm' }))
+    expect(current()).toBe('Com npm')
+    // O salto do clique termina no fim da rolagem, que sozinho marcaria "Uso".
+    scrollTo(700)
+    await new Promise((resolve) => requestAnimationFrame(resolve))
+    expect(current()).toBe('Com npm')
+    // Interação da pessoa (roda do mouse) libera a marca; a rolagem seguinte recalcula.
+    act(() => {
+      panel.dispatchEvent(new WheelEvent('wheel', { bubbles: true }))
+    })
+    scrollTo(700)
+    await waitFor(() => expect(current()).toBe('Uso'))
   })
 
   it('tem um marcador único e decorativo fora da lista', () => {
@@ -186,7 +297,8 @@ describe('TableOfContents', () => {
         <Article />
       </div>,
     )
-    intersect('uso', true)
+    await userEvent.setup().click(screen.getByRole('link', { name: 'Uso' }))
+    expect(current()).toBe('Uso')
     await expectNoA11yViolations(container)
   })
 })
