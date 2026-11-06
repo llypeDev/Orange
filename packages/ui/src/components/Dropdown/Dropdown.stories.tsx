@@ -87,7 +87,7 @@ export const CheckboxAndRadio: Story = {
           </DropdownCheckboxItem>
           <DropdownCheckboxItem>Mostrar arquivadas</DropdownCheckboxItem>
           <DropdownSeparator />
-          <DropdownRadioGroup label="Ordenar por" value={sort} onValueChange={setSort}>
+          <DropdownRadioGroup label="Ordenar por" value={sort} onChange={setSort}>
             <DropdownRadioItem value="recent">Mais recentes</DropdownRadioItem>
             <DropdownRadioItem value="name">Nome</DropdownRadioItem>
             <DropdownRadioItem value="due">Prazo</DropdownRadioItem>

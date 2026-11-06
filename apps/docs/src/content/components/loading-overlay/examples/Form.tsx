@@ -20,7 +20,7 @@ export default function Form() {
 
   return (
     <LoadingOverlay
-      visible={saving}
+      open={saving}
       message="Salvando endereço…"
       style={{ width: '100%', maxWidth: 400 }}
     >

@@ -8,6 +8,8 @@ export interface PropRow {
   default?: string
   required?: boolean
   description: Localized<ReactNode>
+  /** Prop depreciada: o selo e a troca aparecem antes da descrição (ver /usage/versioning). */
+  deprecated?: { replacement: string; since: string; removal: string }
 }
 
 /** Tabela de propriedades (API) de um componente. */
@@ -40,7 +42,18 @@ export function PropsTable({ rows, caption }: { rows: PropRow[]; caption?: Local
                 <code className="doc-type">{row.type}</code>
               </td>
               <td>{row.default ? <Code>{row.default}</Code> : <span aria-label={t({ pt: 'nenhum', en: 'none' })}>—</span>}</td>
-              <td>{t(row.description)}</td>
+              <td>
+                {row.deprecated && (
+                  <p className="doc-prop-deprecated">
+                    <span className="doc-prop-deprecated__badge">{t({ pt: 'Depreciado', en: 'Deprecated' })}</span>{' '}
+                    {t({
+                      pt: <>desde a v{row.deprecated.since}; sai na v{row.deprecated.removal}. Use <Code>{row.deprecated.replacement}</Code>.</>,
+                      en: <>since v{row.deprecated.since}; removed in v{row.deprecated.removal}. Use <Code>{row.deprecated.replacement}</Code> instead.</>,
+                    })}
+                  </p>
+                )}
+                {t(row.description)}
+              </td>
             </tr>
           ))}
         </tbody>

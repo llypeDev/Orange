@@ -17,7 +17,7 @@ import {
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, deprecate } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Table.css'
 
@@ -79,6 +79,11 @@ export interface TableProps<T> extends Omit<TableHTMLAttributes<HTMLTableElement
   /** Ids selecionados inicialmente (não controlado). */
   defaultSelectedRows?: string[]
   /** Chamado com os ids selecionados sempre que a seleção muda. */
+  onSelectedRowsChange?: (ids: string[]) => void
+  /**
+   * @deprecated Use `onSelectedRowsChange` (par de `selectedRows`/`defaultSelectedRows`). Sai na
+   * v1.0.
+   */
   onSelectionChange?: (ids: string[]) => void
   /** Texto que identifica a linha no rótulo do checkbox ("Selecionar linha: …"). */
   getRowLabel?: (row: T) => string
@@ -140,6 +145,7 @@ function TableInner<T>(
     selectable = false,
     selectedRows,
     defaultSelectedRows,
+    onSelectedRowsChange,
     onSelectionChange,
     getRowLabel,
     density = 'normal',
@@ -165,10 +171,16 @@ function TableInner<T>(
     defaultValue: defaultSort,
     onChange: onSortChange,
   })
+  if (onSelectionChange !== undefined) {
+    deprecate(
+      'Table: `onSelectionChange` está depreciado e sai na v1.0. Use `onSelectedRowsChange`.',
+      'table.onSelectionChange',
+    )
+  }
   const [selected, setSelected] = useControllableState<string[]>({
     value: selectedRows,
     defaultValue: defaultSelectedRows ?? [],
-    onChange: onSelectionChange,
+    onChange: onSelectedRowsChange ?? onSelectionChange,
   })
 
   const collator = useMemo(() => {

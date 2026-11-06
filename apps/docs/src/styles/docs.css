@@ -499,6 +499,23 @@ a {
   color: var(--or-color-warning-text);
 }
 
+/* Prop depreciada na tabela de props: selo + substituto, antes da descrição. */
+.doc-prop-deprecated {
+  margin: 0 0 var(--or-space-1);
+}
+
+.doc-prop-deprecated__badge {
+  display: inline-block;
+  padding: 0 var(--or-space-1);
+  border: 1px solid var(--or-color-warning);
+  background: var(--or-color-warning-subtle);
+  color: var(--or-color-warning-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+}
+
 /* Aviso de componente depreciado: ocupa a linha inteira abaixo da importação e dos links. */
 .doc-deprecation {
   flex-basis: 100%;

@@ -1,7 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, deprecate } from '../../utils'
 import { feedbackIcons, feedbackLabelKeys, type FeedbackTone } from '../Alert/feedback'
 import { Button } from '../Button'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -21,6 +21,11 @@ export interface ToastProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
   /** Ação relacionada (ex.: "Desfazer"). */
   action?: ReactNode
   /** Quando informado, mostra o botão de fechar e o chama ao clicar. */
+  onDismiss?: () => void
+  /**
+   * @deprecated Use `onDismiss` (o mesmo nome de `Alert`, `Banner` e das opções de `toast()`). Sai
+   * na v1.0.
+   */
   onClose?: () => void
 }
 
@@ -29,15 +34,29 @@ export interface ToastProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
  * `ToastProvider` — chame `useToast().toast({...})` em vez de usá-lo direto.
  */
 export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
-  { tone = 'neutral', title, description, icon, action, onClose, className, ...rest },
+  {
+    tone = 'neutral',
+    title,
+    description,
+    icon,
+    action,
+    onDismiss: onDismissProp,
+    onClose,
+    className,
+    ...rest
+  },
   ref,
 ) {
   const { t } = useLocale()
+  if (onClose !== undefined) {
+    deprecate('Toast: `onClose` está depreciado e sai na v1.0. Use `onDismiss`.', 'toast.onClose')
+  }
+  const onDismiss = onDismissProp ?? onClose
   const labelKey = feedbackLabelKeys[tone]
   return (
     <div
       ref={ref}
-      className={cx('or-toast', `or-toast--${tone}`, onClose && 'or-toast--closable', className)}
+      className={cx('or-toast', `or-toast--${tone}`, onDismiss && 'or-toast--closable', className)}
       {...rest}
     >
       {icon !== false && (
@@ -53,7 +72,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
         </div>
         {action && <div className="or-toast__action">{action}</div>}
       </div>
-      {onClose && (
+      {onDismiss && (
         <Button
           className="or-toast__close"
           variant="ghost"
@@ -61,7 +80,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(
           iconOnly
           aria-label={t('close')}
           startIcon={<Icon name="close" size="sm" />}
-          onClick={onClose}
+          onClick={onDismiss}
         />
       )}
     </div>

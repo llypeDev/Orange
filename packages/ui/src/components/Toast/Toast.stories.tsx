@@ -19,7 +19,7 @@ const meta = {
     tone: { control: 'inline-radio', options: ['neutral', 'info', 'success', 'warning', 'danger'] },
     title: { control: 'text' },
     description: { control: 'text' },
-    onClose: { action: 'close' },
+    onDismiss: { action: 'dismiss' },
   },
   args: {
     tone: 'success',

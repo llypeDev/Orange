@@ -139,8 +139,8 @@ export default function SegmentedControlPage() {
         <Example
           title={{ pt: 'Tamanhos e largura total', en: 'Sizes and full width' }}
           description={{
-            pt: <>sm (32px), md (40px) e lg (48px). <Code>fullWidth</Code> ocupa a largura do contêiner.</>,
-            en: <>sm (32px), md (40px) and lg (48px). <Code>fullWidth</Code> fills the container width.</>,
+            pt: <>sm (32px), md (40px) e lg (48px). <Code>block</Code> ocupa a largura do contêiner.</>,
+            en: <>sm (32px), md (40px) and lg (48px). <Code>block</Code> fills the container width.</>,
           }}
           code={SizesCode}
         >
@@ -179,7 +179,8 @@ export default function SegmentedControlPage() {
             { name: 'defaultValue', type: 'string', description: { pt: 'Valor inicial. Padrão: a primeira opção habilitada.', en: 'Initial value. Default: the first enabled option.' } },
             { name: 'onChange', type: '(value: string) => void', description: { pt: 'Chamado quando a seleção muda.', en: 'Called when the selection changes.' } },
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Altura do controle.', en: 'Control height.' } },
-            { name: 'fullWidth', type: 'boolean', default: 'false', description: { pt: 'Ocupa toda a largura disponível.', en: 'Fills the available width.' } },
+            { name: 'block', type: 'boolean', default: 'false', description: { pt: 'Ocupa toda a largura disponível; as opções dividem o espaço igualmente.', en: 'Fills the available width; options share the space equally.' } },
+            { name: 'fullWidth', type: 'boolean', deprecated: { replacement: 'block', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de block.', en: 'Former name of block.' } },
             { name: 'iconOnly', type: 'boolean', default: 'false', description: { pt: 'Mostra só os ícones; os rótulos ficam ocultos visualmente.', en: 'Shows only icons; labels are visually hidden.' } },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: { pt: 'Esconde o rótulo do grupo visualmente.', en: 'Visually hides the group label.' } },
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto de ajuda, vinculado por aria-describedby.', en: 'Help text, linked via aria-describedby.' } },

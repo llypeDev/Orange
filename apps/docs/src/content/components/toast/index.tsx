@@ -86,13 +86,13 @@ export default function ToastPage() {
             ]}
           />
           <DoDont
-            doExample={<Toast tone="success" title="Pedido enviado" onClose={() => {}} />}
+            doExample={<Toast tone="success" title="Pedido enviado" onDismiss={() => {}} />}
             dontExample={
               <Toast
                 tone="danger"
                 title="Erro de validação"
                 description="O campo CNPJ é obrigatório, o e-mail é inválido e a data de vencimento precisa ser futura."
-                onClose={() => {}}
+                onDismiss={() => {}}
               />
             }
             doItems={[
@@ -455,6 +455,46 @@ export default function ToastPage() {
                 name: 'dismissAll',
                 type: '() => void',
                 description: { pt: 'Fecha todos.', en: 'Closes all toasts.' },
+              },
+            ]}
+          />
+          <PropsTable
+            caption={{ pt: 'Toast (só o visual, sem o provider)', en: 'Toast (visual only, without the provider)' }}
+            rows={[
+              {
+                name: 'tone',
+                type: "'neutral' | 'info' | 'success' | 'warning' | 'danger'",
+                default: "'neutral'",
+                description: { pt: 'Cor semântica e ícone.', en: 'Semantic color and icon.' },
+              },
+              {
+                name: 'title / description',
+                type: 'ReactNode',
+                description: { pt: 'Mensagem principal e detalhe.', en: 'Main message and detail.' },
+              },
+              {
+                name: 'icon',
+                type: 'ReactNode | false',
+                description: { pt: 'Substitui ou remove o ícone.', en: 'Replaces or removes the icon.' },
+              },
+              {
+                name: 'action',
+                type: 'ReactNode',
+                description: { pt: 'Ação relacionada (ex.: "Desfazer").', en: 'Related action (e.g. "Undo").' },
+              },
+              {
+                name: 'onDismiss',
+                type: '() => void',
+                description: {
+                  pt: 'Mostra o botão de fechar e o chama ao clicar.',
+                  en: 'Shows the close button and calls it on click.',
+                },
+              },
+              {
+                name: 'onClose',
+                type: '() => void',
+                deprecated: { replacement: 'onDismiss', since: '0.6.0', removal: '1.0.0' },
+                description: { pt: 'Nome antigo de onDismiss.', en: 'Former name of onDismiss.' },
               },
             ]}
           />

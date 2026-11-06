@@ -25,6 +25,26 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-06',
+    version: 'v0.6.0',
+    unreleased: true,
+    title: {
+      pt: 'Revisão da API antes da 1.0: nomes consistentes',
+      en: 'API review before 1.0: consistent names',
+    },
+    summary: {
+      pt: 'Revisamos as props dos 157 componentes exportados e alinhamos seis nomes que fugiam das convenções da biblioteca. Os nomes antigos continuam funcionando até a v1.0, com aviso no console.',
+      en: 'We reviewed the props of all 157 exported components and aligned six names that strayed from the library conventions. The old names keep working until v1.0, with a console warning.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'SegmentedControl: fullWidth vira block, como no Button.', en: 'SegmentedControl: fullWidth becomes block, as in Button.' } },
+      { kind: 'improved', text: { pt: 'DropdownRadioGroup: onValueChange vira onChange, e FileUploader: onFilesChange vira onChange — o par de value/defaultValue, como nos outros campos.', en: 'DropdownRadioGroup: onValueChange becomes onChange, and FileUploader: onFilesChange becomes onChange — the pair of value/defaultValue, as in other fields.' } },
+      { kind: 'improved', text: { pt: 'Table: onSelectionChange vira onSelectedRowsChange, fechando o trio com selectedRows e defaultSelectedRows.', en: 'Table: onSelectionChange becomes onSelectedRowsChange, completing the trio with selectedRows and defaultSelectedRows.' } },
+      { kind: 'improved', text: { pt: 'LoadingOverlay: visible vira open, e Toast: onClose vira onDismiss — os mesmos nomes das outras sobreposições e avisos.', en: 'LoadingOverlay: visible becomes open, and Toast: onClose becomes onDismiss — the same names as other overlays and notices.' } },
+      { kind: 'improved', text: { pt: 'As tabelas de props mostram as props depreciadas com selo, substituto e versão de remoção.', en: 'Props tables show deprecated props with a badge, replacement and removal version.' } },
+    ],
+  },
+  {
     date: '2026-11-05',
     version: 'v0.5.1',
     title: {

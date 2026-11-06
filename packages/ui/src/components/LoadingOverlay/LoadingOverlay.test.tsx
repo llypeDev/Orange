@@ -5,9 +5,9 @@ import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
 import { LoadingOverlay } from './LoadingOverlay'
 
-function Report({ visible, message }: { visible: boolean; message?: string }) {
+function Report({ open, message }: { open: boolean; message?: string }) {
   return (
-    <LoadingOverlay visible={visible} message={message} data-testid="overlay">
+    <LoadingOverlay open={open} message={message} data-testid="overlay">
       <h2>Vendas por região</h2>
       <button type="button">Exportar CSV</button>
     </LoadingOverlay>
@@ -18,7 +18,7 @@ const content = () => screen.getByRole('heading', { hidden: true }).parentElemen
 
 describe('LoadingOverlay', () => {
   it('oculto: conteúdo interativo, sem aria-busy e região de status vazia', () => {
-    render(<Report visible={false} />)
+    render(<Report open={false} />)
     expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'hidden')
     expect(content()).not.toHaveAttribute('inert')
     expect(content()).not.toHaveAttribute('aria-busy')
@@ -27,7 +27,7 @@ describe('LoadingOverlay', () => {
   })
 
   it('visível: conteúdo inert + aria-busy e mensagem padrão anunciada', () => {
-    const { container } = render(<Report visible />)
+    const { container } = render(<Report open />)
     expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'visible')
     expect(content()).toHaveAttribute('inert')
     expect(content()).toHaveAttribute('aria-busy', 'true')
@@ -37,32 +37,32 @@ describe('LoadingOverlay', () => {
   })
 
   it('a região de status fica fora do conteúdo ocupado', () => {
-    render(<Report visible message="Atualizando relatório…" />)
+    render(<Report open message="Atualizando relatório…" />)
     const status = screen.getByRole('status')
     expect(status).toHaveTextContent('Atualizando relatório…')
     expect(content().contains(status)).toBe(false)
   })
 
   it('a mensagem muda quando o carregamento começa (região sempre montada)', () => {
-    const { rerender } = render(<Report visible={false} message="Aplicando filtros…" />)
+    const { rerender } = render(<Report open={false} message="Aplicando filtros…" />)
     const status = screen.getByRole('status')
-    rerender(<Report visible message="Aplicando filtros…" />)
+    rerender(<Report open message="Aplicando filtros…" />)
     expect(screen.getByRole('status')).toBe(status)
     expect(status).toHaveTextContent('Aplicando filtros…')
-    rerender(<Report visible={false} message="Aplicando filtros…" />)
+    rerender(<Report open={false} message="Aplicando filtros…" />)
     expect(status).toBeEmptyDOMElement()
     expect(content()).not.toHaveAttribute('inert')
   })
 
   it('estaciona o foco no painel e o devolve ao terminar', async () => {
     const user = userEvent.setup()
-    const { rerender, container } = render(<Report visible={false} />)
+    const { rerender, container } = render(<Report open={false} />)
     await user.tab()
     const button = screen.getByRole('button', { name: 'Exportar CSV' })
     expect(button).toHaveFocus()
-    rerender(<Report visible />)
+    rerender(<Report open />)
     expect(container.querySelector('.or-loading-overlay__panel')).toHaveFocus()
-    rerender(<Report visible={false} />)
+    rerender(<Report open={false} />)
     expect(button).toHaveFocus()
   })
 
@@ -70,7 +70,7 @@ describe('LoadingOverlay', () => {
     const { rerender } = render(
       <>
         <button type="button">Fora</button>
-        <Report visible={false} />
+        <Report open={false} />
       </>,
     )
     const outside = screen.getByRole('button', { name: 'Fora' })
@@ -78,7 +78,7 @@ describe('LoadingOverlay', () => {
     rerender(
       <>
         <button type="button">Fora</button>
-        <Report visible />
+        <Report open />
       </>,
     )
     expect(outside).toHaveFocus()
@@ -95,8 +95,8 @@ describe('LoadingOverlay', () => {
         transitionDuration: '0.16s',
       }) as CSSStyleDeclaration
     })
-    const { container, rerender } = render(<Report visible message="Salvando…" />)
-    rerender(<Report visible={false} message="Salvando…" />)
+    const { container, rerender } = render(<Report open message="Salvando…" />)
+    rerender(<Report open={false} message="Salvando…" />)
     expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'hidden')
     expect(content()).not.toHaveAttribute('inert')
     expect(screen.getByRole('status')).toHaveTextContent('Salvando…')
@@ -109,7 +109,7 @@ describe('LoadingOverlay', () => {
   it('traduz a mensagem padrão', () => {
     render(
       <OrangeProvider locale="en-US" themeTarget="scoped">
-        <LoadingOverlay visible>
+        <LoadingOverlay open>
           <p>Content</p>
         </LoadingOverlay>
       </OrangeProvider>,
@@ -117,10 +117,22 @@ describe('LoadingOverlay', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Loading…')
   })
 
+  it('visible (depreciado) ainda abre a sobreposição e avisa no console', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <LoadingOverlay visible data-testid="overlay">
+        <p>Conteúdo</p>
+      </LoadingOverlay>,
+    )
+    expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'visible')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`visible` está depreciado'))
+    warn.mockRestore()
+  })
+
   it('não possui violações de acessibilidade', async () => {
-    const { container, rerender } = render(<Report visible={false} />)
+    const { container, rerender } = render(<Report open={false} />)
     await expectNoA11yViolations(container)
-    rerender(<Report visible message="Atualizando relatório…" />)
+    rerender(<Report open message="Atualizando relatório…" />)
     await expectNoA11yViolations(container)
   })
 })

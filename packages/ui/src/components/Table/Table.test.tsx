@@ -90,25 +90,25 @@ describe('Table', () => {
 
   it('seleciona linhas e todas as linhas, com estado indeterminado', async () => {
     const user = userEvent.setup()
-    const onSelectionChange = vi.fn()
-    render(<Table caption="Faturas" columns={columns} data={data} selectable onSelectionChange={onSelectionChange} />)
+    const onSelectedRowsChange = vi.fn()
+    render(<Table caption="Faturas" columns={columns} data={data} selectable onSelectedRowsChange={onSelectedRowsChange} />)
     const selectAll = screen.getByRole('checkbox', { name: 'Selecionar todos' }) as HTMLInputElement
     const rowCheckbox = screen.getByRole('checkbox', { name: 'Selecionar linha Clínica Bem Viver' })
 
     await user.click(rowCheckbox)
     expect(rowCheckbox).toBeChecked()
-    expect(onSelectionChange).toHaveBeenLastCalledWith(['inv-2'])
+    expect(onSelectedRowsChange).toHaveBeenLastCalledWith(['inv-2'])
     expect(selectAll.indeterminate).toBe(true)
     expect(rowCheckbox.closest('tr')).toHaveAttribute('data-selected')
 
     await user.click(selectAll)
-    expect(onSelectionChange).toHaveBeenLastCalledWith(['inv-2', 'inv-1', 'inv-3'])
+    expect(onSelectedRowsChange).toHaveBeenLastCalledWith(['inv-2', 'inv-1', 'inv-3'])
     expect(selectAll).toBeChecked()
     expect(selectAll.indeterminate).toBe(false)
 
     selectAll.focus()
     await user.keyboard(' ')
-    expect(onSelectionChange).toHaveBeenLastCalledWith([])
+    expect(onSelectedRowsChange).toHaveBeenLastCalledWith([])
   })
 
   it('usa getRowLabel no rótulo do checkbox e respeita seleção controlada', () => {
@@ -124,6 +124,17 @@ describe('Table', () => {
     )
     expect(screen.getByRole('checkbox', { name: 'Selecionar linha: Atelier Norte' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Selecionar linha: Padaria Aurora' })).not.toBeChecked()
+  })
+
+  it('onSelectionChange (depreciado) ainda é chamado e avisa no console', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const onSelectionChange = vi.fn()
+    render(<Table caption="Faturas" columns={columns} data={data} selectable onSelectionChange={onSelectionChange} />)
+    await user.click(screen.getByRole('checkbox', { name: 'Selecionar linha Clínica Bem Viver' }))
+    expect(onSelectionChange).toHaveBeenLastCalledWith(['inv-2'])
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onSelectionChange` está depreciado'))
+    warn.mockRestore()
   })
 
   it('mostra o estado vazio', () => {

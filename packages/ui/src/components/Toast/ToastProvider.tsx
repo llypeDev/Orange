@@ -506,7 +506,7 @@ function ToastItem({
                 </Button>
               )
             }
-            onClose={dismissible ? close : undefined}
+            onDismiss={dismissible ? close : undefined}
           />
           {showTimer && (
             // key: reinicia a barra quando o conteúdo do toast é atualizado

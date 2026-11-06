@@ -118,7 +118,7 @@ describe('SegmentedControl', () => {
   })
 
   it('disabled desabilita o grupo inteiro', () => {
-    render(<SegmentedControl label="Período" options={periods} disabled size="sm" fullWidth />)
+    render(<SegmentedControl label="Período" options={periods} disabled size="sm" block />)
     for (const radio of screen.getAllByRole('radio')) expect(radio).toBeDisabled()
     const group = screen.getByRole('radiogroup')
     expect(group).toHaveAttribute('aria-disabled', 'true')
@@ -126,6 +126,16 @@ describe('SegmentedControl', () => {
       'or-segmented-control--sm',
       'or-segmented-control--full-width',
     )
+  })
+
+  it('fullWidth (depreciado) ainda funciona como block e avisa no console', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<SegmentedControl label="Período" options={periods} fullWidth />)
+    expect(screen.getByRole('radiogroup').parentElement).toHaveClass(
+      'or-segmented-control--full-width',
+    )
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`fullWidth` está depreciado'))
+    warn.mockRestore()
   })
 
   it('liga a transição do indicador só depois da primeira medição', async () => {

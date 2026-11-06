@@ -149,13 +149,19 @@ export default function LoadingOverlayPage() {
         <PropsTable
           rows={[
             {
-              name: 'visible',
+              name: 'open',
               type: 'boolean',
               default: 'false',
               description: {
                 pt: 'Mostra a sobreposição e bloqueia o conteúdo.',
                 en: 'Shows the overlay and blocks the content.',
               },
+            },
+            {
+              name: 'visible',
+              type: 'boolean',
+              deprecated: { replacement: 'open', since: '0.6.0', removal: '1.0.0' },
+              description: { pt: 'Nome antigo de open.', en: 'Former name of open.' },
             },
             {
               name: 'message',

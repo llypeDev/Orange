@@ -273,11 +273,20 @@ export default function FileUploaderPage() {
               },
             },
             {
-              name: 'onFilesChange',
+              name: 'onChange',
               type: '(items: FileUploaderItem[]) => void',
               description: {
                 pt: 'Lista completa a cada mudança.',
                 en: 'Full list on every change.',
+              },
+            },
+            {
+              name: 'onFilesChange',
+              type: '(items: FileUploaderItem[]) => void',
+              deprecated: { replacement: 'onChange', since: '0.6.0', removal: '1.0.0' },
+              description: {
+                pt: 'Nome antigo de onChange.',
+                en: 'Former name of onChange.',
               },
             },
             {

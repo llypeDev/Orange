@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
-import { cx, devWarning, mergeRefs } from '../../utils'
+import { cx, deprecate, devWarning, mergeRefs } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './SegmentedControl.css'
 
@@ -47,6 +47,8 @@ export interface SegmentedControlProps extends Omit<
   /** Altura: `sm` 32px, `md` 40px, `lg` 48px. */
   size?: SegmentedControlSize
   /** Ocupa toda a largura disponível; as opções dividem o espaço igualmente. */
+  block?: boolean
+  /** @deprecated Use `block` (o mesmo nome do `Button`). Sai na v1.0. */
   fullWidth?: boolean
   /** Mostra apenas os ícones; os rótulos continuam disponíveis para leitores de tela. */
   iconOnly?: boolean
@@ -77,7 +79,8 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
       defaultValue,
       onChange,
       size = 'md',
-      fullWidth = false,
+      block: blockProp,
+      fullWidth,
       iconOnly = false,
       disabled = false,
       name: nameProp,
@@ -88,6 +91,13 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     },
     ref,
   ) {
+    if (fullWidth !== undefined) {
+      deprecate(
+        'SegmentedControl: `fullWidth` está depreciado e sai na v1.0. Use `block`.',
+        'segmented-control.fullWidth',
+      )
+    }
+    const block = blockProp ?? fullWidth ?? false
     const id = useId('or-segmented', idProp)
     const name = nameProp ?? id
     const labelId = `${id}-label`
@@ -125,7 +135,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
       })
     }, [])
 
-    useIsomorphicLayoutEffect(measure, [measure, value, options, size, iconOnly, fullWidth])
+    useIsomorphicLayoutEffect(measure, [measure, value, options, size, iconOnly, block])
 
     useEffect(() => {
       const track = trackRef.current
@@ -146,7 +156,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
         className={cx(
           'or-segmented-control',
           `or-segmented-control--${size}`,
-          fullWidth && 'or-segmented-control--full-width',
+          block && 'or-segmented-control--full-width',
           iconOnly && 'or-segmented-control--icon-only',
           disabled && 'or-segmented-control--disabled',
           className,

@@ -15,7 +15,7 @@ const meta = {
     },
   },
   argTypes: {
-    onFilesChange: { action: 'filesChange' },
+    onChange: { action: 'change' },
     onFilesAdded: { action: 'filesAdded' },
   },
   args: {
@@ -92,7 +92,7 @@ export const SimulatedUpload: Story = {
         timers.current.push(timer)
       })
     }
-    return <FileUploader {...args} value={items} onFilesChange={setItems} onFilesAdded={start} />
+    return <FileUploader {...args} value={items} onChange={setItems} onFilesAdded={start} />
   },
 }
 

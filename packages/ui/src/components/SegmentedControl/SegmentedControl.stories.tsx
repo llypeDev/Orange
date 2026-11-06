@@ -16,7 +16,7 @@ const meta = {
   },
   argTypes: {
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
-    fullWidth: { control: 'boolean' },
+    block: { control: 'boolean' },
     iconOnly: { control: 'boolean' },
     hideLabel: { control: 'boolean' },
     disabled: { control: 'boolean' },
@@ -76,7 +76,7 @@ export const Sizes: Story = {
 }
 
 export const FullWidth: Story = {
-  args: { fullWidth: true, description: 'Os dados são agregados no fuso horário da conta.' },
+  args: { block: true, description: 'Os dados são agregados no fuso horário da conta.' },
 }
 
 export const DisabledOption: Story = {

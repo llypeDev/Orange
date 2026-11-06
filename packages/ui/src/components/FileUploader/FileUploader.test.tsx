@@ -56,13 +56,13 @@ describe('FileUploader', () => {
 
   it('adiciona arquivos, lista nome/tamanho e anuncia', async () => {
     const user = userEvent.setup()
-    const onFilesChange = vi.fn()
+    const onChange = vi.fn()
     const onFilesAdded = vi.fn()
     const { container } = render(
       <FileUploader
         label="Anexos"
         multiple
-        onFilesChange={onFilesChange}
+        onChange={onChange}
         onFilesAdded={onFilesAdded}
       />,
     )
@@ -76,7 +76,7 @@ describe('FileUploader', () => {
     expect(items[0]).toHaveTextContent('nota-fiscal.pdf')
     expect(items[0]).toHaveTextContent('2 kB')
     expect(items[1]).toHaveTextContent('3 MB')
-    expect(onFilesChange).toHaveBeenLastCalledWith([
+    expect(onChange).toHaveBeenLastCalledWith([
       expect.objectContaining({
         status: 'idle',
         file: expect.objectContaining({ name: 'nota-fiscal.pdf' }),
@@ -105,9 +105,9 @@ describe('FileUploader', () => {
   })
 
   it('arrastar mostra o estado visual e soltar valida o tipo aceito', () => {
-    const onFilesChange = vi.fn()
+    const onChange = vi.fn()
     const { container } = render(
-      <FileUploader label="Imagens" multiple accept="image/*" onFilesChange={onFilesChange} />,
+      <FileUploader label="Imagens" multiple accept="image/*" onChange={onChange} />,
     )
     const dropzone = getDropzone(container)
     const files = [
@@ -188,13 +188,13 @@ describe('FileUploader', () => {
   })
 
   it('desabilitado ignora soltar e bloqueia os botões', () => {
-    const onFilesChange = vi.fn()
+    const onChange = vi.fn()
     const { container } = render(
-      <FileUploader label="Anexos" disabled onFilesChange={onFilesChange} />,
+      <FileUploader label="Anexos" disabled onChange={onChange} />,
     )
     expect(screen.getByRole('button', { name: /Escolher arquivo/ })).toBeDisabled()
     fireEvent.drop(getDropzone(container), dataTransfer([makeFile('a.pdf', 10)]))
-    expect(onFilesChange).not.toHaveBeenCalled()
+    expect(onChange).not.toHaveBeenCalled()
   })
 
   it('motion: itens novos entram escalonados; os da primeira renderização não', async () => {
@@ -245,6 +245,19 @@ describe('FileUploader', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Remover b.pdf' })).toHaveFocus())
     fireEvent.animationEnd(ghost)
     expect(container.querySelector('.or-file-uploader__item[data-state="closed"]')).toBeNull()
+  })
+
+  it('onFilesChange (depreciado) ainda é chamado e avisa no console', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const onFilesChange = vi.fn()
+    const { container } = render(<FileUploader label="Anexos" onFilesChange={onFilesChange} />)
+    await user.upload(getInput(container), makeFile('contrato.pdf', 1024))
+    expect(onFilesChange).toHaveBeenLastCalledWith([
+      expect.objectContaining({ file: expect.objectContaining({ name: 'contrato.pdf' }) }),
+    ])
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onFilesChange` está depreciado'))
+    warn.mockRestore()
   })
 
   it('não possui violações de acessibilidade', async () => {

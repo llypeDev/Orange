@@ -32,7 +32,7 @@ export default function Options() {
           Tarefas arquivadas
         </DropdownCheckboxItem>
         <DropdownSeparator />
-        <DropdownRadioGroup label="Ordenar por" value={ordem} onValueChange={setOrdem}>
+        <DropdownRadioGroup label="Ordenar por" value={ordem} onChange={setOrdem}>
           <DropdownRadioItem value="recentes">Mais recentes</DropdownRadioItem>
           <DropdownRadioItem value="prazo">Prazo</DropdownRadioItem>
           <DropdownRadioItem value="nome">Nome</DropdownRadioItem>

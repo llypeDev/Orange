@@ -195,7 +195,7 @@ describe('Dropdown', () => {
           <DropdownRadioGroup
             label="Ordenar por"
             value={sort}
-            onValueChange={(value) => {
+            onChange={(value) => {
               onSort(value)
               setSort(value)
             }}
@@ -234,6 +234,25 @@ describe('Dropdown', () => {
       'aria-checked',
       'true',
     )
+  })
+
+  it('DropdownRadioGroup: onValueChange (depreciado) ainda é chamado e avisa no console', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const onValueChange = vi.fn()
+    render(
+      <Dropdown trigger={<Button>Ordenar</Button>}>
+        <DropdownRadioGroup label="Ordenar por" defaultValue="recent" onValueChange={onValueChange}>
+          <DropdownRadioItem value="recent">Mais recentes</DropdownRadioItem>
+          <DropdownRadioItem value="name">Nome</DropdownRadioItem>
+        </DropdownRadioGroup>
+      </Dropdown>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Ordenar' }))
+    await user.click(screen.getByRole('menuitemradio', { name: 'Nome' }))
+    expect(onValueChange).toHaveBeenCalledWith('name')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onValueChange` está depreciado'))
+    warn.mockRestore()
   })
 
   it('motion: menu expõe data-state e o check só anima quando o estado muda', async () => {
