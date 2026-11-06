@@ -172,12 +172,32 @@ export function useAnnouncer() {
   return { announce, region }
 }
 
-/** Mantém a opção ativa visível ao navegar por teclado. */
+/**
+ * Mantém a opção ativa visível ao navegar por teclado. Devolve a ref da lista:
+ * ao abrir, a lista (no portal) só é montada depois que a opção ativa muda e
+ * só ganha a altura final depois do posicionamento (com movimento reduzido,
+ * um quadro depois) — por isso a opção ativa (a última, com ArrowUp, ou a
+ * escolhida) é revelada também sempre que a lista muda de tamanho.
+ */
 export function useScrollActiveIntoView(activeId: string | undefined) {
+  const activeIdRef = useRef(activeId)
+  activeIdRef.current = activeId
   useEffect(() => {
     if (!activeId) return
     document.getElementById(activeId)?.scrollIntoView?.({ block: 'nearest' })
   }, [activeId])
+
+  const observer = useRef<ResizeObserver | null>(null)
+  return useCallback((list: HTMLElement | null) => {
+    observer.current?.disconnect()
+    observer.current = null
+    if (!list || typeof ResizeObserver === 'undefined') return
+    observer.current = new ResizeObserver(() => {
+      const id = activeIdRef.current
+      if (id) list.ownerDocument.getElementById(id)?.scrollIntoView?.({ block: 'nearest' })
+    })
+    observer.current.observe(list)
+  }, [])
 }
 
 export interface ListboxOptionItemProps {

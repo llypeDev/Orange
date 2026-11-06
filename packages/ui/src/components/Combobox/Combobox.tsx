@@ -166,7 +166,7 @@ function ComboboxControl({
   const optionId = (option: ComboboxOption) => `${listboxId}-${options.indexOf(option)}`
   const activeOption = isOpen && activeIndex >= 0 ? visible[activeIndex] : undefined
   const activeId = activeOption ? optionId(activeOption) : undefined
-  useScrollActiveIntoView(activeId)
+  const listRef = useScrollActiveIntoView(activeId)
 
   const { refs, floatingStyles, theme, present, state, nodeRef, side } = useListboxPopup(isOpen)
   useClickOutside([frameEl, popupEl], () => setOpen(false), isOpen)
@@ -440,6 +440,7 @@ function ComboboxControl({
                 <div className="or-combobox-popup__message">{emptyMessage ?? t('noResults')}</div>
               ) : null}
               <ul
+                ref={listRef}
                 id={listboxId}
                 role="listbox"
                 className="or-combobox-listbox"

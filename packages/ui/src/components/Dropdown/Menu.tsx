@@ -9,6 +9,7 @@ import {
   forwardRef,
   isValidElement,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -54,6 +55,26 @@ function getItems(menu: HTMLElement | null): HTMLElement[] {
 
 function getTextValue(item: HTMLElement) {
   return (item.dataset.textValue ?? item.textContent ?? '').trim().toLowerCase()
+}
+
+/**
+ * Rola só o menu (nunca a página) até o item. No primeiro item, volta ao topo;
+ * logo depois de um título (`DropdownLabel` ou o título de um grupo), mostra
+ * o título também.
+ */
+function revealItem(menu: HTMLElement, item: HTMLElement) {
+  if (getItems(menu)[0] === item) {
+    menu.scrollTop = 0
+    return
+  }
+  const previous = item.previousElementSibling
+  const head = previous?.classList.contains('or-menu__group-label') ? previous : item
+  const top = menu.getBoundingClientRect().top + menu.clientTop
+  const bottom = top + menu.clientHeight
+  const headTop = head.getBoundingClientRect().top
+  const itemBottom = item.getBoundingClientRect().bottom
+  if (headTop < top) menu.scrollTop -= top - headTop
+  else if (itemBottom > bottom) menu.scrollTop += itemBottom - bottom
 }
 
 /* -------------------------------------------------------------------------- */
@@ -131,6 +152,20 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
     )
   }, [open, menuEl])
 
+  // A altura final do menu só existe depois do posicionamento (com movimento
+  // reduzido, um quadro depois): sempre que o menu muda de tamanho, revela o
+  // item focado (ex.: o último, aberto com ↑ no gatilho).
+  useEffect(() => {
+    if (!menuEl || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => {
+      const item = menuEl.ownerDocument.activeElement
+      if (item instanceof HTMLElement && item !== menuEl && menuEl.contains(item))
+        revealItem(menuEl, item)
+    })
+    observer.observe(menuEl)
+    return () => observer.disconnect()
+  }, [menuEl])
+
   const context = useMemo<MenuContextValue>(
     () => ({ close: () => closeRef.current('select'), focusMenu: () => focusElement(menuEl) }),
     [menuEl],
@@ -142,9 +177,14 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
     const items = getItems(menuEl)
     if (items.length === 0) return
     const index = items.indexOf(document.activeElement as HTMLElement)
+    // Foca sem rolar a página e rola só o menu até o item.
+    const focusItem = (item: HTMLElement) => {
+      focusElement(item)
+      revealItem(menuEl, item)
+    }
     const focusAt = (i: number) => {
       event.preventDefault()
-      focusElement(items[(i + items.length) % items.length])
+      focusItem(items[(i + items.length) % items.length])
     }
     switch (event.key) {
       case 'ArrowDown':
@@ -175,7 +215,7 @@ export const MenuPanel = forwardRef<HTMLDivElement, MenuPanelProps>(function Men
     const start = index < 0 ? 0 : repeated ? index + 1 : index
     const ordered = [...items.slice(start), ...items.slice(0, start)]
     const match = ordered.find((item) => getTextValue(item).startsWith(search))
-    if (match) focusElement(match)
+    if (match) focusItem(match)
   }
 
   const menuRef = useMemo(

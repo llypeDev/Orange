@@ -108,6 +108,135 @@ describe('Dropdown', () => {
     expect(screen.getByRole('menuitem', { name: 'Renomear' })).toHaveFocus()
   })
 
+  describe('rolagem do menu (mais itens do que cabem)', () => {
+    // Geometria simulada: o menu mostra 120px; itens de 36px, títulos de 28px e
+    // separadores de 9px, empilhados depois de 4px de respiro.
+    const VIEW = 120
+    function mockMenuLayout() {
+      const isMenu = (el: Element) => el.getAttribute('role') === 'menu'
+      vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        return isMenu(this) ? VIEW : 0
+      })
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        const rect = (top: number, height: number) =>
+          ({ top, bottom: top + height, left: 0, right: 200, width: 200, height }) as DOMRect
+        const menu = this.closest<HTMLElement>('[role="menu"]')
+        if (!menu) return rect(0, 0)
+        if (this === menu) return rect(100, VIEW)
+        let y = 4
+        for (const row of menu.querySelectorAll<HTMLElement>(
+          '[role^="menuitem"], .or-menu__group-label, [role="separator"]',
+        )) {
+          let height = 36
+          if (row.getAttribute('role') === 'separator') height = 9
+          else if (row.matches('.or-menu__group-label')) height = 28
+          if (row === this) return rect(100 + y - menu.scrollTop, height)
+          y += height
+        }
+        return rect(0, 0)
+      })
+    }
+
+    it('End, PageDown, Home, a volta das setas e o typeahead rolam até o item focado', async () => {
+      const user = userEvent.setup()
+      render(<Example />)
+      screen.getByRole('button', { name: 'Ações' }).focus()
+      await user.keyboard('{Enter}')
+      const menu = screen.getByRole('menu')
+      mockMenuLayout()
+      // Projeto 4–32, Renomear 32–68, Duplicar 68–104, Exportar 104–140, Mover 140–176,
+      // separador 176–185, Excluir 185–221: o último termina 101px abaixo da área visível.
+      await user.keyboard('{End}')
+      expect(screen.getByRole('menuitem', { name: 'Excluir' })).toHaveFocus()
+      expect(menu.scrollTop).toBe(101)
+      await user.keyboard('{Home}')
+      expect(screen.getByRole('menuitem', { name: 'Renomear' })).toHaveFocus()
+      expect(menu.scrollTop).toBe(0)
+      await user.keyboard('{ArrowUp}')
+      expect(screen.getByRole('menuitem', { name: 'Excluir' })).toHaveFocus()
+      expect(menu.scrollTop).toBe(101)
+      // Voltar ao primeiro mostra também o título "Projeto" (topo da lista).
+      await user.keyboard('{ArrowDown}')
+      expect(menu.scrollTop).toBe(0)
+      await user.keyboard('{PageDown}')
+      expect(menu.scrollTop).toBe(101)
+      await user.keyboard('{PageUp}')
+      expect(menu.scrollTop).toBe(0)
+      // Typeahead: "Exportar" (104–140) passa 20px da área visível.
+      await user.keyboard('e')
+      expect(screen.getByRole('menuitem', { name: 'Exportar' })).toHaveFocus()
+      expect(menu.scrollTop).toBe(20)
+    })
+
+    it('↑ no gatilho abre no último item e o revela quando o menu ganha a altura final', async () => {
+      // A altura final só existe depois do posicionamento: o item focado é revelado
+      // quando o menu muda de tamanho.
+      const observers: { targets: Element[]; callback: (entries: unknown[]) => void }[] = []
+      vi.stubGlobal(
+        'ResizeObserver',
+        class {
+          targets: Element[] = []
+          constructor(callback: (entries: unknown[]) => void) {
+            observers.push({ targets: this.targets, callback })
+          }
+          observe(target: Element) {
+            this.targets.push(target)
+          }
+          unobserve() {}
+          disconnect() {}
+        },
+      )
+      try {
+        const user = userEvent.setup()
+        render(<Example />)
+        mockMenuLayout()
+        screen.getByRole('button', { name: 'Ações' }).focus()
+        await user.keyboard('{ArrowUp}')
+        const menu = screen.getByRole('menu')
+        expect(screen.getByRole('menuitem', { name: 'Excluir' })).toHaveFocus()
+        observers.filter((o) => o.targets.includes(menu)).forEach((o) => o.callback([]))
+        expect(menu.scrollTop).toBe(101)
+      } finally {
+        vi.unstubAllGlobals()
+      }
+    })
+
+    it('no primeiro item de um grupo, mostra também o título do grupo', async () => {
+      const user = userEvent.setup()
+      render(
+        <Dropdown trigger={<Button>Exibir</Button>}>
+          <DropdownCheckboxItem>Mostrar concluídas</DropdownCheckboxItem>
+          <DropdownCheckboxItem>Mostrar arquivadas</DropdownCheckboxItem>
+          <DropdownCheckboxItem>Mostrar rascunhos</DropdownCheckboxItem>
+          <DropdownSeparator />
+          <DropdownRadioGroup label="Ordenar por" defaultValue="recent">
+            <DropdownRadioItem value="recent">Mais recentes</DropdownRadioItem>
+            <DropdownRadioItem value="name">Nome</DropdownRadioItem>
+            <DropdownRadioItem value="due">Prazo</DropdownRadioItem>
+          </DropdownRadioGroup>
+        </Dropdown>,
+      )
+      screen.getByRole('button', { name: 'Exibir' }).focus()
+      await user.keyboard('{Enter}')
+      const menu = screen.getByRole('menu')
+      mockMenuLayout()
+      // 3 checkboxes 4–112, separador 112–121, "Ordenar por" 121–149, Mais recentes
+      // 149–185, Nome 185–221, Prazo 221–257.
+      await user.keyboard('{End}')
+      expect(menu.scrollTop).toBe(137)
+      await user.keyboard('{ArrowUp}')
+      expect(menu.scrollTop).toBe(137)
+      // "Mais recentes" (149) já está visível, mas o título do grupo (121) não.
+      await user.keyboard('{ArrowUp}')
+      expect(screen.getByRole('menuitemradio', { name: 'Mais recentes' })).toHaveFocus()
+      expect(menu.scrollTop).toBe(121)
+    })
+  })
+
   it('typeahead foca o item pela letra inicial', async () => {
     const user = userEvent.setup()
     render(<Example />)

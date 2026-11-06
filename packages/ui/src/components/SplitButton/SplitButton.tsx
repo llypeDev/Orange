@@ -58,6 +58,19 @@ export interface SplitButtonProps extends Omit<
 
 const isPrintableKey = (key: string) => key.length === 1 && key !== ' '
 
+/** Rola só o menu (nunca a página) até o item; no primeiro, volta ao topo. */
+function revealItem(menu: HTMLElement, item: HTMLElement) {
+  if (menu.querySelector('[role="menuitem"]') === item) {
+    menu.scrollTop = 0
+    return
+  }
+  const top = menu.getBoundingClientRect().top + menu.clientTop
+  const bottom = top + menu.clientHeight
+  const rect = item.getBoundingClientRect()
+  if (rect.top < top) menu.scrollTop -= top - rect.top
+  else if (rect.bottom > bottom) menu.scrollTop += rect.bottom - bottom
+}
+
 /**
  * Ação principal com um botão de seta que abre um menu de ações relacionadas
  * (padrão "menu button" do WAI-ARIA). `ref` e os atributos extras vão para o
@@ -112,6 +125,7 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
 
   const {
     refs,
+    elements,
     floatingStyles,
     isPositioned,
     placement: resolvedPlacement,
@@ -125,8 +139,14 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
       flip({ padding: 8 }),
       shift({ padding: 8 }),
       sizeMiddleware({
-        apply({ rects, elements }) {
+        padding: 8,
+        apply({ rects, availableHeight, elements }) {
           elements.floating.style.minWidth = `${Math.max(rects.reference.width, 192)}px`
+          // Com pouco espaço, o menu rola em vez de sair da tela (como no Dropdown).
+          elements.floating.style.setProperty(
+            '--or-floating-available-height',
+            `${Math.max(0, Math.floor(availableHeight))}px`,
+          )
         },
       }),
     ],
@@ -142,11 +162,31 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
     if (restoreFocus) triggerRef.current?.focus()
   }
 
-  // Move o foco para o item ativo sempre que o menu abre ou o item muda.
+  // Move o foco para o item ativo sempre que o menu abre ou o item muda e rola
+  // só o menu até ele. O mouse só foca: não rola o menu sob o cursor.
+  const pointerMoved = useRef(false)
   useEffect(() => {
     if (!isOpen) return
-    itemRefs.current[activeIndex]?.focus({ preventScroll: true })
-  }, [isOpen, activeIndex])
+    const item = itemRefs.current[activeIndex]
+    item?.focus({ preventScroll: true })
+    if (pointerMoved.current) pointerMoved.current = false
+    else if (item && menuRef.current) revealItem(menuRef.current, item)
+  }, [isOpen, activeIndex, menuRef])
+
+  // A altura final do menu só existe depois do posicionamento (com movimento
+  // reduzido, um quadro depois): sempre que o menu muda de tamanho, revela o
+  // item focado (ex.: o último, aberto com ↑ na seta).
+  useEffect(() => {
+    const menu = elements.floating
+    if (!menu || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => {
+      const item = menu.ownerDocument.activeElement
+      if (item instanceof HTMLElement && item !== menu && menu.contains(item))
+        revealItem(menu, item)
+    })
+    observer.observe(menu)
+    return () => observer.disconnect()
+  }, [elements.floating])
 
   useClickOutside([rootRef, menuRef], () => setOpen(false), isOpen)
 
@@ -290,8 +330,10 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
                 onClick={() => selectItem(action)}
                 onMouseMove={(event: MouseEvent<HTMLButtonElement>) => {
                   // O item sob o ponteiro recebe o foco, como em menus nativos.
-                  if (activeIndex !== index) setActiveIndex(index)
-                  else if (document.activeElement !== event.currentTarget) {
+                  if (activeIndex !== index) {
+                    pointerMoved.current = true
+                    setActiveIndex(index)
+                  } else if (document.activeElement !== event.currentTarget) {
                     event.currentTarget.focus({ preventScroll: true })
                   }
                 }}

@@ -141,6 +141,132 @@ describe('SplitButton', () => {
     expect(screen.getByRole('button', { name: 'Fora' })).toHaveFocus()
   })
 
+  describe('rolagem do menu (mais ações do que cabem)', () => {
+    const many: SplitButtonAction[] = [
+      { label: 'Salvar como rascunho', onSelect: () => {} },
+      { label: 'Agendar publicação', onSelect: () => {} },
+      { label: 'Enviar para revisão', onSelect: () => {} },
+      { label: 'Duplicar', onSelect: () => {} },
+      { label: 'Publicar em todos os canais', onSelect: () => {} },
+    ]
+    // Geometria simulada: o menu (borda de 1px) mostra 120px; itens de 36px depois de 4px
+    // de respiro — o último (148–184) termina 64px abaixo da área visível.
+    const VIEW = 120
+    function mockMenuLayout() {
+      const isMenu = (el: Element) => el.getAttribute('role') === 'menu'
+      vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        return isMenu(this) ? VIEW : 0
+      })
+      vi.spyOn(HTMLElement.prototype, 'clientTop', 'get').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        return isMenu(this) ? 1 : 0
+      })
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        const rect = (top: number, height: number) =>
+          ({ top, bottom: top + height, left: 0, right: 200, width: 200, height }) as DOMRect
+        const menu = this.closest<HTMLElement>('[role="menu"]')
+        if (!menu) return rect(0, 0)
+        if (this === menu) return rect(100, VIEW + 2)
+        const index = Array.from(menu.querySelectorAll('[role="menuitem"]')).indexOf(this)
+        return index < 0 ? rect(0, 0) : rect(101 + 4 + index * 36 - menu.scrollTop, 36)
+      })
+    }
+
+    it('limita a altura ao espaço disponível na tela', async () => {
+      const user = userEvent.setup()
+      render(<SplitButton actions={many}>Publicar</SplitButton>)
+      await user.click(screen.getByRole('button', { name: 'Mais ações' }))
+      const menu = screen.getByRole('menu')
+      await waitFor(() =>
+        expect(menu.style.getPropertyValue('--or-floating-available-height')).toMatch(/^\d+px$/),
+      )
+    })
+
+    it('End, PageDown, Home, a volta das setas e a busca por letra rolam até o item focado', async () => {
+      const user = userEvent.setup()
+      render(<SplitButton actions={many}>Publicar</SplitButton>)
+      const trigger = screen.getByRole('button', { name: 'Mais ações' })
+      trigger.focus()
+      await user.keyboard('{ArrowDown}')
+      const menu = screen.getByRole('menu')
+      const items = screen.getAllByRole('menuitem')
+      await waitFor(() => expect(items[0]).toHaveFocus())
+      mockMenuLayout()
+      await user.keyboard('{End}')
+      expect(items[4]).toHaveFocus()
+      expect(menu.scrollTop).toBe(64)
+      await user.keyboard('{Home}')
+      expect(menu.scrollTop).toBe(0)
+      await user.keyboard('{ArrowUp}')
+      expect(items[4]).toHaveFocus()
+      expect(menu.scrollTop).toBe(64)
+      await user.keyboard('{ArrowDown}')
+      expect(items[0]).toHaveFocus()
+      expect(menu.scrollTop).toBe(0)
+      await user.keyboard('{PageDown}')
+      expect(menu.scrollTop).toBe(64)
+      await user.keyboard('{PageUp}')
+      expect(menu.scrollTop).toBe(0)
+      // "Duplicar" (112–148) passa 28px da área visível.
+      await user.keyboard('d')
+      expect(items[3]).toHaveFocus()
+      expect(menu.scrollTop).toBe(28)
+    })
+
+    it('o mouse só foca: não rola o menu sob o cursor', async () => {
+      const user = userEvent.setup()
+      render(<SplitButton actions={many}>Publicar</SplitButton>)
+      await user.click(screen.getByRole('button', { name: 'Mais ações' }))
+      const menu = screen.getByRole('menu')
+      const items = screen.getAllByRole('menuitem')
+      await waitFor(() => expect(items[0]).toHaveFocus())
+      mockMenuLayout()
+      await user.pointer({ target: items[3] })
+      expect(items[3]).toHaveFocus()
+      expect(menu.scrollTop).toBe(0)
+    })
+
+    it('↑ na seta abre no último item e o revela quando o menu ganha a altura final', async () => {
+      // A altura final só existe depois do posicionamento: o item focado é revelado
+      // quando o menu muda de tamanho.
+      const observers: { targets: Element[]; callback: (entries: unknown[]) => void }[] = []
+      vi.stubGlobal(
+        'ResizeObserver',
+        class {
+          targets: Element[] = []
+          constructor(callback: (entries: unknown[]) => void) {
+            observers.push({ targets: this.targets, callback })
+          }
+          observe(target: Element) {
+            this.targets.push(target)
+          }
+          unobserve() {}
+          disconnect() {}
+        },
+      )
+      try {
+        const user = userEvent.setup()
+        render(<SplitButton actions={many}>Publicar</SplitButton>)
+        screen.getByRole('button', { name: 'Mais ações' }).focus()
+        await user.keyboard('{ArrowUp}')
+        const menu = screen.getByRole('menu')
+        await waitFor(() => expect(screen.getAllByRole('menuitem')[4]).toHaveFocus())
+        expect(menu.scrollTop).toBe(0)
+        // O posicionamento limita a altura: o menu passa a rolar.
+        mockMenuLayout()
+        act(() => observers.filter((o) => o.targets.includes(menu)).forEach((o) => o.callback([])))
+        expect(menu.scrollTop).toBe(64)
+      } finally {
+        vi.unstubAllGlobals()
+      }
+    })
+  })
+
   it('busca por letra inicial move o foco', async () => {
     const { user, trigger } = setup()
     await user.click(trigger)

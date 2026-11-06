@@ -38,6 +38,40 @@ describe('MultiSelect', () => {
     )
   })
 
+  it('ArrowUp abre a lista rolada até a última opção habilitada', async () => {
+    // A lista (no portal) é montada depois que a opção ativa muda e só ganha a altura final
+    // depois do posicionamento: a opção ativa é revelada quando a lista muda de tamanho.
+    const observers: { targets: Element[]; callback: () => void }[] = []
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        targets: Element[] = []
+        constructor(callback: () => void) {
+          observers.push({ targets: this.targets, callback })
+        }
+        observe(target: Element) {
+          this.targets.push(target)
+        }
+        unobserve() {}
+        disconnect() {}
+      },
+    )
+    const scrollIntoView = vi.spyOn(Element.prototype, 'scrollIntoView')
+    try {
+      const { user, input } = setup()
+      input.focus()
+      await user.keyboard('{ArrowUp}')
+      const listbox = screen.getByRole('listbox')
+      const last = screen.getByRole('option', { name: /Acessibilidade/ })
+      expect(input).toHaveAttribute('aria-activedescendant', last.id)
+      act(() => observers.filter((o) => o.targets.includes(listbox)).forEach((o) => o.callback()))
+      expect(scrollIntoView.mock.contexts).toContain(last)
+      expect(scrollIntoView).toHaveBeenLastCalledWith({ block: 'nearest' })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('alterna opções com Enter mantendo a lista aberta', async () => {
     const { user, input, onChange } = setup()
     input.focus()
