@@ -196,6 +196,23 @@ describe('FileUploader', () => {
     expect(screen.getByText('Falha no envio')).toBeInTheDocument()
   })
 
+  it('progresso só mostra 100% ao concluir e arredonda para baixo', () => {
+    const file = makeFile('planilha.xlsx', 4096)
+    const { rerender } = render(
+      <FileUploader label="Anexos" value={[{ id: '1', file, status: 'uploading', progress: 99.6 }]} />,
+    )
+    const progress = screen.getByRole('progressbar', { name: 'Enviando planilha.xlsx' })
+    expect(progress).toHaveAttribute('aria-valuenow', '99')
+    expect(screen.getByText('99%')).toBeInTheDocument()
+    // 0.29 × 100 em ponto flutuante (28.999…96) continua 29%
+    rerender(<FileUploader label="Anexos" value={[{ id: '1', file, status: 'uploading', progress: 0.29 * 100 }]} />)
+    expect(progress).toHaveAttribute('aria-valuenow', '29')
+    expect(screen.getByText('29%')).toBeInTheDocument()
+    rerender(<FileUploader label="Anexos" value={[{ id: '1', file, status: 'uploading', progress: 100 }]} />)
+    expect(progress).toHaveAttribute('aria-valuenow', '100')
+    expect(screen.getByText('100%')).toBeInTheDocument()
+  })
+
   it('desabilitado ignora soltar e bloqueia os botões', () => {
     const onChange = vi.fn()
     const { container } = render(

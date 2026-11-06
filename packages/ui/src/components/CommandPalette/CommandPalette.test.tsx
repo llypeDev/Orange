@@ -106,6 +106,48 @@ describe('CommandPalette', () => {
     )
   })
 
+  it('ao chegar ao primeiro item de um grupo, mostra também o título do grupo', async () => {
+    const user = userEvent.setup()
+    render(<Example />)
+    await user.click(screen.getByRole('button', { name: 'Comandos' }))
+    const input = screen.getByRole('combobox')
+    const results = screen.getByRole('listbox').parentElement!
+    const scrollIntoView = vi.spyOn(Element.prototype, 'scrollIntoView')
+    const optionId = (name: string) => screen.getByRole('option', { name }).id
+
+    // Primeiro item da lista (PageUp ou a volta do ↓ a partir do último): volta ao topo.
+    await user.keyboard('{PageDown}')
+    results.scrollTop = 45
+    await user.keyboard('{PageUp}')
+    expect(input).toHaveAttribute('aria-activedescendant', optionId('Ir para o início'))
+    expect(results.scrollTop).toBe(0)
+    await user.keyboard('{PageDown}')
+    results.scrollTop = 45
+    await user.keyboard('{ArrowDown}')
+    expect(input).toHaveAttribute('aria-activedescendant', optionId('Ir para o início'))
+    expect(results.scrollTop).toBe(0)
+
+    // Primeiro item de outro grupo: o título "Ações" é revelado antes da opção.
+    await user.keyboard('{PageDown}')
+    scrollIntoView.mockClear()
+    await user.keyboard('{ArrowUp}')
+    expect(input).toHaveAttribute('aria-activedescendant', optionId('Criar projeto'))
+    const heading = screen.getByText('Ações', { selector: '.or-command-palette__group-label' })
+    expect(scrollIntoView.mock.contexts).toEqual([
+      heading,
+      screen.getByRole('option', { name: 'Criar projeto' }),
+    ])
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest' })
+
+    // Item do meio do grupo: só a opção.
+    scrollIntoView.mockClear()
+    await user.keyboard('{ArrowDown}')
+    expect(input).toHaveAttribute('aria-activedescendant', optionId('Convidar pessoas'))
+    expect(scrollIntoView.mock.contexts).toEqual([
+      screen.getByRole('option', { name: 'Convidar pessoas' }),
+    ])
+  })
+
   it('filtra sem acentos, por descrição e por palavras-chave, anunciando o total', async () => {
     const user = userEvent.setup()
     render(<Example />)

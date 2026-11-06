@@ -194,8 +194,20 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     }, [query]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-      if (!activeOptionId) return
-      document.getElementById(activeOptionId)?.scrollIntoView({ block: 'nearest' })
+      const option = activeOptionId ? document.getElementById(activeOptionId) : null
+      const results = resultsRef.current
+      if (!option || !results?.contains(option)) return
+      const enabled = '[role="option"]:not([aria-disabled="true"])'
+      const group = option.parentElement?.closest('[role="group"]')
+      if (results.querySelector(enabled) === option) {
+        // Primeiro item habilitado da lista: volta ao topo (com o título do primeiro grupo).
+        results.scrollTop = 0
+      } else if (group?.querySelector(enabled) === option) {
+        // Primeiro item habilitado de um grupo: mostra também o título do grupo.
+        const label = group.querySelector('.or-command-palette__group-label')
+        label?.scrollIntoView({ block: 'nearest' })
+      }
+      option.scrollIntoView({ block: 'nearest' })
     }, [activeOptionId])
 
     // Posiciona o destaque sobre o item ativo. A primeira medida é instantânea

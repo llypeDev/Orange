@@ -61,6 +61,8 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepp
       ref={ref}
       className={cx('or-stepper', `or-stepper--${orientation}`, className)}
       data-orientation={orientation}
+      // Fluxo concluído: nenhuma etapa é a atual (o layout compacto mostra o rótulo da última).
+      data-complete={(steps.length > 0 && current >= steps.length) || undefined}
       {...rest}
     >
       {steps.map((step, index) => {

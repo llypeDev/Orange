@@ -10,36 +10,78 @@ interface TocItem {
   text: string
 }
 
+/**
+ * Seção ativa pela geometria dos títulos — a mesma regra do `TableOfContents` da biblioteca,
+ * com a faixa `'-80px 0px -65% 0px'`: no fim da rolagem, o último título à vista (uma seção final
+ * curta nunca chega à faixa); senão, o primeiro título dentro da faixa; senão, o último que já
+ * passou acima dela. Só o IntersectionObserver não basta: um título que atravessa a faixa entre
+ * dois quadros (rolagem rápida, Home/End) não gera evento.
+ */
+function activeHeading(headings: HTMLElement[]): string | undefined {
+  const page = document.scrollingElement ?? document.documentElement
+  const height = page.clientHeight
+  const bandTop = 80
+  const bandBottom = height * 0.35
+  const rects = headings.map((h) => h.getBoundingClientRect())
+  if (page.scrollHeight > height + 1 && page.scrollHeight - window.scrollY - height <= 1) {
+    for (let i = rects.length - 1; i >= 0; i--) if (rects[i].top < height) return headings[i].id
+  }
+  const inBand = rects.findIndex((r) => r.bottom > bandTop && r.top < bandBottom)
+  if (inBand !== -1) return headings[inBand].id
+  let passed = -1
+  rects.forEach((r, i) => {
+    if (r.bottom <= bandTop) passed = i
+  })
+  return passed === -1 ? undefined : headings[passed].id
+}
+
 function useHeadings(ref: React.RefObject<HTMLElement | null>) {
   const [items, setItems] = useState<TocItem[]>([])
   const [active, setActive] = useState<string>()
+  // Item clicado: fica marcado durante o salto que o clique provoca (senão, ao pular para uma das
+  // últimas seções, o fim da rolagem marcaria a última) e até a próxima interação da pessoa.
+  const clicked = useRef<string | null>(null)
 
   useEffect(() => {
     const root = ref.current
     if (!root) return
-    const collect = () => {
-      const hs = Array.from(root.querySelectorAll<HTMLHeadingElement>('h2.doc-h2[id]'))
-      setItems(hs.map((h) => ({ id: h.id, text: h.textContent ?? '' })))
-      return hs
+    const hs = Array.from(root.querySelectorAll<HTMLHeadingElement>('h2.doc-h2[id]'))
+    setItems(hs.map((h) => ({ id: h.id, text: h.textContent ?? '' })))
+    let frame = 0
+    const update = () => {
+      frame = 0
+      if (!clicked.current) setActive(activeHeading(hs))
     }
-    const hs = collect()
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        if (visible[0]) setActive(visible[0].target.id)
-      },
-      { rootMargin: '-80px 0px -65% 0px' },
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    const release = () => {
+      clicked.current = null
+    }
+    const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    inputs.forEach((type) =>
+      window.addEventListener(type, release, { capture: true, passive: true }),
     )
-    hs.forEach((h) => io.observe(h))
-    return () => io.disconnect()
+    schedule()
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      inputs.forEach((type) => window.removeEventListener(type, release, { capture: true }))
+    }
   }, [ref])
 
-  // No topo da página (cabeçalho/lead ainda à vista) nenhum h2 cruzou a faixa observada,
-  // então o observer não marca nada e o índice ficava sem destaque até a primeira rolagem.
-  // Enquanto não houver uma seção ativa válida, a primeira é a "atual": é onde o leitor está.
+  // No topo da página (cabeçalho/lead ainda à vista) nenhum h2 chegou à faixa. Enquanto não houver
+  // uma seção ativa válida, a primeira é a "atual": é onde o leitor está.
   const current = active && items.some((item) => item.id === active) ? active : items[0]?.id
+  const select = (id: string) => {
+    clicked.current = id
+    setActive(id)
+  }
 
-  return { items, active: current }
+  return { items, active: current, select }
 }
 
 export interface DocPageProps {
@@ -67,7 +109,7 @@ export interface DocPageProps {
 export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, children, footer, hero }: DocPageProps) {
   const { t } = useLang()
   const contentRef = useRef<HTMLDivElement>(null)
-  const { items, active } = useHeadings(contentRef)
+  const { items, active, select } = useHeadings(contentRef)
   const resolvedTitle = typeof title === 'string' ? title : t(title)
 
   useEffect(() => {
@@ -111,7 +153,11 @@ export function DocPage({ eyebrow, title, lead, headerExtra, toc = true, childre
             <ul>
               {items.map((item) => (
                 <li key={item.id}>
-                  <a href={`#${item.id}`} aria-current={active === item.id ? 'location' : undefined}>
+                  <a
+                    href={`#${item.id}`}
+                    aria-current={active === item.id ? 'location' : undefined}
+                    onClick={() => select(item.id)}
+                  >
                     {item.text}
                   </a>
                 </li>

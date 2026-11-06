@@ -17,6 +17,7 @@ import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
 import { Button } from '../Button'
 import { Field, useField, type FieldContextValue } from '../Field'
+import { displayPercent } from '../ProgressBar/percent'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './FileUploader.css'
 
@@ -298,7 +299,8 @@ function FileRow({ item, disabled, animate, order, leaving, onRemove, onExited }
   const { t, locale } = useLocale()
   const [enter] = useState(animate)
   const status = item.status ?? 'idle'
-  const progress = Math.round(Math.min(100, Math.max(0, item.progress ?? 0)))
+  // Arredonda para baixo: só mostra 100% quando o envio chega a 100.
+  const progress = displayPercent(item.progress ?? 0, 0, 100)
   return (
     <li
       className={cx('or-file-uploader__item', enter && 'or-file-uploader__item--enter')}

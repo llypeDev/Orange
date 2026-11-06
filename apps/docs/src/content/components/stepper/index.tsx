@@ -113,8 +113,8 @@ export default function StepperPage() {
         <Example
           title={{ pt: 'Em espaço estreito', en: 'In a narrow space' }}
           description={{
-            pt: 'Abaixo de ~540px de largura do contêiner, só o rótulo da etapa atual aparece; os demais continuam acessíveis.',
-            en: 'Below ~540px of container width, only the current step label shows; the others remain accessible.',
+            pt: 'Abaixo de ~540px de largura do contêiner, só o rótulo da etapa atual aparece (com o fluxo concluído, o da última); os demais continuam acessíveis.',
+            en: 'Below ~540px of container width, only the current step label shows (once the flow is finished, the last one); the others remain accessible.',
           }}
           code={NarrowCode}
         >

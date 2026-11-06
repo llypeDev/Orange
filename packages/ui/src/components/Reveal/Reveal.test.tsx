@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations } from '../../test/axe'
 import { Reveal } from './Reveal'
@@ -27,23 +27,33 @@ function mockIntersectionObserver() {
   }
 }
 
-/** Posiciona o elemento abaixo da dobra para o Reveal esconder até o scroll. */
-function belowTheFold() {
+/** Página de 3000px numa janela de 800px, rolada até `scrollY`. */
+function page(scrollY = 0) {
+  const html = document.documentElement
+  vi.spyOn(html, 'scrollHeight', 'get').mockReturnValue(3000)
+  vi.spyOn(html, 'clientHeight', 'get').mockReturnValue(800)
+  vi.spyOn(window, 'scrollY', 'get').mockReturnValue(scrollY)
+}
+
+/** Posiciona o elemento abaixo da dobra (`top` px do topo da janela) para o Reveal esconder até o scroll. */
+function belowTheFold(top = 2000) {
+  page()
   vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
-    top: 2000,
-    bottom: 2200,
+    top,
+    bottom: top + 200,
     left: 0,
     right: 100,
     width: 100,
     height: 200,
     x: 0,
-    y: 2000,
+    y: top,
     toJSON: () => ({}),
   } as DOMRect)
 }
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  vi.restoreAllMocks()
 })
 
 describe('Reveal', () => {
@@ -62,6 +72,21 @@ describe('Reveal', () => {
     expect(el).toHaveClass('or-reveal', 'or-reveal--up')
     io.trigger(true)
     expect(el).toHaveAttribute('data-reveal', 'shown')
+  })
+
+  it('no fim da rolagem revela o que ficou nos últimos pixels da página (aquém da margem de -60px)', async () => {
+    mockIntersectionObserver() // o observer nunca vê a entrada: o elemento não alcança a faixa
+    belowTheFold()
+    render(<Reveal>Rodapé</Reveal>)
+    const el = screen.getByText('Rodapé')
+    expect(el).toHaveAttribute('data-reveal', 'hidden')
+    // Rola até o fim (3000 - 800): o elemento está a 40px da base da janela.
+    page(2200)
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 760, 100, 20))
+    act(() => {
+      window.dispatchEvent(new Event('scroll'))
+    })
+    await waitFor(() => expect(el).toHaveAttribute('data-reveal', 'shown'))
   })
 
   it('marca data-reveal-settled quando a entrada termina (filhos voltam às próprias transições)', async () => {

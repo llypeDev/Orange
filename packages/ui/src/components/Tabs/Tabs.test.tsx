@@ -195,6 +195,78 @@ describe('Tabs', () => {
     expect(hiddenPanel).not.toBeVisible()
   })
 
+  describe('lista com rolagem horizontal', () => {
+    // Layout simulado: abas de 120px lado a lado numa lista de 300px que rola (4 abas = 480px).
+    function mockLayout() {
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+        this: HTMLElement,
+      ) {
+        const list = this.closest<HTMLElement>('[role="tablist"]')
+        const isTab = this.getAttribute('role') === 'tab'
+        const left =
+          isTab && list ? Array.from(list.children).indexOf(this) * 120 - list.scrollLeft : 0
+        const width = this === list ? 300 : isTab ? 120 : 0
+        return {
+          left,
+          right: left + width,
+          top: 0,
+          bottom: 40,
+          width,
+          height: 40,
+          x: left,
+          y: 0,
+        } as DOMRect
+      })
+    }
+
+    it('setas, Home e End rolam só a lista até a aba focada', async () => {
+      const user = userEvent.setup()
+      mockLayout()
+      const scrollIntoView = vi.spyOn(Element.prototype, 'scrollIntoView')
+      render(<Example />)
+      const tablist = screen.getByRole('tablist')
+      await user.tab()
+      await user.keyboard('{End}')
+      expect(screen.getByRole('tab', { name: /Notificações/ })).toHaveFocus()
+      // A última aba termina em 480px: a lista rola 180px para mostrá-la inteira.
+      expect(tablist.scrollLeft).toBe(180)
+      await user.keyboard('{Home}')
+      expect(tablist.scrollLeft).toBe(0)
+      // ← na primeira aba volta para a última.
+      await user.keyboard('{ArrowLeft}')
+      expect(tablist.scrollLeft).toBe(180)
+      // Nunca rola a página (scrollIntoView rolaria também os ancestrais).
+      expect(scrollIntoView).not.toHaveBeenCalled()
+    })
+
+    it('ativação manual: a aba focada (ainda não selecionada) também fica visível', async () => {
+      const user = userEvent.setup()
+      mockLayout()
+      render(<Example activation="manual" />)
+      await user.tab()
+      await user.keyboard('{End}')
+      expect(screen.getByRole('tab', { name: /Notificações/ })).toHaveAttribute(
+        'aria-selected',
+        'false',
+      )
+      expect(screen.getByRole('tablist').scrollLeft).toBe(180)
+    })
+
+    it('a aba selecionada por clique, valor inicial ou mudança controlada fica visível', async () => {
+      const user = userEvent.setup()
+      mockLayout()
+      const { unmount } = render(<Example defaultValue="notificacoes" />)
+      expect(screen.getByRole('tablist').scrollLeft).toBe(180)
+      await user.click(screen.getByRole('tab', { name: 'Perfil' }))
+      expect(screen.getByRole('tablist').scrollLeft).toBe(0)
+      unmount()
+      const { rerender } = render(<Example value="perfil" />)
+      expect(screen.getByRole('tablist').scrollLeft).toBe(0)
+      rerender(<Example value="notificacoes" />)
+      expect(screen.getByRole('tablist').scrollLeft).toBe(180)
+    })
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

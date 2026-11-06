@@ -165,6 +165,50 @@ describe('Table', () => {
     expect(screen.getByText('Faturas', { selector: 'caption' })).toHaveClass('or-visually-hidden')
   })
 
+  it('cabeçalho fixo: publica a altura do thead para o scroll-padding-top (foco nunca fica sob ele)', () => {
+    // Captura os ResizeObservers para simular a troca de altura do cabeçalho (densidade, fonte).
+    const observers: { targets: Element[]; callback: () => void }[] = []
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        targets: Element[] = []
+        constructor(callback: () => void) {
+          observers.push({ targets: this.targets, callback })
+        }
+        observe(target: Element) {
+          this.targets.push(target)
+        }
+        unobserve() {}
+        disconnect() {}
+      },
+    )
+    let headHeight = 53
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      return this.tagName === 'THEAD' ? headHeight : 0
+    })
+    try {
+      const { container, rerender } = render(
+        <Table caption="Faturas" columns={columns} data={data} maxHeight={240} />,
+      )
+      const region = screen.getByRole('region', { name: 'Faturas' })
+      expect(region.style.getPropertyValue('--_head-height')).toBe('53px')
+
+      headHeight = 41
+      const thead = screen.getAllByRole('rowgroup')[0]
+      act(() => observers.filter((o) => o.targets.includes(thead)).forEach((o) => o.callback()))
+      expect(region.style.getPropertyValue('--_head-height')).toBe('41px')
+
+      // Sem maxHeight o cabeçalho não é fixo: nada a reservar.
+      rerender(<Table caption="Faturas" columns={columns} data={data} />)
+      const plain = container.querySelector('.or-table-container') as HTMLElement
+      expect(plain.style.getPropertyValue('--_head-height')).toBe('')
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('sem maxHeight, só vira região focável quando rola na horizontal', () => {
     const { container, unmount } = render(<Table caption="Faturas" columns={columns} data={data} />)
     expect(container.querySelector('.or-table-container')).not.toHaveAttribute('tabindex')

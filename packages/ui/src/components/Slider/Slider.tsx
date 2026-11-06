@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useControllableState, useId } from '../../hooks'
 import { useLocale } from '../../providers'
-import { clamp, cx, mergeRefs } from '../../utils'
+import { clamp, cx, devWarning, mergeRefs } from '../../utils'
 import { Field, useField, useFieldControlProps } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Slider.css'
@@ -37,7 +37,10 @@ interface SliderBaseProps extends Omit<
   min?: number
   /** Valor máximo. Padrão: 100. */
   max?: number
-  /** Incremento. Padrão: 1. */
+  /**
+   * Incremento. Padrão: 1. Como no input nativo, se não dividir `max − min`,
+   * o maior valor alcançável é o último passo antes de `max`.
+   */
   step?: number
   /**
    * Marcas no trilho. `true` = uma por passo; números = marcas sem rótulo;
@@ -80,14 +83,43 @@ export interface SliderRangeProps extends SliderBaseProps {
 
 export type SliderProps = SliderSingleProps | SliderRangeProps
 
-function decimals(step: number) {
-  const s = String(step)
-  return s.includes('.') ? s.split('.')[1].length : 0
+/** Casas decimais de um número, inclusive em notação exponencial (1e-7 → 7; 1.5e-7 → 8). */
+function decimalsOf(value: number) {
+  if (!Number.isFinite(value)) return 0
+  const [mantissa, exponent = '0'] = String(value).split('e')
+  const dot = mantissa.indexOf('.')
+  return Math.max(0, (dot === -1 ? 0 : mantissa.length - dot - 1) - Number(exponent))
 }
 
+/** Os valores válidos são `min + n × step`: as casas decimais vêm do passo e também de `min`. */
+function precisionOf(min: number, step: number) {
+  return Math.min(20, Math.max(decimalsOf(step), decimalsOf(min)))
+}
+
+const roundTo = (value: number, digits: number) => Number(value.toFixed(digits))
+
+// Tolerância relativa ao erro de ponto flutuante (0.7 / 0.1 = 6.999…).
+const EPSILON = 1e-9
+
+/** Quantos passos inteiros cabem entre `min` e `max`. */
+function stepCount(min: number, max: number, step: number) {
+  const n = (max - min) / step
+  return Math.max(0, Math.floor(n + EPSILON * Math.max(1, n)))
+}
+
+/** Maior valor alcançável: o último passo que não passa de `max` (como no input nativo). */
+function lastValue(min: number, max: number, step: number) {
+  return roundTo(min + stepCount(min, max, step) * step, precisionOf(min, step))
+}
+
+/**
+ * Arredonda para o passo e limita a [min, último passo] — a mesma sanitização
+ * do `<input type="range">` nativo, para estado, saída, polegar e
+ * `aria-valuenow` mostrarem o mesmo valor.
+ */
 function snap(value: number, min: number, max: number, step: number) {
   const snapped = Math.round((value - min) / step) * step + min
-  return clamp(Number(snapped.toFixed(decimals(step))), min, max)
+  return clamp(roundTo(snapped, precisionOf(min, step)), min, lastValue(min, max, step))
 }
 
 const toArray = (v: number | [number, number] | undefined) =>
@@ -161,9 +193,9 @@ function SliderControl({
 
   const markList: SliderMark[] =
     marks === true
-      ? (max - min) / step <= 100
-        ? Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => ({
-            value: min + i * step,
+      ? stepCount(min, max, step) <= 100
+        ? Array.from({ length: stepCount(min, max, step) + 1 }, (_, i) => ({
+            value: roundTo(min + i * step, precisionOf(min, step)),
           }))
         : []
       : Array.isArray(marks)
@@ -411,10 +443,19 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   const isRange = range === true
   const thumbLabels: [string, string] = thumbLabelsProp ?? [t('minimum'), t('maximum')]
 
-  const [values, setValues] = useControllableState<number[]>({
+  const steps = (max - min) / step
+  devWarning(
+    Math.abs(steps - Math.round(steps)) > EPSILON * Math.max(1, Math.abs(steps)),
+    `Slider: \`step\` (${step}) não divide \`max − min\` (de ${min} a ${max}). Como no input range nativo, \`max\` fica inalcançável: o maior valor é ${lastValue(min, max, step)}.`,
+  )
+
+  const [rawValues, setValues] = useControllableState<number[]>({
     value: toArray(value),
     defaultValue: toArray(defaultValue) ?? (isRange ? [min, max] : [min]),
   })
+  // Mostra o valor como o input nativo o sanitiza (passo e [min, max]): o padrão [min, max]
+  // com passo que não divide a faixa e valores fora dela. Normalizar não chama onChange.
+  const values = rawValues.map((v) => snap(v, min, max, step))
   const valuesRef = useRef(values)
   valuesRef.current = values
 

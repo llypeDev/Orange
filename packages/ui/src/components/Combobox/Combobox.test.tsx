@@ -82,6 +82,51 @@ describe('Combobox', () => {
     expect(input).toHaveAttribute('aria-activedescendant', options[4].id)
   })
 
+  it('ao abrir, rola a lista até a opção ativa quando ela ganha a altura final', async () => {
+    // A lista (no portal) é montada depois que a opção ativa muda e só ganha a altura final
+    // depois do posicionamento: a opção ativa é revelada quando a lista muda de tamanho.
+    const observers: { targets: Element[]; callback: () => void }[] = []
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        targets: Element[] = []
+        constructor(callback: () => void) {
+          observers.push({ targets: this.targets, callback })
+        }
+        observe(target: Element) {
+          this.targets.push(target)
+        }
+        unobserve() {}
+        disconnect() {}
+      },
+    )
+    const resize = (el: Element) =>
+      act(() => observers.filter((o) => o.targets.includes(el)).forEach((o) => o.callback()))
+    const scrollIntoView = vi.spyOn(Element.prototype, 'scrollIntoView')
+    try {
+      const { user, input } = setup({ defaultValue: 'rj' })
+      input.focus()
+      // ArrowUp abre na última opção.
+      await user.keyboard('{ArrowUp}')
+      const last = screen.getByRole('option', { name: /Salvador/ })
+      expect(input).toHaveAttribute('aria-activedescendant', last.id)
+      resize(screen.getByRole('listbox'))
+      expect(scrollIntoView.mock.contexts).toContain(last)
+      expect(scrollIntoView).toHaveBeenLastCalledWith({ block: 'nearest' })
+
+      // ArrowDown abre na opção escolhida.
+      await user.keyboard('{Escape}')
+      scrollIntoView.mockClear()
+      await user.keyboard('{ArrowDown}')
+      const selected = screen.getByRole('option', { name: /Rio/ })
+      expect(input).toHaveAttribute('aria-activedescendant', selected.id)
+      resize(screen.getByRole('listbox'))
+      expect(scrollIntoView.mock.contexts).toContain(selected)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('Escape fecha a lista e, com ela fechada, limpa o valor', async () => {
     const { user, input, onChange } = setup({ defaultValue: 'rj' })
     expect(input).toHaveValue('Rio de Janeiro')

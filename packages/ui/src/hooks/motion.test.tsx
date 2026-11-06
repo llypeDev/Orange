@@ -1,4 +1,4 @@
-import { act, render, renderHook, screen } from '@testing-library/react'
+import { act, render, renderHook, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { useCountUp, useInView, usePresence, useScrollDirection } from './index'
 
@@ -59,6 +59,46 @@ describe('useCountUp', () => {
 })
 
 describe('useInView', () => {
+  function stubIO() {
+    class MockIO {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return []
+      }
+    }
+    vi.stubGlobal('IntersectionObserver', MockIO)
+  }
+  function Probe() {
+    const [ref, inView] = useInView<HTMLDivElement>()
+    return <div ref={ref}>{inView ? 'visível' : 'oculto'}</div>
+  }
+
+  it('no fim da rolagem conta como visto o que está nos últimos pixels (margem inferior negativa)', async () => {
+    stubIO()
+    const html = document.documentElement
+    let scrollY = 0
+    vi.spyOn(html, 'scrollHeight', 'get').mockReturnValue(3000)
+    vi.spyOn(html, 'clientHeight', 'get').mockReturnValue(800)
+    vi.spyOn(window, 'scrollY', 'get').mockImplementation(() => scrollY)
+    // Elemento nos últimos 30px da página: no fim da rolagem fica a 770px do topo da janela.
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 2970 - scrollY, 100, 20))
+    try {
+      render(<Probe />)
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      expect(screen.getByText('oculto')).toBeInTheDocument()
+      scrollY = 2200
+      act(() => {
+        window.dispatchEvent(new Event('scroll'))
+      })
+      await waitFor(() => expect(screen.getByText('visível')).toBeInTheDocument())
+    } finally {
+      vi.restoreAllMocks()
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('sem IntersectionObserver considera visível', () => {
     const original = window.IntersectionObserver
     // @ts-expect-error — simula ambiente sem suporte

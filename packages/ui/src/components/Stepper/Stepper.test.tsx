@@ -96,6 +96,22 @@ describe('Stepper', () => {
     expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('Entrega (current)')
   })
 
+  it('fluxo concluído (step = steps.length): marca a lista para o layout compacto manter o último rótulo', () => {
+    const { rerender } = render(<Stepper steps={steps} step={3} />)
+    const list = screen.getByRole('list')
+    expect(list).not.toHaveAttribute('data-complete')
+    rerender(<Stepper steps={steps} step={steps.length} />)
+    // O CSS compacto só mostra o rótulo da etapa atual; sem etapa atual, mostra o da última.
+    expect(list).toHaveAttribute('data-complete')
+    // A semântica não muda: nenhuma etapa vira a atual e todas seguem concluídas.
+    const items = screen.getAllByRole('listitem')
+    items.forEach((li) => {
+      expect(li).not.toHaveAttribute('aria-current')
+      expect(li).toHaveAttribute('data-status', 'complete')
+    })
+    expect(items[3]).toHaveTextContent('Revisão (concluído)')
+  })
+
   it('sem step, a primeira etapa é a atual', () => {
     render(<Stepper steps={steps} />)
     expect(screen.getAllByRole('listitem')[0]).toHaveAttribute('aria-current', 'step')

@@ -345,8 +345,8 @@ export default function FileUploaderPage() {
               name: 'progress',
               type: 'number',
               description: {
-                pt: 'Progresso de 0 a 100 (com uploading).',
-                en: 'Progress from 0 to 100 (with uploading).',
+                pt: 'Progresso de 0 a 100 (com uploading). Exibido arredondado para baixo: 100% só ao concluir.',
+                en: 'Progress from 0 to 100 (with uploading). Shown rounded down: 100% only when complete.',
               },
             },
             {

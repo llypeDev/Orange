@@ -230,13 +230,15 @@ button.or-stepper__trigger:focus-visible {
   padding-right: var(--or-space-2);
 }
 
-/* Contêiner estreito: só o rótulo da etapa atual fica visível. */
+/* Contêiner estreito: só o rótulo da etapa atual fica visível. Com o fluxo concluído
+   (data-complete: nenhuma etapa é a atual), fica o da última, que já se ajusta ao conteúdo. */
 @container (max-width: 34rem) {
   .or-stepper--horizontal .or-stepper__description {
     display: none;
   }
 
-  .or-stepper--horizontal .or-stepper__step:not([aria-current='step']) .or-stepper__text {
+  .or-stepper--horizontal:not([data-complete]) .or-stepper__step:not([aria-current='step']) .or-stepper__text,
+  .or-stepper--horizontal[data-complete] .or-stepper__step:not(:last-child) .or-stepper__text {
     position: absolute;
     width: 1px;
     height: 1px;

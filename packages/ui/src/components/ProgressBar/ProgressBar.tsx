@@ -2,6 +2,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { useId } from '../../hooks'
 import { useLocale } from '../../providers'
 import { clamp, cx, devWarning } from '../../utils'
+import { displayPercent } from './percent'
 import './ProgressBar.css'
 
 export type ProgressBarTone = 'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'danger'
@@ -80,7 +81,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
     : formatValue
       ? formatValue(current, { min, max, percent })
       : new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 0 }).format(
-          percent / 100,
+          displayPercent(current, min, max) / 100,
         )
 
   const labelledBy =
