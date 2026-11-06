@@ -702,6 +702,53 @@ describe('Picker', () => {
     })
   })
 
+  describe('abertura na última opção', () => {
+    it('revela a opção ativa também quando a lista ganha a altura final (movimento reduzido)', async () => {
+      // Com movimento reduzido, a altura final do popup chega um quadro depois do quadro em que
+      // a abertura revela a opção: a lista revela de novo quando muda de tamanho.
+      const observers: { targets: Element[]; callback: () => void }[] = []
+      vi.stubGlobal(
+        'ResizeObserver',
+        class {
+          targets: Element[] = []
+          constructor(callback: () => void) {
+            observers.push({ targets: this.targets, callback })
+          }
+          observe(target: Element) {
+            this.targets.push(target)
+          }
+          unobserve() {}
+          disconnect() {}
+        },
+      )
+      try {
+        const user = userEvent.setup()
+        render(<Picker label="Sprint" options={sprints} />)
+        const trigger = screen.getByRole('combobox')
+        trigger.focus()
+        await user.keyboard('{End}')
+        const listbox = screen.getByRole('listbox')
+        // Só agora a lista tem 200px de altura (antes, sem altura, não havia o que rolar).
+        const ROW = 36
+        const rect = (top: number, height: number) =>
+          ({ top, bottom: top + height, left: 0, right: 200, width: 200, height }) as DOMRect
+        vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (
+          this: HTMLElement,
+        ) {
+          if (this === listbox) return rect(0, 200)
+          const index = Number(this.id.split('-option-')[1])
+          return Number.isNaN(index) ? rect(0, 0) : rect(index * ROW - listbox.scrollTop, ROW)
+        })
+        act(() => observers.filter((o) => o.targets.includes(listbox)).forEach((o) => o.callback()))
+        // A última opção (índice 24) termina em 25 × 36 = 900px: a lista rola 700px.
+        expect(listbox.scrollTop).toBe(700)
+      } finally {
+        vi.unstubAllGlobals()
+        vi.restoreAllMocks()
+      }
+    })
+  })
+
   describe('acessibilidade', () => {
     it('não possui violações (fechado, com valor e descrição)', async () => {
       const { container } = render(

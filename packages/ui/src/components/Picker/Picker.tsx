@@ -387,11 +387,28 @@ function PickerControl({
   // Ao abrir, a altura final do popup só existe depois do posicionamento: revela no quadro seguinte.
   const activeIdRef = useRef(activeId)
   activeIdRef.current = activeId
+  const expandedRef = useRef(expanded)
+  expandedRef.current = expanded
   useEffect(() => {
     if (!expanded) return
     const frame = requestAnimationFrame(() => revealOption(listEl.current, activeIdRef.current))
     return () => cancelAnimationFrame(frame)
   }, [expanded])
+  // Com movimento reduzido, a transição global de 0.01ms atrasa max-height/top em mais um
+  // quadro e o quadro seguinte ainda é cedo demais: revela também sempre que a lista muda de
+  // tamanho. Ref estável — reconectar a cada render faria o observer disparar ao passar o mouse.
+  const listRef = useMemo(() => {
+    let observer: ResizeObserver | null = null
+    return mergeRefs<HTMLDivElement>(listEl, (list) => {
+      observer?.disconnect()
+      observer = null
+      if (!list || typeof ResizeObserver === 'undefined') return
+      observer = new ResizeObserver(() => {
+        if (expandedRef.current) revealOption(list, activeIdRef.current)
+      })
+      observer.observe(list)
+    })
+  }, [])
 
   /* Eventos do gatilho ------------------------------------------------------ */
 
@@ -584,7 +601,7 @@ function PickerControl({
             <Freeze frozen={!expanded}>
               {hasOptions ? (
                 <div
-                  ref={listEl}
+                  ref={listRef}
                   id={listboxId}
                   role="listbox"
                   aria-labelledby={labelledBy}
