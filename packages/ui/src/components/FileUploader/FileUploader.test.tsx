@@ -142,6 +142,15 @@ describe('FileUploader', () => {
     )
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<FileUploader label="Fotos" invalid />)
+    expect(getDropzone(container)).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field')).toHaveAttribute('data-invalid')
+    const button = screen.getByRole('button', { name: /Escolher arquivo/ })
+    expect(button).not.toHaveAccessibleDescription()
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('sem multiple, um novo arquivo substitui o anterior', async () => {
     const user = userEvent.setup()
     const { container } = render(<FileUploader label="Contrato" />)

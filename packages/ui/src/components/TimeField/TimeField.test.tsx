@@ -90,6 +90,15 @@ describe('TimeField', () => {
     expect(getInput(container)).toHaveAttribute('readonly')
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<TimeField label="Horário" invalid />)
+    const input = getInput(container)
+    expect(input).toHaveAttribute('aria-invalid', 'true')
+    expect(input).not.toHaveAccessibleDescription()
+    expect(input.closest('.or-control-frame')).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>

@@ -40,6 +40,8 @@ export interface RatingProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   required?: boolean
   disabled?: boolean
   /**
@@ -69,6 +71,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
     hideLabel = false,
     description,
     error,
+    invalid = false,
     required = false,
     disabled = false,
     labels,
@@ -150,7 +153,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
     <div
       ref={ref}
       className={cx('or-field', 'or-rating-field', className)}
-      data-invalid={hasError || undefined}
+      data-invalid={hasError || invalid || undefined}
       data-disabled={disabled || undefined}
       {...rest}
     >
@@ -180,7 +183,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
             aria-labelledby={label ? labelId : undefined}
             aria-describedby={describedBy}
             aria-required={required || undefined}
-            aria-invalid={hasError || undefined}
+            aria-invalid={hasError || invalid || undefined}
             aria-disabled={disabled || undefined}
             className={cx(
               'or-rating',

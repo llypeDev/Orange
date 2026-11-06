@@ -25,6 +25,8 @@ export interface RadioGroupProps
   description?: ReactNode
   /** Mensagem de erro do grupo. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Exige uma escolha: aplica `required` nativo a todas as opções. */
   required?: boolean
   /** Mostra "(opcional)" ao lado da legenda. */
@@ -59,6 +61,7 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(funct
     hideLabel,
     description,
     error,
+    invalid,
     required = false,
     optional,
     disabled = false,
@@ -96,6 +99,7 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(funct
         hideLegend={hideLabel}
         description={description}
         error={error}
+        invalid={invalid}
         required={required}
         optional={optional}
         disabled={disabled}

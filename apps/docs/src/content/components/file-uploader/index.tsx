@@ -318,6 +318,15 @@ export default function FileUploaderPage() {
               type: 'ReactNode / boolean',
               description: { pt: 'Estados do campo.', en: 'Field states.' },
             },
+            {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).',
+                en: 'Invalid state without a message (error shown elsewhere).',
+              },
+            },
           ]}
         />
         <PropsTable

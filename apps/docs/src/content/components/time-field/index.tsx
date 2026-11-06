@@ -206,6 +206,15 @@ export default function TimeFieldPage() {
               description: { pt: 'Mensagem de erro.', en: 'Error message.' },
             },
             {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).',
+                en: 'Invalid state without a message (error shown elsewhere).',
+              },
+            },
+            {
               name: 'required / disabled / readOnly',
               type: 'boolean',
               default: 'false',

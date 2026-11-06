@@ -61,6 +61,15 @@ describe('ColorField', () => {
     expect(text).not.toHaveAttribute('aria-invalid')
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<ColorField label="Cor" invalid />)
+    const text = screen.getByRole('textbox', { name: 'Cor' })
+    expect(text).toHaveAttribute('aria-invalid', 'true')
+    expect(text).not.toHaveAccessibleDescription()
+    expect(text.closest('.or-control-frame')).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('o seletor nativo atualiza o campo de texto', () => {
     const onChange = vi.fn()
     const { container } = render(<ColorField label="Cor" onChange={onChange} />)

@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, type HTMLAttributes, type ReactNode } from 'react'
+import { createContext, forwardRef, useContext, useMemo, type HTMLAttributes, type ReactNode } from 'react'
 import { useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
@@ -59,6 +59,8 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   description?: ReactNode
   /** Mensagem de erro. Quando presente, o campo fica inválido. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Campo obrigatório: mostra `*` e marca o controle como `required`. */
   required?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
@@ -75,41 +77,47 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
  * Estrutura padrão de campos de formulário: rótulo, descrição, controle e
  * erro, com todos os vínculos ARIA (`for`, `aria-describedby`, `aria-invalid`).
  */
-export function Field({
-  label,
-  hideLabel = false,
-  description,
-  error,
-  required = false,
-  optional = false,
-  disabled = false,
-  controlId: controlIdProp,
-  labelAside,
-  className,
-  children,
-  ...rest
-}: FieldProps) {
+export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
+  {
+    label,
+    hideLabel = false,
+    description,
+    error,
+    invalid = false,
+    required = false,
+    optional = false,
+    disabled = false,
+    controlId: controlIdProp,
+    labelAside,
+    className,
+    children,
+    ...rest
+  },
+  ref,
+) {
   const { t } = useLocale()
   const controlId = useId('or-field', controlIdProp)
   const hasError = error !== undefined && error !== null && error !== false && error !== ''
+  const isInvalid = hasError || invalid
   const value = useMemo<FieldContextValue>(
     () => ({
       controlId,
       labelId: `${controlId}-label`,
       descriptionId: description ? `${controlId}-description` : undefined,
       errorId: hasError ? `${controlId}-error` : undefined,
-      invalid: hasError,
+      invalid: isInvalid,
       required,
       disabled,
     }),
-    [controlId, description, hasError, required, disabled],
+    [controlId, description, hasError, isInvalid, required, disabled],
   )
 
   return (
     <FieldContext.Provider value={value}>
       <div
+        ref={ref}
         className={cx('or-field', className)}
-        data-invalid={hasError || undefined}
+        data-invalid={isInvalid || undefined}
         data-disabled={disabled || undefined}
         {...rest}
       >
@@ -142,4 +150,4 @@ export function Field({
       </div>
     </FieldContext.Provider>
   )
-}
+})

@@ -122,6 +122,7 @@ export default function CheckboxPage() {
             { name: 'label', type: 'ReactNode', required: true, description: { pt: 'Legenda do grupo (<legend>).', en: 'Group legend (<legend>).' } },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: { pt: 'Oculta a legenda visualmente.', en: 'Visually hides the legend.' } },
             { name: 'description / error', type: 'ReactNode', description: { pt: 'Ajuda e erro do grupo (aria-describedby).', en: 'Group help and error (aria-describedby).' } },
+            { name: 'invalid', type: 'boolean', default: 'false', description: { pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).', en: 'Invalid state without a message (error shown elsewhere).' } },
             { name: 'required / optional', type: 'boolean', description: { pt: 'Indicadores na legenda ("obrigatório" é anunciado).', en: 'Legend indicators ("required" is announced).' } },
             { name: 'value / defaultValue', type: 'string[]', description: { pt: 'Valores marcados (controlado / inicial).', en: 'Checked values (controlled / initial).' } },
             { name: 'onChange', type: '(value: string[]) => void', description: { pt: 'Chamado com a nova lista.', en: 'Called with the new list.' } },

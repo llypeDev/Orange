@@ -22,6 +22,8 @@ export interface CheckboxGroupProps
   description?: ReactNode
   /** Mensagem de erro do grupo. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Mostra `*` e anuncia "obrigatório" na legenda. A validação fica com o formulário. */
   required?: boolean
   /** Mostra "(opcional)" ao lado da legenda. */
@@ -53,6 +55,7 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
     hideLabel,
     description,
     error,
+    invalid: invalidProp = false,
     required,
     optional,
     disabled = false,
@@ -69,7 +72,7 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
   ref,
 ) {
   const [value, setValue] = useControllableState<string[]>({ value: valueProp, defaultValue, onChange })
-  const invalid = hasContent(error)
+  const invalid = hasContent(error) || invalidProp
 
   const context = useMemo<CheckboxGroupContextValue>(
     () => ({
@@ -92,6 +95,7 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
         hideLegend={hideLabel}
         description={description}
         error={error}
+        invalid={invalidProp}
         required={required}
         optional={optional}
         announceRequired

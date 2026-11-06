@@ -37,6 +37,8 @@ export interface TimeFieldProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro. Quando presente, o campo fica inválido. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
   optional?: boolean
   /** Altura do campo: `sm` 32px, `md` 40px, `lg` 48px. */
@@ -70,6 +72,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
     hideLabel,
     description,
     error,
+    invalid,
     required,
     optional,
     disabled,
@@ -103,6 +106,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
       hideLabel={hideLabel}
       description={description}
       error={error}
+      invalid={invalid}
       required={required}
       optional={optional}
       disabled={disabled}
@@ -114,7 +118,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
         {(fieldProps) => (
           <div
             className={cx('or-control-frame', `or-control-frame--${size}`, 'or-time-field__frame')}
-            data-invalid={hasError || undefined}
+            data-invalid={hasError || invalid || undefined}
             aria-disabled={disabled || undefined}
             data-disabled={disabled || undefined}
             data-readonly={readOnly || undefined}
