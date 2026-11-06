@@ -7,7 +7,7 @@ export default function MultipleTargets() {
       <SkipLink href="#loja-busca">
         Pular para a busca
       </SkipLink>
-      <nav aria-label="Categorias" style={{ display: 'flex', gap: 20, padding: '14px 16px', borderBottom: '1px solid var(--or-color-border)' }}>
+      <nav aria-label="Categorias" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 20px', padding: '14px 16px', borderBottom: '1px solid var(--or-color-border)' }}>
         <a href="#notebooks">Notebooks</a>
         <a href="#monitores">Monitores</a>
         <a href="#acessorios">Acessórios</a>

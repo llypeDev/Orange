@@ -9,21 +9,17 @@ const campos = [
 
 export default function Profile() {
   return (
-    <dl
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(140px, auto) 1fr',
-        alignItems: 'center',
-        gap: '4px 24px',
-        margin: 0,
-        width: '100%',
-        maxWidth: 560,
-      }}
-    >
+    <dl style={{ display: 'grid', gap: 4, margin: 0, width: '100%', maxWidth: 560 }}>
       {campos.map((campo) => (
-        <div key={campo.label} style={{ display: 'contents' }}>
-          <dt className="or-eyebrow">{campo.label}</dt>
-          <dd style={{ margin: 0 }}>
+        // Rótulo e valor lado a lado; sem largura para os dois (celular), o valor desce.
+        <div
+          key={campo.label}
+          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: 24 }}
+        >
+          <dt className="or-eyebrow" style={{ flex: '0 0 144px' }}>
+            {campo.label}
+          </dt>
+          <dd style={{ flex: '1 1 200px', minWidth: 0, margin: 0 }}>
             <InlineEdit
               label={campo.label}
               defaultValue={campo.valor}

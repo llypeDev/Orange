@@ -28,8 +28,10 @@ export default function FileExplorer() {
   const [aberto, setAberto] = useState('Card.tsx')
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, 280px) 1fr', gap: 24, width: '100%' }}>
+    // Árvore (220–280px) e painel lado a lado; sem espaço para os dois, o painel desce.
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 24, width: '100%' }}>
       <TreeView
+        style={{ flex: '1 1 220px', maxWidth: 280 }}
         aria-label="Arquivos do projeto"
         items={arquivos}
         defaultExpanded={['src', 'components']}
@@ -38,7 +40,7 @@ export default function FileExplorer() {
           if (!item.children) setAberto(String(item.label))
         }}
       />
-      <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
+      <p style={{ flex: '1 1 200px', margin: 0, color: 'var(--or-color-text-muted)' }}>
         Arquivo aberto: <strong style={{ color: 'var(--or-color-text)' }}>{aberto}</strong>
       </p>
     </div>

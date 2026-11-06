@@ -5,7 +5,15 @@ export default function Basic() {
   const [ultimaBusca, setUltimaBusca] = useState<string>()
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        gap: 12,
+        width: '100%',
+        maxWidth: 420,
+      }}
+    >
       <Search
         label="Buscar na loja"
         placeholder="Buscar produtos, marcas e categorias"

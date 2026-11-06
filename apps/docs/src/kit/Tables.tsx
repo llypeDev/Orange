@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLang, type Localized } from '../i18n'
 import { Code } from './CodeBlock'
 
@@ -62,6 +62,35 @@ export function PropsTable({ rows, caption }: { rows: PropRow[]; caption?: Local
   )
 }
 
+/**
+ * Contêiner de tabela que só vira região focável (role, nome e tabIndex) quando rola na
+ * horizontal — em telas estreitas o teclado precisa alcançar a rolagem (WCAG 2.1.1); no desktop
+ * não sobra uma parada de Tab sem função.
+ */
+function ScrollableTableWrap({ label, children }: { label: string; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [scrollable, setScrollable] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const check = () => setScrollable(el.scrollWidth > el.clientWidth + 1)
+    check()
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(check)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+  return (
+    <div
+      ref={ref}
+      className="doc-table-wrap"
+      {...(scrollable ? { role: 'region', 'aria-label': label, tabIndex: 0 } : {})}
+    >
+      {children}
+    </div>
+  )
+}
+
 export interface KeyboardRow {
   keys: string[]
   description: Localized<ReactNode>
@@ -71,7 +100,7 @@ export interface KeyboardRow {
 export function KeyboardTable({ rows }: { rows: KeyboardRow[] }) {
   const { t } = useLang()
   return (
-    <div className="doc-table-wrap">
+    <ScrollableTableWrap label={t({ pt: 'Tabela: teclado', en: 'Table: keyboard' })}>
       <table className="doc-table">
         <thead>
           <tr>
@@ -95,7 +124,7 @@ export function KeyboardTable({ rows }: { rows: KeyboardRow[] }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollableTableWrap>
   )
 }
 
@@ -108,7 +137,7 @@ export interface DefinitionRow {
 export function DefinitionTable({ rows }: { rows: DefinitionRow[] }) {
   const { t } = useLang()
   return (
-    <div className="doc-table-wrap">
+    <ScrollableTableWrap label={t({ pt: 'Tabela: definições', en: 'Table: definitions' })}>
       <table className="doc-table doc-table--definitions">
         <tbody>
           {rows.map((row, i) => (
@@ -119,6 +148,6 @@ export function DefinitionTable({ rows }: { rows: DefinitionRow[] }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollableTableWrap>
   )
 }

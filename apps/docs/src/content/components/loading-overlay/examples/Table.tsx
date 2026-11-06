@@ -25,33 +25,41 @@ export default function Table() {
   return (
     <div style={{ width: '100%', maxWidth: 560, border: '1px solid var(--or-color-border)' }}>
       <LoadingOverlay open={loading} message="Atualizando relatório…">
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-          <caption style={{ ...cell, borderTop: 0, fontWeight: 700 }}>
-            Vendas por região — outubro
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col" style={cell}>
-                Região
-              </th>
-              <th scope="col" style={cell}>
-                Receita
-              </th>
-              <th scope="col" style={cell}>
-                Variação
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {regions.map(([region, revenue, change]) => (
-              <tr key={region}>
-                <td style={cell}>{region}</td>
-                <td style={cell}>{revenue}</td>
-                <td style={cell}>{change}</td>
+        {/* Em telas muito estreitas a tabela rola na horizontal em vez de alargar a página. */}
+        <div
+          role="region"
+          aria-label="Vendas por região"
+          tabIndex={0}
+          style={{ overflowX: 'auto' }}
+        >
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+            <caption style={{ ...cell, borderTop: 0, fontWeight: 700 }}>
+              Vendas por região — outubro
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cell}>
+                  Região
+                </th>
+                <th scope="col" style={cell}>
+                  Receita
+                </th>
+                <th scope="col" style={cell}>
+                  Variação
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {regions.map(([region, revenue, change]) => (
+                <tr key={region}>
+                  <td style={cell}>{region}</td>
+                  <td style={cell}>{revenue}</td>
+                  <td style={cell}>{change}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div style={{ padding: 16, borderTop: '1px solid var(--or-color-border)' }}>
           <Button size="sm" variant="outline" onClick={refresh}>
             Atualizar dados

@@ -5,7 +5,7 @@ export default function Basic() {
     // transform cria um contexto para o position: fixed — só para a prévia.
     <div style={{ position: 'relative', width: '100%', minHeight: 200, transform: 'translateZ(0)', border: '1px solid var(--or-color-border)' }}>
       <SkipLink href="#conteudo-pedidos" />
-      <nav aria-label="Principal" style={{ display: 'flex', gap: 20, padding: '14px 16px', borderBottom: '1px solid var(--or-color-border)' }}>
+      <nav aria-label="Principal" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 20px', padding: '14px 16px', borderBottom: '1px solid var(--or-color-border)' }}>
         <a href="#painel">Painel</a>
         <a href="#pedidos">Pedidos</a>
         <a href="#clientes">Clientes</a>
