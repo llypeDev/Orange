@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Controle deslizante para escolher um valor ou um intervalo dentro de uma faixa contínua.',
     en: 'Sliding control to pick a value or a range within a continuous scale.',
   },
-  status: 'new',
+  status: 'stable',
 }

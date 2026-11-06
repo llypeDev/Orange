@@ -165,6 +165,20 @@ describe('Table', () => {
     expect(screen.getByText('Faturas', { selector: 'caption' })).toHaveClass('or-visually-hidden')
   })
 
+  it('sem maxHeight, só vira região focável quando rola na horizontal', () => {
+    const { container, unmount } = render(<Table caption="Faturas" columns={columns} data={data} />)
+    expect(container.querySelector('.or-table-container')).not.toHaveAttribute('tabindex')
+    unmount()
+    // Tabela mais larga que o contêiner (ex.: celular): o teclado precisa alcançar a rolagem.
+    const scrollWidth = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(600)
+    const clientWidth = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(280)
+    render(<Table caption="Faturas" columns={columns} data={data} />)
+    const region = screen.getByRole('region', { name: 'Faturas' })
+    expect(region).toHaveAttribute('tabindex', '0')
+    scrollWidth.mockRestore()
+    clientWidth.mockRestore()
+  })
+
   it('usa as mensagens do idioma configurado', async () => {
     const user = userEvent.setup()
     render(

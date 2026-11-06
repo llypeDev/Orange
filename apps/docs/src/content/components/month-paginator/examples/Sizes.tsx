@@ -10,7 +10,14 @@ export default function Sizes() {
         aria-label="Mês (pequeno)"
       />
       <MonthPaginator size="md" defaultValue={{ year: 2026, month: 2 }} aria-label="Mês (médio)" />
-      <MonthPaginator size="lg" defaultValue={{ year: 2026, month: 2 }} aria-label="Mês (grande)" />
+      {/* O lg tem ~285px: numa prévia estreita (celular de 320px) ele rola na horizontal. */}
+      <div style={{ maxWidth: '100%', overflowX: 'auto' }}>
+        <MonthPaginator
+          size="lg"
+          defaultValue={{ year: 2026, month: 2 }}
+          aria-label="Mês (grande)"
+        />
+      </div>
       <MonthPaginator
         disabled
         defaultValue={{ year: 2026, month: 2 }}

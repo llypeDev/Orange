@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Campo de valor monetário com símbolo da moeda, digitação natural e formatação pelo locale.',
     en: 'Money input with the currency symbol, natural typing and locale-aware formatting.',
   },
-  status: 'new',
+  status: 'stable',
 }

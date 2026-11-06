@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Sequência cronológica de eventos com datas, marcadores por tom e destaque do evento atual.',
     en: 'A chronological sequence of events with dates, tone markers and the current event highlighted.',
   },
-  status: 'new',
+  status: 'stable',
 }

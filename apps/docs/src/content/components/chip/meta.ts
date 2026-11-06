@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Chips selecionáveis para filtros rápidos, com seleção única ou múltipla em um grupo rotulado.',
     en: 'Selectable chips for quick filters, with single or multiple selection in a labelled group.',
   },
-  status: 'new',
+  status: 'stable',
 }

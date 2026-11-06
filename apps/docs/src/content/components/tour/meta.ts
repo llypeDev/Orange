@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Tour guiado com spotlight: apresenta novidades passo a passo, destacando cada elemento com um recorte na tela escurecida, com foco preso e retorno ao fechar.',
     en: 'Guided spotlight tour: walks people through new features step by step, highlighting each element with a cutout in a dimmed screen, with trapped focus and focus return on close.',
   },
-  status: 'new',
+  status: 'stable',
 }

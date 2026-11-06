@@ -559,6 +559,18 @@ a {
   white-space: pre;
 }
 
+/* Telas estreitas: a linha de importação quebra em vez de rolar (uma rolagem sem foco
+   prende quem usa teclado — WCAG 2.1.1). */
+@media (max-width: 40rem) {
+  .doc-import code {
+    overflow-x: visible;
+    padding-block: var(--or-space-2);
+    line-height: var(--or-leading-body);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
 .doc-import__kw {
   color: #f58549;
 }

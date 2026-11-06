@@ -1,0 +1,61 @@
+/* ---------------------------------------------------------------------------
+ * Blockquote — citação com barra de acento e fonte opcional
+ *
+ * O Prose repete este visual para o <blockquote> de conteúdo externo
+ * (Prose.css, seção "Citações"): mantenha os dois em sincronia.
+ * ------------------------------------------------------------------------- */
+
+.or-blockquote {
+  --_font-size: var(--or-text-md);
+  --_indent: var(--or-space-5);
+
+  min-width: 0;
+  margin: 0;
+  /* A barra passa um pouco do texto em cima e embaixo. */
+  padding-block: var(--or-space-1);
+  padding-inline: var(--_indent) 0;
+  /* Barra de 3px desenhada como borda: continua visível em alto contraste. */
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
+  color: var(--or-color-text);
+  font-size: var(--_font-size);
+  overflow-wrap: break-word;
+}
+
+.or-blockquote--sm {
+  --_font-size: var(--or-text-sm);
+  --_indent: var(--or-space-4);
+}
+
+.or-blockquote--lg {
+  --_font-size: var(--or-text-lg);
+  --_indent: var(--or-space-6);
+}
+
+.or-blockquote__quote {
+  margin: 0;
+}
+
+/* Parágrafos e listas dentro da citação. `[class]` eleva a especificidade
+   (0,2,0) para valer também dentro de um Prose (`.or-prose :where(p)`). */
+.or-blockquote__quote[class] > * {
+  margin-block: 0;
+}
+
+.or-blockquote__quote[class] > * + * {
+  margin-top: var(--or-space-3);
+}
+
+/* Fonte ------------------------------------------------------------------- */
+
+.or-blockquote__source {
+  margin: var(--or-space-3) 0 0;
+  color: var(--or-color-text-muted);
+  font-size: 0.875em;
+  line-height: var(--or-leading-body);
+}
+
+/* Travessão decorativo: texto alternativo vazio, leitores de tela não o leem. */
+.or-blockquote__source::before {
+  content: '— ';
+  content: '— ' / '';
+}

@@ -246,6 +246,26 @@ export const ptBR = {
   sortableMoveTop: 'Mover para o topo',
   sortableMoveStart: 'Mover para o início',
   sortableMoveEnd: 'Mover para o fim',
+  // barra de ações em lote (ActionBar)
+  actionBarLabel: 'Ações em lote',
+  actionBarCount: '{count} selecionados',
+  actionBarCountOne: '1 selecionado',
+  actionBarClear: 'Limpar seleção',
+  // lista suspensa personalizada (Picker)
+  pickerPlaceholder: 'Selecione…',
+  pickerEmpty: 'Nenhuma opção disponível',
+  // lista interativa (ListView)
+  listViewSelect: 'Selecionar',
+  listViewSelectedCount: '{count} itens selecionados',
+  listViewSelectedCountOne: '1 item selecionado',
+  listViewSelectedNone: 'Nenhum item selecionado',
+  // gráfico de rosca (DonutChart) e ranking em barras (BarList)
+  chartDonutLabel: 'Gráfico de rosca: {title}',
+  chartDonutTotal: '{label}: {value}.',
+  chartSlice: '{label}: {value} ({percent})',
+  chartValue: 'Valor',
+  chartShare: 'Participação',
+  barListShowAll: 'Mostrar todos ({count})',
 } as const
 
 export type MessageKey = keyof typeof ptBR
@@ -475,6 +495,22 @@ export const enUS: Messages = {
   sortableMoveTop: 'Move to top',
   sortableMoveStart: 'Move to start',
   sortableMoveEnd: 'Move to end',
+  actionBarLabel: 'Bulk actions',
+  actionBarCount: '{count} selected',
+  actionBarCountOne: '1 selected',
+  actionBarClear: 'Clear selection',
+  pickerPlaceholder: 'Select…',
+  pickerEmpty: 'No options available',
+  listViewSelect: 'Select',
+  listViewSelectedCount: '{count} items selected',
+  listViewSelectedCountOne: '1 item selected',
+  listViewSelectedNone: 'No items selected',
+  chartDonutLabel: 'Donut chart: {title}',
+  chartDonutTotal: '{label}: {value}.',
+  chartSlice: '{label}: {value} ({percent})',
+  chartValue: 'Value',
+  chartShare: 'Share',
+  barListShowAll: 'Show all ({count})',
 }
 
 export type Locale = 'pt-BR' | 'en-US' | (string & {})

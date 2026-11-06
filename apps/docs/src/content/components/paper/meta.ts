@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Superfície base com fundo, borda de 1px e espaçamento interno — a peça sobre a qual painéis e cartões são montados.',
     en: 'Base surface with background, 1px border and padding — the piece panels and cards are built on.',
   },
-  status: 'new',
+  status: 'stable',
 }

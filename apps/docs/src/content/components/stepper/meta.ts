@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Mostra o progresso em um fluxo de várias etapas — concluídas, a atual e as próximas.',
     en: 'Shows progress through a multi-step flow — completed steps, the current one and those ahead.',
   },
-  status: 'new',
+  status: 'stable',
 }

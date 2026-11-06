@@ -157,6 +157,7 @@ function TableInner<T>(
   const tableId = useId('or-table')
   const captionId = `${tableId}-caption`
   const selectAllRef = useRef<HTMLInputElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [announcement, setAnnouncement] = useState('')
   const sortedByUser = useRef(false)
 
@@ -259,15 +260,20 @@ function TableInner<T>(
   }
 
   const colCount = columns.length + (selectable ? 1 : 0)
+  const overflowX = useHorizontalOverflow(containerRef)
+  // Contêiner rolável (altura máxima ou tabela mais larga que a tela) vira região focável, para o
+  // teclado alcançar a rolagem (WCAG 2.1.1).
   const scrollable = maxHeight !== undefined
+  const focusableRegion = scrollable || overflowX
   const containerStyle: CSSProperties = { ...containerProps?.style, ...(scrollable ? { maxHeight } : null) }
 
   return (
     <div
       {...containerProps}
+      ref={containerRef}
       className={cx('or-table-container', scrollable && 'or-table-container--scroll', containerProps?.className)}
       style={containerStyle}
-      {...(scrollable ? { role: 'region', 'aria-labelledby': captionId, tabIndex: 0 } : null)}
+      {...(focusableRegion ? { role: 'region', 'aria-labelledby': captionId, tabIndex: 0 } : null)}
     >
       <table
         ref={ref}
@@ -430,3 +436,20 @@ ForwardedTable.displayName = 'Table'
 export const Table = ForwardedTable as <T>(
   props: TableProps<T> & { ref?: Ref<HTMLTableElement> },
 ) => ReactElement | null
+
+/** Verdadeiro quando o contêiner rola na horizontal (tabela mais larga que o espaço disponível). */
+function useHorizontalOverflow(ref: { current: HTMLElement | null }): boolean {
+  const [overflow, setOverflow] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const check = () => setOverflow(el.scrollWidth > el.clientWidth + 1)
+    check()
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(check)
+    observer.observe(el)
+    if (el.firstElementChild) observer.observe(el.firstElementChild)
+    return () => observer.disconnect()
+  }, [ref])
+  return overflow
+}

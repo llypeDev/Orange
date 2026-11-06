@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Indicador circular de progresso, determinado ou indeterminado, com valor central opcional.',
     en: 'Circular progress indicator, determinate or indeterminate, with an optional central value.',
   },
-  status: 'new',
+  status: 'stable',
 }

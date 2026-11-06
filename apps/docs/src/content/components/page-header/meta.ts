@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Topo de uma página da aplicação: contexto, título, descrição, selos, ações e abas.',
     en: 'The top of an app page: context, title, description, badges, actions and tabs.',
   },
-  status: 'new',
+  status: 'stable',
 }

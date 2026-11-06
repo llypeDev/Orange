@@ -281,6 +281,24 @@
   cursor: not-allowed;
 }
 
+/* Telas muito estreitas (320px): células de 36px e navegação de 28px, como no
+   RangeCalendar — com 40px o mês tem 280px e só cabe sem nenhum respiro em
+   volta (cartão, prévia, popover). Os alvos continuam acima de 24px. */
+@media (max-width: 24rem) {
+  .or-calendar {
+    --_cell: 2.25rem;
+  }
+
+  .or-calendar__header {
+    gap: var(--or-space-1);
+  }
+
+  .or-calendar__nav {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
 /* Keyframes --------------------------------------------------------------- */
 
 @keyframes or-calendar-in-next {

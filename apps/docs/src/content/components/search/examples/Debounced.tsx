@@ -22,7 +22,15 @@ export default function Debounced() {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        gap: 12,
+        width: '100%',
+        maxWidth: 420,
+      }}
+    >
       <Search
         label="Buscar na central de ajuda"
         hideLabel={false}

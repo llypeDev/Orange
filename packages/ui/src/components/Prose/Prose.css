@@ -1,0 +1,645 @@
+/* ===========================================================================
+ * Prose — tipografia para conteúdo rico (CMS, Markdown, artigos, termos)
+ *
+ * Especificidade: todo seletor de elemento tem a forma
+ *
+ *   .or-prose :where(<elemento>):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *))
+ *
+ * e pesa sempre (0,1,0) — o suficiente para vencer resets globais (`p { margin: 0 }`,
+ * `a { color: inherit }`), nunca mais que uma classe. O `:not(...)` deixa de fora:
+ *   - elementos com classe do Orange (`or-*`): componentes como Heading, Link, List,
+ *     Kbd, CodeBlock, Table, Highlight, Divider e Blockquote mantêm o próprio estilo,
+ *     não importa a ordem em que o CSS foi carregado;
+ *   - tudo dentro de `.or-not-prose` (a própria classe também começa com `or-`).
+ * Partes que dependem do pai (li, dt/dd, células, figcaption, `pre code`) exigem
+ * que o pai também seja "comum": `:is(ul, ol):not([class^='or-'], [class*=' or-']) > li`.
+ *
+ * Ritmo vertical: margens em múltiplos de --_prose-flow (16/20/24px por tamanho);
+ * a primeira e a última margem de cada bloco são cortadas no fim do arquivo.
+ * ========================================================================= */
+
+/* Numeração "01", "02"… como a List numbered (sem o ponto final). */
+@counter-style or-prose-decimal {
+  system: extends decimal-leading-zero;
+  suffix: ' ';
+}
+
+/* Raiz e tamanhos ----------------------------------------------------------- */
+
+.or-prose {
+  --_prose-font-size: var(--or-text-md);
+  --_prose-leading: var(--or-leading-loose);
+  --_prose-flow: var(--or-space-5);
+  --_prose-small: var(--or-text-sm);
+  --_prose-indent: var(--or-space-5);
+  /* Títulos: a escala do Heading (h1 4xl … h6 md). */
+  --_prose-h1-size: clamp(2.125rem, 4vw, var(--or-text-4xl));
+  --_prose-h1-weight: var(--or-weight-semibold);
+  --_prose-h1-tracking: var(--or-tracking-heading);
+  --_prose-h2-size: var(--or-text-3xl);
+  --_prose-h2-weight: var(--or-weight-bold);
+  --_prose-h2-tracking: var(--or-tracking-heading);
+  --_prose-h3-size: var(--or-text-2xl);
+  --_prose-h3-tracking: var(--or-tracking-heading);
+  --_prose-h4-size: var(--or-text-xl);
+  --_prose-h4-tracking: -0.02em;
+  --_prose-h5-size: var(--or-text-lg);
+  --_prose-h5-tracking: -0.015em;
+  --_prose-h6-size: var(--or-text-md);
+  --_prose-h6-tracking: -0.01em;
+
+  min-width: 0;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+  font-size: var(--_prose-font-size);
+  line-height: var(--_prose-leading);
+  /* Palavras e URLs longas quebram em vez de alargar a página. */
+  overflow-wrap: break-word;
+}
+
+/* sm: um degrau abaixo na escala do Heading. */
+.or-prose--sm {
+  --_prose-font-size: var(--or-text-sm);
+  --_prose-leading: var(--or-leading-body);
+  --_prose-flow: var(--or-space-4);
+  --_prose-small: var(--or-text-xs);
+  --_prose-indent: var(--or-space-4);
+  --_prose-h1-size: var(--or-text-3xl);
+  --_prose-h1-weight: var(--or-weight-bold);
+  --_prose-h2-size: var(--or-text-2xl);
+  --_prose-h3-size: var(--or-text-xl);
+  --_prose-h3-tracking: -0.02em;
+  --_prose-h4-size: var(--or-text-lg);
+  --_prose-h4-tracking: -0.015em;
+  --_prose-h5-size: var(--or-text-md);
+  --_prose-h5-tracking: -0.01em;
+}
+
+/* lg: um degrau acima. */
+.or-prose--lg {
+  --_prose-font-size: var(--or-text-lg);
+  --_prose-flow: var(--or-space-6);
+  --_prose-small: var(--or-text-md);
+  --_prose-indent: var(--or-space-6);
+  --_prose-h1-size: clamp(2.5rem, 5vw, var(--or-text-5xl));
+  --_prose-h1-tracking: -0.04em;
+  --_prose-h2-size: clamp(2.125rem, 4vw, var(--or-text-4xl));
+  --_prose-h2-weight: var(--or-weight-semibold);
+  --_prose-h3-size: var(--or-text-3xl);
+  --_prose-h4-size: var(--or-text-2xl);
+  --_prose-h4-tracking: var(--or-tracking-heading);
+  --_prose-h5-size: var(--or-text-xl);
+  --_prose-h5-tracking: -0.02em;
+  --_prose-h6-size: var(--or-text-lg);
+  --_prose-h6-tracking: -0.015em;
+}
+
+/* Medida de leitura: ~68 caracteres por linha (acompanha o tamanho do texto). */
+.or-prose--measure {
+  max-width: 68ch;
+}
+
+/* Blocos: ritmo vertical ---------------------------------------------------- */
+
+.or-prose
+  :where(p, ul, ol, dl, blockquote, figure, pre, table):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin: var(--_prose-flow) 0;
+}
+
+.or-prose > :where(img, video):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin-block: var(--_prose-flow);
+}
+
+/* Títulos ------------------------------------------------------------------- */
+
+.or-prose
+  :where(h1, h2, h3, h4, h5, h6):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin: calc(var(--_prose-flow) * 1.4) 0 calc(var(--_prose-flow) * 0.5);
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-bold);
+  line-height: var(--or-leading-tight);
+  text-wrap: balance;
+}
+
+.or-prose :where(h1):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin: calc(var(--_prose-flow) * 2) 0 var(--_prose-flow);
+  font-size: var(--_prose-h1-size);
+  font-weight: var(--_prose-h1-weight);
+  line-height: var(--or-leading-heading);
+  letter-spacing: var(--_prose-h1-tracking);
+}
+
+.or-prose :where(h2):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin: calc(var(--_prose-flow) * 2) 0 calc(var(--_prose-flow) * 0.8);
+  font-size: var(--_prose-h2-size);
+  font-weight: var(--_prose-h2-weight);
+  line-height: var(--or-leading-heading);
+  letter-spacing: var(--_prose-h2-tracking);
+}
+
+.or-prose :where(h3):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin: calc(var(--_prose-flow) * 1.6) 0 calc(var(--_prose-flow) * 0.6);
+  font-size: var(--_prose-h3-size);
+  line-height: var(--or-leading-heading);
+  letter-spacing: var(--_prose-h3-tracking);
+}
+
+.or-prose :where(h4):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  font-size: var(--_prose-h4-size);
+  letter-spacing: var(--_prose-h4-tracking);
+}
+
+.or-prose :where(h5):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  font-size: var(--_prose-h5-size);
+  letter-spacing: var(--_prose-h5-tracking);
+}
+
+.or-prose :where(h6):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  font-size: var(--_prose-h6-size);
+  letter-spacing: var(--_prose-h6-tracking);
+}
+
+/* Links: o mesmo do Link (variante default) -------------------------------- */
+
+.or-prose :where(a[href]):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  color: var(--or-color-text);
+  text-decoration-line: underline;
+  text-decoration-color: var(--or-color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+  overflow-wrap: anywhere;
+  /* O sublinhado engrossa (1px → 2px) e se aproxima do texto no hover/foco. */
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-prose
+  :where(a[href]:hover, a[href]:focus-visible):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  color: var(--or-color-accent-text);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+.or-prose
+  :where(a[href]:focus-visible):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-prose :where(a[href]:active):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  color: var(--or-color-accent-active);
+}
+
+/* Texto em linha ------------------------------------------------------------ */
+
+.or-prose :where(strong, b):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  font-weight: var(--or-weight-semibold);
+}
+
+/* Em títulos e cabeçalhos de tabela o negrito já é o peso do bloco. */
+.or-prose
+  :where(:is(h1, h2, h3, h4, h5, h6, th) :is(strong, b)):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  font-weight: inherit;
+}
+
+.or-prose :where(small):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  color: var(--or-color-text-muted);
+  font-size: 0.875em;
+}
+
+/* Sobrescrito e subscrito não abrem a entrelinha. */
+.or-prose :where(sub, sup):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  line-height: 0;
+}
+
+/* Marca: o mesmo destaque do Highlight (fundo e sublinhado de 2px). */
+.or-prose :where(mark):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding: 0 0.0625em;
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-accent-subtle);
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--or-color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  text-decoration-skip-ink: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Código em linha: moldura de 1px, como o código em linha da documentação. */
+.or-prose :where(code, samp):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding: 0.1em 0.375em;
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg-subtle);
+  color: inherit;
+  font-family: var(--or-font-mono);
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Tecla: o mesmo visual do Kbd (borda inferior de 2px = borda + sombra). */
+.or-prose :where(kbd):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  display: inline-block;
+  min-width: 1.75em;
+  margin-bottom: 1px;
+  padding: 0 0.375em;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-bg-subtle);
+  box-shadow: 0 1px 0 0 var(--or-color-border-strong);
+  color: var(--or-color-text);
+  font-family: var(--or-font-mono);
+  font-size: 0.8em;
+  font-weight: var(--or-weight-medium);
+  line-height: 1.6;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Combinação <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>: só as teclas internas têm moldura. */
+.or-prose :where(kbd:has(kbd)):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  display: inline;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 1em;
+  font-weight: inherit;
+}
+
+/* Bloco de código: a superfície escura do CodeBlock ------------------------- */
+
+.or-prose :where(pre):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  overflow-x: auto;
+  padding: var(--or-space-4) var(--or-space-5);
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-code-bg);
+  color: var(--or-color-code-text);
+  font-family: var(--or-font-mono);
+  font-size: var(--_prose-small);
+  line-height: var(--or-leading-loose);
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+  scrollbar-color: var(--or-palette-carbon-300) transparent;
+}
+
+/* Fundo escuro nos dois temas: mesmo laranja de foco do CodeBlock. O <pre> só
+   recebe foco com tabindex="0" (ou nos navegadores que tornam áreas roláveis
+   focáveis sozinhas). */
+.or-prose :where(pre:focus-visible):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  outline: 2px solid var(--or-palette-orange-400);
+  outline-offset: -2px;
+}
+
+.or-prose
+  :where(pre:not([class^='or-'], [class*=' or-']) code):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  white-space: inherit;
+  overflow-wrap: normal;
+}
+
+/* Listas: quadrado laranja e "01" da List ---------------------------------- */
+
+/* Marcadores nativos (::marker): a semântica de lista é preservada no Safari,
+   o que não acontece com list-style: none. */
+.or-prose :where(ul, ol):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding-inline-start: 1.25em;
+}
+
+.or-prose :where(ul):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  list-style-type: square;
+}
+
+/* Listas com type="a", "i"… mantêm o tipo pedido no HTML. */
+.or-prose :where(ol:not([type])):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding-inline-start: 2em;
+  list-style-type: or-prose-decimal;
+}
+
+.or-prose
+  :where(:is(ul, ol):not([class^='or-'], [class*=' or-']) > li):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-block: calc(var(--_prose-flow) * 0.4);
+  padding-inline-start: 0.375em;
+}
+
+.or-prose
+  :where(ul:not([class^='or-'], [class*=' or-']) > li):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  )::marker {
+  color: var(--or-color-accent);
+}
+
+.or-prose
+  :where(ol:not([class^='or-'], [class*=' or-']) > li):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  )::marker {
+  color: var(--or-color-accent-text);
+  font-family: var(--or-font-display);
+  font-size: 0.875em;
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.or-prose :where(li > ul, li > ol):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin-block: calc(var(--_prose-flow) * 0.4);
+}
+
+.or-prose :where(li > p):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin-block: calc(var(--_prose-flow) * 0.5);
+}
+
+/* Listas de definição ------------------------------------------------------- */
+
+.or-prose
+  :where(dl:not([class^='or-'], [class*=' or-']) > div):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-top: calc(var(--_prose-flow) * 0.8);
+}
+
+.or-prose
+  :where(
+    dl:not([class^='or-'], [class*=' or-']) > dt,
+    dl:not([class^='or-'], [class*=' or-']) > div > dt
+  ):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin-top: calc(var(--_prose-flow) * 0.8);
+  color: var(--or-color-text);
+  font-weight: var(--or-weight-semibold);
+}
+
+.or-prose
+  :where(
+    dl:not([class^='or-'], [class*=' or-']) > dd,
+    dl:not([class^='or-'], [class*=' or-']) > div > dd
+  ):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin: calc(var(--_prose-flow) * 0.25) 0 0;
+  padding-inline-start: 1.25em;
+}
+
+/* Citações: o mesmo visual do Blockquote ------------------------------------ */
+
+.or-prose :where(blockquote):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding-block: var(--or-space-1);
+  padding-inline: var(--_prose-indent) 0;
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
+  color: var(--or-color-text);
+}
+
+.or-prose
+  :where(blockquote:not([class^='or-'], [class*=' or-']) > *):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-block: 0;
+}
+
+.or-prose
+  :where(blockquote:not([class^='or-'], [class*=' or-']) > * + *):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-top: var(--or-space-3);
+}
+
+/* <figure><blockquote/><figcaption/></figure>: a barra vai para a figura e a
+   legenda vira a fonte da citação, com travessão. */
+.or-prose
+  :where(figure:has(> blockquote)):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  padding-block: var(--or-space-1);
+  padding-inline: var(--_prose-indent) 0;
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
+}
+
+.or-prose
+  :where(figure:not([class^='or-'], [class*=' or-']):has(> blockquote) > blockquote):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Mídia e legendas ---------------------------------------------------------- */
+
+.or-prose :where(img, video):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  max-width: 100%;
+  height: auto;
+}
+
+.or-prose :where(figcaption):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  margin-top: calc(var(--_prose-flow) * 0.5);
+  color: var(--or-color-text-muted);
+  font-size: 0.875em;
+  line-height: var(--or-leading-body);
+}
+
+.or-prose
+  :where(figure:not([class^='or-'], [class*=' or-']):has(> blockquote) > figcaption):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-top: var(--or-space-3);
+}
+
+/* Travessão decorativo: texto alternativo vazio, leitores de tela não o leem. */
+.or-prose
+  :where(figure:not([class^='or-'], [class*=' or-']):has(> blockquote) > figcaption):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  )::before {
+  content: '— ';
+  content: '— ' / '';
+}
+
+/* Divisor: a linha de 1px do Divider. */
+.or-prose :where(hr):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  height: 0;
+  margin: calc(var(--_prose-flow) * 2) 0;
+  border: 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/* Tabelas: bordas e cabeçalho do Table -------------------------------------
+ * display: block + overflow-x: auto faz a tabela larga rolar dentro dela
+ * mesma, em vez de alargar a página (a mesma técnica do Markdown do GitHub).
+ * Tabelas estreitas ficam do tamanho do conteúdo. */
+
+.or-prose :where(table):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--or-color-surface);
+  font-size: var(--_prose-small);
+  line-height: var(--or-leading-tight);
+  overscroll-behavior-x: contain;
+}
+
+.or-prose
+  :where(table:focus-visible):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) caption):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  padding: var(--or-space-3) var(--or-space-4);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  caption-side: top;
+  color: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-size: var(--_prose-font-size);
+  font-weight: var(--or-weight-bold);
+  letter-spacing: -0.01em;
+  text-align: start;
+}
+
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) :is(th, td)):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  padding: var(--or-space-3) var(--or-space-4);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  vertical-align: top;
+}
+
+/* Alinhamento do Markdown (align="right") é respeitado. */
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) :is(th, td):not([align])):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  text-align: start;
+}
+
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) thead th):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  border-bottom-color: var(--or-color-border-strong);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-subtle);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-2xs);
+  font-weight: var(--or-weight-medium);
+  letter-spacing: var(--or-tracking-meta);
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) tbody th):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  font-weight: var(--or-weight-semibold);
+}
+
+/* Nas células, código e links não quebram no meio: a tabela rola. */
+.or-prose
+  :where(table:not([class^='or-'], [class*=' or-']) :is(code, samp, a)):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  overflow-wrap: break-word;
+}
+
+.or-prose
+  :where(
+    table:not([class^='or-'], [class*=' or-'])
+      :is(tbody, tfoot):last-child
+      > tr:last-child
+      > :is(th, td)
+  ):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+  border-bottom: 0;
+}
+
+/* Depois de títulos e divisores, a margem de baixo deles manda ------------- */
+
+.or-prose
+  :where(:is(h1, h2, h3, h4, h5, h6, hr):not([class^='or-'], [class*=' or-']) + *):not(
+    :where([class^='or-'], [class*=' or-'], .or-not-prose *)
+  ) {
+  margin-top: 0;
+}
+
+/* Corte das margens nas pontas ----------------------------------------------
+ * Por último, para vencer as regras acima (mesma especificidade). Vale para
+ * qualquer primeiro/último filho da raiz, inclusive componentes do Orange. */
+
+.or-prose > :where(:first-child) {
+  margin-top: 0;
+}
+
+.or-prose > :where(:last-child) {
+  margin-bottom: 0;
+}
+
+.or-prose
+  :where(
+    :is(li, dd, td, th, figure, dl, dl > div):not([class^='or-'], [class*=' or-']) > :first-child
+  ):not(:where(.or-not-prose *)) {
+  margin-top: 0;
+}
+
+.or-prose
+  :where(
+    :is(li, dd, td, th, figure, dl, dl > div):not([class^='or-'], [class*=' or-']) > :last-child
+  ):not(:where(.or-not-prose *)) {
+  margin-bottom: 0;
+}
+
+/* Alto contraste ------------------------------------------------------------
+ * Fundos viram Canvas e sombras somem: a tecla ganha borda inferior de 2px
+ * (como no Kbd). A marca precisa de Mark/MarkText explícitos: sem eles o
+ * Chromium volta a cor do texto para o MarkText do navegador, mas mantém a
+ * transparência do fundo do autor (12%) — texto escuro sobre Canvas, ilegível.
+ * Com as duas cores de sistema definidas, o texto fica legível sem
+ * forced-color-adjust: none (verificado na emulação de forced-colors do Chromium). */
+@media (forced-colors: active) {
+  .or-prose :where(a[href]):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+    text-decoration-color: LinkText;
+  }
+
+  .or-prose :where(kbd):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+    border-color: CanvasText;
+    border-bottom-width: var(--or-border-thick);
+  }
+
+  .or-prose :where(kbd:has(kbd)):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+    border: 0;
+  }
+
+  .or-prose :where(mark):not(:where([class^='or-'], [class*=' or-'], .or-not-prose *)) {
+    background-color: Mark;
+    color: MarkText;
+    text-decoration-color: MarkText;
+  }
+}

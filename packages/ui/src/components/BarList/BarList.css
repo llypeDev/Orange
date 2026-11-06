@@ -1,0 +1,267 @@
+/* ===========================================================================
+ * BarList — ranking em barras horizontais. Cada linha: rótulo e valor (em cor
+ * de texto, nunca na cor da série) e, abaixo, uma barra reta proporcional ao
+ * maior valor. Linhas com href são links inteiros.
+ * ========================================================================= */
+
+.or-bar-list {
+  --_font: var(--or-text-sm);
+  --_pad-y: var(--or-space-2);
+  --_bar: 0.375rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--or-space-2);
+  min-width: 0;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+}
+
+.or-bar-list--sm {
+  --_font: var(--or-text-xs);
+  --_pad-y: var(--or-space-1);
+  --_bar: 0.25rem;
+}
+
+.or-bar-list--lg {
+  --_font: var(--or-text-md);
+  --_pad-y: var(--or-space-3);
+  --_bar: 0.5rem;
+}
+
+.or-bar-list__list {
+  display: grid;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.or-bar-list__item {
+  min-width: 0;
+}
+
+.or-bar-list__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--or-space-1) var(--or-space-4);
+  padding: var(--_pad-y) var(--or-space-2);
+  border-radius: var(--or-radius-none);
+  color: inherit;
+  font-size: var(--_font);
+  line-height: var(--or-leading-tight);
+  text-decoration: none;
+}
+
+.or-bar-list__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.or-bar-list__value {
+  font-family: var(--or-font-mono);
+  font-size: 0.9em;
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.or-bar-list__bar {
+  grid-column: 1 / -1;
+  height: var(--_bar);
+}
+
+/* Comprimento por transform (scaleX), não por largura: anima sem recalcular layout. */
+.or-bar-list__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--_color);
+  transform: scaleX(var(--_share, 0));
+  transform-origin: left center;
+  transition: transform var(--or-duration-slow) var(--or-ease-out);
+}
+
+[dir='rtl'] .or-bar-list__fill {
+  transform-origin: right center;
+}
+
+/* --- Linhas com link: a linha inteira é o alvo ---------------------------- */
+
+.or-bar-list__row--link {
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-bar-list__row--link .or-bar-list__label {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Hover e foco visível: mesma resposta (fundo + sublinhado no rótulo). */
+.or-bar-list__row--link:hover,
+.or-bar-list__row--link:focus-visible {
+  background: var(--or-color-surface-hover);
+}
+
+.or-bar-list__row--link:hover .or-bar-list__label,
+.or-bar-list__row--link:focus-visible .or-bar-list__label {
+  text-decoration-color: currentColor;
+}
+
+/* Linha inteira: o contorno fica por dentro (como o botão "Ver dados" dos gráficos). */
+.or-bar-list__row--link:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-bar-list__row--link:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* --- Mostrar todos / mostrar menos ----------------------------------------- */
+
+.or-bar-list__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--or-space-1);
+  min-height: 1.5rem;
+  margin-inline-start: var(--or-space-2);
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-accent-text);
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  transition:
+    text-decoration-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-bar-list__toggle:hover,
+.or-bar-list__toggle:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.or-bar-list__toggle:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-bar-list__toggle:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-bar-list__toggle-icon {
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-bar-list__toggle[aria-expanded='true'] .or-bar-list__toggle-icon {
+  transform: rotate(180deg);
+}
+
+.or-bar-list__empty {
+  align-self: stretch;
+  margin: 0;
+  padding: var(--or-space-6) var(--or-space-4);
+  border: var(--or-border-thin) dashed var(--or-color-border);
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text-subtle);
+  text-align: center;
+}
+
+/* --- Entrada --------------------------------------------------------------
+ * Uma vez, ao entrar na tela (useInView): cada barra cresce a partir do início
+ * (scaleX), escalonada com --or-stagger. Itens revelados por "Mostrar todos"
+ * descem 4px e aparecem; ao recolher, somem em --or-duration-fast. Em
+ * movimento reduzido o estado é `static` e as durações são zero.
+ * ------------------------------------------------------------------------- */
+
+.or-bar-list[data-motion='pending'] .or-bar-list__fill {
+  transform: scaleX(0);
+}
+
+.or-bar-list[data-motion='enter'] .or-bar-list__fill {
+  animation: or-bar-list-grow var(--or-duration-reveal) var(--or-ease-out) backwards;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger));
+}
+
+.or-bar-list__item--extra[data-state='open'] {
+  animation: or-bar-list-in var(--or-duration-medium) var(--or-ease-out) backwards;
+  animation-delay: calc(var(--_i, 0) * var(--or-stagger) / 2);
+}
+
+.or-bar-list__item--extra[data-state='closed'] {
+  animation: or-bar-list-out var(--or-duration-fast) var(--or-ease-in-out) both;
+}
+
+@keyframes or-bar-list-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes or-bar-list-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--or-distance-sm) * -1));
+  }
+}
+
+@keyframes or-bar-list-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Impressão: barras desenhadas (sem esperar a entrada) e com o fundo impresso. */
+@media print {
+  .or-bar-list .or-bar-list__fill {
+    animation: none !important;
+    transform: scaleX(var(--_share, 0)) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .or-bar-list__toggle {
+    display: none;
+  }
+}
+
+/* Alto contraste: série única — barras no texto do sistema; o fundo do hover
+   some, então o destaque das linhas com link vira contorno. */
+@media (forced-colors: active) {
+  .or-bar-list__fill {
+    background: CanvasText;
+  }
+
+  .or-bar-list__row--link:hover {
+    outline: 1px solid LinkText;
+    outline-offset: -1px;
+  }
+
+  .or-bar-list__row--link:focus-visible,
+  .or-bar-list__toggle:focus-visible {
+    outline: 2px solid Highlight;
+  }
+
+  .or-bar-list__empty {
+    border-color: CanvasText;
+  }
+}

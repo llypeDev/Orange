@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Envio de arquivos com arrastar e soltar, validação de tipo e tamanho e lista com progresso.',
     en: 'File upload with drag and drop, type and size validation and a list with progress.',
   },
-  status: 'new',
+  status: 'stable',
 }

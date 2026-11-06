@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Texto longo recolhido em algumas linhas, com botão "Mostrar mais" que só aparece quando o conteúdo não cabe.',
     en: 'Long text collapsed to a few lines, with a "Show more" button that only appears when the content overflows.',
   },
-  status: 'new',
+  status: 'stable',
 }

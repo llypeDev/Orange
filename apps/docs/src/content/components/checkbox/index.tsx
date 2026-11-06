@@ -14,6 +14,8 @@ import { T } from '../../../i18n'
 import { Checkbox, Switch } from '@orangesys/ui'
 import Basic from './examples/Basic'
 import BasicCode from './examples/Basic?raw'
+import Cards from './examples/Cards'
+import CardsCode from './examples/Cards?raw'
 import Group from './examples/Group'
 import GroupCode from './examples/Group?raw'
 import Horizontal from './examples/Horizontal'
@@ -53,6 +55,20 @@ export default function CheckboxPage() {
             {
               pt: (
                 <>
+                  A variante <Code>card</Code> do CheckboxGroup funciona bem quando cada opção tem uma descrição relevante,
+                  como módulos e complementos de um plano — é o mesmo cartão do RadioGroup.
+                </>
+              ),
+              en: (
+                <>
+                  The CheckboxGroup <Code>card</Code> variant works well when each option has a meaningful description, such
+                  as plan modules and add-ons — it is the same card as RadioGroup's.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
                   Use <Code>indeterminate</Code> apenas para "selecionar todos" quando parte dos itens está marcada.
                 </>
               ),
@@ -85,6 +101,17 @@ export default function CheckboxPage() {
           code={GroupCode}
         >
           <Group />
+        </Example>
+        <Example
+          title={{ pt: 'Cartões', en: 'Cards' }}
+          description={{
+            pt: <>Com <Code>variant="card"</Code>, o cartão inteiro é clicável; a borda fica laranja nas opções marcadas.</>,
+            en: <>With <Code>variant="card"</Code>, the whole card is clickable; the border turns orange on checked options.</>,
+          }}
+          code={CardsCode}
+          align="stretch"
+        >
+          <Cards />
         </Example>
         <Example title={{ pt: 'Selecionar todos', en: 'Select all' }} code={SelectAllCode}>
           <SelectAll />
@@ -128,6 +155,7 @@ export default function CheckboxPage() {
             { name: 'onChange', type: '(value: string[]) => void', description: { pt: 'Chamado com a nova lista.', en: 'Called with the new list.' } },
             { name: 'options', type: '{ value, label, description?, disabled? }[]', description: { pt: 'Opções geradas automaticamente.', en: 'Auto-generated options.' } },
             { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: { pt: 'Disposição das opções.', en: 'Options layout.' } },
+            { name: 'variant', type: "'default' | 'card'", default: "'default'", description: { pt: 'Lista simples ou cartões com borda (como no RadioGroup).', en: 'Plain list or bordered cards (as in RadioGroup).' } },
             { name: 'name', type: 'string', description: { pt: 'name aplicado a todas as caixas.', en: 'name applied to every checkbox.' } },
             { name: 'disabled', type: 'boolean', default: 'false', description: { pt: 'Desabilita todas as opções (fieldset nativo).', en: 'Disables every option (native fieldset).' } },
           ]}
@@ -148,6 +176,7 @@ export default function CheckboxPage() {
             { term: { pt: 'Indeterminado', en: 'Indeterminate' }, description: { pt: 'O traço cresce do centro em scaleX (250ms, --or-ease-bounce).', en: 'The dash grows from the center with scaleX (250ms, --or-ease-bounce).' } },
             { term: { pt: 'Desmarcar', en: 'Uncheck' }, description: { pt: 'O ícone some em 160ms (--or-ease-in-out) — saída mais curta que a entrada.', en: 'The icon fades out in 160ms (--or-ease-in-out) — shorter than the entrance.' } },
             { term: { pt: 'Pressionar', en: 'Press' }, description: { pt: 'Na caixa ou no rótulo, a caixa afunda 1px e encolhe (scale 0.92) em 90ms.', en: 'On the box or label, the box sinks 1px and shrinks (scale 0.92) in 90ms.' } },
+            { term: { pt: 'Cartões (variant="card")', en: 'Cards (variant="card")' }, description: { pt: 'Borda em 160ms; fundo e anel laranja em 250ms; o cartão afunda translateY(1px) scale(0.985) em 90ms ao clicar.', en: 'Border in 160ms; orange background and ring in 250ms; the card sinks translateY(1px) scale(0.985) in 90ms on click.' } },
             { term: { pt: 'Erro surge', en: 'Error appears' }, description: { pt: 'A caixa (ou as opções do CheckboxGroup) treme uma vez e a mensagem desliza 4px com fade.', en: 'The box (or the CheckboxGroup options) shakes once and the message slides 4px with a fade.' } },
           ]}
         />
@@ -156,8 +185,8 @@ export default function CheckboxPage() {
       <Section title={{ pt: 'Acessibilidade', en: 'Accessibility' }}>
         <p>
           <T
-            pt={<>Cada opção é um <Code>&lt;input type="checkbox"&gt;</Code> nativo (invisível) sobre a caixa desenhada, com área de clique de 24×24px e rótulo clicável. O grupo usa <Code>&lt;fieldset&gt;</Code>/<Code>&lt;legend&gt;</Code>; descrição e erro entram em <Code>aria-describedby</Code>. <Code>indeterminate</Code> é aplicado como propriedade do DOM e lido como "misto".</>}
-            en={<>Each option is a native (invisible) <Code>&lt;input type="checkbox"&gt;</Code> over the drawn box, with a 24×24px hit area and clickable label. The group uses <Code>&lt;fieldset&gt;</Code>/<Code>&lt;legend&gt;</Code>; description and error go into <Code>aria-describedby</Code>. <Code>indeterminate</Code> is set as a DOM property and read as "mixed".</>}
+            pt={<>Cada opção é um <Code>&lt;input type="checkbox"&gt;</Code> nativo (invisível) sobre a caixa desenhada, com área de clique de 24×24px e rótulo clicável. O grupo usa <Code>&lt;fieldset&gt;</Code>/<Code>&lt;legend&gt;</Code>; descrição e erro entram em <Code>aria-describedby</Code>. <Code>indeterminate</Code> é aplicado como propriedade do DOM e lido como "misto". Na variante <Code>card</Code>, o <Code>&lt;label&gt;</Code> é o cartão inteiro e o nome da caixa vem só do rótulo (<Code>aria-labelledby</Code>), com a descrição em <Code>aria-describedby</Code>.</>}
+            en={<>Each option is a native (invisible) <Code>&lt;input type="checkbox"&gt;</Code> over the drawn box, with a 24×24px hit area and clickable label. The group uses <Code>&lt;fieldset&gt;</Code>/<Code>&lt;legend&gt;</Code>; description and error go into <Code>aria-describedby</Code>. <Code>indeterminate</Code> is set as a DOM property and read as "mixed". In the <Code>card</Code> variant, the <Code>&lt;label&gt;</Code> is the whole card and the checkbox name comes from the label text only (<Code>aria-labelledby</Code>), with the description in <Code>aria-describedby</Code>.</>}
           />
         </p>
         <KeyboardTable
@@ -171,7 +200,7 @@ export default function CheckboxPage() {
           items={[
             { criterion: '1.3.1', description: { pt: 'Grupo com fieldset/legend; rótulos associados.', en: 'Group with fieldset/legend; associated labels.' } },
             { criterion: '1.4.11', description: { pt: 'Borda da caixa com contraste mínimo de 3:1.', en: 'Box border with at least 3:1 contrast.' } },
-            { criterion: '2.5.8', description: { pt: 'Área de toque de 24×24px, ampliada pelo rótulo.', en: '24×24px target, extended by the label.' } },
+            { criterion: '2.5.8', description: { pt: 'Área de toque de 24×24px, ampliada pelo rótulo; na variante card, o cartão todo.', en: '24×24px target, extended by the label; in the card variant, the whole card.' } },
             { criterion: '3.3.1', description: { pt: 'Erros em texto ligados à caixa ou ao grupo.', en: 'Text errors linked to the checkbox or group.' } },
             { criterion: '4.1.2', description: { pt: 'Estados marcado, desmarcado e misto expostos nativamente.', en: 'Checked, unchecked and mixed states exposed natively.' } },
           ]}

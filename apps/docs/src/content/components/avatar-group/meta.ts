@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Avatares sobrepostos em uma lista rotulada, com contador "+N" para quem não cabe.',
     en: 'Overlapping avatars in a labelled list, with a "+N" counter for those that do not fit.',
   },
-  status: 'new',
+  status: 'stable',
 }

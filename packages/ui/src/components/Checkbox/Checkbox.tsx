@@ -26,7 +26,8 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
 /**
  * Caixa de seleção nativa estilizada. Use sozinha (aceite de termos) ou dentro
  * de um `CheckboxGroup`. A `ref` e as props nativas vão para o `<input>`;
- * `className` e `style` vão para o contêiner.
+ * `className` e `style` vão para o contêiner. Num `CheckboxGroup` com
+ * `variant="card"`, o contêiner é um `<label>`: o cartão inteiro é clicável.
  */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
   {
@@ -61,6 +62,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   const isInvalid = hasError || invalid
   const isDisabled = Boolean(disabled || group?.disabled)
   const inGroup = group !== null && value !== undefined
+  const card = group?.variant === 'card'
+  const labelId = card && hasContent(label) ? `${inputId}-label` : undefined
   const isChecked = inGroup ? group.value.includes(String(value)) : checked
   const { shakeClassName, onAnimationEnd } = useErrorShake(isInvalid)
 
@@ -81,6 +84,71 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
     if (inGroup) group.toggle(String(value), event.target.checked)
   }
 
+  const control = (
+    <span className="or-checkbox__control">
+      <input
+        ref={mergedRef}
+        type="checkbox"
+        id={inputId}
+        className="or-checkbox__input"
+        name={name ?? group?.name}
+        value={value}
+        checked={isChecked}
+        required={required}
+        disabled={isDisabled}
+        aria-invalid={isInvalid || undefined}
+        // No cartão, o <label> envolve também descrição e erro: o nome vem só do rótulo.
+        aria-labelledby={labelId}
+        aria-describedby={[ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined}
+        onChange={handleChange}
+        {...rest}
+      />
+      <span className={cx('or-checkbox__box', shakeClassName)} aria-hidden="true" onAnimationEnd={onAnimationEnd}>
+        <Icon name="check" size={14} strokeWidth={3} className="or-checkbox__check" />
+        <Icon name="minus" size={14} strokeWidth={3} className="or-checkbox__dash" />
+      </span>
+    </span>
+  )
+
+  if (card) {
+    // Mesma marcação do Radio em cartão: o <label> é o cartão inteiro.
+    return (
+      <label
+        htmlFor={inputId}
+        className={cx('or-checkbox', 'or-checkbox--card', className)}
+        style={style}
+        data-checked={isChecked || undefined}
+        data-invalid={isInvalid || undefined}
+        data-disabled={isDisabled || undefined}
+      >
+        {control}
+        <span className="or-checkbox__body">
+          {hasContent(label) && (
+            <span id={labelId} className="or-checkbox__label">
+              {label}
+              {required && (
+                <span className="or-checkbox__required" aria-hidden="true">
+                  *
+                </span>
+              )}
+            </span>
+          )}
+          {hasDescription && (
+            <span id={descriptionId} className="or-checkbox__description">
+              {description}
+            </span>
+          )}
+          {hasError && (
+            <span id={errorId} className="or-checkbox__error">
+              <Icon name="alert-circle" size="sm" />
+              <span>{error}</span>
+            </span>
+          )}
+        </span>
+      </label>
+    )
+  }
+
   return (
     <div
       className={cx('or-checkbox', className)}
@@ -89,27 +157,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
       data-disabled={isDisabled || undefined}
     >
       <div className="or-checkbox__row">
-        <span className="or-checkbox__control">
-          <input
-            ref={mergedRef}
-            type="checkbox"
-            id={inputId}
-            className="or-checkbox__input"
-            name={name ?? group?.name}
-            value={value}
-            checked={isChecked}
-            required={required}
-            disabled={isDisabled}
-            aria-invalid={isInvalid || undefined}
-            aria-describedby={[ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined}
-            onChange={handleChange}
-            {...rest}
-          />
-          <span className={cx('or-checkbox__box', shakeClassName)} aria-hidden="true" onAnimationEnd={onAnimationEnd}>
-            <Icon name="check" size={14} strokeWidth={3} className="or-checkbox__check" />
-            <Icon name="minus" size={14} strokeWidth={3} className="or-checkbox__dash" />
-          </span>
-        </span>
+        {control}
         {hasContent(label) && (
           <label htmlFor={inputId} className="or-checkbox__label">
             {label}

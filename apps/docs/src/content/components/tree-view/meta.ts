@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Árvore hierárquica navegável por teclado, com seleção única ou múltipla — arquivos, categorias, estrutura de páginas.',
     en: 'A keyboard-navigable hierarchical tree with single or multiple selection — files, categories, page structure.',
   },
-  status: 'new',
+  status: 'stable',
 }

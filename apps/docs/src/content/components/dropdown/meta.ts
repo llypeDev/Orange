@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Menu de ações aberto por um botão, com itens, opções marcáveis, grupos e navegação completa por teclado.',
     en: 'Action menu opened by a button, with items, checkable options, groups and full keyboard navigation.',
   },
-  status: 'new',
+  status: 'stable',
 }

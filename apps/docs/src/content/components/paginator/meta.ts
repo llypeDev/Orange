@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Divide listas e tabelas longas em páginas e permite navegar entre elas.',
     en: 'Splits long lists and tables into pages and lets people move between them.',
   },
-  status: 'new',
+  status: 'stable',
 }

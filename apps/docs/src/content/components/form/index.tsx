@@ -288,8 +288,8 @@ export default function FormPage() {
               {
                 term: { pt: 'name em input oculto', en: 'name on a hidden input' },
                 description: {
-                  pt: 'Combobox (valor da opção), MultiSelect e TagInput (um por item → lista), DatePicker (AAAA-MM-DD), NumberField (número sem formatação), CurrencyField, PinInput e Switch (value quando ligado). O link do resumo foca o controle visível do campo.',
-                  en: 'Combobox (option value), MultiSelect and TagInput (one per item → list), DatePicker (YYYY-MM-DD), NumberField (unformatted number), CurrencyField, PinInput and Switch (value when on). The summary link focuses the visible control of the field.',
+                  pt: 'Combobox e Picker (valor da opção; vazio sem escolha), MultiSelect e TagInput (um por item → lista), DatePicker (AAAA-MM-DD), NumberField (número sem formatação), CurrencyField, PinInput e Switch (value quando ligado). O link do resumo foca o controle visível do campo.',
+                  en: 'Combobox and Picker (option value; empty with no choice), MultiSelect and TagInput (one per item → list), DatePicker (YYYY-MM-DD), NumberField (unformatted number), CurrencyField, PinInput and Switch (value when on). The summary link focuses the visible control of the field.',
                 },
               },
               {

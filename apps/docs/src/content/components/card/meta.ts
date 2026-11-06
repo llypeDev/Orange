@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Contêiner para conteúdo relacionado — título, texto, mídia e ações — que pode ser clicável por inteiro.',
     en: 'A container for related content — title, text, media and actions — that can be fully clickable.',
   },
-  status: 'new',
+  status: 'stable',
 }

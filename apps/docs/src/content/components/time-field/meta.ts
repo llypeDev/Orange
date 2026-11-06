@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Campo de horário nativo com a aparência do Orange, limites e intervalos configuráveis.',
     en: 'Native time field with the Orange look, configurable limits and steps.',
   },
-  status: 'new',
+  status: 'stable',
 }

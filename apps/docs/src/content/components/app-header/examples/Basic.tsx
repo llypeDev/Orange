@@ -1,27 +1,5 @@
 import { AppHeader, Button, Icon } from '@orangesys/ui'
 
-function UserBadge() {
-  return (
-    <span
-      title="Ana Ribeiro"
-      style={{
-        display: 'inline-grid',
-        placeItems: 'center',
-        width: 32,
-        height: 32,
-        borderRadius: '50%',
-        background: 'var(--or-color-accent)',
-        color: 'var(--or-color-text-on-accent)',
-        fontSize: 12,
-        fontWeight: 700,
-      }}
-    >
-      <span aria-hidden="true">AR</span>
-      <span className="or-visually-hidden">Conta de Ana Ribeiro</span>
-    </span>
-  )
-}
-
 export default function Basic() {
   return (
     <AppHeader
@@ -39,13 +17,8 @@ export default function Basic() {
         { label: 'Relatórios', href: '#relatorios' },
       ]}
       currentHref="#campanhas"
-      actions={
-        <>
-          <Button variant="ghost" iconOnly aria-label="Buscar" startIcon={<Icon name="search" />} />
-          <Button variant="ghost" iconOnly aria-label="Notificações" startIcon={<Icon name="bell" />} />
-          <UserBadge />
-        </>
-      }
+      // Uma ação: menu + marca + ação cabem na prévia estreita (celular de 320px).
+      actions={<Button variant="ghost" iconOnly aria-label="Buscar" startIcon={<Icon name="search" />} />}
     />
   )
 }

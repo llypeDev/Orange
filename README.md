@@ -15,19 +15,19 @@ bordas de 1px e grade explícita.
 
 ## Componentes
 
-103 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
+111 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
 Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
 critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
 (`Heading`, `Text`, `Eyebrow`), 20 hooks, 92 ícones e o `OrangeProvider` (tema + idioma).
 
 | Categoria | Componentes |
 | --- | --- |
-| Ações (8) | Button, ButtonGroup, CopyButton, IconButton, SegmentedControl, SplitButton, ToggleButton, Toolbar |
-| Formulários (26) | Checkbox, ColorField, Combobox, CurrencyField, DatePicker, DateRangePicker, ErrorSummary, Fieldset, FileUploader, Form, InlineEdit, Listbox, MultiSelect, NumberField, PasswordField, PinInput, RadioGroup, Rating, Search, Select, Slider, Switch, TagInput, TextArea, TextField, TimeField |
+| Ações (9) | ActionBar, Button, ButtonGroup, CopyButton, IconButton, SegmentedControl, SplitButton, ToggleButton, Toolbar |
+| Formulários (27) | Checkbox, ColorField, Combobox, CurrencyField, DatePicker, DateRangePicker, ErrorSummary, Fieldset, FileUploader, Form, InlineEdit, Listbox, MultiSelect, NumberField, PasswordField, Picker, PinInput, RadioGroup, Rating, Search, Select, Slider, Switch, TagInput, TextArea, TextField, TimeField |
 | Feedback (10) | Alert, Banner, EmptyState, LoadingOverlay, Meter, ProgressBar, ProgressCircle, Skeleton, Spinner, Toast |
 | Sobreposições (11) | CommandPalette, ConfirmDialog, ContextMenu, Drawer, Dropdown, HoverCard, Modal, Popover, Toggletip, Tooltip, Tour |
 | Navegação (12) | AppHeader, BackToTop, BottomNavigation, Breadcrumb, Link, MonthPaginator, Paginator, SideNav, SkipLink, Stepper, TableOfContents, Tabs |
-| Exibição de dados (21) | Accordion, Avatar, AvatarGroup, Badge, BarChart, Card, Carousel, Chip, CodeBlock, DescriptionList, Image, Kbd, LineChart, List, SortableList, Sparkline, Stat, Table, Tag, Timeline, TreeView |
+| Exibição de dados (27) | Accordion, Avatar, AvatarGroup, Badge, BarChart, BarList, Blockquote, Card, Carousel, Chip, CodeBlock, DescriptionList, Disclosure, DonutChart, Image, Kbd, LineChart, List, ListView, Prose, SortableList, Sparkline, Stat, Table, Tag, Timeline, TreeView |
 | Layout (9) | AppShell, Container, Divider, Footer, Grid, PageHeader, Paper, Splitter, Stack |
 | Utilitários (6) | ExpandableText, Highlight, RelativeTime, Reveal, TruncatedText, VisuallyHidden |
 

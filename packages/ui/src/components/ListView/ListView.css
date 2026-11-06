@@ -1,0 +1,391 @@
+/* ---------------------------------------------------------------------------
+ * ListView — lista interativa (padrão Grid do APG em uma coluna).
+ *
+ * Caixa com borda de 1px e separadores de 1px entre as linhas. Cada linha
+ * (.or-list-view__item, role="row") tem uma célula flexível: caixa de seleção,
+ * visual (icon), conteúdo (título + descrição, que quebram linha) e ações, que
+ * nunca encolhem — a 320px o texto quebra e as ações continuam alcançáveis.
+ *
+ * Movimento: fundo de hover/foco/seleção em --or-duration-fast; a barra de
+ * acento da linha selecionada cresce do centro com --or-ease-spring; o check
+ * entra com or-scale-in + --or-ease-bounce; pressionar escurece a linha em
+ * --or-duration-press. Tudo zera em prefers-reduced-motion (tokens).
+ * ------------------------------------------------------------------------- */
+
+.or-list-view {
+  --_row: 3.5rem;
+  --_pad-y: var(--or-space-3);
+  --_pad-x: var(--or-space-4);
+  --_gap: var(--or-space-3);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: var(--or-border-thin) solid var(--or-color-border);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-md);
+  line-height: var(--or-leading-tight);
+}
+
+.or-list-view--sm {
+  --_row: 2.5rem;
+  --_pad-y: var(--or-space-2);
+  --_pad-x: var(--or-space-3);
+  --_gap: var(--or-space-2);
+
+  font-size: var(--or-text-sm);
+}
+
+/* Linha ------------------------------------------------------------------- */
+
+.or-list-view__item {
+  position: relative;
+  flex-shrink: 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Separadores só entre as linhas: nada acima da primeira. */
+.or-list-view > :first-child {
+  border-top: 0;
+}
+
+/* Barra de acento da linha selecionada: cresce do centro (scaleY) com spring. */
+.or-list-view__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--or-border-accent);
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+  pointer-events: none;
+}
+
+.or-list-view--actionable .or-list-view__item:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+.or-list-view__item:focus {
+  outline: none;
+}
+
+.or-list-view__item:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+/* Hover e foco visível têm a mesma resposta. */
+.or-list-view__item:not([aria-selected='true']):focus-visible {
+  background: var(--or-color-surface-hover);
+}
+
+@media (hover: hover) {
+  .or-list-view--actionable
+    .or-list-view__item:not([aria-disabled='true'], [aria-selected='true']):hover {
+    background: var(--or-color-surface-hover);
+  }
+}
+
+/* Pressionar: o fundo escurece um tom (linhas não "afundam" para não quebrar os
+   separadores). Não reage ao pressionar a caixa de seleção ou as ações. */
+.or-list-view--actionable
+  .or-list-view__item:not([aria-disabled='true']):active:not(
+    :has(.or-list-view__actions :active, .or-list-view__check :active)
+  ) {
+  background: var(--or-color-surface-active);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-list-view__cell {
+  display: flex;
+  align-items: center;
+  gap: var(--_gap);
+  min-width: 0;
+  min-height: var(--_row);
+  padding: var(--_pad-y) var(--_pad-x);
+}
+
+/* Slots ------------------------------------------------------------------- */
+
+.or-list-view__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--or-color-text-subtle);
+  transition: color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-list-view__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.or-list-view__label {
+  font-weight: var(--or-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.or-list-view__description {
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text-subtle);
+  overflow-wrap: anywhere;
+}
+
+.or-list-view--sm .or-list-view__description {
+  font-size: var(--or-text-xs);
+}
+
+/* As ações nunca encolhem: em telas estreitas quem quebra é o texto. */
+.or-list-view__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--or-space-1);
+}
+
+/* Seleção ------------------------------------------------------------------ */
+
+.or-list-view__item[aria-selected='true'] {
+  background: var(--or-color-accent-subtle);
+}
+
+.or-list-view__item[aria-selected='true']::before {
+  transform: scaleY(1);
+}
+
+.or-list-view__item[aria-selected='true'] .or-list-view__label {
+  font-weight: var(--or-weight-semibold);
+}
+
+.or-list-view__item[aria-selected='true'] .or-list-view__icon {
+  color: var(--or-color-accent-text);
+}
+
+/* Caixa de seleção (checkbox nativo invisível sobre uma caixa desenhada, 24×24px de alvo). */
+.or-list-view__check {
+  position: relative;
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.or-list-view__check-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.or-list-view__check-input:disabled {
+  cursor: not-allowed;
+}
+
+.or-list-view__check-box {
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  color: var(--or-color-text-on-accent);
+  pointer-events: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+/* O check entra com um pequeno "pop". */
+.or-list-view__check-box .or-icon {
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+.or-list-view__check-input:hover:not(:disabled) + .or-list-view__check-box {
+  border-color: var(--or-color-text-muted);
+}
+
+/* Pressionar: a caixa encolhe e volta com --or-ease-bounce ao soltar. */
+.or-list-view__check-input:active:not(:disabled) + .or-list-view__check-box {
+  transform: scale(0.85);
+  transition-duration: var(--or-duration-fast), var(--or-duration-fast), var(--or-duration-press);
+}
+
+.or-list-view__check-input:checked + .or-list-view__check-box {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent);
+}
+
+.or-list-view__check-input:focus-visible + .or-list-view__check-box {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Seleção única com onAction: botão de opção (círculo com ponto), como o Radio. */
+.or-list-view__check--radio .or-list-view__check-box {
+  border-radius: var(--or-radius-full);
+}
+
+.or-list-view__check--radio .or-list-view__check-box::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--or-radius-full);
+  background: var(--or-color-accent);
+  opacity: 0;
+  transform: scale(0.2);
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-list-view__check--radio .or-list-view__check-input:checked + .or-list-view__check-box {
+  background: var(--or-color-surface);
+}
+
+/* O ponto entra com or-scale-in e --or-ease-bounce. */
+.or-list-view__check--radio .or-list-view__check-input:checked + .or-list-view__check-box::after {
+  opacity: 1;
+  transform: none;
+  animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
+}
+
+/* Desabilitado ---------------------------------------------------------------
+ * Como no TreeView/Listbox, a linha desabilitada continua focável: o conteúdo
+ * fica esmaecido, sem hover nem "pressionar", mas com foco do teclado ganha o
+ * mesmo fundo e o mesmo contorno das outras linhas (o contorno, na linha, não
+ * esmaece). A caixa segue o Listbox: borda e fundo neutros, check apagado.
+ * ------------------------------------------------------------------------- */
+
+.or-list-view__item[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+.or-list-view__item[aria-disabled='true'] > .or-list-view__cell {
+  opacity: 0.45;
+}
+
+.or-list-view__check-input:disabled + .or-list-view__check-box {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  color: var(--or-color-text-subtle);
+}
+
+.or-list-view__check--radio .or-list-view__check-input:disabled + .or-list-view__check-box::after {
+  background: var(--or-color-text-subtle);
+}
+
+/* Estado vazio --------------------------------------------------------------- */
+
+.or-list-view__empty {
+  padding: var(--or-space-8) var(--or-space-6);
+  text-align: center;
+  color: var(--or-color-text-subtle);
+  animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
+}
+
+/* Um EmptyState já traz o próprio respiro: sem padding em dobro (não estoura em telas estreitas). */
+.or-list-view__empty:has(> .or-empty-state) {
+  padding: 0;
+  text-align: start;
+}
+
+/* Alto contraste: fundos e sombras somem, então a seleção vira a barra lateral
+   e a caixa em Highlight (sem texto sobre Highlight: dispensa
+   forced-color-adjust: none) e hover/foco viram contornos. */
+@media (forced-colors: active) {
+  .or-list-view {
+    border-color: CanvasText;
+  }
+
+  .or-list-view__item {
+    border-top-color: GrayText;
+  }
+
+  .or-list-view__item::before {
+    background: Highlight;
+  }
+
+  .or-list-view__item[aria-selected='true'] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+
+  .or-list-view__item:focus-visible,
+  .or-list-view__item[aria-selected='true']:focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
+  }
+
+  @media (hover: hover) {
+    .or-list-view--actionable
+      .or-list-view__item:not([aria-disabled='true'], [aria-selected='true']):hover {
+      outline: 1px dashed CanvasText;
+      outline-offset: -1px;
+    }
+  }
+
+  .or-list-view__item[aria-selected='true'] .or-list-view__icon {
+    color: CanvasText;
+  }
+
+  .or-list-view__check-box {
+    border-color: CanvasText;
+  }
+
+  /* O check é um SVG (preserva a cor do autor): força a cor do sistema. */
+  .or-list-view__check-input:checked + .or-list-view__check-box {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .or-list-view__check-input:focus-visible + .or-list-view__check-box {
+    outline-color: CanvasText;
+  }
+
+  .or-list-view__item[aria-disabled='true'],
+  .or-list-view__item[aria-disabled='true'] .or-list-view__description {
+    color: GrayText;
+  }
+
+  .or-list-view__check--radio .or-list-view__check-input:checked + .or-list-view__check-box {
+    background: Canvas;
+  }
+
+  .or-list-view__check--radio .or-list-view__check-box::after {
+    background: Highlight;
+  }
+
+  .or-list-view__check-input:disabled + .or-list-view__check-box {
+    border-color: GrayText;
+    background: Canvas;
+    color: GrayText;
+  }
+
+  .or-list-view__check--radio
+    .or-list-view__check-input:disabled
+    + .or-list-view__check-box::after {
+    background: GrayText;
+  }
+}

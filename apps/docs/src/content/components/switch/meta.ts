@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Liga ou desliga uma configuração com efeito imediato — trilho e polegar quadrados, laranja quando ligado.',
     en: 'Turns a setting on or off with immediate effect — square track and thumb, orange when on.',
   },
-  status: 'new',
+  status: 'stable',
 }

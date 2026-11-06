@@ -5,6 +5,7 @@ export interface CheckboxGroupContextValue {
   value: string[]
   disabled: boolean
   invalid: boolean
+  variant: 'default' | 'card'
   toggle: (value: string, checked: boolean) => void
 }
 

@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Agrupa botões relacionados, lado a lado ou colados, e repassa tamanho e variante a todos eles.',
     en: 'Groups related buttons, side by side or attached, and passes size and variant down to all of them.',
   },
-  status: 'new',
+  status: 'stable',
 }

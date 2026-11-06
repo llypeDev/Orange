@@ -16,7 +16,15 @@ export default function Loading() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        gap: 12,
+        width: '100%',
+        maxWidth: 420,
+      }}
+    >
       <Search
         label="Buscar clientes"
         placeholder="Nome, e-mail ou CNPJ"

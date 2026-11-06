@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Rótulo curto exibido ao passar o ponteiro ou focar um elemento — ideal para nomear botões só com ícone.',
     en: 'Short label shown on hover or focus — ideal for naming icon-only buttons.',
   },
-  status: 'new',
+  status: 'stable',
 }

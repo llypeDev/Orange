@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Estrutura de página da aplicação: cabeçalho, navegação lateral recolhível, conteúdo, painel complementar e rodapé.',
     en: 'App page scaffold: header, collapsible side navigation, content, complementary panel and footer.',
   },
-  status: 'new',
+  status: 'stable',
 }
