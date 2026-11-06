@@ -191,7 +191,13 @@ pnpm --filter @orangesys/docs typecheck
 O CI tira screenshots das stories nos temas **dark** e **light** e compara com as baselines em
 `tests/visual/__screenshots__/` (suíte em `tests/visual/`, workflow `visual.yml`). Entra uma story por
 componente (a `--default` ou a primeira) mais as de `EXTRA_STORIES`; componentes não determinísticos
-ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`).
+ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`). Além disso:
+
+- **`MOBILE_STORIES`** — também em tela de celular (390 × 844), para componentes cujo layout muda em
+  tela estreita (baselines em `__screenshots__/<tema>/mobile/`).
+- **`OPEN_STORIES`** — estados abertos (menus, listas, calendário, paleta, tooltip): cada entrada diz
+  a interação que abre e o que precisa estar visível; a captura é da tela inteira, porque as
+  sobreposições ficam fora do `#storybook-root` (baselines em `__screenshots__/<tema>/open/`).
 
 - **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.63.0-noble` (mesma versão do
   `@playwright/test`), com data fixa, movimento reduzido e animações desligadas. Diferença acima da
