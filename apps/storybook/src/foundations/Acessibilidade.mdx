@@ -30,8 +30,10 @@ export const Cell = ({ theme, fg, bg, min }) => {
   return (
     <td style={{ padding: 8 }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ display: 'inline-grid', placeItems: 'center', width: 36, height: 26, background: t[bg], color: t[fg], border: '1px solid var(--or-color-border)', fontFamily: 'var(--or-font-display)', fontWeight: 600 }}>
-          Aa
+        {/* Pares de 3:1 são não-texto (WCAG 1.4.11: borda, foco, preenchimento): a amostra é um bloco
+            de cor, não "Aa" — texto nessa cor seria avaliado (e reprovado) pela regra de 4.5:1. */}
+        <span aria-hidden={min === 3 || undefined} style={{ display: 'inline-grid', placeItems: 'center', width: 36, height: 26, background: t[bg], color: t[fg], border: '1px solid var(--or-color-border)', fontFamily: 'var(--or-font-display)', fontWeight: 600 }}>
+          {min === 3 ? <span style={{ width: 20, height: 12, background: t[fg] }} /> : 'Aa'}
         </span>
         <span style={{ fontFamily: 'var(--or-font-mono)', fontSize: 12, color: pass ? 'var(--or-color-success-text)' : 'var(--or-color-danger-text)' }}>
           {ratio.toFixed(2)}:1 · {min === 3 ? (pass ? 'passa 3:1' : 'falha') : wcagLevel(ratio)}
