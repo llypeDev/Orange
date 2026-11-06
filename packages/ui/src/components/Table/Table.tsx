@@ -181,6 +181,7 @@ function TableInner<T>(
   const captionId = `${tableId}-caption`
   const selectAllRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const headRef = useRef<HTMLTableSectionElement>(null)
   const [announcement, setAnnouncement] = useState('')
   const sortedByUser = useRef(false)
 
@@ -301,6 +302,7 @@ function TableInner<T>(
   // Contêiner rolável (altura máxima ou tabela mais larga que a tela) vira região focável, para o
   // teclado alcançar a rolagem (WCAG 2.1.1).
   const scrollable = maxHeight !== undefined
+  useStickyHeadHeight(containerRef, headRef, scrollable)
   const focusableRegion = scrollable || overflowX
   const containerStyle: CSSProperties = { ...containerProps?.style, ...(scrollable ? { maxHeight } : null) }
 
@@ -329,7 +331,7 @@ function TableInner<T>(
         <caption id={captionId} className={cx('or-table__caption', hideCaption && 'or-visually-hidden')}>
           {caption}
         </caption>
-        <thead>
+        <thead ref={headRef}>
           <tr>
             {expandable && (
               <th scope="col" className="or-table__expand">
@@ -594,4 +596,31 @@ function useHorizontalOverflow(ref: { current: HTMLElement | null }, trackWidth 
     }
   }, [ref, trackWidth])
   return overflow
+}
+
+/**
+ * Com o cabeçalho fixo (`maxHeight`), publica a altura real do `<thead>` em `--_head-height` no
+ * contêiner rolável; o CSS a usa em `scroll-padding-top`. Assim, quando o foco sobe pela tabela
+ * (Shift+Tab), o navegador rola o elemento para baixo do cabeçalho em vez de deixá-lo escondido
+ * sob ele (WCAG 2.4.11). A altura é medida porque muda com a densidade, a fonte e a quebra dos
+ * títulos.
+ */
+function useStickyHeadHeight(
+  containerRef: { current: HTMLElement | null },
+  headRef: { current: HTMLElement | null },
+  enabled: boolean,
+) {
+  useEffect(() => {
+    const container = containerRef.current
+    const head = headRef.current
+    if (!enabled || !container || !head) return
+    const update = () => container.style.setProperty('--_head-height', `${head.offsetHeight}px`)
+    update()
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
+    observer?.observe(head)
+    return () => {
+      observer?.disconnect()
+      container.style.removeProperty('--_head-height')
+    }
+  }, [containerRef, headRef, enabled])
 }

@@ -84,6 +84,13 @@
   z-index: 1;
 }
 
+/* Ao rolar até o foco, o contêiner desconta a faixa do cabeçalho fixo (altura do thead medida
+   no Table.tsx): o elemento focado nunca fica escondido sob ele (WCAG 2.4.11). Os 4px a mais
+   cabem o anel de foco (2px + 2px de afastamento) dos botões da linha. */
+.or-table-container--scroll {
+  scroll-padding-top: calc(var(--_head-height, 0px) + var(--or-space-1));
+}
+
 .or-table__row-header {
   font-weight: var(--or-weight-semibold);
 }

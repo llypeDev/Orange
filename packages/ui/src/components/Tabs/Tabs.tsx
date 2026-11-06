@@ -47,6 +47,20 @@ function useTabsContext(component: string): TabsContextValue {
 
 const toIdPart = (value: string) => value.replace(/[^\w-]/g, '_')
 
+/**
+ * Rola só a lista (nunca a página) até a aba ficar inteira na área visível. O
+ * `focus()` do Chromium não rola uma aba que já está parcialmente visível, e a
+ * aba focada/selecionada ficava cortada na borda da lista.
+ */
+function revealTab(list: HTMLElement, tab: HTMLElement) {
+  const box = list.getBoundingClientRect()
+  const rect = tab.getBoundingClientRect()
+  if (rect.left < box.left) list.scrollLeft -= box.left - rect.left
+  else if (rect.right > box.right) list.scrollLeft += rect.right - box.right
+  if (rect.top < box.top) list.scrollTop -= box.top - rect.top
+  else if (rect.bottom > box.bottom) list.scrollTop += rect.bottom - box.bottom
+}
+
 export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Aba selecionada (controlado). */
   value?: string
@@ -200,6 +214,13 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
     if (first?.dataset.value) initialize(first.dataset.value)
   })
 
+  // A aba selecionada (por teclado, clique, valor inicial ou controlado) fica visível na lista.
+  useIsomorphicLayoutEffect(() => {
+    const list = listRef.current
+    const selected = getTabs().find((tab) => tab.dataset.value === value)
+    if (list && selected) revealTab(list, selected)
+  }, [value, getTabs])
+
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const tabs = getTabs().filter((tab) => !tab.disabled)
     const index = tabs.indexOf(document.activeElement as HTMLButtonElement)
@@ -215,6 +236,8 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
     event.preventDefault()
     const tab = tabs[next]
     tab.focus()
+    // Na ativação manual a aba focada ainda não está selecionada: revela aqui também.
+    if (listRef.current) revealTab(listRef.current, tab)
     if (activation === 'automatic' && tab.dataset.value) select(tab.dataset.value)
   }
 
