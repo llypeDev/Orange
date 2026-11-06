@@ -16,7 +16,7 @@ const meta = {
     },
   },
   argTypes: {
-    type: { control: 'inline-radio', options: ['single', 'multiple'] },
+    selectionMode: { control: 'inline-radio', options: ['single', 'multiple'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     variant: { control: 'inline-radio', options: ['outline', 'ghost'] },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },

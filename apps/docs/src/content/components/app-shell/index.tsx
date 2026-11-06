@@ -177,7 +177,6 @@ export default function AppShellPage() {
             { name: 'asideLabel', type: 'string', default: "'Painel lateral'", description: { pt: 'Nome do landmark complementar.', en: 'Complementary landmark name.' } },
             { name: 'navTitle', type: 'ReactNode', default: "'Menu'", description: { pt: 'Título do painel em telas estreitas.', en: 'Panel title on narrow screens.' } },
             { name: 'navDrawerBelow', type: "'md' | 'lg'", default: "'lg'", description: { pt: 'Abaixo de 768px (md) ou 1024px (lg) a navegação vai para um painel; a partir daí, a barra fica fixa ao lado do conteúdo.', en: 'Below 768px (md) or 1024px (lg) the navigation moves to a panel; from there up, the bar stays next to the content.' } },
-            { name: 'navBreakpoint', type: "'md' | 'lg'", deprecated: { replacement: 'navDrawerBelow', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de navDrawerBelow.', en: 'Former name of navDrawerBelow.' } },
             { name: 'navCollapsed', type: 'boolean', description: { pt: 'Barra recolhida (controlado).', en: 'Collapsed bar (controlled).' } },
             { name: 'defaultNavCollapsed', type: 'boolean', default: 'false', description: { pt: 'Barra recolhida inicialmente.', en: 'Initially collapsed bar.' } },
             { name: 'onNavCollapsedChange', type: '(collapsed: boolean) => void', description: { pt: 'Chamado ao recolher/expandir.', en: 'Called on collapse/expand.' } },

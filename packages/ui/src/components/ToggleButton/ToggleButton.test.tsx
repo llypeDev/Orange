@@ -150,30 +150,12 @@ describe('ToggleButtonGroup', () => {
     )
   })
 
-  it('type (depreciado) ainda define o modo e avisa no console', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const onChange = vi.fn()
-    render(
-      <ToggleButtonGroup type="multiple" aria-label="Formatação" onChange={onChange}>
-        <ToggleButton value="bold">Negrito</ToggleButton>
-        <ToggleButton value="italic">Itálico</ToggleButton>
-      </ToggleButtonGroup>,
-    )
-    await user.click(screen.getByRole('button', { name: 'Negrito' }))
-    await user.click(screen.getByRole('button', { name: 'Itálico' }))
-    expect(onChange).toHaveBeenLastCalledWith(['bold', 'italic'])
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`type` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('tipos: onChange recebe string[] no modo multiple e string | null no single', () => {
     expectTypeOf<
       Extract<ToggleButtonGroupProps, { selectionMode: 'multiple' }>['onChange']
     >().toEqualTypeOf<((value: string[]) => void) | undefined>()
-    expectTypeOf<Extract<ToggleButtonGroupProps, { type: 'multiple' }>['onChange']>().toEqualTypeOf<
-      ((value: string[]) => void) | undefined
-    >()
+    // @ts-expect-error `type` saiu na v1.0: use `selectionMode`.
+    void (() => <ToggleButtonGroup type="multiple" aria-label="Formatação" />)
     expectTypeOf<ToggleButtonGroupSingleProps['onChange']>().toEqualTypeOf<
       ((value: string | null) => void) | undefined
     >()

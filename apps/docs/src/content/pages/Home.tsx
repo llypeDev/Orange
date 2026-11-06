@@ -15,6 +15,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties
 import { Link, useNavigate } from 'react-router-dom'
 import { useLang, type Localized } from '../../i18n'
 import { CodeBlock } from '../../kit'
+import { libVersion } from '../../version'
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import '../../styles/home.css'
 import { Showcase } from './home/Showcase'
@@ -449,7 +450,7 @@ export default function Home() {
         <div className="home-grid-lines" aria-hidden="true" />
         <Link to={to('/components/overview')} className="home-chip">
           <span className="doc-square" aria-hidden="true" />
-          <span className="home-chip__version">v0.6.0</span>
+          <span className="home-chip__version">v{libVersion}</span>
           <span className="home-chip__sep" aria-hidden="true" />
           <span className="home-chip__text">
             {t({ pt: `${componentMetas.length} componentes prontos para usar.`, en: `${componentMetas.length} components ready to use.` })}

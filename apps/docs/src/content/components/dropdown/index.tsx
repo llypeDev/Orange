@@ -152,7 +152,6 @@ export default function DropdownPage() {
           rows={[
             { name: 'value / defaultValue', type: 'string', description: { pt: 'Grupo: valor selecionado.', en: 'Group: selected value.' } },
             { name: 'onChange', type: '(value: string) => void', description: { pt: 'Grupo: chamado com o novo valor.', en: 'Group: called with the new value.' } },
-            { name: 'onValueChange', type: '(value: string) => void', deprecated: { replacement: 'onChange', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Grupo: nome antigo de onChange.', en: 'Group: former name of onChange.' } },
             { name: 'label', type: 'ReactNode', description: { pt: 'Grupo: título visível que nomeia o grupo.', en: 'Group: visible title naming the group.' } },
             { name: 'value', type: 'string', required: true, description: { pt: 'Item: valor da opção.', en: 'Item: option value.' } },
             { name: 'closeOnSelect', type: 'boolean', default: 'true', description: { pt: 'Item: fecha o menu ao escolher.', en: 'Item: closes the menu on pick.' } },

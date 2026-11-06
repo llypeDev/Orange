@@ -96,14 +96,6 @@ describe('Stepper', () => {
     expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('Entrega (current)')
   })
 
-  it('activeStep (depreciado) ainda define a etapa atual e avisa no console', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(<Stepper steps={steps} activeStep={1} />)
-    expect(screen.getAllByRole('listitem')[1]).toHaveAttribute('aria-current', 'step')
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`activeStep` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('sem step, a primeira etapa é a atual', () => {
     render(<Stepper steps={steps} />)
     expect(screen.getAllByRole('listitem')[0]).toHaveAttribute('aria-current', 'step')

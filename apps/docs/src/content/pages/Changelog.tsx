@@ -2,6 +2,7 @@ import { Icon } from '@orangesys/ui'
 import type { ReactNode } from 'react'
 import { useLang, type Localized } from '../../i18n'
 import { DocPage } from '../../kit'
+import { isUnreleased } from '../../version'
 import { REPO_URL } from '../registry'
 import '../../styles/changelog.css'
 
@@ -10,7 +11,6 @@ type Kind = 'new' | 'improved' | 'fixed'
 interface Entry {
   date: string
   version: string
-  unreleased?: boolean
   title: Localized<string>
   summary: Localized<string>
   items: { kind: Kind; text: Localized<ReactNode> }[]
@@ -24,6 +24,23 @@ const kindLabel: Record<Kind, Localized<string>> = {
 
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
+  {
+    date: '2026-11-06',
+    version: 'v1.0.0',
+    title: {
+      pt: 'Orange 1.0: API estável',
+      en: 'Orange 1.0: stable API',
+    },
+    summary: {
+      pt: 'A API pública congela: daqui em diante, mudanças incompatíveis só numa nova major, sempre depois de uma depreciação. Saem os 14 nomes depreciados na 0.6.',
+      en: 'The public API freezes: from now on, breaking changes only in a new major, always after a deprecation. The 14 names deprecated in 0.6 are removed.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'Removidas as props antigas: fullWidth (SegmentedControl), onValueChange (DropdownRadioGroup), onFilesChange (FileUploader), onSelectionChange (Table), visible (LoadingOverlay), onClose (Toast), type (ChipGroup e ToggleButtonGroup), activeStep (Stepper) e navBreakpoint (AppShell).', en: 'Removed the old props: fullWidth (SegmentedControl), onValueChange (DropdownRadioGroup), onFilesChange (FileUploader), onSelectionChange (Table), visible (LoadingOverlay), onClose (Toast), type (ChipGroup and ToggleButtonGroup), activeStep (Stepper) and navBreakpoint (AppShell).' } },
+      { kind: 'improved', text: { pt: 'clamp, range, setRef e getFocusableElements saem da API pública; cx, mergeRefs, composeEventHandlers e interpolate continuam.', en: 'clamp, range, setRef and getFocusableElements leave the public API; cx, mergeRefs, composeEventHandlers and interpolate stay.' } },
+      { kind: 'improved', text: { pt: 'O site acompanha a versão publicada sozinho: selo, versão atual e “em desenvolvimento” vêm do package.json.', en: 'The site follows the published version on its own: badge, current version and “unreleased” come from package.json.' } },
+    ],
+  },
   {
     date: '2026-11-06',
     version: 'v0.6.0',
@@ -198,7 +215,7 @@ export default function Changelog() {
                 {formatDate(entry.date, lang)}
               </time>
               <span className="chg-entry__version">{entry.version}</span>
-              {entry.unreleased && (
+              {isUnreleased(entry.version) && (
                 <span className="chg-entry__status">{t({ pt: 'Em desenvolvimento', en: 'Unreleased' })}</span>
               )}
             </div>

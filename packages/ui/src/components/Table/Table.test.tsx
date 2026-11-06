@@ -126,17 +126,6 @@ describe('Table', () => {
     expect(screen.getByRole('checkbox', { name: 'Selecionar linha: Padaria Aurora' })).not.toBeChecked()
   })
 
-  it('onSelectionChange (depreciado) ainda é chamado e avisa no console', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const onSelectionChange = vi.fn()
-    render(<Table caption="Faturas" columns={columns} data={data} selectable onSelectionChange={onSelectionChange} />)
-    await user.click(screen.getByRole('checkbox', { name: 'Selecionar linha Clínica Bem Viver' }))
-    expect(onSelectionChange).toHaveBeenLastCalledWith(['inv-2'])
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onSelectionChange` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('mostra o estado vazio', () => {
     const { rerender } = render(<Table caption="Faturas" columns={columns} data={[]} />)
     expect(screen.getByRole('cell', { name: 'Nenhum resultado encontrado' })).toHaveAttribute('colspan', '3')

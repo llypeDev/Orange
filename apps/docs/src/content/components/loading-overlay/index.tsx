@@ -158,12 +158,6 @@ export default function LoadingOverlayPage() {
               },
             },
             {
-              name: 'visible',
-              type: 'boolean',
-              deprecated: { replacement: 'open', since: '0.6.0', removal: '1.0.0' },
-              description: { pt: 'Nome antigo de open.', en: 'Former name of open.' },
-            },
-            {
               name: 'message',
               type: 'ReactNode',
               default: "t('loading')",

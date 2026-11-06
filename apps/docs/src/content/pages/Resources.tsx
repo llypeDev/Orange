@@ -4,6 +4,7 @@ import tokensCss from '@orangesys/tokens/tokens.css?raw'
 import { useMemo, useState } from 'react'
 import { T, useLang, type Localized } from '../../i18n'
 import { Callout, Code, CodeBlock, DocPage, Prose, Section } from '../../kit'
+import { libVersion } from '../../version'
 import { REPO_URL, STORYBOOK_URL } from '../registry'
 import { Cards, Segmented } from './_shared/Blocks'
 
@@ -273,7 +274,7 @@ export default function Resources() {
           columns={2}
           items={[
             {
-              eyebrow: { pt: 'v0.1.0 · MIT', en: 'v0.1.0 · MIT' },
+              eyebrow: { pt: `v${libVersion} · MIT`, en: `v${libVersion} · MIT` },
               title: { pt: '@orangesys/tokens', en: '@orangesys/tokens' },
               text: {
                 pt: (
@@ -294,7 +295,7 @@ export default function Resources() {
               meta: 'pnpm add @orangesys/tokens',
             },
             {
-              eyebrow: { pt: 'v0.1.0 · MIT', en: 'v0.1.0 · MIT' },
+              eyebrow: { pt: `v${libVersion} · MIT`, en: `v${libVersion} · MIT` },
               title: { pt: '@orangesys/ui', en: '@orangesys/ui' },
               text: {
                 pt: (

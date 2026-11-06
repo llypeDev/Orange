@@ -4,13 +4,7 @@ import { useState } from 'react'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { Icon } from '../../icons'
 import { expectNoA11yViolations } from '../../test/axe'
-import {
-  Chip,
-  ChipGroup,
-  type ChipGroupMultipleProps,
-  type ChipGroupProps,
-  type ChipGroupSingleProps,
-} from './Chip'
+import { Chip, ChipGroup, type ChipGroupMultipleProps, type ChipGroupSingleProps } from './Chip'
 
 describe('Chip', () => {
   it('é um botão de alternância com aria-pressed', async () => {
@@ -86,30 +80,12 @@ describe('ChipGroup', () => {
     expect(onChange).toHaveBeenLastCalledWith(['pendente'])
   })
 
-  it('type (depreciado) ainda define o modo e avisa no console', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const onChange = vi.fn()
-    render(
-      <ChipGroup type="single" label="Período" onChange={onChange}>
-        <Chip value="7d">7 dias</Chip>
-        <Chip value="30d">30 dias</Chip>
-      </ChipGroup>,
-    )
-    await user.click(screen.getByRole('button', { name: '7 dias' }))
-    await user.click(screen.getByRole('button', { name: '30 dias' }))
-    expect(onChange).toHaveBeenLastCalledWith('30d')
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`type` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('tipos: onChange recebe string | null no modo single e string[] por padrão', () => {
     expectTypeOf<ChipGroupSingleProps['onChange']>().toEqualTypeOf<
       ((value: string | null) => void) | undefined
     >()
-    expectTypeOf<Extract<ChipGroupProps, { type: 'single' }>['onChange']>().toEqualTypeOf<
-      ((value: string | null) => void) | undefined
-    >()
+    // @ts-expect-error `type` saiu na v1.0: use `selectionMode`.
+    void (() => <ChipGroup type="single" label="Período" />)
     expectTypeOf<ChipGroupMultipleProps['onChange']>().toEqualTypeOf<
       ((value: string[]) => void) | undefined
     >()

@@ -16,7 +16,7 @@ import {
 } from 'react'
 import { useControllableState, useId, useIsomorphicLayoutEffect, useMediaQuery } from '../../hooks'
 import { useLocale } from '../../providers'
-import { composeEventHandlers, cx, deprecate, mergeRefs } from '../../utils'
+import { composeEventHandlers, cx, mergeRefs } from '../../utils'
 import { AppHeader } from '../AppHeader'
 import { Drawer } from '../Drawer'
 import { Footer } from '../Footer'
@@ -103,11 +103,6 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
    * (Drawer); a partir dele, fica fixa ao lado do conteúdo. Padrão: `lg`.
    */
   navDrawerBelow?: AppShellBreakpoint
-  /**
-   * @deprecated Use `navDrawerBelow` (no padrão `*Below` de `AppHeader.collapseBelow` e
-   * `Splitter.stackBelow`). Sai na v1.0.
-   */
-  navBreakpoint?: AppShellBreakpoint
   /** Barra lateral recolhida (controlado). */
   navCollapsed?: boolean
   /** Barra lateral recolhida inicialmente (não controlado). */
@@ -154,8 +149,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     mainElement = 'main',
     skipLink = true,
     skipLinkLabel,
-    navDrawerBelow: navDrawerBelowProp,
-    navBreakpoint: navBreakpointProp,
+    navDrawerBelow = 'lg',
     navCollapsed: navCollapsedProp,
     defaultNavCollapsed = false,
     onNavCollapsedChange,
@@ -177,15 +171,8 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
   const rootRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLElement>(null)
 
-  if (navBreakpointProp !== undefined) {
-    deprecate(
-      'AppShell: `navBreakpoint` está depreciado e sai na v1.0. Use `navDrawerBelow`.',
-      'app-shell.navBreakpoint',
-    )
-  }
-  const navBreakpoint = navDrawerBelowProp ?? navBreakpointProp ?? 'lg'
   // No servidor (sem matchMedia) assume tela larga; o CSS esconde a barra abaixo do ponto de quebra.
-  const isWide = useMediaQuery(`(min-width: ${BREAKPOINTS[navBreakpoint]})`, true)
+  const isWide = useMediaQuery(`(min-width: ${BREAKPOINTS[navDrawerBelow]})`, true)
   const isCompact = !isWide
 
   const [navCollapsed, setNavCollapsed] = useControllableState({
@@ -364,7 +351,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
           stickyNav && 'or-app-shell--sticky-nav',
           className,
         )}
-        data-breakpoint={navBreakpoint}
+        data-breakpoint={navDrawerBelow}
         data-compact={isCompact || undefined}
         data-has-nav={hasSidebar || undefined}
         data-collapsed={(hasSidebar && navCollapsed) || undefined}

@@ -490,12 +490,6 @@ export default function ToastPage() {
                   en: 'Shows the close button and calls it on click.',
                 },
               },
-              {
-                name: 'onClose',
-                type: '() => void',
-                deprecated: { replacement: 'onDismiss', since: '0.6.0', removal: '1.0.0' },
-                description: { pt: 'Nome antigo de onDismiss.', en: 'Former name of onDismiss.' },
-              },
             ]}
           />
         </Section>

@@ -180,7 +180,6 @@ export default function SegmentedControlPage() {
             { name: 'onChange', type: '(value: string) => void', description: { pt: 'Chamado quando a seleção muda.', en: 'Called when the selection changes.' } },
             { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: { pt: 'Altura do controle.', en: 'Control height.' } },
             { name: 'block', type: 'boolean', default: 'false', description: { pt: 'Ocupa toda a largura disponível; as opções dividem o espaço igualmente.', en: 'Fills the available width; options share the space equally.' } },
-            { name: 'fullWidth', type: 'boolean', deprecated: { replacement: 'block', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de block.', en: 'Former name of block.' } },
             { name: 'iconOnly', type: 'boolean', default: 'false', description: { pt: 'Mostra só os ícones; os rótulos ficam ocultos visualmente.', en: 'Shows only icons; labels are visually hidden.' } },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: { pt: 'Esconde o rótulo do grupo visualmente.', en: 'Visually hides the group label.' } },
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto de ajuda, vinculado por aria-describedby.', en: 'Help text, linked via aria-describedby.' } },

@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
-import { cx, deprecate, devWarning, mergeRefs } from '../../utils'
+import { cx, devWarning, mergeRefs } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './SegmentedControl.css'
 
@@ -48,8 +48,6 @@ export interface SegmentedControlProps extends Omit<
   size?: SegmentedControlSize
   /** Ocupa toda a largura disponível; as opções dividem o espaço igualmente. */
   block?: boolean
-  /** @deprecated Use `block` (o mesmo nome do `Button`). Sai na v1.0. */
-  fullWidth?: boolean
   /** Mostra apenas os ícones; os rótulos continuam disponíveis para leitores de tela. */
   iconOnly?: boolean
   /** Desabilita o grupo inteiro. */
@@ -79,8 +77,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
       defaultValue,
       onChange,
       size = 'md',
-      block: blockProp,
-      fullWidth,
+      block = false,
       iconOnly = false,
       disabled = false,
       name: nameProp,
@@ -91,13 +88,6 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     },
     ref,
   ) {
-    if (fullWidth !== undefined) {
-      deprecate(
-        'SegmentedControl: `fullWidth` está depreciado e sai na v1.0. Use `block`.',
-        'segmented-control.fullWidth',
-      )
-    }
-    const block = blockProp ?? fullWidth ?? false
     const id = useId('or-segmented', idProp)
     const name = nameProp ?? id
     const labelId = `${id}-label`

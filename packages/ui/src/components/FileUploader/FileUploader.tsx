@@ -14,7 +14,7 @@ import {
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx, deprecate, mergeRefs } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
 import { Button } from '../Button'
 import { Field, useField, type FieldContextValue } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -67,8 +67,6 @@ export interface FileUploaderProps extends Omit<
   defaultValue?: FileUploaderItem[]
   /** Chamado com a lista completa sempre que arquivos entram ou saem. */
   onChange?: (items: FileUploaderItem[]) => void
-  /** @deprecated Use `onChange` (par de `value`/`defaultValue`, como nos outros campos). Sai na v1.0. */
-  onFilesChange?: (items: FileUploaderItem[]) => void
   /** Chamado só com os arquivos aceitos de cada seleção — útil para iniciar o envio. */
   onFilesAdded?: (items: FileUploaderItem[]) => void
   /** Chamado quando o usuário remove um arquivo. */
@@ -391,7 +389,6 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
     value,
     defaultValue = [],
     onChange,
-    onFilesChange,
     onFilesAdded,
     onFileRemove,
     name,
@@ -402,16 +399,10 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
   ref,
 ) {
   const { t, locale } = useLocale()
-  if (onFilesChange !== undefined) {
-    deprecate(
-      'FileUploader: `onFilesChange` está depreciado e sai na v1.0. Use `onChange`.',
-      'file-uploader.onFilesChange',
-    )
-  }
   const [items, setItems] = useControllableState<FileUploaderItem[]>({
     value,
     defaultValue,
-    onChange: onChange ?? onFilesChange,
+    onChange,
   })
   const [countError, setCountError] = useState<string | null>(null)
   const [announcement, setAnnouncement] = useState('')

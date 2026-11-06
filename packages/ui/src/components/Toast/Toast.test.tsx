@@ -85,17 +85,6 @@ describe('Toast', () => {
     render(<Toast title="Link copiado" />)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
-
-  it('onClose (depreciado) ainda mostra o botão de fechar e avisa no console', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const onClose = vi.fn()
-    render(<Toast title="Link copiado" onClose={onClose} />)
-    await user.click(screen.getByRole('button', { name: 'Fechar' }))
-    expect(onClose).toHaveBeenCalledTimes(1)
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onClose` está depreciado'))
-    warn.mockRestore()
-  })
 })
 
 describe('ToastProvider / useToast', () => {

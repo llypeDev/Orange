@@ -342,16 +342,6 @@ describe('AppShell', () => {
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
   })
 
-  it('navBreakpoint (depreciado) ainda funciona e avisa no console', () => {
-    mockViewport(900)
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const { container } = render(<OrdersShell navBreakpoint="md" />)
-    expect(container.firstChild).toHaveAttribute('data-breakpoint', 'md')
-    expect(container.firstChild).not.toHaveAttribute('data-compact')
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`navBreakpoint` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('ao passar para a tela larga, fecha o painel e mostra a barra lateral', async () => {
     const viewport = mockViewport(390)
     const user = userEvent.setup()

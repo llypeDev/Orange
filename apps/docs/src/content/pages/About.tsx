@@ -2,6 +2,7 @@ import { iconNames, ptBR } from '@orangesys/ui'
 import { primitives, themes } from '@orangesys/tokens'
 import { T, useLang } from '../../i18n'
 import { Bullets, Callout, Code, DefinitionTable, DocPage, Prose, Section } from '../../kit'
+import { isPreOne, libVersion } from '../../version'
 import { componentMetas, REPO_URL, STORYBOOK_URL } from '../registry'
 import { Cards, Stats, Steps, TableWrap } from './_shared/Blocks'
 
@@ -93,17 +94,23 @@ const roadmap: {
   },
   {
     version: '1.0',
-    status: 'now',
+    status: isPreOne ? 'now' : 'done',
     items: [
       {
         pt: 'API estável com política formal de depreciação',
         en: 'Stable API with a formal deprecation policy',
         state: 'done',
         note: {
-          pt: 'Política e ferramentas prontas; a API é congelada no lançamento da 1.0.',
-          en: 'Policy and tooling in place; the API freezes when 1.0 ships.',
+          pt: 'Revisão da API dos 157 componentes, nomes depreciados removidos e API congelada na 1.0.',
+          en: 'API review of all 157 components, deprecated names removed and the API frozen at 1.0.',
         },
       },
+    ],
+  },
+  {
+    version: '1.x',
+    status: 'next',
+    items: [
       {
         pt: 'Auditoria externa de acessibilidade (WCAG 2.2 AA)',
         en: 'External accessibility audit (WCAG 2.2 AA)',
@@ -530,9 +537,19 @@ export default function About() {
                   <a href="https://semver.org/lang/pt-BR/" target="_blank" rel="noreferrer">
                     Versionamento Semântico
                   </a>{' '}
-                  e são versionados juntos. Versão atual: <strong>0.1.0</strong>. Enquanto
-                  estivermos em <Code>0.x</Code>, versões minor podem trazer mudanças incompatíveis
-                  — sempre listadas no changelog com o caminho de migração.
+                  e são versionados juntos. Versão atual: <strong>{libVersion}</strong>.{' '}
+                  {isPreOne ? (
+                    <>
+                      Enquanto estivermos em <Code>0.x</Code>, versões minor podem trazer mudanças
+                      incompatíveis — sempre listadas no changelog com o caminho de migração.
+                    </>
+                  ) : (
+                    <>
+                      A API pública é estável: mudanças incompatíveis só numa nova major, sempre
+                      depois de uma depreciação publicada numa minor e com o caminho de migração no
+                      changelog.
+                    </>
+                  )}
                 </>
               }
               en={
@@ -541,9 +558,18 @@ export default function About() {
                   <a href="https://semver.org/" target="_blank" rel="noreferrer">
                     Semantic Versioning
                   </a>{' '}
-                  and are versioned together. Current version: <strong>0.1.0</strong>. While on{' '}
-                  <Code>0.x</Code>, minor versions may include breaking changes — always listed in
-                  the changelog with a migration path.
+                  and are versioned together. Current version: <strong>{libVersion}</strong>.{' '}
+                  {isPreOne ? (
+                    <>
+                      While on <Code>0.x</Code>, minor versions may include breaking changes —
+                      always listed in the changelog with a migration path.
+                    </>
+                  ) : (
+                    <>
+                      The public API is stable: breaking changes only in a new major, always after
+                      a deprecation shipped in a minor and with the migration path in the changelog.
+                    </>
+                  )}
                 </>
               }
             />
