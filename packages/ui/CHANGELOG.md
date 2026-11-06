@@ -1,5 +1,15 @@
 # @orangesys/ui
 
+## 1.3.2
+
+### Patch Changes
+
+- [#33](https://github.com/llypeDev/Orange/pull/33) [`01bebbc`](https://github.com/llypeDev/Orange/commit/01bebbcc8092fc7f84ed9c06d870e0818bdfe8fc) Thanks [@llypeDev](https://github.com/llypeDev)! - `SplitButton`: o menu de ações para em 24rem de altura (e rola acima disso), como o do `Dropdown`. Antes só respeitava o espaço disponível, e numa tela alta um menu com muitas ações esticava até o fim da tela.
+
+- [#33](https://github.com/llypeDev/Orange/pull/33) [`01bebbc`](https://github.com/llypeDev/Orange/commit/01bebbcc8092fc7f84ed9c06d870e0818bdfe8fc) Thanks [@llypeDev](https://github.com/llypeDev)! - Tree-shaking de verdade: o pacote passa a ser publicado com um arquivo por módulo (`dist/esm` e `dist/cjs`), e o bundler do seu projeto descarta o que não é importado. Antes, num arquivo único, importar só o `Button` trazia a biblioteca inteira (~147 KB gzip); agora são ~5 KB (o `DatePicker` ~21 KB, o `useScrollSpy` ~1 KB). Os exports, os tipos e o `@orangesys/ui/styles.css` não mudam. O `@orangesys/tokens` (dependência, sempre na mesma versão) deixa de ser embutido e passa a ser importado — sem cópia duplicada para quem também usa os tokens.
+- Updated dependencies []:
+  - @orangesys/tokens@1.3.2
+
 ## 1.3.1
 
 ### Patch Changes
