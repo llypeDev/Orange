@@ -81,8 +81,9 @@
   display: flex;
   flex-direction: column;
   max-width: min(22rem, calc(100vw - 1rem));
-  /* Com pouco espaço na tela, o menu rola (a altura disponível vem do posicionamento). */
-  max-height: var(--or-floating-available-height, none);
+  /* No máximo 24rem, como o menu do Dropdown; com menos espaço na tela, a altura disponível (vem
+     do posicionamento). Acima disso, o menu rola. */
+  max-height: min(24rem, var(--or-floating-available-height, 24rem));
   padding: var(--or-space-1);
   overflow-y: auto;
   overscroll-behavior: contain;

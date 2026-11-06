@@ -172,6 +172,27 @@ test.describe('Listas e menus: o item ativo fica à vista', () => {
     await expectActiveVisible(page)
   })
 
+  test('SplitButton com muitas ações: o menu para em 24rem, como o do Dropdown, e rola', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-splitbutton--many-actions', {
+      viewport: { width: 900, height: 1000 },
+    })
+    await page.locator('[aria-haspopup="menu"]').first().focus()
+    await page.keyboard.press('ArrowDown')
+    const menu = page.getByRole('menu')
+    await expect(menu).toBeVisible()
+    const { height, scrolls, rem } = await menu.evaluate((el) => ({
+      height: el.getBoundingClientRect().height,
+      scrolls: el.scrollHeight > el.clientHeight + 1,
+      rem: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+    }))
+    expect(height).toBeLessThanOrEqual(24 * rem + 0.5)
+    expect(scrolls).toBe(true)
+    await page.keyboard.press('End')
+    await expectActiveVisible(page)
+  })
+
   test('CommandPalette: voltar ao primeiro item mostra o título do primeiro grupo', async ({
     page,
   }) => {

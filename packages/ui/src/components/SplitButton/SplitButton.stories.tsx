@@ -72,3 +72,26 @@ export const Open: Story = {
 export const Disabled: Story = {
   args: { disabled: true },
 }
+
+/** Muitas ações: o menu para em 24rem (como o do Dropdown) e rola. */
+export const ManyActions: Story = {
+  args: {
+    children: 'Exportar',
+    actions: [
+      'PDF',
+      'CSV',
+      'XLSX',
+      'JSON',
+      'XML',
+      'Markdown',
+      'HTML',
+      'Imagem PNG',
+      'Imagem SVG',
+      'Texto puro',
+      'Planilha ODS',
+      'Documento ODT',
+      'Arquivo ZIP',
+      'Pacote do projeto',
+    ].map((format) => ({ label: `Exportar como ${format}`, onSelect: fn() })),
+  },
+}
