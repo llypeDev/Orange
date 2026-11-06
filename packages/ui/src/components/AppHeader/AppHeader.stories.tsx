@@ -72,6 +72,71 @@ export const Sticky: Story = {
   ),
 }
 
+export const WithSubmenus: Story = {
+  args: {
+    items: [
+      {
+        label: 'Produtos',
+        href: '#produtos',
+        columns: 2,
+        items: [
+          { label: 'Loja virtual', href: '#loja-virtual', description: 'Catálogo, carrinho e checkout.', icon: 'tag' },
+          { label: 'Pagamentos', href: '#pagamentos', description: 'Pix, cartão e boleto.', icon: 'zap' },
+          { label: 'Estoque', href: '#estoque', description: 'Saldo por depósito e reposição.', icon: 'layers' },
+          { label: 'Relatórios', href: '#relatorios', description: 'Vendas e margem por canal.', icon: 'chart-bar' },
+        ],
+      },
+      {
+        label: 'Soluções',
+        href: '#solucoes',
+        items: [
+          {
+            label: 'Por setor',
+            items: [
+              { label: 'Varejo', href: '#varejo' },
+              { label: 'Alimentação', href: '#alimentacao' },
+              { label: 'Educação', href: '#educacao' },
+            ],
+          },
+          {
+            label: 'Por porte',
+            items: [
+              { label: 'Pequenas empresas', href: '#pequenas-empresas' },
+              { label: 'Grandes contas', href: '#grandes-contas' },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Recursos',
+        href: '#recursos',
+        items: [
+          { label: 'Central de ajuda', href: '#ajuda' },
+          { label: 'Blog', href: '#blog' },
+          { label: 'Webinars', href: '#webinars' },
+        ],
+      },
+      { label: 'Preços', href: '#precos' },
+    ],
+    currentHref: '#pagamentos',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Itens com `items` viram botões que abrem um submenu (padrão Disclosure Navigation Menu do APG, o mesmo do `NavigationMenu`): painel flutuante encostado na borda do cabeçalho em telas largas; abaixo de `collapseBelow`, seções expansíveis dentro do painel do menu, com a seção da página atual já aberta.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: 420 }}>
+        <Story />
+      </div>
+    ),
+  ],
+}
+
 export const HideOnScroll: Story = {
   args: { hideOnScroll: true },
   parameters: {

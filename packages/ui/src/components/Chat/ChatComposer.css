@@ -1,0 +1,121 @@
+/* ---------------------------------------------------------------------------
+ * ChatComposer — moldura com aparência de controle (borda de 1px, cantos
+ * retos) envolvendo o TextArea sem borda e a barra com ações e enviar.
+ * ------------------------------------------------------------------------- */
+
+.or-chat-composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-2);
+  min-width: 0;
+  margin: 0;
+}
+
+.or-chat-composer__label {
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-semibold);
+  color: var(--or-color-text);
+}
+
+.or-chat-composer__frame {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    box-shadow var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-chat-composer__frame:hover:not([data-disabled], :focus-within) {
+  border-color: var(--or-color-text-subtle);
+}
+
+/* O foco do campo (ou dos botões) acende a moldura inteira, como o .or-control-frame. */
+.or-chat-composer__frame:focus-within {
+  border-color: var(--or-color-accent);
+  box-shadow: 0 0 0 1px var(--or-color-accent);
+}
+
+.or-chat-composer__frame[data-disabled] {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+}
+
+/* O textarea vive dentro da moldura: sem borda, fundo nem anel próprios. */
+.or-chat-composer__frame .or-chat-composer__field .or-text-area__control {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.or-chat-composer__frame .or-chat-composer__field .or-text-area__control:focus {
+  box-shadow: none;
+}
+
+.or-chat-composer__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--or-space-2);
+  min-width: 0;
+  padding: 0 var(--or-space-2) var(--or-space-2);
+}
+
+/* As ações não encolhem; só quebram em linhas quando não cabem ao lado do enviar. */
+.or-chat-composer__actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-1);
+  max-width: calc(100% - var(--or-control-sm) - var(--or-space-2));
+}
+
+/* Em telas estreitas o contador cede espaço primeiro (quebra em duas linhas)
+   antes de as ações se empilharem. */
+.or-chat-composer__toolbar .or-character-count {
+  flex: 0 100 auto;
+  min-width: 0;
+  margin-top: 0;
+  margin-left: auto;
+  text-align: end;
+}
+
+.or-chat-composer__send {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.or-chat-composer__toolbar .or-character-count + .or-chat-composer__send {
+  margin-left: 0;
+}
+
+/* Campo vazio ou "Parar" sem onStop: focável, mas visualmente inativo. */
+.or-chat-composer__send[aria-disabled='true']:not(:disabled) {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .or-chat-composer__frame {
+    border-color: CanvasText;
+  }
+
+  .or-chat-composer__frame:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+
+  /* O anel fica na moldura: sem o contorno global do .or-control por dentro (anel duplo). */
+  .or-chat-composer__frame .or-chat-composer__field .or-text-area__control:focus {
+    outline: none;
+  }
+
+  .or-chat-composer__frame[data-disabled] {
+    border-color: GrayText;
+  }
+}

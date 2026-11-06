@@ -3,7 +3,7 @@
 Componentes React acessíveis do **Orange**, um design system open source: geométrico, de cantos retos,
 com um único acento laranja e WCAG 2.2 AA desde o primeiro componente.
 
-- 111 componentes (formulários, sobreposições, navegação, exibição de dados, layout, gráficos, conteúdo)
+- 117 componentes (formulários, sobreposições, navegação, exibição de dados, layout, gráficos, conteúdo)
 - Temas escuro, claro e de alto contraste (`dark-hc`, `light-hc`), com suporte a `forced-colors`
 - Textos internos em português e inglês, motion que respeita `prefers-reduced-motion`
 - CSS puro com tokens — sem CSS-in-JS

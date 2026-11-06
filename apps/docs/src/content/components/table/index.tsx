@@ -17,10 +17,14 @@ import ClickableRows from './examples/ClickableRows'
 import ClickableRowsCode from './examples/ClickableRows?raw'
 import DensitySticky from './examples/DensitySticky'
 import DensityStickyCode from './examples/DensitySticky?raw'
+import ExpandableRows from './examples/ExpandableRows'
+import ExpandableRowsCode from './examples/ExpandableRows?raw'
 import Selection from './examples/Selection'
 import SelectionCode from './examples/Selection?raw'
 import Sorting from './examples/Sorting'
 import SortingCode from './examples/Sorting?raw'
+import VisibleColumns from './examples/VisibleColumns'
+import VisibleColumnsCode from './examples/VisibleColumns?raw'
 import { meta } from './meta'
 
 export default function TablePage() {
@@ -79,6 +83,21 @@ export default function TablePage() {
               pt: 'Ordenação, seleção e linha clicável são opcionais: ative só o que a tarefa precisa.',
               en: 'Sorting, selection and clickable rows are optional: enable only what the task needs.',
             },
+            {
+              pt: (
+                <>
+                  Use linhas expansíveis (<Code>renderExpanded</Code>) para detalhes secundários — itens de um pedido,
+                  histórico, observações. O que é preciso para comparar as linhas fica nas colunas, não escondido no
+                  painel.
+                </>
+              ),
+              en: (
+                <>
+                  Use expandable rows (<Code>renderExpanded</Code>) for secondary details — order lines, history,
+                  notes. Whatever is needed to compare rows belongs in the columns, not hidden in the panel.
+                </>
+              ),
+            },
           ]}
         />
       </Section>
@@ -101,6 +120,10 @@ export default function TablePage() {
             {
               term: { pt: 'Seleção', en: 'Selection' },
               description: { pt: 'Checkbox nativo por linha e "selecionar todos" com estado indeterminado.', en: 'Native checkbox per row and "select all" with an indeterminate state.' },
+            },
+            {
+              term: { pt: 'Expansão', en: 'Expansion' },
+              description: { pt: 'Coluna inicial ("Detalhes", oculta visualmente) com um botão por linha (aria-expanded, aria-controls). O painel é uma linha logo abaixo, com uma única célula que ocupa todas as colunas.', en: 'Leading column ("Details", visually hidden) with one button per row (aria-expanded, aria-controls). The panel is a row right below, with a single cell spanning all columns.' },
             },
             {
               term: { pt: 'Estado vazio', en: 'Empty state' },
@@ -166,6 +189,28 @@ export default function TablePage() {
         >
           <ClickableRows />
         </Example>
+        <Example
+          title={{ pt: 'Pedidos com detalhes', en: 'Orders with details' }}
+          description={{
+            pt: 'renderExpanded mostra os itens do pedido num painel abaixo da linha. O estado é controlado (expandedRows + onExpandedRowsChange) para o botão "Expandir todos"; ele guarda ids, então acompanha a linha ao ordenar. Use isRowExpandable para tirar o botão de linhas sem detalhe.',
+            en: 'renderExpanded shows the order lines in a panel below the row. State is controlled (expandedRows + onExpandedRowsChange) to drive the "Expand all" button; it stores ids, so it follows the row when sorting. Use isRowExpandable to remove the button from rows without details.',
+          }}
+          code={ExpandableRowsCode}
+          align="stretch"
+        >
+          <ExpandableRows />
+        </Example>
+        <Example
+          title={{ pt: 'Colunas visíveis', en: 'Visible columns' }}
+          description={{
+            pt: 'A Table não tem API própria para isso: a aplicação filtra o array columns. Aqui um Dropdown com DropdownCheckboxItem liga e desliga as colunas, mantendo a ordem original; a coluna rowHeader fica sempre visível. Guarde a escolha (ex.: nas preferências do usuário) se ela precisar persistir.',
+            en: 'Table has no dedicated API for this: the app filters the columns array. Here a Dropdown with DropdownCheckboxItem toggles columns while keeping their original order; the rowHeader column always stays visible. Store the choice (e.g. in user preferences) if it must persist.',
+          }}
+          code={VisibleColumnsCode}
+          align="stretch"
+        >
+          <VisibleColumns />
+        </Example>
       </Section>
 
       <Section title={{ pt: 'Movimento', en: 'Motion' }}>
@@ -174,6 +219,7 @@ export default function TablePage() {
             { term: { pt: 'Hover de linha', en: 'Row hover' }, description: { pt: 'Fundo da linha em --or-duration-fast (160ms). Em linhas clicáveis, uma barra laranja de 2px entra pela esquerda e o texto principal ganha sublinhado que cresce (250ms).', en: 'Row background in --or-duration-fast (160ms). On clickable rows, a 2px orange bar enters from the left and the main text gets a growing underline (250ms).' } },
             { term: { pt: 'Ordenar', en: 'Sort' }, description: { pt: 'Crossfade entre o ícone neutro e a seta (160ms); a seta gira 180° entre crescente e decrescente com --or-ease-spring (250ms). O botão afunda 1px ao clicar (90ms).', en: 'Crossfade between the neutral icon and the arrow (160ms); the arrow turns 180° between ascending and descending with --or-ease-spring (250ms). The button sinks 1px on click (90ms).' } },
             { term: { pt: 'Selecionar', en: 'Select' }, description: { pt: 'Fundo da linha em 160ms. A caixa encolhe ao pressionar e volta com --or-ease-bounce; o check é desenhado (stroke-dashoffset, 250ms) e o traço indeterminado cresce com spring.', en: 'Row background in 160ms. The box shrinks on press and springs back with --or-ease-bounce; the check is drawn (stroke-dashoffset, 250ms) and the indeterminate dash grows with spring.' } },
+            { term: { pt: 'Expandir', en: 'Expand' }, description: { pt: 'O painel abre com grid-template-rows 0fr → 1fr em --or-duration-slow (400ms) e fecha mais rápido (250ms); o conteúdo entra com fade e desliza 4px. O chevron gira 180° com --or-ease-spring. Sem movimento em prefers-reduced-motion.', en: 'The panel opens with grid-template-rows 0fr → 1fr in --or-duration-slow (400ms) and closes faster (250ms); content fades in and slides 4px. The chevron turns 180° with --or-ease-spring. No motion under prefers-reduced-motion.' } },
             { term: { pt: 'Estado vazio', en: 'Empty state' }, description: { pt: 'Entra com fade (250ms).', en: 'Fades in (250ms).' } },
           ]}
         />
@@ -187,7 +233,7 @@ export default function TablePage() {
             { name: 'data', type: 'T[]', required: true, description: { pt: 'Linhas da tabela.', en: 'Table rows.' } },
             { name: 'caption', type: 'ReactNode', required: true, description: { pt: 'Título da tabela (<caption>).', en: 'Table title (<caption>).' } },
             { name: 'hideCaption', type: 'boolean', default: 'false', description: { pt: 'Esconde a legenda visualmente.', en: 'Visually hides the caption.' } },
-            { name: 'getRowId', type: '(row: T, index: number) => string', default: 'row.id ?? index', description: { pt: 'Id estável de cada linha (usado na seleção).', en: 'Stable id for each row (used by selection).' } },
+            { name: 'getRowId', type: '(row: T, index: number) => string', default: 'row.id ?? index', description: { pt: 'Id estável de cada linha (usado na seleção e na expansão).', en: 'Stable id for each row (used by selection and expansion).' } },
             { name: 'sort', type: "{ key: string; direction: 'ascending' | 'descending' } | null", description: { pt: 'Ordenação controlada.', en: 'Controlled sorting.' } },
             { name: 'defaultSort', type: 'TableSort | null', default: 'null', description: { pt: 'Ordenação inicial (não controlada).', en: 'Initial sorting (uncontrolled).' } },
             { name: 'onSortChange', type: '(sort: TableSort | null) => void', description: { pt: 'Chamado quando o usuário ordena.', en: 'Called when the user sorts.' } },
@@ -196,7 +242,12 @@ export default function TablePage() {
             { name: 'selectedRows', type: 'string[]', description: { pt: 'Ids selecionados (controlado).', en: 'Selected ids (controlled).' } },
             { name: 'defaultSelectedRows', type: 'string[]', default: '[]', description: { pt: 'Ids selecionados inicialmente.', en: 'Initially selected ids.' } },
             { name: 'onSelectedRowsChange', type: '(ids: string[]) => void', description: { pt: 'Chamado quando a seleção muda.', en: 'Called when the selection changes.' } },
-            { name: 'getRowLabel', type: '(row: T) => string', description: { pt: <>Identifica a linha no rótulo do checkbox. Padrão: o conteúdo da coluna <Code>rowHeader</Code>.</>, en: <>Identifies the row in the checkbox label. Default: the <Code>rowHeader</Code> column content.</> } },
+            { name: 'getRowLabel', type: '(row: T) => string', description: { pt: <>Identifica a linha no rótulo do checkbox e do botão de expandir. Padrão: o conteúdo da coluna <Code>rowHeader</Code>.</>, en: <>Identifies the row in the checkbox and expand button labels. Default: the <Code>rowHeader</Code> column content.</> } },
+            { name: 'renderExpanded', type: '(row: T) => ReactNode', description: { pt: 'Conteúdo do painel de detalhes. Ativa as linhas expansíveis: botão na primeira coluna e painel numa linha logo abaixo.', en: 'Detail panel content. Enables expandable rows: a button in the first column and the panel in a row right below.' } },
+            { name: 'expandedRows', type: 'string[]', description: { pt: 'Ids expandidos (controlado).', en: 'Expanded ids (controlled).' } },
+            { name: 'defaultExpandedRows', type: 'string[]', default: '[]', description: { pt: 'Ids expandidos inicialmente.', en: 'Initially expanded ids.' } },
+            { name: 'onExpandedRowsChange', type: '(ids: string[]) => void', description: { pt: 'Chamado quando uma linha abre ou fecha.', en: 'Called when a row opens or closes.' } },
+            { name: 'isRowExpandable', type: '(row: T) => boolean', default: '() => true', description: { pt: <>Quais linhas têm painel. As demais ficam sem botão. Só vale com <Code>renderExpanded</Code>.</>, en: <>Which rows have a panel. The others get no button. Only applies with <Code>renderExpanded</Code>.</> } },
             { name: 'density', type: "'normal' | 'compact'", default: "'normal'", description: { pt: 'Espaçamento das células.', en: 'Cell spacing.' } },
             { name: 'striped', type: 'boolean', default: 'false', description: { pt: 'Alterna o fundo das linhas.', en: 'Alternates row backgrounds.' } },
             { name: 'maxHeight', type: 'number | string', description: { pt: 'Altura máxima com rolagem e cabeçalho fixo.', en: 'Maximum height with scrolling and sticky header.' } },
@@ -261,11 +312,33 @@ export default function TablePage() {
             }
           />
         </p>
+        <p>
+          <T
+            pt={
+              <>
+                Nas linhas expansíveis, o botão de cada linha segue o padrão disclosure: <Code>aria-expanded</Code> diz
+                se o painel está aberto e, aberto, <Code>aria-controls</Code> aponta para a célula do painel (fechado, o
+                painel sai do DOM). O nome segue a lógica do checkbox: "Expandir linha" ou "Recolher linha" seguido do
+                cabeçalho da linha. A ordem na linha é botão de expandir, checkbox e células; o clique no botão não
+                dispara <Code>onRowClick</Code>.
+              </>
+            }
+            en={
+              <>
+                In expandable rows, each row's button follows the disclosure pattern: <Code>aria-expanded</Code> tells
+                whether the panel is open and, when open, <Code>aria-controls</Code> points to the panel cell (when
+                closed, the panel leaves the DOM). The name follows the checkbox logic: "Expand row" or "Collapse row"
+                followed by the row header. The order in the row is expand button, checkbox, then cells; clicking the
+                button does not trigger <Code>onRowClick</Code>.
+              </>
+            }
+          />
+        </p>
         <KeyboardTable
           rows={[
-            { keys: ['Tab'], description: { pt: 'Move o foco entre botões de ordenação, checkboxes, a região rolável e ações das linhas.', en: 'Moves focus between sort buttons, checkboxes, the scroll region and row actions.' } },
-            { keys: ['Enter'], description: { pt: 'Ordena pela coluna focada ou abre a linha (botão da célula principal).', en: 'Sorts by the focused column or opens the row (main cell button).' } },
-            { keys: ['Space'], description: { pt: 'Ordena pela coluna ou marca/desmarca o checkbox focado.', en: 'Sorts by the column or toggles the focused checkbox.' } },
+            { keys: ['Tab'], description: { pt: 'Move o foco entre botões de ordenação, botões de expandir, checkboxes, a região rolável e ações das linhas.', en: 'Moves focus between sort buttons, expand buttons, checkboxes, the scroll region and row actions.' } },
+            { keys: ['Enter'], description: { pt: 'Ordena pela coluna focada, abre/fecha o painel da linha ou abre a linha (botão da célula principal).', en: 'Sorts by the focused column, opens/closes the row panel or opens the row (main cell button).' } },
+            { keys: ['Space'], description: { pt: 'Ordena pela coluna, abre/fecha o painel da linha ou marca/desmarca o checkbox focado.', en: 'Sorts by the column, opens/closes the row panel or toggles the focused checkbox.' } },
             { keys: ['↑', '↓'], description: { pt: 'Com a região rolável focada, rola a tabela.', en: 'With the scroll region focused, scrolls the table.' } },
           ]}
         />
@@ -278,9 +351,9 @@ export default function TablePage() {
         <WcagList
           items={[
             { criterion: '1.3.1', description: { pt: <>Estrutura com <Code>caption</Code>, <Code>th scope="col"</Code> e <Code>th scope="row"</Code>.</>, en: <>Structure with <Code>caption</Code>, <Code>th scope="col"</Code> and <Code>th scope="row"</Code>.</> } },
-            { criterion: '2.1.1', description: { pt: 'Ordenação, seleção, rolagem e linha clicável funcionam pelo teclado.', en: 'Sorting, selection, scrolling and clickable rows work with the keyboard.' } },
-            { criterion: '2.4.7', description: { pt: 'Foco visível em botões de ordenação, checkboxes e na região rolável.', en: 'Visible focus on sort buttons, checkboxes and the scroll region.' } },
-            { criterion: '4.1.2', description: { pt: <>Estado de ordenação em <Code>aria-sort</Code>; checkbox "selecionar todos" com estado indeterminado.</>, en: <>Sort state in <Code>aria-sort</Code>; "select all" checkbox with an indeterminate state.</> } },
+            { criterion: '2.1.1', description: { pt: 'Ordenação, seleção, expansão, rolagem e linha clicável funcionam pelo teclado.', en: 'Sorting, selection, expansion, scrolling and clickable rows work with the keyboard.' } },
+            { criterion: '2.4.7', description: { pt: 'Foco visível em botões de ordenação e de expandir, checkboxes e na região rolável.', en: 'Visible focus on sort and expand buttons, checkboxes and the scroll region.' } },
+            { criterion: '4.1.2', description: { pt: <>Estado de ordenação em <Code>aria-sort</Code>; checkbox "selecionar todos" com estado indeterminado; painel de detalhes em <Code>aria-expanded</Code>.</>, en: <>Sort state in <Code>aria-sort</Code>; "select all" checkbox with an indeterminate state; detail panel in <Code>aria-expanded</Code>.</> } },
             { criterion: '4.1.3', description: { pt: 'Mudanças de ordenação anunciadas em role="status".', en: 'Sort changes announced in role="status".' } },
           ]}
         />

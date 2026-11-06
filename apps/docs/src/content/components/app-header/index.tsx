@@ -18,6 +18,8 @@ import Mobile from './examples/Mobile'
 import MobileCode from './examples/Mobile?raw'
 import Sticky from './examples/Sticky'
 import StickyCode from './examples/Sticky?raw'
+import Submenus from './examples/Submenus'
+import SubmenusCode from './examples/Submenus?raw'
 import WithRouter from './examples/WithRouter'
 import WithRouterCode from './examples/WithRouter?raw'
 import { meta } from './meta'
@@ -73,6 +75,7 @@ export default function AppHeaderPage() {
           rows={[
             { term: { pt: 'Marca', en: 'Brand' }, description: { pt: 'Logo com link para o início (brand).', en: 'Logo linking home (brand).' } },
             { term: { pt: 'Navegação', en: 'Navigation' }, description: { pt: 'Links principais; o atual ganha o sublinhado laranja (items, currentHref).', en: 'Main links; the current one gets the orange underline (items, currentHref).' } },
+            { term: { pt: 'Submenu', en: 'Submenu' }, description: { pt: <>Item com <Code>items</Code>: botão com chevron que abre um painel de links (como no <Code>NavigationMenu</Code>); em telas pequenas, seção expansível do menu.</>, en: <>Item with <Code>items</Code>: a button with a chevron opening a panel of links (as in <Code>NavigationMenu</Code>); on small screens, an expandable section of the menu.</> } },
             { term: { pt: 'Ações', en: 'Actions' }, description: { pt: 'Busca, notificações, perfil (actions).', en: 'Search, notifications, profile (actions).' } },
             { term: { pt: 'Botão de menu', en: 'Menu button' }, description: { pt: <>Em telas estreitas, abre o painel com a navegação (<Code>aria-expanded</Code>).</>, en: <>On narrow screens, opens the panel with the navigation (<Code>aria-expanded</Code>).</> } },
           ]}
@@ -100,6 +103,18 @@ export default function AppHeaderPage() {
           code={MobileCode}
         >
           <Mobile />
+        </Example>
+        <Example
+          title={{ pt: 'Com submenus', en: 'With submenus' }}
+          description={{
+            pt: 'Itens com items abrem um submenu (padrão Disclosure Navigation Menu do APG, o mesmo do NavigationMenu): em telas largas, um painel encostado na borda do cabeçalho, com links, descrições e grupos em colunas; abaixo de collapseBelow, seções expansíveis dentro do menu — a da página atual já vem aberta. O href do item com submenu não vira link: ele marca a seção atual.',
+            en: 'Items with items open a submenu (APG Disclosure Navigation Menu pattern, the same as NavigationMenu): on wide screens, a panel flush with the header edge, with links, descriptions and groups in columns; below collapseBelow, expandable sections inside the menu — the current page one starts open. The href of an item with a submenu is not rendered as a link: it marks the current section.',
+          }}
+          code={SubmenusCode}
+          align="stretch"
+          minHeight={400}
+        >
+          <Submenus />
         </Example>
         <Example
           title={{ pt: 'Fixo no topo', en: 'Sticky' }}
@@ -146,6 +161,7 @@ export default function AppHeaderPage() {
             { term: { pt: 'Abrir o menu (telas pequenas)', en: 'Opening the menu (small screens)' }, description: { pt: 'O painel desce com fade (medium, ease-out) e os itens entram em cascata (40ms entre eles).', en: 'The panel drops in with a fade (medium, ease-out) and items enter staggered (40ms apart).' } },
             { term: { pt: 'Fechar o menu', en: 'Closing the menu' }, description: { pt: 'O painel sai com fade + 4px para cima — fast, ease-in-out — e só então é escondido (usePresence).', en: 'The panel exits with a fade + 4px upward — fast, ease-in-out — and only then gets hidden (usePresence).' } },
             { term: { pt: 'Botão de menu', en: 'Menu button' }, description: { pt: 'O ícone ☰/✕ entra girando com um pop (medium, ease-bounce); o botão afunda 1px ao pressionar (press).', en: 'The ☰/✕ icon spins in with a pop (medium, ease-bounce); the button sinks 1px when pressed (press).' } },
+            { term: { pt: 'Submenu', en: 'Submenu' }, description: { pt: 'Telas largas: o painel entra com fade + 4px (medium, ease-out) e sai mais rápido (fast). Menu móvel: a seção abre com grid-template-rows 0fr → 1fr (slow, ease-out) e fecha em medium. O chevron gira 180° (medium, ease-spring).', en: 'Wide screens: the panel enters with a fade + 4px (medium, ease-out) and leaves faster (fast). Mobile menu: the section opens with grid-template-rows 0fr → 1fr (slow, ease-out) and closes in medium. The chevron turns 180° (medium, ease-spring).' } },
           ]}
         />
       </Section>
@@ -154,7 +170,7 @@ export default function AppHeaderPage() {
         <PropsTable
           rows={[
             { name: 'brand', type: 'ReactNode', description: { pt: 'Área da marca.', en: 'Brand area.' } },
-            { name: 'items', type: '{ label, href, active? }[]', description: { pt: 'Links da navegação principal.', en: 'Main navigation links.' } },
+            { name: 'items', type: '{ label, href, active?, items?, columns? }[]', description: { pt: <>Links da navegação principal. Com <Code>items</Code> (links <Code>{'{ label, href, description?, icon?, active? }'}</Code> e/ou grupos <Code>{'{ label, items }'}</Code>), o item vira um submenu; <Code>columns</Code> (1–4) define as colunas do painel. O <Code>href</Code> de um item com submenu não vira link: marca a seção atual.</>, en: <>Main navigation links. With <Code>items</Code> (links <Code>{'{ label, href, description?, icon?, active? }'}</Code> and/or groups <Code>{'{ label, items }'}</Code>), the item becomes a submenu; <Code>columns</Code> (1–4) sets the panel columns. The <Code>href</Code> of an item with a submenu is not rendered as a link: it marks the current section.</> } },
             { name: 'currentHref', type: 'string', description: { pt: 'Rota atual; marca o item correspondente.', en: 'Current route; marks the matching item.' } },
             { name: 'renderLink', type: '(props: RenderLinkProps) => ReactNode', description: { pt: 'Link do roteador.', en: 'Router link.' } },
             { name: 'actions', type: 'ReactNode', description: { pt: 'Ações à direita.', en: 'Actions on the right.' } },
@@ -182,7 +198,8 @@ export default function AppHeaderPage() {
             { keys: ['Tab'], description: { pt: 'Percorre marca, botão de menu, links e ações.', en: 'Moves through brand, menu button, links and actions.' } },
             { keys: ['Enter'], description: { pt: 'Segue o link ou abre/fecha o menu.', en: 'Follows the link or opens/closes the menu.' } },
             { keys: ['Space'], description: { pt: 'Abre/fecha o menu.', en: 'Opens/closes the menu.' } },
-            { keys: ['Esc'], description: { pt: 'Fecha o menu e devolve o foco ao botão.', en: 'Closes the menu and returns focus to the button.' } },
+            { keys: ['Esc'], description: { pt: 'Fecha o submenu aberto (ou, em telas pequenas, o menu) e devolve o foco ao botão.', en: 'Closes the open submenu (or, on small screens, the menu) and returns focus to the button.' } },
+            { keys: ['→', '←', '↑', '↓', 'Home', 'End'], description: { pt: <>Só com submenus, como no <Code>NavigationMenu</Code>: ←/→ entre os itens, ↓ entra no submenu aberto, ↑/↓ entre os sublinks, Home/End no primeiro/último.</>, en: <>Only with submenus, as in <Code>NavigationMenu</Code>: ←/→ between items, ↓ into the open submenu, ↑/↓ between sub-links, Home/End to the first/last.</> } },
           ]}
         />
         <WcagList

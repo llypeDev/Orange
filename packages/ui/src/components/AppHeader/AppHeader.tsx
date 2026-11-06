@@ -14,6 +14,12 @@ import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
 import { cx, mergeRefs } from '../../utils'
 import type { RenderLink } from '../Link'
+import type { NavigationMenuGroup, NavigationMenuLink } from '../NavigationMenu'
+import {
+  NavigationMenuSubmenu,
+  containsActive,
+  useNavigationMenuController,
+} from '../NavigationMenu/internal'
 import './AppHeader.css'
 
 export interface AppHeaderNavItem {
@@ -21,8 +27,21 @@ export interface AppHeaderNavItem {
   label: ReactNode
   /** Destino. */
   href: string
-  /** Marca o item como página atual. Padrão: `href === currentHref`. */
+  /**
+   * Marca o item como página atual. Padrão: `href === currentHref`. Com
+   * `items`, marca a seção como atual (padrão: `href` ou algum sublink atual).
+   */
   active?: boolean
+  /**
+   * Sublinks: links e/ou grupos com título (os mesmos do `NavigationMenu`).
+   * Com `items`, o item vira um botão que abre um submenu — painel flutuante
+   * em telas largas, seção expansível no menu em telas estreitas — e o `href`
+   * dele não vira link: identifica o item e marca a seção como atual quando
+   * é igual a `currentHref`.
+   */
+  items?: (NavigationMenuLink | NavigationMenuGroup)[]
+  /** Colunas do submenu em telas largas (1–4). Padrão: uma por grupo; links soltos, 1. */
+  columns?: 1 | 2 | 3 | 4
 }
 
 export type AppHeaderBreakpoint = 'sm' | 'md' | 'lg'
@@ -105,18 +124,43 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
   // Painel móvel com entrada e saída animadas: continua montado até a saída terminar.
   const panel = usePresence<HTMLElement>(menuOpen)
 
+  // Submenus (itens com `items`): um aberto por vez, chave = `href` do item.
+  const navRef = useRef<HTMLElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+  const hasSubmenus = items.some((item) => item.items !== undefined)
+  const isSectionActive = (item: AppHeaderNavItem) =>
+    item.active ??
+    (currentHref !== undefined &&
+      (item.href === currentHref || containsActive(item.items ?? [], currentHref)))
+  const currentSection = items.find((item) => item.items && isSectionActive(item))?.href ?? null
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(() =>
+    menuOpen ? currentSection : null,
+  )
+  // Com o menu móvel aberto, as seções ficam no fluxo: Esc fecha o menu inteiro
+  // e clique/foco fora não as recolhem.
+  const submenus = useNavigationMenuController({
+    openKey: openSubmenu,
+    setOpenKey: setOpenSubmenu,
+    rootRef: navRef,
+    listRef,
+    floating: !menuOpen,
+  })
+
   // O ícone do botão de menu só anima depois da primeira troca (não ao montar).
   const [prevMenuOpen, setPrevMenuOpen] = useState(menuOpen)
   const [iconMotion, setIconMotion] = useState(false)
   if (prevMenuOpen !== menuOpen) {
     setPrevMenuOpen(menuOpen)
     setIconMotion(true)
+    // Menu móvel: ao abrir, expande a seção da página atual; ao fechar, recolhe.
+    setOpenSubmenu(menuOpen ? currentSection : null)
   }
 
-  // Esconder ao rolar: nunca com foco dentro do cabeçalho ou com o menu aberto.
+  // Esconder ao rolar: nunca com foco dentro do cabeçalho ou com o menu (ou um submenu) aberto.
   const [scrolledDown, setScrolledDown] = useState(false)
   const [focusWithin, setFocusWithin] = useState(false)
-  const scrollHidden = hideOnScroll && scrolledDown && !focusWithin && !menuOpen
+  const scrollHidden =
+    hideOnScroll && scrolledDown && !focusWithin && !menuOpen && openSubmenu === null
 
   const handleFocus = (event: FocusEvent<HTMLElement>) => {
     onFocus?.(event)
@@ -180,19 +224,47 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(function AppHea
           {brand && <div className="or-app-header__brand">{brand}</div>}
         </div>
         {hasNav && (
-          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- clique delegado fecha o painel ao escolher um link nativo
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- clique delegado fecha o painel ao escolher um link nativo; setas delegadas com submenus
           <nav
-            ref={panel.nodeRef}
+            ref={mergeRefs(panel.nodeRef, navRef)}
             id={navId}
             className="or-app-header__nav"
             data-state={panel.state}
             aria-label={navLabel ?? t('mainNavigation')}
             onClick={(event) => {
               if ((event.target as HTMLElement).closest('a[href]')) setMenuOpen(false)
+              submenus.onClick(event)
             }}
+            // Setas/Home/End e "foco em outro item fecha o submenu" só existem com submenus.
+            onKeyDown={hasSubmenus ? submenus.onKeyDown : undefined}
+            onFocus={hasSubmenus ? submenus.onFocus : undefined}
           >
-            <ul className="or-app-header__list">
+            <ul ref={listRef} className="or-app-header__list">
               {items.map((item, index) => {
+                if (item.items) {
+                  const refs = submenus.refsFor(item.href)
+                  return (
+                    <NavigationMenuSubmenu
+                      key={item.href}
+                      label={item.label}
+                      entries={item.items}
+                      columns={item.columns}
+                      open={openSubmenu === item.href}
+                      onToggle={() => submenus.toggle(item.href)}
+                      active={isSectionActive(item)}
+                      currentHref={currentHref}
+                      renderLink={renderLink}
+                      // Painel encostado na borda de baixo do cabeçalho.
+                      offset={1}
+                      className="or-app-header__item or-app-header__item--group"
+                      style={{ '--_i': index } as CSSProperties}
+                      triggerClassName="or-app-header__link or-app-header__trigger"
+                      panelClassName="or-app-header__panel"
+                      itemRef={refs.item}
+                      triggerRef={refs.trigger}
+                    />
+                  )
+                }
                 const active = item.active ?? (currentHref !== undefined && item.href === currentHref)
                 const linkProps = {
                   href: item.href,

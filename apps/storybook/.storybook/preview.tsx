@@ -10,7 +10,12 @@ const withOrangeProvider: Decorator = (Story, context) => {
   const theme = isThemeSetting(context.globals.theme) ? context.globals.theme : 'dark'
   return (
     <OrangeProvider locale={locale} themeTarget="scoped" theme={theme}>
-      <div style={{ padding: 4 }} data-motion={motion}>
+      {/* Fundo e cor do tema na própria story: na página de docs o fundo é o do Storybook
+          (escuro), e sem isso as stories nos temas claros ficavam com contraste insuficiente. */}
+      <div
+        style={{ padding: 4, background: 'var(--or-color-bg)', color: 'var(--or-color-text)' }}
+        data-motion={motion}
+      >
         <Story />
       </div>
     </OrangeProvider>
