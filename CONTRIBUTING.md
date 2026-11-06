@@ -216,6 +216,23 @@ pnpm test:visual -g "Button"                          # compara (fora do contêi
 VISUAL_SNAPSHOT_DIR=/tmp/vr pnpm test:visual:update   # baselines descartáveis, fora do repositório
 ```
 
+## Tamanho do pacote
+
+O `@orangesys/ui` é publicado com um arquivo por módulo (`dist/esm`, `dist/cjs`) e declara
+`sideEffects: ["*.css"]`: o bundler de quem usa descarta os módulos que não importa. `pnpm size`
+(depois de `pnpm build:lib`; também no CI) mede o custo de importar cada item de `size-limits.json`
+como um projeto faria — tree-shaking, minificação, gzip, sem React — e falha acima do limite.
+
+- Aumento intencional (componente novo, recurso)? Ajuste o limite em `size-limits.json` no mesmo PR
+  e explique o motivo na descrição.
+- Um componente leve puxando muito (ex.: o Button passar de alguns KB) quase sempre é um import que
+  arrasta outro módulo pesado, ou código de topo com efeito colateral.
+
+```bash
+pnpm build:lib
+pnpm size
+```
+
 ## Testes de layout no navegador
 
 Comportamentos que dependem de layout real — fim da rolagem, abas com overflow, posição de listas e

@@ -7,17 +7,29 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'OrangeUI',
       formats: ['es', 'cjs'],
-      fileName: (format) => (format === 'es' ? 'orange-ui.js' : 'orange-ui.cjs'),
+      // Um arquivo por módulo (preserveModules): com `sideEffects: ["*.css"]`, o bundler de quem
+      // usa descarta os módulos que não são importados. Num arquivo único, chamadas de topo como
+      // forwardRef(...) seguravam a biblioteca inteira — importar só o Button trazia ~147 KB gzip.
+      fileName: (format, entryName) =>
+        format === 'es' ? `esm/${entryName}.js` : `cjs/${entryName}.cjs`,
       cssFileName: 'styles',
     },
     cssCodeSplit: false,
     sourcemap: true,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react-dom'],
+      // Dependências declaradas ficam de fora (o @orangesys/tokens sai na mesma versão do ui).
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@floating-ui/react-dom',
+        /^@orangesys\/tokens(\/.*)?$/,
+      ],
       output: {
-        globals: { react: 'React', 'react-dom': 'ReactDOM' },
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        exports: 'named',
       },
     },
   },

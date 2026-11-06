@@ -92,6 +92,7 @@ export function App() {
 | `pnpm build`     | tokens → biblioteca → Storybook → docs (Storybook em `/storybook`) |
 | `pnpm test:visual` | Regressão visual dos dois temas (baselines geradas no CI)  |
 | `pnpm test:layout` | Layout no navegador: rolagem, overflow, listas e foco (Chromium) |
+| `pnpm size`       | Orçamento de tamanho do `@orangesys/ui` (gzip, com tree-shaking) |
 | `pnpm changeset` | Registra uma mudança para o próximo release no npm         |
 
 ## Contribuindo
