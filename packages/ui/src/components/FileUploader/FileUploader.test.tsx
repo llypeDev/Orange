@@ -256,19 +256,6 @@ describe('FileUploader', () => {
     expect(container.querySelector('.or-file-uploader__item[data-state="closed"]')).toBeNull()
   })
 
-  it('onFilesChange (depreciado) ainda é chamado e avisa no console', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const onFilesChange = vi.fn()
-    const { container } = render(<FileUploader label="Anexos" onFilesChange={onFilesChange} />)
-    await user.upload(getInput(container), makeFile('contrato.pdf', 1024))
-    expect(onFilesChange).toHaveBeenLastCalledWith([
-      expect.objectContaining({ file: expect.objectContaining({ name: 'contrato.pdf' }) }),
-    ])
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onFilesChange` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('não possui violações de acessibilidade', async () => {
     const items: FileUploaderItem[] = [
       { id: '1', file: makeFile('planilha.xlsx', 4096), status: 'uploading', progress: 60 },

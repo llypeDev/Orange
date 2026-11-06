@@ -117,18 +117,6 @@ describe('LoadingOverlay', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Loading…')
   })
 
-  it('visible (depreciado) ainda abre a sobreposição e avisa no console', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(
-      <LoadingOverlay visible data-testid="overlay">
-        <p>Conteúdo</p>
-      </LoadingOverlay>,
-    )
-    expect(screen.getByTestId('overlay')).toHaveAttribute('data-state', 'visible')
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`visible` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('não possui violações de acessibilidade', async () => {
     const { container, rerender } = render(<Report open={false} />)
     await expectNoA11yViolations(container)

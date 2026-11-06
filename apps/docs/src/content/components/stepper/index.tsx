@@ -141,7 +141,6 @@ export default function StepperPage() {
           rows={[
             { name: 'steps', type: 'StepperStep[]', required: true, description: { pt: '{ label, description?, status?, content? } em ordem.', en: '{ label, description?, status?, content? } in order.' } },
             { name: 'step', type: 'number', default: '0', description: { pt: 'Índice (base 0) da etapa atual.', en: 'Index (0-based) of the current step.' } },
-            { name: 'activeStep', type: 'number', deprecated: { replacement: 'step', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de step.', en: 'Former name of step.' } },
             { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: { pt: 'Orientação.', en: 'Orientation.' } },
             { name: 'onStepClick', type: '(index: number) => void', description: { pt: 'Torna as etapas concluídas clicáveis.', en: 'Makes completed steps clickable.' } },
             { name: 'aria-label', type: 'string', description: { pt: 'Nome da lista (ex.: "Etapas do checkout").', en: 'List name (e.g. "Checkout steps").' } },

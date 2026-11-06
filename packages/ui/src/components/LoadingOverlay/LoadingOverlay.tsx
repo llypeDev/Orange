@@ -1,15 +1,13 @@
 import { forwardRef, useRef, type HTMLAttributes, type ReactNode } from 'react'
 import { useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { useLocale } from '../../providers'
-import { cx, deprecate } from '../../utils'
+import { cx } from '../../utils'
 import { Spinner, type SpinnerSize } from '../Spinner'
 import './LoadingOverlay.css'
 
 export interface LoadingOverlayProps extends HTMLAttributes<HTMLDivElement> {
   /** Mostra a sobreposição e bloqueia o conteúdo coberto. */
   open?: boolean
-  /** @deprecated Use `open` (o mesmo nome das outras sobreposições). Sai na v1.0. */
-  visible?: boolean
   /** Mensagem exibida e anunciada. Padrão: `t('loading')`. */
   message?: ReactNode
   /** Tamanho do spinner. */
@@ -25,17 +23,10 @@ export interface LoadingOverlayProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
   function LoadingOverlay(
-    { open: openProp, visible, message, spinnerSize = 'md', className, children, ...rest },
+    { open = false, message, spinnerSize = 'md', className, children, ...rest },
     ref,
   ) {
     const { t } = useLocale()
-    if (visible !== undefined) {
-      deprecate(
-        'LoadingOverlay: `visible` está depreciado e sai na v1.0. Use `open`.',
-        'loading-overlay.visible',
-      )
-    }
-    const open = openProp ?? visible ?? false
     const contentRef = useRef<HTMLDivElement>(null)
     const panelRef = useRef<HTMLDivElement>(null)
     const restoreFocus = useRef<HTMLElement | null>(null)

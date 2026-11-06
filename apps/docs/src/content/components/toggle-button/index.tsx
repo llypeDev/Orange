@@ -185,7 +185,6 @@ export default function ToggleButtonPage() {
           caption={{ pt: 'ToggleButtonGroup', en: 'ToggleButtonGroup' }}
           rows={[
             { name: 'selectionMode', type: "'single' | 'multiple'", default: "'single'", description: { pt: 'No máximo um pressionado ou qualquer combinação.', en: 'At most one pressed or any combination.' } },
-            { name: 'type', type: "'single' | 'multiple'", deprecated: { replacement: 'selectionMode', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de selectionMode.', en: 'Former name of selectionMode.' } },
             { name: 'value', type: 'string | null | string[]', description: { pt: 'Valor controlado: string/null em single, array em multiple.', en: 'Controlled value: string/null for single, array for multiple.' } },
             { name: 'defaultValue', type: 'string | null | string[]', description: { pt: 'Valor inicial (não controlado).', en: 'Initial value (uncontrolled).' } },
             { name: 'onChange', type: '(value) => void', description: { pt: 'Chamado com o novo valor.', en: 'Called with the new value.' } },

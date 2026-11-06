@@ -128,16 +128,6 @@ describe('SegmentedControl', () => {
     )
   })
 
-  it('fullWidth (depreciado) ainda funciona como block e avisa no console', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(<SegmentedControl label="Período" options={periods} fullWidth />)
-    expect(screen.getByRole('radiogroup').parentElement).toHaveClass(
-      'or-segmented-control--full-width',
-    )
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`fullWidth` está depreciado'))
-    warn.mockRestore()
-  })
-
   it('liga a transição do indicador só depois da primeira medição', async () => {
     render(<SegmentedControl label="Período" options={periods} defaultValue="week" />)
     const track = screen.getByRole('radiogroup')

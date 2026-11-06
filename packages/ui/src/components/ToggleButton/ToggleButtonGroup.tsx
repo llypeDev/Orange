@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useMemo, type HTMLAttributes } from 'react'
 import { useControllableState } from '../../hooks'
-import { cx, deprecate } from '../../utils'
+import { cx } from '../../utils'
 import type { ButtonSize } from '../Button'
 import { ButtonGroup, type ButtonGroupOrientation } from '../ButtonGroup/ButtonGroup'
 import { ToggleGroupContext, type ToggleGroupContextValue } from './context'
@@ -24,8 +24,6 @@ interface ToggleButtonGroupBaseProps extends Omit<
 export interface ToggleButtonGroupSingleProps extends ToggleButtonGroupBaseProps {
   /** `single` (padrão): no máximo um botão pressionado (clicar no pressionado o solta). */
   selectionMode?: 'single'
-  /** @deprecated Use `selectionMode` (o mesmo nome de `Listbox` e `TreeView`). Sai na v1.0. */
-  type?: 'single'
   /** Valor pressionado (controlado). `null` quando nenhum. */
   value?: string | null
   /** Valor inicial (não controlado). */
@@ -36,8 +34,6 @@ export interface ToggleButtonGroupSingleProps extends ToggleButtonGroupBaseProps
 export interface ToggleButtonGroupMultipleProps extends ToggleButtonGroupBaseProps {
   /** `multiple`: qualquer combinação de botões pressionados. */
   selectionMode: 'multiple'
-  /** @deprecated Use `selectionMode` (o mesmo nome de `Listbox` e `TreeView`). Sai na v1.0. */
-  type?: 'multiple'
   /** Valores pressionados (controlado). */
   value?: string[]
   /** Valores iniciais (não controlado). */
@@ -45,20 +41,7 @@ export interface ToggleButtonGroupMultipleProps extends ToggleButtonGroupBasePro
   onChange?: (value: string[]) => void
 }
 
-/** Forma antiga, com `type="multiple"` no lugar de `selectionMode`. Sai na v1.0. */
-interface ToggleButtonGroupLegacyMultipleProps extends Omit<
-  ToggleButtonGroupMultipleProps,
-  'selectionMode' | 'type'
-> {
-  /** @deprecated Use `selectionMode="multiple"`. Sai na v1.0. */
-  type: 'multiple'
-  selectionMode?: 'multiple'
-}
-
-export type ToggleButtonGroupProps =
-  | ToggleButtonGroupSingleProps
-  | ToggleButtonGroupMultipleProps
-  | ToggleButtonGroupLegacyMultipleProps
+export type ToggleButtonGroupProps = ToggleButtonGroupSingleProps | ToggleButtonGroupMultipleProps
 
 type GroupValue = string | null | string[]
 
@@ -70,8 +53,7 @@ type GroupValue = string | null | string[]
 export const ToggleButtonGroup = forwardRef<HTMLDivElement, ToggleButtonGroupProps>(
   function ToggleButtonGroup(props, ref) {
     const {
-      selectionMode,
-      type,
+      selectionMode = 'single',
       value: valueProp,
       defaultValue,
       onChange,
@@ -84,14 +66,7 @@ export const ToggleButtonGroup = forwardRef<HTMLDivElement, ToggleButtonGroupPro
       children,
       ...rest
     } = props
-    if (type !== undefined) {
-      deprecate(
-        'ToggleButtonGroup: `type` está depreciado e sai na v1.0. Use `selectionMode`.',
-        'toggle-button-group.type',
-      )
-    }
-    const mode = selectionMode ?? type ?? 'single'
-    const multiple = mode === 'multiple'
+    const multiple = selectionMode === 'multiple'
 
     const [value, setValue] = useControllableState<GroupValue>({
       value: valueProp,
@@ -129,7 +104,7 @@ export const ToggleButtonGroup = forwardRef<HTMLDivElement, ToggleButtonGroupPro
           variant={variant}
           disabled={disabled}
           className={cx('or-toggle-button-group', className)}
-          data-type={mode}
+          data-type={selectionMode}
           {...rest}
         >
           {children}

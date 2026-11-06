@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { T, useLang, type Localized } from '../../../i18n'
+import { isPreOne } from '../../../version'
 import {
   Bullets,
   Callout,
@@ -432,13 +433,21 @@ export default function VersioningPage() {
         </Callout>
       </Section>
 
-      <Section title={{ pt: 'Antes da 1.0', en: 'Before 1.0' }}>
+      <Section title={isPreOne ? { pt: 'Antes da 1.0', en: 'Before 1.0' } : { pt: 'A série 0.x', en: 'The 0.x series' }}>
         <Prose>
+          {!isPreOne && (
+            <p>
+              <T
+                pt="Desde a 1.0.0 vale a tabela acima: mudanças incompatíveis só numa nova major. Antes dela, as regras eram estas:"
+                en="Since 1.0.0 the table above applies: breaking changes only in a new major. Before it, the rules were these:"
+              />
+            </p>
+          )}
           <p>
             <T
               pt={
                 <>
-                  O Orange está na série 0.x. Nela, o npm já trata a minor como major:{' '}
+                  O Orange {isPreOne ? 'está' : 'esteve'} na série 0.x. Nela, o npm já trata a minor como major:{' '}
                   <Code>^0.4.0</Code> aceita a 0.4.1, mas não a 0.5.0. Por isso, até a 1.0, a{' '}
                   <strong>minor faz o papel da major</strong>: patch traz correções; minor traz
                   novidades e, quando inevitável, mudanças incompatíveis — sempre depois de uma
@@ -448,7 +457,7 @@ export default function VersioningPage() {
               }
               en={
                 <>
-                  Orange is in the 0.x series. There, npm already treats the minor as the major:{' '}
+                  Orange {isPreOne ? 'is' : 'was'} in the 0.x series. There, npm already treats the minor as the major:{' '}
                   <Code>^0.4.0</Code> accepts 0.4.1 but not 0.5.0. So until 1.0 the{' '}
                   <strong>minor plays the role of the major</strong>: patches bring fixes; minors
                   bring features and, when unavoidable, breaking changes — always after a
@@ -596,10 +605,15 @@ export default function VersioningPage() {
             },
             {
               term: { pt: 'Série 0.x', en: '0.x series' },
-              description: {
-                pt: 'Só a minor mais recente recebe correções. Atualize para a última 0.y antes de reportar um bug.',
-                en: 'Only the latest minor gets fixes. Upgrade to the latest 0.y before reporting a bug.',
-              },
+              description: isPreOne
+                ? {
+                    pt: 'Só a minor mais recente recebe correções. Atualize para a última 0.y antes de reportar um bug.',
+                    en: 'Only the latest minor gets fixes. Upgrade to the latest 0.y before reporting a bug.',
+                  }
+                : {
+                    pt: 'Encerrada com a 1.0.0: não recebe mais correções. Migre seguindo o changelog da 1.0.',
+                    en: 'Closed with 1.0.0: no more fixes. Migrate following the 1.0 changelog.',
+                  },
             },
             {
               term: { pt: 'React', en: 'React' },
