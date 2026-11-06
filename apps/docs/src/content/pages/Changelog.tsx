@@ -26,6 +26,26 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.2.1',
+    title: {
+      pt: 'O fim da faixa sempre ao alcance',
+      en: 'The end of the range always within reach',
+    },
+    summary: {
+      pt: 'Uma revisão dos componentes em busca do mesmo defeito: o último item, seção, valor ou opção que não ficava visível ou não era alcançável.',
+      en: 'A review of the components hunting the same defect: the last item, section, value or option that was not visible or not reachable.',
+    },
+    items: [
+      { kind: 'fixed', text: { pt: 'TableOfContents e o índice desta documentação marcam a última seção no fim da rolagem, a seção certa ao subir e mantêm o item clicado.', en: 'TableOfContents and these docs’ index mark the last section at the end of the scroll, the right section when scrolling up, and keep the clicked item.' } },
+      { kind: 'fixed', text: { pt: 'Reveal e useInView: o que fica nos últimos pixels da página aparece no fim da rolagem; esconder é instantâneo e appear volta a animar.', en: 'Reveal and useInView: content in the last pixels of the page shows up at the end of the scroll; hiding is instant and appear animates again.' } },
+      { kind: 'fixed', text: { pt: 'Combobox, MultiSelect, Picker, Dropdown, ContextMenu, SplitButton e CommandPalette mantêm à vista a opção ou o item ativo nas pontas (↑, End, PageDown, volta das setas), inclusive com movimento reduzido.', en: 'Combobox, MultiSelect, Picker, Dropdown, ContextMenu, SplitButton and CommandPalette keep the active option or item in view at the ends (↑, End, PageDown, wrapping), including with reduced motion.' } },
+      { kind: 'fixed', text: { pt: 'Tabs revela a aba cortada numa lista com rolagem; Table com cabeçalho fixo não esconde o foco sob ele (WCAG 2.4.11); Stepper compacto mostra o rótulo da última etapa ao concluir.', en: 'Tabs reveals a clipped tab in a scrolling list; Table with a sticky header no longer hides focus under it (WCAG 2.4.11); compact Stepper shows the last step’s label when finished.' } },
+      { kind: 'fixed', text: { pt: 'Slider: saída, polegar e aria-valuenow concordam quando o passo não divide a faixa; min decimal e passos em notação exponencial funcionam; marks não perde a última marca.', en: 'Slider: output, thumb and aria-valuenow agree when the step does not divide the range; decimal min and exponent-notation steps work; marks keeps the last tick.' } },
+      { kind: 'fixed', text: { pt: 'ProgressBar, ProgressCircle e FileUploader só mostram 100% ao concluir (99,6% era exibido como 100%).', en: 'ProgressBar, ProgressCircle and FileUploader only show 100% when complete (99.6% used to show as 100%).' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.2.0',
     title: {
       pt: 'NavigationMenu, DateTimePicker, Chat e mais',
