@@ -329,13 +329,16 @@
  * As transições da revelação só valem até a entrada terminar. Depois, o
  * Reveal marca `data-reveal-settled` e o elemento (ou os filhos do grupo)
  * volta a usar as próprias transições — senão o hover de um cartão revelado
- * herdaria o atraso escalonado e perderia o box-shadow. */
+ * herdaria o atraso escalonado e perderia o box-shadow.
+ * Esconder é instantâneo: só a entrada anima (a transição vem do estilo depois
+ * da mudança). Antes, o que ficava abaixo da dobra esmaecia de 1 a 0 ao
+ * carregar a página — e, com `appear`, o "esconder" durava o atraso inteiro. */
 
 .or-reveal {
   --or-reveal-index: 0;
 }
 
-.or-reveal:not([data-reveal-settled]) {
+.or-reveal:not([data-reveal-settled], [data-reveal='hidden']) {
   transition:
     opacity var(--or-duration-reveal) var(--or-ease-out),
     transform var(--or-duration-reveal) var(--or-ease-out);
@@ -355,7 +358,7 @@
 }
 
 /* Grupo escalonado: cada filho entra 80ms depois do anterior. */
-.or-reveal-group:not([data-reveal-settled]) > * {
+.or-reveal-group:not([data-reveal-settled], [data-reveal='hidden']) > * {
   transition:
     opacity var(--or-duration-reveal) var(--or-ease-out),
     transform var(--or-duration-reveal) var(--or-ease-out);
