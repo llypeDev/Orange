@@ -1,0 +1,209 @@
+/* ===========================================================================
+ * TaskList — lista de tarefas com status (padrão "Task list" do GOV.UK).
+ * Cada linha: nome (link/botão quando acionável), descrição e status (tag).
+ * Linhas acionáveis são alvos inteiros: o ::after do link cobre o <li>.
+ * ========================================================================= */
+
+.or-task-list {
+  min-width: 0;
+  color: var(--or-color-text);
+  font-family: var(--or-font-body);
+}
+
+/* --- Resumo: título + "3 de 5 concluídas" + barra -------------------------- */
+
+.or-task-list__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-3);
+  padding-bottom: var(--or-space-5);
+}
+
+.or-task-list__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--or-space-1) var(--or-space-4);
+}
+
+.or-task-list__heading {
+  min-width: 0;
+  margin: 0;
+  font-family: var(--or-font-display);
+  font-size: var(--or-text-xl);
+  font-weight: var(--or-weight-semibold);
+  line-height: var(--or-leading-heading);
+  letter-spacing: -0.025em;
+  color: var(--or-color-text);
+  text-wrap: balance;
+}
+
+.or-task-list__count {
+  font-size: var(--or-text-sm);
+  font-weight: var(--or-weight-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text-muted);
+  white-space: nowrap;
+}
+
+/* --- Lista ----------------------------------------------------------------- */
+
+.or-task-list__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+}
+
+/*
+ * Linha em flex com quebra: o status fica à direita do nome e, quando não cabe
+ * (contêineres estreitos, rótulos longos), desce para baixo da descrição.
+ */
+.or-task-list__item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-2) var(--or-space-4);
+  padding: var(--or-space-3);
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-task-list__main {
+  display: flex;
+  flex: 1 1 12rem;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.or-task-list__label {
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-md);
+  font-weight: var(--or-weight-medium);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text);
+  overflow-wrap: anywhere;
+}
+
+.or-task-list__description {
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-body);
+  color: var(--or-color-text-muted);
+}
+
+.or-task-list__status {
+  display: flex;
+  flex: 0 1 auto;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* `cannot-start`: texto simples, sem tag (não há o que fazer ainda). */
+.or-task-list__status-text {
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-tight);
+  color: var(--or-color-text-subtle);
+}
+
+/* --- Linhas acionáveis: a linha inteira é o alvo ---------------------------- */
+
+/* Reset do <button> (linhas com onClick) — o visual é o mesmo do link. */
+button.or-task-list__link {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--or-radius-none);
+  background: none;
+  text-align: start;
+}
+
+.or-task-list__link {
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-color: var(--or-color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+  /* Como o Link: o sublinhado engrossa e se aproxima do texto no hover/foco. */
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    text-decoration-thickness var(--or-duration-fast) var(--or-ease-out),
+    text-underline-offset var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Área de clique estendida (stretched link): cobre o <li> inteiro. */
+.or-task-list__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* Hover e foco visível: mesma resposta (fundo da linha + sublinhado + cor). */
+.or-task-list__item--actionable:hover,
+.or-task-list__item--actionable:has(.or-task-list__link:focus-visible) {
+  background: var(--or-color-surface-hover);
+}
+
+.or-task-list__item--actionable:hover .or-task-list__link,
+.or-task-list__link:focus-visible {
+  color: var(--or-color-accent-text);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+/* O contorno de foco envolve a linha inteira (o alvo real), por dentro. */
+.or-task-list__link:focus-visible {
+  outline: none;
+}
+
+.or-task-list__link:focus-visible::after {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-task-list__item--actionable:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* --- Movimento: status que muda depois de montado dá um pequeno "pop" ------- */
+
+.or-task-list__status[data-changed] .or-task-list__status-value {
+  animation: or-task-list-status-in var(--or-duration-medium) var(--or-ease-bounce);
+}
+
+@keyframes or-task-list-status-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+/* --- Alto contraste --------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .or-task-list__link {
+    color: LinkText;
+    text-decoration-color: LinkText;
+  }
+
+  /* O fundo do hover some em alto contraste: um contorno fino indica a linha. */
+  .or-task-list__item--actionable:hover {
+    outline: 1px solid LinkText;
+    outline-offset: -1px;
+  }
+
+  .or-task-list__link:focus-visible::after {
+    outline-color: Highlight;
+  }
+
+  .or-task-list__status-text {
+    color: GrayText;
+  }
+}
