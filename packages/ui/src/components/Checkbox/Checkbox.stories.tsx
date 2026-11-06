@@ -100,3 +100,22 @@ export const GroupHorizontal: Story = {
     />
   ),
 }
+
+/** `variant="card"`: o mesmo cartão do RadioGroup, para escolhas múltiplas com descrição. */
+export const GroupCards: Story = {
+  render: () => (
+    <CheckboxGroup
+      label="Escolha os módulos do plano"
+      description="Cada módulo adiciona R$ 39/mês. Você pode mudar depois."
+      variant="card"
+      orientation="horizontal"
+      defaultValue={['financeiro']}
+      options={[
+        { value: 'financeiro', label: 'Financeiro', description: 'Contas a pagar e a receber e conciliação bancária.' },
+        { value: 'estoque', label: 'Estoque', description: 'Inventário, lotes e transferências entre depósitos.' },
+        { value: 'fiscal', label: 'Fiscal', description: 'Emissão de NF-e e NFS-e.' },
+        { value: 'bi', label: 'Relatórios avançados', description: 'Disponível a partir do plano Pro.', disabled: true },
+      ]}
+    />
+  ),
+}

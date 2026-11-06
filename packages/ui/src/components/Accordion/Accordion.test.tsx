@@ -135,8 +135,11 @@ describe('Accordion', () => {
     expect(panel).toBeVisible()
     // um quadro em 0fr antes de expandir, para a transição acontecer
     await waitFor(() => expect(panel).toHaveAttribute('data-state', 'open'))
+    expect(panel).not.toHaveAttribute('inert')
     await user.click(button)
     expect(panel).toHaveAttribute('data-state', 'closed')
+    // fora do Tab e da árvore de acessibilidade já durante a saída
+    expect(panel).toHaveAttribute('inert')
     await waitFor(() => expect(panel).not.toBeVisible())
   })
 

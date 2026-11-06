@@ -12,6 +12,8 @@ export interface CheckboxGroupOption {
   disabled?: boolean
 }
 
+export type CheckboxGroupVariant = 'default' | 'card'
+
 export interface CheckboxGroupProps
   extends Omit<FieldsetHTMLAttributes<HTMLFieldSetElement>, 'defaultValue' | 'onChange' | 'title'> {
   /** Pergunta ou título do grupo, renderizado como `<legend>`. */
@@ -42,12 +44,15 @@ export interface CheckboxGroupProps
   options?: CheckboxGroupOption[]
   /** Disposição das opções. Padrão: `vertical`. */
   orientation?: 'vertical' | 'horizontal'
+  /** `card` mostra cada opção em um cartão com borda (laranja quando marcado). */
+  variant?: CheckboxGroupVariant
   children?: ReactNode
 }
 
 /**
  * Grupo de caixas de seleção para escolhas múltiplas, com `<fieldset>` e
  * `<legend>` nativos. Recebe `options` ou `<Checkbox value="…">` como filhos.
+ * A variante `card` mostra cada opção em um cartão clicável, como no RadioGroup.
  */
 export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(function CheckboxGroup(
   {
@@ -65,6 +70,7 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
     onChange,
     options,
     orientation = 'vertical',
+    variant = 'default',
     className,
     children,
     ...rest
@@ -80,10 +86,11 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
       value,
       disabled,
       invalid,
+      variant,
       toggle: (item, checked) =>
         setValue((prev) => (checked ? (prev.includes(item) ? prev : [...prev, item]) : prev.filter((v) => v !== item))),
     }),
-    [name, value, disabled, invalid, setValue],
+    [name, value, disabled, invalid, variant, setValue],
   )
 
   return (
@@ -100,8 +107,8 @@ export const CheckboxGroup = forwardRef<HTMLFieldSetElement, CheckboxGroupProps>
         optional={optional}
         announceRequired
         disabled={disabled}
-        className={cx('or-checkbox-group', className)}
-        contentProps={{ 'data-orientation': orientation }}
+        className={cx('or-checkbox-group', `or-checkbox-group--${variant}`, className)}
+        contentProps={{ 'data-orientation': orientation, className: 'or-checkbox-group__options' }}
         {...rest}
       >
         {options?.map((option) => (

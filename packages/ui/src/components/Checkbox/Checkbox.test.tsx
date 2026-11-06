@@ -188,6 +188,107 @@ describe('CheckboxGroup', () => {
     await expectNoA11yViolations(container)
   })
 
+  describe('variante card', () => {
+    const modules = [
+      { value: 'financeiro', label: 'Financeiro', description: 'Contas a pagar e a receber e conciliação bancária.' },
+      { value: 'estoque', label: 'Estoque', description: 'Inventário, lotes e transferências entre depósitos.' },
+      { value: 'fiscal', label: 'Fiscal', description: 'Disponível a partir do plano Pro.', disabled: true },
+    ]
+
+    it('renderiza cada opção como um cartão <label> com nome e descrição próprios', () => {
+      render(
+        <CheckboxGroup label="Módulos do plano" variant="card" orientation="horizontal" options={modules} name="modulos" />,
+      )
+      const group = screen.getByRole('group', { name: 'Módulos do plano' })
+      expect(group).toHaveClass('or-checkbox-group--card')
+      expect(group.querySelector('.or-checkbox-group__options')).toHaveAttribute('data-orientation', 'horizontal')
+      const financeiro = screen.getByRole('checkbox', { name: 'Financeiro' })
+      expect(financeiro).toHaveAttribute('type', 'checkbox')
+      expect(financeiro).toHaveAttribute('name', 'modulos')
+      // o nome vem só do rótulo, mesmo com a descrição dentro do <label>
+      expect(financeiro).toHaveAccessibleName('Financeiro')
+      expect(financeiro).toHaveAccessibleDescription('Contas a pagar e a receber e conciliação bancária.')
+      const card = financeiro.closest('.or-checkbox')!
+      expect(card.tagName).toBe('LABEL')
+      expect(card).toHaveClass('or-checkbox--card')
+      expect(card).not.toHaveAttribute('data-checked')
+      expect(screen.getByRole('checkbox', { name: 'Fiscal' })).toBeDisabled()
+      expect(screen.getByRole('checkbox', { name: 'Fiscal' }).closest('.or-checkbox')).toHaveAttribute('data-disabled')
+    })
+
+    it('o cartão inteiro alterna com o mouse (inclusive pela descrição) e marca data-checked', async () => {
+      const user = userEvent.setup()
+      const onChange = vi.fn()
+      render(<CheckboxGroup label="Módulos do plano" variant="card" options={modules} onChange={onChange} />)
+      const financeiro = screen.getByRole('checkbox', { name: 'Financeiro' })
+      const card = financeiro.closest('.or-checkbox')!
+      await user.click(screen.getByText('Contas a pagar e a receber e conciliação bancária.'))
+      expect(financeiro).toBeChecked()
+      expect(card).toHaveAttribute('data-checked')
+      expect(onChange).toHaveBeenLastCalledWith(['financeiro'])
+      await user.click(screen.getByText('Estoque'))
+      expect(onChange).toHaveBeenLastCalledWith(['financeiro', 'estoque'])
+      await user.click(card)
+      expect(financeiro).not.toBeChecked()
+      expect(card).not.toHaveAttribute('data-checked')
+      expect(onChange).toHaveBeenLastCalledWith(['estoque'])
+      await user.click(screen.getByText('Disponível a partir do plano Pro.'))
+      expect(screen.getByRole('checkbox', { name: 'Fiscal' })).not.toBeChecked()
+    })
+
+    it('teclado inalterado: Tab entre as caixas e Espaço alterna (controlado, com filhos)', async () => {
+      const user = userEvent.setup()
+      function Controlled() {
+        const [value, setValue] = useState<string[]>(['financeiro'])
+        return (
+          <>
+            <CheckboxGroup label="Módulos do plano" variant="card" value={value} onChange={setValue}>
+              <Checkbox value="financeiro" label="Financeiro" />
+              <Checkbox value="estoque" label="Estoque" description="Inventário e lotes." />
+            </CheckboxGroup>
+            <span data-testid="out">{value.join(',')}</span>
+          </>
+        )
+      }
+      render(<Controlled />)
+      await user.tab()
+      expect(screen.getByRole('checkbox', { name: 'Financeiro' })).toHaveFocus()
+      await user.tab()
+      expect(screen.getByRole('checkbox', { name: 'Estoque' })).toHaveFocus()
+      await user.keyboard(' ')
+      expect(screen.getByTestId('out')).toHaveTextContent('financeiro,estoque')
+      expect(screen.getByRole('checkbox', { name: 'Estoque' }).closest('.or-checkbox')).toHaveAttribute('data-checked')
+    })
+
+    it('a variante padrão mantém a marcação de lista (sem aria-labelledby)', () => {
+      render(<CheckboxGroup label="Canais" options={options} />)
+      const email = screen.getByRole('checkbox', { name: 'E-mail' })
+      expect(email).not.toHaveAttribute('aria-labelledby')
+      expect(email.closest('.or-checkbox')!.tagName).toBe('DIV')
+      expect(screen.getByRole('group')).toHaveClass('or-checkbox-group--default')
+    })
+
+    it('não possui violações de acessibilidade', async () => {
+      const { container } = render(
+        <div>
+          <CheckboxGroup
+            label="Módulos do plano"
+            variant="card"
+            orientation="horizontal"
+            options={modules}
+            defaultValue={['estoque']}
+            description="Você pode adicionar módulos depois."
+          />
+          <CheckboxGroup label="Integrações" variant="card" error="Escolha pelo menos uma integração." required>
+            <Checkbox value="banco" label="Conciliação bancária" description="Importa extratos OFX." />
+            <Checkbox value="loja" label="Loja virtual" error="Requer o módulo Estoque." />
+          </CheckboxGroup>
+        </div>,
+      )
+      await expectNoA11yViolations(container)
+    })
+  })
+
   it('motion: a caixa (Checkbox) e as opções (grupo) tremem quando o erro surge', () => {
     const { rerender } = render(
       <>

@@ -203,6 +203,104 @@
   cursor: not-allowed;
 }
 
+/* Variante card (CheckboxGroup variant="card") --------------------------------
+ * Espelha o cartão do RadioGroup (mesmos tokens, estados e movimento): o
+ * <label> é o cartão inteiro, com borda laranja e fundo suave quando marcado. */
+
+.or-checkbox-group--card > .or-checkbox-group__options {
+  gap: var(--or-space-3);
+}
+
+.or-checkbox-group--card > .or-checkbox-group__options[data-orientation='horizontal'] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.or-checkbox--card {
+  position: relative;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--or-space-3);
+  padding: var(--or-space-4);
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  cursor: pointer;
+  /* Borda, fundo e anel animados; o cartão afunda no clique. */
+  transition:
+    border-color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-medium) var(--or-ease-out),
+    box-shadow var(--or-duration-medium) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-checkbox__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--or-space-1);
+  min-width: 0;
+  padding-top: calc((var(--_control) - 1lh) / 2);
+}
+
+.or-checkbox--card .or-checkbox__label {
+  padding-top: 0;
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.or-checkbox--card .or-checkbox__description {
+  margin: 0;
+  padding-left: 0;
+  line-height: var(--or-leading-tight);
+}
+
+.or-checkbox--card .or-checkbox__error {
+  padding-left: 0;
+}
+
+.or-checkbox--card:hover:not([data-disabled], [data-checked]),
+.or-checkbox--card:not([data-checked]):has(.or-checkbox__input:focus-visible) {
+  border-color: var(--or-color-text-subtle);
+}
+
+.or-checkbox--card:active:not([data-disabled], :has(.or-checkbox__input:disabled)) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-checkbox--card:hover .or-checkbox__input:not(:disabled) + .or-checkbox__box {
+  box-shadow: none;
+}
+
+.or-checkbox--card[data-checked] {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+  box-shadow: inset 0 0 0 1px var(--or-color-accent);
+}
+
+.or-checkbox--card:has(.or-checkbox__input:focus-visible) {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-checkbox--card .or-checkbox__input:focus-visible + .or-checkbox__box {
+  outline: none;
+}
+
+.or-fieldset[data-invalid] .or-checkbox--card:not([data-checked]),
+.or-checkbox--card[data-invalid]:not([data-checked]) {
+  border-color: var(--or-color-danger);
+}
+
+.or-checkbox--card[data-disabled],
+.or-checkbox--card:has(.or-checkbox__input:disabled) {
+  border-color: var(--or-color-border);
+  background: var(--or-color-bg-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
 /* Alto contraste: repete os seletores de hover/foco/desabilitado — senão a
    regra mais específica (cor de token) vence e o navegador a descarta,
    deixando a caixa marcada branca sobre branco. */
@@ -242,5 +340,17 @@
   .or-checkbox[data-disabled] .or-checkbox__description,
   .or-checkbox:has(.or-checkbox__input:disabled) .or-checkbox__description {
     color: GrayText;
+  }
+
+  /* Cartão marcado: borda e contorno em Highlight, como no RadioGroup. */
+  .or-checkbox--card[data-checked] {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+  }
+
+  /* Foco do cartão: anel no texto do sistema, distinto do Highlight da seleção. */
+  .or-checkbox--card:has(.or-checkbox__input:focus-visible) {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
   }
 }

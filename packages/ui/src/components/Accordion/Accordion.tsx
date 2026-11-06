@@ -272,8 +272,8 @@ export type AccordionContentProps = HTMLAttributes<HTMLDivElement>
 
 /**
  * Painel do item (`role="region"` rotulado pelo cabeçalho). Expande com
- * `grid-template-rows: 0fr → 1fr` e só recebe `hidden` quando a transição de
- * saída termina (`usePresence`). Sem movimento em `prefers-reduced-motion`.
+ * `grid-template-rows: 0fr → 1fr`, fica `inert` assim que fecha e só recebe `hidden` quando a
+ * transição de saída termina (`usePresence`). Sem movimento em `prefers-reduced-motion`.
  */
 export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(function AccordionContent(
   { className, children, ...rest },
@@ -310,6 +310,8 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
       className={cx('or-accordion__content', className)}
       data-state={open && expanded ? 'open' : 'closed'}
       hidden={!present}
+      // Fora da ordem de Tab e da árvore de acessibilidade já durante a animação de saída.
+      inert={open ? undefined : true}
       {...rest}
     >
       <div className="or-accordion__content-clip">
