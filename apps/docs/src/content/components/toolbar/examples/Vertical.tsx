@@ -10,7 +10,7 @@ import {
 export default function Vertical() {
   return (
     <Toolbar aria-label="Ferramentas do quadro" orientation="vertical">
-      <ToggleButtonGroup type="single" aria-label="Ferramenta ativa" defaultValue="select">
+      <ToggleButtonGroup selectionMode="single" aria-label="Ferramenta ativa" defaultValue="select">
         <ToggleButton
           value="select"
           iconOnly

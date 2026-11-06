@@ -9,7 +9,7 @@ export default function GroupSingle() {
   return (
     <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
       <ToggleButtonGroup
-        type="single"
+        selectionMode="single"
         aria-label="Alinhamento do parágrafo"
         attached
         value={align}

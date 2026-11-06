@@ -38,7 +38,7 @@ const meta = {
         <IconButton icon="redo" label="Refazer" disabled />
       </ToolbarGroup>
       <ToolbarSeparator />
-      <ToggleButtonGroup type="multiple" aria-label="Estilo" defaultValue={['bold']}>
+      <ToggleButtonGroup selectionMode="multiple" aria-label="Estilo" defaultValue={['bold']}>
         <ToggleButton value="bold" iconOnly aria-label="Negrito" startIcon={<Icon name="bold" />} />
         <ToggleButton
           value="italic"
@@ -54,7 +54,7 @@ const meta = {
         />
       </ToggleButtonGroup>
       <ToolbarSeparator />
-      <ToggleButtonGroup type="single" aria-label="Alinhamento" defaultValue="left">
+      <ToggleButtonGroup selectionMode="single" aria-label="Alinhamento" defaultValue="left">
         <ToggleButton
           value="left"
           iconOnly
@@ -90,7 +90,7 @@ export const Vertical: Story = {
   args: { orientation: 'vertical', 'aria-label': 'Ferramentas de desenho' },
   render: (args) => (
     <Toolbar {...args}>
-      <ToggleButtonGroup type="single" aria-label="Ferramenta" defaultValue="select">
+      <ToggleButtonGroup selectionMode="single" aria-label="Ferramenta" defaultValue="select">
         <ToggleButton
           value="select"
           iconOnly

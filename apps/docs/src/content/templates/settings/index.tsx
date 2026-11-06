@@ -35,8 +35,8 @@ export default function SettingsTemplatePage() {
         {
           slug: 'app-shell',
           why: {
-            pt: 'Área de configurações com navigation próprio e navBreakpoint="md": a barra lateral fica visível já a partir de 768px.',
-            en: 'Settings area with its own navigation and navBreakpoint="md": the sidebar is visible from 768px up.',
+            pt: 'Área de configurações com navigation próprio e navDrawerBelow="md": a barra lateral fica visível já a partir de 768px.',
+            en: 'Settings area with its own navigation and navDrawerBelow="md": the sidebar is visible from 768px up.',
           },
         },
         {

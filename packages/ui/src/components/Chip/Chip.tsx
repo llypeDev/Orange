@@ -11,7 +11,7 @@ import {
 } from 'react'
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
-import { composeEventHandlers, cx, devWarning } from '../../utils'
+import { composeEventHandlers, cx, deprecate, devWarning } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Chip.css'
 
@@ -124,6 +124,8 @@ interface ChipGroupBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
 
 export interface ChipGroupMultipleProps extends ChipGroupBaseProps {
   /** `multiple` (padrão): vários chips selecionados. */
+  selectionMode?: 'multiple'
+  /** @deprecated Use `selectionMode` (o mesmo nome de `Listbox` e `TreeView`). Sai na v1.0. */
   type?: 'multiple'
   value?: string[]
   defaultValue?: string[]
@@ -132,13 +134,22 @@ export interface ChipGroupMultipleProps extends ChipGroupBaseProps {
 
 export interface ChipGroupSingleProps extends ChipGroupBaseProps {
   /** `single`: no máximo um chip selecionado; clicar no selecionado o desmarca. */
-  type: 'single'
+  selectionMode: 'single'
+  /** @deprecated Use `selectionMode` (o mesmo nome de `Listbox` e `TreeView`). Sai na v1.0. */
+  type?: 'single'
   value?: string | null
   defaultValue?: string | null
   onChange?: (value: string | null) => void
 }
 
-export type ChipGroupProps = ChipGroupMultipleProps | ChipGroupSingleProps
+/** Forma antiga, com `type="single"` no lugar de `selectionMode`. Sai na v1.0. */
+interface ChipGroupLegacySingleProps extends Omit<ChipGroupSingleProps, 'selectionMode' | 'type'> {
+  /** @deprecated Use `selectionMode="single"`. Sai na v1.0. */
+  type: 'single'
+  selectionMode?: 'single'
+}
+
+export type ChipGroupProps = ChipGroupMultipleProps | ChipGroupSingleProps | ChipGroupLegacySingleProps
 
 function toArray(value: string | string[] | null | undefined): string[] | undefined {
   if (value === undefined) return undefined
@@ -149,7 +160,8 @@ function toArray(value: string | string[] | null | undefined): string[] | undefi
 /** Agrupa chips de filtro (`role="group"` rotulado) com seleção única ou múltipla. */
 export const ChipGroup = forwardRef<HTMLDivElement, ChipGroupProps>(function ChipGroup(props, ref) {
   const {
-    type = 'multiple',
+    selectionMode,
+    type,
     value,
     defaultValue,
     onChange,
@@ -161,7 +173,10 @@ export const ChipGroup = forwardRef<HTMLDivElement, ChipGroupProps>(function Chi
     children,
     ...rest
   } = props
-  const single = type === 'single'
+  if (type !== undefined) {
+    deprecate('ChipGroup: `type` está depreciado e sai na v1.0. Use `selectionMode`.', 'chip-group.type')
+  }
+  const single = (selectionMode ?? type ?? 'multiple') === 'single'
   const labelId = useId('or-chip-group')
   devWarning(
     !label && !rest['aria-label'] && !rest['aria-labelledby'],

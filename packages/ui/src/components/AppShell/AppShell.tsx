@@ -16,7 +16,7 @@ import {
 } from 'react'
 import { useControllableState, useId, useIsomorphicLayoutEffect, useMediaQuery } from '../../hooks'
 import { useLocale } from '../../providers'
-import { composeEventHandlers, cx, mergeRefs } from '../../utils'
+import { composeEventHandlers, cx, deprecate, mergeRefs } from '../../utils'
 import { AppHeader } from '../AppHeader'
 import { Drawer } from '../Drawer'
 import { Footer } from '../Footer'
@@ -99,8 +99,13 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
   /** Texto do link de atalho. Padrão: `t('skipToContent')`. */
   skipLinkLabel?: ReactNode
   /**
-   * Largura da tela a partir da qual a navegação fica fixa ao lado do conteúdo
-   * (`md` 768px, `lg` 1024px). Abaixo dela, vai para um painel (Drawer).
+   * Abaixo deste ponto de quebra (`md` 768px, `lg` 1024px) a navegação vai para um painel
+   * (Drawer); a partir dele, fica fixa ao lado do conteúdo. Padrão: `lg`.
+   */
+  navDrawerBelow?: AppShellBreakpoint
+  /**
+   * @deprecated Use `navDrawerBelow` (no padrão `*Below` de `AppHeader.collapseBelow` e
+   * `Splitter.stackBelow`). Sai na v1.0.
    */
   navBreakpoint?: AppShellBreakpoint
   /** Barra lateral recolhida (controlado). */
@@ -149,7 +154,8 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     mainElement = 'main',
     skipLink = true,
     skipLinkLabel,
-    navBreakpoint = 'lg',
+    navDrawerBelow: navDrawerBelowProp,
+    navBreakpoint: navBreakpointProp,
     navCollapsed: navCollapsedProp,
     defaultNavCollapsed = false,
     onNavCollapsedChange,
@@ -171,6 +177,13 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
   const rootRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLElement>(null)
 
+  if (navBreakpointProp !== undefined) {
+    deprecate(
+      'AppShell: `navBreakpoint` está depreciado e sai na v1.0. Use `navDrawerBelow`.',
+      'app-shell.navBreakpoint',
+    )
+  }
+  const navBreakpoint = navDrawerBelowProp ?? navBreakpointProp ?? 'lg'
   // No servidor (sem matchMedia) assume tela larga; o CSS esconde a barra abaixo do ponto de quebra.
   const isWide = useMediaQuery(`(min-width: ${BREAKPOINTS[navBreakpoint]})`, true)
   const isCompact = !isWide

@@ -34,7 +34,7 @@ export default function ClickableRows() {
 
   return (
     <div style={{ display: 'grid', gap: 16 }}>
-      <ChipGroup type="single" label="Status" value={status} onChange={setStatus}>
+      <ChipGroup selectionMode="single" label="Status" value={status} onChange={setStatus}>
         <Chip value="aberto">Abertos</Chip>
         <Chip value="aguardando">Aguardando cliente</Chip>
         <Chip value="resolvido">Resolvidos</Chip>

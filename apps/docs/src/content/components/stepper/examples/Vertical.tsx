@@ -7,7 +7,7 @@ export default function Vertical() {
   return (
     <Stepper
       orientation="vertical"
-      activeStep={active}
+      step={active}
       aria-label="Configuração do workspace"
       steps={[
         { label: 'Criar workspace', description: 'Orange Labs' },

@@ -23,13 +23,13 @@ const meta = {
     },
   },
   argTypes: {
-    activeStep: { control: { type: 'number', min: 0, max: 4 } },
+    step: { control: { type: 'number', min: 0, max: 4 } },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
     onStepClick: { action: 'stepClick' },
   },
   args: {
     steps,
-    activeStep: 2,
+    step: 2,
     orientation: 'horizontal',
     'aria-label': 'Etapas do checkout',
   },
@@ -55,7 +55,7 @@ export const Interactive: Story = {
     const [active, setActive] = useState(1)
     return (
       <div style={{ display: 'grid', gap: 24 }}>
-        <Stepper {...args} activeStep={active} onStepClick={setActive} />
+        <Stepper {...args} step={active} onStepClick={setActive} />
         <div style={{ display: 'flex', gap: 8 }}>
           <Button variant="outline" disabled={active === 0} onClick={() => setActive((v) => v - 1)}>
             Voltar

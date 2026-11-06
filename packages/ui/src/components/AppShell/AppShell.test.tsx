@@ -331,15 +331,25 @@ describe('AppShell', () => {
     expect(await screen.findByRole('dialog', { name: 'Menu' })).toBeInTheDocument()
   })
 
-  it('navBreakpoint escolhe a largura em que a barra fica fixa', () => {
+  it('navDrawerBelow escolhe a largura abaixo da qual a navegação vai para o painel', () => {
     mockViewport(900)
-    const { container, rerender } = render(<OrdersShell navBreakpoint="md" />)
+    const { container, rerender } = render(<OrdersShell navDrawerBelow="md" />)
     expect(container.firstChild).toHaveAttribute('data-breakpoint', 'md')
     expect(container.firstChild).not.toHaveAttribute('data-compact')
     expect(screen.getByRole('navigation', { name: 'Navegação da loja' })).toBeInTheDocument()
-    rerender(<OrdersShell navBreakpoint="lg" />)
+    rerender(<OrdersShell navDrawerBelow="lg" />)
     expect(container.firstChild).toHaveAttribute('data-compact')
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+  })
+
+  it('navBreakpoint (depreciado) ainda funciona e avisa no console', () => {
+    mockViewport(900)
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const { container } = render(<OrdersShell navBreakpoint="md" />)
+    expect(container.firstChild).toHaveAttribute('data-breakpoint', 'md')
+    expect(container.firstChild).not.toHaveAttribute('data-compact')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`navBreakpoint` está depreciado'))
+    warn.mockRestore()
   })
 
   it('ao passar para a tela larga, fecha o painel e mostra a barra lateral', async () => {

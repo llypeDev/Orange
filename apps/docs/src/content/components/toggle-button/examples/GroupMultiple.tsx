@@ -7,7 +7,7 @@ export default function GroupMultiple() {
   return (
     <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
       <ToggleButtonGroup
-        type="multiple"
+        selectionMode="multiple"
         aria-label="Modalidade de trabalho"
         value={modes}
         onChange={setModes}

@@ -80,8 +80,8 @@ export default function ChipPage() {
         <Example
           title={{ pt: 'Seleção única', en: 'Single selection' }}
           description={{
-            pt: 'type="single": selecionar um chip desmarca o anterior; clicar no selecionado o desmarca.',
-            en: 'type="single": selecting a chip deselects the previous one; clicking the selected one deselects it.',
+            pt: 'selectionMode="single": selecionar um chip desmarca o anterior; clicar no selecionado o desmarca.',
+            en: 'selectionMode="single": selecting a chip deselects the previous one; clicking the selected one deselects it.',
           }}
           code={SingleCode}
         >
@@ -128,7 +128,8 @@ export default function ChipPage() {
           rows={[
             { name: 'label', type: 'ReactNode', description: { pt: 'Rótulo do grupo (visível, como eyebrow).', en: 'Group label (visible, as an eyebrow).' } },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: { pt: 'Esconde o rótulo visualmente.', en: 'Visually hides the label.' } },
-            { name: 'type', type: "'multiple' | 'single'", default: "'multiple'", description: { pt: 'Seleção múltipla ou única.', en: 'Multiple or single selection.' } },
+            { name: 'selectionMode', type: "'multiple' | 'single'", default: "'multiple'", description: { pt: 'Seleção múltipla ou única.', en: 'Multiple or single selection.' } },
+            { name: 'type', type: "'multiple' | 'single'", deprecated: { replacement: 'selectionMode', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de selectionMode.', en: 'Former name of selectionMode.' } },
             { name: 'value / defaultValue', type: 'string[] (multiple) · string | null (single)', description: { pt: 'Selecionados (controlado / inicial).', en: 'Selected (controlled / initial).' } },
             { name: 'onChange', type: '(value) => void', description: { pt: 'Chamado quando a seleção muda.', en: 'Called when the selection changes.' } },
             { name: 'size', type: "'sm' | 'md'", description: { pt: 'Tamanho de todos os chips.', en: 'Size of every chip.' } },

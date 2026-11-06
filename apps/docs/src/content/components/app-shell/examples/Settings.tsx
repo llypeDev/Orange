@@ -30,7 +30,7 @@ export default function Settings() {
       <AppShell
         mainElement="div"
         fullHeight={false}
-        navBreakpoint="md"
+        navDrawerBelow="md"
         header={<SettingsHeader />}
         navLabel="Seções das configurações"
         navTitle="Configurações"

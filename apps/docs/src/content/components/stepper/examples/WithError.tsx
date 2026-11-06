@@ -4,7 +4,7 @@ export default function WithError() {
   return (
     <Stepper
       aria-label="Verificação de identidade"
-      activeStep={1}
+      step={1}
       steps={[
         { label: 'Dados pessoais', description: 'Nome e data de nascimento' },
         { label: 'Documento', description: 'Foto ilegível — envie novamente', status: 'error' },

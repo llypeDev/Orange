@@ -156,12 +156,12 @@ const meta = {
     docs: {
       description: {
         component:
-          'Estrutura de página da aplicação: `header`, `navigation` (barra lateral fixa e recolhível a partir de `navBreakpoint`; abaixo dele vira um `Drawer`), `children` no `<main>`, `aside` e `footer`, com landmarks nomeados e `SkipLink`. Use `AppShellNavToggle` e `useAppShell()` para controlar a navegação de qualquer lugar. Redimensione a prévia para ver o painel em telas estreitas.',
+          'Estrutura de página da aplicação: `header`, `navigation` (barra lateral fixa e recolhível; abaixo de `navDrawerBelow` vira um `Drawer`), `children` no `<main>`, `aside` e `footer`, com landmarks nomeados e `SkipLink`. Use `AppShellNavToggle` e `useAppShell()` para controlar a navegação de qualquer lugar. Redimensione a prévia para ver o painel em telas estreitas.',
       },
     },
   },
   argTypes: {
-    navBreakpoint: { control: 'inline-radio', options: ['md', 'lg'] },
+    navDrawerBelow: { control: 'inline-radio', options: ['md', 'lg'] },
     stickyHeader: { control: 'boolean' },
     stickyNav: { control: 'boolean' },
     skipLink: { control: 'boolean' },

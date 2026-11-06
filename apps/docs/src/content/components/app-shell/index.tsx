@@ -60,12 +60,12 @@ export default function AppShellPage() {
               pt: (
                 <>
                   Coloque o <Code>AppShellNavToggle</Code> no cabeçalho, perto da marca. Abaixo de{' '}
-                  <Code>navBreakpoint</Code> ele abre o painel; acima, recolhe a barra lateral.
+                  <Code>navDrawerBelow</Code> ele abre o painel; acima, recolhe a barra lateral.
                 </>
               ),
               en: (
                 <>
-                  Place <Code>AppShellNavToggle</Code> in the header, near the brand. Below <Code>navBreakpoint</Code> it
+                  Place <Code>AppShellNavToggle</Code> in the header, near the brand. Below <Code>navDrawerBelow</Code> it
                   opens the panel; above it, it collapses the sidebar.
                 </>
               ),
@@ -137,8 +137,8 @@ export default function AppShellPage() {
         <Example
           title={{ pt: 'Área de configurações', en: 'Settings area' }}
           description={{
-            pt: 'Cabeçalho próprio com useAppShell(): o botão de menu só aparece quando a navegação vai para o painel (navBreakpoint="md"). Footer no rodapé.',
-            en: 'Custom header with useAppShell(): the menu button only shows when the navigation moves to the panel (navBreakpoint="md"). Footer at the bottom.',
+            pt: 'Cabeçalho próprio com useAppShell(): o botão de menu só aparece quando a navegação vai para o painel (navDrawerBelow="md"). Footer no rodapé.',
+            en: 'Custom header with useAppShell(): the menu button only shows when the navigation moves to the panel (navDrawerBelow="md"). Footer at the bottom.',
           }}
           code={SettingsCode}
           align="stretch"
@@ -176,7 +176,8 @@ export default function AppShellPage() {
             { name: 'navLabel', type: 'string', default: "'Navegação principal'", description: { pt: 'Nome do landmark de navegação.', en: 'Navigation landmark name.' } },
             { name: 'asideLabel', type: 'string', default: "'Painel lateral'", description: { pt: 'Nome do landmark complementar.', en: 'Complementary landmark name.' } },
             { name: 'navTitle', type: 'ReactNode', default: "'Menu'", description: { pt: 'Título do painel em telas estreitas.', en: 'Panel title on narrow screens.' } },
-            { name: 'navBreakpoint', type: "'md' | 'lg'", default: "'lg'", description: { pt: 'A partir de 768px (md) ou 1024px (lg) a barra fica fixa ao lado do conteúdo.', en: 'From 768px (md) or 1024px (lg) the bar stays next to the content.' } },
+            { name: 'navDrawerBelow', type: "'md' | 'lg'", default: "'lg'", description: { pt: 'Abaixo de 768px (md) ou 1024px (lg) a navegação vai para um painel; a partir daí, a barra fica fixa ao lado do conteúdo.', en: 'Below 768px (md) or 1024px (lg) the navigation moves to a panel; from there up, the bar stays next to the content.' } },
+            { name: 'navBreakpoint', type: "'md' | 'lg'", deprecated: { replacement: 'navDrawerBelow', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de navDrawerBelow.', en: 'Former name of navDrawerBelow.' } },
             { name: 'navCollapsed', type: 'boolean', description: { pt: 'Barra recolhida (controlado).', en: 'Collapsed bar (controlled).' } },
             { name: 'defaultNavCollapsed', type: 'boolean', default: 'false', description: { pt: 'Barra recolhida inicialmente.', en: 'Initially collapsed bar.' } },
             { name: 'onNavCollapsedChange', type: '(collapsed: boolean) => void', description: { pt: 'Chamado ao recolher/expandir.', en: 'Called on collapse/expand.' } },

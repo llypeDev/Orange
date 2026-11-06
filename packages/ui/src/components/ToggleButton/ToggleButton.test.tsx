@@ -1,11 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { Icon } from '../../icons'
 import { expectNoA11yViolations } from '../../test/axe'
 import { ToggleButton } from './ToggleButton'
-import { ToggleButtonGroup } from './ToggleButtonGroup'
+import {
+  ToggleButtonGroup,
+  type ToggleButtonGroupProps,
+  type ToggleButtonGroupSingleProps,
+} from './ToggleButtonGroup'
 
 describe('ToggleButton', () => {
   it('alterna aria-pressed com o mouse (não controlado)', async () => {
@@ -103,12 +107,12 @@ describe('ToggleButton', () => {
 })
 
 describe('ToggleButtonGroup', () => {
-  it('type="single": no máximo um pressionado e clicar de novo solta', async () => {
+  it('selectionMode="single": no máximo um pressionado e clicar de novo solta', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
     render(
       <ToggleButtonGroup
-        type="single"
+        selectionMode="single"
         aria-label="Alinhamento"
         defaultValue="left"
         onChange={onChange}
@@ -131,11 +135,55 @@ describe('ToggleButtonGroup', () => {
     expect(center).toHaveAttribute('aria-pressed', 'false')
   })
 
-  it('type="multiple": combina vários valores', async () => {
+  it('sem selectionMode, a seleção é única', async () => {
     const user = userEvent.setup()
+    render(
+      <ToggleButtonGroup aria-label="Alinhamento" defaultValue="left">
+        <ToggleButton value="left">Esquerda</ToggleButton>
+        <ToggleButton value="center">Centro</ToggleButton>
+      </ToggleButtonGroup>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Centro' }))
+    expect(screen.getByRole('button', { name: 'Esquerda' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+  })
+
+  it('type (depreciado) ainda define o modo e avisa no console', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const onChange = vi.fn()
     render(
       <ToggleButtonGroup type="multiple" aria-label="Formatação" onChange={onChange}>
+        <ToggleButton value="bold">Negrito</ToggleButton>
+        <ToggleButton value="italic">Itálico</ToggleButton>
+      </ToggleButtonGroup>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Negrito' }))
+    await user.click(screen.getByRole('button', { name: 'Itálico' }))
+    expect(onChange).toHaveBeenLastCalledWith(['bold', 'italic'])
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`type` está depreciado'))
+    warn.mockRestore()
+  })
+
+  it('tipos: onChange recebe string[] no modo multiple e string | null no single', () => {
+    expectTypeOf<
+      Extract<ToggleButtonGroupProps, { selectionMode: 'multiple' }>['onChange']
+    >().toEqualTypeOf<((value: string[]) => void) | undefined>()
+    expectTypeOf<Extract<ToggleButtonGroupProps, { type: 'multiple' }>['onChange']>().toEqualTypeOf<
+      ((value: string[]) => void) | undefined
+    >()
+    expectTypeOf<ToggleButtonGroupSingleProps['onChange']>().toEqualTypeOf<
+      ((value: string | null) => void) | undefined
+    >()
+  })
+
+  it('selectionMode="multiple": combina vários valores', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(
+      <ToggleButtonGroup selectionMode="multiple" aria-label="Formatação" onChange={onChange}>
         <ToggleButton value="bold">Negrito</ToggleButton>
         <ToggleButton value="italic">Itálico</ToggleButton>
       </ToggleButtonGroup>,
@@ -156,7 +204,7 @@ describe('ToggleButtonGroup', () => {
       return (
         <>
           <ToggleButtonGroup
-            type="single"
+            selectionMode="single"
             aria-label="Período"
             value={value}
             onChange={(v) => v && setValue(v)}
@@ -179,7 +227,7 @@ describe('ToggleButtonGroup', () => {
   it('repassa size, variant e disabled aos botões', () => {
     render(
       <ToggleButtonGroup
-        type="multiple"
+        selectionMode="multiple"
         aria-label="Filtros"
         size="sm"
         variant="ghost"
@@ -202,7 +250,7 @@ describe('ToggleButtonGroup', () => {
   it('opera pelo teclado com Tab e Espaço', async () => {
     const user = userEvent.setup()
     render(
-      <ToggleButtonGroup type="multiple" aria-label="Formatação">
+      <ToggleButtonGroup selectionMode="multiple" aria-label="Formatação">
         <ToggleButton value="bold">Negrito</ToggleButton>
         <ToggleButton value="italic">Itálico</ToggleButton>
       </ToggleButtonGroup>,
@@ -224,7 +272,12 @@ describe('ToggleButtonGroup', () => {
           aria-label="Favoritar"
           startIcon={<Icon name="star" />}
         />
-        <ToggleButtonGroup type="single" aria-label="Alinhamento" defaultValue="center" attached>
+        <ToggleButtonGroup
+          selectionMode="single"
+          aria-label="Alinhamento"
+          defaultValue="center"
+          attached
+        >
           <ToggleButton
             value="left"
             iconOnly
