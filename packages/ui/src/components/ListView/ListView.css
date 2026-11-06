@@ -304,6 +304,12 @@
   animation: or-fade-in var(--or-duration-medium) var(--or-ease-out);
 }
 
+/* Um EmptyState já traz o próprio respiro: sem padding em dobro (não estoura em telas estreitas). */
+.or-list-view__empty:has(> .or-empty-state) {
+  padding: 0;
+  text-align: start;
+}
+
 /* Alto contraste: fundos e sombras somem, então a seleção vira a barra lateral
    e a caixa em Highlight (sem texto sobre Highlight: dispensa
    forced-color-adjust: none) e hover/foco viram contornos. */

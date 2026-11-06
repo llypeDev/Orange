@@ -28,7 +28,7 @@ export default function TeamMembers() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 560 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 12, width: '100%', maxWidth: 560 }}>
       <div
         style={{
           display: 'flex',

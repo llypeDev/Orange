@@ -26,6 +26,28 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.1.0',
+    title: {
+      pt: 'Oito componentes novos: Picker, ActionBar, ListView e mais',
+      en: 'Eight new components: Picker, ActionBar, ListView and more',
+    },
+    summary: {
+      pt: 'Comparamos o catálogo com shadcn/ui, Chakra, Mantine, React Aria, Carbon, Polaris, Atlassian e GOV.UK e preenchemos as lacunas mais usadas em apps: seleção rica, ações em lote, listas interativas, gráficos de participação e conteúdo de CMS.',
+      en: 'We compared the catalog with shadcn/ui, Chakra, Mantine, React Aria, Carbon, Polaris, Atlassian and GOV.UK and filled the gaps apps use most: rich selection, bulk actions, interactive lists, share charts and CMS content.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'Picker: select customizado com ícones, descrições e grupos (padrão APG select-only combobox), integrado ao Form.', en: 'Picker: custom select with icons, descriptions and groups (APG select-only combobox), integrated with Form.' } },
+      { kind: 'new', text: { pt: 'ActionBar: ações em lote sobre uma seleção, com contagem anunciada e foco que nunca se perde.', en: 'ActionBar: bulk actions on a selection, with an announced count and focus that is never lost.' } },
+      { kind: 'new', text: { pt: 'ListView: lista interativa com seleção, onAction e ações por linha (padrão APG Grid).', en: 'ListView: interactive list with selection, onAction and row actions (APG Grid pattern).' } },
+      { kind: 'new', text: { pt: 'DonutChart e BarList: participação no todo e ranking, com tabela de dados e teclado como os outros gráficos.', en: 'DonutChart and BarList: share of a whole and rankings, with a data table and keyboard like the other charts.' } },
+      { kind: 'new', text: { pt: 'Disclosure, Prose e Blockquote: mostrar/ocultar avulso, tipografia para HTML de CMS/Markdown e citações.', en: 'Disclosure, Prose and Blockquote: standalone show/hide, typography for CMS/Markdown HTML and quotations.' } },
+      { kind: 'improved', text: { pt: 'CheckboxGroup ganha variant="card", igual ao RadioGroup.', en: 'CheckboxGroup gets variant="card", like RadioGroup.' } },
+      { kind: 'fixed', text: { pt: 'Accordion: o conteúdo que fecha fica inert já durante a animação de saída.', en: 'Accordion: closing content becomes inert during the exit animation.' } },
+      { kind: 'improved', text: { pt: 'Documentação: o selo “Novo” fica só para os componentes desta versão; os anteriores à 1.0 passam a estáveis.', en: 'Docs: the “New” badge is kept for this version’s components; everything before 1.0 is now stable.' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.0.0',
     title: {
       pt: 'Orange 1.0: API estável',

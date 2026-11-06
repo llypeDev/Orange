@@ -17,7 +17,7 @@ export default function Empty() {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 560 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 12, width: '100%', maxWidth: 560 }}>
       <Search
         label="Buscar arquivos do projeto"
         placeholder="Buscar arquivos…"
