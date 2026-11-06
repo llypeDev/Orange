@@ -1,5 +1,13 @@
 # @orangesys/ui
 
+## 1.3.1
+
+### Patch Changes
+
+- [#31](https://github.com/llypeDev/Orange/pull/31) [`e6d7350`](https://github.com/llypeDev/Orange/commit/e6d735026e020ded1a9f453d8ebcadb1023e31cf) Thanks [@llypeDev](https://github.com/llypeDev)! - `NumberField`: um passo em notação exponencial com casas na mantissa (ex.: `step={1.5e-7}`) era arredondado para 7 casas e virava `0.0000002`; agora as casas da mantissa somam ao expoente e o passo é exato. Por dentro, a contagem de casas decimais e o arredondamento passam a ser um utilitário interno único, usado por `NumberField`, `Slider` e pelos eixos dos gráficos.
+- Updated dependencies []:
+  - @orangesys/tokens@1.3.1
+
 ## 1.3.0
 
 ### Minor Changes
