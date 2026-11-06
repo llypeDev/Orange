@@ -191,7 +191,13 @@ pnpm --filter @orangesys/docs typecheck
 O CI tira screenshots das stories nos temas **dark** e **light** e compara com as baselines em
 `tests/visual/__screenshots__/` (suíte em `tests/visual/`, workflow `visual.yml`). Entra uma story por
 componente (a `--default` ou a primeira) mais as de `EXTRA_STORIES`; componentes não determinísticos
-ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`).
+ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`). Além disso:
+
+- **`MOBILE_STORIES`** — também em tela de celular (390 × 844), para componentes cujo layout muda em
+  tela estreita (baselines em `__screenshots__/<tema>/mobile/`).
+- **`OPEN_STORIES`** — estados abertos (menus, listas, calendário, paleta, tooltip): cada entrada diz
+  a interação que abre e o que precisa estar visível; a captura é da tela inteira, porque as
+  sobreposições ficam fora do `#storybook-root` (baselines em `__screenshots__/<tema>/open/`).
 
 - **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.63.0-noble` (mesma versão do
   `@playwright/test`), com data fixa, movimento reduzido e animações desligadas. Diferença acima da
@@ -208,6 +214,41 @@ ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`).
 pnpm build:storybook
 pnpm test:visual -g "Button"                          # compara (fora do contêiner, espere diferenças)
 VISUAL_SNAPSHOT_DIR=/tmp/vr pnpm test:visual:update   # baselines descartáveis, fora do repositório
+```
+
+## Tamanho do pacote
+
+O `@orangesys/ui` é publicado com um arquivo por módulo (`dist/esm`, `dist/cjs`) e declara
+`sideEffects: ["*.css"]`: o bundler de quem usa descarta os módulos que não importa. `pnpm size`
+(depois de `pnpm build:lib`; também no CI) mede o custo de importar cada item de `size-limits.json`
+como um projeto faria — tree-shaking, minificação, gzip, sem React — e falha acima do limite.
+
+- Aumento intencional (componente novo, recurso)? Ajuste o limite em `size-limits.json` no mesmo PR
+  e explique o motivo na descrição.
+- Um componente leve puxando muito (ex.: o Button passar de alguns KB) quase sempre é um import que
+  arrasta outro módulo pesado, ou código de topo com efeito colateral.
+
+```bash
+pnpm build:lib
+pnpm size
+```
+
+## Testes de layout no navegador
+
+Comportamentos que dependem de layout real — fim da rolagem, abas com overflow, posição de listas e
+menus em telas baixas, foco sob cabeçalho fixo, movimento reduzido — não aparecem no jsdom dos testes
+unitários. A suíte `tests/layout/` abre as stories do Storybook construído num Chromium de verdade,
+usa teclado e rolagem como uma pessoa e **mede posições** (não compara imagens, então roda igual em
+qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layout** traz o relatório.
+
+- Cada teste reproduz um defeito já corrigido e falharia no código antigo. Ao corrigir um defeito
+  desse tipo, acrescente o teste aqui (de preferência sobre uma story existente).
+- Listas e menus: meça com `expectActiveVisible`, que espera a lista assentar antes de medir — logo
+  depois da tecla, antes do posicionamento, qualquer opção "cabe".
+
+```bash
+pnpm build:storybook
+pnpm test:layout
 ```
 
 ## Commits

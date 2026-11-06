@@ -25,6 +25,8 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
+      # Orçamento de tamanho do @orangesys/ui (size-limits.json): falha se um import passar do limite.
+      - run: pnpm size
       - uses: actions/upload-artifact@v6
         with:
           name: docs-site

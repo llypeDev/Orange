@@ -1,0 +1,44 @@
+name: Layout no navegador
+
+# Comportamentos que dependem de layout real — fim da rolagem, overflow, posição de listas e
+# menus, foco sob cabeçalho fixo, movimento reduzido — medidos num Chromium de verdade sobre as
+# stories do Storybook (tests/layout). O jsdom dos testes unitários não tem layout.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: layout-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  layout:
+    name: Testes de layout (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm gen && pnpm build:tokens && pnpm build:storybook
+      - run: pnpm test:layout
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: relatorio-layout
+          path: tests/layout/playwright-report
+          retention-days: 14

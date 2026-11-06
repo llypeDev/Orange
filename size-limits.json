@@ -1,0 +1,16 @@
+{
+  "$comment": "Orçamento de tamanho do @orangesys/ui em KB gzip (scripts/size-check.mjs, `pnpm size`). Mede o custo de importar cada item com tree-shaking, sem React. Aumentou de propósito? Ajuste aqui no mesmo PR e explique.",
+  "items": [
+    { "name": "Biblioteca inteira", "import": "*", "limit": "175 KB" },
+    { "name": "Button", "import": "Button", "limit": "6 KB" },
+    { "name": "OrangeProvider", "import": "OrangeProvider", "limit": "8 KB" },
+    { "name": "TextField", "import": "TextField", "limit": "11 KB" },
+    { "name": "Modal", "import": "Modal", "limit": "13 KB" },
+    { "name": "Table", "import": "Table", "limit": "13 KB" },
+    { "name": "BarChart", "import": "BarChart", "limit": "16 KB" },
+    { "name": "Combobox", "import": "Combobox", "limit": "22 KB" },
+    { "name": "DatePicker", "import": "DatePicker", "limit": "23 KB" },
+    { "name": "useScrollSpy", "import": "useScrollSpy", "limit": "1.5 KB" },
+    { "name": "styles.css", "file": "packages/ui/dist/styles.css", "limit": "70 KB" }
+  ]
+}

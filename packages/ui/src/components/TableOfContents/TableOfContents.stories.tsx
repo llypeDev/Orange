@@ -19,7 +19,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Índice "Nesta página": `<nav>` rotulada com links para as seções. Destaca a seção visível (IntersectionObserver) com `aria-current="location"`. Recebe `items` ou coleta os títulos de um `container`.',
+          'Índice "Nesta página": `<nav>` rotulada com links para as seções. Destaca a seção visível com `aria-current="location"` (o mesmo mecanismo do hook `useScrollSpy`): o primeiro título na faixa, entre dois títulos o que já passou e, no fim da rolagem, o último à vista. Recebe `items` ou coleta os títulos de um `container`.',
       },
     },
   },

@@ -26,6 +26,24 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.3.2',
+    title: {
+      pt: 'Importe só o que usar',
+      en: 'Import only what you use',
+    },
+    summary: {
+      pt: 'O pacote passa a ser publicado com um arquivo por módulo: importar só o Button custa ~5 KB gzip, não mais a biblioteca inteira.',
+      en: 'The package is now published one file per module: importing just Button costs ~5 KB gzip, no longer the whole library.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'Tree-shaking de verdade: Button ~147 → ~5 KB gzip, DatePicker ~21 KB, useScrollSpy ~1 KB. Exports, tipos e styles.css iguais.', en: 'Real tree-shaking: Button ~147 → ~5 KB gzip, DatePicker ~21 KB, useScrollSpy ~1 KB. Same exports, types and styles.css.' } },
+      { kind: 'improved', text: { pt: '@orangesys/tokens deixa de ser embutido no ui (é importado, sempre na mesma versão): sem cópia duplicada.', en: '@orangesys/tokens is no longer inlined into ui (it is imported, always on the same version): no duplicate copy.' } },
+      { kind: 'improved', text: { pt: 'Links diretos para qualquer página desta documentação respondem 200 (antes, 404), com título, descrição e idioma próprios.', en: 'Direct links to any page of these docs now return 200 (previously 404), with their own title, description and language.' } },
+      { kind: 'fixed', text: { pt: 'SplitButton: o menu de ações para em 24rem de altura e rola, como o do Dropdown — antes, numa tela alta, esticava até o fim.', en: 'SplitButton: the actions menu stops at 24rem tall and scrolls, like Dropdown’s — on a tall screen it used to stretch to the bottom.' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.3.1',
     title: {
       pt: 'NumberField com passos minúsculos exatos',
