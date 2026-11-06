@@ -27,7 +27,6 @@ const entries: Entry[] = [
   {
     date: '2026-11-06',
     version: 'v0.6.0',
-    unreleased: true,
     title: {
       pt: 'Revisão da API antes da 1.0: nomes consistentes',
       en: 'API review before 1.0: consistent names',
