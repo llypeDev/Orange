@@ -60,3 +60,18 @@ export const Escalonado: Story = {
     </Reveal>
   ),
 }
+
+export const NoFimDaPagina: Story = {
+  name: 'No fim da página',
+  render: (args) => (
+    <div>
+      <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>Role até o fim da página ↓</p>
+      <div style={{ height: 1600 }} />
+      {/* Nos últimos pixels da página: com a margem de -60px do observer, o item nunca entraria
+          na faixa observada. Ele aparece quando a rolagem chega ao fim. */}
+      <Reveal {...args} data-testid="reveal-fim">
+        Última linha da página.
+      </Reveal>
+    </div>
+  ),
+}

@@ -19,6 +19,7 @@
     "build": "pnpm gen && pnpm build:lib && pnpm build:storybook && pnpm build:docs && node scripts/merge-storybook.mjs",
     "preview": "pnpm --filter @orangesys/docs preview",
     "test": "pnpm gen && pnpm -r --if-present test",
+    "test:layout": "playwright test -c tests/layout",
     "test:visual": "playwright test -c tests/visual",
     "test:visual:update": "playwright test -c tests/visual --update-snapshots",
     "typecheck": "pnpm gen && pnpm -r --if-present typecheck",

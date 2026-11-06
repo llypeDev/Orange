@@ -210,6 +210,24 @@ pnpm test:visual -g "Button"                          # compara (fora do contêi
 VISUAL_SNAPSHOT_DIR=/tmp/vr pnpm test:visual:update   # baselines descartáveis, fora do repositório
 ```
 
+## Testes de layout no navegador
+
+Comportamentos que dependem de layout real — fim da rolagem, abas com overflow, posição de listas e
+menus em telas baixas, foco sob cabeçalho fixo, movimento reduzido — não aparecem no jsdom dos testes
+unitários. A suíte `tests/layout/` abre as stories do Storybook construído num Chromium de verdade,
+usa teclado e rolagem como uma pessoa e **mede posições** (não compara imagens, então roda igual em
+qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layout** traz o relatório.
+
+- Cada teste reproduz um defeito já corrigido e falharia no código antigo. Ao corrigir um defeito
+  desse tipo, acrescente o teste aqui (de preferência sobre uma story existente).
+- Listas e menus: meça com `expectActiveVisible`, que espera a lista assentar antes de medir — logo
+  depois da tecla, antes do posicionamento, qualquer opção "cabe".
+
+```bash
+pnpm build:storybook
+pnpm test:layout
+```
+
 ## Commits
 
 Mensagens no imperativo, em português: `Adiciona componente Tabs`, `Corrige foco do Modal`.
