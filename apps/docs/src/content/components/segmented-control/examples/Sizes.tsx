@@ -14,7 +14,7 @@ export default function Sizes() {
       <SegmentedControl
         label="Ciclo de cobrança"
         description="No plano anual você economiza 20%."
-        fullWidth
+        block
         defaultValue="yearly"
         options={[
           { value: 'monthly', label: 'Mensal' },

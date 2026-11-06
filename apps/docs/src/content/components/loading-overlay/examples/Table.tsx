@@ -24,7 +24,7 @@ export default function Table() {
 
   return (
     <div style={{ width: '100%', maxWidth: 560, border: '1px solid var(--or-color-border)' }}>
-      <LoadingOverlay visible={loading} message="Atualizando relatório…">
+      <LoadingOverlay open={loading} message="Atualizando relatório…">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
           <caption style={{ ...cell, borderTop: 0, fontWeight: 700 }}>
             Vendas por região — outubro

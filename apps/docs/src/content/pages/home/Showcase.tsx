@@ -95,7 +95,7 @@ export function Showcase() {
             value: key,
             label: periods[key][lang],
           }))}
-          fullWidth
+          block
         />
         <ProgressBar
           label={t({ pt: 'Meta de vendas', en: 'Sales goal' })}

@@ -38,7 +38,7 @@ export default function UploadProgress() {
       multiple
       maxFiles={6}
       value={arquivos}
-      onFilesChange={setArquivos}
+      onChange={setArquivos}
       onFilesAdded={enviar}
     />
   )

@@ -22,7 +22,7 @@ import {
 } from 'react'
 import { useControllableState, useId, useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
-import { composeEventHandlers, cx, mergeRefs } from '../../utils'
+import { composeEventHandlers, cx, deprecate, mergeRefs } from '../../utils'
 import { focusElement, getThemeScope, useLayer } from '../Modal/overlay'
 import { useFloatingPanel, type FloatingPlacement } from '../Popover/floating'
 import { Portal } from '../Portal'
@@ -446,12 +446,17 @@ interface RadioGroupContextValue {
 
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null)
 
-export interface DropdownRadioGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface DropdownRadioGroupProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Valor selecionado (controlado). */
   value?: string
   /** Valor selecionado inicialmente (não controlado). */
   defaultValue?: string
   /** Chamado com o novo valor. */
+  onChange?: (value: string) => void
+  /** @deprecated Use `onChange` (o mesmo nome do `RadioGroup`). Sai na v1.0. */
   onValueChange?: (value: string) => void
   /** Rótulo visível do grupo (ex.: "Ordenar por"). Também nomeia o grupo. */
   label?: ReactNode
@@ -460,13 +465,19 @@ export interface DropdownRadioGroupProps extends HTMLAttributes<HTMLDivElement> 
 /** Grupo de opções exclusivas (`role="group"` com `menuitemradio`). */
 export const DropdownRadioGroup = forwardRef<HTMLDivElement, DropdownRadioGroupProps>(
   function DropdownRadioGroup(
-    { value, defaultValue, onValueChange, label, className, children, ...rest },
+    { value, defaultValue, onChange, onValueChange, label, className, children, ...rest },
     ref,
   ) {
+    if (onValueChange !== undefined) {
+      deprecate(
+        'DropdownRadioGroup: `onValueChange` está depreciado e sai na v1.0. Use `onChange`.',
+        'dropdown-radio-group.onValueChange',
+      )
+    }
     const [current, setCurrent] = useControllableState<string | undefined>({
       value,
       defaultValue,
-      onChange: onValueChange as ((value: string | undefined) => void) | undefined,
+      onChange: (onChange ?? onValueChange) as ((value: string | undefined) => void) | undefined,
     })
     const labelId = useId('or-menu-group')
     const context = useMemo<RadioGroupContextValue>(

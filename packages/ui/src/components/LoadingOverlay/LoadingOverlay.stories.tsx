@@ -64,12 +64,12 @@ const meta = {
     },
   },
   argTypes: {
-    visible: { control: 'boolean' },
+    open: { control: 'boolean' },
     message: { control: 'text' },
     spinnerSize: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
   },
   args: {
-    visible: true,
+    open: true,
     message: 'Atualizando relatório…',
     spinnerSize: 'md',
   },
@@ -99,7 +99,7 @@ export const DefaultMessage: Story = {
 }
 
 export const Toggle: Story = {
-  args: { visible: false },
+  args: { open: false },
   render: function ToggleStory(args) {
     const [loading, setLoading] = useState(false)
     const refresh = () => {
@@ -107,7 +107,7 @@ export const Toggle: Story = {
       setTimeout(() => setLoading(false), 2000)
     }
     return (
-      <LoadingOverlay {...args} visible={loading}>
+      <LoadingOverlay {...args} open={loading}>
         <SalesTable />
         <div style={{ padding: 16 }}>
           <Button variant="outline" size="sm" onClick={refresh}>

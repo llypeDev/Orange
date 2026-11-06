@@ -66,24 +66,35 @@ const item = (text: string) => getToast(text).closest('li') as HTMLLIElement
 describe('Toast', () => {
   it('renderiza o visual com título, descrição, tom e botão de fechar', async () => {
     const user = userEvent.setup()
-    const onClose = vi.fn()
+    const onDismiss = vi.fn()
     const { container } = render(
       <Toast
         tone="success"
         title="Pedido enviado"
         description="Chega até sexta-feira."
-        onClose={onClose}
+        onDismiss={onDismiss}
       />,
     )
     expect(container.firstElementChild).toHaveClass('or-toast', 'or-toast--success')
     expect(container).toHaveTextContent('Sucesso: Pedido enviado')
     await user.click(screen.getByRole('button', { name: 'Fechar' }))
-    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(onDismiss).toHaveBeenCalledTimes(1)
   })
 
-  it('sem onClose não mostra o botão de fechar', () => {
+  it('sem onDismiss não mostra o botão de fechar', () => {
     render(<Toast title="Link copiado" />)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('onClose (depreciado) ainda mostra o botão de fechar e avisa no console', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const onClose = vi.fn()
+    render(<Toast title="Link copiado" onClose={onClose} />)
+    await user.click(screen.getByRole('button', { name: 'Fechar' }))
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`onClose` está depreciado'))
+    warn.mockRestore()
   })
 })
 

@@ -45,7 +45,7 @@ export default function Selection() {
         data={members}
         selectable
         selectedRows={selected}
-        onSelectionChange={setSelected}
+        onSelectedRowsChange={setSelected}
       />
     </div>
   )

@@ -97,7 +97,7 @@ function ThemeMenu() {
         </button>
       }
     >
-      <DropdownRadioGroup label={label} value={theme} onValueChange={choose}>
+      <DropdownRadioGroup label={label} value={theme} onChange={choose}>
         {themeOptions.map((option) => (
           <DropdownRadioItem key={option.value} value={option.value}>
             {t(option.label)}

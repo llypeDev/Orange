@@ -268,7 +268,7 @@ function SettingsScreen() {
                     maxSize={1024 * 1024}
                     optional
                     defaultValue={salvo.logo}
-                    onFilesChange={(items) => {
+                    onChange={(items) => {
                       logoRef.current = items
                       conferir()
                     }}

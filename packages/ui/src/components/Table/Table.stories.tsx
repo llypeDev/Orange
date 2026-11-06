@@ -77,7 +77,7 @@ export const Selectable: Story = {
     const [selected, setSelected] = useState<string[]>(['2'])
     return (
       <div style={{ display: 'grid', gap: 12 }}>
-        <Table {...args} selectable selectedRows={selected} onSelectionChange={setSelected} />
+        <Table {...args} selectable selectedRows={selected} onSelectedRowsChange={setSelected} />
         <p style={{ margin: 0 }}>{selected.length} pedido(s) selecionado(s)</p>
       </div>
     )

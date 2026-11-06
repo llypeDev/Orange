@@ -3,18 +3,18 @@ import { Button, Toast } from '@orangesys/ui'
 export default function Visual() {
   return (
     <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 416 }}>
-      <Toast title="Link copiado" onClose={() => {}} />
+      <Toast title="Link copiado" onDismiss={() => {}} />
       <Toast
         tone="success"
         title="Pedido enviado"
         description="O cliente receberá o código de rastreio por e-mail."
-        onClose={() => {}}
+        onDismiss={() => {}}
       />
       <Toast
         tone="danger"
         title="Falha ao salvar"
         description="Verifique sua conexão e tente novamente."
-        onClose={() => {}}
+        onDismiss={() => {}}
       />
       <Toast
         title="3 conversas arquivadas"
@@ -23,7 +23,7 @@ export default function Visual() {
             Desfazer
           </Button>
         }
-        onClose={() => {}}
+        onDismiss={() => {}}
       />
     </div>
   )
