@@ -9,6 +9,10 @@
   border: var(--or-border-thin) solid var(--or-color-border);
   background: var(--or-color-surface);
   overscroll-behavior: contain;
+  /* Largura visível publicada pelo Table.tsx (estilo inline) só enquanto a tabela rola na
+     horizontal. Zerada aqui para uma tabela aninhada num painel de detalhes não herdar a da
+     tabela de fora. */
+  --_detail-width: initial;
 }
 
 .or-table-container:focus-visible {
@@ -199,6 +203,17 @@
   background-color: var(--or-color-bg-subtle);
 }
 
+/* Com linhas expansíveis, só as linhas de dados contam para as listras (a linha de detalhe
+   aberta não desloca a alternância). :where() mantém a especificidade da regra acima, para
+   hover e seleção continuarem prevalecendo; sem suporte a `of S`, vale a regra acima. */
+.or-table--expandable.or-table--striped tbody .or-table__row:where(:nth-child(odd of .or-table__row)) {
+  background-color: transparent;
+}
+
+.or-table--expandable.or-table--striped tbody .or-table__row:where(:nth-child(even of .or-table__row)) {
+  background-color: var(--or-color-bg-subtle);
+}
+
 /* Hover de linha: ajuda a seguir a linha com o olho. */
 .or-table tbody .or-table__row:hover {
   background-color: var(--or-color-bg-subtle);
@@ -377,9 +392,138 @@
   opacity: 0.42;
 }
 
+/* Expansão (painel de detalhes) -------------------------------------------- */
+
+/* Coluna do botão: estreita como a de seleção; vem antes dela. */
+.or-table__expand {
+  width: 1%;
+  padding-inline-end: 0 !important;
+  white-space: nowrap;
+}
+
+.or-table__expand-button {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border: var(--or-border-thin) solid transparent;
+  border-radius: var(--or-radius-none);
+  background: transparent;
+  color: var(--or-color-text-subtle);
+  vertical-align: middle;
+  cursor: pointer;
+  transition:
+    color var(--or-duration-fast) var(--or-ease-out),
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Hover e foco visível: mesma resposta. */
+.or-table__expand-button:is(:hover, :focus-visible) {
+  color: var(--or-color-text);
+  background: var(--or-color-surface-hover);
+}
+
+.or-table__expand-button:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+/* Aberto: caixa com borda laranja e fundo de acento, como o ícone do Accordion. */
+.or-table__expand-button[aria-expanded='true'] {
+  border-color: var(--or-color-accent);
+  background: var(--or-color-accent-subtle);
+  color: var(--or-color-accent-text);
+}
+
+.or-table__expand-button[aria-expanded='true']:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--or-color-accent) 20%, transparent);
+}
+
+/* Chevron: gira 180° ao abrir (--or-ease-spring) e encolhe ao pressionar. */
+.or-table__expand-icon {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    scale var(--or-duration-press) var(--or-ease-out);
+}
+
+.or-table__expand-button[aria-expanded='true'] .or-table__expand-icon {
+  transform: rotate(180deg);
+}
+
+.or-table__expand-button:active .or-table__expand-icon {
+  scale: 0.88;
+}
+
+/* Linha de detalhe: uma célula que ocupa todas as colunas, sem padding próprio (fica no
+   conteúdo, que é recortado durante a animação de altura). */
+.or-table .or-table__detail {
+  padding: 0;
+  background: var(--or-color-bg-subtle);
+  vertical-align: top;
+}
+
+/* Painel: grid 0fr → 1fr (abre em 400ms, fecha mais rápido), com a barra laranja de 2px das
+   linhas clicáveis ligando o painel à linha. Sem rolagem horizontal, ocupa a célula inteira
+   (width: 0 + min-width: 100% impedem que o conteúdo alargue a tabela); quando a tabela rola
+   na horizontal, fica do tamanho da área visível e preso a ela. */
+.or-table__detail-panel {
+  position: sticky;
+  inset-inline-start: 0;
+  display: grid;
+  grid-template-rows: 0fr;
+  width: var(--_detail-width, 0);
+  min-width: var(--_detail-width, 100%);
+  box-shadow: inset 2px 0 0 0 var(--or-color-accent);
+  transition: grid-template-rows var(--or-duration-medium) var(--or-ease-in-out);
+}
+
+.or-table__detail-panel[data-state='open'] {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-table__detail-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Conteúdo alinhado à coluna seguinte à do botão. */
+.or-table__detail-content {
+  padding: var(--_pad-y) var(--_pad-x) calc(var(--_pad-y) * 1.5);
+  padding-inline-start: calc(var(--_pad-x) * 2 + 1.5rem);
+  line-height: var(--or-leading-body);
+  overflow-wrap: break-word;
+  opacity: 0;
+  transform: translateY(calc(var(--or-distance-sm) * -1));
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-in-out),
+    transform var(--or-duration-fast) var(--or-ease-in-out);
+}
+
+.or-table__detail-panel[data-state='open'] > .or-table__detail-clip > .or-table__detail-content {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--or-duration-medium) var(--or-ease-out) var(--or-duration-instant),
+    transform var(--or-duration-slow) var(--or-ease-out);
+}
+
+.or-table__detail-content > :first-child {
+  margin-top: 0;
+}
+
+.or-table__detail-content > :last-child {
+  margin-bottom: 0;
+}
+
 /* Alto contraste: caixas de seleção e linha selecionada em Highlight; a seta
    de ordenação é SVG (preservaria o laranja) e passa para o texto do sistema;
-   a barra de hover/foco da linha clicável vira contorno. */
+   a barra de hover/foco da linha clicável vira contorno. O botão de expandir
+   ganha caixa (Highlight quando aberto) e a barra laranja do painel de
+   detalhes (box-shadow, que some) vira borda. */
 @media (forced-colors: active) {
   .or-table__check-box {
     border-color: ButtonText;
@@ -409,5 +553,17 @@
   .or-table--clickable .or-table__row:focus-within {
     outline: 2px solid Highlight;
     outline-offset: -2px;
+  }
+
+  .or-table__expand-button {
+    border-color: ButtonText;
+  }
+
+  .or-table__expand-button[aria-expanded='true'] {
+    border-color: Highlight;
+  }
+
+  .or-table__detail-panel {
+    border-inline-start: 2px solid CanvasText;
   }
 }

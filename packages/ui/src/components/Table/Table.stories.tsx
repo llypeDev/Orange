@@ -107,3 +107,62 @@ export const Empty: Story = {
     emptyState: 'Nenhum pedido no período selecionado.',
   },
 }
+
+interface OrderLine {
+  sku: string
+  product: string
+  quantity: number
+  price: number
+}
+
+/** Itens de cada pedido (o pedido cancelado não tem itens para mostrar). */
+const orderLines: Record<string, OrderLine[]> = {
+  '1': [
+    { sku: 'MOL-001', product: 'Moletom canguru', quantity: 1, price: 249.9 },
+    { sku: 'CAM-010', product: 'Camiseta básica', quantity: 2, price: 89.9 },
+    { sku: 'MEI-004', product: 'Meia cano alto', quantity: 2, price: 30.1 },
+  ],
+  '2': [{ sku: 'BON-002', product: 'Boné aba reta', quantity: 1, price: 129 }],
+  '3': [
+    { sku: 'JAQ-007', product: 'Jaqueta corta-vento', quantity: 2, price: 599.9 },
+    { sku: 'MOL-001', product: 'Moletom canguru', quantity: 2, price: 249.9 },
+    { sku: 'CAM-012', product: 'Camiseta estampada', quantity: 2, price: 95.45 },
+  ],
+  '5': [
+    { sku: 'JAQ-007', product: 'Jaqueta corta-vento', quantity: 1, price: 552 },
+    { sku: 'BON-002', product: 'Boné aba reta', quantity: 1, price: 90 },
+  ],
+  '6': [{ sku: 'CAM-010', product: 'Camiseta básica', quantity: 3, price: 105.25 }],
+}
+
+const lineColumns: TableColumn<OrderLine>[] = [
+  { key: 'product', header: 'Produto', rowHeader: true },
+  { key: 'quantity', header: 'Qtd.', align: 'end' },
+  { key: 'price', header: 'Preço unitário', align: 'end', render: (l) => currency.format(l.price) },
+  { key: 'subtotal', header: 'Subtotal', align: 'end', render: (l) => currency.format(l.quantity * l.price) },
+]
+
+export const ExpandableRows: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`renderExpanded` adiciona um botão de expandir (com `aria-expanded`/`aria-controls`) no início de cada linha e mostra o painel logo abaixo, numa célula que ocupa todas as colunas. `isRowExpandable` tira o botão das linhas sem detalhe (aqui, o pedido cancelado). O estado segue o id da linha: ordene a tabela com um pedido aberto.',
+      },
+    },
+  },
+  args: {
+    defaultExpandedRows: ['1'],
+    isRowExpandable: (order: Order) => order.id in orderLines,
+    renderExpanded: (order: Order) => (
+      <Table
+        caption={`Itens do pedido ${order.number}`}
+        hideCaption
+        density="compact"
+        columns={lineColumns}
+        data={orderLines[order.id] ?? []}
+        getRowId={(line) => line.sku}
+      />
+    ),
+  },
+}
