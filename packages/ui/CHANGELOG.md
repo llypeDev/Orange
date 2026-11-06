@@ -1,5 +1,42 @@
 # @orangesys/ui
 
+## 0.6.0
+
+### Minor Changes
+
+- [#16](https://github.com/llypeDev/Orange/pull/16) [`a48a385`](https://github.com/llypeDev/Orange/commit/a48a385104d81fb0beedc610932639cfa0febea3) Thanks [@llypeDev](https://github.com/llypeDev)! - Depreciado: seis props ganharam o nome usado no resto da biblioteca, antes de a API congelar na 1.0. Os nomes antigos continuam funcionando até a v1.0 e avisam no console em desenvolvimento.
+
+  | Componente           | Antes               | Agora                                                                |
+  | -------------------- | ------------------- | -------------------------------------------------------------------- |
+  | `SegmentedControl`   | `fullWidth`         | `block` (como no `Button`)                                           |
+  | `DropdownRadioGroup` | `onValueChange`     | `onChange` (como no `RadioGroup`)                                    |
+  | `FileUploader`       | `onFilesChange`     | `onChange` (par de `value`/`defaultValue`)                           |
+  | `Table`              | `onSelectionChange` | `onSelectedRowsChange` (par de `selectedRows`/`defaultSelectedRows`) |
+  | `LoadingOverlay`     | `visible`           | `open` (como nas outras sobreposições)                               |
+  | `Toast`              | `onClose`           | `onDismiss` (como em `Alert`, `Banner` e `toast()`)                  |
+
+  Migração: troque o nome da prop; os valores e os argumentos dos callbacks são os mesmos.
+
+- [#18](https://github.com/llypeDev/Orange/pull/18) [`91c585e`](https://github.com/llypeDev/Orange/commit/91c585e4f92d51607f374703b4f28ce6f6276c69) Thanks [@llypeDev](https://github.com/llypeDev)! - Depreciado: mais quatro nomes alinhados antes de a API congelar na 1.0. Os antigos continuam funcionando até a v1.0 e avisam no console em desenvolvimento.
+
+  | Onde                             | Antes                                              | Agora                                                                             |
+  | -------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
+  | `ChipGroup`, `ToggleButtonGroup` | `type`                                             | `selectionMode` (como em `Listbox` e `TreeView`)                                  |
+  | `Stepper`                        | `activeStep`                                       | `step` (como no `Tour`); agora opcional, padrão `0`                               |
+  | `AppShell`                       | `navBreakpoint`                                    | `navDrawerBelow` (no padrão de `AppHeader.collapseBelow` e `Splitter.stackBelow`) |
+  | utilitários                      | `clamp`, `range`, `setRef`, `getFocusableElements` | saem da API pública na v1.0                                                       |
+
+  O `ToggleButtonGroup` passa a aceitar a omissão do modo, com seleção única como padrão. O `Accordion` mantém `type`, porque ali o modo é de expansão, não de seleção. Continuam públicos os utilitários que ajudam a compor com os componentes: `cx`, `mergeRefs`, `composeEventHandlers` e `interpolate`.
+
+  Migração: troque o nome da prop; os valores são os mesmos. Para os utilitários, a mensagem no console mostra o equivalente em uma linha.
+
+- [#18](https://github.com/llypeDev/Orange/pull/18) [`91c585e`](https://github.com/llypeDev/Orange/commit/91c585e4f92d51607f374703b4f28ce6f6276c69) Thanks [@llypeDev](https://github.com/llypeDev)! - Todo campo que aceita `error` agora também aceita `invalid`, que marca o campo como inválido sem mostrar mensagem (por exemplo, quando o erro aparece num `ErrorSummary`). A prop é nova em `Field`, `CheckboxGroup`, `RadioGroup`, `ColorField`, `DatePicker`, `DateRangePicker`, `TimeField`, `Rating` e `FileUploader`, e se comporta como `error` sem a mensagem. `Field` passa a repassar `ref` para a `div` raiz.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @orangesys/tokens@0.6.0
+
 ## 0.5.1
 
 ### Patch Changes
