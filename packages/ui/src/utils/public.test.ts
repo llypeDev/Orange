@@ -18,4 +18,10 @@ describe('utilitários públicos', () => {
       expect(ui).not.toHaveProperty(name)
     }
   })
+
+  it('decimalsOf e roundTo são internos', () => {
+    for (const name of ['decimalsOf', 'roundTo']) {
+      expect(ui).not.toHaveProperty(name)
+    }
+  })
 })

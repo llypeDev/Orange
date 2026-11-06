@@ -26,6 +26,22 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.3.1',
+    title: {
+      pt: 'NumberField com passos minúsculos exatos',
+      en: 'NumberField with exact tiny steps',
+    },
+    summary: {
+      pt: 'Uma correção no NumberField e uma limpeza interna: a contagem de casas decimais agora vem de um único lugar.',
+      en: 'A NumberField fix and an internal cleanup: decimal-place counting now comes from a single place.',
+    },
+    items: [
+      { kind: 'fixed', text: { pt: 'NumberField: step={1.5e-7} era arredondado para 0.0000002; agora o passo é exato (as casas da mantissa somam ao expoente).', en: 'NumberField: step={1.5e-7} was rounded to 0.0000002; the step is now exact (mantissa digits add to the exponent).' } },
+      { kind: 'improved', text: { pt: 'NumberField, Slider e os eixos dos gráficos usam o mesmo utilitário interno de casas decimais e arredondamento — antes eram três cópias.', en: 'NumberField, Slider and the chart axes share one internal decimal-places and rounding utility — previously three copies.' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.3.0',
     title: {
       pt: 'useScrollSpy: o índice com o seu visual',

@@ -15,7 +15,7 @@ import { flushSync } from 'react-dom'
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { clamp, cx, mergeRefs } from '../../utils'
+import { clamp, cx, decimalsOf, mergeRefs, roundTo } from '../../utils'
 import { Field } from '../Field'
 import { InputControl } from '../TextField/InputControl'
 import type { TextFieldBaseProps } from '../TextField/TextField'
@@ -54,19 +54,6 @@ export interface NumberFieldProps
   suffix?: ReactNode
   /** Oculta os botões − / +. O teclado continua funcionando. */
   hideStepper?: boolean
-}
-
-function decimalsOf(value: number): number {
-  if (!Number.isFinite(value)) return 0
-  const text = String(value)
-  const exp = text.match(/e-(\d+)$/)
-  if (exp) return Number(exp[1])
-  const dot = text.indexOf('.')
-  return dot === -1 ? 0 : text.length - dot - 1
-}
-
-function roundTo(value: number, digits: number): number {
-  return Number(value.toFixed(Math.min(Math.max(digits, 0), 20)))
 }
 
 /** Cria um leitor de números que entende separadores do idioma, moeda e %. */

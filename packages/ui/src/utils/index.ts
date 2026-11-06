@@ -67,6 +67,24 @@ export function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
+/**
+ * Casas decimais de um número, inclusive em notação exponencial: `0.25` → 2,
+ * `1e-7` → 7, `1.5e-7` → 8 (as casas da mantissa somam ao expoente), `1e21` → 0.
+ * Infinito e NaN → 0. Usado para arredondar passos (`NumberField`, `Slider`) e
+ * formatar eixos de gráficos sem erro de ponto flutuante.
+ */
+export function decimalsOf(value: number): number {
+  if (!Number.isFinite(value)) return 0
+  const [mantissa, exponent = '0'] = String(value).split('e')
+  const dot = mantissa.indexOf('.')
+  return Math.max(0, (dot === -1 ? 0 : mantissa.length - dot - 1) - Number(exponent))
+}
+
+/** Arredonda para `digits` casas decimais (limitadas a 0–20, a faixa de `toFixed`). */
+export function roundTo(value: number, digits: number): number {
+  return Number(value.toFixed(Math.min(Math.max(digits, 0), 20)))
+}
+
 /** Verdadeiro quando o código roda no navegador. */
 export const canUseDOM = typeof window !== 'undefined' && typeof document !== 'undefined'
 

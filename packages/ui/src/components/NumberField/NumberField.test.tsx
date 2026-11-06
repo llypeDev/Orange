@@ -106,6 +106,20 @@ describe('NumberField', () => {
     expect(input).toHaveValue('0,3')
   })
 
+  it('passo em notação exponencial com casas na mantissa (1.5e-7) não é arredondado', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<NumberField label="Tolerância" defaultValue={0} step={1.5e-7} onChange={onChange} />)
+    const input = screen.getByRole('spinbutton')
+    input.focus()
+    await user.keyboard('{ArrowUp}')
+    // 1.5e-7 tem 8 casas decimais: com 7, o passo virava 0.0000002.
+    expect(onChange).toHaveBeenLastCalledWith(1.5e-7)
+    expect(input).toHaveAttribute('aria-valuenow', '1.5e-7')
+    await user.keyboard('{ArrowUp}')
+    expect(onChange).toHaveBeenLastCalledWith(3e-7)
+  })
+
   it('formata moeda no idioma do provider e anuncia via aria-valuetext', async () => {
     const user = userEvent.setup()
     render(<NumberField label="Preço" defaultValue={1234.5} formatOptions={{ style: 'currency', currency: 'BRL' }} />)

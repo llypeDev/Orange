@@ -3,6 +3,8 @@
  * Não são exportados pela biblioteca.
  */
 
+import { decimalsOf } from '../../utils'
+
 /** Formato dos valores: uma função ou opções de `Intl.NumberFormat` (ex.: moeda BRL). */
 export type ChartValueFormat = ((value: number) => string) | Intl.NumberFormatOptions
 
@@ -57,15 +59,6 @@ export function createValueFormatter(
   if (typeof format === 'function') return format
   const formatter = numberFormat(locale, format)
   return (value) => formatter.format(value)
-}
-
-/** Casas decimais de um número (`0.25` → 2). */
-function decimalsOf(value: number): number {
-  if (!Number.isFinite(value) || Number.isInteger(value)) return 0
-  const text = String(value)
-  const exp = text.match(/e-(\d+)$/)
-  if (exp) return Number(exp[1])
-  return text.split('.')[1]?.length ?? 0
 }
 
 /**
