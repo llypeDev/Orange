@@ -57,6 +57,20 @@ export default function SelectPage() {
             {
               pt: (
                 <>
+                  O <Code>&lt;select&gt;</Code> nativo só mostra texto. Quando as opções precisam de
+                  ícone, descrição ou grupos estilizados, use o <strong>Picker</strong>.
+                </>
+              ),
+              en: (
+                <>
+                  The native <Code>&lt;select&gt;</Code> only shows text. When options need an icon,
+                  a description or styled groups, use <strong>Picker</strong>.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
                   Ordene as opções de forma previsível (alfabética, cronológica ou por frequência de
                   uso) e use <Code>placeholder</Code> quando não houver um padrão sensato.
                 </>
