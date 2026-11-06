@@ -1,0 +1,191 @@
+/* ===========================================================================
+ * DonutChart — anel com 2px de fundo entre as fatias, total no centro e
+ * legenda com valor e percentual. Moldura, tabela e região de anúncio em
+ * BarChart/ChartFrame.css (o SVG usa .or-chart__svg).
+ * ========================================================================= */
+
+.or-donut-chart__layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--or-space-5) var(--or-space-8);
+}
+
+/* Largura (diâmetro) posta inline; encolhe para caber, sempre quadrada. */
+.or-donut-chart__ring {
+  position: relative;
+  flex: none;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+/* --- Fatias ------------------------------------------------------------------ */
+
+.or-donut-chart__slice {
+  fill: var(--_color);
+  stroke: var(--_surface);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition:
+    opacity var(--or-duration-fast) var(--or-ease-out),
+    transform var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Destaque (teclado, ponteiro ou legenda): o resto recua, a fatia ativa se afasta do centro. */
+.or-donut-chart__slice[data-emphasis='muted'] {
+  opacity: 0.4;
+}
+
+.or-donut-chart__slice[data-emphasis='active'] {
+  transform: translate(var(--_dx), var(--_dy));
+}
+
+/* --- Centro ------------------------------------------------------------------ */
+
+.or-donut-chart__total {
+  fill: var(--or-color-text);
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.or-donut-chart__caption {
+  fill: var(--or-color-text-subtle);
+  font-family: var(--or-font-body);
+  font-size: var(--or-text-xs);
+}
+
+/* Total ↔ percentual da fatia em destaque: troca cruzada, sem piscar. */
+.or-donut-chart__face {
+  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-donut-chart__face[data-state='closed'] {
+  opacity: 0;
+}
+
+/* --- Legenda: cor, nome, valor e percentual, em colunas alinhadas ---------------- */
+
+.or-donut-chart__legend {
+  display: grid;
+  flex: 1 1 15rem;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  column-gap: var(--or-space-3);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border-top: var(--or-border-thin) solid var(--or-color-border);
+  list-style: none;
+  font-size: var(--or-text-sm);
+}
+
+.or-donut-chart__legend-item {
+  display: grid;
+  grid-column: 1 / -1;
+  /* Fallback sem subgrid: colunas próprias (o percentual tem largura fixa). */
+  grid-template-columns: auto minmax(0, 1fr) auto 4.5ch;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-height: var(--or-control-sm);
+  padding: var(--or-space-2) 0;
+  border-bottom: var(--or-border-thin) solid var(--or-color-border);
+  transition: opacity var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-donut-chart__legend-item[data-emphasis='muted'] {
+  opacity: 0.45;
+}
+
+.or-donut-chart__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--or-color-text);
+}
+
+.or-donut-chart__value {
+  font-family: var(--or-font-mono);
+  font-size: var(--or-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text-muted);
+  text-align: end;
+  white-space: nowrap;
+}
+
+.or-donut-chart__share {
+  font-family: var(--or-font-display);
+  font-weight: var(--or-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--or-color-text);
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* --- Entrada --------------------------------------------------------------
+ * Uma vez, ao entrar na tela: a máscara (traço circular com pathLength=1)
+ * varre o anel no sentido horário a partir do topo e o centro aparece no fim.
+ * Em movimento reduzido o estado é `static`: sem máscara, tudo desenhado.
+ * ------------------------------------------------------------------------- */
+
+.or-donut-chart__sweep {
+  fill: none;
+  /* Máscara: branco = visível (luminância, não é uma cor da interface). */
+  stroke: white;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 0;
+}
+
+.or-donut-chart[data-motion='pending'] .or-donut-chart__sweep {
+  stroke-dashoffset: 1;
+}
+
+.or-donut-chart[data-motion='enter'] .or-donut-chart__sweep {
+  animation: or-donut-chart-sweep calc(var(--or-duration-reveal) * 1.5) var(--or-ease-in-out) both;
+}
+
+.or-donut-chart[data-motion='pending'] .or-donut-chart__center {
+  opacity: 0;
+}
+
+.or-donut-chart[data-motion='enter'] .or-donut-chart__center {
+  animation: or-donut-chart-fade var(--or-duration-medium) var(--or-ease-out) both;
+  animation-delay: var(--or-duration-reveal);
+}
+
+@keyframes or-donut-chart-sweep {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes or-donut-chart-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Alto contraste: as fatias mantêm a cor (o SVG tem forced-color-adjust: none em
+   ChartFrame.css) e ganham contorno no texto do sistema, como as barras do BarChart;
+   o texto do centro e o destaque da legenda usam cores do sistema. */
+@media (forced-colors: active) {
+  .or-donut-chart__slice {
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+
+  .or-donut-chart__total,
+  .or-donut-chart__caption {
+    fill: CanvasText;
+  }
+
+  .or-donut-chart__legend-item[data-emphasis='active'] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
