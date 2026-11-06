@@ -23,6 +23,8 @@ import UsePresence from './examples/UsePresence'
 import UsePresenceCode from './examples/UsePresence?raw'
 import UseScrollDirection from './examples/UseScrollDirection'
 import UseScrollDirectionCode from './examples/UseScrollDirection?raw'
+import UseScrollSpy from './examples/UseScrollSpy'
+import UseScrollSpyCode from './examples/UseScrollSpy?raw'
 import UseControllableState from './examples/UseControllableState'
 import UseControllableStateCode from './examples/UseControllableState?raw'
 import UseDebouncedValue from './examples/UseDebouncedValue'
@@ -140,6 +142,7 @@ export default function HooksPage() {
                     { pt: 'Movimento', en: 'Motion' },
                     ['usePresence', 'useInView', 'useCountUp', 'useScrollDirection'],
                   ],
+                  [{ pt: 'Navegação na página', en: 'In-page navigation' }, ['useScrollSpy']],
                   [
                     { pt: 'Ambiente e SSR', en: 'Environment and SSR' },
                     [
@@ -771,6 +774,95 @@ return <header data-hidden={escondido || undefined} className="cabecalho">…</h
             description: {
               pt: 'Role a página para cima e para baixo e veja os valores mudarem.',
               en: 'Scroll the page up and down and watch the values change.',
+            },
+          }}
+        />
+      </Section>
+
+      <Section title={{ pt: 'Navegação na página', en: 'In-page navigation' }}>
+        <HookDoc
+          name="useScrollSpy"
+          signature={`function useScrollSpy(ids: readonly string[], options?: {
+  root?: HTMLElement | null | RefObject<HTMLElement | null>  // window
+  rootMargin?: string  // '-80px 0px -65% 0px'
+}): { activeId: string | undefined; setActiveId: (id: string) => void }`}
+          description={{
+            pt: (
+              <>
+                Diz qual seção está sendo lida, para montar um índice "Nesta página" com o visual que
+                você quiser — é o hook por trás do <Code>TableOfContents</Code> e do índice desta
+                documentação. Recebe os ids dos títulos na ordem do documento. Vence o primeiro título
+                dentro da faixa; entre dois títulos, o que já passou (também ao subir); no fim da
+                rolagem, o último à vista, mesmo que não alcance a faixa. Recalcula a cada quadro de
+                rolagem e é seguro para SSR.
+              </>
+            ),
+            en: (
+              <>
+                Tells which section is being read, so you can build an “On this page” index with any
+                look — it is the hook behind <Code>TableOfContents</Code> and these docs’ index. It
+                takes the heading ids in document order. The first heading inside the band wins;
+                between two headings, the one already passed (also when scrolling up); at the end of
+                the scroll, the last one in view, even if it never reaches the band. It recomputes on
+                every scroll frame and is SSR-safe.
+              </>
+            ),
+          }}
+          params={[
+            {
+              name: 'ids',
+              type: 'readonly string[]',
+              required: true,
+              description: {
+                pt: 'Ids dos títulos, na ordem do documento. Um array novo a cada render não reinicia a observação.',
+                en: 'Heading ids, in document order. A new array on every render does not restart observing.',
+              },
+            },
+            {
+              name: 'root',
+              type: 'HTMLElement | null | RefObject',
+              default: 'window',
+              description: {
+                pt: 'Contêiner rolável, quando o conteúdo rola dentro de um painel.',
+                en: 'Scroll container, when the content scrolls inside a panel.',
+              },
+            },
+            {
+              name: 'rootMargin',
+              type: 'string',
+              default: "'-80px 0px -65% 0px'",
+              description: {
+                pt: 'Faixa em que um título conta como "na tela", no formato do rootMargin (px ou %). O padrão é o terço superior, descontando um cabeçalho fixo de 80px.',
+                en: 'Band where a heading counts as “on screen”, in rootMargin format (px or %). The default is the top third, minus an 80px sticky header.',
+              },
+            },
+          ]}
+          returns={{
+            pt: '{ activeId, setActiveId } — setActiveId marca uma seção na hora (no clique de um link) e segura a marca durante o salto, até a próxima interação.',
+            en: '{ activeId, setActiveId } — setActiveId marks a section right away (on a link click) and holds it during the jump, until the next interaction.',
+          }}
+          usage={`const { activeId, setActiveId } = useScrollSpy(secoes.map((s) => s.id))
+
+return (
+  <nav aria-label="Nesta página">
+    {secoes.map((s) => (
+      <a
+        key={s.id}
+        href={\`#\${s.id}\`}
+        aria-current={activeId === s.id ? 'location' : undefined}
+        onClick={() => setActiveId(s.id)}
+      >
+        {s.titulo}
+      </a>
+    ))}
+  </nav>
+)`}
+          example={{
+            node: <UseScrollSpy />,
+            code: UseScrollSpyCode,
+            description: {
+              pt: 'Um índice próprio para um painel rolável: role até o fim e a última etapa fica marcada.',
+              en: 'A custom index for a scrolling panel: scroll to the end and the last step gets marked.',
             },
           }}
         />
