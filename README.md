@@ -18,7 +18,7 @@ bordas de 1px e grade explícita.
 117 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
 Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
 critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
-(`Heading`, `Text`, `Eyebrow`), 20 hooks, 92 ícones e o `OrangeProvider` (tema + idioma).
+(`Heading`, `Text`, `Eyebrow`), 21 hooks, 92 ícones e o `OrangeProvider` (tema + idioma).
 
 | Categoria | Componentes |
 | --- | --- |

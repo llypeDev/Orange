@@ -26,6 +26,22 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.3.0',
+    title: {
+      pt: 'useScrollSpy: o índice com o seu visual',
+      en: 'useScrollSpy: the index with your own look',
+    },
+    summary: {
+      pt: 'O mecanismo que decide a seção atual do TableOfContents virou um hook público, para índices "Nesta página" com qualquer visual.',
+      en: 'The mechanism that picks TableOfContents’ current section became a public hook, for “On this page” indexes with any look.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'useScrollSpy(ids, { root, rootMargin }) devolve { activeId, setActiveId }: primeiro título na faixa, o que já passou entre dois títulos e o último à vista no fim da rolagem; setActiveId segura a marca do clique durante o salto.', en: 'useScrollSpy(ids, { root, rootMargin }) returns { activeId, setActiveId }: the first heading in the band, the one already passed between two headings, and the last one in view at the end of the scroll; setActiveId holds the click’s mark during the jump.' } },
+      { kind: 'improved', text: { pt: 'TableOfContents e o índice desta documentação usam o hook — uma única implementação.', en: 'TableOfContents and these docs’ index use the hook — a single implementation.' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.2.1',
     title: {
       pt: 'O fim da faixa sempre ao alcance',

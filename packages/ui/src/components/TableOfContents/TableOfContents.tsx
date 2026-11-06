@@ -8,9 +8,9 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react'
-import { useId } from '../../hooks'
+import { useId, useScrollSpy } from '../../hooks'
 import { useLocale } from '../../providers'
-import { canUseDOM, cx } from '../../utils'
+import { cx } from '../../utils'
 import { useSlidingIndicator } from '../Tabs/useSlidingIndicator'
 import './TableOfContents.css'
 
@@ -84,57 +84,6 @@ function collectHeadings(root: HTMLElement, selector: string): TableOfContentsIt
   })
 }
 
-/** Margens de topo e base (px) de um `rootMargin` (1 a 4 valores, px ou %). */
-function verticalMargins(margin: string, height: number): [number, number] {
-  const parts = margin.trim().split(/\s+/)
-  const toPx = (value = '0px') => {
-    const n = Number.parseFloat(value)
-    if (!Number.isFinite(n)) return 0
-    return value.endsWith('%') ? (n / 100) * height : n
-  }
-  return [toPx(parts[0]), toPx(parts.length > 2 ? parts[2] : parts[0])]
-}
-
-/**
- * Seção ativa pela geometria atual dos títulos. Não dá para depender só dos
- * eventos do IntersectionObserver: um título que atravessa a faixa entre dois
- * quadros (rolagem rápida, Home/End, salto por âncora) não gera evento, e uma
- * seção final curta nunca chega à faixa. Ordem:
- * 1. no fim da rolagem, o último título já à vista;
- * 2. senão, o primeiro título dentro da faixa;
- * 3. senão, o último que já passou acima dela (a leitura está naquela seção);
- * 4. senão (antes do primeiro título), nenhuma.
- */
-function activeSection(
-  elements: HTMLElement[],
-  scroller: HTMLElement | null,
-  rootMargin: string,
-): string | undefined {
-  const page = document.scrollingElement ?? document.documentElement
-  const box = scroller ?? page
-  const viewTop = scroller ? scroller.getBoundingClientRect().top + scroller.clientTop : 0
-  const viewHeight = box.clientHeight
-  const [marginTop, marginBottom] = verticalMargins(rootMargin, viewHeight)
-  const bandTop = viewTop - marginTop
-  const bandBottom = viewTop + viewHeight + marginBottom
-  const rects = elements.map((el) => el.getBoundingClientRect())
-
-  const scrollTop = scroller ? scroller.scrollTop : window.scrollY
-  const scrollable = box.scrollHeight > viewHeight + 1
-  if (scrollable && box.scrollHeight - scrollTop - viewHeight <= 1) {
-    for (let i = rects.length - 1; i >= 0; i--) {
-      if (rects[i].top < viewTop + viewHeight) return elements[i].id
-    }
-  }
-  const inBand = rects.findIndex((r) => r.bottom > bandTop && r.top < bandBottom)
-  if (inBand !== -1) return elements[inBand].id
-  let passed = -1
-  rects.forEach((r, i) => {
-    if (r.bottom <= bandTop) passed = i
-  })
-  return passed === -1 ? undefined : elements[passed].id
-}
-
 /**
  * Índice "Nesta página": lista as seções da página e destaca a que está
  * visível enquanto a pessoa rola.
@@ -158,11 +107,6 @@ export const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
     const { t } = useLocale()
     const titleId = useId('or-toc-title')
     const [collected, setCollected] = useState<TableOfContentsItem[]>([])
-    const [activeId, setActiveId] = useState<string>()
-    // Item clicado: fica marcado durante a rolagem que o clique provoca (senão, ao
-    // pular para uma das últimas seções, o fim da rolagem marcaria a última) e até
-    // a próxima interação da pessoa (roda, toque, tecla ou ponteiro).
-    const clickedRef = useRef<string | null>(null)
     const items = itemsProp ?? collected
 
     // Coleta automática dos títulos do contêiner (e atualiza se o conteúdo mudar).
@@ -186,55 +130,15 @@ export const TableOfContents = forwardRef<HTMLElement, TableOfContentsProps>(
 
     const idsKey = items.map((item) => item.id).join('|')
 
-    // Destaca a seção visível: recalcula a cada quadro de rolagem (de qualquer contêiner —
-    // `scroll` não borbulha, mas é capturado na janela), ao redimensionar e quando o
-    // IntersectionObserver vê um título cruzar a faixa (o conteúdo mudou de lugar).
-    useEffect(() => {
-      if (!canUseDOM) return
-      const ids = idsKey ? idsKey.split('|') : []
-      const elements = ids
-        .map((id) => document.getElementById(id))
-        .filter((el): el is HTMLElement => !!el)
-      if (elements.length === 0) return
-      const scroller = resolveContainer(root)
-      let frame = 0
-      const update = () => {
-        frame = 0
-        if (clickedRef.current) return
-        setActiveId(activeSection(elements, scroller, rootMargin))
-      }
-      const schedule = () => {
-        if (!frame) frame = requestAnimationFrame(update)
-      }
-      const release = () => {
-        clickedRef.current = null
-      }
-      const io =
-        typeof IntersectionObserver === 'undefined'
-          ? null
-          : new IntersectionObserver(schedule, { rootMargin, root: scroller })
-      elements.forEach((el) => io?.observe(el))
-      window.addEventListener('scroll', schedule, { capture: true, passive: true })
-      window.addEventListener('resize', schedule)
-      const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
-      inputs.forEach((type) =>
-        window.addEventListener(type, release, { capture: true, passive: true }),
-      )
-      schedule()
-      return () => {
-        if (frame) cancelAnimationFrame(frame)
-        io?.disconnect()
-        window.removeEventListener('scroll', schedule, { capture: true })
-        window.removeEventListener('resize', schedule)
-        inputs.forEach((type) => window.removeEventListener(type, release, { capture: true }))
-      }
-    }, [idsKey, rootMargin, root])
+    // Destaca a seção visível (geometria dos títulos a cada quadro; ver useScrollSpy).
+    const { activeId, setActiveId } = useScrollSpy(
+      items.map((item) => item.id),
+      { root, rootMargin },
+    )
 
     const handleClick = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
       onItemClick?.(id, event)
-      if (event.defaultPrevented) return
-      clickedRef.current = id
-      setActiveId(id)
+      if (!event.defaultPrevented) setActiveId(id)
     }
 
     const minLevel = items.reduce((min, item) => Math.min(min, item.level ?? 2), Infinity)

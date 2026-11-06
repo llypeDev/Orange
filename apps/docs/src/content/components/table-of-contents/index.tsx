@@ -50,6 +50,20 @@ export default function TableOfContentsPage() {
                 </>
               ),
             },
+            {
+              pt: (
+                <>
+                  Precisa de outro visual — etapas numeradas, abas, progresso de leitura? Use o hook{' '}
+                  <Code>useScrollSpy</Code> (em Usando → Hooks): a mesma detecção da seção atual, com o seu markup.
+                </>
+              ),
+              en: (
+                <>
+                  Need a different look — numbered steps, tabs, reading progress? Use the <Code>useScrollSpy</Code> hook
+                  (in Usage → Hooks): the same current-section detection, with your own markup.
+                </>
+              ),
+            },
           ]}
         />
       </Section>

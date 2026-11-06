@@ -553,3 +553,142 @@ export function useScrollDirection(options: { threshold?: number; tolerance?: nu
   }, [threshold, tolerance])
   return state
 }
+
+/** Margens de topo e base (px) de um `rootMargin` (1 a 4 valores, px ou %). */
+function verticalMargins(margin: string, height: number): [number, number] {
+  const parts = margin.trim().split(/\s+/)
+  const toPx = (value = '0px') => {
+    const n = Number.parseFloat(value)
+    if (!Number.isFinite(n)) return 0
+    return value.endsWith('%') ? (n / 100) * height : n
+  }
+  return [toPx(parts[0]), toPx(parts.length > 2 ? parts[2] : parts[0])]
+}
+
+/**
+ * Seção ativa pela geometria atual dos títulos. Não dá para depender só dos
+ * eventos do IntersectionObserver: um título que atravessa a faixa entre dois
+ * quadros (rolagem rápida, Home/End, salto por âncora) não gera evento, e uma
+ * seção final curta nunca chega à faixa. Ordem:
+ * 1. no fim da rolagem, o último título já à vista;
+ * 2. senão, o primeiro título dentro da faixa;
+ * 3. senão, o último que já passou acima dela (a leitura está naquela seção);
+ * 4. senão (antes do primeiro título), nenhuma.
+ */
+function activeSection(
+  elements: HTMLElement[],
+  scroller: HTMLElement | null,
+  rootMargin: string,
+): string | undefined {
+  const page = document.scrollingElement ?? document.documentElement
+  const box = scroller ?? page
+  const viewTop = scroller ? scroller.getBoundingClientRect().top + scroller.clientTop : 0
+  const viewHeight = box.clientHeight
+  const [marginTop, marginBottom] = verticalMargins(rootMargin, viewHeight)
+  const bandTop = viewTop - marginTop
+  const bandBottom = viewTop + viewHeight + marginBottom
+  const rects = elements.map((el) => el.getBoundingClientRect())
+
+  const scrollTop = scroller ? scroller.scrollTop : window.scrollY
+  const scrollable = box.scrollHeight > viewHeight + 1
+  if (scrollable && box.scrollHeight - scrollTop - viewHeight <= 1) {
+    for (let i = rects.length - 1; i >= 0; i--) {
+      if (rects[i].top < viewTop + viewHeight) return elements[i].id
+    }
+  }
+  const inBand = rects.findIndex((r) => r.bottom > bandTop && r.top < bandBottom)
+  if (inBand !== -1) return elements[inBand].id
+  let passed = -1
+  rects.forEach((r, i) => {
+    if (r.bottom <= bandTop) passed = i
+  })
+  return passed === -1 ? undefined : elements[passed].id
+}
+
+export interface UseScrollSpyOptions {
+  /**
+   * Contêiner rolável (elemento ou ref). Padrão: a janela. Informe quando o
+   * conteúdo rola dentro de um painel.
+   */
+  root?: HTMLElement | null | RefObject<HTMLElement | null>
+  /**
+   * Faixa da área visível em que um título conta como "na tela", no formato do
+   * `rootMargin` do IntersectionObserver (px ou %). Padrão: `'-80px 0px -65% 0px'`
+   * (terço superior, descontando um cabeçalho fixo de 80px).
+   */
+  rootMargin?: string
+}
+
+export interface UseScrollSpyReturn {
+  /** Id da seção atual; `undefined` antes do primeiro título chegar à faixa. */
+  activeId: string | undefined
+  /**
+   * Marca uma seção na hora (ex.: no clique de um link do índice). A marca vale
+   * durante o salto que o clique provoca e até a próxima interação da pessoa
+   * (roda, toque, tecla ou ponteiro) — senão, ao pular para uma das últimas
+   * seções, o fim da rolagem marcaria a última.
+   */
+  setActiveId: (id: string) => void
+}
+
+/**
+ * Qual seção está sendo lida: para índices "Nesta página" com o visual que você
+ * quiser (é o hook por trás do `TableOfContents`). Recebe os ids dos títulos, na
+ * ordem do documento, e recalcula a cada quadro de rolagem (de qualquer
+ * contêiner), ao redimensionar e quando um título cruza a faixa. No fim da
+ * rolagem, a última seção à vista fica ativa mesmo que o título não alcance a
+ * faixa. Seguro para SSR (`activeId` começa `undefined`).
+ */
+export function useScrollSpy(ids: readonly string[], options: UseScrollSpyOptions = {}): UseScrollSpyReturn {
+  const { root, rootMargin = '-80px 0px -65% 0px' } = options
+  const [activeId, setActive] = useState<string>()
+  const clickedRef = useRef<string | null>(null)
+  // Arrays novos a cada render (ex.: `items.map(...)`) não reiniciam a observação.
+  const idsKey = ids.join('|')
+
+  useEffect(() => {
+    if (!canUseDOM) return
+    const elements = (idsKey ? idsKey.split('|') : [])
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el)
+    if (elements.length === 0) return
+    const scroller = root && 'current' in root ? root.current : (root ?? null)
+    let frame = 0
+    const update = () => {
+      frame = 0
+      if (clickedRef.current) return
+      setActive(activeSection(elements, scroller, rootMargin))
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    const release = () => {
+      clickedRef.current = null
+    }
+    const io =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(schedule, { rootMargin, root: scroller })
+    elements.forEach((el) => io?.observe(el))
+    // `scroll` não borbulha, mas é capturado na janela: vale para qualquer contêiner.
+    window.addEventListener('scroll', schedule, { capture: true, passive: true })
+    window.addEventListener('resize', schedule)
+    const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
+    inputs.forEach((type) => window.addEventListener(type, release, { capture: true, passive: true }))
+    schedule()
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      io?.disconnect()
+      window.removeEventListener('scroll', schedule, { capture: true })
+      window.removeEventListener('resize', schedule)
+      inputs.forEach((type) => window.removeEventListener(type, release, { capture: true }))
+    }
+  }, [idsKey, rootMargin, root])
+
+  const setActiveId = useCallback((id: string) => {
+    clickedRef.current = id
+    setActive(id)
+  }, [])
+
+  return useMemo(() => ({ activeId, setActiveId }), [activeId, setActiveId])
+}

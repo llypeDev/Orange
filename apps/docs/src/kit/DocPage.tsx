@@ -1,4 +1,4 @@
-import { Icon, useClipboard } from '@orangesys/ui'
+import { Icon, useClipboard, useScrollSpy } from '@orangesys/ui'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { componentMetas, sourceUrl, storybookUrl } from '../content/registry'
@@ -10,78 +10,24 @@ interface TocItem {
   text: string
 }
 
-/**
- * Seção ativa pela geometria dos títulos — a mesma regra do `TableOfContents` da biblioteca,
- * com a faixa `'-80px 0px -65% 0px'`: no fim da rolagem, o último título à vista (uma seção final
- * curta nunca chega à faixa); senão, o primeiro título dentro da faixa; senão, o último que já
- * passou acima dela. Só o IntersectionObserver não basta: um título que atravessa a faixa entre
- * dois quadros (rolagem rápida, Home/End) não gera evento.
- */
-function activeHeading(headings: HTMLElement[]): string | undefined {
-  const page = document.scrollingElement ?? document.documentElement
-  const height = page.clientHeight
-  const bandTop = 80
-  const bandBottom = height * 0.35
-  const rects = headings.map((h) => h.getBoundingClientRect())
-  if (page.scrollHeight > height + 1 && page.scrollHeight - window.scrollY - height <= 1) {
-    for (let i = rects.length - 1; i >= 0; i--) if (rects[i].top < height) return headings[i].id
-  }
-  const inBand = rects.findIndex((r) => r.bottom > bandTop && r.top < bandBottom)
-  if (inBand !== -1) return headings[inBand].id
-  let passed = -1
-  rects.forEach((r, i) => {
-    if (r.bottom <= bandTop) passed = i
-  })
-  return passed === -1 ? undefined : headings[passed].id
-}
-
 function useHeadings(ref: React.RefObject<HTMLElement | null>) {
   const [items, setItems] = useState<TocItem[]>([])
-  const [active, setActive] = useState<string>()
-  // Item clicado: fica marcado durante o salto que o clique provoca (senão, ao pular para uma das
-  // últimas seções, o fim da rolagem marcaria a última) e até a próxima interação da pessoa.
-  const clicked = useRef<string | null>(null)
 
   useEffect(() => {
     const root = ref.current
     if (!root) return
     const hs = Array.from(root.querySelectorAll<HTMLHeadingElement>('h2.doc-h2[id]'))
     setItems(hs.map((h) => ({ id: h.id, text: h.textContent ?? '' })))
-    let frame = 0
-    const update = () => {
-      frame = 0
-      if (!clicked.current) setActive(activeHeading(hs))
-    }
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update)
-    }
-    const release = () => {
-      clicked.current = null
-    }
-    const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
-    window.addEventListener('scroll', schedule, { passive: true })
-    window.addEventListener('resize', schedule)
-    inputs.forEach((type) =>
-      window.addEventListener(type, release, { capture: true, passive: true }),
-    )
-    schedule()
-    return () => {
-      if (frame) cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', schedule)
-      window.removeEventListener('resize', schedule)
-      inputs.forEach((type) => window.removeEventListener(type, release, { capture: true }))
-    }
   }, [ref])
+
+  // O mesmo hook do TableOfContents (faixa padrão '-80px 0px -65% 0px', fim da rolagem e clique).
+  const { activeId, setActiveId } = useScrollSpy(items.map((item) => item.id))
 
   // No topo da página (cabeçalho/lead ainda à vista) nenhum h2 chegou à faixa. Enquanto não houver
   // uma seção ativa válida, a primeira é a "atual": é onde o leitor está.
-  const current = active && items.some((item) => item.id === active) ? active : items[0]?.id
-  const select = (id: string) => {
-    clicked.current = id
-    setActive(id)
-  }
+  const current = activeId && items.some((item) => item.id === activeId) ? activeId : items[0]?.id
 
-  return { items, active: current, select }
+  return { items, active: current, select: setActiveId }
 }
 
 export interface DocPageProps {
