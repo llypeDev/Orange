@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Botão que aparece em páginas longas e leva de volta ao início, movendo o foco junto.',
     en: 'A button that appears on long pages and takes people back to the top, moving focus along.',
   },
-  status: 'new',
+  status: 'stable',
 }

@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Escolha única entre poucas opções, com radios nativos, setas do teclado e variante em cartões.',
     en: 'Single choice among a few options, with native radios, arrow-key navigation and a card variant.',
   },
-  status: 'new',
+  status: 'stable',
 }

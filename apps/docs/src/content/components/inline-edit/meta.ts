@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Edição no lugar: o valor vira um campo ao ser ativado e salva com Enter ou ao sair.',
     en: 'Edit in place: the value turns into a field when activated and saves on Enter or blur.',
   },
-  status: 'new',
+  status: 'stable',
 }

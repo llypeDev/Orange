@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Links levam a outra página, a outro site ou a outro ponto da mesma página.',
     en: 'Links take people to another page, another site or another place on the same page.',
   },
-  status: 'new',
+  status: 'stable',
 }

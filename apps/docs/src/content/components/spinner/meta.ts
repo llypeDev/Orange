@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Indicador circular para esperas curtas de duração desconhecida.',
     en: 'Circular indicator for short waits of unknown duration.',
   },
-  status: 'new',
+  status: 'stable',
 }

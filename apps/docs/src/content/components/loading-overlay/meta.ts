@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Cobre uma área enquanto ela é atualizada, bloqueando a interação e anunciando o carregamento.',
     en: 'Covers an area while it updates, blocking interaction and announcing the loading state.',
   },
-  status: 'new',
+  status: 'stable',
 }

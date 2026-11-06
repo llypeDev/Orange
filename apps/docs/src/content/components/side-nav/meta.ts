@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Navegação lateral da aplicação, com grupos recolhíveis, seções e modo só com ícones.',
     en: 'The app side navigation, with collapsible groups, sections and an icon-only mode.',
   },
-  status: 'new',
+  status: 'stable',
 }

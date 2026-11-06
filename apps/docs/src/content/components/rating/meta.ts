@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Avaliação por estrelas com rádios nativos, prévia no hover e modo somente leitura com frações.',
     en: 'Star rating built on native radios, with hover preview and a read-only mode with fractions.',
   },
-  status: 'new',
+  status: 'stable',
 }

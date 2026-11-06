@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Botão quadrado só com ícone, com nome acessível obrigatório — para ações reconhecíveis pelo ícone.',
     en: 'Square icon-only button with a required accessible name — for actions recognizable by their icon.',
   },
-  status: 'new',
+  status: 'stable',
 }

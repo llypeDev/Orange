@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Campo de busca com lupa, botão de limpar e envio por Enter, dentro de um landmark de busca.',
     en: 'Search field with a magnifier, clear button and Enter to submit, inside a search landmark.',
   },
-  status: 'new',
+  status: 'stable',
 }

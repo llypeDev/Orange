@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Rodapé do site: marca, mapa do site em colunas e barra inferior com informações legais.',
     en: 'Site footer: brand, a column site map and a bottom bar with legal information.',
   },
-  status: 'new',
+  status: 'stable',
 }

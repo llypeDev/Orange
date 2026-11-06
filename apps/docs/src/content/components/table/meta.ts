@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Tabela de dados semântica com ordenação por coluna, seleção de linhas, cabeçalho fixo e estado vazio.',
     en: 'Semantic data table with column sorting, row selection, sticky header and empty state.',
   },
-  status: 'new',
+  status: 'stable',
 }

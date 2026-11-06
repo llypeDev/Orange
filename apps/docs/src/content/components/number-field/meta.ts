@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Campo numérico (spinbutton) com botões − / +, atalhos de teclado, limites e formatação de moeda, porcentagem e unidades.',
     en: 'Numeric input (spinbutton) with − / + buttons, keyboard shortcuts, bounds and currency, percent and unit formatting.',
   },
-  status: 'new',
+  status: 'stable',
 }

@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Cartão de pré-visualização ao passar o ponteiro ou focar um link — perfis, itens referenciados, prévias de páginas.',
     en: 'Preview card on hover or focus of a link — profiles, referenced items, page previews.',
   },
-  status: 'new',
+  status: 'stable',
 }

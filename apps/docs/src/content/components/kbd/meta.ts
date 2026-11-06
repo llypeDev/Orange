@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Representa teclas e atalhos de teclado, com combinações e símbolos do macOS acessíveis.',
     en: 'Represents keys and keyboard shortcuts, with combinations and accessible macOS symbols.',
   },
-  status: 'new',
+  status: 'stable',
 }

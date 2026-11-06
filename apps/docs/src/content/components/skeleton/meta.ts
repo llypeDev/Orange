@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Espaço reservado com a forma do conteúdo que está carregando.',
     en: 'Placeholder that mirrors the shape of the content being loaded.',
   },
-  status: 'new',
+  status: 'stable',
 }

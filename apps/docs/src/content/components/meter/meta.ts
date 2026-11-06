@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Medidor de um valor dentro de uma faixa conhecida — armazenamento, cotas, níveis — com cor por faixa.',
     en: 'Gauge for a value within a known range — storage, quotas, levels — colored by range.',
   },
-  status: 'new',
+  status: 'stable',
 }

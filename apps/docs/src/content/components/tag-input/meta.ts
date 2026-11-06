@@ -8,5 +8,5 @@ export const meta: ComponentMeta = {
     pt: 'Campo que transforma o texto digitado em tags removíveis — palavras-chave, e-mails, códigos.',
     en: 'Field that turns typed text into removable tags — keywords, e-mails, codes.',
   },
-  status: 'new',
+  status: 'stable',
 }
