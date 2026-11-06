@@ -289,6 +289,7 @@ export const ptBR = {
   consentPreferencesDescription:
     'Escolha quais cookies opcionais podemos usar. Os necessários mantêm o site funcionando e não podem ser desligados.',
   consentAlwaysActive: 'Sempre ativos',
+  consentCategoriesLabel: 'Categorias de cookies',
   consentSave: 'Salvar preferências',
   consentAccepted:
     'Você aceitou todos os cookies. Você pode mudar as suas preferências a qualquer momento.',
@@ -588,6 +589,7 @@ export const enUS: Messages = {
   consentPreferencesDescription:
     'Choose which optional cookies we can use. Necessary cookies keep the site working and cannot be turned off.',
   consentAlwaysActive: 'Always active',
+  consentCategoriesLabel: 'Cookie categories',
   consentSave: 'Save preferences',
   consentAccepted: "You've accepted all cookies. You can change your preferences at any time.",
   consentRejected: "You've rejected optional cookies. You can change your preferences at any time.",
