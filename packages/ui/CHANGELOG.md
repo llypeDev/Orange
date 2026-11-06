@@ -1,5 +1,16 @@
 # @orangesys/ui
 
+## 1.3.0
+
+### Minor Changes
+
+- [#29](https://github.com/llypeDev/Orange/pull/29) [`a12ef94`](https://github.com/llypeDev/Orange/commit/a12ef94018aa5fb45e3a4158d4ce9b8513e3aab6) Thanks [@llypeDev](https://github.com/llypeDev)! - Novo hook `useScrollSpy(ids, { root, rootMargin })`: diz qual seção está sendo lida, para montar um índice "Nesta página" com qualquer visual. É o mesmo mecanismo do `TableOfContents` (que agora o usa por dentro): vence o primeiro título dentro da faixa; entre dois títulos, o que já passou (também ao subir); no fim da rolagem, o último à vista. Retorna `{ activeId, setActiveId }` — `setActiveId` marca uma seção no clique e segura a marca durante o salto, até a próxima interação. Aceita janela ou contêiner rolável (elemento ou ref), é seguro para SSR e um array novo de ids a cada render não reinicia a observação.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @orangesys/tokens@1.3.0
+
 ## 1.2.1
 
 ### Patch Changes
