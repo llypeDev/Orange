@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useControllableState, useId } from '../../hooks'
 import { useLocale } from '../../providers'
-import { clamp, cx, devWarning, mergeRefs } from '../../utils'
+import { clamp, cx, decimalsOf, devWarning, mergeRefs, roundTo } from '../../utils'
 import { Field, useField, useFieldControlProps } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Slider.css'
@@ -83,20 +83,10 @@ export interface SliderRangeProps extends SliderBaseProps {
 
 export type SliderProps = SliderSingleProps | SliderRangeProps
 
-/** Casas decimais de um número, inclusive em notação exponencial (1e-7 → 7; 1.5e-7 → 8). */
-function decimalsOf(value: number) {
-  if (!Number.isFinite(value)) return 0
-  const [mantissa, exponent = '0'] = String(value).split('e')
-  const dot = mantissa.indexOf('.')
-  return Math.max(0, (dot === -1 ? 0 : mantissa.length - dot - 1) - Number(exponent))
-}
-
 /** Os valores válidos são `min + n × step`: as casas decimais vêm do passo e também de `min`. */
 function precisionOf(min: number, step: number) {
   return Math.min(20, Math.max(decimalsOf(step), decimalsOf(min)))
 }
-
-const roundTo = (value: number, digits: number) => Number(value.toFixed(digits))
 
 // Tolerância relativa ao erro de ponto flutuante (0.7 / 0.1 = 6.999…).
 const EPSILON = 1e-9
