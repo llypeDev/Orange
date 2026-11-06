@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   Bullets,
   Code,
@@ -10,7 +11,7 @@ import {
   Section,
   WcagList,
 } from '../../../kit'
-import { T } from '../../../i18n'
+import { T, useLang } from '../../../i18n'
 import { DatePicker } from '@orangesys/ui'
 import Agenda from './examples/Agenda'
 import AgendaCode from './examples/Agenda?raw'
@@ -25,6 +26,8 @@ import ValidationCode from './examples/Validation?raw'
 import { meta } from './meta'
 
 export default function DatePickerPage() {
+  const { to } = useLang()
+  const dateTimePicker = <Link to={to('/components/date-time-picker')}>DateTimePicker</Link>
   return (
     <ComponentPage meta={meta}>
       <Section title={{ pt: 'Boas práticas', en: 'Best practices' }}>
@@ -33,6 +36,23 @@ export default function DatePickerPage() {
             {
               pt: 'Use para datas próximas ou relativas a hoje (entrega, vencimento, agendamento). Para datas distantes e conhecidas, como nascimento, a pessoa digita mais rápido — o campo aceita digitação direta com máscara.',
               en: 'Use it for dates close to or relative to today (delivery, due date, scheduling). For distant, known dates such as birthdays, typing is faster — the field accepts direct typing with a mask.',
+            },
+            {
+              pt: (
+                <>
+                  Quando o horário também importa (agendar uma publicação, marcar uma reunião), use
+                  o {dateTimePicker}: data e hora num só campo, com um rótulo e um valor{' '}
+                  <Code>Date</Code> — em vez de um DatePicker e um TimeField combinados à mão.
+                </>
+              ),
+              en: (
+                <>
+                  When the time matters too (scheduling a post, booking a meeting), use{' '}
+                  {dateTimePicker}: date and time in a single field, with one label and one{' '}
+                  <Code>Date</Code> value — instead of combining a DatePicker and a TimeField by
+                  hand.
+                </>
+              ),
             },
             {
               pt: (
