@@ -26,6 +26,26 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-06',
+    version: 'v1.2.0',
+    title: {
+      pt: 'NavigationMenu, DateTimePicker, Chat e mais',
+      en: 'NavigationMenu, DateTimePicker, Chat and more',
+    },
+    summary: {
+      pt: 'A segunda leva da pesquisa de lacunas: menus de navegação com painéis, data e hora num campo, conversas, consentimento de cookies (LGPD), checklists de configuração, autosave e linhas expansíveis na Table.',
+      en: 'The second batch from the gap research: navigation menus with panels, date and time in one field, conversations, cookie consent (LGPD), setup checklists, autosave and expandable rows in Table.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'NavigationMenu (padrão APG de navegação por disclosure) e submenus no AppHeader, com seções sanfonadas no celular.', en: 'NavigationMenu (APG disclosure navigation pattern) and AppHeader submenus, with collapsible sections on mobile.' } },
+      { kind: 'new', text: { pt: 'DateTimePicker: data e hora num campo só, com calendário, limites e defaultTime.', en: 'DateTimePicker: date and time in one field, with calendar, limits and defaultTime.' } },
+      { kind: 'new', text: { pt: 'ChatThread, ChatMessage e ChatComposer: assistentes, suporte e comentários, com rolagem que respeita a leitura e anúncios sem ruído.', en: 'ChatThread, ChatMessage and ChatComposer: assistants, support and comments, with scrolling that respects reading and quiet announcements.' } },
+      { kind: 'new', text: { pt: 'ConsentBanner: consentimento de cookies para a LGPD, com escolhas de mesmo peso e categorias granulares.', en: 'ConsentBanner: cookie consent for LGPD, with equally weighted choices and granular categories.' } },
+      { kind: 'new', text: { pt: 'TaskList e SaveStatus: checklist de configuração com progresso e indicador de autosave.', en: 'TaskList and SaveStatus: setup checklist with progress and an autosave indicator.' } },
+      { kind: 'improved', text: { pt: 'Table: linhas expansíveis com painel de detalhes; exemplo de colunas visíveis com Dropdown.', en: 'Table: expandable rows with a detail panel; visible-columns example with Dropdown.' } },
+    ],
+  },
+  {
+    date: '2026-11-06',
     version: 'v1.1.0',
     title: {
       pt: 'Oito componentes novos: Picker, ActionBar, ListView e mais',
