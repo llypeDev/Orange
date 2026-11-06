@@ -100,9 +100,10 @@ const roadmap: {
         pt: 'API estável com política formal de depreciação',
         en: 'Stable API with a formal deprecation policy',
         state: 'done',
+        // Total calculado do registro: acompanha as novas levas sem edição manual.
         note: {
-          pt: 'Revisão da API dos 157 componentes, nomes depreciados removidos e API congelada na 1.0.',
-          en: 'API review of all 157 components, deprecated names removed and the API frozen at 1.0.',
+          pt: `API revisada, nomes depreciados removidos e API congelada na 1.0. Hoje são ${componentMetas.length} componentes documentados, todos sob a mesma política.`,
+          en: `API reviewed, deprecated names removed and the API frozen at 1.0. There are ${componentMetas.length} documented components today, all under the same policy.`,
         },
       },
     ],
