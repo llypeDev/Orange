@@ -5,7 +5,11 @@ import { Eyebrow, Icon, Text } from '@orangesys/ui'
 
 <Meta title="Fundamentos/Cores" />
 
-export const ink = (hex) => (contrastRatio('#0f0f12', hex) >= contrastRatio('#f0ebdb', hex) ? '#0f0f12' : '#f0ebdb')
+export const ink = (hex) =>
+  // Tinta do rótulo: carvão ou creme quando passam 4.5:1; nos tons médios em que nenhum dos dois
+  // passa (carbon-500, orange-700, blue-500), o preto ou o branco puro que contrastar mais.
+  ['#0f0f12', '#f0ebdb'].find((c) => contrastRatio(c, hex) >= 4.5) ??
+  (contrastRatio('#000000', hex) >= contrastRatio('#ffffff', hex) ? '#000000' : '#ffffff')
 
 export const Palette = ({ name }) => (
   <div style={{ marginBottom: 24 }}>
