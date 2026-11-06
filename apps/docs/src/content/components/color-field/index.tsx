@@ -200,6 +200,15 @@ export default function ColorFieldPage() {
               },
             },
             {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).',
+                en: 'Invalid state without a message (error shown elsewhere).',
+              },
+            },
+            {
               name: 'required / optional / disabled / readOnly',
               type: 'boolean',
               default: 'false',

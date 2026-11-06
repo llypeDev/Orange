@@ -165,7 +165,7 @@ function SettingsScreen() {
     // O AppShell cria o <main> e o link "Pular para o conteúdo principal".
     <AppShell
       className="aurora-settings"
-      navBreakpoint="md"
+      navDrawerBelow="md"
       header={
         <AppHeader
           brand={

@@ -13,8 +13,8 @@ const steps: StepperStep[] = [
 ]
 
 describe('Stepper', () => {
-  it('renderiza uma lista ordenada com estados calculados a partir de activeStep', () => {
-    render(<Stepper steps={steps} activeStep={2} aria-label="Etapas do checkout" />)
+  it('renderiza uma lista ordenada com estados calculados a partir de step', () => {
+    render(<Stepper steps={steps} step={2} aria-label="Etapas do checkout" />)
     const list = screen.getByRole('list', { name: 'Etapas do checkout' })
     expect(list.tagName).toBe('OL')
     const items = within(list).getAllByRole('listitem')
@@ -24,7 +24,7 @@ describe('Stepper', () => {
   })
 
   it('anuncia o estado com texto oculto', () => {
-    render(<Stepper steps={steps} activeStep={1} />)
+    render(<Stepper steps={steps} step={1} />)
     const items = screen.getAllByRole('listitem')
     expect(items[0]).toHaveTextContent('Carrinho (concluído)')
     expect(items[1]).toHaveTextContent('Entrega (atual)')
@@ -36,7 +36,7 @@ describe('Stepper', () => {
     render(
       <Stepper
         steps={[{ label: 'Dados' }, { label: 'Documentos', status: 'error' }, { label: 'Envio' }]}
-        activeStep={2}
+        step={2}
       />,
     )
     const items = screen.getAllByRole('listitem')
@@ -50,14 +50,14 @@ describe('Stepper', () => {
   })
 
   it('sem onStepClick, nenhuma etapa é interativa', () => {
-    render(<Stepper steps={steps} activeStep={2} />)
+    render(<Stepper steps={steps} step={2} />)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
   it('com onStepClick, só etapas concluídas viram botões (mouse e teclado)', async () => {
     const user = userEvent.setup()
     const onStepClick = vi.fn()
-    render(<Stepper steps={steps} activeStep={2} onStepClick={onStepClick} />)
+    render(<Stepper steps={steps} step={2} onStepClick={onStepClick} />)
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(2)
     expect(buttons[0]).toHaveAccessibleName('Carrinho (concluído) 3 itens')
@@ -74,7 +74,7 @@ describe('Stepper', () => {
     render(
       <Stepper
         orientation="vertical"
-        activeStep={1}
+        step={1}
         steps={[
           { label: 'Criar conta', content: 'Formulário de conta' },
           { label: 'Convidar equipe', content: 'Formulário de convites' },
@@ -89,21 +89,34 @@ describe('Stepper', () => {
   it('traduz os textos de estado', () => {
     render(
       <OrangeProvider locale="en-US" themeTarget="scoped">
-        <Stepper steps={steps} activeStep={1} />
+        <Stepper steps={steps} step={1} />
       </OrangeProvider>,
     )
     expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('Carrinho (completed)')
     expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('Entrega (current)')
   })
 
+  it('activeStep (depreciado) ainda define a etapa atual e avisa no console', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<Stepper steps={steps} activeStep={1} />)
+    expect(screen.getAllByRole('listitem')[1]).toHaveAttribute('aria-current', 'step')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('`activeStep` está depreciado'))
+    warn.mockRestore()
+  })
+
+  it('sem step, a primeira etapa é a atual', () => {
+    render(<Stepper steps={steps} />)
+    expect(screen.getAllByRole('listitem')[0]).toHaveAttribute('aria-current', 'step')
+  })
+
   it('não possui violações de acessibilidade', async () => {
     const { container } = render(
       <div>
-        <Stepper steps={steps} activeStep={2} onStepClick={() => {}} aria-label="Checkout" />
+        <Stepper steps={steps} step={2} onStepClick={() => {}} aria-label="Checkout" />
         <Stepper
           orientation="vertical"
           steps={[...steps.slice(0, 2), { label: 'Pagamento', status: 'error' }]}
-          activeStep={2}
+          step={2}
           aria-label="Cadastro"
         />
       </div>,

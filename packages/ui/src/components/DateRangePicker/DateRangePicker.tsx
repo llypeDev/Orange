@@ -94,6 +94,8 @@ export interface DateRangePickerProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro. Substitui a validação interna. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Marca os dois campos como obrigatórios. */
   required?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
@@ -156,6 +158,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       hideLabel,
       description,
       error,
+      invalid: invalidProp = false,
       required,
       optional,
       disabled,
@@ -401,10 +404,12 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const errorMessage = error ?? startError ?? endError ?? rangeMessage ?? undefined
     const hasExternalError = error !== undefined && error !== null && error !== false && error !== ''
     const invalid = {
-      start: hasExternalError || !!startError,
-      end: hasExternalError || !!endError || !!rangeError,
+      start: invalidProp || hasExternalError || !!startError,
+      end: invalidProp || hasExternalError || !!endError || !!rangeError,
     }
-    const shake = useShake(typeof errorMessage === 'string' ? errorMessage : !!errorMessage)
+    const shake = useShake(
+      typeof errorMessage === 'string' ? errorMessage : !!errorMessage || invalidProp,
+    )
 
     const buttonLabel =
       value.start && value.end
@@ -456,6 +461,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         hideLabel={hideLabel}
         description={description}
         error={errorMessage}
+        invalid={invalidProp}
         required={required}
         optional={optional}
         disabled={disabled}
@@ -474,7 +480,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                 `or-control-frame--${size}`,
                 'or-date-range-picker__frame',
               )}
-              data-invalid={!!errorMessage || undefined}
+              data-invalid={!!errorMessage || invalidProp || undefined}
               aria-disabled={disabled || undefined}
               data-disabled={disabled || undefined}
               {...shake}

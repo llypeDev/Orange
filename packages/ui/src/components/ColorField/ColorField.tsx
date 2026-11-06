@@ -52,6 +52,8 @@ export interface ColorFieldProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro. Substitui a validação interna de formato. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
   optional?: boolean
   /** Altura do campo: `sm` 32px, `md` 40px, `lg` 48px. */
@@ -99,6 +101,7 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
     hideLabel,
     description,
     error,
+    invalid: invalidProp = false,
     required,
     optional,
     disabled,
@@ -199,7 +202,7 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
   }
 
   const errorMessage = error ?? (formatError ? t('invalidColor') : undefined)
-  const invalid = !!errorMessage
+  const invalid = !!errorMessage || invalidProp
 
   return (
     <Field
@@ -207,6 +210,7 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
       hideLabel={hideLabel}
       description={description}
       error={errorMessage}
+      invalid={invalidProp}
       required={required}
       optional={optional}
       disabled={disabled}

@@ -1,7 +1,7 @@
 import { forwardRef, type OlHTMLAttributes, type ReactNode } from 'react'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, deprecate } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Stepper.css'
 
@@ -13,7 +13,7 @@ export interface StepperStep {
   label: ReactNode
   /** Texto de apoio abaixo do nome. */
   description?: ReactNode
-  /** Força um estado. Padrão: calculado a partir de `activeStep`. Use `error` para etapas com problema. */
+  /** Força um estado. Padrão: calculado a partir de `step`. Use `error` para etapas com problema. */
   status?: StepperStatus
   /** Conteúdo exibido sob a etapa atual (somente na orientação vertical). */
   content?: ReactNode
@@ -22,8 +22,10 @@ export interface StepperStep {
 export interface StepperProps extends Omit<OlHTMLAttributes<HTMLOListElement>, 'children'> {
   /** Etapas do fluxo, em ordem. */
   steps: StepperStep[]
-  /** Índice (a partir de 0) da etapa atual. Etapas anteriores ficam concluídas. */
-  activeStep: number
+  /** Índice (a partir de 0) da etapa atual. Etapas anteriores ficam concluídas. Padrão: `0`. */
+  step?: number
+  /** @deprecated Use `step` (o mesmo nome do `Tour`). Sai na v1.0. */
+  activeStep?: number
   /** Orientação. A horizontal vira compacta em contêineres estreitos. */
   orientation?: StepperOrientation
   /**
@@ -33,10 +35,10 @@ export interface StepperProps extends Omit<OlHTMLAttributes<HTMLOListElement>, '
   onStepClick?: (index: number) => void
 }
 
-function getStatus(step: StepperStep, index: number, activeStep: number): StepperStatus {
-  if (step.status) return step.status
-  if (index < activeStep) return 'complete'
-  if (index === activeStep) return 'current'
+function getStatus(item: StepperStep, index: number, current: number): StepperStatus {
+  if (item.status) return item.status
+  if (index < current) return 'complete'
+  if (index === current) return 'current'
   return 'upcoming'
 }
 
@@ -45,10 +47,14 @@ function getStatus(step: StepperStep, index: number, activeStep: number): Steppe
  * configuração). Indica etapas concluídas, a atual e as próximas.
  */
 export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepper(
-  { steps, activeStep, orientation = 'horizontal', onStepClick, className, ...rest },
+  { steps, step: stepProp, activeStep, orientation = 'horizontal', onStepClick, className, ...rest },
   ref,
 ) {
   const { t } = useLocale()
+  if (activeStep !== undefined) {
+    deprecate('Stepper: `activeStep` está depreciado e sai na v1.0. Use `step`.', 'stepper.activeStep')
+  }
+  const current = stepProp ?? activeStep ?? 0
   const statusText: Record<StepperStatus, string | null> = {
     complete: t('completed'),
     current: t('current'),
@@ -64,8 +70,8 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepp
       {...rest}
     >
       {steps.map((step, index) => {
-        const status = getStatus(step, index, activeStep)
-        const isCurrent = index === activeStep
+        const status = getStatus(step, index, current)
+        const isCurrent = index === current
         const clickable = Boolean(onStepClick) && status === 'complete'
         const hidden = statusText[status]
         const marker = (

@@ -5,7 +5,7 @@ export default function Narrow() {
     <div style={{ width: 320, padding: 16, border: '1px solid var(--or-color-border)' }}>
       <Stepper
         aria-label="Abertura de conta"
-        activeStep={2}
+        step={2}
         steps={[
           { label: 'Conta', description: 'E-mail e senha' },
           { label: 'Perfil', description: 'Nome e telefone' },

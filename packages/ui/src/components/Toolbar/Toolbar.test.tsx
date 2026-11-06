@@ -19,7 +19,7 @@ function Editor({ orientation }: { orientation?: 'horizontal' | 'vertical' }) {
           <IconButton icon="redo" label="Refazer" disabled />
         </ToolbarGroup>
         <ToolbarSeparator />
-        <ToggleButtonGroup type="multiple" aria-label="Estilo">
+        <ToggleButtonGroup selectionMode="multiple" aria-label="Estilo">
           <ToggleButton value="bold">Negrito</ToggleButton>
           <ToggleButton value="italic">Itálico</ToggleButton>
         </ToggleButtonGroup>

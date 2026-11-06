@@ -330,6 +330,15 @@ export default function DatePickerPage() {
               },
             },
             {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).',
+                en: 'Invalid state without a message (error shown elsewhere).',
+              },
+            },
+            {
               name: 'required',
               type: 'boolean',
               default: 'false',

@@ -123,8 +123,8 @@ export default function ToggleButtonPage() {
         <Example
           title={{ pt: 'Grupo com múltipla escolha', en: 'Multiple-choice group' }}
           description={{
-            pt: <>Com <Code>type="multiple"</Code>, o valor é um array com os botões pressionados.</>,
-            en: <>With <Code>type="multiple"</Code>, the value is an array of the pressed buttons.</>,
+            pt: <>Com <Code>selectionMode="multiple"</Code>, o valor é um array com os botões pressionados.</>,
+            en: <>With <Code>selectionMode="multiple"</Code>, the value is an array of the pressed buttons.</>,
           }}
           code={GroupMultipleCode}
         >
@@ -135,13 +135,13 @@ export default function ToggleButtonPage() {
           description={{
             pt: (
               <>
-                Com <Code>type="single"</Code>, clicar no botão pressionado o solta (<Code>onChange(null)</Code>). Para manter sempre
+                Com <Code>selectionMode="single"</Code>, clicar no botão pressionado o solta (<Code>onChange(null)</Code>). Para manter sempre
                 um ativo, ignore o <Code>null</Code> no modo controlado.
               </>
             ),
             en: (
               <>
-                With <Code>type="single"</Code>, clicking the pressed button releases it (<Code>onChange(null)</Code>). To always
+                With <Code>selectionMode="single"</Code>, clicking the pressed button releases it (<Code>onChange(null)</Code>). To always
                 keep one active, ignore <Code>null</Code> in controlled mode.
               </>
             ),
@@ -184,7 +184,8 @@ export default function ToggleButtonPage() {
         <PropsTable
           caption={{ pt: 'ToggleButtonGroup', en: 'ToggleButtonGroup' }}
           rows={[
-            { name: 'type', type: "'single' | 'multiple'", required: true, description: { pt: 'No máximo um pressionado ou qualquer combinação.', en: 'At most one pressed or any combination.' } },
+            { name: 'selectionMode', type: "'single' | 'multiple'", default: "'single'", description: { pt: 'No máximo um pressionado ou qualquer combinação.', en: 'At most one pressed or any combination.' } },
+            { name: 'type', type: "'single' | 'multiple'", deprecated: { replacement: 'selectionMode', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de selectionMode.', en: 'Former name of selectionMode.' } },
             { name: 'value', type: 'string | null | string[]', description: { pt: 'Valor controlado: string/null em single, array em multiple.', en: 'Controlled value: string/null for single, array for multiple.' } },
             { name: 'defaultValue', type: 'string | null | string[]', description: { pt: 'Valor inicial (não controlado).', en: 'Initial value (uncontrolled).' } },
             { name: 'onChange', type: '(value) => void', description: { pt: 'Chamado com o novo valor.', en: 'Called with the new value.' } },

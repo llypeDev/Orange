@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Agrupa ToggleButtons (`role="group"`). `type="single"` permite no máximo um pressionado (clicar no pressionado solta); `type="multiple"`, qualquer combinação. Para escolha exclusiva obrigatória, use SegmentedControl.',
+          'Agrupa ToggleButtons (`role="group"`). `selectionMode="single"` permite no máximo um pressionado (clicar no pressionado solta); `selectionMode="multiple"`, qualquer combinação. Para escolha exclusiva obrigatória, use SegmentedControl.',
       },
     },
   },
@@ -25,7 +25,7 @@ const meta = {
     onChange: { action: 'change' },
   },
   args: {
-    type: 'multiple',
+    selectionMode: 'multiple',
     'aria-label': 'Modalidade da vaga',
     defaultValue: ['remote'],
   },
@@ -45,7 +45,7 @@ export const Multiple: Story = {}
 
 export const Single: Story = {
   args: {
-    type: 'single',
+    selectionMode: 'single',
     defaultValue: 'left',
     attached: true,
     'aria-label': 'Alinhamento do texto',

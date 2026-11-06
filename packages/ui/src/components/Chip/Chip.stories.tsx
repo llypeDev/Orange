@@ -70,7 +70,7 @@ export const MultipleGroup: Story = {
 
 export const SingleGroup: Story = {
   render: () => (
-    <ChipGroup type="single" label="Período" defaultValue="30d">
+    <ChipGroup selectionMode="single" label="Período" defaultValue="30d">
       <Chip value="7d">7 dias</Chip>
       <Chip value="30d">30 dias</Chip>
       <Chip value="90d">90 dias</Chip>

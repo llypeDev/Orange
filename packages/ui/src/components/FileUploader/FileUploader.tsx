@@ -47,6 +47,8 @@ export interface FileUploaderProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro do campo. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   required?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
   optional?: boolean
@@ -378,6 +380,7 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
     hideLabel,
     description,
     error,
+    invalid,
     required,
     optional,
     disabled = false,
@@ -522,6 +525,7 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(functi
         hideLabel={hideLabel}
         description={description}
         error={fieldError}
+        invalid={invalid}
         required={required}
         optional={optional}
         disabled={disabled}

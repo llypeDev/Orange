@@ -19,6 +19,8 @@ export interface FieldsetBaseProps extends Omit<FieldsetHTMLAttributes<HTMLField
   hideLegend?: boolean
   description?: ReactNode
   error?: ReactNode
+  /** Estado inválido sem mensagem (CheckboxGroup/RadioGroup). */
+  invalid?: boolean
   required?: boolean
   optional?: boolean
   /** Anuncia "obrigatório" na legenda (para grupos sem `required` nativo, como checkboxes). */
@@ -39,6 +41,7 @@ export const FieldsetBase = forwardRef<HTMLFieldSetElement, FieldsetBaseProps>(f
     hideLegend = false,
     description,
     error,
+    invalid = false,
     required = false,
     optional = false,
     announceRequired = false,
@@ -54,18 +57,19 @@ export const FieldsetBase = forwardRef<HTMLFieldSetElement, FieldsetBaseProps>(f
   const baseId = useId('or-fieldset')
   const hasDescription = hasContent(description)
   const hasError = hasContent(error)
+  const isInvalid = hasError || invalid
   const descriptionId = hasDescription ? `${baseId}-description` : undefined
   const errorId = hasError ? `${baseId}-error` : undefined
   const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   // Grupos de opções tremem uma vez quando o erro surge; seções só mostram a barra.
-  const { shakeClassName, onAnimationEnd } = useErrorShake(appearance === 'group' && hasError)
+  const { shakeClassName, onAnimationEnd } = useErrorShake(appearance === 'group' && isInvalid)
 
   return (
     <fieldset
       ref={ref}
       className={cx('or-fieldset', `or-fieldset--${appearance}`, className)}
       aria-describedby={describedBy}
-      data-invalid={hasError || undefined}
+      data-invalid={isInvalid || undefined}
       {...rest}
     >
       {hasContent(legend) && (

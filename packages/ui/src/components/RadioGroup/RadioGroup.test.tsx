@@ -91,6 +91,14 @@ describe('RadioGroup', () => {
     expect(screen.getByRole('group')).toHaveAccessibleDescription('Escolha uma. Selecione uma forma de pagamento.')
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<RadioGroup label="Plano" options={plans} invalid />)
+    const group = screen.getByRole('group', { name: 'Plano' })
+    expect(group).toHaveAttribute('data-invalid')
+    expect(group).not.toHaveAccessibleDescription()
+    expect(container.querySelector('.or-fieldset__error')).toBeNull()
+  })
+
   it('variante card marca o cartão selecionado e aceita orientação horizontal', async () => {
     const user = userEvent.setup()
     render(<RadioGroup label="Plano" variant="card" orientation="horizontal" options={plans} name="plano" />)

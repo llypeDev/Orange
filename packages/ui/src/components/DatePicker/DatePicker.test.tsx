@@ -198,6 +198,15 @@ describe('DatePicker', () => {
     )
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<DatePicker label="Data" invalid />)
+    const input = screen.getByRole('textbox', { name: 'Data' })
+    expect(input).toHaveAttribute('aria-invalid', 'true')
+    expect(input).toHaveAccessibleDescription('Formato: dd/mm/aaaa')
+    expect(input.closest('.or-control-frame')).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('entra pelo lado do campo e sai animado (usePresence) antes de desmontar', async () => {
     const user = userEvent.setup()
     const original = window.getComputedStyle

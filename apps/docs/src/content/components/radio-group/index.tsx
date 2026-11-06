@@ -100,6 +100,7 @@ export default function RadioGroupPage() {
             { name: 'label', type: 'ReactNode', required: true, description: { pt: 'Pergunta do grupo (<legend>).', en: 'Group question (<legend>).' } },
             { name: 'hideLabel', type: 'boolean', default: 'false', description: { pt: 'Oculta a legenda visualmente.', en: 'Visually hides the legend.' } },
             { name: 'description / error', type: 'ReactNode', description: { pt: 'Ajuda e erro do grupo (aria-describedby).', en: 'Group help and error (aria-describedby).' } },
+            { name: 'invalid', type: 'boolean', default: 'false', description: { pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).', en: 'Invalid state without a message (error shown elsewhere).' } },
             { name: 'required', type: 'boolean', default: 'false', description: { pt: 'required nativo em todas as opções.', en: 'Native required on every option.' } },
             { name: 'optional', type: 'boolean', default: 'false', description: { pt: 'Mostra "(opcional)" na legenda.', en: 'Shows "(optional)" on the legend.' } },
             { name: 'value', type: 'string | null', description: { pt: 'Opção selecionada (controlado).', en: 'Selected option (controlled).' } },

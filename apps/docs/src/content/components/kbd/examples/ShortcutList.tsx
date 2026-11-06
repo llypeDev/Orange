@@ -34,7 +34,7 @@ export default function ShortcutList() {
 
   return (
     <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 520 }}>
-      <ChipGroup type="single" label="Sistema" value={platform} onChange={(v) => v && setPlatform(v)} size="sm">
+      <ChipGroup selectionMode="single" label="Sistema" value={platform} onChange={(v) => v && setPlatform(v)} size="sm">
         <Chip value="windows">Windows e Linux</Chip>
         <Chip value="mac">macOS</Chip>
       </ChipGroup>

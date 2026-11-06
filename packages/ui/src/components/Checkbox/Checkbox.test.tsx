@@ -165,6 +165,14 @@ describe('CheckboxGroup', () => {
     expect(group).toHaveAccessibleDescription('Escolha pelo menos um. Selecione uma opção.')
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<CheckboxGroup label="Canais" options={options} invalid />)
+    const group = screen.getByRole('group', { name: 'Canais' })
+    expect(group).toHaveAttribute('data-invalid')
+    expect(group).not.toHaveAccessibleDescription()
+    expect(container.querySelector('.or-fieldset__error')).toBeNull()
+  })
+
   it('disabled desabilita todas as opções nativamente', () => {
     render(<CheckboxGroup label="Canais" options={options} disabled />)
     screen.getAllByRole('checkbox').forEach((box) => expect(box).toBeDisabled())

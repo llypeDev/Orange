@@ -61,8 +61,8 @@ export default function StepperPage() {
       <Section title={{ pt: 'Estados', en: 'States' }}>
         <DefinitionTable
           rows={[
-            { term: { pt: 'complete', en: 'complete' }, description: { pt: 'Etapas antes de activeStep. Quadrado com check e conector laranja.', en: 'Steps before activeStep. Square with a check and an orange connector.' } },
-            { term: { pt: 'current', en: 'current' }, description: { pt: <>A etapa de <Code>activeStep</Code>. Quadrado laranja e <Code>aria-current="step"</Code>.</>, en: <>The step at <Code>activeStep</Code>. Orange square and <Code>aria-current="step"</Code>.</> } },
+            { term: { pt: 'complete', en: 'complete' }, description: { pt: 'Etapas antes de step. Quadrado com check e conector laranja.', en: 'Steps before step. Square with a check and an orange connector.' } },
+            { term: { pt: 'current', en: 'current' }, description: { pt: <>A etapa de <Code>step</Code>. Quadrado laranja e <Code>aria-current="step"</Code>.</>, en: <>The step at <Code>step</Code>. Orange square and <Code>aria-current="step"</Code>.</> } },
             { term: { pt: 'upcoming', en: 'upcoming' }, description: { pt: 'Etapas seguintes. Quadrado com borda e número.', en: 'Following steps. Bordered square with a number.' } },
             { term: { pt: 'error', en: 'error' }, description: { pt: 'Definido por step.status. Quadrado vermelho com alerta.', en: 'Set via step.status. Red square with an alert.' } },
           ]}
@@ -73,8 +73,8 @@ export default function StepperPage() {
         <Example
           title={{ pt: 'Checkout', en: 'Checkout' }}
           description={{
-            pt: 'Horizontal, controlado por activeStep. Avance e volte com os botões.',
-            en: 'Horizontal, driven by activeStep. Move forward and back with the buttons.',
+            pt: 'Horizontal, controlado por step. Avance e volte com os botões.',
+            en: 'Horizontal, driven by step. Move forward and back with the buttons.',
           }}
           code={CheckoutCode}
         >
@@ -140,7 +140,8 @@ export default function StepperPage() {
         <PropsTable
           rows={[
             { name: 'steps', type: 'StepperStep[]', required: true, description: { pt: '{ label, description?, status?, content? } em ordem.', en: '{ label, description?, status?, content? } in order.' } },
-            { name: 'activeStep', type: 'number', required: true, description: { pt: 'Índice (base 0) da etapa atual.', en: 'Index (0-based) of the current step.' } },
+            { name: 'step', type: 'number', default: '0', description: { pt: 'Índice (base 0) da etapa atual.', en: 'Index (0-based) of the current step.' } },
+            { name: 'activeStep', type: 'number', deprecated: { replacement: 'step', since: '0.6.0', removal: '1.0.0' }, description: { pt: 'Nome antigo de step.', en: 'Former name of step.' } },
             { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: { pt: 'Orientação.', en: 'Orientation.' } },
             { name: 'onStepClick', type: '(index: number) => void', description: { pt: 'Torna as etapas concluídas clicáveis.', en: 'Makes completed steps clickable.' } },
             { name: 'aria-label', type: 'string', description: { pt: 'Nome da lista (ex.: "Etapas do checkout").', en: 'List name (e.g. "Checkout steps").' } },

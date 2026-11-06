@@ -68,6 +68,8 @@ export interface DatePickerProps extends Omit<
   description?: ReactNode
   /** Mensagem de erro. Substitui a validação interna de formato. */
   error?: ReactNode
+  /** Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). */
+  invalid?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
   optional?: boolean
   /** Altura do campo: `sm` 32px, `md` 40px, `lg` 48px. */
@@ -110,6 +112,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     hideLabel,
     description,
     error,
+    invalid: invalidProp = false,
     required,
     optional,
     disabled,
@@ -349,7 +352,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const buttonLabel = value
     ? t('changeDate', { date: longFormatter.format(value) })
     : t('chooseDate')
-  const invalid = !!errorMessage
+  const invalid = !!errorMessage || invalidProp
 
   return (
     <Field
@@ -357,6 +360,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
       hideLabel={hideLabel}
       description={description}
       error={errorMessage}
+      invalid={invalidProp}
       required={required}
       optional={optional}
       disabled={disabled}

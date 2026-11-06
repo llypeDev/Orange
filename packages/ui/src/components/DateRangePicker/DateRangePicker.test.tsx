@@ -158,6 +158,15 @@ describe('DateRangePicker', () => {
     )
   })
 
+  it('aceita invalid sem mensagem de erro e marca os dois campos', () => {
+    const { container } = render(<DateRangePicker label="Vigência" invalid />)
+    expect(startInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(endInput()).toHaveAttribute('aria-invalid', 'true')
+    expect(endInput()).toHaveAccessibleDescription('Formato: dd/mm/aaaa')
+    expect(container.querySelector('.or-control-frame')).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('seleciona o período no calendário com o mouse e devolve o foco', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()

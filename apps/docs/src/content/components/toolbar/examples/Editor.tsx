@@ -23,7 +23,7 @@ export default function Editor() {
           <IconButton icon="redo" label="Refazer" disabled />
         </ToolbarGroup>
         <ToolbarSeparator />
-        <ToggleButtonGroup type="multiple" aria-label="Estilo" value={styles} onChange={setStyles}>
+        <ToggleButtonGroup selectionMode="multiple" aria-label="Estilo" value={styles} onChange={setStyles}>
           <ToggleButton
             value="bold"
             iconOnly
@@ -45,7 +45,7 @@ export default function Editor() {
         </ToggleButtonGroup>
         <ToolbarSeparator />
         <ToggleButtonGroup
-          type="single"
+          selectionMode="single"
           aria-label="Alinhamento"
           value={align}
           onChange={(value) => value && setAlign(value as Align)}

@@ -132,6 +132,15 @@ describe('Rating', () => {
     expect(group).toHaveAccessibleDescription('Sua opinião é anônima Dê uma nota de 1 a 5')
   })
 
+  it('aceita invalid sem mensagem de erro', () => {
+    const { container } = render(<Rating label="Nota" invalid />)
+    const group = screen.getByRole('radiogroup', { name: 'Nota' })
+    expect(group).toHaveAttribute('aria-invalid', 'true')
+    expect(group).not.toHaveAccessibleDescription()
+    expect(container.querySelector('.or-rating-field')).toHaveAttribute('data-invalid')
+    expect(container.querySelector('.or-field__error')).toBeNull()
+  })
+
   it('aplica o tamanho', () => {
     const { container } = render(<Rating label="Nota" size="lg" />)
     expect(container.querySelector('.or-rating')).toHaveClass('or-rating--lg')

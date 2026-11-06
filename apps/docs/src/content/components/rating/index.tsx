@@ -215,6 +215,15 @@ export default function RatingPage() {
               description: { pt: 'Ajuda e erro do grupo.', en: 'Group help and error.' },
             },
             {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: {
+                pt: 'Estado inválido sem mensagem (erro mostrado em outro lugar).',
+                en: 'Invalid state without a message (error shown elsewhere).',
+              },
+            },
+            {
               name: 'required / disabled',
               type: 'boolean',
               default: 'false',
