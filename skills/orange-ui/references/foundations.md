@@ -47,7 +47,7 @@ Títulos em Space Grotesk com espaçamento negativo, a voz do Orange.
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Nível semântico (h1–h6). Defina pela hierarquia do documento, não pelo tamanho. |
-| `size` | `"md" \| "lg" \| "xl" \| "display" \| "5xl" \| "4xl" \| "3xl" \| "2xl"` | `md` | Tamanho visual, independente do nível semântico. |
+| `size` | `"md" \| "lg" \| "xl" \| "display" \| "5xl" \| "4xl" \| "3xl" \| "2xl"` | — | Tamanho visual, independente do nível semântico. |
 
 Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
@@ -106,7 +106,7 @@ Texto corrido com escala, tons e pesos do sistema.
 | `as` | `ElementType` | `p` | Elemento renderizado. Padrão: `p`. |
 | `font` | `"body" \| "display" \| "mono"` | `body` | Família tipográfica: `body` (Inter), `display` (Space Grotesk) ou `mono`. |
 | `size` | `"sm" \| "md" \| "lg" \| "xs" \| "xl" \| "2xs"` | `md` | — |
-| `tone` | `"inherit" \| "info" \| "success" \| "warning" \| "danger" \| "accent" \| "default" \| "subtle" \| "muted"` | `subtle` | — |
+| `tone` | `"inherit" \| "info" \| "success" \| "warning" \| "danger" \| "accent" \| "default" \| "subtle" \| "muted"` | `default` | — |
 | `truncate` | `boolean` | — | Corta o texto em uma linha com reticências. |
 | `weight` | `"bold" \| "regular" \| "medium" \| "semibold"` | — | — |
 

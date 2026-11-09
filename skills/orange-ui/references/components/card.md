@@ -191,7 +191,7 @@ Contêiner de conteúdo relacionado: título, texto, mídia e ações.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | `a` | Elemento raiz. Use `article` para conteúdo independente e `li` dentro de listas. |
+| `as` | `ElementType` | `div` | Elemento raiz. Use `article` para conteúdo independente e `li` dentro de listas. |
 | `interactive` | `boolean` | `false` | Torna o cartão inteiro clicável. O alvo é o `CardLink` do título, que ganha uma área estendida sobre o cartão (o título continua sendo o link). |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Espaçamento interno: `sm` 16px, `md` 24px, `lg` 32px. |
 | `variant` | `"outline" \| "accent" \| "raised"` | `outline` | `outline` (borda 1px, padrão), `raised` (superfície elevada) ou `accent` (borda superior laranja). |

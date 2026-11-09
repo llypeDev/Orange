@@ -198,14 +198,14 @@ Use com `AccordionItem`, `AccordionTrigger` e `AccordionContent`.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `collapsible` | `boolean` | — | Permite fechar o item aberto, deixando todos fechados. Padrão: `true`. |
+| `collapsible` | `boolean` | `true` | Permite fechar o item aberto, deixando todos fechados. Padrão: `true`. |
 | `defaultValue` | `string \| string[] \| null` | — | Item aberto inicialmente (não controlado). Itens abertos inicialmente (não controlado). |
 | `disabled` | `boolean` | `false` | Desabilita todos os itens. |
-| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | — | Nível semântico dos cabeçalhos (`h2`–`h6`). Padrão: 3. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `3` | Nível semântico dos cabeçalhos (`h2`–`h6`). Padrão: 3. |
 | `onChange` | `((value: string \| null) => void) \| ((value: string[]) => void)` | — | — |
-| `type` | `"single" \| "multiple"` | — | `single`: apenas um item aberto por vez. `multiple`: vários itens podem ficar abertos ao mesmo tempo. |
+| `type` | `"single" \| "multiple"` | `single` | `single`: apenas um item aberto por vez. `multiple`: vários itens podem ficar abertos ao mesmo tempo. |
 | `value` | `string \| string[] \| null` | — | Item aberto (controlado). `null` fecha todos. Itens abertos (controlado). |
-| `variant` | `"outline" \| "flush"` | — | `outline` (caixa com borda, padrão) ou `flush` (apenas divisórias). |
+| `variant` | `"outline" \| "flush"` | `outline` | `outline` (caixa com borda, padrão) ou `flush` (apenas divisórias). |
 
 Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 

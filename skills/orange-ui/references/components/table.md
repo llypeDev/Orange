@@ -787,18 +787,18 @@ export default function Virtualized() {
 | `defaultExpandedRows` | `string[]` | — | Ids expandidos inicialmente (não controlado). |
 | `defaultFilters` | `TableFilters` | — | Filtros iniciais (não controlado). |
 | `defaultSelectedRows` | `string[]` | — | Ids selecionados inicialmente (não controlado). |
-| `defaultSort` | `TableSort \| null` | — | Ordenação inicial (não controlada). |
-| `density` | `"compact" \| "normal"` | — | Espaçamento das células. |
+| `defaultSort` | `TableSort \| null` | `null` | Ordenação inicial (não controlada). |
+| `density` | `"compact" \| "normal"` | `normal` | Espaçamento das células. |
 | `emptyState` | `ReactNode` | — | Conteúdo exibido quando `data` está vazio. |
 | `expandedRows` | `string[]` | — | Ids das linhas expandidas (controlado). |
 | `filters` | `TableFilters` | — | Filtros das colunas com `filter` (controlado): `{ [key]: texto }`. |
 | `getRowId` | `((row: T, index: number) => string)` | — | Id estável de cada linha. Padrão: `row.id` ou o índice. |
 | `getRowLabel` | `((row: T) => string)` | — | Texto que identifica a linha no rótulo do checkbox ("Selecionar linha: …") e do botão de expandir ("Expandir linha: …"). Padrão: o cabeçalho de linha (`rowHeader`). |
 | `hiddenColumns` | `string[]` | — | `key` das colunas ocultas. Use com o `TableColumnsMenu` para a pessoa escolher as colunas. |
-| `hideCaption` | `boolean` | — | Esconde a legenda visualmente, mantendo-a para leitores de tela. |
+| `hideCaption` | `boolean` | `false` | Esconde a legenda visualmente, mantendo-a para leitores de tela. |
 | `isRowExpandable` | `((row: T) => boolean)` | — | Diz quais linhas podem ser expandidas. Padrão: todas (quando há `renderExpanded`). |
-| `manualFilter` | `boolean` | — | Não filtra `data` internamente (filtro feito no servidor). |
-| `manualSort` | `boolean` | — | Não ordena `data` internamente (ordenação feita no servidor). |
+| `manualFilter` | `boolean` | `false` | Não filtra `data` internamente (filtro feito no servidor). |
+| `manualSort` | `boolean` | `false` | Não ordena `data` internamente (ordenação feita no servidor). |
 | `maxHeight` | `string \| number` | — | Altura máxima: o corpo rola e o cabeçalho fica fixo. |
 | `onColumnWidthsChange` | `((widths: TableColumnWidths) => void)` | — | Chamado enquanto a pessoa redimensiona uma coluna. |
 | `onExpandedRowsChange` | `((ids: string[]) => void)` | — | Chamado com os ids expandidos sempre que uma linha abre ou fecha. |
@@ -806,15 +806,15 @@ export default function Virtualized() {
 | `onRowClick` | `((row: T, event: MouseEvent<HTMLElement, MouseEvent>) => void)` | — | Torna a linha clicável. A célula principal (cabeçalho de linha ou primeira coluna) vira um botão, garantindo o acesso por teclado. |
 | `onSelectedRowsChange` | `((ids: string[]) => void)` | — | Chamado com os ids selecionados sempre que a seleção muda. |
 | `onSortChange` | `((sort: TableSort \| null) => void)` | — | Chamado quando o usuário muda a ordenação. |
-| `overscan` | `number` | — | Com `virtualized`: linhas a mais renderizadas acima e abaixo da área visível. Padrão: `8`. |
+| `overscan` | `number` | `8` | Com `virtualized`: linhas a mais renderizadas acima e abaixo da área visível. Padrão: `8`. |
 | `ref` | `Ref<HTMLTableElement>` | — | — |
 | `renderExpanded` | `((row: T) => ReactNode)` | — | Conteúdo do painel de detalhes da linha. Com esta prop, cada linha expansível ganha um botão de expandir/recolher na primeira coluna, e o painel aparece logo abaixo da linha, em uma célula que ocupa todas as colunas. |
 | `rowHeight` | `number` | — | Com `virtualized`: altura estimada da linha em px, usada até a tabela medir a real. |
-| `selectable` | `boolean` | — | Mostra checkboxes para selecionar linhas. |
+| `selectable` | `boolean` | `false` | Mostra checkboxes para selecionar linhas. |
 | `selectedRows` | `string[]` | — | Ids das linhas selecionadas (controlado). |
 | `sort` | `TableSort \| null` | — | Ordenação controlada. |
-| `striped` | `boolean` | — | Alterna a cor de fundo das linhas. |
-| `virtualized` | `boolean` | — | Renderiza só as linhas à vista — para milhares de linhas. Exige `maxHeight` e linhas de mesma altura (as células não quebram linha); não se combina com `renderExpanded`. |
+| `striped` | `boolean` | `false` | Alterna a cor de fundo das linhas. |
+| `virtualized` | `boolean` | `false` | Renderiza só as linhas à vista — para milhares de linhas. Exige `maxHeight` e linhas de mesma altura (as células não quebram linha); não se combina com `renderExpanded`. |
 
 Repassa também os atributos nativos (`TableHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 

@@ -118,6 +118,137 @@ for (const doc of componentDocs) {
 
 const fromNodeModules = (decl) => /node_modules/.test(decl.fileName)
 
+// ---------------------------------------------------------------------------------------------
+// Padrão de cada prop: o da função do próprio componente
+// ---------------------------------------------------------------------------------------------
+// O react-docgen-typescript junta os padrões de TODAS as funções do arquivo por nome de prop (a
+// última declarada vence). Num arquivo com vários componentes o padrão de um vaza para o outro:
+// `DropdownCheckboxItem.closeOnSelect` saía `true` (o do `DropdownRadioItem`, declarado depois),
+// embora o código use `false`; e uma prop obrigatória virava opcional se outro componente do
+// arquivo tivesse um padrão para o mesmo nome. Aqui o padrão vem só da desestruturação do primeiro
+// parâmetro da função do componente.
+
+/** A função de um componente: desfaz `forwardRef(...)`, `memo(...)`, `as …` e segue identificadores. */
+function componentFunction(node, depth = 0) {
+  if (!node || depth > 8) return null
+  if (ts.isFunctionDeclaration(node) || ts.isArrowFunction(node) || ts.isFunctionExpression(node))
+    return node
+  if (ts.isVariableDeclaration(node)) return componentFunction(node.initializer, depth + 1)
+  if (
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isSatisfiesExpression(node) ||
+    ts.isNonNullExpression(node)
+  )
+    return componentFunction(node.expression, depth + 1)
+  if (ts.isCallExpression(node)) {
+    // forwardRef(fn), memo(fn), Object.assign(fn, { … })
+    if (!/(^|\.)(forwardRef|memo|assign)$/.test(node.expression.getText())) return null
+    return componentFunction(node.arguments[0], depth + 1)
+  }
+  if (ts.isIdentifier(node)) {
+    let symbol = checker.getSymbolAtLocation(node)
+    if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol)
+    return componentFunction(symbol?.valueDeclaration ?? symbol?.declarations?.[0], depth + 1)
+  }
+  return null
+}
+
+/** Texto do valor padrão, no formato do docgen: literais sem aspas, constantes resolvidas. */
+function defaultText(initializer, depth = 0) {
+  switch (initializer.kind) {
+    case ts.SyntaxKind.TrueKeyword:
+      return 'true'
+    case ts.SyntaxKind.FalseKeyword:
+      return 'false'
+    case ts.SyntaxKind.NullKeyword:
+      return 'null'
+    case ts.SyntaxKind.StringLiteral:
+      return initializer.text.trim()
+    case ts.SyntaxKind.NumericLiteral:
+      return initializer.text
+    case ts.SyntaxKind.Identifier:
+    case ts.SyntaxKind.PropertyAccessExpression: {
+      if (initializer.getText() === 'undefined') return 'undefined'
+      // Constante (`DEFAULT_SIZE`, `sizes.md`): o valor dela.
+      let symbol = checker.getSymbolAtLocation(initializer)
+      if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol)
+      const value = symbol?.declarations?.[0]?.initializer
+      if (value && depth < 4) return defaultText(value, depth + 1)
+      // Nome de uma função interna (`getKey = defaultGetKey`): não diz nada a quem lê a tabela; a
+      // descrição da prop explica o padrão.
+      return ts.isIdentifier(initializer) ? null : initializer.getText()
+    }
+    default:
+      return initializer.getText().trim()
+  }
+}
+
+const ownDefaultsCache = new Map()
+
+/**
+ * Onde o componente desestrutura as props: no próprio parâmetro (`function Foo({ size = 'md' })`)
+ * ou no corpo (`function Foo(props) { const { size = 'md' } = props }`).
+ */
+function propsPattern(fn) {
+  const param = fn.parameters[0]
+  if (!param) return null
+  if (ts.isObjectBindingPattern(param.name)) return param.name
+  if (!ts.isIdentifier(param.name) || !fn.body || !ts.isBlock(fn.body)) return null
+  for (const statement of fn.body.statements) {
+    if (!ts.isVariableStatement(statement)) continue
+    for (const declaration of statement.declarationList.declarations) {
+      if (
+        ts.isObjectBindingPattern(declaration.name) &&
+        declaration.initializer &&
+        ts.isIdentifier(declaration.initializer) &&
+        declaration.initializer.text === param.name.text
+      )
+        return declaration.name
+    }
+  }
+  return null
+}
+
+/**
+ * Padrões declarados pelo próprio componente e o tipo das props, ou `null` quando a função não é
+ * encontrada (aí vale o que o docgen disser). Um padrão sem texto útil fica como `null`: a prop
+ * tem padrão, só não há o que mostrar.
+ */
+function ownDefaults(doc) {
+  if (ownDefaultsCache.has(doc.displayName)) return ownDefaultsCache.get(doc.displayName)
+  const symbol = exportedValues.get(doc.displayName)
+  const fn = componentFunction(symbol?.valueDeclaration ?? symbol?.declarations?.[0])
+  let result = null
+  if (fn) {
+    const values = new Map()
+    for (const element of propsPattern(fn)?.elements ?? []) {
+      if (element.dotDotDotToken || !element.initializer) continue
+      const key = element.propertyName ?? element.name
+      if (ts.isIdentifier(key) || ts.isStringLiteral(key))
+        values.set(key.text, defaultText(element.initializer))
+    }
+    const param = fn.parameters[0]
+    result = { values, propsType: param ? checker.getTypeAtLocation(param) : null }
+  }
+  ownDefaultsCache.set(doc.displayName, result)
+  return result
+}
+
+/** Padrão e obrigatoriedade de uma prop, corrigindo o que o docgen misturou de outras funções. */
+function propDefault(doc, prop) {
+  const own = ownDefaults(doc)
+  if (!own)
+    return { value: prop.defaultValue?.value ?? prop.tags?.default, required: prop.required }
+  const value = own.values.get(prop.name) ?? prop.tags?.default
+  // O docgen tira o "obrigatória" de quem tem padrão no código. Se o padrão era de outra função,
+  // a obrigatoriedade volta a ser a do tipo.
+  const leaked = !!prop.defaultValue && !own.values.has(prop.name)
+  const declared = leaked ? own.propsType?.getProperty(prop.name) : null
+  const required = declared ? !(declared.flags & ts.SymbolFlags.Optional) : prop.required
+  return { value, required }
+}
+
 /**
  * A interface de atributos nativos que o componente repassa. Primeiro pelo `extends` da
  * declaração `<Nome>Props` no código (o docgen, num programa com todos os arquivos, às vezes
@@ -202,6 +333,7 @@ function propsMarkdown(doc) {
       const decls = prop.declarations?.length ? prop.declarations : prop.parent ? [prop.parent] : []
       return !decls.length || decls.some((d) => !fromNodeModules(d))
     })
+    .map((prop) => ({ ...prop, ...propDefault(doc, prop) }))
     .sort((a, b) => {
       if (a.required !== b.required) return a.required ? -1 : 1
       return a.name.localeCompare(b.name)
@@ -219,7 +351,7 @@ function propsMarkdown(doc) {
     )
     for (const prop of own) {
       const name = `\`${prop.name}\`${prop.required ? ' (obrigatória)' : ''}`
-      const def = prop.defaultValue?.value ?? prop.tags?.default
+      const def = prop.value
       // Campos que repassam label/description/error ao Field sem JSDoc próprio: a descrição do Field.
       const isField = 'label' in doc.props && 'error' in doc.props
       const description =

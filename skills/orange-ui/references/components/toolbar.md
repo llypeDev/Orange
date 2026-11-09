@@ -241,7 +241,7 @@ Agrupa itens relacionados dentro da Toolbar (`role="group"`). Use
 | --- | --- | --- | --- |
 | `attached` | `boolean` | — | Cola os botões: sem espaço entre eles e com bordas internas compartilhadas. |
 | `disabled` | `boolean` | — | Desabilita todos os botões do grupo. |
-| `orientation` | `"horizontal" \| "vertical"` | `horizontal` | Direção do grupo. Padrão: `horizontal` (ou a da Toolbar que o contém). |
+| `orientation` | `"horizontal" \| "vertical"` | — | Direção do grupo. Padrão: `horizontal` (ou a da Toolbar que o contém). |
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho aplicado a todos os botões que não definem o próprio `size`. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | — | Variante aplicada a todos os botões que não definem a própria `variant`. |
 

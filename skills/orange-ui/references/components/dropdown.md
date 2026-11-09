@@ -276,7 +276,7 @@ Opção liga/desliga do menu (`role="menuitemcheckbox"`).
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
 | `checked` | `boolean` | — | Marcado (controlado). |
-| `closeOnSelect` | `boolean` | `true` | Fecha o menu ao alternar. Padrão: `false` (permite marcar vários). |
+| `closeOnSelect` | `boolean` | `false` | Fecha o menu ao alternar. Padrão: `false` (permite marcar vários). |
 | `defaultChecked` | `boolean` | `false` | Marcado inicialmente (não controlado). |
 | `disabled` | `boolean` | — | — |
 | `onCheckedChange` | `((checked: boolean) => void)` | — | Chamado com o novo estado. |
