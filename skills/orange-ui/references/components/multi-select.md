@@ -87,7 +87,7 @@ export default function MaxSelected() {
 ### Controlado: filtro de pedidos
 
 ```tsx
-import { Button, MultiSelect } from '@orangesys/ui'
+import { Button, MultiSelect, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const status = [
@@ -113,7 +113,7 @@ export default function Controlled() {
   const visiveis = filtro.length ? pedidos.filter((p) => filtro.includes(p.status)) : pedidos
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 420 }}>
       <MultiSelect
         label="Status do pedido"
         placeholder="Todos os status"
@@ -127,15 +127,15 @@ export default function Controlled() {
       >
         {visiveis.length} de {pedidos.length} pedidos: {visiveis.map((p) => p.id).join(', ')}
       </p>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <Button size="sm" variant="outline" onClick={() => setFiltro(['aguardando', 'aprovado'])}>
           Só pagamentos
         </Button>
         <Button size="sm" variant="ghost" onClick={() => setFiltro([])}>
           Mostrar todos
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```
@@ -143,7 +143,7 @@ export default function Controlled() {
 ### Tamanhos e estados
 
 ```tsx
-import { MultiSelect } from '@orangesys/ui'
+import { MultiSelect, Stack } from '@orangesys/ui'
 
 const idiomas = [
   { value: 'pt', label: 'Português' },
@@ -155,7 +155,7 @@ const idiomas = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <MultiSelect size="sm" label="Idiomas (sm)" options={idiomas} defaultValue={['pt', 'en']} />
       <MultiSelect
         label="Idiomas do atendimento"
@@ -170,7 +170,7 @@ export default function States() {
         defaultValue={['es']}
         disabled
       />
-    </div>
+    </Stack>
   )
 }
 ```

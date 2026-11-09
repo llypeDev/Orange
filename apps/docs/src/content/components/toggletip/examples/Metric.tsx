@@ -1,4 +1,4 @@
-import { Toggletip } from '@orangesys/ui'
+import { Stack, Toggletip } from '@orangesys/ui'
 
 export default function Metric() {
   return (
@@ -11,13 +11,13 @@ export default function Metric() {
         minWidth: 240,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <Stack gap={1} direction="horizontal" align="center">
         <span className="or-eyebrow">Taxa de conversão</span>
         <Toggletip
           label="Sobre a taxa de conversão"
           content="Pedidos concluídos divididos pelo total de visitantes no período. Visitas de robôs são descartadas."
         />
-      </div>
+      </Stack>
       <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 32, lineHeight: 1.1 }}>
         3,8%
       </strong>

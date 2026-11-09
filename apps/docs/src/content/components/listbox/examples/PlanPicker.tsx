@@ -1,4 +1,4 @@
-import { Listbox, ListboxOption } from '@orangesys/ui'
+import { Listbox, ListboxOption, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const planos = [
@@ -13,7 +13,7 @@ export default function PlanPicker() {
   const escolhido = planos.find((p) => p.value === plano)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 460 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 460 }}>
       <Listbox
         label="Plano"
         description="Cobrança mensal. Você pode trocar de plano quando quiser."
@@ -29,6 +29,6 @@ export default function PlanPicker() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         Plano escolhido: <strong style={{ color: 'var(--or-color-text)' }}>{escolhido?.nome ?? 'nenhum'}</strong>
       </p>
-    </div>
+    </Stack>
   )
 }

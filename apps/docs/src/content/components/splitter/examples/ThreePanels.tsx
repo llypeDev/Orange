@@ -1,4 +1,4 @@
-import { Checkbox, Splitter, SplitterHandle, SplitterPanel, Tag } from '@orangesys/ui'
+import { Checkbox, Splitter, SplitterHandle, SplitterPanel, Stack, Tag } from '@orangesys/ui'
 import { useState } from 'react'
 
 const products = [
@@ -22,7 +22,7 @@ export default function ThreePanels() {
   const product = products.find((p) => p.sku === selected) ?? products[0]
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Filtros {Math.round(sizes[0])}% · Resultados {Math.round(sizes[1])}% · Detalhes {Math.round(sizes[2])}%.
         Foque o primeiro separador e pressione Enter para recolher os filtros.
@@ -98,6 +98,6 @@ export default function ThreePanels() {
           </SplitterPanel>
         </Splitter>
       </div>
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Button, TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Button, Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const paginas: TreeViewItem[] = [
@@ -20,15 +20,15 @@ export default function Controlled() {
   const [expandidos, setExpandidos] = useState<string[]>(['inicio'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
-      <div style={{ display: 'flex', gap: 8 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
+      <Stack gap={2} direction="horizontal">
         <Button size="sm" variant="outline" onClick={() => setExpandidos(pastas)}>
           Expandir tudo
         </Button>
         <Button size="sm" variant="ghost" onClick={() => setExpandidos([])}>
           Recolher tudo
         </Button>
-      </div>
+      </Stack>
       <TreeView
         aria-label="Mapa do site"
         items={paginas}
@@ -37,6 +37,6 @@ export default function Controlled() {
         selectionMode="none"
         defaultIcons={false}
       />
-    </div>
+    </Stack>
   )
 }

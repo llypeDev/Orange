@@ -42,13 +42,13 @@ export default function Basic() {
 size e shape do grupo valem para todos os avatares (e para o contador).
 
 ```tsx
-import { Avatar, AvatarGroup } from '@orangesys/ui'
+import { Avatar, AvatarGroup, Stack } from '@orangesys/ui'
 
 const team = ['Ana Souza', 'Bruno Lima', 'Carla Dias', 'Diego Alves', 'Elisa Prado']
 
 export default function SizesShapes() {
   return (
-    <div style={{ display: 'grid', gap: 20 }}>
+    <Stack gap={5}>
       <AvatarGroup label="Equipe de design" size="sm" max={3}>
         {team.map((name) => (
           <Avatar key={name} name={name} />
@@ -59,7 +59,7 @@ export default function SizesShapes() {
           <Avatar key={name} name={name} />
         ))}
       </AvatarGroup>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -69,21 +69,21 @@ export default function SizesShapes() {
 Quando só parte das pessoas foi carregada, total informa o número real e o contador mostra a diferença.
 
 ```tsx
-import { Avatar, AvatarGroup } from '@orangesys/ui'
+import { Avatar, AvatarGroup, Stack } from '@orangesys/ui'
 
 // A API devolveu só os 5 primeiros participantes, mas o evento tem 128.
 const firstPage = ['Lívia Martins', 'Pedro Henrique', 'Sofia Ramos', 'Gustavo Lima', 'Helena Duarte']
 
 export default function Total() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3} direction="horizontal" align="center">
       <AvatarGroup label="Participantes do webinar" total={128} size="sm" shape="circle">
         {firstPage.map((name) => (
           <Avatar key={name} name={name} />
         ))}
       </AvatarGroup>
       <span style={{ color: 'var(--or-color-text-muted)', fontSize: 'var(--or-text-sm)' }}>128 inscritos</span>
-    </div>
+    </Stack>
   )
 }
 ```

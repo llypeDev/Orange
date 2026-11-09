@@ -1,4 +1,4 @@
-import { Button, ProgressBar, VisuallyHidden } from '@orangesys/ui'
+import { Button, ProgressBar, Stack, VisuallyHidden } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const TOTAL_MB = 2.8
@@ -15,7 +15,7 @@ export default function Upload() {
   const sent = (((progress ?? 0) / 100) * TOTAL_MB).toFixed(1).replace('.', ',')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 480 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 480 }}>
       <ProgressBar
         label="Enviando 3 arquivos"
         value={progress ?? 0}
@@ -29,6 +29,6 @@ export default function Upload() {
           {progress === null ? 'Enviar arquivos' : 'Enviar novamente'}
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

@@ -89,11 +89,11 @@ export default function Attached() {
 `size`, `variant` e `disabled` são repassados aos filhos que não os definem. IconButton, ToggleButton, CopyButton e SplitButton leem o grupo em qualquer nível; `Button` recebe os valores quando é filho direto.
 
 ```tsx
-import { Button, ButtonGroup } from '@orangesys/ui'
+import { Button, ButtonGroup, Stack } from '@orangesys/ui'
 
 export default function GroupProps() {
   return (
-    <div style={{ display: 'grid', gap: 20, justifyItems: 'start' }}>
+    <Stack gap={5} align="start">
       {/* Todos os botões herdam size e variant do grupo… */}
       <ButtonGroup aria-label="Rodapé do formulário" size="sm" variant="outline">
         <Button>Cancelar</Button>
@@ -107,7 +107,7 @@ export default function GroupProps() {
         <Button>Mover</Button>
         <Button>Excluir</Button>
       </ButtonGroup>
-    </div>
+    </Stack>
   )
 }
 ```

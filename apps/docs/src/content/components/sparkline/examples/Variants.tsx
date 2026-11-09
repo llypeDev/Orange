@@ -1,10 +1,10 @@
-import { Sparkline } from '@orangesys/ui'
+import { Sparkline, Stack } from '@orangesys/ui'
 
 const visitas = [1820, 1764, 1953, 2018, 1889, 2146, 2213, 2198, 2324, 2411, 2302, 2559]
 
 export default function Variants() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center" wrap>
       <Sparkline data={visitas} label="Visitas subiram 41% em 12 semanas" />
       <Sparkline
         data={visitas}
@@ -21,6 +21,6 @@ export default function Variants() {
         area
         color="var(--or-color-viz-2)"
       />
-    </div>
+    </Stack>
   )
 }

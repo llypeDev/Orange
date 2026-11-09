@@ -1,8 +1,8 @@
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 export default function External() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <p style={{ margin: 0 }}>
         O padrão segue as{' '}
         <Link href="https://www.w3.org/WAI/ARIA/apg/" external>
@@ -13,6 +13,6 @@ export default function External() {
       <Link href="https://github.com/llypeDev/Orange" variant="standalone" external>
         Ver código no GitHub
       </Link>
-    </div>
+    </Stack>
   )
 }

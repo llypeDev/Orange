@@ -1,8 +1,8 @@
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 export default function Variants() {
   return (
-    <div style={{ display: 'grid', gap: 20, maxWidth: 560 }}>
+    <Stack gap={5} style={{ maxWidth: 560 }}>
       <p style={{ margin: 0 }}>
         Ao continuar, você concorda com a <Link href="#privacidade">política de privacidade</Link> e confirma que leu
         as <Link href="#regras">regras da comunidade</Link>.
@@ -20,6 +20,6 @@ export default function Variants() {
       <Link href="#planos" variant="standalone">
         Comparar todos os planos
       </Link>
-    </div>
+    </Stack>
   )
 }

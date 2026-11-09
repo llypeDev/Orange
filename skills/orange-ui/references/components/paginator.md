@@ -23,16 +23,16 @@ Divide listas e tabelas longas em páginas e permite navegar entre elas.
 Com 12 páginas, a primeira e a última ficam sempre visíveis; as demais viram reticências.
 
 ```tsx
-import { Paginator } from '@orangesys/ui'
+import { Paginator, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [page, setPage] = useState(6)
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Paginator totalPages={12} page={page} onPageChange={setPage} />
       <small style={{ color: 'var(--or-color-text-subtle)' }}>Exibindo resultados da página {page}</small>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -42,7 +42,7 @@ export default function Basic() {
 totalItems habilita o texto de intervalo; pageSizeOptions mostra um select nativo (com a lista no visual do Orange onde há select customizável). Ao trocar o tamanho, o primeiro item continua visível.
 
 ```tsx
-import { Paginator } from '@orangesys/ui'
+import { Paginator, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const customers = Array.from({ length: 87 }, (_, i) => ({
@@ -58,7 +58,7 @@ export default function WithTable() {
   const cell = { padding: '10px 12px', borderBottom: '1px solid var(--or-color-border)', textAlign: 'left' as const }
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
         <caption className="or-visually-hidden">Clientes</caption>
         <thead>
@@ -88,7 +88,7 @@ export default function WithTable() {
         pageSizeOptions={[5, 10, 25]}
         size="sm"
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -98,14 +98,14 @@ export default function WithTable() {
 "Página 3 de 12" entre anterior e próximo; o texto é anunciado quando muda.
 
 ```tsx
-import { Paginator } from '@orangesys/ui'
+import { Paginator, Stack } from '@orangesys/ui'
 
 export default function Compact() {
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <Paginator variant="compact" totalPages={12} defaultPage={3} aria-label="Paginação de pedidos" />
       <Paginator variant="compact" totalPages={48} defaultPage={1} showFirstLast size="sm" aria-label="Paginação de notificações" />
-    </div>
+    </Stack>
   )
 }
 ```

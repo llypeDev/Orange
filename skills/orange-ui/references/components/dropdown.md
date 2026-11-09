@@ -30,14 +30,14 @@ Menu de ações aberto por um botão, com itens, opções marcáveis, grupos e n
 Ícones, atalhos, item desabilitado e ação destrutiva. Experimente ↓, letras e Enter.
 
 ```tsx
-import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon } from '@orangesys/ui'
+import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Actions() {
   const [ultima, setUltima] = useState('nenhuma')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Dropdown
         trigger={
           <Button variant="outline" endIcon={<Icon name="chevron-down" />}>
@@ -64,7 +64,7 @@ export default function Actions() {
         </DropdownItem>
       </Dropdown>
       <span>Última ação: {ultima}</span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -81,7 +81,7 @@ import {
   DropdownRadioGroup,
   DropdownRadioItem,
   DropdownSeparator,
-  Icon,
+  Icon, Stack,
 } from '@orangesys/ui'
 import { useState } from 'react'
 
@@ -93,7 +93,7 @@ export default function Options() {
   const [ordem, setOrdem] = useState('recentes')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Dropdown
         trigger={
           <Button variant="outline" startIcon={<Icon name="sliders" />}>
@@ -119,7 +119,7 @@ export default function Options() {
           'só abertas'}
         , por {rotulos[ordem]}
       </span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -189,7 +189,7 @@ export default function RowActions() {
 Ao escolher um item, o foco volta ao gatilho antes da ação rodar — então o diálogo aberto por ela devolve o foco ao lugar certo.
 
 ```tsx
-import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
+import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function WithConfirm() {
@@ -197,7 +197,7 @@ export default function WithConfirm() {
   const [ativo, setAtivo] = useState(true)
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center">
       <span>Webhook de pedidos: {ativo ? 'ativo' : 'removido'}</span>
       {!ativo && (
         <Button variant="ghost" size="sm" onClick={() => setAtivo(true)}>
@@ -236,7 +236,7 @@ export default function WithConfirm() {
         confirmLabel="Remover webhook"
         onConfirm={() => setAtivo(false)}
       />
-    </div>
+    </Stack>
   )
 }
 ```

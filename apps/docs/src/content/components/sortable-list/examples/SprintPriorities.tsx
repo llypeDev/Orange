@@ -1,4 +1,4 @@
-import { SortableList } from '@orangesys/ui'
+import { SortableList, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Task {
@@ -25,7 +25,7 @@ export default function SprintPriorities() {
         items={tasks}
         onReorder={setTasks}
         renderItem={(task, { index }) => (
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+          <Stack gap={3} direction="horizontal" align="baseline">
             <span
               style={{
                 minWidth: '2ch',
@@ -39,7 +39,7 @@ export default function SprintPriorities() {
             </span>
             <span style={{ flex: 1, minWidth: 0 }}>{task.title}</span>
             <span style={{ color: 'var(--or-color-text-muted)', whiteSpace: 'nowrap' }}>{task.points} pts</span>
-          </div>
+          </Stack>
         )}
       />
     </div>

@@ -1,4 +1,4 @@
-import { Button, Icon, useConfirm } from '@orangesys/ui'
+import { Button, Icon, Stack, useConfirm } from '@orangesys/ui'
 import { useState } from 'react'
 
 const membrosIniciais = ['Ana Souza', 'Bruno Lima', 'Carla Mendes']
@@ -18,7 +18,7 @@ export default function UseConfirm() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%', maxWidth: 420 }}>
+    <Stack gap={2} style={{ width: '100%', maxWidth: 420 }}>
       {membros.map((nome) => (
         <div
           key={nome}
@@ -48,6 +48,6 @@ export default function UseConfirm() {
         </Button>
       )}
       {confirmDialog}
-    </div>
+    </Stack>
   )
 }

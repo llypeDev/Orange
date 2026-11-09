@@ -43,7 +43,7 @@ import {
   PageHeader,
   SideNav,
   SideNavGroup,
-  SideNavItem,
+  SideNavItem, Stack,
   Tag,
 } from '@orangesys/ui'
 
@@ -112,7 +112,7 @@ export default function Orders() {
         }
         asideLabel="Resumo do dia"
         aside={
-          <div style={{ display: 'grid', gap: 8 }}>
+          <Stack gap={2}>
             <p className="or-eyebrow" style={{ margin: 0 }}>
               Resumo do dia
             </p>
@@ -129,7 +129,7 @@ export default function Orders() {
             <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
               37 pedidos · 5 aguardando envio
             </p>
-          </div>
+          </Stack>
         }
       >
         <PageHeader
@@ -179,7 +179,7 @@ import {
   PageHeader,
   SideNav,
   SideNavItem,
-  SideNavSection,
+  SideNavSection, Stack,
 } from '@orangesys/ui'
 import { useState } from 'react'
 
@@ -187,7 +187,7 @@ export default function Collapsible() {
   // Controlado: guarde a preferência (ex.: no localStorage) e restaure na próxima visita.
   const [collapsed, setCollapsed] = useState(true)
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Barra lateral: <strong>{collapsed ? 'recolhida' : 'expandida'}</strong>
       </p>
@@ -234,7 +234,7 @@ export default function Collapsible() {
           />
         </AppShell>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

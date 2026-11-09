@@ -1,4 +1,4 @@
-import { DateTimePicker, Text, useLocale } from '@orangesys/ui'
+import { DateTimePicker, Stack, Text, useLocale } from '@orangesys/ui'
 import { useState } from 'react'
 
 const QUINZE_MINUTOS = 15 * 60 * 1000
@@ -11,7 +11,7 @@ export default function Publication() {
   const [publicacao, setPublicacao] = useState<Date | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateTimePicker
         label="Agendar publicação"
         description="Nos próximos 30 dias, de 15 em 15 minutos."
@@ -30,6 +30,6 @@ export default function Publication() {
             })}.`
           : 'Escolha quando o artigo vai ao ar.'}
       </Text>
-    </div>
+    </Stack>
   )
 }

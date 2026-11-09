@@ -1,4 +1,4 @@
-import { Button, PinInput } from '@orangesys/ui'
+import { Button, PinInput, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const CODIGO_CORRETO = '274913'
@@ -23,7 +23,7 @@ export default function Validation() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <PinInput
         label="Confirme o código"
         description={`Para testar, use ${CODIGO_CORRETO}.`}
@@ -53,6 +53,6 @@ export default function Validation() {
           Reenviar código
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

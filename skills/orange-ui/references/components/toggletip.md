@@ -22,7 +22,7 @@ Botão de informação que mostra uma explicação curta ao ser clicado e a anun
 Clique no ícone ou foque e pressione Enter. Escape ou clique fora fecham.
 
 ```tsx
-import { Toggletip } from '@orangesys/ui'
+import { Stack, Toggletip } from '@orangesys/ui'
 
 export default function Metric() {
   return (
@@ -35,13 +35,13 @@ export default function Metric() {
         minWidth: 240,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <Stack gap={1} direction="horizontal" align="center">
         <span className="or-eyebrow">Taxa de conversão</span>
         <Toggletip
           label="Sobre a taxa de conversão"
           content="Pedidos concluídos divididos pelo total de visitantes no período. Visitas de robôs são descartadas."
         />
-      </div>
+      </Stack>
       <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 32, lineHeight: 1.1 }}>
         3,8%
       </strong>
@@ -89,11 +89,11 @@ export default function InForm() {
 sm (24px, padrão) e md (32px); o ícone pode ser trocado.
 
 ```tsx
-import { Toggletip } from '@orangesys/ui'
+import { Stack, Toggletip } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+    <Stack gap={6} direction="horizontal" align="center">
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
         Pequeno (24px)
         <Toggletip
@@ -112,7 +112,7 @@ export default function Sizes() {
           content="Use ao lado de títulos ou em áreas de toque."
         />
       </span>
-    </div>
+    </Stack>
   )
 }
 ```

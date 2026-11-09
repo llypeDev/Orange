@@ -1,4 +1,4 @@
-import { Button, Picker, type PickerOption } from '@orangesys/ui'
+import { Button, Picker, Stack, type PickerOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const status: PickerOption[] = [
@@ -14,7 +14,7 @@ export default function Controlled() {
   const [aberta, setAberta] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <Picker
         label="Status da tarefa"
         options={status}
@@ -31,6 +31,6 @@ export default function Controlled() {
           Marcar como concluída
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

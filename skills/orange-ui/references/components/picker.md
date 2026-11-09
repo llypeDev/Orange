@@ -144,7 +144,7 @@ export default function Groups() {
 Valor com `value` / `onChange` e lista com `open` / `onOpenChange`. `onChange` recebe o valor (ou `null`).
 
 ```tsx
-import { Button, Picker, type PickerOption } from '@orangesys/ui'
+import { Button, Picker, Stack, type PickerOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const status: PickerOption[] = [
@@ -160,7 +160,7 @@ export default function Controlled() {
   const [aberta, setAberta] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <Picker
         label="Status da tarefa"
         options={status}
@@ -177,7 +177,7 @@ export default function Controlled() {
           Marcar como concluída
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -192,7 +192,7 @@ import {
   CodeBlock,
   Form,
   FormActions,
-  Picker,
+  Picker, Stack,
   TextField,
   type FormErrors,
   type FormValues,
@@ -250,7 +250,7 @@ export default function WithForm() {
   const [enviado, setEnviado] = useState<FormValues | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <Form aria-label="Novo projeto" validate={validate} onSubmit={setEnviado}>
         {({ errors }) => (
           <>
@@ -286,7 +286,7 @@ export default function WithForm() {
           code={JSON.stringify(enviado, null, 2)}
         />
       )}
-    </div>
+    </Stack>
   )
 }
 ```
@@ -294,7 +294,7 @@ export default function WithForm() {
 ### Tamanhos e estados
 
 ```tsx
-import { Picker } from '@orangesys/ui'
+import { Picker, Stack } from '@orangesys/ui'
 
 const prioridades = [
   { value: 'urgente', label: 'Urgente', icon: 'zap' },
@@ -305,7 +305,7 @@ const prioridades = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 380 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 380 }}>
       <Picker size="sm" label="Prioridade (sm)" options={prioridades} defaultValue="media" />
       <Picker label="Prioridade (md)" options={prioridades} defaultValue="alta" />
       <Picker size="lg" label="Prioridade (lg)" options={prioridades} defaultValue="urgente" />
@@ -316,7 +316,7 @@ export default function States() {
         error="Defina a prioridade antes de publicar."
       />
       <Picker label="Prioridade" options={prioridades} defaultValue="baixa" disabled />
-    </div>
+    </Stack>
   )
 }
 ```

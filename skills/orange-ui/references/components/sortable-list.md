@@ -35,7 +35,7 @@ Lista que o usuário reordena arrastando, pelo teclado ou com botões de mover �
 Lista controlada: items + onReorder. Arraste pela alça, use as setas no teclado ou os botões de mover. A numeração vem do index de renderItem e acompanha o arraste.
 
 ```tsx
-import { SortableList } from '@orangesys/ui'
+import { SortableList, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Task {
@@ -62,7 +62,7 @@ export default function SprintPriorities() {
         items={tasks}
         onReorder={setTasks}
         renderItem={(task, { index }) => (
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+          <Stack gap={3} direction="horizontal" align="baseline">
             <span
               style={{
                 minWidth: '2ch',
@@ -76,7 +76,7 @@ export default function SprintPriorities() {
             </span>
             <span style={{ flex: 1, minWidth: 0 }}>{task.title}</span>
             <span style={{ color: 'var(--or-color-text-muted)', whiteSpace: 'nowrap' }}>{task.points} pts</span>
-          </div>
+          </Stack>
         )}
       />
     </div>
@@ -141,7 +141,7 @@ export default function MenuCategories() {
 Não controlada (defaultItems). onReorder recebe { item, from, to } — útil para registrar a mudança. A primeira e a última etapa são automáticas e não se movem.
 
 ```tsx
-import { SortableList } from '@orangesys/ui'
+import { SortableList, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Step {
@@ -164,7 +164,7 @@ export default function ProcessSteps() {
   const [lastChange, setLastChange] = useState('Nenhuma alteração ainda.')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 520 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 520 }}>
       <SortableList
         label="Etapas do processo de pedido"
         defaultItems={steps}
@@ -173,7 +173,7 @@ export default function ProcessSteps() {
           setLastChange(`${item.name}: etapa ${from + 1} → etapa ${to + 1}`)
         }
         renderItem={(step, { index }) => (
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+          <Stack gap={3} direction="horizontal" align="baseline" justify="between">
             <span>
               <span style={{ color: 'var(--or-color-text-muted)' }}>Etapa {index + 1} · </span>
               {step.name}
@@ -181,13 +181,13 @@ export default function ProcessSteps() {
             <span style={{ fontSize: 'var(--or-text-xs)', color: 'var(--or-color-text-muted)', whiteSpace: 'nowrap' }}>
               {step.owner}
             </span>
-          </div>
+          </Stack>
         )}
       />
       <p style={{ margin: 0, fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Última alteração: {lastChange}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

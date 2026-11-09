@@ -1,8 +1,8 @@
-import { Icon, TextField } from '@orangesys/ui'
+import { Icon, Stack, TextField } from '@orangesys/ui'
 
 export default function Adornments() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField
         label="Buscar pedidos"
         type="search"
@@ -13,6 +13,6 @@ export default function Adornments() {
       <TextField label="Subdomínio" prefix="https://" suffix=".orange.app" defaultValue="minha-loja" />
       <TextField label="Peso do pacote" inputMode="decimal" suffix="kg" style={{ maxWidth: 200 }} />
       <TextField label="E-mail para contato" type="email" endIcon={<Icon name="mail" />} placeholder="contato@empresa.com" />
-    </div>
+    </Stack>
   )
 }

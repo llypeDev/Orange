@@ -1,8 +1,8 @@
-import { MonthPaginator } from '@orangesys/ui'
+import { MonthPaginator, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
+    <Stack gap={4} align="start">
       <MonthPaginator
         size="sm"
         monthFormat="short"
@@ -23,6 +23,6 @@ export default function Sizes() {
         defaultValue={{ year: 2026, month: 2 }}
         aria-label="Mês (desabilitado)"
       />
-    </div>
+    </Stack>
   )
 }

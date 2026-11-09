@@ -1,4 +1,4 @@
-import { FileUploader, type FileUploaderItem } from '@orangesys/ui'
+import { FileUploader, Stack, type FileUploaderItem } from '@orangesys/ui'
 
 const arquivo = (nome: string, bytes: number, tipo: string) => {
   const file = new File([''], nome, { type: tipo })
@@ -24,7 +24,7 @@ const enviados: FileUploaderItem[] = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 32, width: '100%' }}>
+    <Stack gap={8} style={{ width: '100%' }}>
       <FileUploader
         label="Documentos contábeis"
         description="PDF, até 5 MB cada."
@@ -42,6 +42,6 @@ export default function States() {
         description="Disponível após aprovar o pedido."
         disabled
       />
-    </div>
+    </Stack>
   )
 }

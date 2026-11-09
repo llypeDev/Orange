@@ -1,4 +1,4 @@
-import { Icon, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
+import { Icon, Stack, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Align = 'left' | 'center' | 'right'
@@ -7,7 +7,7 @@ export default function GroupSingle() {
   const [align, setAlign] = useState<Align>('left')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <ToggleButtonGroup
         selectionMode="single"
         aria-label="Alinhamento do parágrafo"
@@ -46,6 +46,6 @@ export default function GroupSingle() {
         A entrega do novo painel de métricas está prevista para a próxima sprint, depois da revisão
         de acessibilidade.
       </p>
-    </div>
+    </Stack>
   )
 }

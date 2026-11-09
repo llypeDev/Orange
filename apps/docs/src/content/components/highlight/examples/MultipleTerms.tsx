@@ -1,4 +1,4 @@
-import { Highlight } from '@orangesys/ui'
+import { Highlight, Stack } from '@orangesys/ui'
 
 const busca = 'nota fiscal cancelar'
 const termos = busca.split(/\s+/)
@@ -16,7 +16,7 @@ const artigos = [
 
 export default function MultipleTerms() {
   return (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 520 }}>
+    <Stack gap={4} style={{ maxWidth: 520 }}>
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }}>
         Resultados para <strong>“{busca}”</strong>
       </p>
@@ -30,6 +30,6 @@ export default function MultipleTerms() {
           </Highlight>
         </article>
       ))}
-    </div>
+    </Stack>
   )
 }

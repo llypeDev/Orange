@@ -39,15 +39,15 @@ Com `loaded`, o próprio Skeleton vira o contêiner da troca: recebe `aria-busy`
 text (uma linha), rect (imagens, gráficos, cartões) e circle (avatares).
 
 ```tsx
-import { Skeleton } from '@orangesys/ui'
+import { Skeleton, Stack } from '@orangesys/ui'
 
 export default function Variants() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <Skeleton variant="text" />
       <Skeleton variant="rect" height={96} />
       <Skeleton variant="circle" width={48} />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -57,14 +57,14 @@ export default function Variants() {
 SkeletonText repete linhas e encurta a última, como um texto real.
 
 ```tsx
-import { SkeletonText } from '@orangesys/ui'
+import { SkeletonText, Stack } from '@orangesys/ui'
 
 export default function Paragraph() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <SkeletonText lines={3} />
       <SkeletonText lines={5} lastLineWidth="35%" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -72,7 +72,7 @@ export default function Paragraph() {
 ### Cartão
 
 ```tsx
-import { Skeleton, SkeletonText } from '@orangesys/ui'
+import { Skeleton, SkeletonText, Stack } from '@orangesys/ui'
 
 export default function Card() {
   return (
@@ -86,13 +86,13 @@ export default function Card() {
       }}
     >
       <Skeleton variant="rect" height={160} />
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <Stack gap={3} direction="horizontal" align="center">
         <Skeleton variant="circle" width={40} />
         <div style={{ flex: 1 }}>
           <Skeleton width="60%" />
           <Skeleton width="35%" />
         </div>
-      </div>
+      </Stack>
       <SkeletonText lines={2} />
     </div>
   )
@@ -104,7 +104,7 @@ export default function Card() {
 Com loaded, o Skeleton envolve o conteúdo real e faz crossfade quando ele chega — sem "pulo". Clique em Recarregar perfil para repetir.
 
 ```tsx
-import { Button, Skeleton, SkeletonText } from '@orangesys/ui'
+import { Button, Skeleton, SkeletonText, Stack } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 export default function Swap() {
@@ -117,7 +117,7 @@ export default function Swap() {
   }, [loaded])
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <article
         style={{
           display: 'grid',
@@ -126,7 +126,7 @@ export default function Swap() {
           border: '1px solid var(--or-color-border)',
         }}
       >
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <Stack gap={3} direction="horizontal" align="center">
           {/* loaded: crossfade do placeholder para o conteúdo real */}
           <Skeleton variant="circle" width={40} loaded={loaded}>
             <span
@@ -151,7 +151,7 @@ export default function Swap() {
               Gerente de contas
             </span>
           </Skeleton>
-        </div>
+        </Stack>
         <SkeletonText lines={2} loaded={loaded}>
           <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
             Atende 42 clientes no Sudeste. Última visita: Padaria Pão Dourado, ontem às 15h.
@@ -163,7 +163,7 @@ export default function Swap() {
           Recarregar perfil
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

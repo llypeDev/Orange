@@ -44,14 +44,14 @@ export default function Address() {
 Desmarque a caixa para liberar o endereço de cobrança.
 
 ```tsx
-import { Checkbox, Fieldset, TextField } from '@orangesys/ui'
+import { Checkbox, Fieldset, Stack, TextField } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function DisabledGroup() {
   const [sameAddress, setSameAddress] = useState(true)
 
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 520 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 520 }}>
       <Checkbox
         label="Usar o endereço de entrega para a cobrança"
         checked={sameAddress}
@@ -61,7 +61,7 @@ export default function DisabledGroup() {
         <TextField label="CEP" inputMode="numeric" style={{ maxWidth: 180 }} />
         <TextField label="Rua e número" />
       </Fieldset>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -108,11 +108,11 @@ export default function GroupError() {
 `gap`: sm (12px), md (20px, padrão) e lg (32px).
 
 ```tsx
-import { Fieldset, RadioGroup, Switch, TextField } from '@orangesys/ui'
+import { Fieldset, RadioGroup, Stack, Switch, TextField } from '@orangesys/ui'
 
 export default function Sections() {
   return (
-    <div style={{ display: 'grid', gap: 40, width: '100%', maxWidth: 520 }}>
+    <Stack gap={10} style={{ width: '100%', maxWidth: 520 }}>
       <Fieldset legend="Dados da equipe" gap="sm">
         <TextField label="Nome da equipe" defaultValue="Design de produto" />
         <TextField label="Identificador" prefix="orange.app/" defaultValue="design" />
@@ -129,7 +129,7 @@ export default function Sections() {
         />
         <Switch label="Permitir convites de pessoas de fora" />
       </Fieldset>
-    </div>
+    </Stack>
   )
 }
 ```

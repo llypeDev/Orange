@@ -43,7 +43,7 @@ export default function Basic() {
 Com `range`, dois polegares definem mínimo e máximo; eles não se cruzam e respeitam `minDistance`. Clique no trilho para mover o polegar mais próximo.
 
 ```tsx
-import { Slider } from '@orangesys/ui'
+import { Slider, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const brl = (valor: number) =>
@@ -53,7 +53,7 @@ export default function Range() {
   const [faixa, setFaixa] = useState<[number, number]>([1500, 4500])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 420 }}>
       <Slider
         range
         label="Faixa de preço"
@@ -68,7 +68,7 @@ export default function Range() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         Mostrando notebooks entre {brl(faixa[0])} e {brl(faixa[1])}.
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -78,7 +78,7 @@ export default function Range() {
 Marcas com rótulo (clicáveis) ou `marks` para uma marca por passo.
 
 ```tsx
-import { Slider } from '@orangesys/ui'
+import { Slider, Stack } from '@orangesys/ui'
 
 const planos: Record<number, string> = {
   1: 'Individual',
@@ -89,7 +89,7 @@ const planos: Record<number, string> = {
 
 export default function Marks() {
   return (
-    <div style={{ display: 'grid', gap: 32, width: '100%', maxWidth: 420 }}>
+    <Stack gap={8} style={{ width: '100%', maxWidth: 420 }}>
       <Slider
         label="Pessoas na equipe"
         min={1}
@@ -119,7 +119,7 @@ export default function Marks() {
         marks
         formatValue={(v) => `${v}%`}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -127,11 +127,11 @@ export default function Marks() {
 ### Tamanhos e desabilitado
 
 ```tsx
-import { Slider } from '@orangesys/ui'
+import { Slider, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 420 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 420 }}>
       <Slider size="sm" label="Brilho (sm)" defaultValue={30} />
       <Slider size="md" label="Brilho (md)" defaultValue={55} />
       <Slider size="lg" label="Brilho (lg)" defaultValue={80} />
@@ -141,7 +141,7 @@ export default function Sizes() {
         defaultValue={50}
         disabled
       />
-    </div>
+    </Stack>
   )
 }
 ```

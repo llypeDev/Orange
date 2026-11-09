@@ -1,4 +1,4 @@
-import { Button, EmptyState } from '@orangesys/ui'
+import { Button, EmptyState, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Entrance() {
@@ -6,7 +6,7 @@ export default function Entrance() {
   const [round, setRound] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 16, justifyItems: 'center', width: '100%' }}>
+    <Stack gap={4} align="center" style={{ width: '100%' }}>
       <EmptyState
         key={round}
         icon="check-circle"
@@ -16,6 +16,6 @@ export default function Entrance() {
       <Button size="sm" variant="ghost" onClick={() => setRound((r) => r + 1)}>
         Repetir animação
       </Button>
-    </div>
+    </Stack>
   )
 }

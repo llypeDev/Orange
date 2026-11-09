@@ -25,7 +25,7 @@ Rótulo curto exibido ao passar o ponteiro ou focar um elemento — ideal para n
 Passe o ponteiro ou navegue com Tab. Depois do primeiro tooltip, os próximos abrem sem atraso.
 
 ```tsx
-import { Button, Icon, Tooltip, type IconName } from '@orangesys/ui'
+import { Button, Icon, Stack, Tooltip, type IconName } from '@orangesys/ui'
 
 const acoes: { icon: IconName; label: string; dica: string }[] = [
   { icon: 'edit', label: 'Editar', dica: 'Editar documento' },
@@ -36,13 +36,13 @@ const acoes: { icon: IconName; label: string; dica: string }[] = [
 
 export default function Toolbar() {
   return (
-    <div role="toolbar" aria-label="Ações do documento" style={{ display: 'flex', gap: 4 }}>
+    <Stack role="toolbar" aria-label="Ações do documento" gap={1} direction="horizontal">
       {acoes.map(({ icon, label, dica }) => (
         <Tooltip key={icon} content={dica}>
           <Button variant="ghost" iconOnly aria-label={label} startIcon={<Icon name={icon} />} />
         </Tooltip>
       ))}
-    </div>
+    </Stack>
   )
 }
 ```

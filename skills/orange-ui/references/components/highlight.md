@@ -22,7 +22,7 @@ Destaca termos de busca dentro de um texto com <mark>, sem diferenciar acentos n
 Digite "sao", "SÃO" ou "ribeirao": acentos e maiúsculas são ignorados.
 
 ```tsx
-import { Field, Highlight } from '@orangesys/ui'
+import { Field, Highlight, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const cidades = ['São Paulo', 'São José dos Campos', 'Santos', 'Ribeirão Preto', 'Campinas', 'Sorocaba', 'Jundiaí']
@@ -34,7 +34,7 @@ export default function SearchList() {
   const resultados = cidades.filter((cidade) => semAcento(cidade).includes(semAcento(busca.trim())))
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <Field label="Cidade de entrega" controlId="busca-cidade">
         <input
           id="busca-cidade"
@@ -51,7 +51,7 @@ export default function SearchList() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -61,7 +61,7 @@ export default function SearchList() {
 Ocorrências sobrepostas ou vizinhas são unidas em um único destaque.
 
 ```tsx
-import { Highlight } from '@orangesys/ui'
+import { Highlight, Stack } from '@orangesys/ui'
 
 const busca = 'nota fiscal cancelar'
 const termos = busca.split(/\s+/)
@@ -79,7 +79,7 @@ const artigos = [
 
 export default function MultipleTerms() {
   return (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 520 }}>
+    <Stack gap={4} style={{ maxWidth: 520 }}>
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }}>
         Resultados para <strong>“{busca}”</strong>
       </p>
@@ -93,7 +93,7 @@ export default function MultipleTerms() {
           </Highlight>
         </article>
       ))}
-    </div>
+    </Stack>
   )
 }
 ```
@@ -103,11 +103,11 @@ export default function MultipleTerms() {
 Caracteres especiais como ( ) $ * são tratados como texto. caseSensitive diferencia "API" de "rápida".
 
 ```tsx
-import { Highlight } from '@orangesys/ui'
+import { Highlight, Stack } from '@orangesys/ui'
 
 export default function Literal() {
   return (
-    <div style={{ display: 'grid', gap: 8, maxWidth: 520 }}>
+    <Stack gap={2} style={{ maxWidth: 520 }}>
       <Highlight as="p" query="(R$ 49,90)" style={{ margin: 0 }}>
         Plano Essencial (R$ 49,90) por mês, com até 5 usuários.
       </Highlight>
@@ -117,7 +117,7 @@ export default function Literal() {
       <Highlight as="p" query="API" caseSensitive style={{ margin: 0 }}>
         A API pública tem limite de 100 requisições por minuto; a rápida integração usa a mesma chave.
       </Highlight>
-    </div>
+    </Stack>
   )
 }
 ```

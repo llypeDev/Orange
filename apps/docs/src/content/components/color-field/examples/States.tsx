@@ -1,8 +1,8 @@
-import { ColorField } from '@orangesys/ui'
+import { ColorField, Stack } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+    <Stack gap={6} direction="horizontal" wrap>
       <ColorField
         label="Cor de destaque"
         optional
@@ -15,6 +15,6 @@ export default function States() {
         error="Contraste insuficiente com o fundo claro."
       />
       <ColorField label="Cor do tema" defaultValue="#0f0f12" disabled size="sm" />
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { NumberField, Text } from '@orangesys/ui'
+import { NumberField, Stack, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 const unitPrice = 39.9
@@ -9,7 +9,7 @@ export default function Controlled() {
   const total = (quantity ?? 0) * unitPrice
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 280 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField
         label="Camisetas (R$ 39,90 cada)"
         value={quantity}
@@ -21,6 +21,6 @@ export default function Controlled() {
       <Text size="sm" tone="muted" aria-live="polite">
         Total: <strong>{brl.format(total)}</strong>
       </Text>
-    </div>
+    </Stack>
   )
 }

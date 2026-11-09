@@ -1,8 +1,8 @@
-import { Button, Icon, Popover } from '@orangesys/ui'
+import { Button, Icon, Popover, Stack } from '@orangesys/ui'
 
 export default function Help() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+    <Stack gap={1} direction="horizontal" align="center">
       <span>Plano Pro</span>
       <Popover
         aria-label="Sobre o plano Pro"
@@ -23,6 +23,6 @@ export default function Help() {
         </p>
         <a href="#comparar-planos">Comparar planos</a>
       </Popover>
-    </div>
+    </Stack>
   )
 }

@@ -74,14 +74,14 @@ export default function WithIcons() {
 Use `pressed` e `onPressedChange`.
 
 ```tsx
-import { Icon, ToggleButton } from '@orangesys/ui'
+import { Icon, Stack, ToggleButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {
   const [watching, setWatching] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <ToggleButton
         pressed={watching}
         onPressedChange={setWatching}
@@ -94,7 +94,7 @@ export default function Controlled() {
           ? 'Você receberá um e-mail a cada mudança de status do pedido #48213.'
           : 'Ative para receber atualizações do pedido #48213 por e-mail.'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -104,14 +104,14 @@ export default function Controlled() {
 Com `selectionMode="multiple"`, o valor é um array com os botões pressionados.
 
 ```tsx
-import { ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
+import { Stack, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function GroupMultiple() {
   const [modes, setModes] = useState<string[]>(['remote', 'hybrid'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <ToggleButtonGroup
         selectionMode="multiple"
         aria-label="Modalidade de trabalho"
@@ -127,7 +127,7 @@ export default function GroupMultiple() {
           ? 'Mostrando vagas de todas as modalidades.'
           : `${modes.length} filtro(s) de modalidade ativo(s).`}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -137,7 +137,7 @@ export default function GroupMultiple() {
 Com `selectionMode="single"`, clicar no botão pressionado o solta (`onChange(null)`). Para manter sempre um ativo, ignore o `null` no modo controlado.
 
 ```tsx
-import { Icon, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
+import { Icon, Stack, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Align = 'left' | 'center' | 'right'
@@ -146,7 +146,7 @@ export default function GroupSingle() {
   const [align, setAlign] = useState<Align>('left')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <ToggleButtonGroup
         selectionMode="single"
         aria-label="Alinhamento do parágrafo"
@@ -185,7 +185,7 @@ export default function GroupSingle() {
         A entrega do novo painel de métricas está prevista para a próxima sprint, depois da revisão
         de acessibilidade.
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

@@ -31,7 +31,7 @@ Tour guiado com spotlight: apresenta novidades passo a passo, destacando cada el
 Quatro passos sobre um painel fictício. Os alvos são refs de elementos do próprio exemplo; o recorte desliza de um para o outro.
 
 ```tsx
-import { Badge, Button, Icon, SegmentedControl, Stat, StatGroup, Tour, type TourStep } from '@orangesys/ui'
+import { Badge, Button, Icon, SegmentedControl, Stack, Stat, StatGroup, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function PainelPedidos() {
@@ -69,7 +69,7 @@ export default function PainelPedidos() {
   ]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <div>
         <Button startIcon={<Icon name="sparkle" />} onClick={() => setAberto(true)}>
           Conheça o novo painel de pedidos
@@ -86,8 +86,8 @@ export default function PainelPedidos() {
           background: 'var(--or-color-surface)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Stack gap={3} direction="horizontal" align="center" justify="between" wrap>
+          <Stack gap={3} direction="horizontal" align="center">
             <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 'var(--or-text-lg)' }}>Pedidos</strong>
             <span
               ref={aoVivoRef}
@@ -97,11 +97,11 @@ export default function PainelPedidos() {
               <Badge dot pulse tone="success" />
               Ao vivo
             </span>
-          </div>
+          </Stack>
           <Button ref={exportarRef} variant="outline" size="sm" startIcon={<Icon name="download" />}>
             Exportar
           </Button>
-        </div>
+        </Stack>
 
         <div ref={filtrosRef} style={{ justifySelf: 'start', maxWidth: '100%' }}>
           <SegmentedControl
@@ -126,7 +126,7 @@ export default function PainelPedidos() {
       </section>
 
       <Tour label="Novidades do painel" steps={passos} open={aberto} onOpenChange={setAberto} />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -206,7 +206,7 @@ export default function Anuncio() {
 `open` e `step` controlados: o tour começa por um botão (ou direto num passo) e os eventos `onStepChange`, `onFinish` e `onSkip` alimentam o estado da página.
 
 ```tsx
-import { Button, Icon, Search, Tour, type TourStep } from '@orangesys/ui'
+import { Button, Icon, Search, Stack, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlado() {
@@ -242,7 +242,7 @@ export default function Controlado() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -265,14 +265,14 @@ export default function Controlado() {
         </Button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <Stack gap={2} direction="horizontal" align="center" wrap>
         <Button variant="secondary" onClick={() => iniciar(0)}>
           Começar tour
         </Button>
         <Button variant="ghost" onClick={() => iniciar(2)}>
           Ir direto para “Ajuda”
         </Button>
-      </div>
+      </Stack>
       <p style={{ margin: 0, fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Último evento: {evento}
       </p>
@@ -290,7 +290,7 @@ export default function Controlado() {
         onFinish={() => setEvento('Tour concluído.')}
         onSkip={(atual) => setEvento(`Tour pulado no passo ${atual + 1}.`)}
       />
-    </div>
+    </Stack>
   )
 }
 ```

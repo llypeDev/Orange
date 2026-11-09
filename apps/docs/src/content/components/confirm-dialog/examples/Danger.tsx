@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@orangesys/ui'
+import { Button, ConfirmDialog, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Danger() {
@@ -6,12 +6,12 @@ export default function Danger() {
 
   if (excluido) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <Stack gap={4} direction="horizontal" align="center">
         <span>Projeto excluído.</span>
         <Button variant="ghost" onClick={() => setExcluido(false)}>
           Desfazer
         </Button>
-      </div>
+      </Stack>
     )
   }
 

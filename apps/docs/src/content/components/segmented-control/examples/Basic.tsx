@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const labels: Record<string, string> = {
@@ -12,7 +12,7 @@ export default function Basic() {
   const [period, setPeriod] = useState('week')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <SegmentedControl
         label="Período do relatório"
         value={period}
@@ -27,6 +27,6 @@ export default function Basic() {
       <p style={{ margin: 0, fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Exibindo vendas {labels[period]}.
       </p>
-    </div>
+    </Stack>
   )
 }

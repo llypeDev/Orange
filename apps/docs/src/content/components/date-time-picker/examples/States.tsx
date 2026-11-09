@@ -1,8 +1,8 @@
-import { DateTimePicker } from '@orangesys/ui'
+import { DateTimePicker, Stack } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <DateTimePicker
         label="Abertura das inscrições"
         description="Definida pela coordenação."
@@ -15,6 +15,6 @@ export default function States() {
         error="O encerramento deve ser depois da abertura."
       />
       <DateTimePicker label="Divulgação do resultado" size="sm" disabled />
-    </div>
+    </Stack>
   )
 }

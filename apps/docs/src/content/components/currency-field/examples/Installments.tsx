@@ -1,4 +1,4 @@
-import { CurrencyField, Select } from '@orangesys/ui'
+import { CurrencyField, Select, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -9,7 +9,7 @@ export default function Installments() {
   const valorParcela = total ? total / Number(parcelas) : 0
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 360 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 360 }}>
       <CurrencyField label="Valor total" value={total} onChange={setTotal} min={0} />
       <Select
         label="Parcelas"
@@ -26,6 +26,6 @@ export default function Installments() {
       >
         {total ? `${parcelas}x de ${brl.format(valorParcela)}` : 'Informe o valor total'}
       </p>
-    </div>
+    </Stack>
   )
 }

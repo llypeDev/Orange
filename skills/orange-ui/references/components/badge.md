@@ -49,14 +49,14 @@ export default function Overlay() {
 O badge surge com um pop, salta quando a contagem muda e encolhe ao zerar. pulse liga o anel "ao vivo" no ponto.
 
 ```tsx
-import { Badge, Button, Icon } from '@orangesys/ui'
+import { Badge, Button, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function LiveCount() {
   const [unread, setUnread] = useState(2)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Badge count={unread} label={`${unread} notificações não lidas`}>
         <Button variant="outline" iconOnly aria-label="Notificações" startIcon={<Icon name="bell" />} />
       </Badge>
@@ -70,7 +70,7 @@ export default function LiveCount() {
         <Badge dot pulse tone="danger" label="Transmissão ao vivo" />
         <span style={{ fontSize: 'var(--or-text-sm)' }}>Ao vivo · 128 assistindo</span>
       </span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -157,29 +157,29 @@ export default function OnAvatar() {
 accent (padrão), neutral, success, warning, danger e info, nos tamanhos md e sm. Pontos sem label são decorativos.
 
 ```tsx
-import { Badge } from '@orangesys/ui'
+import { Badge, Stack } from '@orangesys/ui'
 
 const tones = ['accent', 'neutral', 'success', 'warning', 'danger', 'info'] as const
 
 export default function Tones() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={4}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         {tones.map((tone) => (
           <Badge key={tone} tone={tone} count={8} />
         ))}
         <Badge count={1500} />
         <Badge count={42} max={9} />
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+      </Stack>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         {tones.map((tone) => (
           <Badge key={tone} tone={tone} count={8} size="sm" />
         ))}
         {tones.map((tone) => (
           <Badge key={`dot-${tone}`} tone={tone} dot />
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```

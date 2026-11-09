@@ -1,4 +1,4 @@
-import { HoverCard } from '@orangesys/ui'
+import { HoverCard, Stack } from '@orangesys/ui'
 
 const pessoas = [
   { usuario: 'bruno', nome: 'Bruno Lima', cargo: 'Engenharia · Plataforma', status: 'Disponível' },
@@ -16,13 +16,13 @@ export default function Mentions() {
             closeDelay={200}
             trigger={<a href={`#${pessoa.usuario}`}>@{pessoa.usuario}</a>}
           >
-            <div style={{ display: 'grid', gap: 4 }}>
+            <Stack gap={1}>
               <strong style={{ fontFamily: 'var(--or-font-display)' }}>{pessoa.nome}</strong>
               <span style={{ color: 'var(--or-color-text-muted)' }}>{pessoa.cargo}</span>
               <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
                 {pessoa.status}
               </span>
-            </div>
+            </Stack>
           </HoverCard>
         </span>
       ))}{' '}

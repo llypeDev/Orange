@@ -89,7 +89,7 @@ export default function MacSymbols() {
 pressed aceita true ou uma lista de teclas. Clique no campo e pressione Shift + N: cada tecla afunda enquanto está pressionada.
 
 ```tsx
-import { Kbd } from '@orangesys/ui'
+import { Kbd, Stack } from '@orangesys/ui'
 import { useState, type KeyboardEvent } from 'react'
 
 export default function Pressed() {
@@ -99,7 +99,7 @@ export default function Pressed() {
   const done = down.includes('shift') && down.includes('n')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 420 }}>
       <input
         readOnly
         aria-label="Campo de treino de atalho"
@@ -114,17 +114,17 @@ export default function Pressed() {
           color: 'var(--or-color-text)',
         }}
       />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Stack gap={3} direction="horizontal" align="center">
         <Kbd keys={['Shift', 'N']} pressed={down} />
         <span role="status" style={{ fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-subtle)' }}>
           {done ? 'Novo pedido criado!' : 'Novo pedido'}
         </span>
-      </div>
+      </Stack>
       <p style={{ margin: 0, display: 'flex', gap: 12, alignItems: 'center' }}>
         <Kbd pressed>Esc</Kbd>
         <span style={{ fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-subtle)' }}>pressed fixo</span>
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -134,7 +134,7 @@ export default function Pressed() {
 Uma tabela de atalhos que alterna entre Windows/Linux e macOS com o mesmo array de teclas.
 
 ```tsx
-import { Chip, ChipGroup, Kbd, Table, type TableColumn } from '@orangesys/ui'
+import { Chip, ChipGroup, Kbd, Stack, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Shortcut {
@@ -169,13 +169,13 @@ export default function ShortcutList() {
   ]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 520 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 520 }}>
       <ChipGroup selectionMode="single" label="Sistema" value={platform} onChange={(v) => v && setPlatform(v)} size="sm">
         <Chip value="windows">Windows e Linux</Chip>
         <Chip value="mac">macOS</Chip>
       </ChipGroup>
       <Table caption="Atalhos de teclado" hideCaption columns={columns} data={shortcuts} density="compact" />
-    </div>
+    </Stack>
   )
 }
 ```

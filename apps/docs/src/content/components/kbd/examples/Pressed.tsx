@@ -1,4 +1,4 @@
-import { Kbd } from '@orangesys/ui'
+import { Kbd, Stack } from '@orangesys/ui'
 import { useState, type KeyboardEvent } from 'react'
 
 export default function Pressed() {
@@ -8,7 +8,7 @@ export default function Pressed() {
   const done = down.includes('shift') && down.includes('n')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 420 }}>
       <input
         readOnly
         aria-label="Campo de treino de atalho"
@@ -23,16 +23,16 @@ export default function Pressed() {
           color: 'var(--or-color-text)',
         }}
       />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Stack gap={3} direction="horizontal" align="center">
         <Kbd keys={['Shift', 'N']} pressed={down} />
         <span role="status" style={{ fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-subtle)' }}>
           {done ? 'Novo pedido criado!' : 'Novo pedido'}
         </span>
-      </div>
+      </Stack>
       <p style={{ margin: 0, display: 'flex', gap: 12, alignItems: 'center' }}>
         <Kbd pressed>Esc</Kbd>
         <span style={{ fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-subtle)' }}>pressed fixo</span>
       </p>
-    </div>
+    </Stack>
   )
 }

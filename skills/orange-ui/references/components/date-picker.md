@@ -83,7 +83,7 @@ export default function Restrictions() {
 Dois campos controlados: o check-out só libera depois do check-in e começa no dia seguinte.
 
 ```tsx
-import { DatePicker, Text } from '@orangesys/ui'
+import { DatePicker, Stack, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -95,8 +95,8 @@ export default function Booking() {
   const noites = entrada && saida ? Math.round((saida.getTime() - entrada.getTime()) / DIA) : 0
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+    <Stack gap={4}>
+      <Stack gap={4} direction="horizontal" wrap>
         <DatePicker
           label="Check-in"
           value={entrada}
@@ -113,13 +113,13 @@ export default function Booking() {
           disabled={!entrada}
           onChange={setSaida}
         />
-      </div>
+      </Stack>
       <Text size="sm" tone="muted" aria-live="polite">
         {noites > 0
           ? `${noites} ${noites === 1 ? 'noite' : 'noites'} de hospedagem`
           : 'Escolha as datas da estadia.'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -164,7 +164,7 @@ export default function Validation() {
 A grade também é exportada como Calendar para agendas e painéis — com a mesma navegação por teclado.
 
 ```tsx
-import { Calendar, Text, useLocale } from '@orangesys/ui'
+import { Calendar, Stack, Text, useLocale } from '@orangesys/ui'
 import { useState } from 'react'
 
 const hoje = new Date()
@@ -186,7 +186,7 @@ export default function Agenda() {
   const doDia = dia ? (eventos[dia.toDateString()] ?? []) : []
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+    <Stack gap={8} direction="horizontal" align="start" wrap>
       <Calendar value={dia} onChange={setDia} weekStartsOn={1} showTodayButton />
       <div style={{ minWidth: 220 }}>
         <p className="or-eyebrow">
@@ -204,7 +204,7 @@ export default function Agenda() {
           </Text>
         )}
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

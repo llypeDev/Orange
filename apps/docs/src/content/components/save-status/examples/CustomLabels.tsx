@@ -1,10 +1,10 @@
-import { SaveStatus } from '@orangesys/ui'
+import { SaveStatus, Stack } from '@orangesys/ui'
 
 const salvoEm = new Date(Date.now() - 5 * 60_000)
 
 export default function CustomLabels() {
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SaveStatus
         status="saved"
         savedAt={salvoEm}
@@ -15,6 +15,6 @@ export default function CustomLabels() {
         onRetry={() => {}}
         labels={{ error: 'Sem conexão', retry: 'Reconectar' }}
       />
-    </div>
+    </Stack>
   )
 }

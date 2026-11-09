@@ -54,11 +54,11 @@ export default function WithSource() {
 sm (13px), md (15px, padrão) e lg (17px) — a mesma escala do Prose.
 
 ```tsx
-import { Blockquote } from '@orangesys/ui'
+import { Blockquote, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 32, maxWidth: 560 }}>
+    <Stack gap={8} style={{ maxWidth: 560 }}>
       <Blockquote size="sm" source="Equipe de Suporte">
         Responda primeiro o que a pessoa perguntou; o contexto vem depois.
       </Blockquote>
@@ -75,7 +75,7 @@ export default function Sizes() {
       >
         Levamos uma tarde para importar dois anos de pedidos.
       </Blockquote>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -85,11 +85,11 @@ export default function Sizes() {
 as="div": o mesmo visual, sem a semântica de citação.
 
 ```tsx
-import { Blockquote, Text } from '@orangesys/ui'
+import { Blockquote, Stack, Text } from '@orangesys/ui'
 
 export default function InsetText() {
   return (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 560 }}>
+    <Stack gap={4} style={{ maxWidth: 560 }}>
       <Text>Você pode emitir notas fiscais a qualquer hora pelo painel ou pela API.</Text>
       {/* Não é citação de outra fonte: as="div", sem cite. */}
       <Blockquote as="div">
@@ -97,7 +97,7 @@ export default function InsetText() {
         programada.
       </Blockquote>
       <Text>Notas emitidas antes da manutenção continuam válidas.</Text>
-    </div>
+    </Stack>
   )
 }
 ```

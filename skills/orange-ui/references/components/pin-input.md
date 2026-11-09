@@ -22,14 +22,14 @@ Campos de um caractere para códigos de verificação (OTP) e PINs, com colar e 
 O foco avança sozinho; colar o código inteiro em qualquer campo distribui os dígitos.
 
 ```tsx
-import { PinInput } from '@orangesys/ui'
+import { PinInput, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [status, setStatus] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <PinInput
         label="Código de verificação"
         description="Enviamos um código de 6 dígitos por SMS para (11) •••••-4821."
@@ -39,7 +39,7 @@ export default function Basic() {
       <p role="status" style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         {status}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -49,11 +49,11 @@ export default function Basic() {
 `mask` oculta os caracteres; `groupSize` separa visualmente em blocos.
 
 ```tsx
-import { PinInput } from '@orangesys/ui'
+import { PinInput, Stack } from '@orangesys/ui'
 
 export default function Masked() {
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <PinInput
         label="Senha do cartão"
         description="4 dígitos. Os números ficam ocultos."
@@ -61,7 +61,7 @@ export default function Masked() {
         mask
       />
       <PinInput label="Código do autenticador" length={6} groupSize={3} placeholder="·" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -90,7 +90,7 @@ export default function Alphanumeric() {
 ### Validação e tentativas
 
 ```tsx
-import { Button, PinInput } from '@orangesys/ui'
+import { Button, PinInput, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const CODIGO_CORRETO = '274913'
@@ -115,7 +115,7 @@ export default function Validation() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <PinInput
         label="Confirme o código"
         description={`Para testar, use ${CODIGO_CORRETO}.`}
@@ -145,7 +145,7 @@ export default function Validation() {
           Reenviar código
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

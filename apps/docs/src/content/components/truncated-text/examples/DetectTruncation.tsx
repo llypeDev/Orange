@@ -1,4 +1,4 @@
-import { TruncatedText } from '@orangesys/ui'
+import { Stack, TruncatedText } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function DetectTruncation() {
@@ -6,7 +6,7 @@ export default function DetectTruncation() {
   const [cortado, setCortado] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 420 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 420 }}>
       <label style={{ display: 'grid', gap: 4, fontSize: 14 }}>
         Largura do contêiner: {largura}px
         <input type="range" min={120} max={420} value={largura} onChange={(e) => setLargura(Number(e.target.value))} />
@@ -17,6 +17,6 @@ export default function DetectTruncation() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }} aria-live="polite">
         {cortado ? 'O texto está cortado.' : 'O texto cabe inteiro.'}
       </p>
-    </div>
+    </Stack>
   )
 }

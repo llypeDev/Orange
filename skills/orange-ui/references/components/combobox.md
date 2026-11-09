@@ -132,7 +132,7 @@ export default function Async() {
 Com `value` e `onChange`, o valor pode ser alterado de fora. Opções podem ser desabilitadas.
 
 ```tsx
-import { Button, Combobox, type ComboboxOption } from '@orangesys/ui'
+import { Button, Combobox, Stack, type ComboboxOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const fusos: ComboboxOption[] = [
@@ -148,7 +148,7 @@ export default function Controlled() {
   const [fuso, setFuso] = useState<string | null>('America/Sao_Paulo')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 380 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 380 }}>
       <Combobox
         label="Fuso horário"
         options={fusos}
@@ -167,7 +167,7 @@ export default function Controlled() {
           Usar fuso do navegador
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -175,7 +175,7 @@ export default function Controlled() {
 ### Tamanhos e estados
 
 ```tsx
-import { Combobox } from '@orangesys/ui'
+import { Combobox, Stack } from '@orangesys/ui'
 
 const bancos = [
   { value: '001', label: '001 — Banco do Brasil' },
@@ -188,7 +188,7 @@ const bancos = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 380 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 380 }}>
       <Combobox size="sm" label="Banco (sm)" options={bancos} placeholder="Código ou nome" />
       <Combobox
         label="Banco"
@@ -204,7 +204,7 @@ export default function States() {
         defaultValue="341"
         disabled
       />
-    </div>
+    </Stack>
   )
 }
 ```

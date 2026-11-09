@@ -22,7 +22,7 @@
 Seleção única. Clicar numa pasta a expande; onAction dispara com Enter ou clique — aqui, "abre" o arquivo.
 
 ```tsx
-import { TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const arquivos: TreeViewItem[] = [
@@ -53,7 +53,7 @@ export default function FileExplorer() {
 
   return (
     // Árvore (220–280px) e painel lado a lado; sem espaço para os dois, o painel desce.
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 24, width: '100%' }}>
+    <Stack gap={6} direction="horizontal" align="start" wrap style={{ width: '100%' }}>
       <TreeView
         style={{ flex: '1 1 220px', maxWidth: 280 }}
         aria-label="Arquivos do projeto"
@@ -67,7 +67,7 @@ export default function FileExplorer() {
       <p style={{ flex: '1 1 200px', margin: 0, color: 'var(--or-color-text-muted)' }}>
         Arquivo aberto: <strong style={{ color: 'var(--or-color-text)' }}>{aberto}</strong>
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -77,7 +77,7 @@ export default function FileExplorer() {
 Espaço alterna o item focado, Shift + ↑/↓ estende a seleção e Ctrl + A seleciona tudo. Itens desabilitados recebem foco, mas não seleção.
 
 ```tsx
-import { TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const pastas: TreeViewItem[] = [
@@ -106,7 +106,7 @@ export default function MultipleSelection() {
   const [selecionadas, setSelecionadas] = useState<string[]>(['notas', 'campanhas'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <p id="sync-label" style={{ margin: 0, fontWeight: 600 }}>
         Pastas sincronizadas no computador
       </p>
@@ -122,7 +122,7 @@ export default function MultipleSelection() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }}>
         {selecionadas.length} {selecionadas.length === 1 ? 'pasta selecionada' : 'pastas selecionadas'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -132,7 +132,7 @@ export default function MultipleSelection() {
 expanded + onExpandedChange permitem ações externas como "Expandir tudo". selectionMode="none" deixa a árvore só para navegação.
 
 ```tsx
-import { Button, TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Button, Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const paginas: TreeViewItem[] = [
@@ -154,15 +154,15 @@ export default function Controlled() {
   const [expandidos, setExpandidos] = useState<string[]>(['inicio'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
-      <div style={{ display: 'flex', gap: 8 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
+      <Stack gap={2} direction="horizontal">
         <Button size="sm" variant="outline" onClick={() => setExpandidos(pastas)}>
           Expandir tudo
         </Button>
         <Button size="sm" variant="ghost" onClick={() => setExpandidos([])}>
           Recolher tudo
         </Button>
-      </div>
+      </Stack>
       <TreeView
         aria-label="Mapa do site"
         items={paginas}
@@ -171,7 +171,7 @@ export default function Controlled() {
         selectionMode="none"
         defaultIcons={false}
       />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -1,8 +1,8 @@
-import { Toggletip } from '@orangesys/ui'
+import { Stack, Toggletip } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+    <Stack gap={6} direction="horizontal" align="center">
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
         Pequeno (24px)
         <Toggletip
@@ -21,6 +21,6 @@ export default function Sizes() {
           content="Use ao lado de títulos ou em áreas de toque."
         />
       </span>
-    </div>
+    </Stack>
   )
 }

@@ -1,8 +1,8 @@
-import { List, ListItem } from '@orangesys/ui'
+import { List, ListItem, Stack } from '@orangesys/ui'
 
 export default function Inline() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <List variant="inline" size="sm" aria-label="Detalhes do arquivo" style={{ color: 'var(--or-color-text-muted)' }}>
         <ListItem>PDF</ListItem>
         <ListItem>2,4 MB</ListItem>
@@ -21,6 +21,6 @@ export default function Inline() {
           </ListItem>
         </List>
       </nav>
-    </div>
+    </Stack>
   )
 }

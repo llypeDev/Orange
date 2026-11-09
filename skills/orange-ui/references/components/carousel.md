@@ -94,7 +94,7 @@ export default function Onboarding() {
 slidesPerView responsivo ({ base: 1.4, sm: 2.4, lg: 3.2 }) deixa o próximo produto espiando. Controles no topo com contador. Arraste no toque ou use as setas e o seletor.
 
 ```tsx
-import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orangesys/ui'
+import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Stack, Text } from '@orangesys/ui'
 import bone from './media/bone.svg'
 import caneca from './media/caneca.svg'
 import fone from './media/fone.svg'
@@ -117,7 +117,7 @@ const products = [
 
 export default function ProductRail() {
   return (
-    <div style={{ display: 'grid', gap: 12, minWidth: 0 }}>
+    <Stack gap={3} style={{ minWidth: 0 }}>
       <Heading level={4} size="lg">
         Mais vendidos da semana
       </Heading>
@@ -145,7 +145,7 @@ export default function ProductRail() {
           </CarouselSlide>
         ))}
       </Carousel>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -219,7 +219,7 @@ index + onIndexChange: as miniaturas e o carrossel compartilham a mesma posiçã
 
 ```tsx
 import { useState } from 'react'
-import { Carousel, CarouselSlide, Image, Text } from '@orangesys/ui'
+import { Carousel, CarouselSlide, Image, Stack, Text } from '@orangesys/ui'
 import fone from './media/fone.svg'
 import garrafa from './media/garrafa.svg'
 import mochila from './media/mochila.svg'
@@ -237,7 +237,7 @@ export default function Gallery() {
   const [index, setIndex] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 360, width: '100%' }}>
+    <Stack gap={3} style={{ maxWidth: 360, width: '100%' }}>
       <Carousel label="Fotos do produto" index={index} onIndexChange={setIndex} picker="none" loop>
         {photos.map((photo) => (
           <CarouselSlide key={photo.id}>
@@ -245,7 +245,7 @@ export default function Gallery() {
           </CarouselSlide>
         ))}
       </Carousel>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         {photos.map((photo, i) => (
           <button
             key={photo.id}
@@ -264,11 +264,11 @@ export default function Gallery() {
             <Image src={photo.src} alt="" ratio="1/1" />
           </button>
         ))}
-      </div>
+      </Stack>
       <Text size="sm" tone="muted">
         Foto {index + 1} de {photos.length}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```

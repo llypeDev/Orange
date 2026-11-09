@@ -22,7 +22,7 @@ Painel modal que desliza de uma borda da tela para filtros, formulários e detal
 Painel à direita (padrão) com rodapé fixo. `footer` e `children` aceitam funções que recebem `close`.
 
 ```tsx
-import { Button, Drawer, Field } from '@orangesys/ui'
+import { Button, Drawer, Field, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const statusOpcoes = ['Pendente', 'Pago', 'Enviado', 'Cancelado']
@@ -37,7 +37,7 @@ export default function Filters() {
     )
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Drawer
         title="Filtrar pedidos"
         description="Os filtros valem para a lista e para a exportação."
@@ -59,7 +59,7 @@ export default function Filters() {
           </>
         )}
       >
-        <div style={{ display: 'grid', gap: 24 }}>
+        <Stack gap={6}>
           <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'grid', gap: 10 }}>
             <legend style={{ fontWeight: 600, marginBottom: 8 }}>Status</legend>
             {statusOpcoes.map((status) => (
@@ -81,12 +81,12 @@ export default function Filters() {
               <option value="90">Últimos 90 dias</option>
             </select>
           </Field>
-        </div>
+        </Stack>
       </Drawer>
       <span>
         {aplicados.length ? `Mostrando: ${aplicados.join(', ')}` : 'Mostrando todos os pedidos'}
       </span>
-    </div>
+    </Stack>
   )
 }
 ```

@@ -1,4 +1,4 @@
-import { TableOfContents } from '@orangesys/ui'
+import { Stack, TableOfContents } from '@orangesys/ui'
 import { useRef } from 'react'
 
 const sections = [
@@ -13,7 +13,7 @@ const sections = [
 export default function Manual() {
   const panelRef = useRef<HTMLDivElement>(null)
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, width: '100%' }}>
+    <Stack gap={8} direction="horizontal" wrap style={{ width: '100%' }}>
       <div
         ref={panelRef}
         tabIndex={0}
@@ -42,6 +42,6 @@ export default function Manual() {
         rootMargin="0px 0px -70% 0px"
         style={{ flex: '0 0 200px' }}
       />
-    </div>
+    </Stack>
   )
 }

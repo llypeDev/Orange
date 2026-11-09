@@ -1,4 +1,4 @@
-import { Field, Highlight } from '@orangesys/ui'
+import { Field, Highlight, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const cidades = ['São Paulo', 'São José dos Campos', 'Santos', 'Ribeirão Preto', 'Campinas', 'Sorocaba', 'Jundiaí']
@@ -10,7 +10,7 @@ export default function SearchList() {
   const resultados = cidades.filter((cidade) => semAcento(cidade).includes(semAcento(busca.trim())))
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <Field label="Cidade de entrega" controlId="busca-cidade">
         <input
           id="busca-cidade"
@@ -27,6 +27,6 @@ export default function SearchList() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }

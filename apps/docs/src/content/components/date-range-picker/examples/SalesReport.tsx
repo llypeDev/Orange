@@ -1,4 +1,4 @@
-import { DateRangePicker, Text, type DateRange } from '@orangesys/ui'
+import { DateRangePicker, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -17,7 +17,7 @@ export default function SalesReport() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateRangePicker
         label="Período do relatório de vendas"
         description="Pedidos faturados até hoje."
@@ -45,6 +45,6 @@ export default function SalesReport() {
           ? `Exibindo vendas de ${dias} ${dias === 1 ? 'dia' : 'dias'}.`
           : 'Escolha o período para atualizar o relatório.'}
       </Text>
-    </div>
+    </Stack>
   )
 }

@@ -49,7 +49,7 @@ export default function Basic() {
 Atalhos prontos (chaves como "last7Days") e um próprio ({ label, range }); max em hoje desabilita o futuro.
 
 ```tsx
-import { DateRangePicker, Text, type DateRange } from '@orangesys/ui'
+import { DateRangePicker, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -68,7 +68,7 @@ export default function SalesReport() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateRangePicker
         label="Período do relatório de vendas"
         description="Pedidos faturados até hoje."
@@ -96,7 +96,7 @@ export default function SalesReport() {
           ? `Exibindo vendas de ${dias} ${dias === 1 ? 'dia' : 'dias'}.`
           : 'Escolha o período para atualizar o relatório.'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -106,7 +106,7 @@ export default function SalesReport() {
 min em hoje bloqueia datas passadas; minLength 1 exige pelo menos uma noite e maxLength 14 limita a estadia. Depois do check-in, as datas fora da regra ficam desabilitadas.
 
 ```tsx
-import { DateRangePicker, Text, type DateRange } from '@orangesys/ui'
+import { DateRangePicker, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -122,7 +122,7 @@ export default function HotelBooking() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateRangePicker
         label="Check-in e check-out"
         description="Mínimo de 1 noite e máximo de 14. Datas passadas ficam indisponíveis."
@@ -140,7 +140,7 @@ export default function HotelBooking() {
           ? `${noites} ${noites === 1 ? 'noite' : 'noites'} · ${moeda.format(noites * DIARIA)} (diária de ${moeda.format(DIARIA)})`
           : 'Escolha as datas da estadia.'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -194,7 +194,7 @@ export default function Validation() {
 A grade de período também é exportada para painéis e agendas, com a mesma navegação por teclado. Aqui, férias que começam e terminam em dias úteis.
 
 ```tsx
-import { RangeCalendar, Text, type DateRange } from '@orangesys/ui'
+import { RangeCalendar, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -209,7 +209,7 @@ export default function TeamVacation() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <RangeCalendar
         aria-label="Férias da equipe de suporte"
         value={ferias}
@@ -225,7 +225,7 @@ export default function TeamVacation() {
           ? `${dias} dias corridos de férias, começando e terminando em dias úteis.`
           : 'Clique no primeiro e no último dia das férias (até 30 dias corridos).'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```

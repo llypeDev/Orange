@@ -1,11 +1,11 @@
-import { ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
+import { Stack, ToggleButton, ToggleButtonGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function GroupMultiple() {
   const [modes, setModes] = useState<string[]>(['remote', 'hybrid'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <ToggleButtonGroup
         selectionMode="multiple"
         aria-label="Modalidade de trabalho"
@@ -21,6 +21,6 @@ export default function GroupMultiple() {
           ? 'Mostrando vagas de todas as modalidades.'
           : `${modes.length} filtro(s) de modalidade ativo(s).`}
       </p>
-    </div>
+    </Stack>
   )
 }

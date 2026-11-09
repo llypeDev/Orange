@@ -100,11 +100,11 @@ export default function Divided() {
 Para metadados curtos e links de rodapé. O separador "·" não é lido por leitores de tela.
 
 ```tsx
-import { List, ListItem } from '@orangesys/ui'
+import { List, ListItem, Stack } from '@orangesys/ui'
 
 export default function Inline() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <List variant="inline" size="sm" aria-label="Detalhes do arquivo" style={{ color: 'var(--or-color-text-muted)' }}>
         <ListItem>PDF</ListItem>
         <ListItem>2,4 MB</ListItem>
@@ -123,7 +123,7 @@ export default function Inline() {
           </ListItem>
         </List>
       </nav>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -133,7 +133,7 @@ export default function Inline() {
 Para listas de destaque em páginas de apresentação: os itens entram escalonados ao aparecer na tela.
 
 ```tsx
-import { Button, Icon, List, ListItem } from '@orangesys/ui'
+import { Button, Icon, List, ListItem, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Animated() {
@@ -141,7 +141,7 @@ export default function Animated() {
   const [rodada, setRodada] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 20, maxWidth: 480 }}>
+    <Stack gap={5} style={{ maxWidth: 480 }}>
       <div>
         <Button size="sm" variant="outline" startIcon={<Icon name="refresh" />} onClick={() => setRodada((r) => r + 1)}>
           Repetir animação
@@ -152,7 +152,7 @@ export default function Animated() {
         <ListItem description="Regras automáticas casam lançamentos e pagamentos.">Concilie todos os dias</ListItem>
         <ListItem description="Relatórios prontos para a reunião de fechamento.">Feche o mês sem planilhas</ListItem>
       </List>
-    </div>
+    </Stack>
   )
 }
 ```

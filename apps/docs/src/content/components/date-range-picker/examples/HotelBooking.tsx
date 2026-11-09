@@ -1,4 +1,4 @@
-import { DateRangePicker, Text, type DateRange } from '@orangesys/ui'
+import { DateRangePicker, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -14,7 +14,7 @@ export default function HotelBooking() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateRangePicker
         label="Check-in e check-out"
         description="Mínimo de 1 noite e máximo de 14. Datas passadas ficam indisponíveis."
@@ -32,6 +32,6 @@ export default function HotelBooking() {
           ? `${noites} ${noites === 1 ? 'noite' : 'noites'} · ${moeda.format(noites * DIARIA)} (diária de ${moeda.format(DIARIA)})`
           : 'Escolha as datas da estadia.'}
       </Text>
-    </div>
+    </Stack>
   )
 }

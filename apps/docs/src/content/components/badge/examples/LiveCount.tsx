@@ -1,11 +1,11 @@
-import { Badge, Button, Icon } from '@orangesys/ui'
+import { Badge, Button, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function LiveCount() {
   const [unread, setUnread] = useState(2)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Badge count={unread} label={`${unread} notificações não lidas`}>
         <Button variant="outline" iconOnly aria-label="Notificações" startIcon={<Icon name="bell" />} />
       </Badge>
@@ -19,6 +19,6 @@ export default function LiveCount() {
         <Badge dot pulse tone="danger" label="Transmissão ao vivo" />
         <span style={{ fontSize: 'var(--or-text-sm)' }}>Ao vivo · 128 assistindo</span>
       </span>
-    </div>
+    </Stack>
   )
 }

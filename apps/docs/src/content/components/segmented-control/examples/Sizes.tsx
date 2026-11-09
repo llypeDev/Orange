@@ -1,4 +1,4 @@
-import { SegmentedControl, type SegmentedControlOption } from '@orangesys/ui'
+import { SegmentedControl, Stack, type SegmentedControlOption } from '@orangesys/ui'
 
 const units: SegmentedControlOption[] = [
   { value: 'km', label: 'Quilômetros' },
@@ -7,7 +7,7 @@ const units: SegmentedControlOption[] = [
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <SegmentedControl label="Small" size="sm" options={units} />
       <SegmentedControl label="Medium" size="md" options={units} />
       <SegmentedControl label="Large" size="lg" options={units} />
@@ -21,6 +21,6 @@ export default function Sizes() {
           { value: 'yearly', label: 'Anual' },
         ]}
       />
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Button, CommandPalette, Icon, type CommandGroup } from '@orangesys/ui'
+import { Button, CommandPalette, Icon, Stack, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
@@ -80,7 +80,7 @@ export default function Basic() {
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <CommandPalette
         groups={grupos}
         hotkey="mod+k"
@@ -101,6 +101,6 @@ export default function Basic() {
         }
       />
       <span>Último comando: {ultimo}</span>
-    </div>
+    </Stack>
   )
 }

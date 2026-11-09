@@ -48,7 +48,7 @@ export default function Basic() {
 min em agora e max em 30 dias; step de 15 minutos; ao escolher um dia sem hora, defaultTime preenche 09:00. Escolha hoje para ver o aviso de horário mínimo.
 
 ```tsx
-import { DateTimePicker, Text, useLocale } from '@orangesys/ui'
+import { DateTimePicker, Stack, Text, useLocale } from '@orangesys/ui'
 import { useState } from 'react'
 
 const QUINZE_MINUTOS = 15 * 60 * 1000
@@ -61,7 +61,7 @@ export default function Publication() {
   const [publicacao, setPublicacao] = useState<Date | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <DateTimePicker
         label="Agendar publicação"
         description="Nos próximos 30 dias, de 15 em 15 minutos."
@@ -80,7 +80,7 @@ export default function Publication() {
             })}.`
           : 'Escolha quando o artigo vai ao ar.'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -170,11 +170,11 @@ export default function FormSubmit() {
 Somente leitura, erro de negócio via error e desabilitado (no tamanho sm).
 
 ```tsx
-import { DateTimePicker } from '@orangesys/ui'
+import { DateTimePicker, Stack } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <DateTimePicker
         label="Abertura das inscrições"
         description="Definida pela coordenação."
@@ -187,7 +187,7 @@ export default function States() {
         error="O encerramento deve ser depois da abertura."
       />
       <DateTimePicker label="Divulgação do resultado" size="sm" disabled />
-    </div>
+    </Stack>
   )
 }
 ```

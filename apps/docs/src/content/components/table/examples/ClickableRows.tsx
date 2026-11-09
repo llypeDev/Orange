@@ -1,4 +1,4 @@
-import { Chip, ChipGroup, Table, Tag, type TableColumn } from '@orangesys/ui'
+import { Chip, ChipGroup, Stack, Table, Tag, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Priority = 'Alta' | 'Média' | 'Baixa'
@@ -33,7 +33,7 @@ export default function ClickableRows() {
   const visible = tickets.filter((t) => !status || t.status === status)
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <ChipGroup selectionMode="single" label="Status" value={status} onChange={setStatus}>
         <Chip value="aberto">Abertos</Chip>
         <Chip value="aguardando">Aguardando cliente</Chip>
@@ -50,6 +50,6 @@ export default function ClickableRows() {
       <p role="status" style={{ margin: 0 }}>
         {opened ? `Chamado ${opened.id} aberto: ${opened.subject}` : 'Clique em uma linha para abrir o chamado.'}
       </p>
-    </div>
+    </Stack>
   )
 }

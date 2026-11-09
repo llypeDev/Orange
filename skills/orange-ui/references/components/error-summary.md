@@ -22,11 +22,11 @@ Resumo dos erros de um formulário, com links que levam a cada campo e foco auto
 Clique em um erro para ir até o campo.
 
 ```tsx
-import { ErrorSummary, TextField } from '@orangesys/ui'
+import { ErrorSummary, Stack, TextField } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 520 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 520 }}>
       <ErrorSummary
         autoFocus={false}
         errors={[
@@ -36,7 +36,7 @@ export default function Basic() {
       />
       <TextField id="basico-nome" label="Nome completo" error="Informe seu nome completo." />
       <TextField id="basico-email" label="E-mail" type="email" defaultValue="ana@" error="Informe um e-mail no formato nome@empresa.com." />
-    </div>
+    </Stack>
   )
 }
 ```

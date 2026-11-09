@@ -1,4 +1,4 @@
-import { MultiSelect } from '@orangesys/ui'
+import { MultiSelect, Stack } from '@orangesys/ui'
 
 const idiomas = [
   { value: 'pt', label: 'Português' },
@@ -10,7 +10,7 @@ const idiomas = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <MultiSelect size="sm" label="Idiomas (sm)" options={idiomas} defaultValue={['pt', 'en']} />
       <MultiSelect
         label="Idiomas do atendimento"
@@ -25,6 +25,6 @@ export default function States() {
         defaultValue={['es']}
         disabled
       />
-    </div>
+    </Stack>
   )
 }

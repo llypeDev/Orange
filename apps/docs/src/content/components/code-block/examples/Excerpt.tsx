@@ -1,4 +1,4 @@
-import { CodeBlock } from '@orangesys/ui'
+import { CodeBlock, Stack } from '@orangesys/ui'
 
 const excerpt = `  const { t } = useLocale()
   const [open, setOpen] = useState(false)
@@ -8,7 +8,7 @@ const excerpt = `  const { t } = useLocale()
 
 export default function Excerpt() {
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%' }}>
+    <Stack gap={2} style={{ width: '100%' }}>
       <p style={{ margin: 0 }}>
         A linha 43 cria o estado do menu; a numeração continua a partir do arquivo original.
       </p>
@@ -20,6 +20,6 @@ export default function Excerpt() {
         startingLineNumber={42}
         highlightLines={[43]}
       />
-    </div>
+    </Stack>
   )
 }

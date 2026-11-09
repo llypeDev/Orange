@@ -1,4 +1,4 @@
-import { Badge, Button, Icon, SegmentedControl, Stat, StatGroup, Tour, type TourStep } from '@orangesys/ui'
+import { Badge, Button, Icon, SegmentedControl, Stack, Stat, StatGroup, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function PainelPedidos() {
@@ -36,7 +36,7 @@ export default function PainelPedidos() {
   ]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <div>
         <Button startIcon={<Icon name="sparkle" />} onClick={() => setAberto(true)}>
           Conheça o novo painel de pedidos
@@ -53,8 +53,8 @@ export default function PainelPedidos() {
           background: 'var(--or-color-surface)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Stack gap={3} direction="horizontal" align="center" justify="between" wrap>
+          <Stack gap={3} direction="horizontal" align="center">
             <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 'var(--or-text-lg)' }}>Pedidos</strong>
             <span
               ref={aoVivoRef}
@@ -64,11 +64,11 @@ export default function PainelPedidos() {
               <Badge dot pulse tone="success" />
               Ao vivo
             </span>
-          </div>
+          </Stack>
           <Button ref={exportarRef} variant="outline" size="sm" startIcon={<Icon name="download" />}>
             Exportar
           </Button>
-        </div>
+        </Stack>
 
         <div ref={filtrosRef} style={{ justifySelf: 'start', maxWidth: '100%' }}>
           <SegmentedControl
@@ -93,6 +93,6 @@ export default function PainelPedidos() {
       </section>
 
       <Tour label="Novidades do painel" steps={passos} open={aberto} onOpenChange={setAberto} />
-    </div>
+    </Stack>
   )
 }

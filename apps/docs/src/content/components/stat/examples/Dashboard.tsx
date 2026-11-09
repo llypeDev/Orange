@@ -1,4 +1,4 @@
-import { Button, Icon, Stat, StatGroup } from '@orangesys/ui'
+import { Button, Icon, Stack, Stat, StatGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Dashboard() {
@@ -6,7 +6,7 @@ export default function Dashboard() {
   const [run, setRun] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <StatGroup key={run}>
         <Stat animate label="Receita" value="R$ 48,2 mil" delta="12%" trend="increase" help="vs. outubro" />
         <Stat animate label="Pedidos" value={1284} delta="4,3%" trend="increase" help="vs. outubro" />
@@ -18,6 +18,6 @@ export default function Dashboard() {
           Repetir animação
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

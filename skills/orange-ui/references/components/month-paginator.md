@@ -34,7 +34,7 @@ export default function Basic() {
 O mês escolhido filtra o conteúdo abaixo; os limites cobrem só os meses com dados.
 
 ```tsx
-import { MonthPaginator, Text, type YearMonth } from '@orangesys/ui'
+import { MonthPaginator, Stack, Text, type YearMonth } from '@orangesys/ui'
 import { useState } from 'react'
 
 // Dados de exemplo: entradas e saídas por mês (chave "ano-mês").
@@ -51,7 +51,7 @@ export default function Statement() {
   const dados = resumo[`${mes.year}-${mes.month}`]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <MonthPaginator
         aria-label="Mês do resumo"
         value={mes}
@@ -77,7 +77,7 @@ export default function Statement() {
       ) : (
         <Text tone="muted">Sem movimentações neste mês.</Text>
       )}
-    </div>
+    </Stack>
   )
 }
 ```
@@ -106,11 +106,11 @@ export default function Limits() {
 ### Tamanhos e formato curto
 
 ```tsx
-import { MonthPaginator } from '@orangesys/ui'
+import { MonthPaginator, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
+    <Stack gap={4} align="start">
       <MonthPaginator
         size="sm"
         monthFormat="short"
@@ -131,7 +131,7 @@ export default function Sizes() {
         defaultValue={{ year: 2026, month: 2 }}
         aria-label="Mês (desabilitado)"
       />
-    </div>
+    </Stack>
   )
 }
 ```

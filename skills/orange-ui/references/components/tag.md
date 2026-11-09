@@ -43,25 +43,25 @@ export default function Status() {
 solid usa o fundo suave do tom e o texto na cor do tom. Tamanhos sm, md (padrão) e lg.
 
 ```tsx
-import { Tag } from '@orangesys/ui'
+import { Stack, Tag } from '@orangesys/ui'
 
 export default function SolidSizes() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+    <Stack gap={4}>
+      <Stack gap={2} direction="horizontal" wrap>
         <Tag variant="solid">Neutro</Tag>
         <Tag variant="solid" tone="accent">Destaque</Tag>
         <Tag variant="solid" tone="success">Ativo</Tag>
         <Tag variant="solid" tone="warning">Em teste</Tag>
         <Tag variant="solid" tone="danger">Suspenso</Tag>
         <Tag variant="solid" tone="info">Beta</Tag>
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
+      </Stack>
+      <Stack gap={2} direction="horizontal" align="center" wrap>
         <Tag size="sm" tone="success">sm · 22px</Tag>
         <Tag size="md" tone="success">md · 28px</Tag>
         <Tag size="lg" tone="success">lg · 32px</Tag>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```
@@ -96,7 +96,7 @@ export default function WithIcons() {
 onRemove adiciona o botão "Remover {rótulo}". O exemplo move o foco para a próxima tag após a remoção.
 
 ```tsx
-import { Button, Tag } from '@orangesys/ui'
+import { Button, Stack, Tag } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 const initial = ['São Paulo', 'Até R$ 200', 'Frete grátis', 'Avaliação 4+']
@@ -118,7 +118,7 @@ export default function Removable() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <ul
         ref={listRef}
         aria-label="Filtros aplicados"
@@ -135,7 +135,7 @@ export default function Removable() {
           Restaurar filtros
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

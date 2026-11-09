@@ -1,4 +1,4 @@
-import { Button, Icon, Search, Tour, type TourStep } from '@orangesys/ui'
+import { Button, Icon, Search, Stack, Tour, type TourStep } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlado() {
@@ -34,7 +34,7 @@ export default function Controlado() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -57,14 +57,14 @@ export default function Controlado() {
         </Button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <Stack gap={2} direction="horizontal" align="center" wrap>
         <Button variant="secondary" onClick={() => iniciar(0)}>
           Começar tour
         </Button>
         <Button variant="ghost" onClick={() => iniciar(2)}>
           Ir direto para “Ajuda”
         </Button>
-      </div>
+      </Stack>
       <p style={{ margin: 0, fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Último evento: {evento}
       </p>
@@ -82,6 +82,6 @@ export default function Controlado() {
         onFinish={() => setEvento('Tour concluído.')}
         onSkip={(atual) => setEvento(`Tour pulado no passo ${atual + 1}.`)}
       />
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const pastas: TreeViewItem[] = [
@@ -27,7 +27,7 @@ export default function MultipleSelection() {
   const [selecionadas, setSelecionadas] = useState<string[]>(['notas', 'campanhas'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <p id="sync-label" style={{ margin: 0, fontWeight: 600 }}>
         Pastas sincronizadas no computador
       </p>
@@ -43,6 +43,6 @@ export default function MultipleSelection() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }}>
         {selecionadas.length} {selecionadas.length === 1 ? 'pasta selecionada' : 'pastas selecionadas'}
       </p>
-    </div>
+    </Stack>
   )
 }

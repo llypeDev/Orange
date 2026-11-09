@@ -31,14 +31,14 @@ Uma ação principal ao lado de uma seta que abre um menu com ações alternativ
 Ao escolher um item, o menu fecha e o foco volta para a seta.
 
 ```tsx
-import { SplitButton } from '@orangesys/ui'
+import { SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [status, setStatus] = useState('Rascunho salvo às 14:32')
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SplitButton
         onClick={() => setStatus('Artigo publicado agora')}
         actions={[
@@ -67,7 +67,7 @@ export default function Basic() {
       >
         {status}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -77,14 +77,14 @@ export default function Basic() {
 Para ações secundárias, como exportar.
 
 ```tsx
-import { Icon, SplitButton } from '@orangesys/ui'
+import { Icon, SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Outline() {
   const [format, setFormat] = useState<string | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SplitButton
         variant="outline"
         startIcon={<Icon name="download" />}
@@ -105,7 +105,7 @@ export default function Outline() {
           ? `Relatório de vendas de outubro exportado (${format}).`
           : 'Nenhuma exportação ainda.'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -115,7 +115,7 @@ export default function Outline() {
 primary (padrão), secondary e outline; sm, md e lg.
 
 ```tsx
-import { SplitButton, type SplitButtonAction } from '@orangesys/ui'
+import { SplitButton, Stack, type SplitButtonAction } from '@orangesys/ui'
 
 const actions: SplitButtonAction[] = [
   { label: 'Duplicar', icon: 'copy', onSelect: () => {} },
@@ -124,7 +124,7 @@ const actions: SplitButtonAction[] = [
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="end" wrap>
       <SplitButton size="lg" actions={actions}>
         Salvar
       </SplitButton>
@@ -134,7 +134,7 @@ export default function Sizes() {
       <SplitButton size="sm" variant="outline" actions={actions}>
         Salvar
       </SplitButton>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -144,14 +144,14 @@ export default function Sizes() {
 Itens com `disabled` recebem foco, mas não são acionados. `placement="bottom-start"` alinha o menu à esquerda.
 
 ```tsx
-import { SplitButton } from '@orangesys/ui'
+import { SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function DisabledActions() {
   const [merged, setMerged] = useState<string | null>(null)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <SplitButton
         placement="bottom-start"
         onClick={() => setMerged('merge commit')}
@@ -179,7 +179,7 @@ export default function DisabledActions() {
           Mesclado com {merged}.
         </span>
       )}
-    </div>
+    </Stack>
   )
 }
 ```

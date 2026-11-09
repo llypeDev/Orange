@@ -1,8 +1,8 @@
-import { TagInput } from '@orangesys/ui'
+import { Stack, TagInput } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 440 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 440 }}>
       <TagInput size="sm" label="Rótulos (sm)" defaultValue={['bug', 'urgente']} />
       <TagInput
         label="Códigos de rastreio"
@@ -16,6 +16,6 @@ export default function States() {
         defaultValue={['eletrônicos', 'casa']}
         disabled
       />
-    </div>
+    </Stack>
   )
 }

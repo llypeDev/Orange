@@ -30,14 +30,14 @@ Campo de valor monetário com símbolo da moeda, digitação natural e formataç
 Real brasileiro (padrão). O símbolo fica no campo e a formatação é aplicada ao sair.
 
 ```tsx
-import { CurrencyField } from '@orangesys/ui'
+import { CurrencyField, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [preco, setPreco] = useState<number | null>(1299.9)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 320 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 320 }}>
       <CurrencyField
         label="Preço de venda"
         description="Use vírgula para os centavos."
@@ -48,7 +48,7 @@ export default function Basic() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         Valor numérico: <code>{preco === null ? 'null' : preco}</code>
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -87,11 +87,11 @@ export default function Limits() {
 Casas decimais, separadores e posição do símbolo seguem o Intl.NumberFormat (o iene não tem centavos).
 
 ```tsx
-import { CurrencyField } from '@orangesys/ui'
+import { CurrencyField, Stack } from '@orangesys/ui'
 
 export default function Currencies() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 320 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 320 }}>
       <CurrencyField label="Assinatura em dólar" currency="USD" locale="en-US" defaultValue={49} />
       <CurrencyField
         label="Hospedagem em Lisboa"
@@ -112,7 +112,7 @@ export default function Currencies() {
         defaultValue={89.9}
         size="sm"
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -120,7 +120,7 @@ export default function Currencies() {
 ### Simulador de parcelas
 
 ```tsx
-import { CurrencyField, Select } from '@orangesys/ui'
+import { CurrencyField, Select, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -131,7 +131,7 @@ export default function Installments() {
   const valorParcela = total ? total / Number(parcelas) : 0
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 360 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 360 }}>
       <CurrencyField label="Valor total" value={total} onChange={setTotal} min={0} />
       <Select
         label="Parcelas"
@@ -148,7 +148,7 @@ export default function Installments() {
       >
         {total ? `${parcelas}x de ${brl.format(valorParcela)}` : 'Informe o valor total'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

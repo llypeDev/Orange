@@ -1,4 +1,4 @@
-import { SplitButton, type SplitButtonAction } from '@orangesys/ui'
+import { SplitButton, Stack, type SplitButtonAction } from '@orangesys/ui'
 
 const actions: SplitButtonAction[] = [
   { label: 'Duplicar', icon: 'copy', onSelect: () => {} },
@@ -7,7 +7,7 @@ const actions: SplitButtonAction[] = [
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="end" wrap>
       <SplitButton size="lg" actions={actions}>
         Salvar
       </SplitButton>
@@ -17,6 +17,6 @@ export default function Sizes() {
       <SplitButton size="sm" variant="outline" actions={actions}>
         Salvar
       </SplitButton>
-    </div>
+    </Stack>
   )
 }

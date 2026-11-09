@@ -75,11 +75,11 @@ export default function Collapsed() {
 Qualquer nó serve de separador; ele é sempre decorativo (aria-hidden).
 
 ```tsx
-import { Breadcrumb, BreadcrumbItem, Icon } from '@orangesys/ui'
+import { Breadcrumb, BreadcrumbItem, Icon, Stack } from '@orangesys/ui'
 
 export default function Separator() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <Breadcrumb separator={<Icon name="chevron-right" />} aria-label="Trilha do projeto">
         <BreadcrumbItem href="#workspace" icon={<Icon name="layers" />}>
           Orange Labs
@@ -95,7 +95,7 @@ export default function Separator() {
         <BreadcrumbItem href="#financeiro">Financeiro</BreadcrumbItem>
         <BreadcrumbItem>Notas fiscais 2026</BreadcrumbItem>
       </Breadcrumb>
-    </div>
+    </Stack>
   )
 }
 ```

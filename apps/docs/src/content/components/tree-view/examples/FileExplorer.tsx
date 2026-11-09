@@ -1,4 +1,4 @@
-import { TreeView, type TreeViewItem } from '@orangesys/ui'
+import { Stack, TreeView, type TreeViewItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 const arquivos: TreeViewItem[] = [
@@ -29,7 +29,7 @@ export default function FileExplorer() {
 
   return (
     // Árvore (220–280px) e painel lado a lado; sem espaço para os dois, o painel desce.
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 24, width: '100%' }}>
+    <Stack gap={6} direction="horizontal" align="start" wrap style={{ width: '100%' }}>
       <TreeView
         style={{ flex: '1 1 220px', maxWidth: 280 }}
         aria-label="Arquivos do projeto"
@@ -43,6 +43,6 @@ export default function FileExplorer() {
       <p style={{ flex: '1 1 200px', margin: 0, color: 'var(--or-color-text-muted)' }}>
         Arquivo aberto: <strong style={{ color: 'var(--or-color-text)' }}>{aberto}</strong>
       </p>
-    </div>
+    </Stack>
   )
 }

@@ -33,7 +33,7 @@ Digite no campo: salva 1s depois da última tecla. Ligue “Simular falha” par
 
 ```tsx
 import { useEffect, useRef, useState } from 'react'
-import { SaveStatus, Switch, TextArea, type SaveStatusState } from '@orangesys/ui'
+import { SaveStatus, Stack, Switch, TextArea, type SaveStatusState } from '@orangesys/ui'
 
 export default function Autosave() {
   const [descricao, setDescricao] = useState(
@@ -69,21 +69,15 @@ export default function Autosave() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 520 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 520 }}>
       <TextArea
         label="Descrição do produto"
         rows={4}
         value={descricao}
         onChange={(event) => editar(event.target.value)}
       />
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 12,
-        }}
+      <Stack
+        gap={3} direction="horizontal" align="center" justify="between" wrap
       >
         <Switch
           size="sm"
@@ -92,8 +86,8 @@ export default function Autosave() {
           onCheckedChange={setSimularFalha}
         />
         <SaveStatus status={status} savedAt={salvoEm} onRetry={salvar} />
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```
@@ -101,18 +95,18 @@ export default function Autosave() {
 ### Estados
 
 ```tsx
-import { SaveStatus } from '@orangesys/ui'
+import { SaveStatus, Stack } from '@orangesys/ui'
 
 const doisMinutosAtras = new Date(Date.now() - 2 * 60_000)
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SaveStatus status="idle" labels={{ idle: 'Salvamento automático ativado' }} />
       <SaveStatus status="saving" />
       <SaveStatus status="saved" savedAt={doisMinutosAtras} />
       <SaveStatus status="error" onRetry={() => {}} />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -159,13 +153,13 @@ export default function Toolbar() {
 labels troca qualquer texto; em savedAt, {time} marca onde entra o tempo relativo.
 
 ```tsx
-import { SaveStatus } from '@orangesys/ui'
+import { SaveStatus, Stack } from '@orangesys/ui'
 
 const salvoEm = new Date(Date.now() - 5 * 60_000)
 
 export default function CustomLabels() {
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SaveStatus
         status="saved"
         savedAt={salvoEm}
@@ -176,7 +170,7 @@ export default function CustomLabels() {
         onRetry={() => {}}
         labels={{ error: 'Sem conexão', retry: 'Reconectar' }}
       />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -1,10 +1,10 @@
-import { TableOfContents } from '@orangesys/ui'
+import { Stack, TableOfContents } from '@orangesys/ui'
 import { useRef } from 'react'
 
 export default function Auto() {
   const articleRef = useRef<HTMLElement>(null)
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, width: '100%' }}>
+    <Stack gap={8} direction="horizontal" wrap style={{ width: '100%' }}>
       <article
         ref={articleRef}
         tabIndex={0}
@@ -29,6 +29,6 @@ export default function Auto() {
         title="Neste artigo"
         style={{ flex: '0 0 200px' }}
       />
-    </div>
+    </Stack>
   )
 }

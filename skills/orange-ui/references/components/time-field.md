@@ -59,7 +59,7 @@ export default function BusinessHours() {
 Dois campos controlados com validação de negócio: o fim precisa ser depois do início.
 
 ```tsx
-import { Text, TimeField } from '@orangesys/ui'
+import { Stack, Text, TimeField } from '@orangesys/ui'
 import { useState } from 'react'
 
 const emMinutos = (hora: string) => {
@@ -74,8 +74,8 @@ export default function Interval() {
   const invalido = Boolean(inicio && fim && duracao <= 0)
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+    <Stack gap={4}>
+      <Stack gap={4} direction="horizontal" wrap>
         <TimeField label="Início do plantão" value={inicio} onChange={setInicio} required />
         <TimeField
           label="Fim do plantão"
@@ -84,13 +84,13 @@ export default function Interval() {
           required
           error={invalido ? 'O fim precisa ser depois do início.' : undefined}
         />
-      </div>
+      </Stack>
       {!invalido && duracao > 0 && (
         <Text size="sm" tone="muted" aria-live="polite">
           Duração: {Math.floor(duracao / 60)}h{String(duracao % 60).padStart(2, '0')}
         </Text>
       )}
-    </div>
+    </Stack>
   )
 }
 ```
@@ -98,15 +98,15 @@ export default function Interval() {
 ### Tamanhos
 
 ```tsx
-import { TimeField } from '@orangesys/ui'
+import { Stack, TimeField } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="end" wrap>
       <TimeField label="Pequeno" size="sm" defaultValue="07:45" />
       <TimeField label="Médio" size="md" defaultValue="12:00" />
       <TimeField label="Grande" size="lg" defaultValue="18:30" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -116,11 +116,11 @@ export default function Sizes() {
 Somente leitura, com erro e desabilitado.
 
 ```tsx
-import { TimeField } from '@orangesys/ui'
+import { Stack, TimeField } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" wrap>
       <TimeField
         label="Abertura da loja"
         defaultValue="08:00"
@@ -129,7 +129,7 @@ export default function States() {
       />
       <TimeField label="Fechamento" defaultValue="23:30" error="A loja fecha no máximo às 22:00." />
       <TimeField label="Intervalo" defaultValue="12:00" disabled />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -24,17 +24,17 @@ Caixas de seleção para aceites, preferências e escolhas múltiplas — sozinh
 ### Básico
 
 ```tsx
-import { Checkbox } from '@orangesys/ui'
+import { Checkbox, Stack } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <Checkbox label="Lembrar de mim neste dispositivo" defaultChecked />
       <Checkbox
         label="Receber o resumo semanal por e-mail"
         description="Um e-mail toda segunda-feira com a atividade dos seus projetos."
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -107,7 +107,7 @@ export default function Cards() {
 ### Selecionar todos
 
 ```tsx
-import { Checkbox, CheckboxGroup } from '@orangesys/ui'
+import { Checkbox, CheckboxGroup, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const permissions = [
@@ -122,7 +122,7 @@ export default function SelectAll() {
   const all = selected.length === permissions.length
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Checkbox
         label="Todas as permissões"
         checked={all}
@@ -132,7 +132,7 @@ export default function SelectAll() {
       <div style={{ paddingLeft: 36 }}>
         <CheckboxGroup label="Permissões do papel Editor" hideLabel value={selected} onChange={setSelected} options={permissions} />
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

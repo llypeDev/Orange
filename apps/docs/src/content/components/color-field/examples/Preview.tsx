@@ -1,11 +1,11 @@
-import { ColorField } from '@orangesys/ui'
+import { ColorField, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Preview() {
   const [cor, setCor] = useState('#4a66d4')
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+    <Stack gap={8} direction="horizontal" align="start" wrap>
       <ColorField
         label="Cor do cabeçalho do e-mail"
         value={cor}
@@ -23,6 +23,6 @@ export default function Preview() {
           <div style={{ height: 10, width: '55%', background: 'var(--or-color-surface-hover)' }} />
         </div>
       </div>
-    </div>
+    </Stack>
   )
 }

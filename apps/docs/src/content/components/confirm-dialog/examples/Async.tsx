@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@orangesys/ui'
+import { Button, ConfirmDialog, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const encerrarSessoes = () => new Promise((resolve) => setTimeout(resolve, 1800))
@@ -7,7 +7,7 @@ export default function Async() {
   const [status, setStatus] = useState('3 dispositivos conectados')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <span>{status}</span>
       <ConfirmDialog
         tone="danger"
@@ -21,6 +21,6 @@ export default function Async() {
         }}
         trigger={<Button variant="outline">Encerrar sessões</Button>}
       />
-    </div>
+    </Stack>
   )
 }

@@ -44,7 +44,7 @@ export default function Basic() {
 Validação por tag, colagem de várias de uma vez e Tab/espaço como separadores. Tente colar “ana@empresa.com, bruno, carla@empresa.com”.
 
 ```tsx
-import { Button, TagInput } from '@orangesys/ui'
+import { Button, Stack, TagInput } from '@orangesys/ui'
 import { useState } from 'react'
 
 const emailValido = (texto: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texto)
@@ -53,7 +53,7 @@ export default function Emails() {
   const [convidados, setConvidados] = useState<string[]>([])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 440 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 440 }}>
       <TagInput
         label="Convidar pessoas"
         description="Cole uma lista de e-mails separados por vírgula ou digite um por vez."
@@ -71,7 +71,7 @@ export default function Emails() {
             : `Enviar ${convidados.length} ${convidados.length === 1 ? 'convite' : 'convites'}`}
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -98,11 +98,11 @@ export default function MaxTags() {
 ### Tamanhos e estados
 
 ```tsx
-import { TagInput } from '@orangesys/ui'
+import { Stack, TagInput } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 440 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 440 }}>
       <TagInput size="sm" label="Rótulos (sm)" defaultValue={['bug', 'urgente']} />
       <TagInput
         label="Códigos de rastreio"
@@ -116,7 +116,7 @@ export default function States() {
         defaultValue={['eletrônicos', 'casa']}
         disabled
       />
-    </div>
+    </Stack>
   )
 }
 ```

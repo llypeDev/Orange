@@ -1,8 +1,8 @@
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 
 export default function Disabled() {
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <SegmentedControl
         label="Prioridade do chamado"
         defaultValue="normal"
@@ -24,6 +24,6 @@ export default function Disabled() {
           { value: 'pdf', label: 'PDF' },
         ]}
       />
-    </div>
+    </Stack>
   )
 }

@@ -1,8 +1,8 @@
-import { Button, EmptyState } from '@orangesys/ui'
+import { Button, EmptyState, Stack } from '@orangesys/ui'
 
 export default function Compact() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 480 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 480 }}>
       <section aria-labelledby="equipe" style={{ border: '1px solid var(--or-color-border)' }}>
         <h3
           id="equipe"
@@ -48,6 +48,6 @@ export default function Compact() {
           description="Arraste arquivos para cá ou use o botão Enviar."
         />
       </section>
-    </div>
+    </Stack>
   )
 }

@@ -90,14 +90,14 @@ export default function Cards() {
 ### Horizontal e controlado
 
 ```tsx
-import { RadioGroup } from '@orangesys/ui'
+import { RadioGroup, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Horizontal() {
   const [size, setSize] = useState<string | null>('m')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <RadioGroup
         label="Tamanho"
         orientation="horizontal"
@@ -106,7 +106,7 @@ export default function Horizontal() {
         options={['PP', 'P', 'M', 'G', 'GG'].map((s) => ({ value: s.toLowerCase(), label: s }))}
       />
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>Selecionado: {size?.toUpperCase()}</p>
-    </div>
+    </Stack>
   )
 }
 ```

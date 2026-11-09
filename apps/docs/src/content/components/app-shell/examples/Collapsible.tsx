@@ -6,7 +6,7 @@ import {
   PageHeader,
   SideNav,
   SideNavItem,
-  SideNavSection,
+  SideNavSection, Stack,
 } from '@orangesys/ui'
 import { useState } from 'react'
 
@@ -14,7 +14,7 @@ export default function Collapsible() {
   // Controlado: guarde a preferência (ex.: no localStorage) e restaure na próxima visita.
   const [collapsed, setCollapsed] = useState(true)
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Barra lateral: <strong>{collapsed ? 'recolhida' : 'expandida'}</strong>
       </p>
@@ -61,6 +61,6 @@ export default function Collapsible() {
           />
         </AppShell>
       </div>
-    </div>
+    </Stack>
   )
 }

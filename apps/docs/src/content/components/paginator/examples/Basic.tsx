@@ -1,12 +1,12 @@
-import { Paginator } from '@orangesys/ui'
+import { Paginator, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [page, setPage] = useState(6)
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Paginator totalPages={12} page={page} onPageChange={setPage} />
       <small style={{ color: 'var(--or-color-text-subtle)' }}>Exibindo resultados da página {page}</small>
-    </div>
+    </Stack>
   )
 }

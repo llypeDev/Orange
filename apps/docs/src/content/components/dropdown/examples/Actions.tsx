@@ -1,11 +1,11 @@
-import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon } from '@orangesys/ui'
+import { Button, Dropdown, DropdownItem, DropdownLabel, DropdownSeparator, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Actions() {
   const [ultima, setUltima] = useState('nenhuma')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Dropdown
         trigger={
           <Button variant="outline" endIcon={<Icon name="chevron-down" />}>
@@ -32,6 +32,6 @@ export default function Actions() {
         </DropdownItem>
       </Dropdown>
       <span>Última ação: {ultima}</span>
-    </div>
+    </Stack>
   )
 }
