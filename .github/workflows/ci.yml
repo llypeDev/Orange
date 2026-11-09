@@ -21,6 +21,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm gen
+      # Referência para IAs (skills/orange-ui/references): falha se o código mudou e ela não foi
+      # regenerada. Corrija com `pnpm gen:ai` e faça commit.
+      - run: pnpm gen:ai --check
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test

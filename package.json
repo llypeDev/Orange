@@ -12,6 +12,7 @@
     "dev": "pnpm --filter @orangesys/docs dev",
     "storybook": "pnpm --filter @orangesys/storybook dev",
     "gen": "node scripts/gen-index.mjs",
+    "gen:ai": "node scripts/gen-ai.mjs",
     "build:tokens": "pnpm --filter @orangesys/tokens build",
     "build:lib": "pnpm build:tokens && pnpm --filter @orangesys/ui build",
     "build:storybook": "pnpm --filter @orangesys/storybook build",
@@ -42,6 +43,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "prettier": "^3.9.0",
+    "react-docgen-typescript": "2.4.0",
     "tsx": "^4.20.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1"

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/spa-fallback.mjs && node scripts/route-pages.mjs",
+    "build": "vite build && node scripts/spa-fallback.mjs && node scripts/route-pages.mjs && node scripts/llms.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
