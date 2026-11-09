@@ -60,7 +60,9 @@ createRoot(document.getElementById('root')!).render(
   Node sem bundler (testes, SSR direto).
 - `OrangeProvider`: `theme`/`defaultTheme` (`dark` padrão, `light`, `dark-hc`, `light-hc`,
   `system`), `onThemeChange`, `themeTarget` (`document` | `scoped`), `locale` (`pt-BR` padrão,
-  `en-US`) e `messages` (sobrescreve textos internos). `useTheme()` lê e troca o tema.
+  `en-US`) e `messages` (sobrescreve textos internos). Espanhol: `locale="es-ES"` com
+  `messages={esES}` (o dicionário é importado de `@orangesys/ui`; não vem embutido). `useTheme()`
+  lê e troca o tema.
 - `ToastProvider`, uma vez, na raiz (dentro do `OrangeProvider`), se a aplicação usar `useToast()`.
   O hook só funciona num componente **descendente** do provider (fora dele, lança erro) — nunca
   no mesmo componente que renderiza o `ToastProvider`.

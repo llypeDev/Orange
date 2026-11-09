@@ -268,6 +268,18 @@ Junta classes CSS condicionalmente: `cx('a', cond && 'b', { c: true })`.
 
 ### `enUS`
 
+### `esES`
+
+Textos internos dos componentes em espanhol (Espanha). Não vem embutido no provider, para não
+pesar no bundle de quem não usa: passe-o em `messages`, junto com o `locale`, que cuida de
+datas, números e ordenação.
+
+```tsx
+import { esES, OrangeProvider } from '@orangesys/ui'
+
+<OrangeProvider locale="es-ES" messages={esES}>…</OrangeProvider>
+```
+
 ### `getColorScheme`
 
 ```ts

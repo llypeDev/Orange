@@ -28,12 +28,12 @@ const entries: Entry[] = [
     date: '2026-11-09',
     version: 'v1.4.0',
     title: {
-      pt: 'Table para dados grandes e CSS só do que você usa',
-      en: 'Table for large data and only the CSS you use',
+      pt: 'Table para dados grandes, CSS só do que você usa e espanhol',
+      en: 'Table for large data, only the CSS you use, and Spanish',
     },
     summary: {
-      pt: 'A tabela ganha filtros por coluna, colunas ocultas, fixas e redimensionáveis e virtualização para milhares de linhas; e uma entrada nova do pacote leva para a página só o CSS dos componentes usados. Tudo opcional: o que já existe não muda.',
-      en: 'The table gets column filters, hidden, pinned and resizable columns and virtualization for thousands of rows; and a new package entry ships only the CSS of the components in use. All optional: nothing existing changes.',
+      pt: 'A tabela ganha filtros por coluna, colunas ocultas, fixas e redimensionáveis e virtualização para milhares de linhas; uma entrada nova do pacote leva para a página só o CSS dos componentes usados; e os componentes passam a falar espanhol. Tudo opcional: o que já existe não muda.',
+      en: 'The table gets column filters, hidden, pinned and resizable columns and virtualization for thousands of rows; a new package entry ships only the CSS of the components in use; and the components now speak Spanish. All optional: nothing existing changes.',
     },
     items: [
       { kind: 'new', text: { pt: 'Table: filtros por coluna (filter: "text" ou "select"), com anúncio do número de linhas e "Limpar filtros" quando nada casa. manualFilter deixa o filtro com o servidor.', en: 'Table: column filters (filter: "text" or "select"), announcing the number of rows and offering "Clear filters" when nothing matches. manualFilter leaves filtering to the server.' } },
@@ -41,6 +41,8 @@ const entries: Entry[] = [
       { kind: 'new', text: { pt: 'Table: colunas fixas (pinned: "start" ou "end") e redimensionáveis (resizable) — arraste, setas do teclado ou clique duplo para ajustar ao conteúdo.', en: 'Table: pinned columns (pinned: "start" or "end") and resizable columns (resizable) — drag, arrow keys or double-click to fit the content.' } },
       { kind: 'new', text: { pt: 'TableColumnsMenu: menu "Colunas" pronto para a pessoa escolher o que ver, com a prop hiddenColumns da Table.', en: 'TableColumnsMenu: a ready-made "Columns" menu for choosing what to see, with the Table hiddenColumns prop.' } },
       { kind: 'new', text: { pt: 'Entrada @orangesys/ui/with-css: cada componente traz o próprio CSS e o bundler leva só o do que é usado — só o Button, 6,9 KB em gzip no lugar dos 65 KB do styles.css, que continua igual.', en: '@orangesys/ui/with-css entry: each component brings its own CSS and the bundler ships only what is used — Button alone, 6.9 KB gzipped instead of the 65 KB of styles.css, which stays the same.' } },
+      { kind: 'new', text: { pt: 'Espanhol: o dicionário esES traduz todos os textos internos. Use locale="es-ES" com messages={esES}; ele só entra no bundle de quem o importa.', en: 'Spanish: the esES dictionary translates every internal text. Use locale="es-ES" with messages={esES}; it only reaches the bundle of apps that import it.' } },
+      { kind: 'improved', text: { pt: 'OrangeProvider: em desenvolvimento, avisa quando o locale não tem textos embutidos e nenhum messages foi passado (os componentes ficariam em português).', en: 'OrangeProvider: in development, warns when the locale has no built-in texts and no messages were passed (components would stay in Portuguese).' } },
     ],
   },
   {

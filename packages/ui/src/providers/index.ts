@@ -10,4 +10,5 @@ export {
 } from './theme'
 export type { ColorScheme, ResolvedTheme, SystemThemePreferences, ThemeSetting } from './theme'
 export { builtInMessages, enUS, interpolate, ptBR } from './messages'
+export { esES } from './esES'
 export type { Locale, MessageKey, Messages } from './messages'

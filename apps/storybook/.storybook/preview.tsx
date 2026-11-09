@@ -1,5 +1,5 @@
 import '@orangesys/ui/styles.css'
-import { isThemeSetting, OrangeProvider, themeNames } from '@orangesys/ui'
+import { esES, isThemeSetting, OrangeProvider, themeNames } from '@orangesys/ui'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import type { Decorator, Preview } from '@storybook/react-vite'
 import { orangeTheme } from './theme'
@@ -9,7 +9,13 @@ const withOrangeProvider: Decorator = (Story, context) => {
   const motion = (context.globals.motion as string) ?? 'full'
   const theme = isThemeSetting(context.globals.theme) ? context.globals.theme : 'dark'
   return (
-    <OrangeProvider locale={locale} themeTarget="scoped" theme={theme}>
+    // O espanhol não vem embutido no provider: o dicionário entra por messages.
+    <OrangeProvider
+      locale={locale}
+      messages={locale === 'es-ES' ? esES : undefined}
+      themeTarget="scoped"
+      theme={theme}
+    >
       {/* Fundo e cor do tema na própria story: na página de docs o fundo é o do Storybook
           (escuro), e sem isso as stories nos temas claros ficavam com contraste insuficiente. */}
       <div
@@ -32,6 +38,7 @@ const preview: Preview = {
         items: [
           { value: 'pt-BR', title: 'Português (BR)' },
           { value: 'en-US', title: 'English (US)' },
+          { value: 'es-ES', title: 'Español (ES)' },
         ],
         dynamicTitle: true,
       },

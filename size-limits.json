@@ -11,6 +11,7 @@
     { "name": "Combobox", "import": "Combobox", "limit": "22 KB" },
     { "name": "DatePicker", "import": "DatePicker", "limit": "23 KB" },
     { "name": "useScrollSpy", "import": "useScrollSpy", "limit": "1.5 KB" },
+    { "name": "esES (dicionário)", "import": "esES", "limit": "5 KB" },
     { "name": "styles.css", "file": "packages/ui/dist/styles.css", "limit": "70 KB" },
     { "name": "CSS do Button (with-css)", "css": "Button", "limit": "8 KB" },
     { "name": "CSS da Table (with-css)", "css": "Table", "limit": "10 KB" },
