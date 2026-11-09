@@ -440,7 +440,7 @@ Implementa o padrão Window Splitter do WAI-ARIA: cada `SplitterHandle` é um
 | `step` | `number` | `2` | Passo das setas, em %. Padrão: 2. |
 | `storageKey` | `string` | — | Guarda os tamanhos no `localStorage` (chave `or-splitter:<storageKey>`) ao fim de cada redimensionamento e os restaura ao montar. Falhas de armazenamento (modo privado, cota cheia) são ignoradas. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SplitterHandle`
 
@@ -450,7 +450,7 @@ clique duplo volta aos tamanhos padrão.
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SplitterPanel`
 
@@ -467,7 +467,21 @@ lidos pelo Splitter — o painel precisa ser filho direto dele.
 | `maxSize` | `number` | — | Tamanho máximo em %. Padrão: 100. |
 | `minSize` | `number` | — | Tamanho mínimo em %. Padrão: 0. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SplitterOrientation`:
+
+```ts
+export type SplitterOrientation = 'horizontal' | 'vertical'
+```
+
+`SplitterStackBreakpoint`:
+
+```ts
+export type SplitterStackBreakpoint = 'sm' | 'md'
+```
 
 ## Acessibilidade
 

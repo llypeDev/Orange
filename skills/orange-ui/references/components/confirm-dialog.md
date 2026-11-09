@@ -207,7 +207,32 @@ ação importante ou irreversível.
 | `tone` | `"neutral" \| "danger"` | `neutral` | `danger` para ações destrutivas: botão vermelho e foco inicial em Cancelar. `neutral` foca o botão de confirmação. |
 | `trigger` | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Elemento que abre o diálogo (modo não controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ConfirmDialogTone`:
+
+```ts
+export type ConfirmDialogTone = 'neutral' | 'danger'
+```
+
+`ConfirmOptions`:
+
+```ts
+/** Opções aceitas por `confirm()` do hook `useConfirm`. */
+export type ConfirmOptions = Pick<
+  ConfirmDialogProps,
+  | 'title'
+  | 'description'
+  | 'children'
+  | 'confirmLabel'
+  | 'cancelLabel'
+  | 'tone'
+  | 'onConfirm'
+  | 'loadingText'
+>
+```
 
 ## Acessibilidade
 

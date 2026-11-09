@@ -355,7 +355,7 @@ rodapé — com os landmarks e o link de atalho certos.
 | `stickyHeader` | `boolean` | `true` | Fixa o cabeçalho no topo durante a rolagem. |
 | `stickyNav` | `boolean` | `true` | Fixa a barra lateral (altura da tela, rolagem própria). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `AppShellNavToggle`
 
@@ -365,14 +365,52 @@ na marca do `AppHeader`. Não renderiza nada sem `navigation`.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Ícone. Padrão: menu (telas estreitas) ou chevrons que giram (telas largas). |
+| `icon` | `IconName \| ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Ícone. Padrão: menu (telas estreitas) ou chevrons que giram (telas largas). |
 | `label` | `string` | — | Nome acessível. Padrão: "Abrir navegação" (telas estreitas) ou "Recolher/Expandir menu lateral" (telas largas). |
 | `loading` | `boolean` | — | Mostra um indicador de carregamento e bloqueia novos cliques. |
 | `loadingText` | `string` | — | Texto anunciado a leitores de tela durante o carregamento. |
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do botão: `sm` 32px, `md` 40px, `lg` 48px. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | — | Estilo visual. `primary` é a ação principal; use apenas um por contexto. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`AppShellBreakpoint`:
+
+```ts
+export type AppShellBreakpoint = 'md' | 'lg'
+```
+
+`AppShellNavigationState`:
+
+```ts
+/** Estado entregue ao `navigation` quando ele é uma função. */
+export interface AppShellNavigationState {
+  /** Barra lateral recolhida (sempre `false` dentro do painel). */
+  collapsed: boolean
+  /** A navegação está no painel (telas estreitas). */
+  compact: boolean
+}
+```
+
+`AppShellState`:
+
+```ts
+/** Estado da navegação, exposto por `useAppShell()`. */
+export interface AppShellState {
+  /** Painel de navegação aberto (telas abaixo do ponto de quebra). */
+  navOpen: boolean
+  setNavOpen: (open: boolean) => void
+  /** Abre/fecha o painel (telas estreitas) ou recolhe/expande a barra lateral (telas largas). */
+  toggleNav: () => void
+  /** Barra lateral recolhida (telas a partir do ponto de quebra). */
+  navCollapsed: boolean
+  setNavCollapsed: (collapsed: boolean) => void
+  /** `true` abaixo do ponto de quebra: a navegação vive no painel (Drawer). */
+  isCompact: boolean
+}
+```
 
 ## Acessibilidade
 

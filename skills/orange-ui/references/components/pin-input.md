@@ -161,11 +161,11 @@ sozinho, aceita colar o código inteiro e o preenchimento automático do SMS.
 | --- | --- | --- | --- |
 | `autoFocus` | `boolean` | — | Foca o primeiro campo ao montar. |
 | `defaultValue` | `string` | — | Código inicial (não controlado). |
-| `description` | `ReactNode` | — | — |
+| `description` | `ReactNode` | — | Texto de ajuda exibido abaixo do rótulo. |
 | `disabled` | `boolean` | — | — |
-| `error` | `ReactNode` | — | — |
+| `error` | `ReactNode` | — | Mensagem de erro. Quando presente, o campo fica inválido. |
 | `groupSize` | `number` | — | Agrupa visualmente os campos (ex.: 3 → "123 456"). |
-| `hideLabel` | `boolean` | — | — |
+| `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
 | `id` | `string` | — | Id do primeiro campo. |
 | `invalid` | `boolean` | — | Marca os campos como inválidos sem exibir mensagem. |
 | `label` | `ReactNode` | — | Rótulo do grupo. |
@@ -175,12 +175,26 @@ sozinho, aceita colar o código inteiro e o preenchimento automático do SMS.
 | `onChange` | `((value: string) => void)` | — | Chamado a cada alteração. |
 | `onComplete` | `((value: string) => void)` | — | Chamado quando todos os campos estão preenchidos. |
 | `placeholder` | `string` | — | Texto de exemplo em cada campo vazio (ex.: "○"). |
-| `required` | `boolean` | — | — |
+| `required` | `boolean` | — | Campo obrigatório: mostra `*` e marca o controle como `required`. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Lado de cada campo: `sm` 32px, `md` 40px, `lg` 48px. |
 | `type` | `"numeric" \| "alphanumeric"` | `numeric` | Caracteres aceitos. `numeric` abre o teclado numérico no celular. |
 | `value` | `string` | — | Código digitado (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PinInputSize`:
+
+```ts
+export type PinInputSize = 'sm' | 'md' | 'lg'
+```
+
+`PinInputType`:
+
+```ts
+export type PinInputType = 'numeric' | 'alphanumeric'
+```
 
 ## Movimento
 

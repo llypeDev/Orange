@@ -299,7 +299,7 @@ Visual de uma notificação temporária. Normalmente é renderizado pelo
 | `title` | `ReactNode` | — | Mensagem principal, curta. |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger"` | `neutral` | Cor semântica e ícone. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ToastProvider`
 
@@ -315,6 +315,72 @@ Coloque-o uma vez, perto da raiz da aplicação.
 | `limit` | `number` | `3` | Máximo de toasts visíveis ao mesmo tempo; os demais aguardam na fila. |
 | `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `bottom-right` | Canto da tela onde a pilha aparece. |
 | `showProgress` | `boolean` | `false` | Mostra uma barra fina com o tempo restante em toasts que fecham sozinhos. Ela pausa junto com o timer (hover, foco, aba oculta). |
+
+### Tipos
+
+`ToastAction`:
+
+```ts
+export interface ToastAction {
+  /** Rótulo do botão (ex.: "Desfazer"). */
+  label: string
+  /** Chamado no clique. O toast é fechado em seguida. */
+  onClick: () => void
+}
+```
+
+`ToastOptions`:
+
+```ts
+export interface ToastOptions {
+  /** Id próprio. Chamar `toast()` com um id existente substitui o conteúdo daquele toast. */
+  id?: string
+  title?: ReactNode
+  description?: ReactNode
+  /** Padrão: `neutral`. */
+  tone?: ToastTone
+  /** Substitui o ícone do tom. `false` remove o ícone. */
+  icon?: ReactNode | false
+  action?: ToastAction
+  /**
+   * Tempo em ms até fechar sozinho. `Infinity` mantém o toast até ser fechado.
+   * Padrão: o `duration` do provider — ou `Infinity` quando há `action`.
+   */
+  duration?: number
+  /** Mostra o botão de fechar. Padrão: `true`. */
+  dismissible?: boolean
+  /** Chamado quando o toast é fechado (pelo usuário, pelo tempo ou por `dismiss`). */
+  onDismiss?: () => void
+  /** Mostra a barra de tempo restante deste toast. Padrão: o `showProgress` do provider. */
+  showProgress?: boolean
+}
+```
+
+`ToastPosition`:
+
+```ts
+export type ToastPosition =
+  'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+```
+
+`ToastTone`:
+
+```ts
+export type ToastTone = FeedbackTone
+```
+
+`UseToastReturn`:
+
+```ts
+export interface UseToastReturn {
+  /** Mostra um toast e retorna o seu id. */
+  toast: (options: ToastOptions) => string
+  /** Fecha o toast com o id informado. */
+  dismiss: (id: string) => void
+  /** Fecha todos os toasts. */
+  dismissAll: () => void
+}
+```
 
 ## Acessibilidade
 

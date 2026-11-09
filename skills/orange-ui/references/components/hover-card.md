@@ -172,7 +172,15 @@ também precisa estar disponível no destino do link.
 | `openDelay` | `number` | `600` | Atraso para abrir, em ms. |
 | `placement` | `"bottom" \| "top" \| "left" \| "right" \| "bottom-start" \| "bottom-end" \| "top-start" \| "top-end" \| "left-start" \| "left-end" \| "right-start" \| "right-end"` | `bottom` | Posição preferida; inverte sozinha se faltar espaço. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`HoverCardPlacement`:
+
+```ts
+export type HoverCardPlacement = FloatingPlacement
+```
 
 ## Acessibilidade
 

@@ -249,7 +249,82 @@ Só `transform` e `box-shadow` são animados — nada de `top` ou `height`.
 | `orientation` | `"horizontal" \| "vertical"` | — | Direção da lista. Define também as setas do teclado. Padrão: `vertical`. |
 | `ref` | `Ref<HTMLUListElement>` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SortableAnnouncementContext`:
+
+```ts
+export interface SortableAnnouncementContext {
+  /** Nome do item (de `getItemLabel`). */
+  label: string
+  /** Posição atual (base 1). */
+  position: number
+  /** Total de itens. */
+  total: number
+  /** Posição (base 1) antes do movimento começar. */
+  initialPosition: number
+}
+```
+
+`SortableAnnouncements`:
+
+```ts
+/** Textos anunciados no leitor de tela. Cada função substitui o texto padrão. */
+export interface SortableAnnouncements {
+  lifted?: (context: SortableAnnouncementContext) => string
+  moved?: (context: SortableAnnouncementContext) => string
+  dropped?: (context: SortableAnnouncementContext) => string
+  cancelled?: (context: SortableAnnouncementContext) => string
+}
+```
+
+`SortableItemState`:
+
+```ts
+export interface SortableItemState {
+  /** Posição atual (base 0). Durante o arraste, é a posição prevista. */
+  index: number
+  /** Total de itens. */
+  total: number
+  /** O item está sendo movido (por ponteiro ou teclado). */
+  isDragging: boolean
+  /** O item não pode ser movido (`disabled` da lista ou do item). */
+  disabled: boolean
+}
+```
+
+`SortableKey`:
+
+```ts
+export type SortableKey = string | number
+```
+
+`SortableListOrientation`:
+
+```ts
+export type SortableListOrientation = 'vertical' | 'horizontal'
+```
+
+`SortableMoveControls`:
+
+```ts
+export type SortableMoveControls = 'buttons' | 'menu' | 'none'
+```
+
+`SortableReorderDetails`:
+
+```ts
+export interface SortableReorderDetails<T> {
+  /** Posição original do item (base 0). */
+  from: number
+  /** Nova posição do item (base 0). */
+  to: number
+  /** O item movido. */
+  item: T
+}
+```
 
 ## Acessibilidade
 

@@ -164,7 +164,27 @@ colorido e botão de remover opcional.
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "accent"` | `neutral` | Cor semântica do marcador (e do fundo, na variante `solid`). |
 | `variant` | `"outline" \| "solid"` | `outline` | `outline` (borda, padrão) ou `solid` (fundo suave do tom). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TagSize`:
+
+```ts
+export type TagSize = 'sm' | 'md' | 'lg'
+```
+
+`TagTone`:
+
+```ts
+export type TagTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger' | 'info'
+```
+
+`TagVariant`:
+
+```ts
+export type TagVariant = 'outline' | 'solid'
+```
 
 ## Acessibilidade
 

@@ -145,7 +145,7 @@ resumos — "Plano: Pro", "Vencimento: 12/03".
 | `termVariant` | `"strong" \| "eyebrow"` | `eyebrow` | Estilo dos termos: `eyebrow` (caixa alta, padrão) ou `strong` (negrito). |
 | `termWidth` | `string` | — | Largura da coluna de termos no layout `horizontal` (valor CSS). Padrão: `12rem`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DescriptionDetails`
 
@@ -153,7 +153,7 @@ Descrição de um termo (`<dd>`).
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DescriptionGroup`
 
@@ -161,7 +161,7 @@ Agrupa um termo e suas descrições (`<div>` dentro do `<dl>`). Necessário no l
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DescriptionTerm`
 
@@ -169,7 +169,34 @@ Termo de uma `DescriptionList` (`<dt>`).
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DescriptionListItem`:
+
+```ts
+export interface DescriptionListItem {
+  /** Termo (rótulo) — vira um `<dt>`. */
+  term: ReactNode
+  /** Descrição (valor) — vira um `<dd>`. Use um array para vários valores do mesmo termo. */
+  description: ReactNode | ReactNode[]
+  /** Chave estável (padrão: índice). */
+  key?: Key
+}
+```
+
+`DescriptionListLayout`:
+
+```ts
+export type DescriptionListLayout = 'horizontal' | 'vertical' | 'grid'
+```
+
+`DescriptionTermVariant`:
+
+```ts
+export type DescriptionTermVariant = 'eyebrow' | 'strong'
+```
 
 ## Acessibilidade
 

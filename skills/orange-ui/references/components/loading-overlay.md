@@ -220,7 +220,7 @@ região `role="status"` que fica fora dele.
 | `open` | `boolean` | `false` | Mostra a sobreposição e bloqueia o conteúdo coberto. |
 | `spinnerSize` | `"sm" \| "md" \| "lg"` | `md` | Tamanho do spinner. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

@@ -330,7 +330,7 @@ valores de formulário, `Listbox`.
 | `selectionMode` | `"single" \| "multiple" \| "none"` | `none` | `none` (padrão, só navegação e ações), `single` (selecionar outra linha substitui; a selecionada continua selecionada) ou `multiple` (alterna, com caixas de seleção). |
 | `size` | `"sm" \| "md"` | `md` | Densidade das linhas: `sm` (40px) ou `md` (56px, padrão). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ListViewItem`
 
@@ -347,7 +347,21 @@ esquerda, `children` (título) e `description` no meio, `actions` à direita.
 | `icon` | `ReactNode` | — | Visual à esquerda: ícone, avatar ou logotipo. Decorativo (`aria-hidden`). |
 | `textValue` | `string` | — | Texto da busca por digitação e nome acessível quando `children` não tem texto. Padrão: o texto de `children`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ListViewSelectionMode`:
+
+```ts
+export type ListViewSelectionMode = 'none' | 'single' | 'multiple'
+```
+
+`ListViewSize`:
+
+```ts
+export type ListViewSize = 'sm' | 'md'
+```
 
 ## Movimento
 

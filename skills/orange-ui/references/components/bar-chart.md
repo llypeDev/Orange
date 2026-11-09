@@ -241,7 +241,40 @@ Legenda com marcas, tabela de dados alternativa e exploração por teclado.
 | `valueFormat` | `((value: number) => string) \| NumberFormatOptions` | — | Formato dos números: função ou opções do `Intl.NumberFormat` (ex.: `{ style: 'currency', currency: 'BRL' }`). |
 | `variant` | `"outline" \| "plain"` | `outline` | `outline` (padrão): borda de 1px e respiro interno. `plain`: sem moldura, para cartões. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BarChartDatum`:
+
+```ts
+export type BarChartDatum = ChartDatum
+```
+
+`BarChartLayout`:
+
+```ts
+export type BarChartLayout = 'grouped' | 'stacked'
+```
+
+`BarChartOrientation`:
+
+```ts
+export type BarChartOrientation = 'vertical' | 'horizontal'
+```
+
+`BarChartSeries`:
+
+```ts
+export type BarChartSeries = ChartSeries
+```
+
+`ChartValueFormat`:
+
+```ts
+/** Formato dos valores: uma função ou opções de `Intl.NumberFormat` (ex.: moeda BRL). */
+export type ChartValueFormat = ((value: number) => string) | Intl.NumberFormatOptions
+```
 
 ## Acessibilidade
 

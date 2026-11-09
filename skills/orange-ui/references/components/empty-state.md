@@ -217,7 +217,15 @@ resultados, filtro restritivo) e oferece o próximo passo.
 | `secondaryAction` | `ReactNode` | — | Ação secundária (ex.: um link para a documentação). |
 | `variant` | `"default" \| "compact"` | `default` | `compact`: horizontal e menor, para painéis, listas e células. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`EmptyStateVariant`:
+
+```ts
+export type EmptyStateVariant = 'default' | 'compact'
+```
 
 ## Acessibilidade
 

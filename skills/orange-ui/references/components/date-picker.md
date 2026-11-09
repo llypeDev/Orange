@@ -11,7 +11,7 @@ Campo de data com máscara conforme o idioma e calendário em diálogo, navegáv
 ## Boas práticas
 
 - Use para datas próximas ou relativas a hoje (entrega, vencimento, agendamento). Para datas distantes e conhecidas, como nascimento, a pessoa digita mais rápido — o campo aceita digitação direta com máscara.
-- Quando o horário também importa (agendar uma publicação, marcar uma reunião), use o : data e hora num só campo, com um rótulo e um valor `Date` — em vez de um DatePicker e um TimeField combinados à mão.
+- Quando o horário também importa (agendar uma publicação, marcar uma reunião), use o DateTimePicker: data e hora num só campo, com um rótulo e um valor `Date` — em vez de um DatePicker e um TimeField combinados à mão.
 - O formato segue o idioma do `OrangeProvider`: `dd/mm/aaaa` em pt-BR e `mm/dd/yyyy` em en-US. Ele aparece como placeholder e é anunciado como descrição do campo.
 - Restrinja com `min`, `max` e `isDateDisabled` e explique a regra na `description` ("Dias úteis nos próximos 60 dias").
 - Datas inválidas (31/02) ou indisponíveis mostram um erro automático e emitem `null`. Passe `error` para mensagens de negócio, como "Informe o vencimento".
@@ -248,7 +248,7 @@ mm/dd/yyyy em en-US) e um calendário em diálogo, seguindo o padrão
 | `value` | `Date \| null` | — | Data selecionada (controlado). `null` = vazio. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana no calendário: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `Calendar`
 
@@ -269,7 +269,21 @@ do WAI-ARIA). Use sozinha em painéis de agenda ou dentro do `DatePicker`.
 | `value` | `Date \| null` | — | Data selecionada (controlado). `null` = nenhuma. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CalendarWeekDay`:
+
+```ts
+export type CalendarWeekDay = WeekDay
+```
+
+`DatePickerSize`:
+
+```ts
+export type DatePickerSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

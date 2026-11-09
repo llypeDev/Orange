@@ -259,7 +259,21 @@ filtros e detalhes que não exigem sair do contexto atual.
 | `size` | `"sm" \| "md" \| "lg" \| "full"` | `md` | Largura (left/right): `sm` 360px, `md` 480px, `lg` 640px, `full` 100%. Altura máxima (bottom): `sm` 40%, `md` 60%, `lg` 85%, `full` 100%. |
 | `trigger` | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Elemento que abre o painel (modo não controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DrawerPlacement`:
+
+```ts
+export type DrawerPlacement = 'left' | 'right' | 'bottom'
+```
+
+`DrawerSize`:
+
+```ts
+export type DrawerSize = 'sm' | 'md' | 'lg' | 'full'
+```
 
 ## Acessibilidade
 

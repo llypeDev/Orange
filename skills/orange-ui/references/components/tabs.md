@@ -214,7 +214,7 @@ Implementa o padrão Tabs do WAI-ARIA com `TabList`, `Tab` e `TabPanel`.
 | `value` | `string` | — | Aba selecionada (controlado). |
 | `variant` | `"line" \| "enclosed"` | `line` | `line`: sublinhado laranja de 2px. `enclosed`: abas com borda, unidas ao painel. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `Tab`
 
@@ -226,7 +226,7 @@ Uma aba. Fica fora da ordem de Tab quando não está selecionada (roving tabinde
 | `badge` | `ReactNode` | — | Contador ou selo após o rótulo (ex.: número de itens). |
 | `icon` | `ReactNode` | — | Ícone antes do rótulo (decorativo). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `TabList`
 
@@ -234,7 +234,7 @@ Contêiner das abas (`role="tablist"`). Dê um nome com `aria-label` ou `aria-la
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `TabPanel`
 
@@ -245,7 +245,33 @@ Painel de conteúdo de uma aba (`role="tabpanel"`).
 | `value` (obrigatória) | `string` | — | O `value` da aba que controla este painel. |
 | `keepMounted` | `boolean` | `false` | Mantém o conteúdo montado (apenas escondido) quando o painel está inativo. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TabsActivation`:
+
+```ts
+export type TabsActivation = 'automatic' | 'manual'
+```
+
+`TabsOrientation`:
+
+```ts
+export type TabsOrientation = 'horizontal' | 'vertical'
+```
+
+`TabsSize`:
+
+```ts
+export type TabsSize = 'sm' | 'md' | 'lg'
+```
+
+`TabsVariant`:
+
+```ts
+export type TabsVariant = 'line' | 'enclosed'
+```
 
 ## Acessibilidade
 

@@ -164,7 +164,15 @@ leitores de tela anunciem o propósito do grupo. `size`, `variant` e
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho aplicado a todos os botões que não definem o próprio `size`. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | — | Variante aplicada a todos os botões que não definem a própria `variant`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ButtonGroupOrientation`:
+
+```ts
+export type ButtonGroupOrientation = 'horizontal' | 'vertical'
+```
 
 ## Acessibilidade
 

@@ -233,7 +233,21 @@ instabilidade, prazos, convites. Fica no topo, acima do conteúdo.
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger"` | `info` | Cor semântica e ícone (variante `default`). |
 | `variant` | `"accent" \| "default"` | `default` | `default`: faixa compacta com fundo do tom, para avisos do sistema. `accent`: chamada com borda laranja e título grande (anúncios, convites). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BannerTone`:
+
+```ts
+export type BannerTone = FeedbackTone
+```
+
+`BannerVariant`:
+
+```ts
+export type BannerVariant = 'default' | 'accent'
+```
 
 ## Acessibilidade
 

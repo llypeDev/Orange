@@ -234,7 +234,27 @@ descrição, selos, ações e navegação local (abas).
 | `renderLink` | `RenderLink` | — | Renderiza o link de volta com o componente do seu roteador. |
 | `reveal` | `boolean` | `false` | Entrada em sequência ao montar: eyebrow → título → descrição → ações (sobem 24px com fade, 80ms entre eles). Desligada com movimento reduzido. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PageHeaderBack`:
+
+```ts
+/** Link de volta para a página anterior na hierarquia. */
+export interface PageHeaderBack {
+  /** Destino do link. */
+  href: string
+  /** Texto do link — diga para onde ele leva ("Pedidos", "Voltar para pedidos"). */
+  label: string
+}
+```
+
+`PageHeaderHeadingLevel`:
+
+```ts
+export type PageHeaderHeadingLevel = 1 | 2 | 3
+```
 
 ## Acessibilidade
 

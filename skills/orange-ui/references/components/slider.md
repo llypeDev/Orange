@@ -159,9 +159,9 @@ dois polegares definem um intervalo.
 | `className` | `string` | — | Classe aplicada ao contêiner externo. |
 | `defaultValue` | `number \| [number, number]` | — | — |
 | `description` | `ReactNode` | — | Texto de ajuda exibido abaixo do rótulo. |
-| `error` | `ReactNode` | — | — |
+| `error` | `ReactNode` | — | Mensagem de erro. Quando presente, o campo fica inválido. |
 | `formatValue` | `((value: number) => string)` | — | Formata o valor para a saída visível e para `aria-valuetext` (ex.: moeda, %). |
-| `hideLabel` | `boolean` | — | — |
+| `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
 | `invalid` | `boolean` | — | Marca o campo como inválido sem exibir mensagem. |
 | `label` | `ReactNode` | — | Rótulo visível do campo. |
 | `marks` | `boolean \| (number \| SliderMark)[]` | — | Marcas no trilho. `true` = uma por passo; números = marcas sem rótulo; objetos `{ value, label }` = marcas com rótulo (clicáveis com o mouse). |
@@ -177,7 +177,25 @@ dois polegares definem um intervalo.
 | `thumbLabels` | `[string, string]` | — | Nomes acessíveis dos polegares. Padrão: "mínimo" e "máximo". |
 | `value` | `number \| [number, number]` | — | — |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SliderMark`:
+
+```ts
+export interface SliderMark {
+  value: number
+  /** Rótulo exibido abaixo do trilho. Sem rótulo, mostra apenas a marca. */
+  label?: ReactNode
+}
+```
+
+`SliderSize`:
+
+```ts
+export type SliderSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

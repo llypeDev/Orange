@@ -236,7 +236,33 @@ montados.
 | `padding` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 10 \| 12` | `6` | Espaçamento interno na escala de espaço (`6` = 1.5rem). Padrão: `6`. |
 | `tone` | `"default" \| "subtle" \| "inverse"` | `default` | Cor de fundo: `default` (superfície), `subtle` (fundo sutil) ou `inverse` (inverte o tema dentro da superfície — componentes internos acompanham). |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PaperBorder`:
+
+```ts
+export type PaperBorder = 'none' | 'default' | 'strong' | 'accent-top' | 'accent-left'
+```
+
+`PaperElevation`:
+
+```ts
+export type PaperElevation = 'flat' | 'raised' | 'overlay'
+```
+
+`PaperPadding`:
+
+```ts
+export type PaperPadding = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+```
+
+`PaperTone`:
+
+```ts
+export type PaperTone = 'default' | 'subtle' | 'inverse'
+```
 
 ## Movimento
 

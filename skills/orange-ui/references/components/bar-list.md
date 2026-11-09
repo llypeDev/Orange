@@ -153,7 +153,35 @@ barra proporcional ao maior valor. Linhas com `href` viram links. Com
 | `sort` | `"none" \| "desc" \| "asc"` | `desc` | `desc` (maior primeiro, padrão), `asc` ou `none` (a ordem de `data`). |
 | `valueFormat` | `ChartValueFormat` | — | Formato dos valores: função ou opções do `Intl.NumberFormat` (ex.: `{ style: 'currency', currency: 'BRL' }`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BarListDatum`:
+
+```ts
+/** Uma linha do ranking. */
+export interface BarListDatum {
+  /** Nome do item: página, produto, região… */
+  label: ReactNode
+  /** Valor (≥ 0). A barra é proporcional ao maior valor da lista. */
+  value: number
+  /** Torna a linha inteira um link. */
+  href?: string
+}
+```
+
+`BarListSize`:
+
+```ts
+export type BarListSize = 'sm' | 'md' | 'lg'
+```
+
+`BarListSort`:
+
+```ts
+export type BarListSort = 'desc' | 'asc' | 'none'
+```
 
 ## Acessibilidade
 

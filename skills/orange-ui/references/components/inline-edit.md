@@ -183,7 +183,15 @@ ser ativado. Enter ou sair do campo salva, Escape cancela.
 | `validate` | `((value: string) => string \| null)` | — | Retorna uma mensagem de erro para impedir o salvamento. |
 | `value` | `string` | — | Valor salvo (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`InlineEditSize`:
+
+```ts
+export type InlineEditSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

@@ -124,7 +124,15 @@ enviar um formulário, prefira `Checkbox`.
 | `size` | `"sm" \| "md"` | `md` | Tamanho do trilho: `sm` ou `md` (padrão). |
 | `value` | `string` | `on` | Valor enviado quando ligado. Padrão: `on`. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SwitchSize`:
+
+```ts
+export type SwitchSize = 'sm' | 'md'
+```
 
 ## Movimento
 

@@ -238,7 +238,34 @@ explorador de arquivos, categorias, estrutura de páginas.
 | `selectionMode` | `"single" \| "multiple" \| "none"` | `single` | `single` (padrão), `multiple` ou `none` (só navegação). |
 | `size` | `"sm" \| "md"` | `md` | Altura das linhas: `sm` (28px) ou `md` (32px, padrão). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TreeViewItem`:
+
+```ts
+export interface TreeViewItem {
+  /** Identificador único em toda a árvore. */
+  id: string
+  /** Rótulo exibido. */
+  label: ReactNode
+  /** Texto usado na busca por digitação quando `label` não é uma string. */
+  textValue?: string
+  /** Ícone do item. Sem ele, pastas e arquivos usam ícones padrão (veja `defaultIcons`). */
+  icon?: ReactNode
+  /** Itens filhos. Um item com `children` (mesmo vazio) é tratado como pasta. */
+  children?: TreeViewItem[]
+  /** Item focável, mas que não pode ser selecionado nem expandido. */
+  disabled?: boolean
+}
+```
+
+`TreeViewSelectionMode`:
+
+```ts
+export type TreeViewSelectionMode = 'single' | 'multiple' | 'none'
+```
 
 ## Movimento
 

@@ -195,7 +195,43 @@ colunas com títulos em caixa alta e uma barra inferior.
 | `navLabel` | `string` | — | Nome da navegação do mapa do site. Padrão: `t('footerNavLabel')` ("Mapa do site"). |
 | `renderLink` | `RenderLink` | — | Renderiza os links internos com o componente do seu roteador: `renderLink={({ href, ...p }) => <RouterLink to={href} {...p} />}`. Links `external` continuam sendo `<a>` nativos. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`FooterColumn`:
+
+```ts
+/** Uma coluna do mapa do site: título curto em caixa alta e a lista de links. */
+export interface FooterColumn {
+  /** Título da coluna (vira um heading). */
+  title: string
+  links: FooterLinkItem[]
+}
+```
+
+`FooterHeadingLevel`:
+
+```ts
+export type FooterHeadingLevel = 2 | 3 | 4 | 5 | 6
+```
+
+`FooterLinkItem`:
+
+```ts
+/** Um link de uma coluna do rodapé. */
+export interface FooterLinkItem {
+  /** Texto do link. */
+  label: string
+  /** Destino. */
+  href: string
+  /**
+   * Link para outro site: abre em nova aba (`rel="noopener noreferrer"`),
+   * mostra o ícone ↗ colado à última palavra e avisa leitores de tela.
+   */
+  external?: boolean
+}
+```
 
 ## Acessibilidade
 

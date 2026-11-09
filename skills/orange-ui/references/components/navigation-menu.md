@@ -286,7 +286,79 @@ foco fora fecham.
 | `openItem` | `string \| null` | — | Painel aberto (controlado): o `id` do item, ou `null` para nenhum. |
 | `renderLink` | `RenderLink` | — | Renderiza os links com o componente do seu roteador. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`NavigationMenuGroup`:
+
+```ts
+/** Grupo de links com título — uma coluna do painel (ex.: "Por setor"). */
+export interface NavigationMenuGroup {
+  /** Título curto do grupo (em caixa alta); rotula a lista. */
+  label: ReactNode
+  /** Links do grupo. */
+  items: NavigationMenuLink[]
+}
+```
+
+`NavigationMenuItem`:
+
+```ts
+export type NavigationMenuItem = NavigationMenuLinkItem | NavigationMenuPanelItem
+```
+
+`NavigationMenuLink`:
+
+```ts
+/** Um link dentro de um painel. */
+export interface NavigationMenuLink {
+  /** Texto do link (nome acessível). */
+  label: ReactNode
+  /** Destino. */
+  href: string
+  /** Linha de apoio abaixo do rótulo; vira a descrição acessível do link (`aria-describedby`). */
+  description?: ReactNode
+  /** Ícone decorativo: nome de um ícone do Orange ou um elemento. */
+  icon?: IconName | ReactNode
+  /** Marca o link como página atual. Padrão: `href === currentHref`. */
+  active?: boolean
+}
+```
+
+`NavigationMenuLinkItem`:
+
+```ts
+/** Item do primeiro nível que é um link. */
+export interface NavigationMenuLinkItem {
+  /** Texto do link. */
+  label: ReactNode
+  /** Destino. */
+  href: string
+  /** Ícone decorativo antes do rótulo: nome de um ícone do Orange ou um elemento. */
+  icon?: IconName | ReactNode
+  /** Marca o item como página atual. Padrão: `href === currentHref`. */
+  active?: boolean
+}
+```
+
+`NavigationMenuPanelItem`:
+
+```ts
+/** Item do primeiro nível que abre um painel com links. */
+export interface NavigationMenuPanelItem {
+  /** Identificador usado em `openItem`. Padrão: a posição do item (`'0'`, `'1'`…). */
+  id?: string
+  /** Texto do botão que abre o painel. */
+  label: ReactNode
+  /** Links do painel: soltos e/ou grupos com título (cada grupo vira uma coluna). */
+  items: (NavigationMenuLink | NavigationMenuGroup)[]
+  /** Texto curto no topo do painel, apresentando a seção. */
+  description?: ReactNode
+  /** Colunas do painel (1–4). Padrão: uma por grupo; links soltos, 1. */
+  columns?: 1 | 2 | 3 | 4
+}
+```
 
 ## Acessibilidade
 

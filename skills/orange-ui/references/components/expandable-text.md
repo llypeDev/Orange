@@ -150,7 +150,7 @@ só aparece quando o conteúdo realmente não cabe.
 | `showLessLabel` | `string` | — | Rótulo do botão quando expandido. Padrão: `t('showLess')`. |
 | `showMoreLabel` | `string` | — | Rótulo do botão quando recolhido. Padrão: `t('showMore')`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Movimento
 

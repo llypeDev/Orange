@@ -268,7 +268,7 @@ automáticas por largura mínima) com espaçamento da escala do sistema.
 | `rowGap` | `ResponsiveValue<LayoutGap>` | — | Espaço só entre linhas (substitui `gap` nesse eixo). Responsivo. |
 | `variant` | `"plain" \| "bordered"` | `plain` | `plain` (padrão) ou `bordered`: as células encostam, separadas por linhas de 1px e com moldura externa, como as grades de números do zop.dev. Em `bordered`, `gap`/`rowGap`/`columnGap` viram o respiro interno de cada célula (o espaço entre a linha e o conteúdo). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `GridItem`
 
@@ -279,7 +279,21 @@ Item de `Grid` que ocupa mais de uma coluna. Itens simples não precisam dele.
 | `as` | `ElementType` | `div` | Elemento renderizado. Padrão: `div`. Dentro de `Grid as="ul"`, use `li`. |
 | `span` | `ResponsiveValue<GridSpan>` | — | Quantas colunas o item ocupa, ou `full` para a linha inteira. Responsivo: `{ base: 'full', lg: 2 }`. Não passe de `columns` no mesmo breakpoint. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`GridSpan`:
+
+```ts
+export type GridSpan = number | 'full'
+```
+
+`GridVariant`:
+
+```ts
+export type GridVariant = 'plain' | 'bordered'
+```
 
 ## Acessibilidade
 

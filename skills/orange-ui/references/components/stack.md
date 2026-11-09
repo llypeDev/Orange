@@ -244,7 +244,47 @@ breakpoint, só com CSS.
 | `separator` | `boolean` | `false` | Linha de 1px (`--or-color-border`) entre os filhos, com `gap` de cada lado. Acompanha a direção (horizontal ou vertical) sozinha. Decorativa: fica oculta para leitores de tela. Pensada para pilhas sem `wrap`. |
 | `wrap` | `boolean` | `false` | Quebra os filhos em novas linhas quando não cabem. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`LayoutGap`:
+
+```ts
+/** Escala de espaço dos componentes de layout: `4` = `--or-space-4` (1rem). */
+export type LayoutGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
+```
+
+`ResponsiveValue`:
+
+```ts
+/**
+ * Valor que pode mudar conforme a largura da janela. Mobile-first: `base` vale
+ * sempre e cada breakpoint vale daquela largura para cima (sm 640px, md 768px,
+ * lg 1024px, xl 1280px), até o próximo breakpoint definido.
+ *
+ * `direction={{ base: 'vertical', md: 'horizontal' }}`
+ */
+export type ResponsiveValue<T> = T | BreakpointMap<T>
+```
+
+`StackAlign`:
+
+```ts
+export type StackAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
+```
+
+`StackDirection`:
+
+```ts
+export type StackDirection = 'vertical' | 'horizontal'
+```
+
+`StackJustify`:
+
+```ts
+export type StackJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
+```
 
 ## Acessibilidade
 

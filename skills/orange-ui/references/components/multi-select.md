@@ -189,13 +189,13 @@ e os itens escolhidos aparecem como chips removíveis.
 | `clearable` | `boolean` | — | Mostra o botão "Limpar tudo" quando há seleção. Padrão: `true`. |
 | `defaultOpen` | `boolean` | — | — |
 | `defaultValue` | `string[]` | — | Valores iniciais (não controlado). |
-| `description` | `ReactNode` | — | — |
+| `description` | `ReactNode` | — | Texto de ajuda exibido abaixo do rótulo. |
 | `emptyMessage` | `ReactNode` | — | Mensagem quando nenhuma opção corresponde à busca. |
-| `error` | `ReactNode` | — | — |
+| `error` | `ReactNode` | — | Mensagem de erro. Quando presente, o campo fica inválido. |
 | `filter` | `false \| ((option: MultiSelectOption, query: string) => boolean)` | — | Função de filtro. Padrão: o rótulo contém o texto, ignorando acentos e caixa. Passe `false` quando as opções já vierem filtradas. |
-| `hideLabel` | `boolean` | — | — |
+| `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
 | `invalid` | `boolean` | — | Marca o campo como inválido sem exibir mensagem. |
-| `label` | `ReactNode` | — | — |
+| `label` | `ReactNode` | — | Rótulo visível do campo. Sempre informe um rótulo — mesmo que oculto. |
 | `loading` | `boolean` | — | Mostra "Carregando…" na lista. |
 | `maxSelected` | `number` | — | Limite de itens selecionados. Ao atingir, as demais opções ficam indisponíveis. |
 | `onChange` | `((value: string[], options: MultiSelectOption[]) => void)` | — | Chamado a cada seleção ou remoção. |
@@ -205,7 +205,29 @@ e os itens escolhidos aparecem como chips removíveis.
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura mínima do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `string[]` | — | Valores selecionados (controlado). |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`MultiSelectOption`:
+
+```ts
+export interface MultiSelectOption {
+  /** Valor da opção (único). */
+  value: string
+  /** Texto exibido na lista e no chip. */
+  label: string
+  /** Texto secundário exibido abaixo do rótulo. */
+  description?: string
+  disabled?: boolean
+}
+```
+
+`MultiSelectSize`:
+
+```ts
+export type MultiSelectSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

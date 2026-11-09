@@ -184,14 +184,14 @@ variante `ghost` por padrão e integração com ButtonGroup e Toolbar.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `icon` (obrigatória) | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Nome de um ícone do Orange ou um elemento SVG próprio. |
+| `icon` (obrigatória) | `IconName \| ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Nome de um ícone do Orange ou um elemento SVG próprio. |
 | `label` (obrigatória) | `string` | — | Nome acessível do botão (vira `aria-label`). Obrigatório: descreva a ação, não o ícone — "Excluir arquivo", não "Lixeira". |
 | `loading` | `boolean` | — | Mostra um indicador de carregamento e bloqueia novos cliques. |
 | `loadingText` | `string` | — | Texto anunciado a leitores de tela durante o carregamento. |
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do botão: `sm` 32px, `md` 40px, `lg` 48px. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | — | Estilo visual. `primary` é a ação principal; use apenas um por contexto. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

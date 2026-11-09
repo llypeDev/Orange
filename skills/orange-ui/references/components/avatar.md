@@ -179,7 +179,27 @@ indicador de presença opcional.
 | `status` | `"online" \| "away" \| "busy" \| "offline"` | — | Indicador de presença. |
 | `statusLabel` | `string` | — | Substitui o texto acessível do status. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`AvatarShape`:
+
+```ts
+export type AvatarShape = 'square' | 'circle'
+```
+
+`AvatarSize`:
+
+```ts
+export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+```
+
+`AvatarStatus`:
+
+```ts
+export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
+```
 
 ## Acessibilidade
 

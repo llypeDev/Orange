@@ -15,10 +15,11 @@ grade explícita. Site: https://orange.llypedev.com.br · Código: https://githu
 1. **Escolha** os componentes em [references/components.md](references/components.md) (índice por
    categoria, com uma linha sobre cada um) ou na tabela "Preciso de…" abaixo.
 2. **Leia** `references/components/<slug>.md` de cada componente que for usar, antes de escrever o
-   código. Ele traz as props reais (geradas do TypeScript), boas práticas, faça/evite, teclado, WCAG
-   e exemplos completos que funcionam. **Não invente props**: o que não está na tabela não existe —
-   exceto os atributos nativos que o componente repassa ao elemento raiz (`className`, `style`,
-   `aria-*`, `data-*`, eventos), indicados no fim de cada tabela.
+   código. Ele traz as props reais (geradas do TypeScript), os tipos exportados (seção "Tipos",
+   como `FormValues` ou `SelectOption`), boas práticas, faça/evite, teclado, WCAG e exemplos
+   completos que funcionam. **Não invente props**: o que não está na tabela não existe — exceto os
+   atributos nativos que o componente repassa (`name`, `required`, `disabled`, `className`,
+   `aria-*`…), indicados na linha "Repassa também…" depois de cada tabela.
 3. **Tela inteira?** Parta de um modelo: [sign-in](references/templates/sign-in.md),
    [dashboard](references/templates/dashboard.md) ou [settings](references/templates/settings.md) —
    código completo, componentes usados e decisões de acessibilidade.
@@ -55,7 +56,11 @@ createRoot(document.getElementById('root')!).render(
 - `OrangeProvider`: `theme`/`defaultTheme` (`dark` padrão, `light`, `dark-hc`, `light-hc`,
   `system`), `onThemeChange`, `themeTarget` (`document` | `scoped`), `locale` (`pt-BR` padrão,
   `en-US`) e `messages` (sobrescreve textos internos). `useTheme()` lê e troca o tema.
-- `ToastProvider` (dentro do `OrangeProvider`) se usar `useToast()`.
+- `ToastProvider`, uma vez, na raiz (dentro do `OrangeProvider`), se a aplicação usar `useToast()`.
+  O hook só funciona num componente **descendente** do provider (fora dele, lança erro) — nunca
+  no mesmo componente que renderiza o `ToastProvider`.
+- Landmarks: o `AppShell` já cria `header`, `nav`, `main` e o link "Pular para o conteúdo". Uma
+  tela dentro dele não cria outro `<main>`; uma página avulsa usa `Container as="main"`.
 - Next.js App Router: o provider vai num componente `'use client'`; veja "Next.js e SSR" em
   `references/guides/getting-started.md` (inclui o script que evita o flash de tema).
 
@@ -71,6 +76,8 @@ createRoot(document.getElementById('root')!).render(
 | Escolher 1 numa lista longa, com busca          | `Combobox`                                                                                      | `Select` com 200 itens                |
 | Escolher vários                                 | `Checkbox` em `CheckboxGroup`, `MultiSelect` (com busca), `Chip` (filtros rápidos)              | —                                     |
 | Liga/desliga com efeito imediato                | `Switch`                                                                                        | `Checkbox`                            |
+| Opção que só vale ao enviar o formulário        | `Checkbox`                                                                                      | `Switch`                              |
+| "Cancelar" num cadastro                         | `Link`/`buttonClassName()` para voltar; `Button` + `ConfirmDialog` se houver alterações         | `Button` que navega                   |
 | Data, período, data e hora, hora                | `DatePicker`, `DateRangePicker`, `DateTimePicker`, `TimeField`                                  | `<input type="date">`                 |
 | Dinheiro, número                                | `CurrencyField`, `NumberField`                                                                  | `TextField` com máscara manual        |
 | Formulário com validação e resumo de erros      | `Form` (+ `ErrorSummary`, `Fieldset`)                                                           | validar só com cor                    |
@@ -113,6 +120,10 @@ outro.
   tema; as primitivas `--or-palette-*` não (não use direto). Lista completa: `references/tokens.md`.
 - Personalize sobrescrevendo **tokens públicos** num escopo (`.compacto { --or-control-md: 2rem }`),
   nunca as classes internas (`.or-button__label`) nem variáveis privadas (`--_bg`).
+- Os exemplos da referência montam a demonstração com `style` inline em px (`gap: 16`,
+  `maxWidth: 520`) e o CSS dos modelos às vezes mira classes internas para compor a página. Copie
+  os componentes e as props, não esse CSS: no seu código, espace com `Stack`/`Grid` (`gap` na
+  escala) e escreva estilos com `var(--or-*)` em classes suas.
 - Identidade: cantos retos (sem `border-radius` arredondado), bordas de 1px, um só acento laranja
   (`--or-color-accent`) — não introduza outras cores de destaque. Ícones: `<Icon name="…" />`
   (nomes em `references/icons.md`), não SVGs avulsos.
@@ -125,8 +136,9 @@ reduce)`.
 
 - Todo campo tem rótulo visível (`label`); se o design esconder, use `hideLabel`, nunca omita.
   Placeholder não é rótulo.
-- Botão só com ícone: `aria-label` descrevendo a ação ("Remover do carrinho"). Ícone que transmite
-  sentido sozinho: `label` no `Icon`.
+- Botão só com ícone: `IconButton` com `label` (ou `Button iconOnly` com `aria-label`) descrevendo a
+  ação ("Remover do carrinho"), não o desenho. Ícone que transmite sentido sozinho: `label` no
+  `Icon`.
 - Um `h1` por página; `Heading level` segue a hierarquia, não o tamanho.
 - Erros dizem o que fazer ("Informe um e-mail no formato nome@empresa.com.br"), não só "Inválido";
   nunca só cor para indicar estado.

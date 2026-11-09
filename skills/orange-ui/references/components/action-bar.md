@@ -388,7 +388,15 @@ aparecer não rouba o foco e a contagem é anunciada numa região viva educada.
 | `placement` | `"bottom" \| "top"` | `bottom` | Borda da tela (ou do contêiner, com `portal={false}`) onde a barra flutua. |
 | `portal` | `boolean` | `true` | `true`: fixa na viewport, centralizada, acima do conteúdo (renderizada em portal). `false`: absoluta dentro do contêiner posicionado mais próximo — para painéis e exemplos. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ActionBarPlacement`:
+
+```ts
+export type ActionBarPlacement = 'bottom' | 'top'
+```
 
 ## Acessibilidade
 

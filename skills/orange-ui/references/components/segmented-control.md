@@ -247,7 +247,30 @@ as setas mudam a seleção.
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Altura: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `string` | — | Valor selecionado (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SegmentedControlOption`:
+
+```ts
+export interface SegmentedControlOption {
+  /** Valor enviado em `onChange` e no formulário. */
+  value: string
+  /** Rótulo da opção. Também é o nome acessível quando `iconOnly`. */
+  label: string
+  /** Ícone antes do rótulo. */
+  icon?: IconName
+  /** Desabilita somente esta opção. */
+  disabled?: boolean
+}
+```
+
+`SegmentedControlSize`:
+
+```ts
+export type SegmentedControlSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

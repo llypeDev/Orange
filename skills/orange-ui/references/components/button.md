@@ -137,7 +137,7 @@ Para navegar entre páginas, use `Link`.
 | `startIcon` | `ReactNode` | — | Ícone antes do rótulo. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | `primary` | Estilo visual. `primary` é a ação principal; use apenas um por contexto. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `buttonClassName(opções)` — função
 
@@ -149,6 +149,20 @@ Gera as classes do botão — útil para estilizar links como botões.
 | `iconOnly` | `boolean` | `false` | Botão somente com ícone (quadrado). Exige `aria-label` para ser compreendido por leitores de tela. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Altura do botão: `sm` 32px, `md` 40px, `lg` 48px. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | `primary` | Estilo visual. `primary` é a ação principal; use apenas um por contexto. |
+
+### Tipos
+
+`ButtonSize`:
+
+```ts
+export type ButtonSize = 'sm' | 'md' | 'lg'
+```
+
+`ButtonVariant`:
+
+```ts
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
+```
 
 ## Acessibilidade
 

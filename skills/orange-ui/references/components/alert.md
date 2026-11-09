@@ -209,7 +209,15 @@ relacionado a uma parte da página.
 | `title` | `ReactNode` | — | Título curto, em negrito. |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger"` | `info` | Cor semântica e ícone. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`AlertTone`:
+
+```ts
+export type AlertTone = FeedbackTone
+```
 
 ## Acessibilidade
 

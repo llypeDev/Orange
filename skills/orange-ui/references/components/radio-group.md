@@ -176,7 +176,7 @@ mudam a seleção.
 | `value` | `string \| null` | — | Valor selecionado (controlado). `null` = nenhum. |
 | `variant` | `"default" \| "card"` | `default` | `card` mostra cada opção em um cartão com borda (laranja quando selecionado). |
 
-Repassa também os atributos nativos (`FieldsetHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`FieldsetHTMLAttributes`) do `<fieldset>`, como `name`, `form` e `disabled`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `Radio`
 
@@ -190,7 +190,26 @@ A `ref` e as props nativas vão para o `<input>`; `className` e `style`, para o 
 | `value` (obrigatória) | `string` | — | Valor enviado quando esta opção está selecionada. |
 | `description` | `ReactNode` | — | Texto de apoio da opção, ligado por `aria-describedby`. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`RadioGroupOption`:
+
+```ts
+export interface RadioGroupOption {
+  value: string
+  label: ReactNode
+  description?: ReactNode
+  disabled?: boolean
+}
+```
+
+`RadioGroupVariant`:
+
+```ts
+export type RadioGroupVariant = 'default' | 'card'
+```
 
 ## Movimento
 

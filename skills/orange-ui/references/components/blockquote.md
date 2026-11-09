@@ -150,7 +150,15 @@ atributos vão para o elemento raiz.
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Tamanho do texto: `sm` (13px), `md` (15px, padrão) ou `lg` (17px). |
 | `source` | `ReactNode` | — | Atribuição visível: autor, cargo, obra (`<cite>`). Com ela, a citação é envolvida em `<figure>` e a fonte vai para uma `<figcaption>` precedida de travessão. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BlockquoteSize`:
+
+```ts
+export type BlockquoteSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

@@ -271,7 +271,7 @@ informação. Prende o foco, bloqueia o scroll da página e fecha com Escape.
 | `size` | `"sm" \| "md" \| "lg" \| "full"` | `md` | Largura: `sm` 400px, `md` 560px, `lg` 800px, `full` tela inteira. |
 | `trigger` | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Elemento que abre o diálogo (modo não controlado). Recebe `onClick` e `aria-haspopup="dialog"`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ModalBody`
 
@@ -279,7 +279,7 @@ Corpo do Modal. Rola internamente quando o conteúdo passa da altura disponível
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ModalFooter`
 
@@ -287,7 +287,15 @@ Rodapé do Modal com as ações, alinhadas à direita (a principal por último).
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ModalSize`:
+
+```ts
+export type ModalSize = 'sm' | 'md' | 'lg' | 'full'
+```
 
 ## Acessibilidade
 

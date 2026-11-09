@@ -637,7 +637,68 @@ export default function VisibleColumns() {
 | `sort` | `TableSort \| null` | — | Ordenação controlada. |
 | `striped` | `boolean` | — | Alterna a cor de fundo das linhas. |
 
-Repassa também os atributos nativos (`TableHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TableHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TableAlign`:
+
+```ts
+export type TableAlign = 'start' | 'center' | 'end'
+```
+
+`TableColumn`:
+
+```ts
+export interface TableColumn<T> {
+  /** Identificador único da coluna. Sem `render`, a célula mostra `row[key]`. */
+  key: string
+  /** Conteúdo do cabeçalho (`<th scope="col">`). */
+  header: ReactNode
+  /** Renderiza o conteúdo da célula. */
+  render?: (row: T, index: number) => ReactNode
+  /** Permite ordenar pela coluna (botão no cabeçalho). */
+  sortable?: boolean
+  /** Valor usado na ordenação. Padrão: `row[key]`. */
+  sortValue?: (row: T) => TableSortValue
+  /** Alinhamento horizontal. Use `end` para números. */
+  align?: TableAlign
+  /** Largura da coluna (px ou qualquer unidade CSS). */
+  width?: number | string
+  /** Células desta coluna viram cabeçalhos de linha (`<th scope="row">`). */
+  rowHeader?: boolean
+  /** Esconde o texto do cabeçalho visualmente (continua acessível). */
+  hideHeader?: boolean
+}
+```
+
+`TableDensity`:
+
+```ts
+export type TableDensity = 'compact' | 'normal'
+```
+
+`TableSort`:
+
+```ts
+export interface TableSort {
+  /** `key` da coluna ordenada. */
+  key: string
+  direction: TableSortDirection
+}
+```
+
+`TableSortDirection`:
+
+```ts
+export type TableSortDirection = 'ascending' | 'descending'
+```
+
+`TableSortValue`:
+
+```ts
+export type TableSortValue = string | number | boolean | Date | null | undefined
+```
 
 ## Acessibilidade
 

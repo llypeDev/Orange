@@ -230,7 +230,7 @@ automaticamente.
 | `orientation` | `"horizontal" \| "vertical"` | `horizontal` | Direção da barra. Define quais setas movem o foco (←/→ ou ↑/↓). |
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho repassado aos botões da barra. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ToolbarGroup`
 
@@ -245,7 +245,7 @@ Agrupa itens relacionados dentro da Toolbar (`role="group"`). Use
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho aplicado a todos os botões que não definem o próprio `size`. |
 | `variant` | `"outline" \| "danger" \| "primary" \| "secondary" \| "ghost"` | — | Variante aplicada a todos os botões que não definem a própria `variant`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ToolbarSeparator`
 
@@ -253,7 +253,15 @@ Divisor visual entre grupos de uma Toolbar (`role="separator"`, não focável).
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ToolbarOrientation`:
+
+```ts
+export type ToolbarOrientation = 'horizontal' | 'vertical'
+```
 
 ## Acessibilidade
 

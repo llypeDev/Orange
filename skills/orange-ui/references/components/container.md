@@ -117,7 +117,15 @@ Centraliza o conteúdo da página com largura máxima e margens laterais
 | `as` | `ElementType` | `div` | Elemento renderizado. Padrão: `div`. Use `main` para o conteúdo principal da página ou `section` com um título. |
 | `size` | `"sm" \| "md" \| "lg" \| "xl" \| "full"` | `xl` | Largura máxima do conteúdo: `sm` 640px (formulários, texto), `md` 768px, `lg` 1024px, `xl` 1200px (`--or-layout-max-width`, padrão) ou `full` (sem limite, só com as margens laterais). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ContainerSize`:
+
+```ts
+export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
+```
 
 ## Acessibilidade
 

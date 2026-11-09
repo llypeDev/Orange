@@ -204,7 +204,41 @@ anuncia o resultado (salvo/erro) uma vez por transição.
 | `savedAt` | `RelativeTimeDate` | — | Momento do último salvamento, exibido em tempo relativo ("Salvo há 2 min."). |
 | `size` | `"sm" \| "md"` | `md` | `sm` (texto 12px) ou `md` (13px, padrão). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SaveStatusLabels`:
+
+```ts
+/** Textos do `SaveStatus`. Cada um substitui o padrão do idioma do provider. */
+export interface SaveStatusLabels {
+  /** Texto no estado `idle`. Padrão: nenhum (o indicador fica vazio). */
+  idle?: string
+  /** Padrão: "Salvando…". */
+  saving?: string
+  /** Estado `saved` sem `savedAt`, e o texto anunciado ao salvar. Padrão: "Salvo". */
+  saved?: string
+  /** Estado `saved` com `savedAt`; `{time}` vira o tempo relativo. Padrão: "Salvo {time}". */
+  savedAt?: string
+  /** Padrão: "Erro ao salvar". */
+  error?: string
+  /** Botão de nova tentativa (com `onRetry`). Padrão: "Tentar de novo". */
+  retry?: string
+}
+```
+
+`SaveStatusSize`:
+
+```ts
+export type SaveStatusSize = 'sm' | 'md'
+```
+
+`SaveStatusState`:
+
+```ts
+export type SaveStatusState = 'idle' | 'saving' | 'saved' | 'error'
+```
 
 ## Acessibilidade
 

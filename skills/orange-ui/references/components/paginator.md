@@ -193,7 +193,21 @@ itens por página.
 | `totalPages` | `number` | — | Total de páginas. Opcional quando `totalItems` é informado. |
 | `variant` | `"default" \| "compact"` | `default` | `default`: lista de páginas. `compact`: "Página 3 de 12" entre anterior/próximo. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PaginatorSize`:
+
+```ts
+export type PaginatorSize = 'sm' | 'md'
+```
+
+`PaginatorVariant`:
+
+```ts
+export type PaginatorVariant = 'default' | 'compact'
+```
 
 ## Acessibilidade
 

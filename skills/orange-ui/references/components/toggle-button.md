@@ -223,7 +223,7 @@ por fundo, borda, barra inferior e indicador (+ → check).
 | `value` | `string` | — | Identificador do botão dentro de um `ToggleButtonGroup`. |
 | `variant` | `"outline" \| "ghost"` | — | Estilo visual em repouso. Pressionado, o botão ganha fundo, borda e barra laranjas. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ToggleButtonGroup`
 
@@ -243,7 +243,15 @@ Para uma escolha exclusiva e obrigatória, prefira o SegmentedControl.
 | `value` | `string \| string[] \| null` | — | Valor pressionado (controlado). `null` quando nenhum. Valores pressionados (controlado). |
 | `variant` | `"outline" \| "ghost"` | — | Variante repassada aos ToggleButtons. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ToggleButtonVariant`:
+
+```ts
+export type ToggleButtonVariant = 'outline' | 'ghost'
+```
 
 ## Acessibilidade
 

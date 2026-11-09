@@ -150,7 +150,7 @@ completo continua no DOM — leitores de tela e a busca da página o encontram.
 | `onTruncatedChange` | `((truncated: boolean) => void)` | — | Chamado quando o texto passa a estar (ou deixa de estar) cortado. |
 | `showTitle` | `boolean` | `false` | Quando o texto estiver cortado, mostra o texto completo no `title` nativo (dica ao passar o mouse). Um `title` passado explicitamente tem prioridade. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

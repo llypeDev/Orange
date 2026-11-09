@@ -162,7 +162,25 @@ de tela a cada mudança.
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Altura dos botões: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `YearMonth` | — | Mês exibido (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`MonthPaginatorSize`:
+
+```ts
+export type MonthPaginatorSize = 'sm' | 'md' | 'lg'
+```
+
+`YearMonth`:
+
+```ts
+/** Um mês do calendário. `month` vai de 0 (janeiro) a 11 (dezembro), como em `Date#getMonth()`. */
+export interface YearMonth {
+  year: number
+  month: number
+}
+```
 
 ## Acessibilidade
 

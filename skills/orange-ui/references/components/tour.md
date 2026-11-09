@@ -330,7 +330,42 @@ tour está aberto.
 | `spotlightPadding` | `number` | `8` | Folga entre o alvo e a borda do recorte, em px. |
 | `step` | `number` | — | Índice do passo atual, a partir de 0 (controlado). Use com `onStepChange`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TourPlacement`:
+
+```ts
+export type TourPlacement = 'top' | 'bottom' | 'left' | 'right' | 'auto'
+```
+
+`TourStep`:
+
+```ts
+export interface TourStep {
+  /**
+   * Elemento destacado pelo recorte. Seletor CSS, ref ou função. Sem alvo — ou
+   * com um alvo que não existe na página — o passo aparece centralizado, sem recorte.
+   */
+  target?: TourTarget
+  /** Título do passo; nomeia o diálogo (junto com o `label` do tour). */
+  title: ReactNode
+  /** Texto do passo; descreve o diálogo via `aria-describedby`. */
+  content: ReactNode
+  /** Lado do alvo onde o diálogo aparece. `auto` escolhe o lado com mais espaço. */
+  placement?: TourPlacement
+  /** Imagem, vídeo ou ilustração exibida acima do título. */
+  media?: ReactNode
+}
+```
+
+`TourTarget`:
+
+```ts
+/** Alvo de um passo: seletor CSS, ref ou função que devolve o elemento. */
+export type TourTarget = string | RefObject<Element | null> | (() => Element | null)
+```
 
 ## Acessibilidade
 

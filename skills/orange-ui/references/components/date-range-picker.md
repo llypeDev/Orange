@@ -277,7 +277,7 @@ atalhos opcionais ("Últimos 7 dias", "Mês passado").
 | `visibleMonths` | `1 \| 2` | `2` | Meses lado a lado no calendário (em telas estreitas, sempre 1). Padrão: 2. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana no calendário: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `RangeCalendar`
 
@@ -300,7 +300,61 @@ Mesma navegação por teclado do `Calendar` (padrão "grid" do WAI-ARIA).
 | `visibleMonths` | `1 \| 2` | `1` | Meses lado a lado. Com `2`, telas estreitas (< 768px) continuam mostrando um mês só — sem rolagem horizontal. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CompleteDateRange`:
+
+```ts
+/** Período completo — o que o `RangeCalendar` emite e um atalho retorna. */
+export interface CompleteDateRange {
+  start: Date
+  end: Date
+}
+```
+
+`DateRange`:
+
+```ts
+/** Período com início e fim (cada um pode estar vazio enquanto é preenchido). */
+export interface DateRange {
+  start: Date | null
+  end: Date | null
+}
+```
+
+`DateRangePickerSize`:
+
+```ts
+export type DateRangePickerSize = 'sm' | 'md' | 'lg'
+```
+
+`DateRangePreset`:
+
+```ts
+/** Atalho de período exibido ao lado do calendário. */
+export interface DateRangePreset {
+  /** Texto do botão ("Últimos 7 dias"). */
+  label: string
+  /** Calcula o período na hora (datas relativas a hoje). */
+  range: () => CompleteDateRange
+}
+```
+
+`DateRangePresetKey`:
+
+```ts
+/** Atalhos prontos, com rótulos traduzidos pelo `OrangeProvider`. */
+export type DateRangePresetKey =
+  | 'today'
+  | 'last7Days'
+  | 'last30Days'
+  | 'thisWeek'
+  | 'thisMonth'
+  | 'lastMonth'
+  | 'thisYear'
+```
 
 ## Acessibilidade
 

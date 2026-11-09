@@ -362,7 +362,44 @@ longas com busca, use `Combobox`.
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `string \| null` | — | Valor escolhido (controlado). `null` = nenhum. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PickerGroup`:
+
+```ts
+/** Grupo de opções do `Picker`, com um título. */
+export interface PickerGroup {
+  /** Título do grupo, que nomeia o `role="group"`. */
+  label: string
+  options: PickerOption[]
+}
+```
+
+`PickerOption`:
+
+```ts
+/** Uma opção do `Picker`. */
+export interface PickerOption {
+  /** Valor da opção (único). É o que vai para `onChange` e para o formulário. */
+  value: string
+  /** Rótulo exibido na lista e no gatilho. Também é usado na busca por digitação. */
+  label: string
+  /** Texto secundário abaixo do rótulo, ligado à opção por `aria-describedby`. */
+  description?: ReactNode
+  /** Ícone decorativo antes do rótulo: nome de um ícone do Orange ou um elemento. */
+  icon?: IconName | ReactNode
+  /** Aparece na lista, mas é pulada pelo teclado e não pode ser escolhida. */
+  disabled?: boolean
+}
+```
+
+`PickerSize`:
+
+```ts
+export type PickerSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

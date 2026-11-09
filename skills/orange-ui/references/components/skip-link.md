@@ -129,7 +129,7 @@ receber foco pelo teclado — deve ser o primeiro elemento focável da página.
 | --- | --- | --- | --- |
 | `href` | `string` | `#main` | Âncora do conteúdo de destino (`#id`). O elemento precisa existir na página. Padrão: `#main`. |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`AnchorHTMLAttributes`) do `<a>`, como `href`, `target`, `rel` e `download`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

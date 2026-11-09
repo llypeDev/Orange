@@ -154,7 +154,7 @@ semântica de lista de definição (`dt`/`dd`).
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho do número. Padrão: `md` (ou o do `StatGroup`). |
 | `trend` | `"neutral" \| "increase" \| "decrease"` | `neutral` | Direção da variação: define a seta e o texto acessível. Padrão: `neutral`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `StatGroup`
 
@@ -167,7 +167,27 @@ coluna conforme a largura disponível.
 | `columns` | `number` | — | Número de colunas em telas largas. Padrão: quantidade de Stats (até 4). |
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho aplicado a todos os Stats. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`StatDeltaTone`:
+
+```ts
+export type StatDeltaTone = 'positive' | 'negative' | 'neutral'
+```
+
+`StatSize`:
+
+```ts
+export type StatSize = 'sm' | 'md' | 'lg'
+```
+
+`StatTrend`:
+
+```ts
+export type StatTrend = 'increase' | 'decrease' | 'neutral'
+```
 
 ## Acessibilidade
 

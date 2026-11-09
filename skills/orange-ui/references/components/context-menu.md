@@ -211,7 +211,7 @@ navegação do Dropdown.
 | `onOpenChange` | `((open: boolean) => void)` | — | Chamado quando o menu abre ou fecha. |
 | `open` | `boolean` | — | Aberto (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

@@ -154,7 +154,7 @@ permite voltar a níveis anteriores.
 | `renderLink` | `RenderLink` | — | Renderiza os links com o componente do seu roteador: `renderLink={({ href, ...p }) => <RouterLink to={href} {...p} />}`. |
 | `separator` | `ReactNode` | `/` | Separador decorativo entre níveis. Padrão: `/`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `BreadcrumbItem`
 
@@ -166,7 +166,22 @@ Um nível da trilha. Use dentro de `Breadcrumb`.
 | `href` | `string` | — | Destino do nível. Sem `href`, o item é renderizado como texto. |
 | `icon` | `ReactNode` | — | Ícone decorativo antes do rótulo. |
 
-Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BreadcrumbEntry`:
+
+```ts
+export interface BreadcrumbEntry {
+  /** Texto do nível. */
+  label: ReactNode
+  /** Destino. O último item (página atual) dispensa `href`. */
+  href?: string
+  /** Ícone decorativo antes do rótulo (ex.: casa no primeiro nível). */
+  icon?: ReactNode
+}
+```
 
 ## Acessibilidade
 

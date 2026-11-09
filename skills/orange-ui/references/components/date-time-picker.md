@@ -10,11 +10,11 @@ Data e hora num só campo: a data com máscara e calendário em diálogo, a hora
 
 ## Boas práticas
 
-- Use quando o horário faz parte da decisão: agendar uma publicação, marcar uma reunião, programar uma manutenção. Só a data? Use o . Só a hora? Use o .
+- Use quando o horário faz parte da decisão: agendar uma publicação, marcar uma reunião, programar uma manutenção. Só a data? Use o DatePicker. Só a hora? Use o TimeField.
 - O valor é um `Date` em hora local. Ele só existe com data e hora completas: enquanto um dos campos estiver vazio, incompleto ou fora das regras, o `onChange` recebe `null`. Diga o fuso na `description` quando ele importar ("Horário de Brasília").
 - Escolher um dia no calendário mantém a hora digitada. Com a hora vazia, passe `defaultTime` (ex.: `'09:00'`) quando houver um horário típico; sem ele, a hora fica vazia para a pessoa preencher.
 - `min` e `max` valem para data *e* hora: dias fora ficam desabilitados no calendário e, no dia-limite, um horário antes do mínimo mostra "Escolha um horário a partir de 14:00". Regras por dia (horário comercial) vão em `error`.
-- Como no , `step` é em segundos (`900` = 15 minutos) e a hora aparece em 12h ou 24h conforme o sistema da pessoa.
+- Como no TimeField, `step` é em segundos (`900` = 15 minutos) e a hora aparece em 12h ou 24h conforme o sistema da pessoa.
 
 - Faça: Um rótulo para o par data e hora, com o fuso e a regra explicados.
 - Evite: Campo sem rótulo visível — ou um DatePicker e um TimeField soltos, com dois rótulos para um só valor.
@@ -236,7 +236,15 @@ dentro de um só controle, com o calendário em diálogo para escolher o dia.
 | `value` | `Date \| null` | — | Data e hora (controlado), no fuso local. `null` = vazio. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana no calendário: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DateTimePickerSize`:
+
+```ts
+export type DateTimePickerSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

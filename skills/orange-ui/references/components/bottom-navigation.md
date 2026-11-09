@@ -178,7 +178,28 @@ principais, com ícone e rótulo sempre visíveis.
 | `renderLink` | `RenderLink` | — | Renderiza os links com o componente do seu roteador. |
 | `value` | `string` | — | Destino ativo (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BottomNavigationItem`:
+
+```ts
+export interface BottomNavigationItem {
+  /** Identificador do destino. */
+  value: string
+  /** Rótulo — sempre visível. */
+  label: string
+  /** Ícone (decorativo). */
+  icon: ReactNode
+  /** Destino. Sem `href`, o item é um botão que só chama `onChange`. */
+  href?: string
+  /** Contador ou ponto de notificação sobre o ícone. `true` mostra só o ponto. */
+  badge?: number | boolean
+  /** Texto para leitores de tela sobre o badge (ex.: "3 não lidas"). */
+  badgeLabel?: string
+}
+```
 
 ## Acessibilidade
 

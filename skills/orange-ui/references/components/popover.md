@@ -243,7 +243,15 @@ complementares (filtros, detalhes, formulários curtos).
 | `showCloseButton` | `boolean` | `false` | Mostra um botão de fechar no cabeçalho. |
 | `title` | `ReactNode` | — | Título visível; nomeia o popover. Sem título, o nome vem do gatilho (ou de `aria-label`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`PopoverPlacement`:
+
+```ts
+export type PopoverPlacement = FloatingPlacement
+```
 
 ## Acessibilidade
 

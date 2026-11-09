@@ -984,6 +984,66 @@ export default function DoisCampos() {
 
 > **Hooks de formulário** `useField()` e `useFieldControlProps()` vêm junto com o componente `Field` e ligam qualquer controle ao rótulo, à descrição e ao erro. Veja o exemplo em Acessibilidade → Formulários .
 
+## Tipos dos hooks
+
+`PresenceState`:
+
+```ts
+export type PresenceState = 'open' | 'closed'
+```
+
+`RovingOrientation`:
+
+```ts
+export type RovingOrientation = 'horizontal' | 'vertical' | 'both'
+```
+
+`UseDisclosureReturn`:
+
+```ts
+export interface UseDisclosureReturn {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
+  setOpen: (open: boolean) => void
+}
+```
+
+`UseScrollSpyOptions`:
+
+```ts
+export interface UseScrollSpyOptions {
+  /**
+   * Contêiner rolável (elemento ou ref). Padrão: a janela. Informe quando o
+   * conteúdo rola dentro de um painel.
+   */
+  root?: HTMLElement | null | RefObject<HTMLElement | null>
+  /**
+   * Faixa da área visível em que um título conta como "na tela", no formato do
+   * `rootMargin` do IntersectionObserver (px ou %). Padrão: `'-80px 0px -65% 0px'`
+   * (terço superior, descontando um cabeçalho fixo de 80px).
+   */
+  rootMargin?: string
+}
+```
+
+`UseScrollSpyReturn`:
+
+```ts
+export interface UseScrollSpyReturn {
+  /** Id da seção atual; `undefined` antes do primeiro título chegar à faixa. */
+  activeId: string | undefined
+  /**
+   * Marca uma seção na hora (ex.: no clique de um link do índice). A marca vale
+   * durante o salto que o clique provoca e até a próxima interação da pessoa
+   * (roda, toque, tecla ou ponteiro) — senão, ao pular para uma das últimas
+   * seções, o fim da rolagem marcaria a última.
+   */
+  setActiveId: (id: string) => void
+}
+```
+
 ## Outros hooks exportados
 
 Hooks ligados a um componente ou provider (o uso completo está na referência dele).

@@ -267,7 +267,7 @@ setas navegam, letras buscam, Enter/Espaço ativam, Escape fecha.
 | `open` | `boolean` | — | Aberto (controlado). Use com `onOpenChange`. |
 | `placement` | `"bottom" \| "top" \| "left" \| "right" \| "bottom-start" \| "bottom-end" \| "top-start" \| "top-end" \| "left-start" \| "left-end" \| "right-start" \| "right-end"` | `bottom-start` | Posição preferida; inverte sozinha se faltar espaço. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownCheckboxItem`
 
@@ -283,7 +283,7 @@ Opção liga/desliga do menu (`role="menuitemcheckbox"`).
 | `shortcut` | `string` | — | Atalho exibido à direita (apenas visual). |
 | `textValue` | `string` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownItem`
 
@@ -293,13 +293,13 @@ Item de ação do menu (`role="menuitem"`).
 | --- | --- | --- | --- |
 | `closeOnSelect` | `boolean` | `true` | Fecha o menu ao ativar. Padrão: `true`. |
 | `disabled` | `boolean` | — | Visível e focável, mas não pode ser ativado. |
-| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Ícone à esquerda: nome da biblioteca do Orange ou um elemento. |
+| `icon` | `IconName \| ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Ícone à esquerda: nome da biblioteca do Orange ou um elemento. |
 | `onSelect` | `((event: SyntheticEvent<HTMLDivElement, Event>) => void)` | — | Executado ao ativar o item (clique, Enter ou Espaço). |
 | `shortcut` | `string` | — | Atalho de teclado exibido à direita (apenas visual — implemente o atalho à parte). |
 | `textValue` | `string` | — | Texto usado pelo typeahead quando o conteúdo não é texto simples. |
 | `tone` | `"neutral" \| "danger"` | `neutral` | `danger` para ações destrutivas. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownLabel`
 
@@ -307,7 +307,7 @@ Título não interativo de uma seção do menu.
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownRadioGroup`
 
@@ -320,7 +320,7 @@ Grupo de opções exclusivas (`role="group"` com `menuitemradio`).
 | `onChange` | `((value: string) => void)` | — | Chamado com o novo valor. |
 | `value` | `string` | — | Valor selecionado (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownRadioItem`
 
@@ -333,7 +333,7 @@ Opção exclusiva dentro de `DropdownRadioGroup` (`role="menuitemradio"`).
 | `disabled` | `boolean` | — | — |
 | `textValue` | `string` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `DropdownSeparator`
 
@@ -341,7 +341,15 @@ Linha divisória entre grupos de itens (`role="separator"`).
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DropdownPlacement`:
+
+```ts
+export type DropdownPlacement = FloatingPlacement
+```
 
 ## Acessibilidade
 

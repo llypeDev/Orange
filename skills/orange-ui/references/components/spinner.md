@@ -162,7 +162,21 @@ desconhecida. Anuncia `role="status"` com um rótulo visualmente oculto.
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Diâmetro: `sm` 16px, `md` 24px, `lg` 40px. |
 | `tone` | `"neutral" \| "accent" \| "current"` | `accent` | Cor do arco: `accent` (laranja), `neutral` (texto) ou `current` (herda `color`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SpinnerSize`:
+
+```ts
+export type SpinnerSize = 'sm' | 'md' | 'lg'
+```
+
+`SpinnerTone`:
+
+```ts
+export type SpinnerTone = 'accent' | 'neutral' | 'current'
+```
 
 ## Acessibilidade
 

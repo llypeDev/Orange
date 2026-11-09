@@ -173,7 +173,7 @@ e `numbered` (`ol`) para passos e rankings.
 | `start` | `number` | — | Número inicial da variante `numbered`. Padrão: `1`. |
 | `variant` | `"inline" \| "icon" \| "plain" \| "divided" \| "bullet" \| "numbered"` | `bullet` | `bullet` (marcador quadrado laranja), `numbered` ("01", "02"…), `icon` (ícone por item), `divided` (linhas entre itens), `inline` (itens na mesma linha separados por "·") ou `plain` (sem marcador). Padrão: `bullet`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ListItem`
 
@@ -184,7 +184,21 @@ Item de `List`. Aceita uma descrição secundária opcional.
 | `description` | `ReactNode` | — | Texto secundário exibido abaixo do conteúdo principal. |
 | `icon` | `ReactNode` | — | Ícone do item (variante `icon`). Sobrescreve o `icon` da `List`. |
 
-Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ListSize`:
+
+```ts
+export type ListSize = 'sm' | 'md' | 'lg'
+```
+
+`ListVariant`:
+
+```ts
+export type ListVariant = 'bullet' | 'numbered' | 'icon' | 'divided' | 'inline' | 'plain'
+```
 
 ## Movimento
 

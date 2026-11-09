@@ -179,6 +179,21 @@ Gera as classes do link — útil para estilizar o link de um roteador.
 | --- | --- | --- | --- |
 | `variant` | `"default" \| "subtle" \| "standalone"` | `default` | — |
 
+### Tipos
+
+`LinkVariant`:
+
+```ts
+export type LinkVariant = 'default' | 'subtle' | 'standalone'
+```
+
+`RenderLink`:
+
+```ts
+/** Renderiza um link customizado (ex.: o `Link` do React Router ou do Next.js). */
+export type RenderLink = (props: RenderLinkProps) => ReactNode
+```
+
 ## Acessibilidade
 
 Renderiza um `<a href>` nativo, com papel, foco e teclado do navegador. Ícones são decorativos; em links externos o aviso de nova aba é texto oculto, incluído no nome acessível.

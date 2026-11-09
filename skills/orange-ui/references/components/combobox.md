@@ -239,7 +239,29 @@ longas; para poucas opções, prefira `Select`.
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `string \| null` | — | Valor selecionado (controlado). `null` = nenhum. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ComboboxOption`:
+
+```ts
+export interface ComboboxOption {
+  /** Valor da opção (único). */
+  value: string
+  /** Texto exibido e usado na busca. */
+  label: string
+  /** Texto secundário exibido abaixo do rótulo (também entra na busca). */
+  description?: string
+  disabled?: boolean
+}
+```
+
+`ComboboxSize`:
+
+```ts
+export type ComboboxSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

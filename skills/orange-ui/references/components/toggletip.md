@@ -136,7 +136,7 @@ foco (padrão "toggletip" do Inclusive Components).
 | --- | --- | --- | --- |
 | `content` (obrigatória) | `ReactNode` | — | Explicação exibida na bolha e anunciada por leitores de tela. Evite links e botões. |
 | `defaultOpen` | `boolean` | `false` | Aberto inicialmente (não controlado). |
-| `icon` | `"type" \| "search" \| "send" \| "grid" \| …` | `info` | Ícone do botão. |
+| `icon` | `IconName` | `info` | Ícone do botão. |
 | `label` | `string` | — | Nome acessível do botão. Padrão: "Mais informações". Prefira algo específico: "Sobre a taxa de conversão". |
 | `offset` | `number` | `8` | Distância do botão, em px. |
 | `onOpenChange` | `((open: boolean) => void)` | — | Chamado quando a bolha abre ou fecha. |
@@ -144,7 +144,21 @@ foco (padrão "toggletip" do Inclusive Components).
 | `placement` | `"bottom" \| "top" \| "left" \| "right" \| "bottom-start" \| "bottom-end" \| "top-start" \| "top-end" \| "left-start" \| "left-end" \| "right-start" \| "right-end"` | `top` | Posição preferida da bolha; inverte sozinha se faltar espaço. |
 | `size` | `"sm" \| "md"` | `sm` | Tamanho do botão: `sm` 24px, `md` 32px. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ToggletipPlacement`:
+
+```ts
+export type ToggletipPlacement = FloatingPlacement
+```
+
+`ToggletipSize`:
+
+```ts
+export type ToggletipSize = 'sm' | 'md'
+```
 
 ## Acessibilidade
 

@@ -135,11 +135,11 @@ vírgulas cria várias tags de uma vez.
 | `allowDuplicates` | `boolean` | `false` | Permite tags repetidas (comparação sem diferenciar maiúsculas). Padrão: `false`. |
 | `className` | `string` | — | Classe aplicada ao contêiner externo. |
 | `defaultValue` | `string[]` | `[]` | Tags iniciais (não controlado). |
-| `description` | `ReactNode` | — | — |
+| `description` | `ReactNode` | — | Texto de ajuda exibido abaixo do rótulo. |
 | `error` | `ReactNode` | — | Mensagem de erro externa (tem precedência sobre os erros de validação internos). |
-| `hideLabel` | `boolean` | — | — |
-| `invalid` | `boolean` | — | — |
-| `label` | `ReactNode` | — | — |
+| `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
+| `invalid` | `boolean` | — | Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). |
+| `label` | `ReactNode` | — | Rótulo visível do campo. Sempre informe um rótulo — mesmo que oculto. |
 | `maxTags` | `number` | — | Número máximo de tags. Mostra o contador ao lado do rótulo. |
 | `onChange` | `((tags: string[]) => void)` | — | Chamado quando uma tag é adicionada ou removida. |
 | `separators` | `TagInputSeparator[]` | — | Teclas que criam a tag. Padrão: `['Enter', ',']`. |
@@ -147,7 +147,21 @@ vírgulas cria várias tags de uma vez.
 | `validate` | `((tag: string, tags: string[]) => string \| boolean \| null)` | — | Valida cada tag antes de adicioná-la. Retorne uma mensagem de erro para recusar, ou `true`/`undefined` para aceitar. |
 | `value` | `string[]` | — | Tags (controlado). |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TagInputSeparator`:
+
+```ts
+export type TagInputSeparator = 'Enter' | ',' | 'Tab' | ';' | ' '
+```
+
+`TagInputSize`:
+
+```ts
+export type TagInputSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

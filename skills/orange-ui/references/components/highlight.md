@@ -138,7 +138,7 @@ acentos e maiúsculas por padrão, e os termos são tratados como texto literal.
 | `caseSensitive` | `boolean` | `false` | Diferencia maiúsculas de minúsculas. Padrão: `false`. |
 | `markClassName` | `string` | — | Classe extra aplicada a cada `<mark>`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Movimento
 

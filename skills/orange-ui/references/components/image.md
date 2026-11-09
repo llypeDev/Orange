@@ -183,7 +183,27 @@ substituto acessível. A `ref` e os demais atributos vão para a `<img>`;
 | `position` | `string` | — | Ponto focal do recorte (`object-position`), ex.: `'top'`, `'50% 30%'`. |
 | `ratio` | `ImageRatio` | — | Proporção reservada antes do carregamento (`aspect-ratio`), evitando deslocamento de layout. Sem `ratio`, usa `width`/`height` numéricos se houver. |
 
-Repassa também os atributos nativos (`ImgHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ImgHTMLAttributes`) da `<img>`, como `src`, `alt`, `width`, `height` e `loading`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ImageFit`:
+
+```ts
+export type ImageFit = 'cover' | 'contain'
+```
+
+`ImageRatio`:
+
+```ts
+export type ImageRatio = '1/1' | '4/3' | '3/2' | '16/9' | '21/9' | number
+```
+
+`ImageState`:
+
+```ts
+export type ImageState = 'loading' | 'loaded' | 'error'
+```
 
 ## Acessibilidade
 

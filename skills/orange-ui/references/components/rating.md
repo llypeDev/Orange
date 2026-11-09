@@ -165,11 +165,19 @@ imagem com a nota por extenso.
 | `name` | `string` | — | Nome do grupo de rádios (envio em formulários). Gerado se omitido. |
 | `onChange` | `((value: number) => void)` | — | Chamado com a nova nota (1 a `max`). |
 | `readOnly` | `boolean` | `false` | Somente leitura: exibe as estrelas como imagem (`role="img"`) com a nota por extenso. Aceita frações (ex.: 4.5). |
-| `required` | `boolean` | `false` | — |
+| `required` | `boolean` | `false` | Campo obrigatório: mostra `*` e marca o controle como `required`. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Tamanho das estrelas: `sm` 16px, `md` 24px, `lg` 32px. |
 | `value` | `number \| null` | — | Nota selecionada (controlado). `null` ou `0` = sem nota. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`RatingSize`:
+
+```ts
+export type RatingSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

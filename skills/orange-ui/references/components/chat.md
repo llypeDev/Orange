@@ -510,7 +510,7 @@ mensagens novas — só se a pessoa já estava no fim; senão mostra o botão
 | `emptyState` | `ReactNode` | — | Conteúdo exibido quando não há mensagens (ex.: um `EmptyState` com sugestões). |
 | `loading` | `boolean` | `false` | Mostra o indicador "Digitando…" no fim da conversa (e o anuncia). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ChatComposer`
 
@@ -536,7 +536,7 @@ nativas vão para o `<textarea>`; `className` e `formProps`, para o `<form>`.
 | `showCount` | `boolean` | `false` | Mostra o contador "x de y caracteres". Requer `maxLength`. |
 | `value` | `string` | — | Texto do campo (controlado). |
 
-Repassa também os atributos nativos (`TextareaHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TextareaHTMLAttributes`) do `<textarea>`, como `name`, `required`, `disabled`, `rows`, `maxLength` e `placeholder`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ChatMessage`
 
@@ -556,7 +556,21 @@ funciona dentro do `ChatThread` (`role="log"`) ou sozinho, numa lista de coment�
 | `timestamp` | `RelativeTimeDate` | — | Momento da mensagem (Date, string ISO ou timestamp em ms). Vira `<time dateTime>`. |
 | `timestampFormat` | `"auto" \| "relative" \| "absolute"` | `absolute` | Como mostrar o `timestamp`: `absolute` (padrão — "14:05" hoje, "3 de nov., 14:05" em outros dias), `relative` ("há 5 minutos") ou `auto` (relativo por 7 dias). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ChatMessageFrom`:
+
+```ts
+export type ChatMessageFrom = 'user' | 'assistant' | 'other' | 'system'
+```
+
+`ChatMessageStatus`:
+
+```ts
+export type ChatMessageStatus = 'sending' | 'sent' | 'error'
+```
 
 ## Acessibilidade
 

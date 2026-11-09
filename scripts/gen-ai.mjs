@@ -42,9 +42,46 @@ const checker = program.getTypeChecker()
 
 const indexSource = program.getSourceFile(join(uiDir, 'src/index.ts'))
 const exportedValues = new Map() // nome → símbolo de destino (só valores, não tipos)
+const exportedTypes = new Map() // nome → declaração (interfaces, aliases e enums só de tipo)
 for (const symbol of checker.getExportsOfModule(checker.getSymbolAtLocation(indexSource))) {
   const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol
   if (target.flags & ts.SymbolFlags.Value) exportedValues.set(symbol.getName(), target)
+  else if (
+    target.flags &
+    (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias | ts.SymbolFlags.Enum)
+  ) {
+    const decl = target.declarations?.[0]
+    if (decl) exportedTypes.set(symbol.getName(), decl)
+  }
+}
+
+/**
+ * Tipos exportados declarados numa pasta (ex.: `components/Form` → FormValues, FormErrors), exceto
+ * `*Props`, que já estão nas tabelas. O texto é o da declaração, com o JSDoc.
+ */
+function typesMarkdown(dirs, { heading = '###', title = 'Tipos' } = {}) {
+  const wanted = [...exportedTypes.entries()]
+    .filter(([name, decl]) => {
+      const dir = rel(dirname(decl.getSourceFile().fileName)).replace(/^packages\/ui\/src\//, '')
+      return dirs.includes(dir) && !/Props$/.test(name)
+    })
+    .sort(([a], [b]) => a.localeCompare(b))
+  if (!wanted.length) return ''
+  const blocks = wanted.map(([name, decl]) => {
+    const sf = decl.getSourceFile()
+    const comments = ts.getLeadingCommentRanges(sf.text, decl.getFullStart()) ?? []
+    const last = comments.at(-1)
+    const doc =
+      last && sf.text.slice(last.pos, last.pos + 3) === '/**'
+        ? `${sf.text.slice(last.pos, last.end)}\n`
+        : ''
+    let text = decl.getText(sf)
+    // Dicionários enormes (ex.: todas as mensagens, todos os nomes de ícone): só o começo.
+    if (text.length > 2500)
+      text = `${text.slice(0, 600).replace(/\n[^\n]*$/, '')}\n  // … (veja o código: ${rel(sf.fileName)})`
+    return `\`${name}\`:\n\n\`\`\`ts\n${doc}${text}\n\`\`\``
+  })
+  return [`${heading} ${title}`, '', blocks.join('\n\n'), ''].join('\n')
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -92,7 +129,7 @@ function inheritedFrom(doc) {
     new RegExp(`(?:interface|type)\\s+${doc.displayName}Props\\b[\\s\\S]{0,600}?(?:\\{|;\\n)`),
   )
   if (decl) {
-    const attrs = decl[0].match(/\b([A-Z]\w*HTMLAttributes)\b/)
+    const attrs = decl[0].match(/\b(\w*HTMLAttributes|SVGProps|SVGAttributes)\b/)
     if (attrs) return attrs[1]
     const tag = decl[0].match(/ComponentProps(?:WithoutRef|WithRef)?<\s*'([a-z]+)'\s*>/)
     if (tag) return `<${tag[1]}>`
@@ -126,11 +163,29 @@ const cell = (text) =>
     .replace(/\|/g, '\\|')
     .trim()
 
+// Nomes dos ícones: uma união com eles todos vira `IconName` nas tabelas.
+const iconNameSet = (() => {
+  const iconPaths = exportedValues.get('iconPaths')
+  if (!iconPaths) return new Set()
+  const type = checker.getTypeOfSymbolAtLocation(iconPaths, iconPaths.valueDeclaration)
+  return new Set(checker.getPropertiesOfType(type).map((p) => p.getName()))
+})()
+
 function typeText(type) {
-  const expanded =
+  let expanded =
     type.name === 'enum' && Array.isArray(type.value)
       ? type.value.map((v) => v.value).join(' | ')
       : type.name
+  const members = expanded.split(' | ')
+  const truncated = members.filter((m) => /^\.\.\. \d+ more \.\.\.$/.test(m.trim()))
+  const quoted = members.filter((m) => /^"[^"]+"$/.test(m))
+  const icons = quoted.filter((m) => iconNameSet.has(m.slice(1, -1)))
+  // Todos os nomes de ícone (ou a união truncada pelo TypeScript, só com nomes de ícone visíveis).
+  if (icons.length >= 20 || (truncated.length && icons.length >= 2 && icons.length === quoted.length)) {
+    expanded = ['IconName', ...members.filter((m) => !icons.includes(m) && !truncated.includes(m))].join(
+      ' | ',
+    )
+  }
   // Uniões gigantes (ex.: `as` genérico expandido em ~180 tags de ElementType): o nome declarado
   // diz mais; sem ele, `("a" & ElementType) | …` vira `ElementType`.
   const huge = expanded.length > 160 || /\.\.\. \d+ more \.\.\./.test(expanded)
@@ -165,8 +220,12 @@ function propsMarkdown(doc) {
     for (const prop of own) {
       const name = `\`${prop.name}\`${prop.required ? ' (obrigatória)' : ''}`
       const def = prop.defaultValue?.value ?? prop.tags?.default
+      // Campos que repassam label/description/error ao Field sem JSDoc próprio: a descrição do Field.
+      const isField = 'label' in doc.props && 'error' in doc.props
+      const description =
+        prop.description || (isField ? fieldDescriptions().get(prop.name) : '') || ''
       lines.push(
-        `| ${name} | \`${cell(typeText(prop.type))}\` | ${def !== undefined && def !== null && def !== '' ? `\`${cell(def)}\`` : '—'} | ${cell(prop.description) || '—'} |`,
+        `| ${name} | \`${cell(typeText(prop.type))}\` | ${def !== undefined && def !== null && def !== '' ? `\`${cell(def)}\`` : '—'} | ${cell(description) || '—'} |`,
       )
     }
     lines.push('')
@@ -175,12 +234,46 @@ function propsMarkdown(doc) {
   }
   const inherited = isFunction ? null : inheritedFrom(doc)
   if (inherited) {
+    const native = nativeAttributes[inherited] ?? ''
     lines.push(
-      `Repassa também os atributos nativos (\`${inherited}\`: \`className\`, \`style\`, \`aria-*\`, \`data-*\`, eventos…) ao elemento raiz.`,
+      native
+        ? `Repassa também os atributos nativos (\`${inherited}\`) ${native}, além de \`className\`, \`style\`, \`aria-*\`, \`data-*\` e eventos.`
+        : `Repassa também os atributos nativos (\`${inherited}\`): \`className\`, \`style\`, \`aria-*\`, \`data-*\` e eventos.`,
       '',
     )
   }
   return lines.join('\n')
+}
+
+/** Atributos nativos que mais aparecem em cada caso (o que a IA costuma procurar na tabela). */
+const nativeAttributes = {
+  InputHTMLAttributes:
+    'do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`',
+  SelectHTMLAttributes:
+    'do `<select>`, como `name`, `required`, `disabled`, `value`/`defaultValue` e `onChange` (com o evento)',
+  TextareaHTMLAttributes:
+    'do `<textarea>`, como `name`, `required`, `disabled`, `rows`, `maxLength` e `placeholder`',
+  ButtonHTMLAttributes: 'do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`',
+  AnchorHTMLAttributes: 'do `<a>`, como `href`, `target`, `rel` e `download`',
+  FormHTMLAttributes: 'do `<form>`, como `id`, `action`, `method` e `noValidate`',
+  FieldsetHTMLAttributes: 'do `<fieldset>`, como `name`, `form` e `disabled`',
+  ImgHTMLAttributes: 'da `<img>`, como `src`, `alt`, `width`, `height` e `loading`',
+  SVGProps: 'do `<svg>`',
+  SVGAttributes: 'do `<svg>`',
+}
+
+let fieldDescriptionsCache
+/** Descrições das props do Field (label, description, error, hideLabel, required, optional…). */
+function fieldDescriptions() {
+  if (!fieldDescriptionsCache) {
+    const field = componentDocs.find((d) => d.displayName === 'Field')
+    fieldDescriptionsCache = new Map(
+      Object.values(field?.props ?? {})
+        .filter((p) => p.description)
+        .map((p) => [p.name, p.description]),
+    )
+  }
+  return fieldDescriptionsCache
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -255,11 +348,16 @@ const decodeEntities = (text) =>
   })
 
 /** Texto em linha: JSX, strings e <Code>/<strong>/<em> → Markdown. */
+/** Constantes JSX da página em conversão (`const dateTimePicker = <Link…>DateTimePicker</Link>`). */
+let jsxConstants = new Map()
+
 function inline(node) {
   node = unwrap(node)
   if (!node) return ''
   const literal = textOfLiteral(node)
   if (literal !== null) return literal
+  if (ts.isIdentifier(node) && jsxConstants.has(node.text))
+    return inline(jsxConstants.get(node.text))
   if (ts.isNumericLiteral(node)) return node.text
   if (ts.isJsxText(node)) return decodeEntities(node.text.replace(/\s+/g, ' '))
   if (ts.isJsxExpression(node)) return node.expression ? inline(node.expression) : ''
@@ -320,6 +418,17 @@ function exampleCodeMap(sourceFile, file) {
 function pageToMarkdown(file, { headingLevel = 2, onProps } = {}) {
   const source = readFileSync(file, 'utf8')
   const sf = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+  jsxConstants = new Map()
+  const collectJsx = (n) => {
+    if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && n.initializer) {
+      const init = unwrap(n.initializer)
+      if (ts.isJsxElement(init) || ts.isJsxFragment(init) || ts.isJsxSelfClosingElement(init)) {
+        jsxConstants.set(n.name.text, init)
+      }
+    }
+    ts.forEachChild(n, collectJsx)
+  }
+  collectJsx(sf)
   const codes = exampleCodeMap(sf, file)
   // Constantes de texto do arquivo (`const mainTsx = \`...\``), usadas como código nos blocos.
   const constants = new Map()
@@ -760,7 +869,13 @@ for (const meta of metas) {
     meta.storyId ?? `componentes-${meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}--docs`
   const page = pageToMarkdown(join(componentsDir, meta.slug, 'index.tsx'), {
     onProps: () =>
-      docs.length ? docs.map(propsMarkdown).join('\n').trim() : 'Veja a página da documentação.',
+      [
+        docs.length ? docs.map(propsMarkdown).join('\n').trim() : 'Veja a página da documentação.',
+        typesMarkdown([dir]),
+      ]
+        .filter(Boolean)
+        .join('\n\n')
+        .trim(),
   })
   const header = [
     `# ${meta.name}`,
@@ -872,6 +987,8 @@ function hookSection(name, level = '###') {
     hooksPage.body,
     '',
   ]
+  const hookTypes = typesMarkdown(['hooks'], { heading: '##', title: 'Tipos dos hooks' })
+  if (hookTypes) lines.push(hookTypes)
   if (rest.length) {
     lines.push(
       '## Outros hooks exportados',
@@ -900,6 +1017,11 @@ function hookSection(name, level = '###') {
     '',
   ]
   for (const doc of baseDocs) lines.push(propsMarkdown(doc), `Código: \`${rel(doc.filePath)}\``, '')
+  const baseDirs = [
+    ...new Set(baseDocs.map((d) => rel(dirname(d.filePath)).replace(/^packages\/ui\/src\//, ''))),
+  ]
+  const baseTypes = typesMarkdown(['providers', 'icons', 'utils', ...baseDirs], { heading: '##' })
+  if (baseTypes) lines.push(baseTypes)
 
   lines.push('## Utilitários e constantes', '')
   const others = [...exportedValues.keys()]
@@ -930,19 +1052,21 @@ function hookSection(name, level = '###') {
     .getPropertiesOfType(type)
     .map((p) => p.getName())
     .sort()
+  const iconDoc = componentDocs.find((d) => d.displayName === 'Icon')
+  const strokeDefault = iconDoc?.props.strokeWidth?.defaultValue?.value ?? '1.75'
   files.set(
     'icons.md',
     [
       '# Ícones',
       '',
-      `${names.length} ícones de linha (24×24, traço de 1,5px, \`currentColor\`). Use \`<Icon name="…" />\`; sem \`label\` o ícone é decorativo (\`aria-hidden\`), com \`label\` ganha nome acessível. Botões só com ícone precisam de \`aria-label\` no botão.`,
+      `${names.length} ícones de linha (grade 24×24, traço padrão ${strokeDefault} via \`strokeWidth\`, cor \`currentColor\`). Use \`<Icon name="…" />\`: sem \`label\` o ícone é decorativo (\`aria-hidden\`); com \`label\`, ganha nome acessível. Botão só com ícone: \`IconButton\` com \`label\` (obrigatório) ou \`Button iconOnly\` com \`aria-label\`. Props do \`Icon\` em \`foundations.md\`.`,
       '',
       '```tsx',
       "import { Icon, IconButton } from '@orangesys/ui'",
       '',
       '<Icon name="search" />',
       '<Icon name="alert" label="Atenção" />',
-      '<IconButton aria-label="Fechar" icon={<Icon name="close" />} />',
+      '<IconButton icon="close" label="Fechar" />',
       '```',
       '',
       'Nomes disponíveis (`IconName`):',

@@ -372,7 +372,48 @@ nomeada que não prende nem rouba o foco; quem guarda a decisão é o app
 | `title` | `ReactNode` | — | Título do banner (nomeia a região). Padrão: "Cookies neste site". |
 | `value` | `ConsentValue` | — | Preferências atuais (controlado), por `id` de categoria. Categorias ausentes contam como recusadas; as `required`, sempre como aceitas. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ConsentBannerPlacement`:
+
+```ts
+export type ConsentBannerPlacement = 'bottom' | 'top' | 'inline'
+```
+
+`ConsentCategory`:
+
+```ts
+/** Uma categoria de cookies (ou de tratamento) que a pessoa pode aceitar ou recusar. */
+export interface ConsentCategory {
+  /** Chave da categoria no objeto de consentimento: `analytics`. */
+  id: string
+  /** Nome curto: "Desempenho". */
+  label: ReactNode
+  /** Para que serve e o que acontece se for recusada. */
+  description?: ReactNode
+  /**
+   * Necessária para o site funcionar: sempre marcada, com a caixa desabilitada
+   * e a indicação "Sempre ativos".
+   */
+  required?: boolean
+}
+```
+
+`ConsentDecisionSource`:
+
+```ts
+/** Como a decisão foi tomada. */
+export type ConsentDecisionSource = 'accept-all' | 'reject' | 'custom'
+```
+
+`ConsentValue`:
+
+```ts
+/** Consentimento por categoria: `{ necessarios: true, analytics: false }`. */
+export type ConsentValue = Record<string, boolean>
+```
 
 ## Acessibilidade
 

@@ -159,7 +159,26 @@ exploração por teclado, como BarChart e LineChart.
 | `valueFormat` | `((value: number) => string) \| NumberFormatOptions` | — | Formato dos números: função ou opções do `Intl.NumberFormat` (ex.: `{ style: 'currency', currency: 'BRL' }`). |
 | `variant` | `"outline" \| "plain"` | `outline` | `outline` (padrão): borda de 1px e respiro interno. `plain`: sem moldura, para cartões. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DonutChartDatum`:
+
+```ts
+/** Uma fatia da rosca. */
+export interface DonutChartDatum {
+  /** Nome da fatia: canal, status, forma de pagamento… */
+  label: string
+  /** Valor da fatia (≥ 0). A participação é calculada sobre a soma de todas. */
+  value: number
+  /**
+   * Cor da fatia. Padrão: `--or-color-viz-1…5`, na ordem dos dados. Use
+   * `--or-color-viz-other` para "Outros".
+   */
+  color?: string
+}
+```
 
 ## Acessibilidade
 

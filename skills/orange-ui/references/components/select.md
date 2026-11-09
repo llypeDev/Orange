@@ -187,7 +187,38 @@ poucas (até ~15). Para listas longas com busca, use `Combobox`.
 | `placeholder` | `string` | — | Texto exibido enquanto nada foi escolhido (opção de valor vazio). Se o campo for `required`, a opção fica desabilitada e não pode ser escolhida de volta. |
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 
-Repassa também os atributos nativos (`SelectHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`SelectHTMLAttributes`) do `<select>`, como `name`, `required`, `disabled`, `value`/`defaultValue` e `onChange` (com o evento), além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SelectOption`:
+
+```ts
+export interface SelectOption {
+  /** Valor enviado no formulário. */
+  value: string
+  /** Texto exibido. */
+  label: string
+  disabled?: boolean
+}
+```
+
+`SelectOptionGroup`:
+
+```ts
+export interface SelectOptionGroup {
+  /** Título do grupo (`<optgroup label>`). */
+  label: string
+  options: SelectOption[]
+  disabled?: boolean
+}
+```
+
+`SelectSize`:
+
+```ts
+export type SelectSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

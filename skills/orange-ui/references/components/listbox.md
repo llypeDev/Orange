@@ -326,7 +326,7 @@ completo (setas, Home/End, digitação, faixas com Shift) e integração com
 | `selectionMode` | `"single" \| "multiple"` | — | `single` (padrão): uma opção por vez. `multiple`: várias, com `aria-multiselectable`. |
 | `value` | `string \| string[] \| null` | — | Valor selecionado (controlado). `null` = nada selecionado. Valores selecionados (controlado), na ordem das opções. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ListboxGroup`
 
@@ -337,7 +337,7 @@ Agrupa opções sob um título (`role="group"` nomeado por `aria-labelledby`).
 | `label` (obrigatória) | `ReactNode` | — | Título do grupo, que nomeia o `role="group"`. |
 | `children` | `ReactNode` | — | As `<ListboxOption>` do grupo. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ListboxOption`
 
@@ -352,7 +352,50 @@ por um check (seleção única) ou uma caixa marcada (seleção múltipla).
 | `disabled` | `boolean` | `false` | A opção continua focável (o leitor de tela a anuncia), mas não pode ser selecionada. |
 | `icon` | `ReactNode` | — | Ícone decorativo antes do rótulo. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ListboxItem`:
+
+```ts
+/** Opção da prop `options` (alternativa a `<ListboxOption>`). */
+export interface ListboxItem {
+  /** Valor da opção (único na lista). É o que vai para `onChange` e para o formulário. */
+  value: string
+  /** Rótulo visível (nome acessível da opção). */
+  label: ReactNode
+  /** Texto secundário abaixo do rótulo, ligado por `aria-describedby`. */
+  description?: ReactNode
+  /** Focável, mas não pode ser selecionada. */
+  disabled?: boolean
+  /** Ícone decorativo antes do rótulo. */
+  icon?: ReactNode
+}
+```
+
+`ListboxItemGroup`:
+
+```ts
+/** Grupo da prop `options` (alternativa a `<ListboxGroup>`). */
+export interface ListboxItemGroup {
+  /** Título do grupo. */
+  label: ReactNode
+  options: ListboxItem[]
+}
+```
+
+`ListboxOrientation`:
+
+```ts
+export type ListboxOrientation = 'vertical' | 'horizontal'
+```
+
+`ListboxSelectionMode`:
+
+```ts
+export type ListboxSelectionMode = 'single' | 'multiple'
+```
 
 ## Acessibilidade
 

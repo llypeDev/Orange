@@ -14,7 +14,7 @@ Rótulo curto em caixa alta (ex.: "COMPONENTES"), usado acima de títulos.
 | `marker` | `boolean` | `false` | Mostra o marcador quadrado laranja antes do texto. |
 | `tone` | `"accent" \| "subtle"` | `subtle` | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 Código: `packages/ui/src/components/Typography/Typography.tsx`
 
@@ -36,7 +36,7 @@ erro, com todos os vínculos ARIA (`for`, `aria-describedby`, `aria-invalid`).
 | `optional` | `boolean` | `false` | Mostra "(opcional)" ao lado do rótulo. |
 | `required` | `boolean` | `false` | Campo obrigatório: mostra `*` e marca o controle como `required`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 Código: `packages/ui/src/components/Field/Field.tsx`
 
@@ -49,7 +49,7 @@ Títulos em Space Grotesk com espaçamento negativo, a voz do Orange.
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Nível semântico (h1–h6). Defina pela hierarquia do documento, não pelo tamanho. |
 | `size` | `"md" \| "lg" \| "xl" \| "display" \| "5xl" \| "4xl" \| "3xl" \| "2xl"` | `md` | Tamanho visual, independente do nível semântico. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 Código: `packages/ui/src/components/Typography/Typography.tsx`
 
@@ -60,12 +60,12 @@ quando o ícone transmitir significado sozinho.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `name` (obrigatória) | `"type" \| "search" \| "send" \| "grid" \| …` | — | Nome do ícone na biblioteca do Orange. |
+| `name` (obrigatória) | `IconName` | — | Nome do ícone na biblioteca do Orange. |
 | `label` | `string` | — | Texto alternativo. Quando informado, o ícone é anunciado por leitores de tela (`role="img"`). Sem `label`, o ícone é decorativo (`aria-hidden`). |
 | `size` | `IconSize` | `md` | Tamanho: token (`xs`=12, `sm`=16, `md`=20, `lg`=24, `xl`=32) ou pixels. |
 | `strokeWidth` | `number` | `1.75` | Espessura do traço. Padrão 1.75. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`SVGProps`) do `<svg>`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 Código: `packages/ui/src/icons/Icon.tsx`
 
@@ -110,9 +110,140 @@ Texto corrido com escala, tons e pesos do sistema.
 | `truncate` | `boolean` | — | Corta o texto em uma linha com reticências. |
 | `weight` | `"bold" \| "regular" \| "medium" \| "semibold"` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 Código: `packages/ui/src/components/Typography/Typography.tsx`
+
+## Tipos
+
+`ClassValue`:
+
+```ts
+export type ClassValue = string | number | false | null | undefined | Record<string, unknown>
+```
+
+`ColorScheme`:
+
+```ts
+/** Esquema de cor de um tema. */
+export type ColorScheme = 'dark' | 'light'
+```
+
+`FieldContextValue`:
+
+```ts
+export interface FieldContextValue {
+  controlId: string
+  labelId: string
+  descriptionId?: string
+  errorId?: string
+  invalid: boolean
+  required: boolean
+  disabled: boolean
+}
+```
+
+`HeadingLevel`:
+
+```ts
+export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6
+```
+
+`HeadingSize`:
+
+```ts
+export type HeadingSize = 'display' | '5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md'
+```
+
+`IconName`:
+
+```ts
+export type IconName = keyof typeof iconPaths
+```
+
+`IconSize`:
+
+```ts
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number
+```
+
+`Locale`:
+
+```ts
+export type Locale = 'pt-BR' | 'en-US' | (string & {})
+```
+
+`MessageKey`:
+
+```ts
+export type MessageKey = keyof typeof ptBR
+```
+
+`Messages`:
+
+```ts
+export type Messages = Record<MessageKey, string>
+```
+
+`ResolvedTheme`:
+
+```ts
+/** Tema aplicado de fato (valor de `data-theme`). */
+export type ResolvedTheme = (typeof themeNames)[number]
+```
+
+`SystemThemePreferences`:
+
+```ts
+/** Preferências do sistema usadas para resolver `system`. */
+export interface SystemThemePreferences {
+  /** `prefers-color-scheme: light`. */
+  prefersLight?: boolean
+  /** `prefers-contrast: more`. */
+  prefersMoreContrast?: boolean
+}
+```
+
+`TextSize`:
+
+```ts
+export type TextSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+```
+
+`TextTone`:
+
+```ts
+export type TextTone = 'default' | 'muted' | 'subtle' | 'accent' | 'success' | 'warning' | 'danger' | 'info' | 'inherit'
+```
+
+`TextWeight`:
+
+```ts
+export type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold'
+```
+
+`ThemeContextValue`:
+
+```ts
+export interface ThemeContextValue {
+  /** Preferência escolhida (pode ser `system`). */
+  theme: ThemeSetting
+  /** Tema efetivamente aplicado (valor de `data-theme`). */
+  resolvedTheme: ResolvedTheme
+  /** Esquema de cor do tema aplicado: `dark-hc` → `dark`. */
+  colorScheme: ColorScheme
+  /** `true` com `dark-hc`/`light-hc` (escolhidos ou vindos de `prefers-contrast: more`). */
+  highContrast: boolean
+  setTheme: (theme: ThemeSetting) => void
+}
+```
+
+`ThemeSetting`:
+
+```ts
+/** Preferência de tema: um tema fixo ou `system` (segue o sistema operacional). */
+export type ThemeSetting = ResolvedTheme | 'system'
+```
 
 ## Utilitários e constantes
 

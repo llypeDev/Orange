@@ -134,7 +134,20 @@ mostre-o após uma tentativa de envio.
 | `onItemClick` | `((item: ErrorSummaryItem, event: MouseEvent<HTMLAnchorElement, MouseEvent>) => void)` | — | Chamado ao clicar em um erro (antes de focar o campo). |
 | `title` | `ReactNode` | — | Título do painel. Padrão: "Corrija os seguintes erros". |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ErrorSummaryItem`:
+
+```ts
+export interface ErrorSummaryItem {
+  /** Id do campo com erro. O link aponta para `#id` e foca esse campo. */
+  id: string
+  /** Mensagem de erro — de preferência a mesma exibida junto ao campo. */
+  message: ReactNode
+}
+```
 
 ## Movimento
 

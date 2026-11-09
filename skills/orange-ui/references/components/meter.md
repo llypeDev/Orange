@@ -185,7 +185,39 @@ use `ProgressBar`.
 | `size` | `"sm" \| "md"` | `md` | Espessura: `sm` 4px, `md` 8px. |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "accent"` | — | Força uma cor. Sem esta prop, a cor vem das faixas: ótimo → `success`, subótimo → `warning`, crítico → `danger` (ou `accent` sem `low`/`high`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`MeterLevel`:
+
+```ts
+/** Faixa do valor em relação ao ótimo (mesmo algoritmo do `<meter>` nativo). */
+export type MeterLevel = 'optimum' | 'suboptimum' | 'critical'
+```
+
+`MeterSize`:
+
+```ts
+export type MeterSize = 'sm' | 'md'
+```
+
+`MeterTone`:
+
+```ts
+export type MeterTone = 'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+```
+
+`MeterValueInfo`:
+
+```ts
+export interface MeterValueInfo {
+  min: number
+  max: number
+  /** Posição do valor na escala, de 0 a 100. */
+  percent: number
+}
+```
 
 ## Acessibilidade
 

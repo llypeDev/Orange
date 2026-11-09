@@ -149,7 +149,7 @@ excedente. Os filhos devem ser `Avatar`.
 | `size` | `"sm" \| "md" \| "lg" \| "xs" \| "xl"` | `md` | Tamanho aplicado a todos os avatares. |
 | `total` | `number` | — | Total real de pessoas, quando apenas parte delas foi carregada. O contador mostra `total - visíveis`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

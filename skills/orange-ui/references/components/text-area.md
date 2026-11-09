@@ -137,7 +137,7 @@ A `ref` e as props nativas vão para o `<textarea>`.
 | `showCount` | `boolean` | `false` | Mostra o contador "x de y caracteres". Requer `maxLength`. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 
-Repassa também os atributos nativos (`TextareaHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TextareaHTMLAttributes`) do `<textarea>`, como `name`, `required`, `disabled`, `rows`, `maxLength` e `placeholder`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Movimento
 

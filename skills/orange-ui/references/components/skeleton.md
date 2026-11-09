@@ -282,7 +282,7 @@ conteúdo real com crossfade.
 | `variant` | `"text" \| "circle" \| "rect"` | `text` | Forma: linha de texto, retângulo (imagens, cartões) ou círculo (avatares). |
 | `width` | `string \| number` | — | Largura (número = px). Padrão: 100% (`text`/`rect`) ou 40px (`circle`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SkeletonText`
 
@@ -297,7 +297,15 @@ Bloco de várias linhas de `Skeleton` imitando um parágrafo.
 | `loaded` | `boolean` | — | Modo de troca: faz crossfade das linhas para `children` quando `true`. |
 | `width` | `string \| number` | — | Largura do bloco. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SkeletonVariant`:
+
+```ts
+export type SkeletonVariant = 'text' | 'rect' | 'circle'
+```
 
 ## Acessibilidade
 

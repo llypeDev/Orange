@@ -342,7 +342,41 @@ estreitas, a navegação vai para um painel aberto pelo botão de menu.
 | `renderLink` | `RenderLink` | — | Renderiza os links com o componente do seu roteador. |
 | `sticky` | `boolean` | `false` | Fixa o cabeçalho no topo durante a rolagem. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`AppHeaderBreakpoint`:
+
+```ts
+export type AppHeaderBreakpoint = 'sm' | 'md' | 'lg'
+```
+
+`AppHeaderNavItem`:
+
+```ts
+export interface AppHeaderNavItem {
+  /** Texto do link. */
+  label: ReactNode
+  /** Destino. */
+  href: string
+  /**
+   * Marca o item como página atual. Padrão: `href === currentHref`. Com
+   * `items`, marca a seção como atual (padrão: `href` ou algum sublink atual).
+   */
+  active?: boolean
+  /**
+   * Sublinks: links e/ou grupos com título (os mesmos do `NavigationMenu`).
+   * Com `items`, o item vira um botão que abre um submenu — painel flutuante
+   * em telas largas, seção expansível no menu em telas estreitas — e o `href`
+   * dele não vira link: identifica o item e marca a seção como atual quando
+   * é igual a `currentHref`.
+   */
+  items?: (NavigationMenuLink | NavigationMenuGroup)[]
+  /** Colunas do submenu em telas largas (1–4). Padrão: uma por grupo; links soltos, 1. */
+  columns?: 1 | 2 | 3 | 4
+}
+```
 
 ## Acessibilidade
 

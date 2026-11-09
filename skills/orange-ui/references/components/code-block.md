@@ -202,7 +202,7 @@ a biblioteca leve e o código legível em qualquer linguagem.
 | `title` | `string` | — | Nome do arquivo ou título do trecho, exibido no cabeçalho. |
 | `wrap` | `boolean` | `false` | Quebra linhas longas em vez de rolar horizontalmente. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Movimento
 

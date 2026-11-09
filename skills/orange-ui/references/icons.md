@@ -1,13 +1,13 @@
 # Ícones
 
-92 ícones de linha (24×24, traço de 1,5px, `currentColor`). Use `<Icon name="…" />`; sem `label` o ícone é decorativo (`aria-hidden`), com `label` ganha nome acessível. Botões só com ícone precisam de `aria-label` no botão.
+92 ícones de linha (grade 24×24, traço padrão 1.75 via `strokeWidth`, cor `currentColor`). Use `<Icon name="…" />`: sem `label` o ícone é decorativo (`aria-hidden`); com `label`, ganha nome acessível. Botão só com ícone: `IconButton` com `label` (obrigatório) ou `Button iconOnly` com `aria-label`. Props do `Icon` em `foundations.md`.
 
 ```tsx
 import { Icon, IconButton } from '@orangesys/ui'
 
 <Icon name="search" />
 <Icon name="alert" label="Atenção" />
-<IconButton aria-label="Fechar" icon={<Icon name="close" />} />
+<IconButton icon="close" label="Fechar" />
 ```
 
 Nomes disponíveis (`IconName`):

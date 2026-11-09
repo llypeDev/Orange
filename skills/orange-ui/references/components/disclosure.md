@@ -207,7 +207,21 @@ recebe `hidden` quando a transição termina.
 | `size` | `"sm" \| "md"` | `md` | Tamanho do texto e dos espaçamentos. Padrão: `md`. |
 | `variant` | `"outline" \| "inline"` | `inline` | `inline` (padrão): botão com cara de link e conteúdo recuado com um fio à esquerda. `outline`: caixa com borda, como um item de Accordion. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DisclosureSize`:
+
+```ts
+export type DisclosureSize = 'sm' | 'md'
+```
+
+`DisclosureVariant`:
+
+```ts
+export type DisclosureVariant = 'inline' | 'outline'
+```
 
 ## Acessibilidade
 

@@ -164,7 +164,21 @@ do provider. Renderiza `<time dateTime>` e se atualiza sozinha.
 | `threshold` | `number` | `7` | No formato `auto`, quantos dias o texto continua relativo. Padrão: `7`. |
 | `updateInterval` | `number \| false` | — | Intervalo de atualização do texto em ms. Padrão: automático (mais frequente para datas recentes). Use `false` para não atualizar. |
 
-Repassa também os atributos nativos (`TimeHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TimeHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`RelativeTimeDate`:
+
+```ts
+export type RelativeTimeDate = Date | string | number
+```
+
+`RelativeTimeFormat`:
+
+```ts
+export type RelativeTimeFormat = 'relative' | 'absolute' | 'auto'
+```
 
 ## Movimento
 

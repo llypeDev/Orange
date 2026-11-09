@@ -281,7 +281,7 @@ cadastro em seções). Padrão "Task list" do GOV.UK.
 | `title` | `ReactNode` | — | Título do resumo acima da lista (ex.: "Configure sua loja"). Também nomeia a lista. |
 | `total` | `number` | — | Total de tarefas. Padrão: o número de `TaskListItem` filhos diretos. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `TaskListItem`
 
@@ -297,7 +297,15 @@ opcional e status em texto + tag.
 | `onClick` | `((event: MouseEvent<HTMLElement, MouseEvent>) => void)` | — | Sem `href`, torna a linha um botão (ex.: abrir um diálogo). Com `href`, é repassado ao link. |
 | `statusLabel` | `ReactNode` | — | Substitui o texto padrão do status (ex.: "Disponível após o frete"). |
 
-Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TaskListStatus`:
+
+```ts
+export type TaskListStatus = 'complete' | 'in-progress' | 'not-started' | 'cannot-start' | 'error'
+```
 
 ## Acessibilidade
 

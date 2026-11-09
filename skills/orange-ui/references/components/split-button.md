@@ -215,7 +215,30 @@ botão principal; `className` e `style`, para o contêiner.
 | `startIcon` | `ReactNode` | — | Ícone antes do rótulo. |
 | `variant` | `"outline" \| "primary" \| "secondary"` | — | Estilo visual das duas partes. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`SplitButtonAction`:
+
+```ts
+export interface SplitButtonAction {
+  /** Rótulo do item do menu (também usado na busca por letra inicial). */
+  label: string
+  /** Chamado quando o item é escolhido. O menu fecha e o foco volta para a seta. */
+  onSelect: () => void
+  /** Ícone antes do rótulo. */
+  icon?: IconName
+  /** Item visível e focável, mas que não pode ser acionado. */
+  disabled?: boolean
+}
+```
+
+`SplitButtonVariant`:
+
+```ts
+export type SplitButtonVariant = 'primary' | 'secondary' | 'outline'
+```
 
 ## Acessibilidade
 

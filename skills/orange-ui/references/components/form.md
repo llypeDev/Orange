@@ -440,7 +440,7 @@ erros chegam aos campos pelo render-prop `children` ou por `useForm()`.
 | `onSubmit` | `((values: FormValues, event: FormEvent<HTMLFormElement>) => unknown)` | — | Chamado só quando não há erros de validação. Se retornar uma promessa, o formulário fica `aria-busy` e bloqueia novos envios até ela terminar. Sem `onSubmit`, um envio válido segue o caminho nativo (`action`/`method`). |
 | `validate` | `((values: FormValues) => FormErrors)` | — | Validação síncrona, chamada no envio com os valores do formulário. Retorne uma mensagem por `name` inválido. Depois de um envio com erros, roda de novo a cada alteração para tirar os erros já corrigidos. |
 
-Repassa também os atributos nativos (`FormHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`FormHTMLAttributes`) do `<form>`, como `id`, `action`, `method` e `noValidate`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `FormActions`
 
@@ -451,7 +451,48 @@ telas estreitas e alinhamento. Coloque o botão de envio primeiro na ordem de le
 | --- | --- | --- | --- |
 | `align` | `"start" \| "end" \| "between"` | `start` | Alinhamento dos botões: `start` (padrão), `end` ou `between` (ex.: Voltar … Continuar). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`FormErrors`:
+
+```ts
+/** Mensagens de erro por `name`. `undefined` ou `''` = sem erro. */
+export type FormErrors = Record<string, string | undefined>
+```
+
+`FormState`:
+
+```ts
+/** Estado exposto pelo render-prop `children` e pelo hook `useForm()`. */
+export interface FormState {
+  /** Erros visíveis agora (validação depois do envio + erros externos), por `name`. */
+  errors: Record<string, string>
+  /** `true` enquanto a promessa retornada por `onSubmit` está pendente. */
+  isSubmitting: boolean
+  /** Número de tentativas de envio (válidas ou não). */
+  submitCount: number
+  /** `true` quando não há erros visíveis. Antes do primeiro envio, é sempre `true`. */
+  isValid: boolean
+  /** Mensagem de erro visível de um campo. */
+  getError: (name: string) => string | undefined
+}
+```
+
+`FormValue`:
+
+```ts
+/** Valor de um campo: texto (ou `File`), ou uma lista quando vários controles têm o mesmo `name`. */
+export type FormValue = FormDataEntryValue | FormDataEntryValue[]
+```
+
+`FormValues`:
+
+```ts
+/** Valores do formulário por `name`, lidos com `FormData`. Campos ausentes (caixa desmarcada) ficam de fora. */
+export type FormValues = Record<string, FormValue | undefined>
+```
 
 ## Acessibilidade
 

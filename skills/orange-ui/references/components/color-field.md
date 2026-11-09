@@ -152,7 +152,26 @@ campo hexadecimal validado e, opcionalmente, uma paleta de cores sugeridas.
 | `swatches` | `(string \| ColorSwatch)[]` | — | Cores sugeridas, exibidas como grupo de opções (radiogroup). |
 | `value` | `string` | — | Cor no formato `#rrggbb` (controlado). `''` = sem cor. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ColorFieldSize`:
+
+```ts
+export type ColorFieldSize = 'sm' | 'md' | 'lg'
+```
+
+`ColorSwatch`:
+
+```ts
+export interface ColorSwatch {
+  /** Cor em hexadecimal (`#rrggbb` ou `#rgb`). */
+  value: string
+  /** Nome acessível da cor ("Laranja Orange"). Padrão: o próprio hexadecimal. */
+  label?: string
+}
+```
 
 ## Acessibilidade
 

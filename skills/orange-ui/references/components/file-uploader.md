@@ -208,10 +208,35 @@ de tela.
 | `onFileRemove` | `((item: FileUploaderItem) => void)` | — | Chamado quando o usuário remove um arquivo. |
 | `onFilesAdded` | `((items: FileUploaderItem[]) => void)` | — | Chamado só com os arquivos aceitos de cada seleção — útil para iniciar o envio. |
 | `optional` | `boolean` | — | Mostra "(opcional)" ao lado do rótulo. |
-| `required` | `boolean` | — | — |
+| `required` | `boolean` | — | Campo obrigatório: mostra `*` e marca o controle como `required`. |
 | `value` | `FileUploaderItem[]` | — | Lista de arquivos (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`FileUploaderItem`:
+
+```ts
+/** Um arquivo da lista. Atualize `status`/`progress` (modo controlado) durante o envio. */
+export interface FileUploaderItem {
+  /** Identificador estável do item. */
+  id: string
+  file: File
+  /** Estado do envio. Padrão: `idle`. Arquivos recusados chegam como `error`. */
+  status?: FileUploaderStatus
+  /** Progresso de 0 a 100, exibido quando `status` é `uploading`. */
+  progress?: number
+  /** Mensagem exibida quando `status` é `error`. */
+  error?: string
+}
+```
+
+`FileUploaderStatus`:
+
+```ts
+export type FileUploaderStatus = 'idle' | 'uploading' | 'success' | 'error'
+```
 
 ## Acessibilidade
 

@@ -168,7 +168,7 @@ Home/End e botões − / +. Aceita formatação por `Intl.NumberFormat`
 | `suffix` | `ReactNode` | — | Texto fixo depois do valor (ex.: `kg`, `un.`). |
 | `value` | `number \| null` | — | Valor (controlado). `null` representa o campo vazio. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Movimento
 

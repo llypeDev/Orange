@@ -139,7 +139,15 @@ Complementa (não substitui) o nome acessível do gatilho.
 | `open` | `boolean` | — | Aberto (controlado). |
 | `placement` | `"bottom" \| "top" \| "left" \| "right" \| "bottom-start" \| "bottom-end" \| "top-start" \| "top-end" \| "left-start" \| "left-end" \| "right-start" \| "right-end"` | `top` | Posição preferida; inverte sozinha se faltar espaço. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TooltipPlacement`:
+
+```ts
+export type TooltipPlacement = FloatingPlacement
+```
 
 ## Acessibilidade
 

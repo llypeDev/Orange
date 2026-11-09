@@ -143,7 +143,7 @@ quando selecionado. Agrupe com `ChipGroup`.
 | `size` | `"sm" \| "md"` | — | Altura: `sm` 28px ou `md` 32px. |
 | `value` | `string` | — | Valor do chip dentro de um `ChipGroup`. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `ChipGroup`
 
@@ -160,7 +160,15 @@ Agrupa chips de filtro (`role="group"` rotulado) com seleção única ou múltip
 | `size` | `"sm" \| "md"` | — | Tamanho aplicado a todos os chips. |
 | `value` | `string \| string[] \| null` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ChipSize`:
+
+```ts
+export type ChipSize = 'sm' | 'md'
+```
 
 ## Acessibilidade
 

@@ -186,7 +186,7 @@ linha mostra. Desenha-se uma vez ao entrar na tela.
 | `showMinMax` | `boolean` | `false` | Marca o menor e o maior valor. |
 | `width` | `number` | `96` | Largura em px. Padrão: 96. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

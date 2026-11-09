@@ -207,7 +207,42 @@ pelo teclado. Abre por um gatilho ou por um atalho global como ⌘K.
 | `placeholder` | `string` | — | Texto de exemplo do campo de busca. |
 | `trigger` | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Elemento que abre a paleta (modo não controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CommandGroup`:
+
+```ts
+export interface CommandGroup {
+  /** Título do grupo (ex.: "Navegação"). */
+  label: string
+  items: CommandItem[]
+}
+```
+
+`CommandItem`:
+
+```ts
+export interface CommandItem {
+  /** Identificador único em toda a paleta. */
+  id: string
+  /** Nome do comando, em forma de ação: "Criar projeto". */
+  label: string
+  /** Detalhe opcional exibido abaixo do rótulo (também é pesquisável). */
+  description?: string
+  /** Ícone: nome da biblioteca do Orange ou um elemento. */
+  icon?: IconName | ReactElement
+  /** Atalho exibido à direita: `'⌘ N'` ou `['G', 'P']`. */
+  shortcut?: string | string[]
+  /** Sinônimos que também encontram o comando na busca. */
+  keywords?: string[]
+  /** Exibido, mas não pode ser escolhido. */
+  disabled?: boolean
+  /** Executado ao escolher o comando (depois que a paleta fecha). */
+  onSelect?: () => void
+}
+```
 
 ## Acessibilidade
 

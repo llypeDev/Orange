@@ -214,7 +214,7 @@ seções e modo recolhido (somente ícones).
 | `onCollapsedChange` | `((collapsed: boolean) => void)` | — | Chamado quando o botão de recolher é acionado. |
 | `renderLink` | `RenderLink` | — | Renderiza os links com o componente do seu roteador. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SideNavGroup`
 
@@ -229,7 +229,7 @@ No modo recolhido, os itens abrem em um painel ao lado.
 | `onOpenChange` | `((open: boolean) => void)` | — | Chamado ao abrir/fechar. |
 | `open` | `boolean` | — | Aberto (controlado). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SideNavItem`
 
@@ -244,7 +244,7 @@ Um destino da navegação lateral.
 | `icon` | `ReactNode` | — | Ícone decorativo. No modo recolhido, sem ícone, mostra a inicial do rótulo. |
 | `onClick` | `((event: MouseEvent<HTMLElement, MouseEvent>) => void)` | — | — |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `SideNavSection`
 
@@ -254,7 +254,7 @@ Agrupa itens sob um título curto em caixa alta (ex.: "Configurações").
 | --- | --- | --- | --- |
 | `title` (obrigatória) | `ReactNode` | — | Título da seção (rótulo da lista). No modo recolhido vira uma linha divisória. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

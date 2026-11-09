@@ -109,7 +109,7 @@ Esconde conteúdo visualmente mantendo-o acessível para leitores de tela.
 | `as` | `ElementType` | `span` | Elemento renderizado. Padrão: `span`. |
 | `focusable` | `boolean` | `false` | Torna-se visível quando recebe foco (útil para links de atalho). |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

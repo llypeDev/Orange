@@ -207,7 +207,7 @@ Use com `AccordionItem`, `AccordionTrigger` e `AccordionContent`.
 | `value` | `string \| string[] \| null` | — | Item aberto (controlado). `null` fecha todos. Itens abertos (controlado). |
 | `variant` | `"outline" \| "flush"` | — | `outline` (caixa com borda, padrão) ou `flush` (apenas divisórias). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `AccordionContent`
 
@@ -217,7 +217,7 @@ transição de saída termina (`usePresence`). Sem movimento em `prefers-reduced
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `AccordionItem`
 
@@ -228,7 +228,7 @@ Um item do Accordion: agrupa um `AccordionTrigger` e um `AccordionContent`.
 | `value` (obrigatória) | `string` | — | Identificador único do item dentro do Accordion. |
 | `disabled` | `boolean` | `false` | Desabilita o item. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `AccordionTrigger`
 
@@ -239,7 +239,21 @@ O ícone de caixa quadrada mostra "+" fechado e "−" aberto.
 | --- | --- | --- | --- |
 | `headingLevel` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | — | Sobrescreve o nível do cabeçalho definido no Accordion. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`AccordionType`:
+
+```ts
+export type AccordionType = 'single' | 'multiple'
+```
+
+`AccordionVariant`:
+
+```ts
+export type AccordionVariant = 'outline' | 'flush'
+```
 
 ## Acessibilidade
 

@@ -305,7 +305,7 @@ O trilho usa scroll-snap nativo: swipe, trackpad e roda funcionam sem JS.
 | `picker` | `"none" \| "dots" \| "counter"` | `dots` | Seletor de slides: `dots` (abas do APG, uma parada de Tab), `counter` ("02 / 05", para muitos slides) ou `none` (só anterior/próximo). |
 | `slidesPerView` | `CarouselSlidesPerView` | `1` | Slides visíveis por vez. Frações deixam o próximo "espiando" (ex.: `1.2`, `2.5`). Aceita valores por breakpoint: `{ base: 1.2, md: 2.5, lg: 4 }`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CarouselSlide`
 
@@ -316,7 +316,57 @@ Fora da vista fica inerte: some dos leitores de tela e da ordem do Tab.
 | --- | --- | --- | --- |
 | `label` | `string` | — | Nome acessível do slide. Padrão: a posição ("2 de 5"). Com um título visível no slide, prefira `aria-labelledby`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CarouselAutoplay`:
+
+```ts
+export type CarouselAutoplay = boolean | { interval: number }
+```
+
+`CarouselControlsPlacement`:
+
+```ts
+export type CarouselControlsPlacement = 'bottom' | 'top'
+```
+
+`CarouselGap`:
+
+```ts
+export type CarouselGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8
+```
+
+`CarouselPicker`:
+
+```ts
+export type CarouselPicker = 'dots' | 'counter' | 'none'
+```
+
+`CarouselResponsiveValue`:
+
+```ts
+/** Valores por breakpoint (largura mínima, mesmos de `@orangesys/tokens`). */
+export interface CarouselResponsiveValue {
+  /** Abaixo de 640px. */
+  base?: number
+  /** A partir de 640px. */
+  sm?: number
+  /** A partir de 768px. */
+  md?: number
+  /** A partir de 1024px. */
+  lg?: number
+  /** A partir de 1280px. */
+  xl?: number
+}
+```
+
+`CarouselSlidesPerView`:
+
+```ts
+export type CarouselSlidesPerView = number | CarouselResponsiveValue
+```
 
 ## Acessibilidade
 

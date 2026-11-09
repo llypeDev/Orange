@@ -157,7 +157,22 @@ visível enquanto a pessoa rola.
 | `rootMargin` | `string` | `-80px 0px -65% 0px` | Faixa da área visível em que um título conta como "na tela", no formato do `rootMargin` do IntersectionObserver (px ou %). Padrão: `'-80px 0px -65% 0px'` (terço superior). No fim da rolagem, a última seção à vista fica ativa mesmo que o título não alcance a faixa. |
 | `title` | `ReactNode` | — | Título visível acima da lista. Padrão: `t('tableOfContents')`. `null` esconde (o nome continua no `aria-label`). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`TableOfContentsItem`:
+
+```ts
+export interface TableOfContentsItem {
+  /** Id do título de destino (sem `#`). */
+  id: string
+  /** Texto exibido no índice. */
+  label: ReactNode
+  /** Nível do título (2 para `h2`, 3 para `h3`…). Define a indentação. */
+  level?: number
+}
+```
 
 ## Acessibilidade
 

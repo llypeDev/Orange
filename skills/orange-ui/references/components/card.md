@@ -196,7 +196,7 @@ Contêiner de conteúdo relacionado: título, texto, mídia e ações.
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Espaçamento interno: `sm` 16px, `md` 24px, `lg` 32px. |
 | `variant` | `"outline" \| "accent" \| "raised"` | `outline` | `outline` (borda 1px, padrão), `raised` (superfície elevada) ou `accent` (borda superior laranja). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CardBody`
 
@@ -204,7 +204,7 @@ Conteúdo principal do cartão.
 
 Sem props próprias.
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CardFooter`
 
@@ -214,7 +214,7 @@ Rodapé com ações ou metadados, sempre alinhado à base do cartão.
 | --- | --- | --- | --- |
 | `divider` | `boolean` | `false` | Mostra uma linha divisória acima do rodapé. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CardHeader`
 
@@ -230,7 +230,7 @@ Cabeçalho do cartão: eyebrow, título (opcionalmente link), descrição e aç�
 | `linkProps` | `Omit<CardLinkProps, "children" \| "href">` | — | Atributos extras do link do título. |
 | `title` | `ReactNode` | — | Título do cartão (renderizado como heading). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CardLink`
 
@@ -243,7 +243,7 @@ todo o cartão (padrão "stretched link").
 | `as` | `ElementType` | `a` | Componente de link do roteador (ex.: `Link` do React Router). Padrão: `a`. |
 | `to` | `string` | — | Repassado ao componente de roteador. |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`AnchorHTMLAttributes`) do `<a>`, como `href`, `target`, `rel` e `download`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ### `CardMedia`
 
@@ -255,7 +255,21 @@ Imagem ou mídia de borda a borda (no topo ou na base do cartão).
 | `ratio` | `string \| number` | `16/9` | Proporção da área de mídia (ex.: `16/9`, `4/3`, `1`). Padrão: `16/9`. |
 | `src` | `string` | — | URL da imagem. Alternativamente, passe a mídia como `children`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CardSize`:
+
+```ts
+export type CardSize = 'sm' | 'md' | 'lg'
+```
+
+`CardVariant`:
+
+```ts
+export type CardVariant = 'outline' | 'raised' | 'accent'
+```
 
 ## Acessibilidade
 

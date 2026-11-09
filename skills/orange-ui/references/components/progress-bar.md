@@ -153,7 +153,32 @@ importação, etapas). Sem `value`, indica atividade de duração desconhecida.
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "accent"` | `accent` | Cor da barra. |
 | `value` | `number \| null` | — | Valor atual. Sem valor (`undefined`/`null`), a barra fica indeterminada. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ProgressBarSize`:
+
+```ts
+export type ProgressBarSize = 'sm' | 'md'
+```
+
+`ProgressBarTone`:
+
+```ts
+export type ProgressBarTone = 'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+```
+
+`ProgressValueInfo`:
+
+```ts
+export interface ProgressValueInfo {
+  min: number
+  max: number
+  /** Percentual concluído, de 0 a 100. */
+  percent: number
+}
+```
 
 ## Acessibilidade
 

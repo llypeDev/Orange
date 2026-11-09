@@ -167,11 +167,11 @@ moeda no campo e formatação com `Intl.NumberFormat` ao sair. Entrega um
 | `currency` | `string` | — | Código ISO 4217 da moeda. Padrão: `'BRL'`. |
 | `currencyDisplay` | `"symbol" \| "code" \| "narrowSymbol"` | — | Como exibir a moeda: símbolo (`R$`), símbolo curto (`$`) ou código (`BRL`). |
 | `defaultValue` | `number \| null` | — | Valor inicial (não controlado). |
-| `description` | `ReactNode` | — | — |
-| `error` | `ReactNode` | — | — |
-| `hideLabel` | `boolean` | — | — |
-| `invalid` | `boolean` | — | — |
-| `label` | `ReactNode` | — | — |
+| `description` | `ReactNode` | — | Texto de ajuda exibido abaixo do rótulo. |
+| `error` | `ReactNode` | — | Mensagem de erro. Quando presente, o campo fica inválido. |
+| `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
+| `invalid` | `boolean` | — | Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). |
+| `label` | `ReactNode` | — | Rótulo visível do campo. Sempre informe um rótulo — mesmo que oculto. |
 | `locale` | `string` | — | Locale da formatação. Padrão: o idioma do `OrangeProvider` (pt-BR). |
 | `max` | `number` | — | Valor máximo (aplicado ao sair do campo). |
 | `min` | `number` | — | Valor mínimo (aplicado ao sair do campo). Valores negativos só são aceitos se `min < 0`. |
@@ -179,7 +179,15 @@ moeda no campo e formatação com `Intl.NumberFormat` ao sair. Entrega um
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `number \| null` | — | Valor numérico (controlado). `null` = vazio. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`) do `<input>`, como `name`, `required`, `disabled`, `readOnly`, `autoComplete`, `placeholder` e `onBlur`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`CurrencyFieldSize`:
+
+```ts
+export type CurrencyFieldSize = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

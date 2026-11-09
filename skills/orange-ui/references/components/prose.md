@@ -335,7 +335,15 @@ responsabilidade da aplicação** (ex.: DOMPurify no servidor).
 | `measure` | `boolean` | `true` | Limita a largura a uma medida confortável de leitura (68 caracteres). Use `false` para ocupar toda a largura do contêiner. Padrão: `true`. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Tamanho do texto e do ritmo vertical: `sm` (13px), `md` (15px, padrão) ou `lg` (17px). Os títulos seguem a escala do `Heading` — `sm` desce um degrau e `lg` sobe um. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`ProseSize`:
+
+```ts
+export type ProseSize = 'sm' | 'md' | 'lg'
+```
 
 ## Acessibilidade
 

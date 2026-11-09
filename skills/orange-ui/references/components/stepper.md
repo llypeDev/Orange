@@ -205,7 +205,36 @@ configuração). Indica etapas concluídas, a atual e as próximas.
 | `orientation` | `"horizontal" \| "vertical"` | `horizontal` | Orientação. A horizontal vira compacta em contêineres estreitos. |
 | `step` | `number` | `0` | Índice (a partir de 0) da etapa atual. Etapas anteriores ficam concluídas. Padrão: `0`. |
 
-Repassa também os atributos nativos (`OlHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`OlHTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`StepperOrientation`:
+
+```ts
+export type StepperOrientation = 'horizontal' | 'vertical'
+```
+
+`StepperStatus`:
+
+```ts
+export type StepperStatus = 'complete' | 'current' | 'upcoming' | 'error'
+```
+
+`StepperStep`:
+
+```ts
+export interface StepperStep {
+  /** Nome da etapa. */
+  label: ReactNode
+  /** Texto de apoio abaixo do nome. */
+  description?: ReactNode
+  /** Força um estado. Padrão: calculado a partir de `step`. Use `error` para etapas com problema. */
+  status?: StepperStatus
+  /** Conteúdo exibido sob a etapa atual (somente na orientação vertical). */
+  content?: ReactNode
+}
+```
 
 ## Acessibilidade
 

@@ -151,7 +151,15 @@ internos de uma vez.
 | `gap` | `"sm" \| "md" \| "lg"` | `md` | Espaçamento entre os campos: `sm` 12px, `md` 20px, `lg` 32px. Padrão: `md`. |
 | `hideLegend` | `boolean` | — | Oculta a legenda visualmente (continua acessível). |
 
-Repassa também os atributos nativos (`FieldsetHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`FieldsetHTMLAttributes`) do `<fieldset>`, como `name`, `form` e `disabled`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`FieldsetGap`:
+
+```ts
+export type FieldsetGap = 'sm' | 'md' | 'lg'
+```
 
 ## Movimento
 

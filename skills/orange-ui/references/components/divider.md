@@ -154,7 +154,27 @@ seja marcado como `decorative`.
 | `thickness` | `"thin" \| "thick"` | `thin` | Espessura: `thin` (1px, padrão) ou `thick` (2px). |
 | `tone` | `"accent" \| "default" \| "strong" \| "subtle"` | `default` | Intensidade da linha: `subtle`, `default`, `strong` ou `accent` (laranja). |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`DividerOrientation`:
+
+```ts
+export type DividerOrientation = 'horizontal' | 'vertical'
+```
+
+`DividerSpacing`:
+
+```ts
+export type DividerSpacing = 0 | 1 | 2 | 3 | 4 | 6 | 8
+```
+
+`DividerTone`:
+
+```ts
+export type DividerTone = 'subtle' | 'default' | 'strong' | 'accent'
+```
 
 ## Acessibilidade
 

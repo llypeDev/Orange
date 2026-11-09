@@ -139,7 +139,7 @@ reduzido) e devolve o foco ao início do conteúdo.
 | `showLabel` | `boolean` | `false` | Mostra o rótulo ao lado do ícone. Padrão: só o ícone (com `aria-label`). |
 | `threshold` | `number` | `400` | Distância rolada (px) a partir da qual o botão aparece. Padrão: 400. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ButtonHTMLAttributes`) do `<button>`, como `type`, `disabled`, `onClick`, `form` e `name`, além de `className`, `style`, `aria-*`, `data-*` e eventos.
 
 ## Acessibilidade
 

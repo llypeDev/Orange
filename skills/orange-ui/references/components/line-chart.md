@@ -161,7 +161,21 @@ séries, cada uma com cor, traço e marcador próprios (nunca só a cor). Lacuna
 | `valueFormat` | `((value: number) => string) \| NumberFormatOptions` | — | Formato dos números: função ou opções do `Intl.NumberFormat` (ex.: `{ style: 'currency', currency: 'BRL' }`). |
 | `variant` | `"outline" \| "plain"` | `outline` | `outline` (padrão): borda de 1px e respiro interno. `plain`: sem moldura, para cartões. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`LineChartDatum`:
+
+```ts
+export type LineChartDatum = ChartDatum
+```
+
+`LineChartSeries`:
+
+```ts
+export type LineChartSeries = ChartSeries
+```
 
 ## Acessibilidade
 

@@ -197,7 +197,15 @@ imediatamente. Puramente visual: nada é escondido de leitores de tela.
 | `stagger` | `boolean` | `false` | Escalona os filhos diretos (cada um entra 80ms depois do anterior). |
 | `variant` | `"up" \| "fade" \| "scale"` | `up` | Tipo de entrada: subir 24px (padrão), só opacidade ou leve escala. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`RevealVariant`:
+
+```ts
+export type RevealVariant = 'up' | 'fade' | 'scale'
+```
 
 ## Movimento
 

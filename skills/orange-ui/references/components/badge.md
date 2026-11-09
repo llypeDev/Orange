@@ -211,7 +211,21 @@ Indicador numérico ou ponto, inline ou sobreposto a outro elemento
 | `size` | `"sm" \| "md"` | `md` | Tamanho: `sm` ou `md` (padrão). |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "accent"` | `accent` | Cor semântica. Padrão: `accent`. |
 
-Repassa também os atributos nativos (`HTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
+
+### Tipos
+
+`BadgeSize`:
+
+```ts
+export type BadgeSize = 'sm' | 'md'
+```
+
+`BadgeTone`:
+
+```ts
+export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger' | 'info'
+```
 
 ## Acessibilidade
 
