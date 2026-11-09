@@ -67,8 +67,9 @@ function revealItem(menu: HTMLElement, item: HTMLElement) {
   const top = menu.getBoundingClientRect().top + menu.clientTop
   const bottom = top + menu.clientHeight
   const rect = item.getBoundingClientRect()
-  if (rect.top < top) menu.scrollTop -= top - rect.top
-  else if (rect.bottom > bottom) menu.scrollTop += rect.bottom - bottom
+  // Arredonda para longe de zero: o WebKit rola em pixels inteiros (senão sobra fração cortada).
+  if (rect.top < top) menu.scrollTop -= Math.ceil(top - rect.top)
+  else if (rect.bottom > bottom) menu.scrollTop += Math.ceil(rect.bottom - bottom)
 }
 
 /**

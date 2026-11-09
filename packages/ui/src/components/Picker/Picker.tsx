@@ -152,7 +152,9 @@ function pageIndex(items: PickerItem[], from: number, step: 1 | -1): number {
 
 /**
  * Rola só a lista (nunca a página) até a opção. Na primeira opção de um
- * grupo, mostra também o título do grupo.
+ * grupo, mostra também o título do grupo. *
+ * Os deslocamentos arredondam para longe de zero: o WebKit rola em pixels inteiros, e uma
+ * rolagem fracionária deixava o item cortado por menos de 1px.
  */
 function revealOption(list: HTMLElement | null, id: string | undefined) {
   if (!list || !id) return
@@ -163,8 +165,8 @@ function revealOption(list: HTMLElement | null, id: string | undefined) {
   const top = head.getBoundingClientRect().top
   const bottom = option.getBoundingClientRect().bottom
   const box = list.getBoundingClientRect()
-  if (top < box.top) list.scrollTop -= box.top - top
-  else if (bottom > box.bottom) list.scrollTop += bottom - box.bottom
+  if (top < box.top) list.scrollTop -= Math.ceil(box.top - top)
+  else if (bottom > box.bottom) list.scrollTop += Math.ceil(bottom - box.bottom)
 }
 
 /* -------------------------------------------------------------------------- */
