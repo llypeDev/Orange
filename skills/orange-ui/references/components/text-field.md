@@ -32,11 +32,11 @@ Campo de texto de uma linha com rótulo, ajuda, erro, ícones, prefixo/sufixo e 
 ### Básico
 
 ```tsx
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField label="Nome completo" autoComplete="name" required />
       <TextField
         label="E-mail de trabalho"
@@ -46,7 +46,7 @@ export default function Basic() {
         placeholder="voce@empresa.com"
       />
       <TextField label="Cargo" optional />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -56,15 +56,15 @@ export default function Basic() {
 sm (32px), md (40px, padrão) e lg (48px) — as mesmas alturas dos botões.
 
 ```tsx
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField size="sm" label="Pequeno (sm · 32px)" placeholder="Filtros e tabelas densas" />
       <TextField size="md" label="Médio (md · 40px)" placeholder="Padrão para formulários" />
       <TextField size="lg" label="Grande (lg · 48px)" placeholder="Telas de destaque e mobile" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -74,11 +74,11 @@ export default function Sizes() {
 Clicar em qualquer parte da moldura foca o campo. Prefixo e sufixo de texto também são lidos por leitores de tela.
 
 ```tsx
-import { Icon, TextField } from '@orangesys/ui'
+import { Icon, Stack, TextField } from '@orangesys/ui'
 
 export default function Adornments() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField
         label="Buscar pedidos"
         type="search"
@@ -89,7 +89,7 @@ export default function Adornments() {
       <TextField label="Subdomínio" prefix="https://" suffix=".orange.app" defaultValue="minha-loja" />
       <TextField label="Peso do pacote" inputMode="decimal" suffix="kg" style={{ maxWidth: 200 }} />
       <TextField label="E-mail para contato" type="email" endIcon={<Icon name="mail" />} placeholder="contato@empresa.com" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -99,11 +99,11 @@ export default function Adornments() {
 Com `maxLength` e `showCount`. O contador é anunciado só quando a pessoa pausa a digitação.
 
 ```tsx
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 
 export default function CharacterCount() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField
         label="Título do anúncio"
         description="Seja direto: tipo do imóvel, quartos e bairro."
@@ -111,7 +111,7 @@ export default function CharacterCount() {
         showCount
         defaultValue="Apartamento com 2 quartos na Vila Madalena"
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -121,7 +121,7 @@ export default function CharacterCount() {
 Campo controlado validado ao sair, somente leitura e desabilitado.
 
 ```tsx
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 import { useState } from 'react'
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -132,7 +132,7 @@ export default function Validation() {
   const error = touched && !isEmail(email) ? 'Informe um e-mail no formato nome@empresa.com.' : undefined
 
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField
         label="E-mail"
         type="email"
@@ -144,7 +144,7 @@ export default function Validation() {
       />
       <TextField label="Código da organização" readOnly defaultValue="ORG-2931" description="Gerado automaticamente." />
       <TextField label="Plano" disabled defaultValue="Gratuito" />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -1,8 +1,8 @@
-import { Banner, Button } from '@orangesys/ui'
+import { Banner, Button, Stack } from '@orangesys/ui'
 
 export default function WithAction() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Banner
         tone="warning"
         title="Instabilidade no Pix"
@@ -23,6 +23,6 @@ export default function WithAction() {
       >
         Escolha um plano para manter seus 4 projetos.
       </Banner>
-    </div>
+    </Stack>
   )
 }

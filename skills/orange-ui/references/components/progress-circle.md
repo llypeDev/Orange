@@ -22,15 +22,15 @@ Indicador circular de progresso, determinado ou indeterminado, com valor central
 sm (24px), md (48px) e lg (80px). O traço tem terminação quadrada e começa no topo.
 
 ```tsx
-import { ProgressCircle } from '@orangesys/ui'
+import { ProgressCircle, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <ProgressCircle size="sm" value={68} label="Perfil completo" />
       <ProgressCircle size="md" value={68} showValue label="Perfil completo" />
       <ProgressCircle size="lg" value={68} showValue label="Perfil completo" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -40,15 +40,15 @@ export default function Sizes() {
 Sem value, o arco gira; com movimento reduzido, pulsa.
 
 ```tsx
-import { ProgressCircle } from '@orangesys/ui'
+import { ProgressCircle, Stack } from '@orangesys/ui'
 
 export default function Indeterminate() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <ProgressCircle size="sm" label="Sincronizando agenda" />
       <ProgressCircle size="md" tone="neutral" label="Sincronizando agenda" />
       <ProgressCircle size="lg" label="Sincronizando agenda" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -112,7 +112,7 @@ export default function Uploads() {
 Tons sinalizam a situação; o detalhe com unidade fica na legenda.
 
 ```tsx
-import { ProgressCircle } from '@orangesys/ui'
+import { ProgressCircle, Stack } from '@orangesys/ui'
 
 const goals = [
   {
@@ -127,7 +127,7 @@ const goals = [
 
 export default function Goals() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 40 }}>
+    <Stack gap={10} direction="horizontal" wrap>
       {goals.map((goal) => (
         <figure
           key={goal.label}
@@ -150,7 +150,7 @@ export default function Goals() {
           </figcaption>
         </figure>
       ))}
-    </div>
+    </Stack>
   )
 }
 ```

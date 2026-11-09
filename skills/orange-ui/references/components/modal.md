@@ -34,7 +34,7 @@ Diálogo modal que interrompe a tarefa atual para pedir uma decisão ou informa�
 Com `trigger`, o Modal controla o próprio estado. `children` pode ser uma função que recebe `close`. O foco vai para o primeiro campo.
 
 ```tsx
-import { Button, Field, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
+import { Button, Field, Modal, ModalBody, ModalFooter, Stack } from '@orangesys/ui'
 
 export default function Basic() {
   return (
@@ -46,7 +46,7 @@ export default function Basic() {
       {({ close }) => (
         <>
           <ModalBody>
-            <div style={{ display: 'grid', gap: 16 }}>
+            <Stack gap={4}>
               <Field
                 label="E-mail"
                 controlId="convite-email"
@@ -66,7 +66,7 @@ export default function Basic() {
                   <option value="editar">Pode editar</option>
                 </select>
               </Field>
-            </div>
+            </Stack>
           </ModalBody>
           <ModalFooter>
             <Button variant="outline" onClick={close}>
@@ -180,7 +180,7 @@ export default function Scrolling() {
 `open` + `onOpenChange` para controlar o estado e `initialFocus` para escolher quem recebe o foco. Um `<form>` pode envolver corpo e rodapé.
 
 ```tsx
-import { Button, Field, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
+import { Button, Field, Modal, ModalBody, ModalFooter, Stack } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlled() {
@@ -195,7 +195,7 @@ export default function Controlled() {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <span>
         Projeto: <strong>{nome}</strong>
       </span>
@@ -236,7 +236,7 @@ export default function Controlled() {
           </ModalFooter>
         </form>
       </Modal>
-    </div>
+    </Stack>
   )
 }
 ```

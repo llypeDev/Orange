@@ -1,4 +1,4 @@
-import { Paginator } from '@orangesys/ui'
+import { Paginator, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const customers = Array.from({ length: 87 }, (_, i) => ({
@@ -14,7 +14,7 @@ export default function WithTable() {
   const cell = { padding: '10px 12px', borderBottom: '1px solid var(--or-color-border)', textAlign: 'left' as const }
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
         <caption className="or-visually-hidden">Clientes</caption>
         <thead>
@@ -44,6 +44,6 @@ export default function WithTable() {
         pageSizeOptions={[5, 10, 25]}
         size="sm"
       />
-    </div>
+    </Stack>
   )
 }

@@ -5,7 +5,7 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownSeparator,
-  Icon,
+  Icon, Stack,
   Table,
   type TableColumn,
 } from '@orangesys/ui'
@@ -91,8 +91,8 @@ export default function VisibleColumns() {
     setVisible((current) => (checked ? [...current, key] : current.filter((k) => k !== key)))
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p style={{ margin: 0, marginRight: 'auto' }}>
           {columns.length} de {allColumns.length} colunas visíveis
         </p>
@@ -120,7 +120,7 @@ export default function VisibleColumns() {
             Restaurar padrão
           </DropdownItem>
         </Dropdown>
-      </div>
+      </Stack>
       <Table
         caption="Catálogo de produtos"
         hideCaption
@@ -128,6 +128,6 @@ export default function VisibleColumns() {
         data={products}
         getRowId={(product) => product.sku}
       />
-    </div>
+    </Stack>
   )
 }

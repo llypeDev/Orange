@@ -1,4 +1,4 @@
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 const posts = [
   { title: 'Como reduzimos o tempo de checkout em 38%', href: '#checkout' },
@@ -8,7 +8,7 @@ const posts = [
 
 export default function Standalone() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 520 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 520 }}>
       <p className="or-eyebrow" style={{ margin: 0 }}>
         Do blog
       </p>
@@ -21,6 +21,6 @@ export default function Standalone() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }

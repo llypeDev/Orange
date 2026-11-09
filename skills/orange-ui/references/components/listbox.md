@@ -31,7 +31,7 @@ Lista de opções sempre visível, com seleção única ou múltipla: painéis d
 Seleção única controlada (`value` / `onChange`) com descrições. Espaço, Enter ou clique selecionam; as setas só movem o foco.
 
 ```tsx
-import { Listbox, ListboxOption } from '@orangesys/ui'
+import { Listbox, ListboxOption, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const planos = [
@@ -46,7 +46,7 @@ export default function PlanPicker() {
   const escolhido = planos.find((p) => p.value === plano)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 460 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 460 }}>
       <Listbox
         label="Plano"
         description="Cobrança mensal. Você pode trocar de plano quando quiser."
@@ -62,7 +62,7 @@ export default function PlanPicker() {
       <p style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         Plano escolhido: <strong style={{ color: 'var(--or-color-text)' }}>{escolhido?.nome ?? 'nenhum'}</strong>
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -72,7 +72,7 @@ export default function PlanPicker() {
 `selectionMode="multiple"` com grupos e `maxHeight`. Clique alterna, Shift+clique marca uma faixa e Ctrl/Cmd+A marca todas; a lista rola mantendo a opção ativa visível.
 
 ```tsx
-import { Button, Listbox, ListboxGroup, ListboxOption } from '@orangesys/ui'
+import { Button, Listbox, ListboxGroup, ListboxOption, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const grupos = [
@@ -108,7 +108,7 @@ export default function StoreFilter() {
   const [categorias, setCategorias] = useState<string[]>(['padaria', 'cafes'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 360 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 360 }}>
       <Listbox
         label="Categorias"
         description="Clique para marcar. Shift+clique ou Shift+↓ marcam em sequência; Ctrl+A marca todas."
@@ -127,7 +127,7 @@ export default function StoreFilter() {
           </ListboxGroup>
         ))}
       </Listbox>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+      <Stack gap={2} direction="horizontal" align="center" justify="between">
         <span style={{ fontSize: 13, color: 'var(--or-color-text-subtle)' }} aria-live="polite">
           {categorias.length === 0
             ? 'Todas as categorias'
@@ -138,8 +138,8 @@ export default function StoreFilter() {
         <Button size="sm" variant="ghost" onClick={() => setCategorias([])} disabled={categorias.length === 0}>
           Limpar filtro
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```
@@ -206,7 +206,7 @@ import {
   Form,
   FormActions,
   Listbox,
-  ListboxOption,
+  ListboxOption, Stack,
   type FormErrors,
   type FormValues,
 } from '@orangesys/ui'
@@ -222,7 +222,7 @@ export default function WithForm() {
   const [enviado, setEnviado] = useState<FormValues | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 460 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 460 }}>
       <Form aria-label="Preferências de entrega" validate={validate} onSubmit={setEnviado}>
         {({ errors }) => (
           <>
@@ -255,7 +255,7 @@ export default function WithForm() {
         )}
       </Form>
       {enviado && <CodeBlock title="Valores enviados" language="json" code={JSON.stringify(enviado, null, 2)} />}
-    </div>
+    </Stack>
   )
 }
 ```

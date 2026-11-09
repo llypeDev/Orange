@@ -28,15 +28,15 @@ Indicador circular para esperas curtas de duração desconhecida.
 sm (16px), md (24px, padrão) e lg (40px).
 
 ```tsx
-import { Spinner } from '@orangesys/ui'
+import { Spinner, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <Spinner size="sm" />
       <Spinner size="md" />
       <Spinner size="lg" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -44,18 +44,18 @@ export default function Sizes() {
 ### Tons
 
 ```tsx
-import { Spinner } from '@orangesys/ui'
+import { Spinner, Stack } from '@orangesys/ui'
 
 export default function Tones() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <Spinner tone="accent" label="Carregando pedidos" />
       <Spinner tone="neutral" label="Carregando clientes" />
       {/* current herda a cor do texto ao redor */}
       <span style={{ color: 'var(--or-color-info-text)' }}>
         <Spinner tone="current" label="Carregando agenda" />
       </span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -83,7 +83,7 @@ export default function WithText() {
 Clique em Recarregar: o Spinner ocupa o lugar do conteúdo e anuncia o rótulo.
 
 ```tsx
-import { Button, Spinner } from '@orangesys/ui'
+import { Button, Spinner, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const comments = [
@@ -110,7 +110,7 @@ export default function Panel() {
         padding: 20,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Stack gap={0} direction="horizontal" align="center" justify="between">
         <h3 id="comentarios" style={{ margin: 0, fontFamily: 'var(--or-font-display)' }}>
           Comentários
         </h3>
@@ -118,7 +118,7 @@ export default function Panel() {
         <Button size="sm" variant="ghost" onClick={() => !loading && reload()}>
           Recarregar
         </Button>
-      </div>
+      </Stack>
       <div
         style={{
           minHeight: 112,

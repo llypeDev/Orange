@@ -1,4 +1,4 @@
-import { ProgressCircle } from '@orangesys/ui'
+import { ProgressCircle, Stack } from '@orangesys/ui'
 
 const goals = [
   {
@@ -13,7 +13,7 @@ const goals = [
 
 export default function Goals() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 40 }}>
+    <Stack gap={10} direction="horizontal" wrap>
       {goals.map((goal) => (
         <figure
           key={goal.label}
@@ -36,6 +36,6 @@ export default function Goals() {
           </figcaption>
         </figure>
       ))}
-    </div>
+    </Stack>
   )
 }

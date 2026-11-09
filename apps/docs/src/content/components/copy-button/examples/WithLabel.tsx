@@ -1,4 +1,4 @@
-import { CopyButton } from '@orangesys/ui'
+import { CopyButton, Stack } from '@orangesys/ui'
 
 const inviteLink = 'https://app.orange.dev/convite/equipe-produto'
 
@@ -17,7 +17,7 @@ export default function WithLabel() {
       >
         Link de convite
       </label>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <input
           id="invite-link"
           readOnly
@@ -36,7 +36,7 @@ export default function WithLabel() {
         <CopyButton value={inviteLink} copiedLabel="Link copiado">
           Copiar link
         </CopyButton>
-      </div>
+      </Stack>
     </div>
   )
 }

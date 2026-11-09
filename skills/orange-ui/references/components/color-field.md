@@ -66,14 +66,14 @@ export default function Swatches() {
 ### Com prévia (controlado)
 
 ```tsx
-import { ColorField } from '@orangesys/ui'
+import { ColorField, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Preview() {
   const [cor, setCor] = useState('#4a66d4')
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+    <Stack gap={8} direction="horizontal" align="start" wrap>
       <ColorField
         label="Cor do cabeçalho do e-mail"
         value={cor}
@@ -91,7 +91,7 @@ export default function Preview() {
           <div style={{ height: 10, width: '55%', background: 'var(--or-color-surface-hover)' }} />
         </div>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -101,11 +101,11 @@ export default function Preview() {
 Sem cor (amostra riscada), com erro e desabilitado. Saia do campo com um código inválido para ver a validação interna.
 
 ```tsx
-import { ColorField } from '@orangesys/ui'
+import { ColorField, Stack } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+    <Stack gap={6} direction="horizontal" wrap>
       <ColorField
         label="Cor de destaque"
         optional
@@ -118,7 +118,7 @@ export default function States() {
         error="Contraste insuficiente com o fundo claro."
       />
       <ColorField label="Cor do tema" defaultValue="#0f0f12" disabled size="sm" />
-    </div>
+    </Stack>
   )
 }
 ```

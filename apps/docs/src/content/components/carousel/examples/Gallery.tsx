@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Carousel, CarouselSlide, Image, Text } from '@orangesys/ui'
+import { Carousel, CarouselSlide, Image, Stack, Text } from '@orangesys/ui'
 import fone from './media/fone.svg'
 import garrafa from './media/garrafa.svg'
 import mochila from './media/mochila.svg'
@@ -17,7 +17,7 @@ export default function Gallery() {
   const [index, setIndex] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 360, width: '100%' }}>
+    <Stack gap={3} style={{ maxWidth: 360, width: '100%' }}>
       <Carousel label="Fotos do produto" index={index} onIndexChange={setIndex} picker="none" loop>
         {photos.map((photo) => (
           <CarouselSlide key={photo.id}>
@@ -25,7 +25,7 @@ export default function Gallery() {
           </CarouselSlide>
         ))}
       </Carousel>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         {photos.map((photo, i) => (
           <button
             key={photo.id}
@@ -44,10 +44,10 @@ export default function Gallery() {
             <Image src={photo.src} alt="" ratio="1/1" />
           </button>
         ))}
-      </div>
+      </Stack>
       <Text size="sm" tone="muted">
         Foto {index + 1} de {photos.length}
       </Text>
-    </div>
+    </Stack>
   )
 }

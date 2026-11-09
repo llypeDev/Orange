@@ -1,11 +1,11 @@
-import { SplitButton } from '@orangesys/ui'
+import { SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function DisabledActions() {
   const [merged, setMerged] = useState<string | null>(null)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <SplitButton
         placement="bottom-start"
         onClick={() => setMerged('merge commit')}
@@ -33,6 +33,6 @@ export default function DisabledActions() {
           Mesclado com {merged}.
         </span>
       )}
-    </div>
+    </Stack>
   )
 }

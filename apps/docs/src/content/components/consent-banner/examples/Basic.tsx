@@ -1,4 +1,4 @@
-import { Button, ConsentBanner, type ConsentCategory } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentCategory } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories: ConsentCategory[] = [
@@ -36,7 +36,7 @@ export default function Basic() {
   const [result, setResult] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <ConsentBanner
         placement="inline"
         open={open}
@@ -49,13 +49,13 @@ export default function Basic() {
         }}
       />
       {!open && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+        <Stack gap={3} direction="horizontal" align="center" wrap>
           <span>{result}</span>
           <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
             Mostrar de novo
           </Button>
-        </div>
+        </Stack>
       )}
-    </div>
+    </Stack>
   )
 }

@@ -18,7 +18,7 @@ Configurações costumam ser formulários longos, editados aos poucos. Este mode
 - **select** (`components/select.md`) — Fuso horário e idioma: escolhas simples, com o select nativo.
 - **listbox** (`components/listbox.md`) — Canais de venda: seleção múltipla sempre visível, com descrição por opção.
 - **radio-group** (`components/radio-group.md`) — O que fazer com produtos esgotados: três opções exclusivas em cartões, cada uma explicando a consequência.
-- **switch** (`components/switch.md`) — Avisos que ligam e desligam, com o rótulo à esquerda (labelPosition="start").
+- **checkbox** (`components/checkbox.md`) — Avisos por e-mail: escolhas que só valem ao salvar o formulário — por isso Checkbox, e não Switch (que é para efeito imediato).
 - **confirm-dialog** (`components/confirm-dialog.md`) — Pausar vendas (neutro, controlado) e excluir a loja (danger: foco inicial em Cancelar, botão em carregamento enquanto a API responde).
 - **toast** (`components/toast.md`) — Confirma o que deu certo sem tirar o foco do lugar; "Desfazer" no aviso de pausa.
 
@@ -41,6 +41,7 @@ import {
   AppShell,
   AppShellNavToggle,
   Button,
+  Checkbox,
   ConfirmDialog,
   Fieldset,
   FileUploader,
@@ -58,7 +59,6 @@ import {
   SideNavItem,
   SideNavSection,
   Stack,
-  Switch,
   Tag,
   Text,
   TextField,
@@ -150,7 +150,7 @@ function SettingsScreen() {
     base.current = retrato(formRef.current, logoRef.current)
   }, [versao, salvo])
 
-  // Espera o React aplicar a mudança (inputs ocultos do Switch e do Listbox) antes de comparar.
+  // Espera o React aplicar a mudança (input oculto do Listbox) antes de comparar.
   const conferir = () => {
     window.setTimeout(() => setAlterado(retrato(formRef.current, logoRef.current) !== base.current), 0)
   }
@@ -272,8 +272,9 @@ function SettingsScreen() {
             {({ errors }) => (
               <>
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Identidade da loja
                     </Heading>
                   }
@@ -339,8 +340,9 @@ function SettingsScreen() {
                 </Fieldset>
 
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Vendas e estoque
                     </Heading>
                   }
@@ -390,8 +392,9 @@ function SettingsScreen() {
                 </Fieldset>
 
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Avisos por e-mail
                     </Heading>
                   }
@@ -408,28 +411,26 @@ function SettingsScreen() {
                     required
                     error={errors.emailAvisos}
                   />
+                  {/* Checkbox, não Switch: as escolhas só valem ao clicar em "Salvar alterações". */}
                   <Stack gap={4} separator>
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="novo-pedido"
                       label="Novo pedido recebido"
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('novo-pedido')}
                     />
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="estoque-baixo"
                       label="Estoque abaixo do mínimo"
                       description="Um e-mail por produto, no máximo uma vez por dia."
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('estoque-baixo')}
                     />
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="resumo-semanal"
                       label="Resumo semanal de vendas"
                       description="Toda segunda-feira, às 8h."
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('resumo-semanal')}
                     />
                   </Stack>
@@ -541,14 +542,14 @@ export default function Settings() {
   min-width: 0;
 }
 
-/* Seções separadas por uma linha de 1px. */
-.aurora-settings__editor .or-form > .or-fieldset + .or-fieldset {
+/* Seções separadas por uma linha de 1px. Classes do modelo, não as internas dos componentes. */
+.aurora-settings__editor .aurora-settings__section + .aurora-settings__section {
   padding-top: var(--or-space-8);
   border-top: var(--or-border-thin) solid var(--or-color-border);
 }
 
 /* O título da seção mora dentro da <legend>: herda o tamanho dela. */
-.aurora-settings__editor .or-fieldset__legend > .or-heading {
+.aurora-settings__editor .aurora-settings__legend-title {
   font-size: inherit;
 }
 
@@ -609,10 +610,6 @@ export default function Settings() {
   display: grid;
   flex: 1 1 18rem;
   gap: var(--or-space-1);
-}
-
-.aurora-settings__danger-list .or-text {
-  margin: 0;
 }
 
 @media (forced-colors: active) {

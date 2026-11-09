@@ -1,4 +1,4 @@
-import { Calendar, Text, useLocale } from '@orangesys/ui'
+import { Calendar, Stack, Text, useLocale } from '@orangesys/ui'
 import { useState } from 'react'
 
 const hoje = new Date()
@@ -20,7 +20,7 @@ export default function Agenda() {
   const doDia = dia ? (eventos[dia.toDateString()] ?? []) : []
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+    <Stack gap={8} direction="horizontal" align="start" wrap>
       <Calendar value={dia} onChange={setDia} weekStartsOn={1} showTodayButton />
       <div style={{ minWidth: 220 }}>
         <p className="or-eyebrow">
@@ -38,6 +38,6 @@ export default function Agenda() {
           </Text>
         )}
       </div>
-    </div>
+    </Stack>
   )
 }

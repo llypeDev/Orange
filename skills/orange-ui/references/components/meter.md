@@ -123,14 +123,14 @@ export default function Neutral() {
 Arraste o controle para ver a cor acompanhar o valor.
 
 ```tsx
-import { Meter } from '@orangesys/ui'
+import { Meter, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Interactive() {
   const [value, setValue] = useState(72)
 
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 480 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 480 }}>
       <Meter
         label="Uso de CPU do servidor"
         value={value}
@@ -149,7 +149,7 @@ export default function Interactive() {
           onChange={(e) => setValue(Number(e.target.value))}
         />
       </label>
-    </div>
+    </Stack>
   )
 }
 ```

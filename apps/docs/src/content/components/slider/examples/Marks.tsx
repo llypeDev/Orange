@@ -1,4 +1,4 @@
-import { Slider } from '@orangesys/ui'
+import { Slider, Stack } from '@orangesys/ui'
 
 const planos: Record<number, string> = {
   1: 'Individual',
@@ -9,7 +9,7 @@ const planos: Record<number, string> = {
 
 export default function Marks() {
   return (
-    <div style={{ display: 'grid', gap: 32, width: '100%', maxWidth: 420 }}>
+    <Stack gap={8} style={{ width: '100%', maxWidth: 420 }}>
       <Slider
         label="Pessoas na equipe"
         min={1}
@@ -39,6 +39,6 @@ export default function Marks() {
         marks
         formatValue={(v) => `${v}%`}
       />
-    </div>
+    </Stack>
   )
 }

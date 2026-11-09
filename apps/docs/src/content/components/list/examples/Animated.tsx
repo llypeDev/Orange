@@ -1,4 +1,4 @@
-import { Button, Icon, List, ListItem } from '@orangesys/ui'
+import { Button, Icon, List, ListItem, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Animated() {
@@ -6,7 +6,7 @@ export default function Animated() {
   const [rodada, setRodada] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 20, maxWidth: 480 }}>
+    <Stack gap={5} style={{ maxWidth: 480 }}>
       <div>
         <Button size="sm" variant="outline" startIcon={<Icon name="refresh" />} onClick={() => setRodada((r) => r + 1)}>
           Repetir animação
@@ -17,6 +17,6 @@ export default function Animated() {
         <ListItem description="Regras automáticas casam lançamentos e pagamentos.">Concilie todos os dias</ListItem>
         <ListItem description="Relatórios prontos para a reunião de fechamento.">Feche o mês sem planilhas</ListItem>
       </List>
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Button, Field, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
+import { Button, Field, Modal, ModalBody, ModalFooter, Stack } from '@orangesys/ui'
 
 export default function Basic() {
   return (
@@ -10,7 +10,7 @@ export default function Basic() {
       {({ close }) => (
         <>
           <ModalBody>
-            <div style={{ display: 'grid', gap: 16 }}>
+            <Stack gap={4}>
               <Field
                 label="E-mail"
                 controlId="convite-email"
@@ -30,7 +30,7 @@ export default function Basic() {
                   <option value="editar">Pode editar</option>
                 </select>
               </Field>
-            </div>
+            </Stack>
           </ModalBody>
           <ModalFooter>
             <Button variant="outline" onClick={close}>

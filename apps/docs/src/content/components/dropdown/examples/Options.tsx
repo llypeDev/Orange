@@ -5,7 +5,7 @@ import {
   DropdownRadioGroup,
   DropdownRadioItem,
   DropdownSeparator,
-  Icon,
+  Icon, Stack,
 } from '@orangesys/ui'
 import { useState } from 'react'
 
@@ -17,7 +17,7 @@ export default function Options() {
   const [ordem, setOrdem] = useState('recentes')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <Dropdown
         trigger={
           <Button variant="outline" startIcon={<Icon name="sliders" />}>
@@ -43,6 +43,6 @@ export default function Options() {
           'só abertas'}
         , por {rotulos[ordem]}
       </span>
-    </div>
+    </Stack>
   )
 }

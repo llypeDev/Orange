@@ -1,10 +1,10 @@
-import { CopyButton } from '@orangesys/ui'
+import { CopyButton, Stack } from '@orangesys/ui'
 
 const pedido = 'PED-2026-048213'
 
 export default function Variants() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3} direction="horizontal" align="center" wrap>
       <CopyButton value={pedido} size="sm" variant="outline" />
       <CopyButton value={pedido} variant="outline" />
       <CopyButton value={pedido} size="lg" variant="outline" />
@@ -14,6 +14,6 @@ export default function Variants() {
       <CopyButton value={pedido} variant="secondary">
         Copiar
       </CopyButton>
-    </div>
+    </Stack>
   )
 }

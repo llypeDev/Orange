@@ -1,21 +1,21 @@
-import { Avatar } from '@orangesys/ui'
+import { Avatar, Stack } from '@orangesys/ui'
 import rafael from './photos/rafael.svg'
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
 export default function SizesShapes() {
   return (
-    <div style={{ display: 'grid', gap: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+    <Stack gap={5}>
+      <Stack gap={4} direction="horizontal" align="end">
         {sizes.map((size) => (
           <Avatar key={size} size={size} name="Diego Almeida" />
         ))}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+      </Stack>
+      <Stack gap={4} direction="horizontal" align="end">
         {sizes.map((size) => (
           <Avatar key={size} size={size} shape="circle" src={rafael} name="Rafael Costa" />
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }

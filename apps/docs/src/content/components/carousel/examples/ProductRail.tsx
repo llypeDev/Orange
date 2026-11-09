@@ -1,4 +1,4 @@
-import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Text } from '@orangesys/ui'
+import { Button, Carousel, CarouselSlide, Eyebrow, Heading, Image, Stack, Text } from '@orangesys/ui'
 import bone from './media/bone.svg'
 import caneca from './media/caneca.svg'
 import fone from './media/fone.svg'
@@ -21,7 +21,7 @@ const products = [
 
 export default function ProductRail() {
   return (
-    <div style={{ display: 'grid', gap: 12, minWidth: 0 }}>
+    <Stack gap={3} style={{ minWidth: 0 }}>
       <Heading level={4} size="lg">
         Mais vendidos da semana
       </Heading>
@@ -49,6 +49,6 @@ export default function ProductRail() {
           </CarouselSlide>
         ))}
       </Carousel>
-    </div>
+    </Stack>
   )
 }

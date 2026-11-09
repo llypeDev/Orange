@@ -23,14 +23,14 @@ Liga ou desliga uma configuração com efeito imediato — trilho e polegar quad
 ### Básico
 
 ```tsx
-import { Switch } from '@orangesys/ui'
+import { Stack, Switch } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <Switch label="Modo escuro" defaultChecked />
       <Switch label="Backup automático" description="Salvamos uma cópia dos seus arquivos todos os dias às 3h." />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -65,14 +65,14 @@ export default function SettingsList() {
 ### Controlado
 
 ```tsx
-import { Switch, Text } from '@orangesys/ui'
+import { Stack, Switch, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {
   const [maintenance, setMaintenance] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Switch
         label="Modo manutenção"
         description="Visitantes verão uma página de aviso enquanto estiver ligado."
@@ -82,7 +82,7 @@ export default function Controlled() {
       <Text size="sm" tone={maintenance ? 'warning' : 'success'} role="status">
         {maintenance ? 'Site em manutenção — apenas administradores têm acesso.' : 'Site no ar para todos os visitantes.'}
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -90,16 +90,16 @@ export default function Controlled() {
 ### Tamanhos e estados
 
 ```tsx
-import { Switch } from '@orangesys/ui'
+import { Stack, Switch } from '@orangesys/ui'
 
 export default function SizesStates() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <Switch size="sm" label="Pequeno (sm)" defaultChecked />
       <Switch size="md" label="Médio (md)" defaultChecked />
       <Switch label="Desabilitado" disabled />
       <Switch label="Desabilitado e ligado" disabled defaultChecked />
-    </div>
+    </Stack>
   )
 }
 ```

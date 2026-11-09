@@ -30,7 +30,7 @@ Painel não modal ancorado a um botão, para conteúdo e controles complementare
 Com título, botão fechar e seta. O foco vai para o primeiro controle ao abrir.
 
 ```tsx
-import { Button, Icon, Popover, useClipboard } from '@orangesys/ui'
+import { Button, Icon, Popover, Stack, useClipboard } from '@orangesys/ui'
 
 export default function Share() {
   const { copy, copied } = useClipboard()
@@ -47,7 +47,7 @@ export default function Share() {
         </Button>
       }
     >
-      <div style={{ display: 'grid', gap: 12, width: 280 }}>
+      <Stack gap={3} style={{ width: 280 }}>
         <span>Qualquer pessoa com o link pode ver este projeto.</span>
         <code
           style={{
@@ -68,7 +68,7 @@ export default function Share() {
         >
           {copied ? 'Link copiado' : 'Copiar link'}
         </Button>
-      </div>
+      </Stack>
     </Popover>
   )
 }
@@ -79,7 +79,7 @@ export default function Share() {
 `initialFocus` leva o foco direto ao campo; `children` como função recebe `close`, que fecha e devolve o foco ao gatilho.
 
 ```tsx
-import { Button, Field, Popover } from '@orangesys/ui'
+import { Button, Field, Popover, Stack } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function InlineEdit() {
@@ -87,7 +87,7 @@ export default function InlineEdit() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3} direction="horizontal" align="center">
       <span>
         Meta mensal: <strong>{meta} vendas</strong>
       </span>
@@ -122,18 +122,18 @@ export default function InlineEdit() {
                 className="or-control"
               />
             </Field>
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <Stack gap={2} direction="horizontal" justify="end">
               <Button size="sm" variant="outline" onClick={close}>
                 Cancelar
               </Button>
               <Button size="sm" type="submit">
                 Salvar
               </Button>
-            </div>
+            </Stack>
           </form>
         )}
       </Popover>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -184,11 +184,11 @@ export default function Placements() {
 Sem título visível: aria-label nomeia o painel. Diferente do Tooltip, pode conter links.
 
 ```tsx
-import { Button, Icon, Popover } from '@orangesys/ui'
+import { Button, Icon, Popover, Stack } from '@orangesys/ui'
 
 export default function Help() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+    <Stack gap={1} direction="horizontal" align="center">
       <span>Plano Pro</span>
       <Popover
         aria-label="Sobre o plano Pro"
@@ -209,7 +209,7 @@ export default function Help() {
         </p>
         <a href="#comparar-planos">Comparar planos</a>
       </Popover>
-    </div>
+    </Stack>
   )
 }
 ```

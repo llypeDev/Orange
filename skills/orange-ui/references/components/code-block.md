@@ -73,7 +73,7 @@ export default function LineHighlight() {
 startingLineNumber mantém a numeração do arquivo original — o destaque usa os mesmos números.
 
 ```tsx
-import { CodeBlock } from '@orangesys/ui'
+import { CodeBlock, Stack } from '@orangesys/ui'
 
 const excerpt = `  const { t } = useLocale()
   const [open, setOpen] = useState(false)
@@ -83,7 +83,7 @@ const excerpt = `  const { t } = useLocale()
 
 export default function Excerpt() {
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%' }}>
+    <Stack gap={2} style={{ width: '100%' }}>
       <p style={{ margin: 0 }}>
         A linha 43 cria o estado do menu; a numeração continua a partir do arquivo original.
       </p>
@@ -95,7 +95,7 @@ export default function Excerpt() {
         startingLineNumber={42}
         highlightLines={[43]}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -136,7 +136,7 @@ export default function WrapAndHeight() {
 Mudar highlightLines faz o destaque deslizar suavemente entre as linhas.
 
 ```tsx
-import { Button, CodeBlock } from '@orangesys/ui'
+import { Button, CodeBlock, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const code = `import { OrangeProvider, Button } from '@orangesys/ui'
@@ -160,8 +160,8 @@ export default function Steps() {
   const [passo, setPasso] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
-      <div role="group" aria-label="Passos da instalação" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+    <Stack gap={3} style={{ width: '100%' }}>
+      <Stack role="group" aria-label="Passos da instalação" gap={2} direction="horizontal" wrap>
         {passos.map((p, i) => (
           <Button
             key={p.rotulo}
@@ -173,9 +173,9 @@ export default function Steps() {
             {p.rotulo}
           </Button>
         ))}
-      </div>
+      </Stack>
       <CodeBlock title="src/App.tsx" language="tsx" code={code} showLineNumbers highlightLines={passos[passo].linhas} />
-    </div>
+    </Stack>
   )
 }
 ```

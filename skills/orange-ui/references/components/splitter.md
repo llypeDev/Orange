@@ -229,7 +229,7 @@ export default function EditorPreview() {
 Filtros, resultados e detalhes com tamanhos mínimos; cada separador mexe só nos seus vizinhos. Os tamanhos são controlados (sizes + onSizesChange) e os filtros, recolhíveis.
 
 ```tsx
-import { Checkbox, Splitter, SplitterHandle, SplitterPanel, Tag } from '@orangesys/ui'
+import { Checkbox, Splitter, SplitterHandle, SplitterPanel, Stack, Tag } from '@orangesys/ui'
 import { useState } from 'react'
 
 const products = [
@@ -253,7 +253,7 @@ export default function ThreePanels() {
   const product = products.find((p) => p.sku === selected) ?? products[0]
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Filtros {Math.round(sizes[0])}% · Resultados {Math.round(sizes[1])}% · Detalhes {Math.round(sizes[2])}%.
         Foque o primeiro separador e pressione Enter para recolher os filtros.
@@ -329,7 +329,7 @@ export default function ThreePanels() {
           </SplitterPanel>
         </Splitter>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -339,7 +339,7 @@ export default function ThreePanels() {
 Com storageKey, os tamanhos vão para o localStorage ao fim de cada ajuste e voltam ao recarregar. Se o armazenamento estiver bloqueado (modo privado, cota cheia), o Splitter segue funcionando sem salvar.
 
 ```tsx
-import { Splitter, SplitterHandle, SplitterPanel } from '@orangesys/ui'
+import { Splitter, SplitterHandle, SplitterPanel, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const tickets = [
@@ -357,7 +357,7 @@ export default function Persisted() {
   const [saved, setSaved] = useState<number[] | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <div style={{ height: 320, border: '1px solid var(--or-color-border)' }}>
         {/* Salvo em localStorage como "or-splitter:docs-atendimento" ao fim de cada ajuste. */}
         <Splitter
@@ -403,7 +403,7 @@ export default function Persisted() {
           ? `Salvo: ${saved.map((size) => `${Math.round(size)}%`).join(' · ')}. Recarregue a página para conferir.`
           : 'Redimensione e recarregue a página: o layout volta como você deixou. Clique duas vezes no separador para voltar ao padrão.'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

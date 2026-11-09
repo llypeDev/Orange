@@ -3,7 +3,7 @@ import {
   ChatComposer,
   ChatMessage,
   ChatThread,
-  EmptyState,
+  EmptyState, Stack,
   type ChatMessageProps,
 } from '@orangesys/ui'
 import { useState } from 'react'
@@ -45,7 +45,7 @@ export default function Empty() {
             title="Como posso ajudar?"
             description="Pergunte sobre vendas, metas ou estoque."
             action={
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <Stack gap={2} direction="horizontal" wrap>
                 {suggestions.map((suggestion) => (
                   <Button
                     key={suggestion}
@@ -56,7 +56,7 @@ export default function Empty() {
                     {suggestion}
                   </Button>
                 ))}
-              </div>
+              </Stack>
             }
           />
         }

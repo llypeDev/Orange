@@ -1,4 +1,4 @@
-import { Button, Field, Modal, ModalBody, ModalFooter } from '@orangesys/ui'
+import { Button, Field, Modal, ModalBody, ModalFooter, Stack } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function Controlled() {
@@ -13,7 +13,7 @@ export default function Controlled() {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <span>
         Projeto: <strong>{nome}</strong>
       </span>
@@ -54,6 +54,6 @@ export default function Controlled() {
           </ModalFooter>
         </form>
       </Modal>
-    </div>
+    </Stack>
   )
 }

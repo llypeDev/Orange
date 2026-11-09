@@ -1,4 +1,4 @@
-import { MonthPaginator, Text, type YearMonth } from '@orangesys/ui'
+import { MonthPaginator, Stack, Text, type YearMonth } from '@orangesys/ui'
 import { useState } from 'react'
 
 // Dados de exemplo: entradas e saídas por mês (chave "ano-mês").
@@ -15,7 +15,7 @@ export default function Statement() {
   const dados = resumo[`${mes.year}-${mes.month}`]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <MonthPaginator
         aria-label="Mês do resumo"
         value={mes}
@@ -41,6 +41,6 @@ export default function Statement() {
       ) : (
         <Text tone="muted">Sem movimentações neste mês.</Text>
       )}
-    </div>
+    </Stack>
   )
 }

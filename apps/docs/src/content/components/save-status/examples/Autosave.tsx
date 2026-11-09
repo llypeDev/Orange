@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { SaveStatus, Switch, TextArea, type SaveStatusState } from '@orangesys/ui'
+import { SaveStatus, Stack, Switch, TextArea, type SaveStatusState } from '@orangesys/ui'
 
 export default function Autosave() {
   const [descricao, setDescricao] = useState(
@@ -35,21 +35,15 @@ export default function Autosave() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 520 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 520 }}>
       <TextArea
         label="Descrição do produto"
         rows={4}
         value={descricao}
         onChange={(event) => editar(event.target.value)}
       />
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 12,
-        }}
+      <Stack
+        gap={3} direction="horizontal" align="center" justify="between" wrap
       >
         <Switch
           size="sm"
@@ -58,7 +52,7 @@ export default function Autosave() {
           onCheckedChange={setSimularFalha}
         />
         <SaveStatus status={status} savedAt={salvoEm} onRetry={salvar} />
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }

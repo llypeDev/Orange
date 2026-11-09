@@ -1,4 +1,4 @@
-import { Combobox } from '@orangesys/ui'
+import { Combobox, Stack } from '@orangesys/ui'
 
 const bancos = [
   { value: '001', label: '001 — Banco do Brasil' },
@@ -11,7 +11,7 @@ const bancos = [
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 380 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 380 }}>
       <Combobox size="sm" label="Banco (sm)" options={bancos} placeholder="Código ou nome" />
       <Combobox
         label="Banco"
@@ -27,6 +27,6 @@ export default function States() {
         defaultValue="341"
         disabled
       />
-    </div>
+    </Stack>
   )
 }

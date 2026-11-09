@@ -1,8 +1,8 @@
-import { Button, ButtonGroup } from '@orangesys/ui'
+import { Button, ButtonGroup, Stack } from '@orangesys/ui'
 
 export default function GroupProps() {
   return (
-    <div style={{ display: 'grid', gap: 20, justifyItems: 'start' }}>
+    <Stack gap={5} align="start">
       {/* Todos os botões herdam size e variant do grupo… */}
       <ButtonGroup aria-label="Rodapé do formulário" size="sm" variant="outline">
         <Button>Cancelar</Button>
@@ -16,6 +16,6 @@ export default function GroupProps() {
         <Button>Mover</Button>
         <Button>Excluir</Button>
       </ButtonGroup>
-    </div>
+    </Stack>
   )
 }

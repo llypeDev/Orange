@@ -157,11 +157,11 @@ export default function Form() {
 Funciona em qualquer contêiner. Em áreas pequenas, use spinnerSize="sm".
 
 ```tsx
-import { LoadingOverlay } from '@orangesys/ui'
+import { LoadingOverlay, Stack } from '@orangesys/ui'
 
 export default function Card() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" wrap>
       <LoadingOverlay open spinnerSize="sm" style={{ width: 260, maxWidth: '100%' }}>
         <article style={{ padding: 20, border: '1px solid var(--or-color-border)' }}>
           <p className="or-eyebrow" style={{ margin: 0 }}>
@@ -193,7 +193,7 @@ export default function Card() {
           </p>
         </article>
       </LoadingOverlay>
-    </div>
+    </Stack>
   )
 }
 ```

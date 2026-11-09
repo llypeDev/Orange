@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@orangesys/ui'
+import { Button, Spinner, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const comments = [
@@ -25,7 +25,7 @@ export default function Panel() {
         padding: 20,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Stack gap={0} direction="horizontal" align="center" justify="between">
         <h3 id="comentarios" style={{ margin: 0, fontFamily: 'var(--or-font-display)' }}>
           Comentários
         </h3>
@@ -33,7 +33,7 @@ export default function Panel() {
         <Button size="sm" variant="ghost" onClick={() => !loading && reload()}>
           Recarregar
         </Button>
-      </div>
+      </Stack>
       <div
         style={{
           minHeight: 112,

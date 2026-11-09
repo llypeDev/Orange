@@ -1,8 +1,8 @@
-import { Banner } from '@orangesys/ui'
+import { Banner, Stack } from '@orangesys/ui'
 
 export default function Tones() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Banner tone="neutral" title="Modo somente leitura">
         Você está vendo a versão publicada em 12/10.
       </Banner>
@@ -18,6 +18,6 @@ export default function Tones() {
       <Banner tone="danger" title="Falha na emissão de notas">
         Nenhuma NF-e foi emitida desde 14h. Nossa equipe já está atuando.
       </Banner>
-    </div>
+    </Stack>
   )
 }

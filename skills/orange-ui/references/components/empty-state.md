@@ -106,7 +106,7 @@ export default function Filtered() {
 Ao montar, os quadrados caem no lugar um depois do outro e o marcador laranja estala por último.
 
 ```tsx
-import { Button, EmptyState } from '@orangesys/ui'
+import { Button, EmptyState, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Entrance() {
@@ -114,7 +114,7 @@ export default function Entrance() {
   const [round, setRound] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 16, justifyItems: 'center', width: '100%' }}>
+    <Stack gap={4} align="center" style={{ width: '100%' }}>
       <EmptyState
         key={round}
         icon="check-circle"
@@ -124,7 +124,7 @@ export default function Entrance() {
       <Button size="sm" variant="ghost" onClick={() => setRound((r) => r + 1)}>
         Repetir animação
       </Button>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -134,11 +134,11 @@ export default function Entrance() {
 Horizontal e menor, para painéis e listas.
 
 ```tsx
-import { Button, EmptyState } from '@orangesys/ui'
+import { Button, EmptyState, Stack } from '@orangesys/ui'
 
 export default function Compact() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 480 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 480 }}>
       <section aria-labelledby="equipe" style={{ border: '1px solid var(--or-color-border)' }}>
         <h3
           id="equipe"
@@ -184,7 +184,7 @@ export default function Compact() {
           description="Arraste arquivos para cá ou use o botão Enviar."
         />
       </section>
-    </div>
+    </Stack>
   )
 }
 ```

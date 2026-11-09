@@ -20,14 +20,14 @@ Campo numérico (spinbutton) com botões − / +, atalhos de teclado, limites e 
 ### Básico
 
 ```tsx
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField label="Quantidade" defaultValue={1} min={1} max={10} description="Máximo de 10 unidades por pedido." />
       <NumberField label="Hóspedes" defaultValue={2} min={1} max={8} size="sm" />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -37,11 +37,11 @@ export default function Basic() {
 Com porcentagem, o valor é a fração (0,1 = 10%). Digite "R$ 99,9" ou "99,90": os dois funcionam.
 
 ```tsx
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function Currency() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField
         label="Preço de venda"
         defaultValue={149.9}
@@ -58,7 +58,7 @@ export default function Currency() {
         formatOptions={{ style: 'percent' }}
         description="Entre 0% e 100%."
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -66,11 +66,11 @@ export default function Currency() {
 ### Unidades e passos
 
 ```tsx
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function Units() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField label="Peso do pacote" defaultValue={1.5} min={0.1} step={0.1} suffix="kg" />
       <NumberField
         label="Distância máxima"
@@ -82,7 +82,7 @@ export default function Units() {
         description="PageUp/PageDown avançam 25 km."
       />
       <NumberField label="Altura" defaultValue={172} suffix="cm" hideStepper />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -92,7 +92,7 @@ export default function Units() {
 O valor é `number | null` — `null` quando o campo está vazio.
 
 ```tsx
-import { NumberField, Text } from '@orangesys/ui'
+import { NumberField, Stack, Text } from '@orangesys/ui'
 import { useState } from 'react'
 
 const unitPrice = 39.9
@@ -103,7 +103,7 @@ export default function Controlled() {
   const total = (quantity ?? 0) * unitPrice
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 280 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField
         label="Camisetas (R$ 39,90 cada)"
         value={quantity}
@@ -115,7 +115,7 @@ export default function Controlled() {
       <Text size="sm" tone="muted" aria-live="polite">
         Total: <strong>{brl.format(total)}</strong>
       </Text>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -123,15 +123,15 @@ export default function Controlled() {
 ### Estados
 
 ```tsx
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function States() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField label="Parcelas" defaultValue={0} min={1} max={12} error="Escolha de 1 a 12 parcelas." />
       <NumberField label="Estoque atual" defaultValue={128} readOnly />
       <NumberField label="Limite de usuários" defaultValue={5} disabled description="Disponível no plano Pro." />
-    </div>
+    </Stack>
   )
 }
 ```

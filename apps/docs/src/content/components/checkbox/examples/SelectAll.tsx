@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@orangesys/ui'
+import { Checkbox, CheckboxGroup, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const permissions = [
@@ -13,7 +13,7 @@ export default function SelectAll() {
   const all = selected.length === permissions.length
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Checkbox
         label="Todas as permissões"
         checked={all}
@@ -23,6 +23,6 @@ export default function SelectAll() {
       <div style={{ paddingLeft: 36 }}>
         <CheckboxGroup label="Permissões do papel Editor" hideLabel value={selected} onChange={setSelected} options={permissions} />
       </div>
-    </div>
+    </Stack>
   )
 }

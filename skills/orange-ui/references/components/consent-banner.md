@@ -44,7 +44,7 @@ Banner de consentimento de cookies (LGPD): aceitar, rejeitar e personalizar com 
 No fluxo da página (`placement="inline"`). Decida para ver o que `onDecision` recebe.
 
 ```tsx
-import { Button, ConsentBanner, type ConsentCategory } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentCategory } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories: ConsentCategory[] = [
@@ -82,7 +82,7 @@ export default function Basic() {
   const [result, setResult] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <ConsentBanner
         placement="inline"
         open={open}
@@ -95,14 +95,14 @@ export default function Basic() {
         }}
       />
       {!open && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+        <Stack gap={3} direction="horizontal" align="center" wrap>
           <span>{result}</span>
           <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
             Mostrar de novo
           </Button>
-        </div>
+        </Stack>
       )}
-    </div>
+    </Stack>
   )
 }
 ```
@@ -112,7 +112,7 @@ export default function Basic() {
 O app lê a escolha salva depois de montar e mostra o banner só se não houver decisão (ou se a versão da política mudou). `onDecision` grava categorias, versão e data no `localStorage`; o botão "Preferências de cookies" do rodapé reabre as preferências com `preferencesOpen`.
 
 ```tsx
-import { Button, ConsentBanner, type ConsentCategory, type ConsentValue } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentCategory, type ConsentValue } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const categories: ConsentCategory[] = [
@@ -200,7 +200,7 @@ export default function Persistence() {
   const accepted = categories.filter((category) => consent[category.id])
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       {/* No app, omita placement: o banner fica fixo no rodapé da janela. */}
       <ConsentBanner
         placement="inline"
@@ -238,7 +238,7 @@ export default function Persistence() {
           Esquecer decisão (demonstração)
         </Button>
       </footer>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -248,7 +248,7 @@ export default function Persistence() {
 Sem placement, o banner flutua no rodapé da janela; placement="top" o leva para o topo. Enquanto ele está aberto, a página reserva a altura dele na rolagem para que o elemento focado nunca fique escondido atrás.
 
 ```tsx
-import { Button, ConsentBanner, type ConsentBannerPlacement } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentBannerPlacement } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories = [
@@ -262,14 +262,14 @@ export default function Viewport() {
 
   return (
     <>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+      <Stack gap={3} direction="horizontal" wrap>
         <Button variant="outline" onClick={() => setPlacement('bottom')}>
           Mostrar no rodapé
         </Button>
         <Button variant="outline" onClick={() => setPlacement('top')}>
           Mostrar no topo
         </Button>
-      </div>
+      </Stack>
       {/* Fixo, o banner vai para o início do <body> (portal): primeiro na leitura e no Tab. */}
       <ConsentBanner
         placement={placement ?? 'bottom'}

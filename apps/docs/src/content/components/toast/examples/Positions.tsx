@@ -1,4 +1,4 @@
-import { Button, ToastProvider, useToast, type ToastPosition } from '@orangesys/ui'
+import { Button, Stack, ToastProvider, useToast, type ToastPosition } from '@orangesys/ui'
 import { useState } from 'react'
 
 const positions: ToastPosition[] = [
@@ -28,8 +28,8 @@ export default function Positions() {
   const [position, setPosition] = useState<ToastPosition>('top-center')
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div role="group" aria-label="Posição" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+    <Stack gap={4}>
+      <Stack role="group" aria-label="Posição" gap={2} direction="horizontal" wrap>
         {positions.map((p) => (
           <Button
             key={p}
@@ -41,12 +41,12 @@ export default function Positions() {
             {p}
           </Button>
         ))}
-      </div>
+      </Stack>
       <ToastProvider position={position} limit={3}>
         <div>
           <Trigger position={position} />
         </div>
       </ToastProvider>
-    </div>
+    </Stack>
   )
 }

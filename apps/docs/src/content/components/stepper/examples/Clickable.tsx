@@ -1,4 +1,4 @@
-import { Stepper } from '@orangesys/ui'
+import { Stack, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 const steps = [
@@ -11,12 +11,12 @@ const steps = [
 export default function Clickable() {
   const [active, setActive] = useState(3)
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <Stepper steps={steps} step={active} onStepClick={setActive} aria-label="Cadastro da empresa" />
       <p style={{ margin: 0, fontSize: 14, color: 'var(--or-color-text-muted)' }}>
         Editando: <strong style={{ color: 'var(--or-color-text)' }}>{steps[active].label}</strong>. Clique em uma etapa concluída
         para revisá-la.
       </p>
-    </div>
+    </Stack>
   )
 }

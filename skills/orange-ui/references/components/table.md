@@ -130,7 +130,7 @@ export default function Sorting() {
 Com selectable, cada linha ganha um checkbox. O cabeçalho seleciona todas e fica indeterminado em seleções parciais.
 
 ```tsx
-import { Button, Table, type TableColumn } from '@orangesys/ui'
+import { Button, Stack, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Member {
@@ -159,8 +159,8 @@ export default function Selection() {
   const [selected, setSelected] = useState<string[]>(['u4'])
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p aria-live="polite" style={{ margin: 0, marginRight: 'auto' }}>
           {selected.length === 0 ? 'Nenhum membro selecionado' : `${selected.length} selecionado(s)`}
         </p>
@@ -170,7 +170,7 @@ export default function Selection() {
         <Button variant="danger" size="sm" disabled={selected.length === 0}>
           Remover acesso
         </Button>
-      </div>
+      </Stack>
       <Table
         caption="Membros da equipe"
         columns={columns}
@@ -179,7 +179,7 @@ export default function Selection() {
         selectedRows={selected}
         onSelectedRowsChange={setSelected}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -238,7 +238,7 @@ export default function DensitySticky() {
 onRowClick torna a linha inteira clicável sem mudar a semântica da tabela: a célula principal vira um botão para quem usa teclado. Filtre por "Resolvidos" para ver o estado vazio.
 
 ```tsx
-import { Chip, ChipGroup, Table, Tag, type TableColumn } from '@orangesys/ui'
+import { Chip, ChipGroup, Stack, Table, Tag, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 type Priority = 'Alta' | 'Média' | 'Baixa'
@@ -273,7 +273,7 @@ export default function ClickableRows() {
   const visible = tickets.filter((t) => !status || t.status === status)
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <ChipGroup selectionMode="single" label="Status" value={status} onChange={setStatus}>
         <Chip value="aberto">Abertos</Chip>
         <Chip value="aguardando">Aguardando cliente</Chip>
@@ -290,7 +290,7 @@ export default function ClickableRows() {
       <p role="status" style={{ margin: 0 }}>
         {opened ? `Chamado ${opened.id} aberto: ${opened.subject}` : 'Clique em uma linha para abrir o chamado.'}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -300,7 +300,7 @@ export default function ClickableRows() {
 renderExpanded mostra os itens do pedido num painel abaixo da linha. O estado é controlado (expandedRows + onExpandedRowsChange) para o botão "Expandir todos"; ele guarda ids, então acompanha a linha ao ordenar. Use isRowExpandable para tirar o botão de linhas sem detalhe.
 
 ```tsx
-import { Button, Table, Tag, type TableColumn } from '@orangesys/ui'
+import { Button, Stack, Table, Tag, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface OrderLine {
@@ -406,7 +406,7 @@ const lineColumns: TableColumn<OrderLine>[] = [
 
 function OrderDetails({ order }: { order: Order }) {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Table
         caption={`Itens do pedido ${order.number}`}
         hideCaption
@@ -418,7 +418,7 @@ function OrderDetails({ order }: { order: Order }) {
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Pagamento: {order.payment} · Entrega: {order.shipping}
       </p>
-    </div>
+    </Stack>
   )
 }
 
@@ -427,8 +427,8 @@ export default function ExpandableRows() {
   const allExpanded = expanded.length === orders.length
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p style={{ margin: 0, marginRight: 'auto' }}>
           {expanded.length === 0
             ? 'Abra um pedido para ver os itens.'
@@ -441,7 +441,7 @@ export default function ExpandableRows() {
         >
           {allExpanded ? 'Recolher todos' : 'Expandir todos'}
         </Button>
-      </div>
+      </Stack>
       <Table
         caption="Pedidos da semana"
         hideCaption
@@ -451,7 +451,7 @@ export default function ExpandableRows() {
         onExpandedRowsChange={setExpanded}
         renderExpanded={(order) => <OrderDetails order={order} />}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -468,7 +468,7 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownSeparator,
-  Icon,
+  Icon, Stack,
   Table,
   type TableColumn,
 } from '@orangesys/ui'
@@ -554,8 +554,8 @@ export default function VisibleColumns() {
     setVisible((current) => (checked ? [...current, key] : current.filter((k) => k !== key)))
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p style={{ margin: 0, marginRight: 'auto' }}>
           {columns.length} de {allColumns.length} colunas visíveis
         </p>
@@ -583,7 +583,7 @@ export default function VisibleColumns() {
             Restaurar padrão
           </DropdownItem>
         </Dropdown>
-      </div>
+      </Stack>
       <Table
         caption="Catálogo de produtos"
         hideCaption
@@ -591,7 +591,7 @@ export default function VisibleColumns() {
         data={products}
         getRowId={(product) => product.sku}
       />
-    </div>
+    </Stack>
   )
 }
 ```

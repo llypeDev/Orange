@@ -1,4 +1,4 @@
-import { Button, CommandPalette, type CommandGroup } from '@orangesys/ui'
+import { Button, CommandPalette, Stack, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 const clientes = [
@@ -25,7 +25,7 @@ export default function Navigation() {
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <CommandPalette
         groups={grupos}
         label="Ir para cliente"
@@ -36,6 +36,6 @@ export default function Navigation() {
       <span>
         {cliente ? `Abrindo ${cliente}` : 'Busque "sao joao" ou "acai": acentos são ignorados.'}
       </span>
-    </div>
+    </Stack>
   )
 }

@@ -140,7 +140,7 @@ export default function WithContent() {
 Com animated, os eventos entram escalonados quando a timeline aparece na tela e a linha é desenhada. O evento atual pulsa.
 
 ```tsx
-import { Button, Icon, Timeline, TimelineItem } from '@orangesys/ui'
+import { Button, Icon, Stack, Timeline, TimelineItem } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Animated() {
@@ -148,7 +148,7 @@ export default function Animated() {
   const [rodada, setRodada] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%' }}>
+    <Stack gap={5} style={{ width: '100%' }}>
       <div>
         <Button size="sm" variant="outline" startIcon={<Icon name="refresh" />} onClick={() => setRodada((r) => r + 1)}>
           Repetir animação
@@ -170,7 +170,7 @@ export default function Animated() {
         />
         <TimelineItem dateLabel="Previsto para 14:08" title="Disponível para todos" />
       </Timeline>
-    </div>
+    </Stack>
   )
 }
 ```

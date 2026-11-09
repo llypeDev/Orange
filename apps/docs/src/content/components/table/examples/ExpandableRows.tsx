@@ -1,4 +1,4 @@
-import { Button, Table, Tag, type TableColumn } from '@orangesys/ui'
+import { Button, Stack, Table, Tag, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface OrderLine {
@@ -104,7 +104,7 @@ const lineColumns: TableColumn<OrderLine>[] = [
 
 function OrderDetails({ order }: { order: Order }) {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <Table
         caption={`Itens do pedido ${order.number}`}
         hideCaption
@@ -116,7 +116,7 @@ function OrderDetails({ order }: { order: Order }) {
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Pagamento: {order.payment} · Entrega: {order.shipping}
       </p>
-    </div>
+    </Stack>
   )
 }
 
@@ -125,8 +125,8 @@ export default function ExpandableRows() {
   const allExpanded = expanded.length === orders.length
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p style={{ margin: 0, marginRight: 'auto' }}>
           {expanded.length === 0
             ? 'Abra um pedido para ver os itens.'
@@ -139,7 +139,7 @@ export default function ExpandableRows() {
         >
           {allExpanded ? 'Recolher todos' : 'Expandir todos'}
         </Button>
-      </div>
+      </Stack>
       <Table
         caption="Pedidos da semana"
         hideCaption
@@ -149,6 +149,6 @@ export default function ExpandableRows() {
         onExpandedRowsChange={setExpanded}
         renderExpanded={(order) => <OrderDetails order={order} />}
       />
-    </div>
+    </Stack>
   )
 }

@@ -6,7 +6,7 @@ import {
   DropdownSeparator,
   IconButton,
   ListView,
-  ListViewItem,
+  ListViewItem, Stack,
 } from '@orangesys/ui'
 import { useState } from 'react'
 
@@ -29,14 +29,8 @@ export default function TeamMembers() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 12, width: '100%', maxWidth: 560 }}>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 12,
-        }}
+      <Stack
+        gap={3} direction="horizontal" align="center" justify="between" wrap
       >
         <p id="membros-titulo" style={{ margin: 0, fontWeight: 600 }}>
           Membros da equipe
@@ -49,7 +43,7 @@ export default function TeamMembers() {
         >
           Remover selecionados ({selecionados.length})
         </Button>
-      </div>
+      </Stack>
       <ListView
         aria-labelledby="membros-titulo"
         selectionMode="multiple"

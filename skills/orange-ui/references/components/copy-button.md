@@ -66,7 +66,7 @@ export default function Command() {
 Com children, o rótulo troca para a confirmação sem mudar a largura do botão.
 
 ```tsx
-import { CopyButton } from '@orangesys/ui'
+import { CopyButton, Stack } from '@orangesys/ui'
 
 const inviteLink = 'https://app.orange.dev/convite/equipe-produto'
 
@@ -85,7 +85,7 @@ export default function WithLabel() {
       >
         Link de convite
       </label>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <input
           id="invite-link"
           readOnly
@@ -104,7 +104,7 @@ export default function WithLabel() {
         <CopyButton value={inviteLink} copiedLabel="Link copiado">
           Copiar link
         </CopyButton>
-      </div>
+      </Stack>
     </div>
   )
 }
@@ -115,14 +115,14 @@ export default function WithLabel() {
 `onCopy` é chamado depois de copiar com sucesso; `timeout` define quanto tempo o check fica visível.
 
 ```tsx
-import { CopyButton } from '@orangesys/ui'
+import { CopyButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function OnCopy() {
   const [count, setCount] = useState(0)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <div style={{ padding: '8px 16px', border: '1px dashed var(--or-color-accent-border)' }}>
         <span className="or-eyebrow">Cupom</span>
         <div style={{ fontFamily: 'var(--or-font-mono)', fontSize: 'var(--or-text-lg)' }}>
@@ -141,7 +141,7 @@ export default function OnCopy() {
       <span style={{ fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Copiado {count} {count === 1 ? 'vez' : 'vezes'}
       </span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -149,13 +149,13 @@ export default function OnCopy() {
 ### Variantes e tamanhos
 
 ```tsx
-import { CopyButton } from '@orangesys/ui'
+import { CopyButton, Stack } from '@orangesys/ui'
 
 const pedido = 'PED-2026-048213'
 
 export default function Variants() {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3} direction="horizontal" align="center" wrap>
       <CopyButton value={pedido} size="sm" variant="outline" />
       <CopyButton value={pedido} variant="outline" />
       <CopyButton value={pedido} size="lg" variant="outline" />
@@ -165,7 +165,7 @@ export default function Variants() {
       <CopyButton value={pedido} variant="secondary">
         Copiar
       </CopyButton>
-    </div>
+    </Stack>
   )
 }
 ```

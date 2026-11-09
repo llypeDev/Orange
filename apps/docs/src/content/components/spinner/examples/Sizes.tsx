@@ -1,11 +1,11 @@
-import { Spinner } from '@orangesys/ui'
+import { Spinner, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <Spinner size="sm" />
       <Spinner size="md" />
       <Spinner size="lg" />
-    </div>
+    </Stack>
   )
 }

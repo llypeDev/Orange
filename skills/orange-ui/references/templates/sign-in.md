@@ -97,7 +97,7 @@ export default function SignIn() {
       <div className="aurora-signin__main">
         <div className="aurora-signin__card">
           <p className="aurora-signin__logo">
-            <Icon name="layers" /> Aurora
+            <Icon name="layers" className="aurora-signin__logo-icon" /> Aurora
           </p>
 
           <div className="aurora-signin__intro">
@@ -140,6 +140,7 @@ export default function SignIn() {
                 />
                 <div className="aurora-signin__row">
                   <Checkbox
+                    className="aurora-signin__remember"
                     name="manterConectado"
                     label="Manter conectado"
                     description="Por 30 dias neste navegador. Não marque em computadores compartilhados."
@@ -248,17 +249,13 @@ export default function SignIn() {
   letter-spacing: var(--or-tracking-heading);
 }
 
-.aurora-signin__logo .or-icon {
+.aurora-signin__logo .aurora-signin__logo-icon {
   color: var(--or-color-accent);
 }
 
 .aurora-signin__intro {
   display: grid;
   gap: var(--or-space-2);
-}
-
-.aurora-signin__intro .or-text {
-  margin: 0;
 }
 
 /* "Manter conectado" e "Esqueci a senha" na mesma linha; quebram quando falta espaço. */
@@ -270,7 +267,7 @@ export default function SignIn() {
   gap: var(--or-space-3) var(--or-space-6);
 }
 
-.aurora-signin__row > .or-checkbox {
+.aurora-signin__row > .aurora-signin__remember {
   flex: 1 1 14rem;
 }
 
@@ -341,10 +338,6 @@ export default function SignIn() {
   max-width: 30rem;
   animation: aurora-signin-rise var(--or-duration-reveal) var(--or-ease-out) both;
   animation-delay: var(--or-stagger);
-}
-
-.aurora-signin__pitch .or-eyebrow-text {
-  margin: 0;
 }
 
 .aurora-signin__tagline {

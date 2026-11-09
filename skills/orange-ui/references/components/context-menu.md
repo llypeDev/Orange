@@ -22,7 +22,7 @@ Menu aberto com o botão direito (ou Shift+F10) sobre uma área, posicionado no 
 Cada linha tem seu próprio menu, nomeado com aria-label. Ao escolher um item, o foco volta para a linha.
 
 ```tsx
-import { ContextMenu, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
+import { ContextMenu, DropdownItem, DropdownSeparator, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const arquivosIniciais = ['briefing-campanha.pdf', 'fotos-evento.zip', 'orcamento-2026.xlsx']
@@ -34,7 +34,7 @@ export default function Files() {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 480 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 480 }}>
       <ul
         style={{
           listStyle: 'none',
@@ -100,7 +100,7 @@ export default function Files() {
       <p role="status" style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-muted)' }}>
         {aviso}
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

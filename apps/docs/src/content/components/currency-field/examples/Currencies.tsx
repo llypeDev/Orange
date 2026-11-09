@@ -1,8 +1,8 @@
-import { CurrencyField } from '@orangesys/ui'
+import { CurrencyField, Stack } from '@orangesys/ui'
 
 export default function Currencies() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 320 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 320 }}>
       <CurrencyField label="Assinatura em dólar" currency="USD" locale="en-US" defaultValue={49} />
       <CurrencyField
         label="Hospedagem em Lisboa"
@@ -23,6 +23,6 @@ export default function Currencies() {
         defaultValue={89.9}
         size="sm"
       />
-    </div>
+    </Stack>
   )
 }

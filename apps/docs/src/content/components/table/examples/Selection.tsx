@@ -1,4 +1,4 @@
-import { Button, Table, type TableColumn } from '@orangesys/ui'
+import { Button, Stack, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Member {
@@ -27,8 +27,8 @@ export default function Selection() {
   const [selected, setSelected] = useState<string[]>(['u4'])
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center" wrap>
         <p aria-live="polite" style={{ margin: 0, marginRight: 'auto' }}>
           {selected.length === 0 ? 'Nenhum membro selecionado' : `${selected.length} selecionado(s)`}
         </p>
@@ -38,7 +38,7 @@ export default function Selection() {
         <Button variant="danger" size="sm" disabled={selected.length === 0}>
           Remover acesso
         </Button>
-      </div>
+      </Stack>
       <Table
         caption="Membros da equipe"
         columns={columns}
@@ -47,6 +47,6 @@ export default function Selection() {
         selectedRows={selected}
         onSelectedRowsChange={setSelected}
       />
-    </div>
+    </Stack>
   )
 }

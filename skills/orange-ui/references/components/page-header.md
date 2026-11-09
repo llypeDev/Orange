@@ -171,14 +171,14 @@ export default function WithTabs() {
 Com reveal, eyebrow → título → descrição → ações sobem em sequência ao montar.
 
 ```tsx
-import { Button, Icon, PageHeader } from '@orangesys/ui'
+import { Button, Icon, PageHeader, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Reveal() {
   // A revelação roda ao montar: trocar a key remonta o cabeçalho para ver de novo.
   const [run, setRun] = useState(0)
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <PageHeader
         headingLevel={2}
         key={run}
@@ -198,7 +198,7 @@ export default function Reveal() {
           Repetir animação
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

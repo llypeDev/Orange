@@ -1,4 +1,4 @@
-import { RangeCalendar, Text, type DateRange } from '@orangesys/ui'
+import { RangeCalendar, Stack, Text, type DateRange } from '@orangesys/ui'
 import { useState } from 'react'
 
 const DIA = 24 * 60 * 60 * 1000
@@ -13,7 +13,7 @@ export default function TeamVacation() {
       : 0
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <RangeCalendar
         aria-label="Férias da equipe de suporte"
         value={ferias}
@@ -29,6 +29,6 @@ export default function TeamVacation() {
           ? `${dias} dias corridos de férias, começando e terminando em dias úteis.`
           : 'Clique no primeiro e no último dia das férias (até 30 dias corridos).'}
       </Text>
-    </div>
+    </Stack>
   )
 }

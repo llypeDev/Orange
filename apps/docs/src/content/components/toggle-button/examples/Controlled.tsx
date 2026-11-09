@@ -1,11 +1,11 @@
-import { Icon, ToggleButton } from '@orangesys/ui'
+import { Icon, Stack, ToggleButton } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {
   const [watching, setWatching] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <ToggleButton
         pressed={watching}
         onPressedChange={setWatching}
@@ -18,6 +18,6 @@ export default function Controlled() {
           ? 'Você receberá um e-mail a cada mudança de status do pedido #48213.'
           : 'Ative para receber atualizações do pedido #48213 por e-mail.'}
       </p>
-    </div>
+    </Stack>
   )
 }

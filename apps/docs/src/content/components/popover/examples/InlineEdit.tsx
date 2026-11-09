@@ -1,4 +1,4 @@
-import { Button, Field, Popover } from '@orangesys/ui'
+import { Button, Field, Popover, Stack } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 export default function InlineEdit() {
@@ -6,7 +6,7 @@ export default function InlineEdit() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3} direction="horizontal" align="center">
       <span>
         Meta mensal: <strong>{meta} vendas</strong>
       </span>
@@ -41,17 +41,17 @@ export default function InlineEdit() {
                 className="or-control"
               />
             </Field>
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <Stack gap={2} direction="horizontal" justify="end">
               <Button size="sm" variant="outline" onClick={close}>
                 Cancelar
               </Button>
               <Button size="sm" type="submit">
                 Salvar
               </Button>
-            </div>
+            </Stack>
           </form>
         )}
       </Popover>
-    </div>
+    </Stack>
   )
 }

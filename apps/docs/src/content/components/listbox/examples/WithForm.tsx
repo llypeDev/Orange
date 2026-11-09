@@ -4,7 +4,7 @@ import {
   Form,
   FormActions,
   Listbox,
-  ListboxOption,
+  ListboxOption, Stack,
   type FormErrors,
   type FormValues,
 } from '@orangesys/ui'
@@ -20,7 +20,7 @@ export default function WithForm() {
   const [enviado, setEnviado] = useState<FormValues | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 460 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 460 }}>
       <Form aria-label="Preferências de entrega" validate={validate} onSubmit={setEnviado}>
         {({ errors }) => (
           <>
@@ -53,6 +53,6 @@ export default function WithForm() {
         )}
       </Form>
       {enviado && <CodeBlock title="Valores enviados" language="json" code={JSON.stringify(enviado, null, 2)} />}
-    </div>
+    </Stack>
   )
 }

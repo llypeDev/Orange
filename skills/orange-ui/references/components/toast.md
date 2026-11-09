@@ -91,7 +91,7 @@ export default function Basic() {
 A ação fecha o toast ao ser clicada. Pressione F8 para levar o foco ao toast mais recente e Escape para fechá-lo.
 
 ```tsx
-import { Button, useToast } from '@orangesys/ui'
+import { Button, Stack, useToast } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function WithAction() {
@@ -107,12 +107,12 @@ export default function WithAction() {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center">
       <Button variant="outline" onClick={archive}>
         Arquivar selecionadas
       </Button>
       <span style={{ color: 'var(--or-color-text-muted)' }}>Arquivadas: {archived}</span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -184,7 +184,7 @@ export default function Progress() {
 No topo, o mais recente aparece em cima; embaixo, junto à borda. Até 3 visíveis (limit) — os demais aguardam na fila.
 
 ```tsx
-import { Button, ToastProvider, useToast, type ToastPosition } from '@orangesys/ui'
+import { Button, Stack, ToastProvider, useToast, type ToastPosition } from '@orangesys/ui'
 import { useState } from 'react'
 
 const positions: ToastPosition[] = [
@@ -214,8 +214,8 @@ export default function Positions() {
   const [position, setPosition] = useState<ToastPosition>('top-center')
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <div role="group" aria-label="Posição" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+    <Stack gap={4}>
+      <Stack role="group" aria-label="Posição" gap={2} direction="horizontal" wrap>
         {positions.map((p) => (
           <Button
             key={p}
@@ -227,13 +227,13 @@ export default function Positions() {
             {p}
           </Button>
         ))}
-      </div>
+      </Stack>
       <ToastProvider position={position} limit={3}>
         <div>
           <Trigger position={position} />
         </div>
       </ToastProvider>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -243,11 +243,11 @@ export default function Positions() {
 O componente Toast é exportado para composições próprias. Dentro do provider, ele é renderizado automaticamente.
 
 ```tsx
-import { Button, Toast } from '@orangesys/ui'
+import { Button, Stack, Toast } from '@orangesys/ui'
 
 export default function Visual() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 416 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 416 }}>
       <Toast title="Link copiado" onDismiss={() => {}} />
       <Toast
         tone="success"
@@ -270,7 +270,7 @@ export default function Visual() {
         }
         onDismiss={() => {}}
       />
-    </div>
+    </Stack>
   )
 }
 ```

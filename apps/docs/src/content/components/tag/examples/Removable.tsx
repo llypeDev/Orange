@@ -1,4 +1,4 @@
-import { Button, Tag } from '@orangesys/ui'
+import { Button, Stack, Tag } from '@orangesys/ui'
 import { useRef, useState } from 'react'
 
 const initial = ['São Paulo', 'Até R$ 200', 'Frete grátis', 'Avaliação 4+']
@@ -20,7 +20,7 @@ export default function Removable() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <ul
         ref={listRef}
         aria-label="Filtros aplicados"
@@ -37,6 +37,6 @@ export default function Removable() {
           Restaurar filtros
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const projects = ['Portal do cliente', 'App de entregas', 'Painel financeiro', 'Site institucional']
@@ -7,9 +7,9 @@ export default function IconOnly() {
   const [view, setView] = useState('grid')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
-      <div
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}
+    <Stack gap={4} style={{ width: '100%' }}>
+      <Stack
+        gap={4} direction="horizontal" align="center" justify="between"
       >
         <strong style={{ fontFamily: 'var(--or-font-display)' }}>Projetos</strong>
         {/* O rótulo do grupo e das opções continua disponível para leitores de tela. */}
@@ -25,7 +25,7 @@ export default function IconOnly() {
             { value: 'grid', label: 'Grade', icon: 'grid' },
           ]}
         />
-      </div>
+      </Stack>
       <ul
         style={{
           display: 'grid',
@@ -49,6 +49,6 @@ export default function IconOnly() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }

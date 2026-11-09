@@ -1,4 +1,4 @@
-import { Button, Skeleton, SkeletonText } from '@orangesys/ui'
+import { Button, Skeleton, SkeletonText, Stack } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 export default function Swap() {
@@ -11,7 +11,7 @@ export default function Swap() {
   }, [loaded])
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <article
         style={{
           display: 'grid',
@@ -20,7 +20,7 @@ export default function Swap() {
           border: '1px solid var(--or-color-border)',
         }}
       >
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <Stack gap={3} direction="horizontal" align="center">
           {/* loaded: crossfade do placeholder para o conteúdo real */}
           <Skeleton variant="circle" width={40} loaded={loaded}>
             <span
@@ -45,7 +45,7 @@ export default function Swap() {
               Gerente de contas
             </span>
           </Skeleton>
-        </div>
+        </Stack>
         <SkeletonText lines={2} loaded={loaded}>
           <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
             Atende 42 clientes no Sudeste. Última visita: Padaria Pão Dourado, ontem às 15h.
@@ -57,6 +57,6 @@ export default function Swap() {
           Recarregar perfil
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

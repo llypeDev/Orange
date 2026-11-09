@@ -1,4 +1,4 @@
-import { Button, ConsentBanner, type ConsentBannerPlacement } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentBannerPlacement } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories = [
@@ -12,14 +12,14 @@ export default function Viewport() {
 
   return (
     <>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+      <Stack gap={3} direction="horizontal" wrap>
         <Button variant="outline" onClick={() => setPlacement('bottom')}>
           Mostrar no rodapé
         </Button>
         <Button variant="outline" onClick={() => setPlacement('top')}>
           Mostrar no topo
         </Button>
-      </div>
+      </Stack>
       {/* Fixo, o banner vai para o início do <body> (portal): primeiro na leitura e no Tab. */}
       <ConsentBanner
         placement={placement ?? 'bottom'}

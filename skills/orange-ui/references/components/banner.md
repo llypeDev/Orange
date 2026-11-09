@@ -29,11 +29,11 @@ Faixa de largura total para avisos do sistema ou da página — manutenção, in
 ### Tons
 
 ```tsx
-import { Banner } from '@orangesys/ui'
+import { Banner, Stack } from '@orangesys/ui'
 
 export default function Tones() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Banner tone="neutral" title="Modo somente leitura">
         Você está vendo a versão publicada em 12/10.
       </Banner>
@@ -49,7 +49,7 @@ export default function Tones() {
       <Banner tone="danger" title="Falha na emissão de notas">
         Nenhuma NF-e foi emitida desde 14h. Nossa equipe já está atuando.
       </Banner>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -59,11 +59,11 @@ export default function Tones() {
 Links simples ganham sublinhado; botões usam o tamanho sm. Ao fechar, o foco segue para o próximo elemento.
 
 ```tsx
-import { Banner, Button } from '@orangesys/ui'
+import { Banner, Button, Stack } from '@orangesys/ui'
 
 export default function WithAction() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Banner
         tone="warning"
         title="Instabilidade no Pix"
@@ -84,7 +84,7 @@ export default function WithAction() {
       >
         Escolha um plano para manter seus 4 projetos.
       </Banner>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -160,7 +160,7 @@ export default function Accent() {
 A queda é anunciada imediatamente (role="alert"); o retorno, de forma educada (role="status").
 
 ```tsx
-import { Banner, Button } from '@orangesys/ui'
+import { Banner, Button, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Live() {
@@ -190,14 +190,14 @@ export default function Live() {
       >
         Sincronizamos 3 alterações pendentes.
       </Banner>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <Button variant="outline" size="sm" onClick={() => setOnline(false)}>
           Simular queda
         </Button>
         <Button variant="outline" size="sm" onClick={() => setOnline(true)}>
           Simular retorno
         </Button>
-      </div>
+      </Stack>
     </div>
   )
 }

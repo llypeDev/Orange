@@ -23,14 +23,14 @@
   min-width: 0;
 }
 
-/* Seções separadas por uma linha de 1px. */
-.aurora-settings__editor .or-form > .or-fieldset + .or-fieldset {
+/* Seções separadas por uma linha de 1px. Classes do modelo, não as internas dos componentes. */
+.aurora-settings__editor .aurora-settings__section + .aurora-settings__section {
   padding-top: var(--or-space-8);
   border-top: var(--or-border-thin) solid var(--or-color-border);
 }
 
 /* O título da seção mora dentro da <legend>: herda o tamanho dela. */
-.aurora-settings__editor .or-fieldset__legend > .or-heading {
+.aurora-settings__editor .aurora-settings__legend-title {
   font-size: inherit;
 }
 
@@ -91,10 +91,6 @@
   display: grid;
   flex: 1 1 18rem;
   gap: var(--or-space-1);
-}
-
-.aurora-settings__danger-list .or-text {
-  margin: 0;
 }
 
 @media (forced-colors: active) {

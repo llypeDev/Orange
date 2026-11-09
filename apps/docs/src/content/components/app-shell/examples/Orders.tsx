@@ -8,7 +8,7 @@ import {
   PageHeader,
   SideNav,
   SideNavGroup,
-  SideNavItem,
+  SideNavItem, Stack,
   Tag,
 } from '@orangesys/ui'
 
@@ -77,7 +77,7 @@ export default function Orders() {
         }
         asideLabel="Resumo do dia"
         aside={
-          <div style={{ display: 'grid', gap: 8 }}>
+          <Stack gap={2}>
             <p className="or-eyebrow" style={{ margin: 0 }}>
               Resumo do dia
             </p>
@@ -94,7 +94,7 @@ export default function Orders() {
             <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
               37 pedidos · 5 aguardando envio
             </p>
-          </div>
+          </Stack>
         }
       >
         <PageHeader

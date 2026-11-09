@@ -1,8 +1,8 @@
-import { Button, Toast } from '@orangesys/ui'
+import { Button, Stack, Toast } from '@orangesys/ui'
 
 export default function Visual() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 416 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 416 }}>
       <Toast title="Link copiado" onDismiss={() => {}} />
       <Toast
         tone="success"
@@ -25,6 +25,6 @@ export default function Visual() {
         }
         onDismiss={() => {}}
       />
-    </div>
+    </Stack>
   )
 }

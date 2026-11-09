@@ -77,11 +77,11 @@ export default function Context() {
 Com focusable, o conteúdo aparece quando recebe foco do teclado — a base do SkipLink.
 
 ```tsx
-import { VisuallyHidden } from '@orangesys/ui'
+import { Stack, VisuallyHidden } from '@orangesys/ui'
 
 export default function Focusable() {
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
+    <Stack gap={2}>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Pressione Tab dentro desta prévia para revelar o link.
       </p>
@@ -93,7 +93,7 @@ export default function Focusable() {
       >
         Pular para o conteúdo
       </VisuallyHidden>
-    </div>
+    </Stack>
   )
 }
 ```

@@ -3,7 +3,7 @@ import {
   CodeBlock,
   Form,
   FormActions,
-  Picker,
+  Picker, Stack,
   TextField,
   type FormErrors,
   type FormValues,
@@ -61,7 +61,7 @@ export default function WithForm() {
   const [enviado, setEnviado] = useState<FormValues | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 420 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 420 }}>
       <Form aria-label="Novo projeto" validate={validate} onSubmit={setEnviado}>
         {({ errors }) => (
           <>
@@ -97,6 +97,6 @@ export default function WithForm() {
           code={JSON.stringify(enviado, null, 2)}
         />
       )}
-    </div>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon } from '@orangesys/ui'
+import { Button, ConfirmDialog, Dropdown, DropdownItem, DropdownSeparator, Icon, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function WithConfirm() {
@@ -6,7 +6,7 @@ export default function WithConfirm() {
   const [ativo, setAtivo] = useState(true)
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center">
       <span>Webhook de pedidos: {ativo ? 'ativo' : 'removido'}</span>
       {!ativo && (
         <Button variant="ghost" size="sm" onClick={() => setAtivo(true)}>
@@ -45,6 +45,6 @@ export default function WithConfirm() {
         confirmLabel="Remover webhook"
         onConfirm={() => setAtivo(false)}
       />
-    </div>
+    </Stack>
   )
 }

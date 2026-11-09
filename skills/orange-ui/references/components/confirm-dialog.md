@@ -22,7 +22,7 @@ Diálogo de alerta que pede confirmação antes de uma ação importante ou irre
 tone="danger": botão vermelho, ícone de alerta e foco inicial em Cancelar. O fundo não fecha o diálogo.
 
 ```tsx
-import { Button, ConfirmDialog } from '@orangesys/ui'
+import { Button, ConfirmDialog, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Danger() {
@@ -30,12 +30,12 @@ export default function Danger() {
 
   if (excluido) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <Stack gap={4} direction="horizontal" align="center">
         <span>Projeto excluído.</span>
         <Button variant="ghost" onClick={() => setExcluido(false)}>
           Desfazer
         </Button>
-      </div>
+      </Stack>
     )
   }
 
@@ -57,7 +57,7 @@ export default function Danger() {
 Se `onConfirm` retornar uma Promise, o botão fica em loading (anunciado a leitores de tela), Cancelar e Escape são bloqueados e o diálogo só fecha quando ela resolver. Se rejeitar, o diálogo continua aberto.
 
 ```tsx
-import { Button, ConfirmDialog } from '@orangesys/ui'
+import { Button, ConfirmDialog, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const encerrarSessoes = () => new Promise((resolve) => setTimeout(resolve, 1800))
@@ -66,7 +66,7 @@ export default function Async() {
   const [status, setStatus] = useState('3 dispositivos conectados')
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <span>{status}</span>
       <ConfirmDialog
         tone="danger"
@@ -80,7 +80,7 @@ export default function Async() {
         }}
         trigger={<Button variant="outline">Encerrar sessões</Button>}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -121,7 +121,7 @@ export default function WithDetails() {
 `const [confirm, confirmDialog] = useConfirm()`: renderize `confirmDialog` uma vez e use `await confirm({…})`, que resolve `true` ou `false`.
 
 ```tsx
-import { Button, Icon, useConfirm } from '@orangesys/ui'
+import { Button, Icon, Stack, useConfirm } from '@orangesys/ui'
 import { useState } from 'react'
 
 const membrosIniciais = ['Ana Souza', 'Bruno Lima', 'Carla Mendes']
@@ -141,7 +141,7 @@ export default function UseConfirm() {
   }
 
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%', maxWidth: 420 }}>
+    <Stack gap={2} style={{ width: '100%', maxWidth: 420 }}>
       {membros.map((nome) => (
         <div
           key={nome}
@@ -171,7 +171,7 @@ export default function UseConfirm() {
         </Button>
       )}
       {confirmDialog}
-    </div>
+    </Stack>
   )
 }
 ```

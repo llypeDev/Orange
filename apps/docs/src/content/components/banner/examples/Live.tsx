@@ -1,4 +1,4 @@
-import { Banner, Button } from '@orangesys/ui'
+import { Banner, Button, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Live() {
@@ -28,14 +28,14 @@ export default function Live() {
       >
         Sincronizamos 3 alterações pendentes.
       </Banner>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <Button variant="outline" size="sm" onClick={() => setOnline(false)}>
           Simular queda
         </Button>
         <Button variant="outline" size="sm" onClick={() => setOnline(true)}>
           Simular retorno
         </Button>
-      </div>
+      </Stack>
     </div>
   )
 }

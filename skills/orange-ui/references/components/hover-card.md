@@ -22,12 +22,12 @@ Cartão de pré-visualização ao passar o ponteiro ou focar um link — perfis,
 Passe o ponteiro sobre o nome ou foque o link com Tab. O cartão continua aberto enquanto o ponteiro estiver sobre ele.
 
 ```tsx
-import { HoverCard } from '@orangesys/ui'
+import { HoverCard, Stack } from '@orangesys/ui'
 
 function Perfil() {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center">
         <span
           aria-hidden="true"
           style={{
@@ -44,18 +44,18 @@ function Perfil() {
         >
           AS
         </span>
-        <div style={{ display: 'grid' }}>
+        <Stack gap={0}>
           <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 16 }}>Ana Souza</strong>
           <span style={{ color: 'var(--or-color-text-subtle)' }}>@ana.souza</span>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Designer de produto no time de Pagamentos. Cuida do checkout e do app do lojista.
       </p>
       <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
         São Paulo · 14 projetos · desde 2021
       </span>
-    </div>
+    </Stack>
   )
 }
 
@@ -111,7 +111,7 @@ export default function LinkPreview() {
 Atrasos menores para listas de menções: ao passar de uma para outra, o cartão troca rapidamente.
 
 ```tsx
-import { HoverCard } from '@orangesys/ui'
+import { HoverCard, Stack } from '@orangesys/ui'
 
 const pessoas = [
   { usuario: 'bruno', nome: 'Bruno Lima', cargo: 'Engenharia · Plataforma', status: 'Disponível' },
@@ -129,13 +129,13 @@ export default function Mentions() {
             closeDelay={200}
             trigger={<a href={`#${pessoa.usuario}`}>@{pessoa.usuario}</a>}
           >
-            <div style={{ display: 'grid', gap: 4 }}>
+            <Stack gap={1}>
               <strong style={{ fontFamily: 'var(--or-font-display)' }}>{pessoa.nome}</strong>
               <span style={{ color: 'var(--or-color-text-muted)' }}>{pessoa.cargo}</span>
               <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
                 {pessoa.status}
               </span>
-            </div>
+            </Stack>
           </HoverCard>
         </span>
       ))}{' '}

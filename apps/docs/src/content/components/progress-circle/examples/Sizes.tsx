@@ -1,11 +1,11 @@
-import { ProgressCircle } from '@orangesys/ui'
+import { ProgressCircle, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+    <Stack gap={8} direction="horizontal" align="center">
       <ProgressCircle size="sm" value={68} label="Perfil completo" />
       <ProgressCircle size="md" value={68} showValue label="Perfil completo" />
       <ProgressCircle size="lg" value={68} showValue label="Perfil completo" />
-    </div>
+    </Stack>
   )
 }

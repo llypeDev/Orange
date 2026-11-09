@@ -22,7 +22,7 @@ Busca de comandos em um diálogo, aberta por atalho (⌘K / Ctrl+K), para navega
 Clique no botão ou use Ctrl+K / ⌘K. Digite para filtrar, ↑/↓ para escolher e Enter para executar.
 
 ```tsx
-import { Button, CommandPalette, Icon, type CommandGroup } from '@orangesys/ui'
+import { Button, CommandPalette, Icon, Stack, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
@@ -104,7 +104,7 @@ export default function Basic() {
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <CommandPalette
         groups={grupos}
         hotkey="mod+k"
@@ -125,7 +125,7 @@ export default function Basic() {
         }
       />
       <span>Último comando: {ultimo}</span>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -135,7 +135,7 @@ export default function Basic() {
 Um grupo só, com `label`, `placeholder` e `emptyMessage` personalizados. Busque sem acentos.
 
 ```tsx
-import { Button, CommandPalette, type CommandGroup } from '@orangesys/ui'
+import { Button, CommandPalette, Stack, type CommandGroup } from '@orangesys/ui'
 import { useState } from 'react'
 
 const clientes = [
@@ -162,7 +162,7 @@ export default function Navigation() {
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <Stack gap={4} direction="horizontal" align="center" wrap>
       <CommandPalette
         groups={grupos}
         label="Ir para cliente"
@@ -173,7 +173,7 @@ export default function Navigation() {
       <span>
         {cliente ? `Abrindo ${cliente}` : 'Busque "sao joao" ou "acai": acentos são ignorados.'}
       </span>
-    </div>
+    </Stack>
   )
 }
 ```

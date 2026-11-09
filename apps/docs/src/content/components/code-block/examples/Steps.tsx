@@ -1,4 +1,4 @@
-import { Button, CodeBlock } from '@orangesys/ui'
+import { Button, CodeBlock, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const code = `import { OrangeProvider, Button } from '@orangesys/ui'
@@ -22,8 +22,8 @@ export default function Steps() {
   const [passo, setPasso] = useState(0)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
-      <div role="group" aria-label="Passos da instalação" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+    <Stack gap={3} style={{ width: '100%' }}>
+      <Stack role="group" aria-label="Passos da instalação" gap={2} direction="horizontal" wrap>
         {passos.map((p, i) => (
           <Button
             key={p.rotulo}
@@ -35,8 +35,8 @@ export default function Steps() {
             {p.rotulo}
           </Button>
         ))}
-      </div>
+      </Stack>
       <CodeBlock title="src/App.tsx" language="tsx" code={code} showLineNumbers highlightLines={passos[passo].linhas} />
-    </div>
+    </Stack>
   )
 }

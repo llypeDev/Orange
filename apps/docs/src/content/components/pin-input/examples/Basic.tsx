@@ -1,11 +1,11 @@
-import { PinInput } from '@orangesys/ui'
+import { PinInput, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [status, setStatus] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <PinInput
         label="Código de verificação"
         description="Enviamos um código de 6 dígitos por SMS para (11) •••••-4821."
@@ -15,6 +15,6 @@ export default function Basic() {
       <p role="status" style={{ margin: 0, fontSize: 13, color: 'var(--or-color-text-subtle)' }}>
         {status}
       </p>
-    </div>
+    </Stack>
   )
 }

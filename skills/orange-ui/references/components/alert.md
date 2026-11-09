@@ -33,11 +33,11 @@ Mensagem inline que confirma, informa, alerta ou aponta um erro ligado a uma par
 Cada tom tem cor e ícone próprios. A borda esquerda de 3px marca o tom; o fundo continua neutro.
 
 ```tsx
-import { Alert } from '@orangesys/ui'
+import { Alert, Stack } from '@orangesys/ui'
 
 export default function Tones() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Alert tone="neutral" title="Rascunho">
         Este documento ainda não foi publicado.
       </Alert>
@@ -53,7 +53,7 @@ export default function Tones() {
       <Alert tone="danger" title="Não foi possível importar a planilha">
         A coluna “CNPJ” está vazia em 14 linhas.
       </Alert>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -168,16 +168,16 @@ export default function LiveRegion() {
 ### Sem título e com ícone próprio
 
 ```tsx
-import { Alert, Icon } from '@orangesys/ui'
+import { Alert, Icon, Stack } from '@orangesys/ui'
 
 export default function WithoutTitle() {
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+    <Stack gap={3} style={{ width: '100%' }}>
       <Alert tone="neutral">As alterações são salvas automaticamente a cada 30 segundos.</Alert>
       <Alert tone="info" icon={<Icon name="sparkle" />}>
         Dica: pressione <kbd>/</kbd> para buscar em qualquer tela.
       </Alert>
-    </div>
+    </Stack>
   )
 }
 ```

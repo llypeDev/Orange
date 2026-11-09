@@ -1,4 +1,4 @@
-import { Skeleton, SkeletonText } from '@orangesys/ui'
+import { Skeleton, SkeletonText, Stack } from '@orangesys/ui'
 
 export default function Card() {
   return (
@@ -12,13 +12,13 @@ export default function Card() {
       }}
     >
       <Skeleton variant="rect" height={160} />
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <Stack gap={3} direction="horizontal" align="center">
         <Skeleton variant="circle" width={40} />
         <div style={{ flex: 1 }}>
           <Skeleton width="60%" />
           <Skeleton width="35%" />
         </div>
-      </div>
+      </Stack>
       <SkeletonText lines={2} />
     </div>
   )

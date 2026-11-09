@@ -52,15 +52,15 @@ export default function Variants() {
 lg (48px), md (40px, padrão) e sm (32px). Em telas de toque, o alvo do sm cresce sem mudar o visual.
 
 ```tsx
-import { IconButton } from '@orangesys/ui'
+import { IconButton, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center">
       <IconButton icon="search" label="Buscar" variant="outline" size="lg" />
       <IconButton icon="search" label="Buscar" variant="outline" size="md" />
       <IconButton icon="search" label="Buscar" variant="outline" size="sm" />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -1,4 +1,4 @@
-import { Button, Stepper } from '@orangesys/ui'
+import { Button, Stack, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Vertical() {
@@ -15,14 +15,14 @@ export default function Vertical() {
           label: 'Convidar equipe',
           description: 'Até 10 pessoas no plano gratuito',
           content: (
-            <div style={{ display: 'flex', gap: 8 }}>
+            <Stack gap={2} direction="horizontal">
               <Button size="sm" onClick={next}>
                 Enviar convites
               </Button>
               <Button size="sm" variant="ghost" onClick={next}>
                 Fazer depois
               </Button>
-            </div>
+            </Stack>
           ),
         },
         {

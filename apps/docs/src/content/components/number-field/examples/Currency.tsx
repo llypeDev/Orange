@@ -1,8 +1,8 @@
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function Currency() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField
         label="Preço de venda"
         defaultValue={149.9}
@@ -19,6 +19,6 @@ export default function Currency() {
         formatOptions={{ style: 'percent' }}
         description="Entre 0% e 100%."
       />
-    </div>
+    </Stack>
   )
 }

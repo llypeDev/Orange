@@ -1,4 +1,4 @@
-import { Chip, ChipGroup, Kbd, Table, type TableColumn } from '@orangesys/ui'
+import { Chip, ChipGroup, Kbd, Stack, Table, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Shortcut {
@@ -33,12 +33,12 @@ export default function ShortcutList() {
   ]
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 520 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 520 }}>
       <ChipGroup selectionMode="single" label="Sistema" value={platform} onChange={(v) => v && setPlatform(v)} size="sm">
         <Chip value="windows">Windows e Linux</Chip>
         <Chip value="mac">macOS</Chip>
       </ChipGroup>
       <Table caption="Atalhos de teclado" hideCaption columns={columns} data={shortcuts} density="compact" />
-    </div>
+    </Stack>
   )
 }

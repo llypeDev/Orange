@@ -29,11 +29,11 @@ Links levam a outra página, a outro site ou a outro ponto da mesma página.
 ### Variantes
 
 ```tsx
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 export default function Variants() {
   return (
-    <div style={{ display: 'grid', gap: 20, maxWidth: 560 }}>
+    <Stack gap={5} style={{ maxWidth: 560 }}>
       <p style={{ margin: 0 }}>
         Ao continuar, você concorda com a <Link href="#privacidade">política de privacidade</Link> e confirma que leu
         as <Link href="#regras">regras da comunidade</Link>.
@@ -51,7 +51,7 @@ export default function Variants() {
       <Link href="#planos" variant="standalone">
         Comparar todos os planos
       </Link>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -61,7 +61,7 @@ export default function Variants() {
 Use standalone em listas de links e chamadas fora de um parágrafo.
 
 ```tsx
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 const posts = [
   { title: 'Como reduzimos o tempo de checkout em 38%', href: '#checkout' },
@@ -71,7 +71,7 @@ const posts = [
 
 export default function Standalone() {
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 520 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 520 }}>
       <p className="or-eyebrow" style={{ margin: 0 }}>
         Do blog
       </p>
@@ -84,7 +84,7 @@ export default function Standalone() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -94,11 +94,11 @@ export default function Standalone() {
 external adiciona target="_blank", rel="noopener noreferrer", o ícone ↗ e o texto oculto "(abre em nova aba)".
 
 ```tsx
-import { Link } from '@orangesys/ui'
+import { Link, Stack } from '@orangesys/ui'
 
 export default function External() {
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
+    <Stack gap={4}>
       <p style={{ margin: 0 }}>
         O padrão segue as{' '}
         <Link href="https://www.w3.org/WAI/ARIA/apg/" external>
@@ -109,7 +109,7 @@ export default function External() {
       <Link href="https://github.com/llypeDev/Orange" variant="standalone" external>
         Ver código no GitHub
       </Link>
-    </div>
+    </Stack>
   )
 }
 ```

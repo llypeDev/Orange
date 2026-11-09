@@ -1,4 +1,4 @@
-import { Button, ConsentBanner, type ConsentCategory, type ConsentValue } from '@orangesys/ui'
+import { Button, ConsentBanner, Stack, type ConsentCategory, type ConsentValue } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const categories: ConsentCategory[] = [
@@ -86,7 +86,7 @@ export default function Persistence() {
   const accepted = categories.filter((category) => consent[category.id])
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       {/* No app, omita placement: o banner fica fixo no rodapé da janela. */}
       <ConsentBanner
         placement="inline"
@@ -124,6 +124,6 @@ export default function Persistence() {
           Esquecer decisão (demonstração)
         </Button>
       </footer>
-    </div>
+    </Stack>
   )
 }

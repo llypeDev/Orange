@@ -1,4 +1,4 @@
-import { Button, Icon, Popover, useClipboard } from '@orangesys/ui'
+import { Button, Icon, Popover, Stack, useClipboard } from '@orangesys/ui'
 
 export default function Share() {
   const { copy, copied } = useClipboard()
@@ -15,7 +15,7 @@ export default function Share() {
         </Button>
       }
     >
-      <div style={{ display: 'grid', gap: 12, width: 280 }}>
+      <Stack gap={3} style={{ width: 280 }}>
         <span>Qualquer pessoa com o link pode ver este projeto.</span>
         <code
           style={{
@@ -36,7 +36,7 @@ export default function Share() {
         >
           {copied ? 'Link copiado' : 'Copiar link'}
         </Button>
-      </div>
+      </Stack>
     </Popover>
   )
 }

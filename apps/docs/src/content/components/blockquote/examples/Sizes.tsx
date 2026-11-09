@@ -1,8 +1,8 @@
-import { Blockquote } from '@orangesys/ui'
+import { Blockquote, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 32, maxWidth: 560 }}>
+    <Stack gap={8} style={{ maxWidth: 560 }}>
       <Blockquote size="sm" source="Equipe de Suporte">
         Responda primeiro o que a pessoa perguntou; o contexto vem depois.
       </Blockquote>
@@ -19,6 +19,6 @@ export default function Sizes() {
       >
         Levamos uma tarde para importar dois anos de pedidos.
       </Blockquote>
-    </div>
+    </Stack>
   )
 }

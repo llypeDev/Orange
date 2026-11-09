@@ -1,4 +1,4 @@
-import { ChatComposer, IconButton } from '@orangesys/ui'
+import { ChatComposer, IconButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Composer() {
@@ -6,7 +6,7 @@ export default function Composer() {
   const [sent, setSent] = useState<string | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 560 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 560 }}>
       <ChatComposer
         label="Mensagem para o cliente"
         hideLabel={false}
@@ -29,6 +29,6 @@ export default function Composer() {
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)', overflowWrap: 'anywhere' }}>
         {sent ? `Enviado: ${sent}` : 'Nenhuma mensagem enviada ainda.'}
       </p>
-    </div>
+    </Stack>
   )
 }

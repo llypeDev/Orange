@@ -100,10 +100,10 @@ export default function SettingsTemplatePage() {
           },
         },
         {
-          slug: 'switch',
+          slug: 'checkbox',
           why: {
-            pt: 'Avisos que ligam e desligam, com o rótulo à esquerda (labelPosition="start").',
-            en: 'Notifications that turn on and off, with the label on the left (labelPosition="start").',
+            pt: 'Avisos por e-mail: escolhas que só valem ao salvar o formulário — por isso Checkbox, e não Switch (que é para efeito imediato).',
+            en: 'Email notifications: choices that only apply when the form is saved — hence Checkbox, not Switch (which is for immediate effect).',
           },
         },
         {

@@ -29,7 +29,7 @@ Mostra o progresso em um fluxo de várias etapas — concluídas, a atual e as p
 Horizontal, controlado por step. Avance e volte com os botões.
 
 ```tsx
-import { Button, Stepper } from '@orangesys/ui'
+import { Button, Stack, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 const steps = [
@@ -42,17 +42,17 @@ const steps = [
 export default function Checkout() {
   const [active, setActive] = useState(1)
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%' }}>
+    <Stack gap={6} style={{ width: '100%' }}>
       <Stepper steps={steps} step={active} aria-label="Etapas do checkout" />
-      <div style={{ display: 'flex', gap: 8 }}>
+      <Stack gap={2} direction="horizontal">
         <Button variant="outline" disabled={active === 0} onClick={() => setActive((v) => v - 1)}>
           Voltar
         </Button>
         <Button disabled={active === steps.length} onClick={() => setActive((v) => v + 1)}>
           {active >= steps.length - 1 ? 'Finalizar pedido' : 'Continuar'}
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 ```
@@ -62,7 +62,7 @@ export default function Checkout() {
 Na vertical, step.content aparece sob a etapa atual — bom para onboarding.
 
 ```tsx
-import { Button, Stepper } from '@orangesys/ui'
+import { Button, Stack, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Vertical() {
@@ -79,14 +79,14 @@ export default function Vertical() {
           label: 'Convidar equipe',
           description: 'Até 10 pessoas no plano gratuito',
           content: (
-            <div style={{ display: 'flex', gap: 8 }}>
+            <Stack gap={2} direction="horizontal">
               <Button size="sm" onClick={next}>
                 Enviar convites
               </Button>
               <Button size="sm" variant="ghost" onClick={next}>
                 Fazer depois
               </Button>
-            </div>
+            </Stack>
           ),
         },
         {
@@ -133,7 +133,7 @@ export default function WithError() {
 Com onStepClick, só as etapas concluídas viram botões.
 
 ```tsx
-import { Stepper } from '@orangesys/ui'
+import { Stack, Stepper } from '@orangesys/ui'
 import { useState } from 'react'
 
 const steps = [
@@ -146,13 +146,13 @@ const steps = [
 export default function Clickable() {
   const [active, setActive] = useState(3)
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
+    <Stack gap={4} style={{ width: '100%' }}>
       <Stepper steps={steps} step={active} onStepClick={setActive} aria-label="Cadastro da empresa" />
       <p style={{ margin: 0, fontSize: 14, color: 'var(--or-color-text-muted)' }}>
         Editando: <strong style={{ color: 'var(--or-color-text)' }}>{steps[active].label}</strong>. Clique em uma etapa concluída
         para revisá-la.
       </p>
-    </div>
+    </Stack>
   )
 }
 ```

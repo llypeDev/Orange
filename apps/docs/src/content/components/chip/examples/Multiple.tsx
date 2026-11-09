@@ -1,4 +1,4 @@
-import { Chip, ChipGroup } from '@orangesys/ui'
+import { Chip, ChipGroup, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const categories = [
@@ -13,7 +13,7 @@ export default function Multiple() {
   const [selected, setSelected] = useState<string[]>(['casa', 'livros'])
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <ChipGroup label="Categorias" value={selected} onChange={setSelected}>
         {categories.map((category) => (
           <Chip key={category.value} value={category.value} count={category.count} disabled={category.count === 0}>
@@ -24,6 +24,6 @@ export default function Multiple() {
       <p style={{ margin: 0, color: 'var(--or-color-text-subtle)', fontSize: 'var(--or-text-sm)' }}>
         Filtrando por: {selected.length ? selected.join(', ') : 'todas as categorias'}
       </p>
-    </div>
+    </Stack>
   )
 }

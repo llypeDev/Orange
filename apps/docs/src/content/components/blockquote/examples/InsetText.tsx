@@ -1,8 +1,8 @@
-import { Blockquote, Text } from '@orangesys/ui'
+import { Blockquote, Stack, Text } from '@orangesys/ui'
 
 export default function InsetText() {
   return (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 560 }}>
+    <Stack gap={4} style={{ maxWidth: 560 }}>
       <Text>Você pode emitir notas fiscais a qualquer hora pelo painel ou pela API.</Text>
       {/* Não é citação de outra fonte: as="div", sem cite. */}
       <Blockquote as="div">
@@ -10,6 +10,6 @@ export default function InsetText() {
         programada.
       </Blockquote>
       <Text>Notas emitidas antes da manutenção continuam válidas.</Text>
-    </div>
+    </Stack>
   )
 }

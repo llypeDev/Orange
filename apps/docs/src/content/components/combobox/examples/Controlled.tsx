@@ -1,4 +1,4 @@
-import { Button, Combobox, type ComboboxOption } from '@orangesys/ui'
+import { Button, Combobox, Stack, type ComboboxOption } from '@orangesys/ui'
 import { useState } from 'react'
 
 const fusos: ComboboxOption[] = [
@@ -14,7 +14,7 @@ export default function Controlled() {
   const [fuso, setFuso] = useState<string | null>('America/Sao_Paulo')
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 380 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 380 }}>
       <Combobox
         label="Fuso horário"
         options={fusos}
@@ -33,6 +33,6 @@ export default function Controlled() {
           Usar fuso do navegador
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }

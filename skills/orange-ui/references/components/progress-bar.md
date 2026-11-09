@@ -22,7 +22,7 @@ Barra de progresso linear para tarefas com andamento mensurável — uploads, im
 O valor visível e o aria-valuetext usam o mesmo texto formatado no idioma do provider.
 
 ```tsx
-import { Button, ProgressBar, VisuallyHidden } from '@orangesys/ui'
+import { Button, ProgressBar, Stack, VisuallyHidden } from '@orangesys/ui'
 import { useEffect, useState } from 'react'
 
 const TOTAL_MB = 2.8
@@ -39,7 +39,7 @@ export default function Upload() {
   const sent = (((progress ?? 0) / 100) * TOTAL_MB).toFixed(1).replace('.', ',')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%', maxWidth: 480 }}>
+    <Stack gap={4} style={{ width: '100%', maxWidth: 480 }}>
       <ProgressBar
         label="Enviando 3 arquivos"
         value={progress ?? 0}
@@ -53,7 +53,7 @@ export default function Upload() {
           {progress === null ? 'Enviar arquivos' : 'Enviar novamente'}
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -79,11 +79,11 @@ export default function Indeterminate() {
 md tem 8px de altura; sm tem 4px.
 
 ```tsx
-import { ProgressBar } from '@orangesys/ui'
+import { ProgressBar, Stack } from '@orangesys/ui'
 
 export default function TonesSizes() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <ProgressBar label="Meta de vendas de outubro" value={82} tone="success" />
       <ProgressBar label="Treinamento de segurança" value={40} tone="info" />
       <ProgressBar label="Backup noturno" value={64} tone="neutral" size="sm" />
@@ -94,7 +94,7 @@ export default function TonesSizes() {
         size="sm"
         description="Conexão perdida. Tente novamente."
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -102,11 +102,11 @@ export default function TonesSizes() {
 ### Valor formatado
 
 ```tsx
-import { ProgressBar } from '@orangesys/ui'
+import { ProgressBar, Stack } from '@orangesys/ui'
 
 export default function CustomFormat() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <ProgressBar
         label="Importando contatos"
         value={320}
@@ -121,7 +121,7 @@ export default function CustomFormat() {
         size="sm"
         formatValue={(value, { max }) => `Etapa ${value} de ${max}`}
       />
-    </div>
+    </Stack>
   )
 }
 ```

@@ -110,14 +110,14 @@ export default function CustomLabels() {
 expanded + onExpandedChange permitem abrir o texto a partir de outra ação.
 
 ```tsx
-import { Button, ExpandableText } from '@orangesys/ui'
+import { Button, ExpandableText, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Controlled() {
   const [aberto, setAberto] = useState(false)
 
   return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 440 }}>
+    <Stack gap={3} style={{ maxWidth: 440 }}>
       <ExpandableText lines={2} expanded={aberto} onExpandedChange={setAberto}>
         Ao assinar, você concorda com a renovação automática do plano ao final de cada período. É possível cancelar a qualquer
         momento pelo painel de cobrança, e o acesso continua disponível até o fim do período já pago. Valores promocionais
@@ -128,7 +128,7 @@ export default function Controlled() {
           Ler termos completos
         </Button>
       </div>
-    </div>
+    </Stack>
   )
 }
 ```

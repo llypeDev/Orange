@@ -1,8 +1,8 @@
-import { ProgressBar } from '@orangesys/ui'
+import { ProgressBar, Stack } from '@orangesys/ui'
 
 export default function CustomFormat() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <ProgressBar
         label="Importando contatos"
         value={320}
@@ -17,6 +17,6 @@ export default function CustomFormat() {
         size="sm"
         formatValue={(value, { max }) => `Etapa ${value} de ${max}`}
       />
-    </div>
+    </Stack>
   )
 }

@@ -1,11 +1,11 @@
-import { IconButton } from '@orangesys/ui'
+import { IconButton, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <Stack gap={4} direction="horizontal" align="center">
       <IconButton icon="search" label="Buscar" variant="outline" size="lg" />
       <IconButton icon="search" label="Buscar" variant="outline" size="md" />
       <IconButton icon="search" label="Buscar" variant="outline" size="sm" />
-    </div>
+    </Stack>
   )
 }

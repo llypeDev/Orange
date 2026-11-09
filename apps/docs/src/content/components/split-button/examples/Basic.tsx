@@ -1,11 +1,11 @@
-import { SplitButton } from '@orangesys/ui'
+import { SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Basic() {
   const [status, setStatus] = useState('Rascunho salvo às 14:32')
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SplitButton
         onClick={() => setStatus('Artigo publicado agora')}
         actions={[
@@ -34,6 +34,6 @@ export default function Basic() {
       >
         {status}
       </p>
-    </div>
+    </Stack>
   )
 }

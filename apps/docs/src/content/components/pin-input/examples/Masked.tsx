@@ -1,8 +1,8 @@
-import { PinInput } from '@orangesys/ui'
+import { PinInput, Stack } from '@orangesys/ui'
 
 export default function Masked() {
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <PinInput
         label="Senha do cartão"
         description="4 dígitos. Os números ficam ocultos."
@@ -10,6 +10,6 @@ export default function Masked() {
         mask
       />
       <PinInput label="Código do autenticador" length={6} groupSize={3} placeholder="·" />
-    </div>
+    </Stack>
   )
 }

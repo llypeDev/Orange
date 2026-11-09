@@ -1,8 +1,8 @@
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 
 export default function Basic() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField label="Nome completo" autoComplete="name" required />
       <TextField
         label="E-mail de trabalho"
@@ -12,6 +12,6 @@ export default function Basic() {
         placeholder="voce@empresa.com"
       />
       <TextField label="Cargo" optional />
-    </div>
+    </Stack>
   )
 }

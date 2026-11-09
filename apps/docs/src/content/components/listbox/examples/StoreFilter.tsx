@@ -1,4 +1,4 @@
-import { Button, Listbox, ListboxGroup, ListboxOption } from '@orangesys/ui'
+import { Button, Listbox, ListboxGroup, ListboxOption, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const grupos = [
@@ -34,7 +34,7 @@ export default function StoreFilter() {
   const [categorias, setCategorias] = useState<string[]>(['padaria', 'cafes'])
 
   return (
-    <div style={{ display: 'grid', gap: 12, width: '100%', maxWidth: 360 }}>
+    <Stack gap={3} style={{ width: '100%', maxWidth: 360 }}>
       <Listbox
         label="Categorias"
         description="Clique para marcar. Shift+clique ou Shift+↓ marcam em sequência; Ctrl+A marca todas."
@@ -53,7 +53,7 @@ export default function StoreFilter() {
           </ListboxGroup>
         ))}
       </Listbox>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+      <Stack gap={2} direction="horizontal" align="center" justify="between">
         <span style={{ fontSize: 13, color: 'var(--or-color-text-subtle)' }} aria-live="polite">
           {categorias.length === 0
             ? 'Todas as categorias'
@@ -64,7 +64,7 @@ export default function StoreFilter() {
         <Button size="sm" variant="ghost" onClick={() => setCategorias([])} disabled={categorias.length === 0}>
           Limpar filtro
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }

@@ -32,7 +32,7 @@ Escolha exclusiva entre 2 a 5 opções sempre visíveis, com um indicador que de
 Controlado com value e onChange.
 
 ```tsx
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const labels: Record<string, string> = {
@@ -46,7 +46,7 @@ export default function Basic() {
   const [period, setPeriod] = useState('week')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
+    <Stack gap={3}>
       <SegmentedControl
         label="Período do relatório"
         value={period}
@@ -61,7 +61,7 @@ export default function Basic() {
       <p style={{ margin: 0, fontSize: 'var(--or-text-sm)', color: 'var(--or-color-text-muted)' }}>
         Exibindo vendas {labels[period]}.
       </p>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -91,7 +91,7 @@ export default function WithIcons() {
 Com `iconOnly`, os rótulos ficam visualmente ocultos mas continuam sendo o nome de cada radio.
 
 ```tsx
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 const projects = ['Portal do cliente', 'App de entregas', 'Painel financeiro', 'Site institucional']
@@ -100,9 +100,9 @@ export default function IconOnly() {
   const [view, setView] = useState('grid')
 
   return (
-    <div style={{ display: 'grid', gap: 16, width: '100%' }}>
-      <div
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}
+    <Stack gap={4} style={{ width: '100%' }}>
+      <Stack
+        gap={4} direction="horizontal" align="center" justify="between"
       >
         <strong style={{ fontFamily: 'var(--or-font-display)' }}>Projetos</strong>
         {/* O rótulo do grupo e das opções continua disponível para leitores de tela. */}
@@ -118,7 +118,7 @@ export default function IconOnly() {
             { value: 'grid', label: 'Grade', icon: 'grid' },
           ]}
         />
-      </div>
+      </Stack>
       <ul
         style={{
           display: 'grid',
@@ -142,7 +142,7 @@ export default function IconOnly() {
           </li>
         ))}
       </ul>
-    </div>
+    </Stack>
   )
 }
 ```
@@ -152,7 +152,7 @@ export default function IconOnly() {
 sm (32px), md (40px) e lg (48px). `block` ocupa a largura do contêiner.
 
 ```tsx
-import { SegmentedControl, type SegmentedControlOption } from '@orangesys/ui'
+import { SegmentedControl, Stack, type SegmentedControlOption } from '@orangesys/ui'
 
 const units: SegmentedControlOption[] = [
   { value: 'km', label: 'Quilômetros' },
@@ -161,7 +161,7 @@ const units: SegmentedControlOption[] = [
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 480 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 480 }}>
       <SegmentedControl label="Small" size="sm" options={units} />
       <SegmentedControl label="Medium" size="md" options={units} />
       <SegmentedControl label="Large" size="lg" options={units} />
@@ -175,7 +175,7 @@ export default function Sizes() {
           { value: 'yearly', label: 'Anual' },
         ]}
       />
-    </div>
+    </Stack>
   )
 }
 ```
@@ -185,11 +185,11 @@ export default function Sizes() {
 As setas pulam opções desabilitadas. Explique perto do controle por que uma opção está indisponível.
 
 ```tsx
-import { SegmentedControl } from '@orangesys/ui'
+import { SegmentedControl, Stack } from '@orangesys/ui'
 
 export default function Disabled() {
   return (
-    <div style={{ display: 'grid', gap: 24 }}>
+    <Stack gap={6}>
       <SegmentedControl
         label="Prioridade do chamado"
         defaultValue="normal"
@@ -211,7 +211,7 @@ export default function Disabled() {
           { value: 'pdf', label: 'PDF' },
         ]}
       />
-    </div>
+    </Stack>
   )
 }
 ```

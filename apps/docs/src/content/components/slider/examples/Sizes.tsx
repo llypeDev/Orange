@@ -1,8 +1,8 @@
-import { Slider } from '@orangesys/ui'
+import { Slider, Stack } from '@orangesys/ui'
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'grid', gap: 24, width: '100%', maxWidth: 420 }}>
+    <Stack gap={6} style={{ width: '100%', maxWidth: 420 }}>
       <Slider size="sm" label="Brilho (sm)" defaultValue={30} />
       <Slider size="md" label="Brilho (md)" defaultValue={55} />
       <Slider size="lg" label="Brilho (lg)" defaultValue={80} />
@@ -12,6 +12,6 @@ export default function Sizes() {
         defaultValue={50}
         disabled
       />
-    </div>
+    </Stack>
   )
 }

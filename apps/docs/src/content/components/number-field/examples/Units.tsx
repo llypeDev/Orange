@@ -1,8 +1,8 @@
-import { NumberField } from '@orangesys/ui'
+import { NumberField, Stack } from '@orangesys/ui'
 
 export default function Units() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 280 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 280 }}>
       <NumberField label="Peso do pacote" defaultValue={1.5} min={0.1} step={0.1} suffix="kg" />
       <NumberField
         label="Distância máxima"
@@ -14,6 +14,6 @@ export default function Units() {
         description="PageUp/PageDown avançam 25 km."
       />
       <NumberField label="Altura" defaultValue={172} suffix="cm" hideStepper />
-    </div>
+    </Stack>
   )
 }

@@ -1,9 +1,9 @@
-import { HoverCard } from '@orangesys/ui'
+import { HoverCard, Stack } from '@orangesys/ui'
 
 function Perfil() {
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <Stack gap={3}>
+      <Stack gap={3} direction="horizontal" align="center">
         <span
           aria-hidden="true"
           style={{
@@ -20,18 +20,18 @@ function Perfil() {
         >
           AS
         </span>
-        <div style={{ display: 'grid' }}>
+        <Stack gap={0}>
           <strong style={{ fontFamily: 'var(--or-font-display)', fontSize: 16 }}>Ana Souza</strong>
           <span style={{ color: 'var(--or-color-text-subtle)' }}>@ana.souza</span>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
       <p style={{ margin: 0, color: 'var(--or-color-text-muted)' }}>
         Designer de produto no time de Pagamentos. Cuida do checkout e do app do lojista.
       </p>
       <span style={{ fontSize: 12, color: 'var(--or-color-text-subtle)' }}>
         São Paulo · 14 projetos · desde 2021
       </span>
-    </div>
+    </Stack>
   )
 }
 

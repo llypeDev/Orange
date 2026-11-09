@@ -1,8 +1,8 @@
-import { TextField } from '@orangesys/ui'
+import { Stack, TextField } from '@orangesys/ui'
 
 export default function CharacterCount() {
   return (
-    <div style={{ display: 'grid', gap: 20, width: '100%', maxWidth: 420 }}>
+    <Stack gap={5} style={{ width: '100%', maxWidth: 420 }}>
       <TextField
         label="Título do anúncio"
         description="Seja direto: tipo do imóvel, quartos e bairro."
@@ -10,6 +10,6 @@ export default function CharacterCount() {
         showCount
         defaultValue="Apartamento com 2 quartos na Vila Madalena"
       />
-    </div>
+    </Stack>
   )
 }

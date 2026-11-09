@@ -1,11 +1,11 @@
-import { Icon, SplitButton } from '@orangesys/ui'
+import { Icon, SplitButton, Stack } from '@orangesys/ui'
 import { useState } from 'react'
 
 export default function Outline() {
   const [format, setFormat] = useState<string | null>(null)
 
   return (
-    <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+    <Stack gap={3} align="start">
       <SplitButton
         variant="outline"
         startIcon={<Icon name="download" />}
@@ -26,6 +26,6 @@ export default function Outline() {
           ? `Relatório de vendas de outubro exportado (${format}).`
           : 'Nenhuma exportação ainda.'}
       </p>
-    </div>
+    </Stack>
   )
 }

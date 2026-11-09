@@ -33,7 +33,7 @@ Imagem com proporção reservada (sem deslocamento de layout), carregamento sob 
 ratio aceita '1/1', '4/3', '3/2', '16/9', '21/9' ou um número. A área existe antes do download, então nada pula.
 
 ```tsx
-import { Eyebrow, Image } from '@orangesys/ui'
+import { Eyebrow, Image, Stack } from '@orangesys/ui'
 import vitrine from './media/vitrine.svg'
 
 const ratios = ['1/1', '4/3', '16/9', '21/9'] as const
@@ -42,11 +42,11 @@ export default function Ratios() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16, width: '100%' }}>
       {ratios.map((ratio) => (
-        <div key={ratio} style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+        <Stack key={ratio} gap={2}>
           {/* A área é reservada antes de carregar: nada pula quando a foto chega. */}
           <Image src={vitrine} alt="Prateleiras da loja com mochilas, garrafas e acessórios" ratio={ratio} bordered />
           <Eyebrow>{ratio}</Eyebrow>
-        </div>
+        </Stack>
       ))}
     </div>
   )
@@ -58,27 +58,27 @@ export default function Ratios() {
 cover recorta para preencher; position escolhe o que preservar. contain mostra a imagem inteira — use para logotipos.
 
 ```tsx
-import { Eyebrow, Image } from '@orangesys/ui'
+import { Eyebrow, Image, Stack } from '@orangesys/ui'
 import logotipo from './media/logotipo.svg'
 import retrato from './media/retrato.svg'
 
 export default function FitPosition() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, width: '100%' }}>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      <Stack gap={2}>
         <Image src={retrato} alt="Retrato da gerente da loja" ratio="1/1" bordered />
         <Eyebrow>cover · center</Eyebrow>
-      </div>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      </Stack>
+      <Stack gap={2}>
         {/* O rosto fica no topo da foto: o ponto focal evita cortá-lo. */}
         <Image src={retrato} alt="Retrato da gerente da loja" ratio="1/1" position="top" bordered />
         <Eyebrow>cover · top</Eyebrow>
-      </div>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      </Stack>
+      <Stack gap={2}>
         {/* Logotipos nunca devem ser recortados. */}
         <Image src={logotipo} alt="Laranja Store" ratio="1/1" fit="contain" bordered />
         <Eyebrow>contain</Eyebrow>
-      </div>
+      </Stack>
     </div>
   )
 }
@@ -89,13 +89,13 @@ export default function FitPosition() {
 Se o src falhar, o Image tenta o fallbackSrc uma vez. Depois mostra o substituto padrão (ícone + "Imagem indisponível: <alt>" para leitores de tela) ou o seu fallback.
 
 ```tsx
-import { Eyebrow, Icon, Image, Text } from '@orangesys/ui'
+import { Eyebrow, Icon, Image, Stack, Text } from '@orangesys/ui'
 import reserva from './media/reserva.svg'
 
 export default function Fallbacks() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, width: '100%' }}>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      <Stack gap={2}>
         {/* 1. A foto falha e o Image tenta o fallbackSrc uma vez. */}
         <Image
           src="/produtos/mochila-inexistente.jpg"
@@ -105,13 +105,13 @@ export default function Fallbacks() {
           bordered
         />
         <Eyebrow>fallbackSrc</Eyebrow>
-      </div>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      </Stack>
+      <Stack gap={2}>
         {/* 2. Sem alternativa: superfície neutra com ícone e o alt em texto oculto. */}
         <Image src="/produtos/tenis-inexistente.jpg" alt="Tênis Pace Leve" ratio="4/3" bordered />
         <Eyebrow>Padrão</Eyebrow>
-      </div>
-      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+      </Stack>
+      <Stack gap={2}>
         {/* 3. Substituto próprio. */}
         <Image
           src="/mapas/loja-centro-inexistente.png"
@@ -119,14 +119,14 @@ export default function Fallbacks() {
           ratio="4/3"
           bordered
           fallback={
-            <div style={{ display: 'grid', justifyItems: 'center', gap: 8 }}>
+            <Stack gap={2} align="center">
               <Icon name="globe" size="lg" />
               <Text size="sm">Mapa indisponível no momento.</Text>
-            </div>
+            </Stack>
           }
         />
         <Eyebrow>fallback</Eyebrow>
-      </div>
+      </Stack>
     </div>
   )
 }
