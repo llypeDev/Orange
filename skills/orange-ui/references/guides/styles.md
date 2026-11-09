@@ -14,7 +14,7 @@ Gerado por `packages/tokens/scripts/build.ts` a partir de `src/index.ts`. Define
 
 ### 3. Um CSS por componente
 
-`Button.css` é importado por `Button.tsx`: usar o componente traz o estilo junto. No pacote publicado, tudo também está em `dist/styles.css`.
+`Button.css` é importado por `Button.tsx`: usar o componente traz o estilo junto. No pacote publicado, tudo está em `styles.css` e, um arquivo por componente, na entrada `@orangesys/ui/with-css` (veja abaixo).
 
 ### 4. Seu CSS
 
@@ -27,6 +27,28 @@ Carregado depois do Orange. Com a mesma especificidade, a regra que vem por últ
 @import '@orangesys/tokens/tokens.css';
 @import './base.css';
 ```
+
+## Só o CSS do que você usa
+
+O `styles.css` traz o CSS de todos os componentes (cerca de 65 KB em gzip). Se a aplicação usa poucos, importe os componentes de `@orangesys/ui/with-css` e não importe o `styles.css`: cada componente traz o próprio CSS — e o dos componentes que usa por dentro —, e o bundler leva para a página só isso, mais a base (tokens, reset e movimento, cerca de 6 KB).
+
+`main.tsx`:
+
+```tsx
+// O CSS inteiro, uma vez na raiz
+import '@orangesys/ui/styles.css'
+import { Button, Table } from '@orangesys/ui'
+
+// Ou só o CSS do que é importado — sem o styles.css
+import { Button, Table } from '@orangesys/ui/with-css'
+import './app.css' // o seu CSS, depois dos componentes
+```
+
+- Mesmos exports e mesmos tipos da entrada principal: é só trocar a origem do import. As duas entradas usam os mesmos componentes por baixo, então podem conviver.
+- CSS que chega à página (gzip, medido com o Vite): só o Button, 6,9 KB; só a Table, 8,5 KB; uma tela com 45 componentes, 25,6 KB; a biblioteca inteira, 65,3 KB.
+- O CSS de cada componente entra onde ele é importado pela primeira vez. Importe o seu CSS depois dos componentes — no fim dos imports do arquivo de entrada — para as suas regras continuarem vencendo.
+
+> **Quando ficar com o styles.css** A entrada `with-css` depende de um bundler que processe os `import './x.css'` de dentro das dependências e descarte os módulos não usados. Foi verificada com o Vite; o esbuild sozinho não descarta o CSS e o resultado é o CSS inteiro (correto, só sem a economia). Sem bundler — testes no Node, SSR direto — o `import` de `.css` falha: nesses ambientes use a entrada principal. Ela só existe em ESM. Se a aplicação usa a maior parte dos componentes, o `styles.css` único, em cache, continua sendo a escolha mais simples.
 
 ## Convenções de nomes
 

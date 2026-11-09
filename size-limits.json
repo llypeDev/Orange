@@ -1,5 +1,5 @@
 {
-  "$comment": "Orçamento de tamanho do @orangesys/ui em KB gzip (scripts/size-check.mjs, `pnpm size`). Mede o custo de importar cada item com tree-shaking, sem React. Aumentou de propósito? Ajuste aqui no mesmo PR e explique.",
+  "$comment": "Orçamento de tamanho do @orangesys/ui em KB gzip (scripts/size-check.mjs, `pnpm size`). Mede o custo de importar cada item com tree-shaking, sem React. Itens com `css` medem o CSS que chega à página ao importar o componente de `@orangesys/ui/with-css` (com o Vite) e falham se o CSS não sair. Aumentou de propósito? Ajuste aqui no mesmo PR e explique.",
   "items": [
     { "name": "Biblioteca inteira", "import": "*", "limit": "175 KB" },
     { "name": "Button", "import": "Button", "limit": "6 KB" },
@@ -11,6 +11,9 @@
     { "name": "Combobox", "import": "Combobox", "limit": "22 KB" },
     { "name": "DatePicker", "import": "DatePicker", "limit": "23 KB" },
     { "name": "useScrollSpy", "import": "useScrollSpy", "limit": "1.5 KB" },
-    { "name": "styles.css", "file": "packages/ui/dist/styles.css", "limit": "70 KB" }
+    { "name": "styles.css", "file": "packages/ui/dist/styles.css", "limit": "70 KB" },
+    { "name": "CSS do Button (with-css)", "css": "Button", "limit": "8 KB" },
+    { "name": "CSS da Table (with-css)", "css": "Table", "limit": "10 KB" },
+    { "name": "CSS do DatePicker (with-css)", "css": "DatePicker", "limit": "9 KB" }
   ]
 }

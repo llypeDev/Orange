@@ -53,6 +53,11 @@ createRoot(document.getElementById('root')!).render(
 - Fontes (no `<head>`): Space Grotesk (títulos), Inter (texto) e JetBrains Mono (código) do Google
   Fonts — o link exato está em `references/guides/getting-started.md`. Sem elas o sistema cai em
   fontes do sistema.
+- CSS: o `styles.css` traz o CSS de todos os componentes (cerca de 65 KB em gzip) e é o padrão. Numa
+  aplicação com bundler (Vite) que usa poucos componentes, a alternativa é importá-los de
+  `@orangesys/ui/with-css` **no lugar** do `styles.css`: cada componente traz o próprio CSS. Mesmos
+  exports; o CSS da aplicação é importado depois dos componentes. Não use em código que roda no
+  Node sem bundler (testes, SSR direto).
 - `OrangeProvider`: `theme`/`defaultTheme` (`dark` padrão, `light`, `dark-hc`, `light-hc`,
   `system`), `onThemeChange`, `themeTarget` (`document` | `scoped`), `locale` (`pt-BR` padrão,
   `en-US`) e `messages` (sobrescreve textos internos). `useTheme()` lê e troca o tema.
