@@ -350,3 +350,320 @@ test.describe('Fim da faixa em navegação e tabelas', () => {
     await expect(root.locator('.or-carousel__counter')).toHaveText(/^0?(\d+)\s*\/\s*0?\1$/)
   })
 })
+
+test.describe('Table para dados grandes', () => {
+  /** O que está no DOM e na área visível do corpo de uma tabela virtualizada. */
+  const virtualState = (page: Page) =>
+    page.evaluate(() => {
+      const container = document.querySelector('.or-table-container') as HTMLElement
+      const table = container.querySelector('.or-table') as HTMLTableElement
+      const rows = Array.from(table.querySelectorAll<HTMLElement>('tbody .or-table__row'))
+      // As células do cabeçalho são sticky: é delas (não do <thead>) a posição na tela.
+      const headBottom = (
+        table.querySelector('thead tr:last-child > :first-child') as HTMLElement
+      ).getBoundingClientRect().bottom
+      const bottom = container.getBoundingClientRect().bottom
+      const visible = rows.filter((row) => {
+        const box = row.getBoundingClientRect()
+        return box.bottom > headBottom + 0.5 && box.top < bottom - 0.5
+      })
+      const index = (row?: HTMLElement) => Number(row?.getAttribute('aria-rowindex') ?? 0)
+      const total = Number(table.getAttribute('aria-rowcount'))
+      const first = visible[0]?.getBoundingClientRect()
+      const last = visible.at(-1)?.getBoundingClientRect()
+      return {
+        rendered: rows.length,
+        total,
+        firstVisible: index(visible[0]),
+        lastVisible: index(visible.at(-1)),
+        // Sem faixa em branco: há linha logo abaixo do cabeçalho e até a base (ou até a última).
+        covered:
+          !!first &&
+          !!last &&
+          first.top <= headBottom + 1 &&
+          (last.bottom >= bottom - 2 || index(visible.at(-1)) === total),
+        scrollTop: Math.round(container.scrollTop),
+        maxScroll: container.scrollHeight - container.clientHeight,
+      }
+    })
+
+  test('virtualização: a janela de linhas acompanha a rolagem, sem faixa em branco', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-table--virtualized', {
+      viewport: { width: 1100, height: 800 },
+    })
+    const container = page.locator('.or-table-container')
+    const start = await virtualState(page)
+    expect(start.total).toBe(5001)
+    expect(start.rendered, JSON.stringify(start)).toBeLessThan(80)
+    expect(start.firstVisible).toBe(2)
+
+    // Salto para o meio (barra de rolagem, Page Down): as linhas certas, na posição pedida.
+    await container.evaluate((el) => (el.scrollTop = 60000))
+    const middle = await measureUntil(async () => {
+      const state = await virtualState(page)
+      return { ...state, ok: state.covered && state.firstVisible > 1000 }
+    })
+    expect(middle.ok, `meio: ${JSON.stringify(middle)}`).toBe(true)
+    // A rolagem fica onde foi pedida: o navegador não a "corrige" ao trocar as linhas do DOM.
+    expect(Math.abs(middle.scrollTop - 60000), JSON.stringify(middle)).toBeLessThanOrEqual(1)
+    expect(middle.rendered).toBeLessThan(80)
+
+    // Roda do mouse, vários passos seguidos.
+    await container.hover()
+    for (let step = 0; step < 8; step++) {
+      await page.mouse.wheel(0, 600)
+      const state = await measureUntil(async () => {
+        const s = await virtualState(page)
+        return { ...s, ok: s.covered }
+      })
+      expect(state.ok, `roda ${step}: ${JSON.stringify(state)}`).toBe(true)
+    }
+
+    // Fim: a última linha aparece e a rolagem chega ao limite.
+    await container.evaluate((el) => (el.scrollTop = el.scrollHeight))
+    const end = await measureUntil(async () => {
+      const state = await virtualState(page)
+      return { ...state, ok: state.covered && state.lastVisible === state.total }
+    })
+    expect(end.ok, `fim: ${JSON.stringify(end)}`).toBe(true)
+    expect(end.maxScroll - end.scrollTop, JSON.stringify(end)).toBeLessThanOrEqual(1)
+  })
+
+  test('virtualização: a linha com o foco continua no DOM depois de rolar para longe', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-table--virtualized', {
+      viewport: { width: 1100, height: 800 },
+    })
+    const container = page.locator('.or-table-container')
+    await page.locator('tbody .or-table__row').nth(2).locator('input[type="checkbox"]').focus()
+    await container.evaluate((el) => (el.scrollTop = 80000))
+    const state = await measureUntil(async () => {
+      const s = await page.evaluate(() => {
+        const active = document.activeElement as HTMLElement
+        const container = document.querySelector('.or-table-container') as HTMLElement
+        return {
+          tag: active.tagName,
+          row: active.closest('tr')?.getAttribute('aria-rowindex') ?? null,
+          rendered: document.querySelectorAll('tbody .or-table__row').length,
+          scrollTop: Math.round(container.scrollTop),
+        }
+      })
+      return { ...s, ok: s.tag === 'INPUT' && s.row === '4' && s.rendered < 80 }
+    })
+    expect(state.ok, JSON.stringify(state)).toBe(true)
+    // Rolar não devolve a tabela à linha focada.
+    expect(Math.abs(state.scrollTop - 80000), JSON.stringify(state)).toBeLessThanOrEqual(1)
+  })
+
+  test('colunas fixas: ficam nas bordas ao rolar e o foco não para sob elas (WCAG 2.4.11)', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-table--pinned-columns', {
+      viewport: { width: 700, height: 800 },
+    })
+    const container = page.locator('.or-table-container')
+    const overflow = await container.evaluate((el) => el.scrollWidth - el.clientWidth)
+    expect(overflow, 'a tabela precisa rolar na horizontal').toBeGreaterThan(50)
+    // Sem rolar: o cabeçalho já nasce alinhado ao corpo (a story combina fixas e redimensionáveis,
+    // sem maxHeight — o caso em que o cabeçalho fixo saía do lugar).
+    const initial = await page.evaluate(() => {
+      const lefts = (row: Element) =>
+        Array.from(row.children).map((cell) => Math.round(cell.getBoundingClientRect().left))
+      return {
+        head: lefts(document.querySelector('.or-table thead tr') as Element),
+        body: lefts(document.querySelector('.or-table tbody .or-table__row') as Element),
+      }
+    })
+    expect(initial.head, JSON.stringify(initial)).toEqual(initial.body)
+
+    // Um controle na primeira e outro na última coluna que rola (a story não tem nenhum).
+    await page.evaluate(() => {
+      const row = document.querySelector('.or-table tbody .or-table__row') as HTMLElement
+      const free = Array.from(row.children).filter(
+        (cell) => !cell.classList.contains('or-table__cell--pinned'),
+      )
+      for (const [cell, id] of [
+        [free[0], 'primeiro'],
+        [free.at(-1), 'ultimo'],
+      ] as const) {
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.dataset.testid = id
+        button.textContent = '•'
+        cell!.prepend(button)
+      }
+    })
+
+    const measure = (id: string) =>
+      page.evaluate((testId) => {
+        const container = document.querySelector('.or-table-container') as HTMLElement
+        const box = container.getBoundingClientRect()
+        const row = document.querySelector('.or-table tbody .or-table__row') as HTMLElement
+        const pinned = Array.from(row.querySelectorAll<HTMLElement>('.or-table__cell--pinned')).map(
+          (cell) => cell.getBoundingClientRect(),
+        )
+        const middle = box.left + box.width / 2
+        const startEdge = Math.max(...pinned.filter((p) => p.left < middle).map((p) => p.right))
+        const endEdge = Math.min(...pinned.filter((p) => p.left >= middle).map((p) => p.left))
+        const target = (
+          document.querySelector(`[data-testid="${testId}"]`) as HTMLElement
+        ).getBoundingClientRect()
+        // Cabeçalho e corpo alinhados, coluna a coluna (as células fixas do cabeçalho também).
+        const head = Array.from(
+          (document.querySelector('.or-table thead tr') as HTMLElement).children,
+        ).map((cell) => cell.getBoundingClientRect().left)
+        const body = Array.from(row.children).map((cell) => cell.getBoundingClientRect().left)
+        return {
+          aligned: head.every((left, index) => Math.abs(left - body[index]) <= 0.5),
+          // As faixas fixas encostam nas bordas do contêiner (1px de borda).
+          stuck:
+            Math.min(...pinned.map((p) => p.left)) - box.left <= 1.5 &&
+            box.right - Math.max(...pinned.map((p) => p.right)) <= 1.5,
+          startEdge: Math.round(startEdge),
+          endEdge: Math.round(endEdge),
+          left: Math.round(target.left),
+          right: Math.round(target.right),
+          scrollLeft: Math.round(container.scrollLeft),
+        }
+      }, id)
+
+    // Rolado até o fim, o primeiro controle está sob a faixa do início; o foco o traz para fora.
+    await container.evaluate((el) => (el.scrollLeft = el.scrollWidth))
+    await page.getByTestId('primeiro').focus()
+    const atStart = await measureUntil(async () => {
+      const m = await measure('primeiro')
+      return { ...m, ok: m.aligned && m.stuck && m.left >= m.startEdge - 0.5 }
+    })
+    expect(atStart.ok, `início: ${JSON.stringify(atStart)}`).toBe(true)
+
+    // De volta ao começo, o último controle está sob a faixa do fim.
+    await container.evaluate((el) => (el.scrollLeft = 0))
+    await page.getByTestId('ultimo').focus()
+    const atEnd = await measureUntil(async () => {
+      const m = await measure('ultimo')
+      return { ...m, ok: m.aligned && m.stuck && m.right <= m.endEdge + 0.5 }
+    })
+    expect(atEnd.ok, `fim: ${JSON.stringify(atEnd)}`).toBe(true)
+  })
+
+  test('redimensionar: teclado, arraste e clique duplo mudam só a coluna; a tabela é a soma delas', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-table--resizable-columns', {
+      viewport: { width: 1100, height: 800 },
+    })
+    const widths = () =>
+      page
+        .locator('.or-table thead th')
+        .evaluateAll((cells) => cells.map((cell) => Math.round(cell.getBoundingClientRect().width)))
+    /** Espera as larguras chegarem ao esperado (tolerância de 1px) e devolve a última medição. */
+    const settle = async (expected: (now: number[]) => boolean) => {
+      const state = await measureUntil(async () => {
+        const now = await widths()
+        return { now, ok: expected(now) }
+      })
+      return state
+    }
+
+    const before = await widths()
+    const separator = page.getByRole('separator', { name: 'Redimensionar coluna Cliente' })
+    await separator.focus()
+    await page.keyboard.press('ArrowRight')
+    const byKey = await settle(
+      (now) =>
+        Math.abs(now[1] - before[1] - 16) <= 1 &&
+        now.every((width, index) => index === 1 || Math.abs(width - before[index]) <= 1),
+    )
+    expect(byKey.ok, `teclado: ${before} → ${byKey.now}`).toBe(true)
+
+    // Layout fixo: a tabela tem exatamente a soma das colunas.
+    const sum = await page.evaluate(() => {
+      const table = document.querySelector('.or-table') as HTMLElement
+      const cells = Array.from(table.querySelectorAll('thead th'))
+      return {
+        table: table.getBoundingClientRect().width,
+        cells: cells.reduce((total, cell) => total + cell.getBoundingClientRect().width, 0),
+      }
+    })
+    expect(Math.abs(sum.table - sum.cells), JSON.stringify(sum)).toBeLessThan(1)
+
+    // Arraste pela borda direita da coluna "Cidade".
+    const city = (await page.locator('.or-table thead th').nth(2).boundingBox())!
+    const y = city.y + city.height / 2
+    await page.mouse.move(city.x + city.width - 3, y)
+    await page.mouse.down()
+    await page.mouse.move(city.x + city.width + 57, y, { steps: 6 })
+    await page.mouse.up()
+    const byDrag = await settle(
+      (now) => Math.abs(now[2] - byKey.now[2] - 60) <= 1 && Math.abs(now[1] - byKey.now[1]) <= 1,
+    )
+    expect(byDrag.ok, `arraste: ${byKey.now} → ${byDrag.now}`).toBe(true)
+
+    // Clique duplo: a coluna fica do tamanho do conteúdo, sem quebrar linha.
+    await page.getByRole('separator', { name: 'Redimensionar coluna Cidade' }).dblclick()
+    const fit = await measureUntil(async () => {
+      const state = await page.evaluate(() => {
+        const table = document.querySelector('.or-table') as HTMLTableElement
+        const cells = Array.from(table.tBodies[0].rows).map((row) => row.cells[2])
+        const range = document.createRange()
+        const content = Math.max(
+          ...cells.map((cell) => {
+            range.selectNodeContents(cell)
+            return range.getBoundingClientRect().width
+          }),
+        )
+        const heights = Array.from(table.tBodies[0].rows)
+          .slice(0, -1)
+          .map((row) => Math.round(row.getBoundingClientRect().height))
+        return {
+          width: cells[0].getBoundingClientRect().width,
+          content,
+          oneLine: new Set(heights).size === 1,
+          measuring: table.hasAttribute('data-measuring'),
+        }
+      })
+      return {
+        ...state,
+        ok:
+          state.oneLine &&
+          !state.measuring &&
+          state.width >= state.content &&
+          state.width <= state.content + 48,
+      }
+    })
+    expect(fit.ok, `clique duplo: ${JSON.stringify(fit)}`).toBe(true)
+  })
+
+  test('filtros com cabeçalho fixo: as duas linhas do cabeçalho ficam presas ao topo', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-table--large-data', {
+      viewport: { width: 1100, height: 800 },
+    })
+    await page.locator('.or-table-container').evaluate((el) => (el.scrollTop = 3000))
+    const state = await measureUntil(async () => {
+      const s = await page.evaluate(() => {
+        const container = document.querySelector('.or-table-container') as HTMLElement
+        const top = container.getBoundingClientRect().top
+        const [head, filters] = Array.from(
+          container.querySelectorAll<HTMLElement>('.or-table thead tr'),
+        ).map((row) => (row.children[1] as HTMLElement).getBoundingClientRect())
+        return {
+          head: Math.round(head.top - top),
+          filters: Math.round(filters.top - top),
+          headHeight: Math.round(head.height),
+          scrollTop: Math.round(container.scrollTop),
+        }
+      })
+      return { ...s, ok: s.head <= 1 && Math.abs(s.filters - s.head - s.headHeight) <= 1 }
+    })
+    expect(state.ok, JSON.stringify(state)).toBe(true)
+    // Filtrar com a tabela rolada: sobram linhas à vista.
+    await page.getByRole('searchbox', { name: 'Filtrar por Cidade' }).fill('recife')
+    await expect(page.getByRole('status')).toHaveText(/resultados disponíveis/)
+    await expect(page.locator('tbody .or-table__row').first()).toBeVisible()
+  })
+})

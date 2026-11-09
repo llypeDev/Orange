@@ -5,8 +5,8 @@ export const meta: ComponentMeta = {
   name: 'Table',
   category: 'data-display',
   description: {
-    pt: 'Tabela de dados semântica com ordenação por coluna, seleção de linhas, cabeçalho fixo e estado vazio.',
-    en: 'Semantic data table with column sorting, row selection, sticky header and empty state.',
+    pt: 'Tabela de dados semântica com ordenação e filtros por coluna, seleção de linhas, colunas ocultas, fixas e redimensionáveis, cabeçalho fixo e virtualização para milhares de linhas.',
+    en: 'Semantic data table with column sorting and filters, row selection, hidden, pinned and resizable columns, sticky header and virtualization for thousands of rows.',
   },
   status: 'stable',
 }

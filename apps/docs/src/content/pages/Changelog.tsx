@@ -26,6 +26,24 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-09',
+    version: 'v1.4.0',
+    title: {
+      pt: 'Table para dados grandes',
+      en: 'Table for large data',
+    },
+    summary: {
+      pt: 'A tabela ganha filtros por coluna, colunas ocultas, fixas e redimensionáveis e virtualização para milhares de linhas. Tudo opcional: tabelas existentes não mudam.',
+      en: 'The table gets column filters, hidden, pinned and resizable columns and virtualization for thousands of rows. All optional: existing tables do not change.',
+    },
+    items: [
+      { kind: 'new', text: { pt: 'Table: filtros por coluna (filter: "text" ou "select"), com anúncio do número de linhas e "Limpar filtros" quando nada casa. manualFilter deixa o filtro com o servidor.', en: 'Table: column filters (filter: "text" or "select"), announcing the number of rows and offering "Clear filters" when nothing matches. manualFilter leaves filtering to the server.' } },
+      { kind: 'new', text: { pt: 'Table: virtualized renderiza só as linhas à vista — dez mil linhas rolam, ordenam e filtram sem pesar. O leitor de tela continua sabendo o total e a posição de cada linha.', en: 'Table: virtualized renders only the rows in view — ten thousand rows scroll, sort and filter smoothly. Screen readers still get the total and each row position.' } },
+      { kind: 'new', text: { pt: 'Table: colunas fixas (pinned: "start" ou "end") e redimensionáveis (resizable) — arraste, setas do teclado ou clique duplo para ajustar ao conteúdo.', en: 'Table: pinned columns (pinned: "start" or "end") and resizable columns (resizable) — drag, arrow keys or double-click to fit the content.' } },
+      { kind: 'new', text: { pt: 'TableColumnsMenu: menu "Colunas" pronto para a pessoa escolher o que ver, com a prop hiddenColumns da Table.', en: 'TableColumnsMenu: a ready-made "Columns" menu for choosing what to see, with the Table hiddenColumns prop.' } },
+    ],
+  },
+  {
+    date: '2026-11-09',
     version: 'v1.3.3',
     title: {
       pt: 'Pacote com metade do tamanho, testado em três navegadores',

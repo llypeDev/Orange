@@ -89,7 +89,7 @@ createRoot(document.getElementById('root')!).render(
 | Aviso ligado a uma parte da página / ao sistema | `Alert` / `Banner`                                                                              | `Toast` para erro que precisa de ação |
 | Carregando                                      | `Skeleton` (forma do conteúdo), `Spinner` (curto), `ProgressBar` (mensurável), `LoadingOverlay` | —                                     |
 | Sem conteúdo                                    | `EmptyState` (explica e oferece o próximo passo)                                                | lista vazia muda                      |
-| Tabela de dados                                 | `Table` (ordenação, seleção, cabeçalho fixo, vazio) + `Paginator`                               | `<table>` sem cabeçalhos              |
+| Tabela de dados                                 | `Table` (ordenação, filtros, seleção, colunas fixas, `virtualized` para milhares) + `Paginator` | `<table>` sem cabeçalhos              |
 | Lista interativa com ações                      | `ListView`; reordenar: `SortableList`; árvore: `TreeView`                                       | —                                     |
 | Métrica                                         | `Stat`/`StatGroup` (+ `Sparkline`); gráficos: `BarChart`, `LineChart`, `DonutChart`, `BarList`  | gráfico sem tabela de dados           |
 | Estrutura de app                                | `AppShell` + `AppHeader` + `SideNav`; topo de página: `PageHeader`                              | layout manual com `position: fixed`   |

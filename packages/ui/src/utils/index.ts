@@ -85,6 +85,11 @@ export function roundTo(value: number, digits: number): number {
   return Number(value.toFixed(Math.min(Math.max(digits, 0), 20)))
 }
 
+/** Remove acentos e caixa para comparar textos ("São" casa com "sao"). */
+export function normalizeText(text: string): string {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
+
 /** Verdadeiro quando o código roda no navegador. */
 export const canUseDOM = typeof window !== 'undefined' && typeof document !== 'undefined'
 

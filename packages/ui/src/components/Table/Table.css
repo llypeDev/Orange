@@ -81,7 +81,8 @@
 .or-table--sticky thead th {
   position: sticky;
   top: 0;
-  z-index: 1;
+  /* Acima das células fixadas do corpo (z-index 1), que passam por baixo ao rolar. */
+  z-index: 2;
 }
 
 /* Ao rolar até o foco, o contêiner desconta a faixa do cabeçalho fixo (altura do thead medida
@@ -89,6 +90,12 @@
    cabem o anel de foco (2px + 2px de afastamento) dos botões da linha. */
 .or-table-container--scroll {
   scroll-padding-top: calc(var(--_head-height, 0px) + var(--or-space-1));
+}
+
+/* O mesmo na horizontal, para as faixas de colunas fixas (larguras publicadas pelo Table.tsx). */
+.or-table-container--pinned {
+  scroll-padding-inline: calc(var(--_pin-start, 0px) + var(--or-space-1))
+    calc(var(--_pin-end, 0px) + var(--or-space-1));
 }
 
 .or-table__row-header {
@@ -196,9 +203,76 @@
   color: var(--or-color-text) !important;
 }
 
+/* Filtros ------------------------------------------------------------------
+ * Uma linha de <td> dentro do <thead>, logo abaixo dos cabeçalhos. Com o cabeçalho fixo, ela
+ * fica presa sob a primeira linha (altura medida no Table.tsx, em --_head-row-height). */
+
+.or-table--filters thead th {
+  border-bottom-color: var(--or-color-border);
+}
+
+.or-table .or-table__filter {
+  padding: var(--or-space-2) var(--_pad-x);
+  border-bottom-color: var(--or-color-border-strong);
+  background: var(--or-color-bg-subtle);
+}
+
+.or-table--sticky .or-table__filter {
+  position: sticky;
+  top: var(--_head-row-height, 0px);
+  z-index: 2;
+}
+
+.or-table__filter-control {
+  display: block;
+  width: 100%;
+  min-width: 5rem;
+  height: var(--or-control-sm);
+  padding: 0 var(--or-space-2);
+  border: var(--or-border-thin) solid var(--or-color-border-control);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface);
+  font: inherit;
+  font-size: var(--or-text-sm);
+  color: var(--or-color-text);
+  transition: border-color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-table__filter-control:hover {
+  border-color: var(--or-color-border-strong);
+}
+
+.or-table__filter-control:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
+.or-table__clear-filters {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--or-color-accent-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.or-table__clear-filters:hover {
+  text-decoration-thickness: 2px;
+}
+
+.or-table__clear-filters:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: 2px;
+}
+
 /* Linhas ------------------------------------------------------------------- */
 
+/* A cor da linha (listras, hover, seleção) mora em --_row-bg: as células fixas a repetem sobre um
+   fundo opaco, para o que rola por baixo não aparecer através delas. */
 .or-table__row {
+  background-color: var(--_row-bg, transparent);
   transition: background-color var(--or-duration-fast) var(--or-ease-out);
 }
 
@@ -207,28 +281,38 @@
 }
 
 .or-table--striped tbody .or-table__row:nth-child(even) {
-  background-color: var(--or-color-bg-subtle);
+  --_row-bg: var(--or-color-bg-subtle);
 }
 
 /* Com linhas expansíveis, só as linhas de dados contam para as listras (a linha de detalhe
    aberta não desloca a alternância). :where() mantém a especificidade da regra acima, para
    hover e seleção continuarem prevalecendo; sem suporte a `of S`, vale a regra acima. */
 .or-table--expandable.or-table--striped tbody .or-table__row:where(:nth-child(odd of .or-table__row)) {
-  background-color: transparent;
+  --_row-bg: transparent;
 }
 
 .or-table--expandable.or-table--striped tbody .or-table__row:where(:nth-child(even of .or-table__row)) {
-  background-color: var(--or-color-bg-subtle);
+  --_row-bg: var(--or-color-bg-subtle);
+}
+
+/* Com virtualização, as linhas do DOM mudam ao rolar (e há espaçadores entre elas): as listras
+   seguem a posição real da linha (--alt nas ímpares), não a ordem no DOM. */
+.or-table--virtual.or-table--striped tbody .or-table__row:where(:not(.or-table__row--alt)) {
+  --_row-bg: transparent;
+}
+
+.or-table--virtual.or-table--striped tbody .or-table__row:where(.or-table__row--alt) {
+  --_row-bg: var(--or-color-bg-subtle);
 }
 
 /* Hover de linha: ajuda a seguir a linha com o olho. */
 .or-table tbody .or-table__row:hover {
-  background-color: var(--or-color-bg-subtle);
+  --_row-bg: var(--or-color-bg-subtle);
 }
 
 .or-table--striped tbody .or-table__row:hover,
 .or-table--clickable tbody .or-table__row:hover {
-  background-color: var(--or-color-surface-hover);
+  --_row-bg: var(--or-color-surface-hover);
 }
 
 .or-table--clickable .or-table__row {
@@ -246,11 +330,11 @@
 }
 
 .or-table tbody .or-table__row[data-selected] {
-  background-color: var(--or-color-accent-subtle);
+  --_row-bg: var(--or-color-accent-subtle);
 }
 
 .or-table tbody .or-table__row[data-selected]:hover {
-  background-color: color-mix(in srgb, var(--or-color-accent) 20%, transparent);
+  --_row-bg: color-mix(in srgb, var(--or-color-accent) 20%, transparent);
 }
 
 .or-table__row-action {
@@ -526,11 +610,196 @@
   margin-bottom: 0;
 }
 
+/* Virtualização --------------------------------------------------------------
+ * Só as linhas à vista estão no DOM; as outras viram espaçadores. As linhas precisam ter a mesma
+ * altura, então as células não quebram linha. */
+
+/* transition-property: none — com movimento reduzido, a regra global dá a toda propriedade uma
+   transição de 0,01ms, e a altura nova só valeria no quadro seguinte: as linhas pulariam. */
+.or-table .or-table__spacer > td {
+  padding: 0;
+  border: 0;
+  transition-property: none;
+}
+
+/* Sem ancoragem de rolagem: se a troca da janela de linhas cair num quadro depois da rolagem, o
+   navegador toma um espaçador como âncora e, quando ele muda de lugar, "corrige" a rolagem para
+   longe de onde a pessoa pediu (60.000px viravam 120.000px). */
+.or-table--virtual {
+  overflow-anchor: none;
+}
+
+.or-table--virtual tbody .or-table__cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Colunas fixas -------------------------------------------------------------
+ * position: sticky na horizontal; a distância até a borda vem do Table.tsx (estilo inline). O
+ * fundo é opaco (a superfície) com a cor da linha por cima, e uma borda de 1px marca o limite. */
+
+.or-table__cell--pinned {
+  position: sticky;
+  z-index: 1;
+  background-color: var(--or-color-surface);
+  background-image: linear-gradient(var(--_row-bg, transparent), var(--_row-bg, transparent));
+}
+
+/* Cabeçalho e filtros fixos nas duas direções: acima do cabeçalho comum (2) e do corpo fixo (1). */
+.or-table thead .or-table__cell--pinned {
+  z-index: 3;
+  background-color: var(--or-color-bg-subtle);
+  background-image: none;
+}
+
+.or-table .or-table__cell--pinned-edge-start {
+  border-inline-end: var(--or-border-thin) solid var(--or-color-border-strong);
+}
+
+.or-table .or-table__cell--pinned-edge-end {
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
+}
+
+/* A cor das células fixas troca na hora (é uma imagem de fundo): a linha acompanha. */
+.or-table--pinned .or-table__row {
+  transition: none;
+}
+
+/* Redimensionar colunas ------------------------------------------------------
+ * Layout fixo: depois do primeiro redimensionamento cada coluna tem exatamente a largura
+ * registrada e a tabela, a soma delas (a largura das colunas de seleção e de expandir entra por
+ * --_util-width). */
+
+/* As duas têm a largura que o navegador lhes dá no layout automático: o respiro inicial mais o
+   controle de 24px (sem respiro final). */
+.or-table--selectable {
+  --_select-width: calc(var(--_pad-x) + 1.5rem);
+}
+
+.or-table--expandable {
+  --_expand-width: calc(var(--_pad-x) + 1.5rem);
+}
+
+.or-table--fixed {
+  --_util-width: calc(var(--_select-width, 0px) + var(--_expand-width, 0px));
+  table-layout: fixed;
+}
+
+.or-table--fixed .or-table__select {
+  width: var(--_select-width);
+}
+
+.or-table--fixed .or-table__expand {
+  width: var(--_expand-width);
+}
+
+.or-table--fixed th,
+.or-table--fixed td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* O campo de filtro encolhe com a coluna. */
+.or-table--fixed .or-table__filter-control {
+  min-width: 0;
+}
+
+/* Enquanto o Table.tsx mede o conteúdo para ajustar a coluna (clique duplo no separador), as
+   células ficam numa linha só. Dura um instante, dentro do mesmo quadro. */
+.or-table[data-measuring] th,
+.or-table[data-measuring] td {
+  white-space: nowrap;
+}
+
+/* O botão de ordenar avança menos sobre o respiro da célula: sobram 12px livres de cada lado da
+   borda, a área de arrasto (24px, WCAG 2.5.8) sem encostar em outro alvo. */
+.or-table--resizable .or-table__sort {
+  margin-inline: -0.25rem;
+  padding-inline: 0.25rem;
+}
+
+.or-table--resizable.or-table--compact .or-table__sort {
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+/* O cabeçalho posiciona o separador. :where() zera a especificidade: o position: sticky do
+   cabeçalho fixo e das colunas fixas continua valendo (com relative, a distância da coluna fixa
+   viraria um deslocamento e o cabeçalho sairia do lugar). */
+:where(.or-table--resizable thead th) {
+  position: relative;
+}
+
+/* Separador focável na borda direita da coluna (metade da área de arrasto) e a outra metade, só
+   para o ponteiro, no começo da coluna seguinte. */
+.or-table__resize,
+.or-table__resize-grab {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.75rem;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.or-table__resize {
+  inset-inline-end: 0;
+}
+
+.or-table__resize-grab {
+  inset-inline-start: 0;
+}
+
+/* Linha de 1px na borda; engrossa e fica laranja no hover, no foco e durante o arrasto. */
+.or-table__resize::after {
+  content: '';
+  position: absolute;
+  inset-block: 25%;
+  inset-inline-end: 0;
+  width: var(--or-border-thin);
+  background: var(--or-color-border-strong);
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    width var(--or-duration-fast) var(--or-ease-out),
+    inset-block var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-table__resize:hover::after,
+.or-table__resize:focus-visible::after,
+.or-table__resize[data-active]::after {
+  inset-block: 0;
+  width: 2px;
+  background: var(--or-color-accent);
+}
+
+.or-table__resize:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+/* Última coluna: a área de arrasto fica toda dentro da célula; o conteúdo ganha respiro para o
+   alvo de 24px não encostar nele. */
+.or-table .or-table__cell--resize-end {
+  padding-inline-end: calc(var(--_pad-x) + var(--or-space-2));
+}
+
+.or-table__cell--resize-end > .or-table__resize {
+  width: 1.5rem;
+}
+
+/* Durante o arrasto: sem seleção de texto e com o cursor de redimensionar na tabela toda. */
+.or-table-container[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+
 /* Alto contraste: caixas de seleção e linha selecionada em Highlight; a seta
    de ordenação é SVG (preservaria o laranja) e passa para o texto do sistema;
    a barra de hover/foco da linha clicável vira contorno. O botão de expandir
    ganha caixa (Highlight quando aberto) e a barra laranja do painel de
-   detalhes (box-shadow, que some) vira borda. */
+   detalhes (box-shadow, que some) vira borda. As células fixas
+   ficam sobre Canvas e a linha do separador de coluna usa as cores do sistema. */
 @media (forced-colors: active) {
   .or-table__check-box {
     border-color: ButtonText;
@@ -572,5 +841,25 @@
 
   .or-table__detail-panel {
     border-inline-start: 2px solid CanvasText;
+  }
+
+  .or-table__cell--pinned {
+    background-color: Canvas;
+    background-image: none;
+  }
+
+  .or-table .or-table__cell--pinned-edge-start,
+  .or-table .or-table__cell--pinned-edge-end {
+    border-color: CanvasText;
+  }
+
+  .or-table__resize::after {
+    background: CanvasText;
+  }
+
+  .or-table__resize:hover::after,
+  .or-table__resize:focus-visible::after,
+  .or-table__resize[data-active]::after {
+    background: Highlight;
   }
 }
