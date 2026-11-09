@@ -252,6 +252,28 @@ pnpm build:storybook
 pnpm test:layout
 ```
 
+## Dependências
+
+O Dependabot (`.github/dependabot.yml`) abre PRs toda segunda, agrupados: Storybook, Vite e Vitest,
+lint, testes, React, um grupo com as versões menores e outro com as GitHub Actions. Cada PR passa
+pela CI inteira (testes, layout, regressão visual, `pnpm size`) antes do merge.
+
+Ficam de fora, de propósito:
+
+- **`@playwright/test`** — atualize à mão, junto com a imagem `mcr.microsoft.com/playwright:v<versão>-noble`
+  nos workflows `visual.yml`, `visual-update.yml` e `layout.yml`, e regenere as baselines
+  ("Atualizar baselines visuais").
+- **`@types/node` (major)** — acompanha o Node do CI (22).
+- **Bloqueados hoje** (reavalie quando o motivo cair):
+  - **TypeScript 7** — o `typescript-eslint` aceita até o TS 6.0. No 7, o build CommonJS dos tokens
+    (`moduleResolution: Node10`) também precisa sair de outra ferramenta.
+  - **ESLint 10** — o `eslint-plugin-jsx-a11y` declara suporte até o ESLint 9.
+  - **jsdom 31** — muda o ambiente de teste (CSS calculado com `var()`/`em`, objetos de estilo
+    estritos, `AnimationEvent` nativo, nomes acessíveis com texto oculto) e quebra 37 testes de
+    ambiente: migração própria.
+- **Regras do React Compiler** (`eslint-plugin-react-hooks` 7) — desligadas; ver o comentário em
+  `eslint.config.mjs`.
+
 ## Commits
 
 Mensagens no imperativo, em português: `Adiciona componente Tabs`, `Corrige foco do Modal`.

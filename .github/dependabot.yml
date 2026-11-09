@@ -1,0 +1,52 @@
+# Atualização automática de dependências (PRs semanais, agrupados para não virar ruído).
+# Processo e exceções: CONTRIBUTING.md, seção "Dependências".
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 6
+    groups:
+      storybook:
+        patterns: ['storybook', '@storybook/*']
+      vite-e-vitest:
+        patterns: ['vite', 'vitest', '@vitejs/*', '@vitest/*']
+      lint:
+        patterns: ['eslint', '@eslint/*', 'eslint-plugin-*', 'typescript-eslint', 'globals']
+      testes:
+        patterns: ['@testing-library/*', 'jsdom', 'axe-core']
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      menores:
+        update-types: ['minor', 'patch']
+    ignore:
+      # Anda junto com a imagem do contêiner (workflows) e exige regenerar as baselines visuais.
+      - dependency-name: '@playwright/test'
+      # Acompanha o Node do CI (22).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # Bloqueados hoje (ver CONTRIBUTING): o typescript-eslint aceita até o TS 6.0; o
+      # eslint-plugin-jsx-a11y, até o ESLint 9; o jsdom 31 muda o ambiente de teste (37 testes).
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'jsdom'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: America/Sao_Paulo
+    groups:
+      actions:
+        patterns: ['*']
