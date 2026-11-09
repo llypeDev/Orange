@@ -233,12 +233,12 @@ Para uma escolha exclusiva e obrigatória, prefira o SegmentedControl.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `attached` | `boolean` | — | Cola os botões, com bordas internas compartilhadas. |
+| `attached` | `boolean` | `false` | Cola os botões, com bordas internas compartilhadas. |
 | `defaultValue` | `string \| string[] \| null` | — | Valor inicial (não controlado). Valores iniciais (não controlado). |
 | `disabled` | `boolean` | — | Desabilita todos os botões. |
 | `onChange` | `((value: string \| null) => void) \| ((value: string[]) => void)` | — | — |
 | `orientation` | `"horizontal" \| "vertical"` | — | — |
-| `selectionMode` | `"single" \| "multiple"` | — | `single` (padrão): no máximo um botão pressionado (clicar no pressionado o solta). `multiple`: qualquer combinação de botões pressionados. |
+| `selectionMode` | `"single" \| "multiple"` | `single` | `single` (padrão): no máximo um botão pressionado (clicar no pressionado o solta). `multiple`: qualquer combinação de botões pressionados. |
 | `size` | `"sm" \| "md" \| "lg"` | — | Tamanho repassado aos ToggleButtons. |
 | `value` | `string \| string[] \| null` | — | Valor pressionado (controlado). `null` quando nenhum. Valores pressionados (controlado). |
 | `variant` | `"outline" \| "ghost"` | — | Variante repassada aos ToggleButtons. |

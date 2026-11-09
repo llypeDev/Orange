@@ -293,6 +293,24 @@ export default function GettingStarted() {
                     language="ts"
                     title="main.tsx"
                   />
+                  <p>
+                    <T
+                      pt={
+                        <>
+                          Usa poucos componentes? Em vez do arquivo único, importe-os de{' '}
+                          <Code>@orangesys/ui/with-css</Code> e o bundler leva só o CSS deles — veja{' '}
+                          <Link to={to('/usage/styles')}>Estilos</Link>.
+                        </>
+                      }
+                      en={
+                        <>
+                          Using only a few components? Instead of the single file, import them from{' '}
+                          <Code>@orangesys/ui/with-css</Code> and the bundler ships only their CSS —
+                          see <Link to={to('/usage/styles')}>Styles</Link>.
+                        </>
+                      }
+                    />
+                  </p>
                 </>
               ),
             },

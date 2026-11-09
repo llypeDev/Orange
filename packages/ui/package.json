@@ -35,6 +35,10 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./with-css": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
     "./styles.css": "./src/styles/index.css",
     "./package.json": "./package.json"
   },
@@ -54,8 +58,21 @@
           "default": "./dist/cjs/index.cjs"
         }
       },
+      "./with-css": {
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/esm/with-css/index.js"
+        }
+      },
       "./styles.css": "./dist/styles.css",
       "./package.json": "./package.json"
+    },
+    "typesVersions": {
+      "*": {
+        "with-css": [
+          "./dist/index.d.ts"
+        ]
+      }
     }
   },
   "files": [

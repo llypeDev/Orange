@@ -310,7 +310,7 @@ completo (setas, Home/End, digitação, faixas com Shift) e integração com
 | `children` | `ReactNode` | — | `<ListboxOption>` e `<ListboxGroup>`. |
 | `defaultValue` | `string \| string[] \| null` | — | Valor inicial (não controlado). Valores iniciais (não controlado). |
 | `description` | `ReactNode` | — | Texto de ajuda abaixo do rótulo, ligado por `aria-describedby`. |
-| `disabled` | `boolean` | `false` | Desabilita a lista inteira: sai da ordem de Tab e não envia valores. |
+| `disabled` | `boolean` | — | Desabilita a lista inteira: sai da ordem de Tab e não envia valores. |
 | `error` | `ReactNode` | — | Mensagem de erro. Quando presente, a lista fica inválida (borda vermelha + tremor). |
 | `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
 | `invalid` | `boolean` | — | Marca a lista como inválida sem exibir mensagem. |

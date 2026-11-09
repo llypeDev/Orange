@@ -152,11 +152,11 @@ Agrupa chips de filtro (`role="group"` rotulado) com seleção única ou múltip
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
 | `defaultValue` | `string \| string[] \| null` | — | — |
-| `disabled` | `boolean` | — | Desabilita todos os chips. |
-| `hideLabel` | `boolean` | — | Esconde o rótulo visualmente (continua acessível). |
+| `disabled` | `boolean` | `false` | Desabilita todos os chips. |
+| `hideLabel` | `boolean` | `false` | Esconde o rótulo visualmente (continua acessível). |
 | `label` | `ReactNode` | — | Rótulo do grupo (ex.: "Status"). |
 | `onChange` | `((value: string[]) => void) \| ((value: string \| null) => void)` | — | — |
-| `selectionMode` | `"single" \| "multiple"` | — | `multiple` (padrão): vários chips selecionados. `single`: no máximo um chip selecionado; clicar no selecionado o desmarca. |
+| `selectionMode` | `"single" \| "multiple"` | `multiple` | `multiple` (padrão): vários chips selecionados. `single`: no máximo um chip selecionado; clicar no selecionado o desmarca. |
 | `size` | `"sm" \| "md"` | — | Tamanho aplicado a todos os chips. |
 | `value` | `string \| string[] \| null` | — | — |
 

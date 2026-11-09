@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import { useMediaQuery } from '../hooks'
+import { devWarning } from '../utils'
 import { builtInMessages, interpolate, ptBR, type Locale, type MessageKey, type Messages } from './messages'
 import {
   getColorScheme,
@@ -110,11 +111,19 @@ export function OrangeProvider({
     [theme, resolvedTheme, setTheme],
   )
 
+  // Idioma sem textos embutidos e sem dicionário: tudo sairia em português sem ninguém perceber.
+  const builtIn = builtInMessages[locale] ?? builtInMessages[locale.split('-')[0]]
+  devWarning(
+    !builtIn && !overrides,
+    `OrangeProvider: não há textos embutidos para o locale "${locale}"; os componentes ficam em português. ` +
+      'Passe o dicionário em `messages` (para o espanhol, `messages={esES}`).',
+  )
+
   const localeValue = useMemo<LocaleContextValue>(() => {
-    const base = builtInMessages[locale] ?? builtInMessages[locale.split('-')[0]] ?? ptBR
+    const base = builtIn ?? ptBR
     const messages = { ...base, ...overrides } as Messages
     return { locale, messages, t: (key, vars) => interpolate(messages[key] ?? key, vars) }
-  }, [locale, overrides])
+  }, [locale, builtIn, overrides])
 
   const content =
     themeTarget === 'scoped' ? (

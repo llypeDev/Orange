@@ -44,6 +44,8 @@ No ponto de entrada da aplicação. O arquivo inclui os tokens ( `tokens.css`) e
 import '@orangesys/ui/styles.css'
 ```
 
+Usa poucos componentes? Em vez do arquivo único, importe-os de `@orangesys/ui/with-css` e o bundler leva só o CSS deles — veja Estilos.
+
 ### 2. Carregue as fontes
 
 Space Grotesk (títulos e rótulos), Inter (texto) e JetBrains Mono (código). Sem elas, os tokens caem em fontes do sistema — funciona, mas perde a voz do Orange.

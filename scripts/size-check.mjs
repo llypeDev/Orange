@@ -9,8 +9,9 @@
 // Por quê: até a 1.3.1 o pacote era um arquivo único e importar só o Button trazia a biblioteca
 // inteira (~147 KB gzip). Este check trava esse tipo de regressão.
 import { appendFileSync, existsSync, readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { build } from 'esbuild'
 
@@ -27,8 +28,65 @@ const { items } = JSON.parse(readFileSync(join(root, 'size-limits.json'), 'utf8'
 const kb = (bytes) => bytes / 1024
 const parseLimit = (text) => Number.parseFloat(text)
 
+/**
+ * CSS que chega à página de quem importa `item.css` de `@orangesys/ui/with-css` (cada componente
+ * traz o próprio CSS). Além do tamanho, confere que o CSS saiu mesmo: os módulos dessa entrada
+ * dependem de o bundler manter os imports de CSS, e um formato errado os descarta em silêncio.
+ */
+async function measureCss(item) {
+  const cssEntry = join(uiDist, 'esm/with-css/index.js')
+  if (!existsSync(cssEntry)) throw new Error(`${cssEntry} não encontrado. Rode \`pnpm build:lib\`.`)
+  // Com o Vite (o do pacote ui), não com o esbuild: o esbuild leva para o bundle o CSS de todo
+  // módulo alcançável, mesmo dos que o tree-shaking descarta — por um índice, é sempre o CSS
+  // inteiro. A economia (e os defeitos de formato) aparecem em bundlers que descartam o CSS junto
+  // com o módulo: Vite/Rollup e webpack.
+  const requireUi = createRequire(join(root, 'packages/ui/package.json'))
+  const vitePackage = requireUi.resolve('vite/package.json')
+  const viteEntry = JSON.parse(readFileSync(vitePackage, 'utf8')).exports['.']
+  const { build: viteBuild } = await import(
+    pathToFileURL(join(dirname(vitePackage), viteEntry.import ?? viteEntry.default ?? viteEntry))
+      .href
+  )
+  const entryId = '\0size-check-entry'
+  const output = await viteBuild({
+    configFile: false,
+    root,
+    logLevel: 'silent',
+    plugins: [
+      {
+        name: 'size-check-entry',
+        resolveId: (id) => (id === 'size-check-entry' ? entryId : null),
+        load: (id) =>
+          id === entryId
+            ? `import { ${item.css} } from ${JSON.stringify(cssEntry)}\nconsole.log(${item.css})`
+            : null,
+      },
+    ],
+    resolve: { alias: { '@orangesys/tokens': join(tokensDist, 'index.js') } },
+    build: {
+      write: false,
+      rollupOptions: {
+        input: 'size-check-entry',
+        external: ['react', 'react-dom', 'react/jsx-runtime', 'react-dom/client'],
+      },
+    },
+  })
+  const files = (Array.isArray(output) ? output : [output]).flatMap((result) => result.output)
+  const css = files
+    .filter((file) => file.type === 'asset' && file.fileName.endsWith('.css'))
+    .map((file) => String(file.source))
+    .join('')
+  if (!css.includes('--or-color-accent') || !css.includes('.or-'))
+    throw new Error(
+      `${item.name}: o bundle de \`${item.css}\` saiu sem o CSS do componente ou sem o base.css. ` +
+        'Veja packages/ui/scripts/component-css.ts.',
+    )
+  return gzipSync(css).length
+}
+
 async function measure(item) {
   if (item.file) return gzipSync(readFileSync(join(root, item.file))).length
+  if (item.css) return measureCss(item)
   const contents =
     item.import === '*' ? `export * from '${entry}'` : `export { ${item.import} } from '${entry}'`
   const result = await build({

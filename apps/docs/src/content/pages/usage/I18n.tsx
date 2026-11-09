@@ -1,5 +1,6 @@
 import {
   enUS,
+  esES,
   Icon,
   interpolate,
   OrangeProvider,
@@ -56,7 +57,8 @@ function MessagesTable() {
       (k) =>
         k.toLowerCase().includes(q) ||
         ptBR[k].toLowerCase().includes(q) ||
-        enUS[k].toLowerCase().includes(q),
+        enUS[k].toLowerCase().includes(q) ||
+        esES[k].toLowerCase().includes(q),
     )
   }, [debounced])
 
@@ -92,6 +94,7 @@ function MessagesTable() {
                 <th scope="col">{t({ pt: 'Chave', en: 'Key' })}</th>
                 <th scope="col">pt-BR</th>
                 <th scope="col">en-US</th>
+                <th scope="col">es-ES</th>
               </tr>
             </thead>
             <tbody>
@@ -105,6 +108,9 @@ function MessagesTable() {
                   </td>
                   <td lang="en">
                     <Message text={enUS[key]} />
+                  </td>
+                  <td lang="es">
+                    <Message text={esES[key]} />
                   </td>
                 </tr>
               ))}
@@ -146,13 +152,16 @@ function Readout({ count }: { count: number }) {
 function LocaleDemo() {
   const { t } = useLang()
   const { resolvedTheme } = useTheme()
-  const [mode, setMode] = useState<'pt-BR' | 'en-US' | 'custom'>('pt-BR')
+  const [mode, setMode] = useState<'pt-BR' | 'en-US' | 'es-ES' | 'custom'>('pt-BR')
   const [count, setCount] = useState(3)
   const countId = useId()
+  // O espanhol não vem embutido: o dicionário esES entra por messages.
   const overrides =
     mode === 'custom'
       ? { close: 'Fechar janela', resultsCount: '{count} produtos encontrados' }
-      : undefined
+      : mode === 'es-ES'
+        ? esES
+        : undefined
   return (
     <div className="guide-stack guide-locale-demo">
       <div className="guide-row">
@@ -163,6 +172,7 @@ function LocaleDemo() {
           options={[
             { value: 'pt-BR', label: 'locale="pt-BR"' },
             { value: 'en-US', label: 'locale="en-US"' },
+            { value: 'es-ES', label: 'es-ES + esES' },
             { value: 'custom', label: t({ pt: 'pt-BR + messages', en: 'pt-BR + messages' }) },
           ]}
         />
@@ -181,7 +191,7 @@ function LocaleDemo() {
       <OrangeProvider
         themeTarget="scoped"
         theme={resolvedTheme}
-        locale={mode === 'en-US' ? 'en-US' : 'pt-BR'}
+        locale={mode === 'custom' ? 'pt-BR' : mode}
         messages={overrides}
       >
         <div className="guide-theme-scope">
@@ -244,6 +254,7 @@ function IntlTable() {
             <th scope="col">API</th>
             <th scope="col">pt-BR</th>
             <th scope="col">en-US</th>
+            <th scope="col">es-ES</th>
           </tr>
         </thead>
         <tbody>
@@ -254,6 +265,7 @@ function IntlTable() {
               </th>
               <td lang="pt-BR">{row.fmt('pt-BR')}</td>
               <td lang="en">{row.fmt('en-US')}</td>
+              <td lang="es">{row.fmt('es-ES')}</td>
             </tr>
           ))}
         </tbody>
@@ -274,8 +286,8 @@ export default function I18nPage() {
       eyebrow={{ pt: 'Usando', en: 'Usage' }}
       title={{ pt: 'Internacionalização', en: 'Internationalization' }}
       lead={{
-        pt: 'Os componentes do Orange falam português e inglês. Rótulos internos — “Fechar”, “Próxima página”, “Carregando…” — vêm de um dicionário que você escolhe, traduz ou sobrescreve pelo OrangeProvider.',
-        en: 'Orange components speak Portuguese and English. Internal labels — “Close”, “Next page”, “Loading…” — come from a dictionary you choose, translate or override through OrangeProvider.',
+        pt: 'Os componentes do Orange falam português, inglês e espanhol. Rótulos internos — “Fechar”, “Próxima página”, “Carregando…” — vêm de um dicionário que você escolhe, traduz ou sobrescreve pelo OrangeProvider.',
+        en: 'Orange components speak Portuguese, English and Spanish. Internal labels — “Close”, “Next page”, “Loading…” — come from a dictionary you choose, translate or override through OrangeProvider.',
       }}
     >
       <Section title={{ pt: 'O locale do provider', en: 'The provider locale' }}>
@@ -331,12 +343,73 @@ createRoot(root).render(
               name: 'messages',
               type: 'Partial<Messages>',
               description: {
-                pt: 'Sobrescreve chaves específicas, mesclando com o dicionário do locale.',
-                en: 'Overrides specific keys, merged over the locale dictionary.',
+                pt: 'Sobrescreve chaves específicas, mesclando com o dicionário do locale — ou troca o dicionário inteiro (esES, o seu).',
+                en: 'Overrides specific keys, merged over the locale dictionary — or replaces the whole dictionary (esES, your own).',
               },
             },
           ]}
         />
+      </Section>
+
+      <Section title={{ pt: 'Espanhol', en: 'Spanish' }}>
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  O dicionário <Code>esES</Code> (espanhol da Espanha) tem todas as chaves
+                  traduzidas. Ele não vem embutido no provider, para não pesar no bundle de quem
+                  não usa: importe-o e passe em <Code>messages</Code>, junto com o{' '}
+                  <Code>locale</Code>, que cuida de datas, números e ordenação.
+                </>
+              }
+              en={
+                <>
+                  The <Code>esES</Code> dictionary (Spanish from Spain) has every key translated.
+                  It is not built into the provider, so it adds nothing to the bundle of apps that
+                  do not use it: import it and pass it as <Code>messages</Code>, along with the{' '}
+                  <Code>locale</Code>, which handles dates, numbers and sorting.
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <CodeBlock
+          language="tsx"
+          title="main.tsx"
+          code={`import { esES, OrangeProvider } from '@orangesys/ui'
+
+document.documentElement.lang = 'es-ES'
+
+createRoot(root).render(
+  <OrangeProvider locale="es-ES" messages={esES}>
+    <App />
+  </OrangeProvider>,
+)`}
+        />
+        <Callout
+          tone="info"
+          title={{ pt: 'Locale sem dicionário', en: 'Locale without a dictionary' }}
+        >
+          <T
+            pt={
+              <>
+                Com um <Code>locale</Code> que não é português nem inglês e sem{' '}
+                <Code>messages</Code>, os textos internos ficam em português. Em desenvolvimento, o
+                provider avisa no console. Para ajustar um texto do espanhol, espalhe o dicionário:{' '}
+                <Code>{'messages={{ ...esES, close: "Cerrar ventana" }}'}</Code>.
+              </>
+            }
+            en={
+              <>
+                With a <Code>locale</Code> that is neither Portuguese nor English and no{' '}
+                <Code>messages</Code>, internal texts stay in Portuguese. In development, the
+                provider warns in the console. To adjust one Spanish text, spread the dictionary:{' '}
+                <Code>{'messages={{ ...esES, close: "Cerrar ventana" }}'}</Code>.
+              </>
+            }
+          />
+        </Callout>
       </Section>
 
       <Section title={{ pt: 'Mensagens internas ao vivo', en: 'Internal messages, live' }}>
@@ -389,7 +462,8 @@ t('resultsCount', { count: 3 })         // "3 produtos encontrados"`}
             <T
               pt={
                 <>
-                  Gerada a partir de <Code>ptBR</Code> e <Code>enUS</Code>, exportados por{' '}
+                  Gerada a partir de <Code>ptBR</Code>, <Code>enUS</Code> e <Code>esES</Code>,
+                  exportados por{' '}
                   <Code>@orangesys/ui</Code> — esta tabela está sempre em dia com o código. Trechos
                   entre chaves, como <span className="guide-var">{'{count}'}</span>, são
                   substituídos na interpolação.
@@ -397,7 +471,8 @@ t('resultsCount', { count: 3 })         // "3 produtos encontrados"`}
               }
               en={
                 <>
-                  Generated from <Code>ptBR</Code> and <Code>enUS</Code>, exported by{' '}
+                  Generated from <Code>ptBR</Code>, <Code>enUS</Code> and <Code>esES</Code>, exported
+                  by{' '}
                   <Code>@orangesys/ui</Code> — this table is always in sync with the code. Segments in
                   braces, like <span className="guide-var">{'{count}'}</span>, are replaced during
                   interpolation.
@@ -529,20 +604,20 @@ export function Aviso({ children, onDismiss }: { children: React.ReactNode; onDi
         </Prose>
         <CodeBlock
           language="tsx"
-          title="es-ES.ts"
+          title="fr-FR.ts"
           code={`import { enUS, OrangeProvider, type Messages } from '@orangesys/ui'
 
-export const esES: Messages = {
+export const frFR: Messages = {
   ...enUS,
-  close: 'Cerrar',
-  cancel: 'Cancelar',
-  loading: 'Cargando…',
-  nextPage: 'Página siguiente',
-  pageOf: 'Página {page} de {total}',
+  close: 'Fermer',
+  cancel: 'Annuler',
+  loading: 'Chargement…',
+  nextPage: 'Page suivante',
+  pageOf: 'Page {page} sur {total}',
   // …
 }
 
-<OrangeProvider locale="es-ES" messages={esES}>
+<OrangeProvider locale="fr-FR" messages={frFR}>
   <App />
 </OrangeProvider>`}
         />

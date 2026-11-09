@@ -165,11 +165,11 @@ Polimórfico: `as` aceita o link do seu roteador.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | — | Componente renderizado no lugar do `<a>` — use para integrar com roteadores: `<Link as={RouterLink} to="/conta">`. |
+| `as` | `ElementType` | `a` | Componente renderizado no lugar do `<a>` — use para integrar com roteadores: `<Link as={RouterLink} to="/conta">`. |
 | `className` | `string` | — | — |
-| `external` | `boolean` | — | Link para outro site: abre em nova aba (`target="_blank"`, `rel="noopener noreferrer"`), mostra o ícone ↗ e avisa leitores de tela. |
+| `external` | `boolean` | `false` | Link para outro site: abre em nova aba (`target="_blank"`, `rel="noopener noreferrer"`), mostra o ícone ↗ e avisa leitores de tela. |
 | `ref` | `Ref<HTMLAnchorElement>` | — | — |
-| `variant` | `"default" \| "subtle" \| "standalone"` | — | Estilo visual. `standalone` é para links isolados, fora de um parágrafo. |
+| `variant` | `"default" \| "subtle" \| "standalone"` | `default` | Estilo visual. `standalone` é para links isolados, fora de um parágrafo. |
 
 ### `linkClassName(opções)` — função
 

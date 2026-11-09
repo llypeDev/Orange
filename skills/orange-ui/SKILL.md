@@ -53,9 +53,16 @@ createRoot(document.getElementById('root')!).render(
 - Fontes (no `<head>`): Space Grotesk (títulos), Inter (texto) e JetBrains Mono (código) do Google
   Fonts — o link exato está em `references/guides/getting-started.md`. Sem elas o sistema cai em
   fontes do sistema.
+- CSS: o `styles.css` traz o CSS de todos os componentes (cerca de 65 KB em gzip) e é o padrão. Numa
+  aplicação com bundler (Vite) que usa poucos componentes, a alternativa é importá-los de
+  `@orangesys/ui/with-css` **no lugar** do `styles.css`: cada componente traz o próprio CSS. Mesmos
+  exports; o CSS da aplicação é importado depois dos componentes. Não use em código que roda no
+  Node sem bundler (testes, SSR direto).
 - `OrangeProvider`: `theme`/`defaultTheme` (`dark` padrão, `light`, `dark-hc`, `light-hc`,
   `system`), `onThemeChange`, `themeTarget` (`document` | `scoped`), `locale` (`pt-BR` padrão,
-  `en-US`) e `messages` (sobrescreve textos internos). `useTheme()` lê e troca o tema.
+  `en-US`) e `messages` (sobrescreve textos internos). Espanhol: `locale="es-ES"` com
+  `messages={esES}` (o dicionário é importado de `@orangesys/ui`; não vem embutido). `useTheme()`
+  lê e troca o tema.
 - `ToastProvider`, uma vez, na raiz (dentro do `OrangeProvider`), se a aplicação usar `useToast()`.
   O hook só funciona num componente **descendente** do provider (fora dele, lança erro) — nunca
   no mesmo componente que renderiza o `ToastProvider`.
@@ -89,7 +96,7 @@ createRoot(document.getElementById('root')!).render(
 | Aviso ligado a uma parte da página / ao sistema | `Alert` / `Banner`                                                                              | `Toast` para erro que precisa de ação |
 | Carregando                                      | `Skeleton` (forma do conteúdo), `Spinner` (curto), `ProgressBar` (mensurável), `LoadingOverlay` | —                                     |
 | Sem conteúdo                                    | `EmptyState` (explica e oferece o próximo passo)                                                | lista vazia muda                      |
-| Tabela de dados                                 | `Table` (ordenação, seleção, cabeçalho fixo, vazio) + `Paginator`                               | `<table>` sem cabeçalhos              |
+| Tabela de dados                                 | `Table` (ordenação, filtros, seleção, colunas fixas, `virtualized` para milhares) + `Paginator` | `<table>` sem cabeçalhos              |
 | Lista interativa com ações                      | `ListView`; reordenar: `SortableList`; árvore: `TreeView`                                       | —                                     |
 | Métrica                                         | `Stat`/`StatGroup` (+ `Sparkline`); gráficos: `BarChart`, `LineChart`, `DonutChart`, `BarList`  | gráfico sem tabela de dados           |
 | Estrutura de app                                | `AppShell` + `AppHeader` + `SideNav`; topo de página: `PageHeader`                              | layout manual com `position: fixed`   |

@@ -7,7 +7,7 @@ import { autoUpdate, flip, offset, shift, size, useFloating } from '@floating-ui
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useIsomorphicLayoutEffect, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
-import { cx } from '../../utils'
+import { cx, normalizeText } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './ListboxPopup.css'
 
@@ -18,10 +18,8 @@ export interface ListboxOptionData {
   description?: string
 }
 
-/** Remove acentos e caixa para comparar textos ("São" casa com "sao"). */
-export function normalizeText(text: string): string {
-  return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-}
+// Mora em utils (a Table também filtra sem acentos); reexportado aqui para quem já importava.
+export { normalizeText }
 
 /** Filtro padrão: o rótulo (ou a descrição) contém o texto buscado, ignorando acentos. */
 export function defaultOptionFilter(option: ListboxOptionData, query: string): boolean {

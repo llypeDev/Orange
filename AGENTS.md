@@ -76,6 +76,9 @@ regressão visual.
   baselines), nem subir majors bloqueados (TypeScript 7, ESLint 10, jsdom 31; motivos no
   CONTRIBUTING).
 - Exportar helpers internos ou nomes duplicados: tudo o que `@orangesys/ui` exporta é API pública.
+- Usar classes `or-*` de outro componente sem importá-lo (ou o CSS dele): na entrada
+  `@orangesys/ui/with-css` cada componente só leva o CSS do que importa, e o build de `packages/ui`
+  falha quando falta (`packages/ui/scripts/component-css.ts`).
 
 ## Antes de entregar
 

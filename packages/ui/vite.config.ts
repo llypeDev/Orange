@@ -1,9 +1,12 @@
 import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { componentCss } from './scripts/component-css.ts'
 
 export default defineConfig({
-  plugins: [react()],
+  // componentCss: além do styles.css inteiro, publica o CSS de cada módulo e a entrada
+  // `@orangesys/ui/with-css` (cada componente importa só o próprio CSS).
+  plugins: [react(), componentCss()],
   build: {
     lib: {
       entry: resolve(import.meta.dirname, 'src/index.ts'),

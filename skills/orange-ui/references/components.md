@@ -119,7 +119,7 @@ Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`
 - **SortableList** — Lista que o usuário reordena arrastando, pelo teclado ou com botões de mover — prioridades, categorias de um cardápio, etapas de um processo. → `components/sortable-list.md`
 - **Sparkline** — Tendência em miniatura, em linha com o texto: acompanha um número (Stat, tabelas) e descreve a tendência em palavras. → `components/sparkline.md`
 - **Stat** — Métrica em destaque com rótulo, variação e contexto; StatGroup organiza várias em uma grade. → `components/stat.md`
-- **Table** — Tabela de dados semântica com ordenação por coluna, seleção de linhas, cabeçalho fixo e estado vazio. → `components/table.md`
+- **Table** — Tabela de dados semântica com ordenação e filtros por coluna, seleção de linhas, colunas ocultas, fixas e redimensionáveis, cabeçalho fixo e virtualização para milhares de linhas. → `components/table.md`
 - **Tag** — Rótulo curto para categorizar ou indicar status, com marcador quadrado colorido e remoção opcional. → `components/tag.md`
 - **Timeline** — Sequência cronológica de eventos com datas, marcadores por tom e destaque do evento atual. → `components/timeline.md`
 - **TreeView** — Árvore hierárquica navegável por teclado, com seleção única ou múltipla — arquivos, categorias, estrutura de páginas. → `components/tree-view.md`

@@ -104,15 +104,17 @@ export default function StylesPage() {
                     pt={
                       <>
                         <Code>Button.css</Code> é importado por <Code>Button.tsx</Code>: usar o
-                        componente traz o estilo junto. No pacote publicado, tudo também está em{' '}
-                        <Code>dist/styles.css</Code>.
+                        componente traz o estilo junto. No pacote publicado, tudo está em{' '}
+                        <Code>styles.css</Code> e, um arquivo por componente, na entrada{' '}
+                        <Code>@orangesys/ui/with-css</Code> (veja abaixo).
                       </>
                     }
                     en={
                       <>
                         <Code>Button.css</Code> is imported by <Code>Button.tsx</Code>: using the
-                        component brings its style along. In the published package everything is
-                        also in <Code>dist/styles.css</Code>.
+                        component brings its style along. In the published package everything is in{' '}
+                        <Code>styles.css</Code> and, one file per component, behind the{' '}
+                        <Code>@orangesys/ui/with-css</Code> entry (see below).
                       </>
                     }
                   />
@@ -139,6 +141,92 @@ export default function StylesPage() {
 @import '@orangesys/tokens/tokens.css';
 @import './base.css';`}
         />
+      </Section>
+
+      <Section title={{ pt: 'Só o CSS do que você usa', en: 'Only the CSS you use' }}>
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  O <Code>styles.css</Code> traz o CSS de todos os componentes (cerca de 65 KB em
+                  gzip). Se a aplicação usa poucos, importe os componentes de{' '}
+                  <Code>@orangesys/ui/with-css</Code> e não importe o <Code>styles.css</Code>: cada
+                  componente traz o próprio CSS — e o dos componentes que usa por dentro —, e o
+                  bundler leva para a página só isso, mais a base (tokens, reset e movimento, cerca
+                  de 6 KB).
+                </>
+              }
+              en={
+                <>
+                  <Code>styles.css</Code> carries the CSS of every component (about 65 KB gzipped).
+                  If the app uses only a few, import the components from{' '}
+                  <Code>@orangesys/ui/with-css</Code> and do not import <Code>styles.css</Code>:
+                  each component brings its own CSS — and that of the components it uses inside —
+                  and the bundler ships only that, plus the base (tokens, reset and motion, about
+                  6 KB).
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <CodeBlock
+          language="tsx"
+          title="main.tsx"
+          code={`// O CSS inteiro, uma vez na raiz
+import '@orangesys/ui/styles.css'
+import { Button, Table } from '@orangesys/ui'
+
+// Ou só o CSS do que é importado — sem o styles.css
+import { Button, Table } from '@orangesys/ui/with-css'
+import './app.css' // o seu CSS, depois dos componentes`}
+        />
+        <Bullets
+          items={[
+            {
+              pt: 'Mesmos exports e mesmos tipos da entrada principal: é só trocar a origem do import. As duas entradas usam os mesmos componentes por baixo, então podem conviver.',
+              en: 'Same exports and same types as the main entry: just change the import source. Both entries use the same components underneath, so they can coexist.',
+            },
+            {
+              pt: 'CSS que chega à página (gzip, medido com o Vite): só o Button, 6,9 KB; só a Table, 8,5 KB; uma tela com 45 componentes, 25,6 KB; a biblioteca inteira, 65,3 KB.',
+              en: 'CSS that reaches the page (gzip, measured with Vite): Button alone, 6.9 KB; Table alone, 8.5 KB; a screen with 45 components, 25.6 KB; the whole library, 65.3 KB.',
+            },
+            {
+              pt: 'O CSS de cada componente entra onde ele é importado pela primeira vez. Importe o seu CSS depois dos componentes — no fim dos imports do arquivo de entrada — para as suas regras continuarem vencendo.',
+              en: 'Each component CSS is inserted where it is first imported. Import your own CSS after the components — at the end of the entry file imports — so your rules keep winning.',
+            },
+          ]}
+        />
+        <Callout
+          tone="info"
+          title={{ pt: 'Quando ficar com o styles.css', en: 'When to stay with styles.css' }}
+        >
+          <T
+            pt={
+              <>
+                A entrada <Code>with-css</Code> depende de um bundler que processe os{' '}
+                <Code>import './x.css'</Code> de dentro das dependências e descarte os módulos não
+                usados. Foi verificada com o Vite; o esbuild sozinho não descarta o CSS e o
+                resultado é o CSS inteiro (correto, só sem a economia). Sem bundler — testes no
+                Node, SSR direto — o <Code>import</Code> de <Code>.css</Code> falha: nesses
+                ambientes use a entrada principal. Ela só existe em ESM. Se a aplicação usa a maior
+                parte dos componentes, o <Code>styles.css</Code> único, em cache, continua sendo a
+                escolha mais simples.
+              </>
+            }
+            en={
+              <>
+                The <Code>with-css</Code> entry relies on a bundler that processes{' '}
+                <Code>import './x.css'</Code> inside dependencies and drops unused modules. It was
+                verified with Vite; esbuild alone does not drop the CSS and the result is the full
+                CSS (correct, just without the savings). With no bundler — tests in Node, direct
+                SSR — importing <Code>.css</Code> fails: use the main entry in those environments.
+                It is ESM only. If the app uses most of the components, the single cached{' '}
+                <Code>styles.css</Code> is still the simplest choice.
+              </>
+            }
+          />
+        </Callout>
       </Section>
 
       <Section title={{ pt: 'Convenções de nomes', en: 'Naming conventions' }}>

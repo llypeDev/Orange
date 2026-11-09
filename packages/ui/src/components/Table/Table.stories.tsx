@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState, type ReactElement } from 'react'
-import { Table, type TableColumn, type TableProps } from './Table'
+import { Table, type TableColumn, type TableColumnWidths, type TableProps } from './Table'
+import { TableColumnsMenu } from './TableColumnsMenu'
 
 interface Order {
   id: string
@@ -164,5 +165,220 @@ export const ExpandableRows: Story = {
         getRowId={(line) => line.sku}
       />
     ),
+  },
+}
+
+const statusOptions = [
+  { value: 'Pago', label: 'Pago' },
+  { value: 'Pendente', label: 'Pendente' },
+  { value: 'Cancelado', label: 'Cancelado' },
+]
+
+/** Pedidos fictícios em quantidade, gerados de forma determinística (sem Math.random). */
+const customers = [
+  'Mariana Lopes',
+  'Rafael Costa',
+  'Beatriz Nunes',
+  'Diego Almeida',
+  'Lívia Martins',
+  'Thiago Rocha',
+  'Camila Duarte',
+  'Otávio Ferraz',
+]
+const cities = ['São Paulo', 'Recife', 'Curitiba', 'Belém', 'Goiânia', 'Porto Alegre']
+const statuses: Order['status'][] = ['Pago', 'Pago', 'Pendente', 'Pago', 'Cancelado']
+
+interface BigOrder extends Order {
+  city: string
+  items: number
+  channel: string
+}
+
+const manyOrders: BigOrder[] = Array.from({ length: 5000 }, (_, index) => ({
+  id: String(index + 1),
+  number: `#${20000 + index}`,
+  customer: customers[index % customers.length],
+  date: `2026-${String((index % 12) + 1).padStart(2, '0')}-${String((index % 28) + 1).padStart(2, '0')}`,
+  total: 40 + ((index * 37) % 1900) + (index % 100) / 100,
+  status: statuses[index % statuses.length],
+  city: cities[index % cities.length],
+  items: (index % 7) + 1,
+  channel: index % 3 === 0 ? 'Loja' : 'Site',
+}))
+
+const bigColumns: TableColumn<BigOrder>[] = [
+  { key: 'number', header: 'Pedido', rowHeader: true, sortable: true, pinned: 'start', resizable: true, filter: 'text' },
+  { key: 'customer', header: 'Cliente', sortable: true, resizable: true, filter: 'text' },
+  { key: 'city', header: 'Cidade', sortable: true, resizable: true, filter: 'text' },
+  { key: 'channel', header: 'Canal', resizable: true },
+  {
+    key: 'date',
+    header: 'Data',
+    sortable: true,
+    resizable: true,
+    render: (o) => new Date(`${o.date}T12:00:00`).toLocaleDateString('pt-BR'),
+  },
+  { key: 'items', header: 'Itens', sortable: true, align: 'end', resizable: true },
+  { key: 'status', header: 'Status', filter: 'select', filterOptions: statusOptions, resizable: true },
+  {
+    key: 'total',
+    header: 'Total',
+    sortable: true,
+    align: 'end',
+    pinned: 'end',
+    hideable: false,
+    render: (o) => currency.format(o.total),
+  },
+]
+
+type BigStory = StoryObj<Meta<TableProps<BigOrder>>>
+
+export const ColumnFilters: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`filter` na coluna mostra um campo sob o cabeçalho: `text` (contém, sem diferenciar acentos nem maiúsculas) ou `select` (valor exato entre `filterOptions`). A tabela anuncia quantas linhas sobraram e "Selecionar todos" vale só para elas. Sem resultado, o estado vazio oferece "Limpar filtros".',
+      },
+    },
+  },
+  args: {
+    selectable: true,
+    columns: [
+      { key: 'number', header: 'Pedido', rowHeader: true, sortable: true, width: 120 },
+      { key: 'customer', header: 'Cliente', sortable: true, filter: 'text' },
+      { key: 'status', header: 'Status', filter: 'select', filterOptions: statusOptions },
+      { key: 'total', header: 'Total', sortable: true, align: 'end', render: (o) => currency.format(o.total) },
+    ],
+  },
+}
+
+export const ColumnsMenu: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`TableColumnsMenu` lista as colunas como itens marcáveis; a aplicação guarda `hiddenColumns` e passa o mesmo valor ao menu e à tabela. `hideable: false` mantém uma coluna sempre à vista (aqui, o pedido).',
+      },
+    },
+  },
+  render: (args) => {
+    const [hidden, setHidden] = useState<string[]>(['date'])
+    const cols = columns.map((column) => (column.key === 'number' ? { ...column, hideable: false } : column))
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <TableColumnsMenu columns={cols} hiddenColumns={hidden} onHiddenColumnsChange={setHidden} />
+        </div>
+        <Table {...args} columns={cols} hiddenColumns={hidden} />
+      </div>
+    )
+  },
+}
+
+export const Virtualized: BigStory = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`virtualized` com `maxHeight`: 5.000 pedidos, mas só as linhas à vista (e algumas a mais) existem no DOM. A tabela informa o total de linhas ao leitor de tela (`aria-rowcount`/`aria-rowindex`) e mantém no DOM a linha que está com o foco.',
+      },
+    },
+  },
+  args: {
+    caption: 'Pedidos do ano (5.000)',
+    columns: bigColumns.map(({ pinned: _pinned, resizable: _resizable, filter: _filter, ...column }) => column),
+    data: manyOrders,
+    maxHeight: 420,
+    virtualized: true,
+    selectable: true,
+    striped: true,
+    density: 'compact',
+  },
+}
+
+export const PinnedColumns: BigStory = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`pinned: "start"` e `pinned: "end"` prendem colunas às bordas enquanto a tabela rola na horizontal. A seleção acompanha as colunas fixas do início. Aqui as colunas também são `resizable`: as duas funções se combinam.',
+      },
+    },
+  },
+  args: {
+    caption: 'Pedidos',
+    columns: bigColumns.map(({ filter: _filter, ...column }) => ({
+      ...column,
+      width: column.pinned ? undefined : 200,
+    })),
+    data: manyOrders.slice(0, 12),
+    selectable: true,
+    containerProps: { style: { maxWidth: 720 } },
+  },
+}
+
+export const ResizableColumns: BigStory = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`resizable` na coluna: arraste a borda direita do cabeçalho ou, com o foco nela, use ← → (Shift para passos de 64px), Home e End. No primeiro redimensionamento a tabela registra a largura de todas as colunas e passa a ter largura fixa.',
+      },
+    },
+  },
+  render: (args) => {
+    const [widths, setWidths] = useState<TableColumnWidths>({})
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Table {...args} columnWidths={widths} onColumnWidthsChange={setWidths} />
+        <p style={{ margin: 0 }}>
+          Larguras:{' '}
+          {Object.keys(widths).length
+            ? Object.entries(widths)
+                .map(([key, width]) => `${key} ${width}px`)
+                .join(' · ')
+            : 'automáticas'}
+        </p>
+      </div>
+    )
+  },
+  args: {
+    caption: 'Pedidos',
+    columns: bigColumns
+      .filter((column) => ['number', 'customer', 'city', 'status', 'total'].includes(column.key))
+      .map(({ pinned: _pinned, filter: _filter, ...column }) => ({ ...column, resizable: true })),
+    data: manyOrders.slice(0, 8),
+  },
+}
+
+export const LargeData: BigStory = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tudo junto: 5.000 linhas virtualizadas, filtros por coluna, colunas fixas, redimensionáveis e ocultáveis.',
+      },
+    },
+  },
+  render: (args) => {
+    const [hidden, setHidden] = useState<string[]>([])
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <TableColumnsMenu columns={bigColumns} hiddenColumns={hidden} onHiddenColumnsChange={setHidden} />
+        </div>
+        <Table {...args} hiddenColumns={hidden} />
+      </div>
+    )
+  },
+  args: {
+    caption: 'Pedidos do ano (5.000)',
+    columns: bigColumns,
+    data: manyOrders,
+    maxHeight: 480,
+    virtualized: true,
+    selectable: true,
+    density: 'compact',
   },
 }

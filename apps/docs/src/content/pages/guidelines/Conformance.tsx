@@ -275,8 +275,8 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
         level: 'A',
         status: 'supports',
         how: {
-          pt: 'Todos os componentes interativos seguem o padrão APG de teclado; arrastar sempre tem alternativa (SortableList, Splitter, Slider) e gráficos são exploráveis com setas.',
-          en: 'Every interactive component follows the APG keyboard pattern; dragging always has an alternative (SortableList, Splitter, Slider) and charts are explorable with arrows.',
+          pt: 'Todos os componentes interativos seguem o padrão APG de teclado; arrastar sempre tem alternativa (SortableList, Splitter, Slider, Table) e gráficos são exploráveis com setas.',
+          en: 'Every interactive component follows the APG keyboard pattern; dragging always has an alternative (SortableList, Splitter, Slider, Table) and charts are explorable with arrows.',
         },
         evidence: {
           pt: 'Testes com user-event (Tab, setas, Home/End, Escape) em 92 suítes; testes de layout com teclado em Chromium, Firefox e WebKit; tabela de teclado em cada página da documentação.',
@@ -497,12 +497,12 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
         level: 'AA',
         status: 'supports',
         how: {
-          pt: 'SortableList tem botões “Mover para cima/baixo” e teclado; Slider aceita clique no trilho; Splitter, setas e Enter; FileUploader, botão de escolher arquivo.',
-          en: 'SortableList has “Move up/down” buttons and keyboard; Slider accepts track clicks; Splitter, arrows and Enter; FileUploader, a choose-file button.',
+          pt: 'SortableList tem botões “Mover para cima/baixo” e teclado; Slider aceita clique no trilho; Splitter, setas e Enter; FileUploader, botão de escolher arquivo; Table (colunas redimensionáveis), clique duplo para ajustar ao conteúdo e setas.',
+          en: 'SortableList has “Move up/down” buttons and keyboard; Slider accepts track clicks; Splitter, arrows and Enter; FileUploader, a choose-file button; Table (resizable columns), double-click to fit the content and arrow keys.',
         },
         evidence: {
-          pt: 'Testes de SortableList, Slider, Splitter e FileUploader.',
-          en: 'SortableList, Slider, Splitter and FileUploader tests.',
+          pt: 'Testes de SortableList, Slider, Splitter, FileUploader e Table.',
+          en: 'SortableList, Slider, Splitter, FileUploader and Table tests.',
         },
       },
       {

@@ -1,14 +1,4 @@
-import {
-  Button,
-  Dropdown,
-  DropdownCheckboxItem,
-  DropdownItem,
-  DropdownLabel,
-  DropdownSeparator,
-  Icon, Stack,
-  Table,
-  type TableColumn,
-} from '@orangesys/ui'
+import { DropdownItem, DropdownSeparator, Stack, Table, TableColumnsMenu, type TableColumn } from '@orangesys/ui'
 import { useState } from 'react'
 
 interface Product {
@@ -62,8 +52,9 @@ const products: Product[] = [
   },
 ]
 
-const allColumns: TableColumn<Product>[] = [
-  { key: 'name', header: 'Produto', rowHeader: true },
+const columns: TableColumn<Product>[] = [
+  // A coluna que identifica a linha não entra no menu: não pode ser ocultada.
+  { key: 'name', header: 'Produto', rowHeader: true, hideable: false },
   { key: 'sku', header: 'SKU' },
   { key: 'category', header: 'Categoria' },
   { key: 'supplier', header: 'Fornecedor' },
@@ -78,54 +69,32 @@ const allColumns: TableColumn<Product>[] = [
   { key: 'updatedAt', header: 'Atualizado em' },
 ]
 
-/** A coluna que identifica a linha (rowHeader) não pode ser escondida. */
-const REQUIRED = 'name'
-const DEFAULT_VISIBLE = ['name', 'sku', 'stock', 'price']
+const DEFAULT_HIDDEN = ['category', 'supplier', 'updatedAt']
 
 export default function VisibleColumns() {
-  const [visible, setVisible] = useState<string[]>(DEFAULT_VISIBLE)
-  // Filtra mantendo a ordem original: uma coluna reexibida volta para o mesmo lugar.
-  const columns = allColumns.filter((column) => visible.includes(column.key))
-
-  const toggle = (key: string, checked: boolean) =>
-    setVisible((current) => (checked ? [...current, key] : current.filter((k) => k !== key)))
+  // O mesmo estado vai para o menu e para a tabela. Guarde-o (ex.: nas preferências do usuário)
+  // se a escolha precisar persistir.
+  const [hidden, setHidden] = useState<string[]>(DEFAULT_HIDDEN)
 
   return (
     <Stack gap={3}>
       <Stack gap={3} direction="horizontal" align="center" wrap>
         <p style={{ margin: 0, marginRight: 'auto' }}>
-          {columns.length} de {allColumns.length} colunas visíveis
+          {columns.length - hidden.length} de {columns.length} colunas visíveis
         </p>
-        <Dropdown
-          placement="bottom-end"
-          trigger={
-            <Button variant="outline" size="sm" startIcon={<Icon name="sliders" />}>
-              Colunas
-            </Button>
-          }
-        >
-          <DropdownLabel>Mostrar colunas</DropdownLabel>
-          {allColumns.map((column) => (
-            <DropdownCheckboxItem
-              key={column.key}
-              checked={visible.includes(column.key)}
-              disabled={column.key === REQUIRED}
-              onCheckedChange={(checked) => toggle(column.key, checked)}
-            >
-              {column.header}
-            </DropdownCheckboxItem>
-          ))}
+        <TableColumnsMenu columns={columns} hiddenColumns={hidden} onHiddenColumnsChange={setHidden}>
           <DropdownSeparator />
-          <DropdownItem icon="refresh" onSelect={() => setVisible(DEFAULT_VISIBLE)}>
+          <DropdownItem icon="refresh" onSelect={() => setHidden(DEFAULT_HIDDEN)}>
             Restaurar padrão
           </DropdownItem>
-        </Dropdown>
+        </TableColumnsMenu>
       </Stack>
       <Table
         caption="Catálogo de produtos"
         hideCaption
         columns={columns}
         data={products}
+        hiddenColumns={hidden}
         getRowId={(product) => product.sku}
       />
     </Stack>

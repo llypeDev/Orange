@@ -238,15 +238,15 @@ Só `transform` e `box-shadow` são animados — nada de `top` ou `height`.
 | `renderItem` (obrigatória) | `(item: T, state: SortableItemState) => ReactNode` | — | Renderiza o conteúdo do item. A alça e os controles de mover são do componente. |
 | `announcements` | `SortableAnnouncements` | — | Substitui os textos anunciados ao levantar, mover, soltar e cancelar. |
 | `defaultItems` | `readonly T[]` | — | Itens iniciais (não controlado). |
-| `disabled` | `boolean` | — | Desabilita a reordenação de todos os itens. |
+| `disabled` | `boolean` | `false` | Desabilita a reordenação de todos os itens. |
 | `getItemLabel` | `((item: T) => string)` | — | Nome do item usado na alça ("Reordenar …") e nos anúncios. Padrão: `item.label`, `item.title` ou `item.name` (ou o próprio item, se for texto). |
 | `getKey` | `((item: T, index: number) => SortableKey)` | — | Chave estável de cada item. Padrão: `item.id` (ou o próprio item, se for texto/número). |
 | `isItemDisabled` | `((item: T) => boolean)` | — | Itens que não podem ser movidos. Padrão: `item.disabled === true`. |
 | `items` | `readonly T[]` | — | Itens na ordem atual (controlado). Use com `onReorder`. |
 | `label` | `string` | — | Nome acessível da lista (`aria-label`). |
-| `moveControls` | `"none" \| "menu" \| "buttons"` | — | Alternativa ao arraste com um único clique (WCAG 2.5.7): botões "Mover para cima/baixo" (`buttons`, padrão), um menu com topo/cima/baixo/fim (`menu`) ou nenhuma (`none` — só quando a página oferece outra alternativa). |
+| `moveControls` | `"none" \| "menu" \| "buttons"` | `buttons` | Alternativa ao arraste com um único clique (WCAG 2.5.7): botões "Mover para cima/baixo" (`buttons`, padrão), um menu com topo/cima/baixo/fim (`menu`) ou nenhuma (`none` — só quando a página oferece outra alternativa). |
 | `onReorder` | `((items: T[], details: SortableReorderDetails<T>) => void)` | — | Chamado quando o usuário conclui uma reordenação (soltar, botão ou menu) com a nova lista e `{ from, to, item }`. Não é chamado ao cancelar. |
-| `orientation` | `"horizontal" \| "vertical"` | — | Direção da lista. Define também as setas do teclado. Padrão: `vertical`. |
+| `orientation` | `"horizontal" \| "vertical"` | `vertical` | Direção da lista. Define também as setas do teclado. Padrão: `vertical`. |
 | `ref` | `Ref<HTMLUListElement>` | — | — |
 
 Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.

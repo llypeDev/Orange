@@ -37,6 +37,22 @@ O `OrangeProvider` aplica o tema (`dark`, `light`, `dark-hc`, `light-hc` ou `sys
 mensagens internas. O guia completo está em
 [Começando](https://orange.llypedev.com.br/pt/getting-started).
 
+### Só o CSS do que você usa
+
+O `styles.css` tem o CSS de todos os componentes (cerca de 65 KB em gzip). Se a aplicação usa poucos,
+importe-os de `@orangesys/ui/with-css` — sem importar o `styles.css` — e o bundler leva para a página
+só o CSS deles, mais a base (cerca de 6 KB):
+
+```tsx
+import { Button, OrangeProvider } from '@orangesys/ui/with-css'
+import './app.css' // o seu CSS, depois dos componentes
+```
+
+Mesmos exports e tipos da entrada principal. Depende de um bundler que processe `import './x.css'`
+dentro das dependências e descarte módulos não usados (verificado com o Vite); só existe em ESM e
+não serve para rodar no Node sem bundler. Detalhes em
+[Estilos](https://orange.llypedev.com.br/pt/usage/styles).
+
 ## Versionamento
 
 Segue SemVer, com a política de depreciação descrita em

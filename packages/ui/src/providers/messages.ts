@@ -277,6 +277,12 @@ export const ptBR = {
   tableExpandRow: 'Expandir linha',
   tableCollapseRow: 'Recolher linha',
   tableDetails: 'Detalhes',
+  // filtros, colunas e redimensionamento da tabela (Table, TableColumnsMenu)
+  tableFilterBy: 'Filtrar por {column}',
+  tableFilterAll: 'Todos',
+  tableClearFilters: 'Limpar filtros',
+  tableColumns: 'Colunas',
+  tableResizeColumn: 'Redimensionar coluna {column}',
   // consentimento de cookies (ConsentBanner)
   consentTitle: 'Cookies neste site',
   consentText:
@@ -579,6 +585,11 @@ export const enUS: Messages = {
   tableExpandRow: 'Expand row',
   tableCollapseRow: 'Collapse row',
   tableDetails: 'Details',
+  tableFilterBy: 'Filter by {column}',
+  tableFilterAll: 'All',
+  tableClearFilters: 'Clear filters',
+  tableColumns: 'Columns',
+  tableResizeColumn: 'Resize column {column}',
   consentTitle: 'Cookies on this site',
   consentText:
     'We use necessary cookies to make this site work and, with your permission, optional cookies to improve your experience. You can change your choice at any time.',
