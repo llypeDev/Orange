@@ -199,7 +199,7 @@ ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`). Além diss
   a interação que abre e o que precisa estar visível; a captura é da tela inteira, porque as
   sobreposições ficam fora do `#storybook-root` (baselines em `__screenshots__/<tema>/open/`).
 
-- **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.63.0-noble` (mesma versão do
+- **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.65.0-noble` (mesma versão do
   `@playwright/test`), com data fixa, movimento reduzido e animações desligadas. Diferença acima da
   tolerância falha o job e publica o artefato **relatorio-visual** (relatório HTML do Playwright com
   expected/actual/diff). Se o branch ainda não tem baselines, a comparação é pulada com um aviso.
