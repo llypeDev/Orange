@@ -182,8 +182,8 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
           en: 'Token text/background pairs at 4.5:1 in both themes. Colors outside the tokens belong to the app.',
         },
         evidence: {
-          pt: 'Testes de contraste em packages/tokens; varredura axe com layout real: 2 achados em 1.124 execuções, ambos em stories com provider aninhado (DatePicker e DateRangePicker “English locale”, tema claro).',
-          en: 'Contrast tests in packages/tokens; axe sweep with real layout: 2 findings in 1,124 runs, both in stories with a nested provider (DatePicker and DateRangePicker “English locale”, light theme).',
+          pt: 'Testes de contraste em packages/tokens; varredura axe com layout real nos quatro temas: nenhuma violação em 2.604 execuções (as 2 da avaliação anterior, em stories com provider aninhado, foram corrigidas).',
+          en: 'Contrast tests in packages/tokens; axe sweep with real layout in the four themes: no violations in 2,604 runs (the 2 from the previous assessment, in stories with a nested provider, were fixed).',
         },
       },
       {
@@ -279,8 +279,8 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
           en: 'Every interactive component follows the APG keyboard pattern; dragging always has an alternative (SortableList, Splitter, Slider) and charts are explorable with arrows.',
         },
         evidence: {
-          pt: 'Testes com user-event (Tab, setas, Home/End, Escape) em 71 suítes; tabela de teclado em cada página da documentação.',
-          en: 'user-event tests (Tab, arrows, Home/End, Escape) in 71 suites; keyboard table on every docs page.',
+          pt: 'Testes com user-event (Tab, setas, Home/End, Escape) em 92 suítes; testes de layout com teclado em Chromium, Firefox e WebKit; tabela de teclado em cada página da documentação.',
+          en: 'user-event tests (Tab, arrows, Home/End, Escape) in 92 suites; keyboard-driven layout tests in Chromium, Firefox and WebKit; keyboard table on every docs page.',
         },
       },
       {
@@ -423,8 +423,8 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
           en: '2px outline in --or-color-focus (3:1 in both themes) on :focus-visible; in high contrast, every focus drawn with a shadow or background gets a system-color outline.',
         },
         evidence: {
-          pt: 'Teste de contraste do foco; guarda forcedColors.test.ts; capturas com Tab em todas as 562 stories (modo forced-colors).',
-          en: 'Focus contrast test; forcedColors.test.ts guard; Tab screenshots of all 562 stories (forced-colors mode).',
+          pt: 'Teste de contraste do foco; guarda forcedColors.test.ts; capturas com Tab em todas as 562 stories da v0.4.0 (modo forced-colors, avaliação de 5/11/2026 — a refazer na auditoria).',
+          en: 'Focus contrast test; forcedColors.test.ts guard; Tab screenshots of all 562 v0.4.0 stories (forced-colors mode, November 5, 2026 assessment — to be redone in the audit).',
         },
       },
       {
@@ -437,8 +437,8 @@ const principles: { title: Localized<string>; criteria: Criterion[] }[] = [
           en: 'Components do not cover the focused element, but a sticky AppHeader, BackToTop and the Toast region can if the app does not reserve space (scroll-padding-top).',
         },
         evidence: {
-          pt: 'A documentação usa scroll-padding-top. Verificação manual pendente.',
-          en: 'The docs use scroll-padding-top. Manual check pending.',
+          pt: 'A documentação usa scroll-padding-top. Table com cabeçalho fixo mede o cabeçalho e aplica scroll-padding-top (1.2.1); teste de layout em Chromium, Firefox e WebKit confere que o foco subindo nunca fica sob ele. Verificação manual pendente.',
+          en: 'The docs use scroll-padding-top. Table with a sticky header measures the header and applies scroll-padding-top (1.2.1); a layout test in Chromium, Firefox and WebKit checks that focus moving up is never under it. Manual check pending.',
         },
       },
       {
@@ -885,8 +885,8 @@ export default function ConformancePage() {
       eyebrow={{ pt: 'Design guidelines', en: 'Design guidelines' }}
       title={{ pt: 'Relatório de conformidade', en: 'Conformance report' }}
       lead={{
-        pt: 'Autoavaliação do Orange frente a todos os critérios A e AA da WCAG 2.2, no formato de um relatório de conformidade (VPAT/ACR). Ela prepara a auditoria externa prevista para a versão 1.0 — e não a substitui.',
-        en: 'Orange’s self-assessment against every WCAG 2.2 A and AA criterion, in the format of a conformance report (VPAT/ACR). It prepares the external audit planned for version 1.0 — and does not replace it.',
+        pt: 'Autoavaliação do Orange frente a todos os critérios A e AA da WCAG 2.2, no formato de um relatório de conformidade (VPAT/ACR). Ela prepara a auditoria externa prevista no roadmap 1.x — e não a substitui.',
+        en: 'Orange’s self-assessment against every WCAG 2.2 A and AA criterion, in the format of a conformance report (VPAT/ACR). It prepares the external audit planned in the 1.x roadmap — and does not replace it.',
       }}
     >
       <Callout
@@ -919,16 +919,18 @@ export default function ConformancePage() {
             {
               pt: (
                 <>
-                  <strong>Produto:</strong> <Code>@orangesys/ui</Code> no estado da v0.4.0 em
-                  desenvolvimento (103 componentes, hooks e estilos) com <Code>@orangesys/tokens</Code>
-                  , nos temas escuro e claro. Avaliado em 5 de novembro de 2026.
+                  <strong>Produto:</strong> <Code>@orangesys/ui</Code> 1.3.3 (117 componentes
+                  documentados, 29 hooks e estilos) com <Code>@orangesys/tokens</Code> 1.3.3, nos
+                  temas escuro, claro e de alto contraste. Reavaliado em 9 de novembro de 2026 (a
+                  primeira avaliação, de 5 de novembro, cobria a v0.4.0 com 103 componentes).
                 </>
               ),
               en: (
                 <>
-                  <strong>Product:</strong> <Code>@orangesys/ui</Code> as of the in-progress v0.4.0
-                  (103 components, hooks and styles) with <Code>@orangesys/tokens</Code>, in the dark
-                  and light themes. Assessed on November 5, 2026.
+                  <strong>Product:</strong> <Code>@orangesys/ui</Code> 1.3.3 (117 documented
+                  components, 29 hooks and styles) with <Code>@orangesys/tokens</Code> 1.3.3, in the
+                  dark, light and high-contrast themes. Reassessed on November 9, 2026 (the first
+                  assessment, on November 5, covered v0.4.0 with 103 components).
                 </>
               ),
             },
@@ -939,26 +941,30 @@ export default function ConformancePage() {
             {
               pt: (
                 <>
-                  <strong>axe-core nos testes:</strong> as 105 suítes de componentes chamam{' '}
+                  <strong>axe-core nos testes:</strong> as 122 suítes de componentes chamam{' '}
                   <Code>expectNoA11yViolations()</Code> (jsdom; contraste e região desligados,
                   cobertos abaixo).
                 </>
               ),
               en: (
                 <>
-                  <strong>axe-core in tests:</strong> all 105 component suites call{' '}
+                  <strong>axe-core in tests:</strong> all 122 component suites call{' '}
                   <Code>expectNoA11yViolations()</Code> (jsdom; contrast and region disabled,
                   covered below).
                 </>
               ),
             },
             {
-              pt: 'Varredura do Storybook: axe-core 4.14 com layout real (Chromium 153, Playwright) em todas as 562 stories, nos dois temas — 1.124 execuções com as tags WCAG 2.0/2.1/2.2 A e AA. Resultado: 2 violações de contraste, ambas em stories de exemplo que aninham um OrangeProvider escopado (tema escuro sobre a página clara) — artefato das stories, a corrigir; nenhuma nas demais 1.122 execuções.',
-              en: 'Storybook sweep: axe-core 4.14 with real layout (Chromium 153, Playwright) on all 562 stories, in both themes — 1,124 runs with the WCAG 2.0/2.1/2.2 A and AA tags. Result: 2 contrast violations, both in example stories that nest a scoped OrangeProvider (dark theme over the light page) — a story artifact, to be fixed; none in the other 1,122 runs.',
+              pt: 'Varredura do Storybook: axe-core 4.14 com layout real (Chromium 153, Playwright) em todas as 651 stories, nos quatro temas (escuro, claro e os dois de alto contraste) — 2.604 execuções com as tags WCAG 2.0/2.1/2.2 A e AA. Resultado: nenhuma violação. As 2 da avaliação anterior (stories “English locale”, provider aninhado) foram corrigidas.',
+              en: 'Storybook sweep: axe-core 4.14 with real layout (Chromium 153, Playwright) on all 651 stories, in the four themes (dark, light and both high-contrast themes) — 2,604 runs with the WCAG 2.0/2.1/2.2 A and AA tags. Result: no violations. The 2 from the previous assessment (“English locale” stories, nested provider) were fixed.',
             },
             {
-              pt: 'Teclado: interações com user-event (Tab, setas, Home/End, Page Up/Down, Escape) em 71 suítes; cada página de componente documenta o mapa de teclado. Verificação manual completa ainda pendente.',
-              en: 'Keyboard: user-event interactions (Tab, arrows, Home/End, Page Up/Down, Escape) in 71 suites; every component page documents its keyboard map. A full manual pass is still pending.',
+              pt: 'Testes de layout (tests/layout) em Chromium, Firefox e WebKit: listas e menus mantêm o item ativo à vista nas pontas, abas com rolagem revelam a aba focada, o foco nunca fica sob o cabeçalho fixo da Table e o fim da rolagem marca a última seção do índice — 39 execuções por rodada no CI.',
+              en: 'Layout tests (tests/layout) in Chromium, Firefox and WebKit: lists and menus keep the active item in view at the ends, scrolling tabs reveal the focused tab, focus never sits under the Table’s sticky header and the end of the scroll marks the index’s last section — 39 runs per CI round.',
+            },
+            {
+              pt: 'Teclado: interações com user-event (Tab, setas, Home/End, Page Up/Down, Escape) em 92 suítes; cada página de componente documenta o mapa de teclado. Verificação manual completa ainda pendente.',
+              en: 'Keyboard: user-event interactions (Tab, arrows, Home/End, Page Up/Down, Escape) in 92 suites; every component page documents its keyboard map. A full manual pass is still pending.',
             },
             {
               pt: (
@@ -1031,8 +1037,8 @@ export default function ConformancePage() {
               en: 'In charts, series keep their color in high contrast; in grouped bars the distinction is color + legend order, with the “View data” table as the alternative.',
             },
             {
-              pt: 'Refluxo a 320px, zoom de texto a 200% e espaçamento de texto (1.4.4, 1.4.10, 1.4.12) não tiveram varredura sistemática.',
-              en: 'Reflow at 320px, 200% text zoom and text spacing (1.4.4, 1.4.10, 1.4.12) have not had a systematic sweep.',
+              pt: 'Refluxo (1.4.10) tem cobertura parcial: regressão visual a 390px de 12 componentes que mudam de layout e checagem de rolagem horizontal das páginas da documentação a 390 e 320px. Zoom de texto a 200% e espaçamento de texto (1.4.4, 1.4.12) não tiveram varredura sistemática.',
+              en: 'Reflow (1.4.10) has partial coverage: visual regression at 390px of 12 layout-changing components and a horizontal-scroll check of the docs pages at 390 and 320px. 200% text zoom and text spacing (1.4.4, 1.4.12) have not had a systematic sweep.',
             },
             {
               pt: 'TimeField e o seletor de cor usam controles nativos do navegador: o comportamento com leitores de tela varia por navegador.',

@@ -25,7 +25,13 @@ export default tseslint.config(
       'jsx-a11y': jsxA11y,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      // Plugin react-hooks 7: só as regras clássicas, com a severidade de sempre. As regras do React
+      // Compiler da recomendação nova (refs, set-state-in-effect, purity…) ficam de fora: a
+      // biblioteca não usa o compiler, e o padrão "ref com o valor mais recente"
+      // (latestRef.current = valor durante o render) é intencional. Adotar o compiler = ligar
+      // reactHooks.configs.recommended e revisar os ~125 pontos que ele aponta.
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       ...jsxA11y.flatConfigs.recommended.rules,
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',

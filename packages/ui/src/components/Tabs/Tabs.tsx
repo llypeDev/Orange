@@ -50,15 +50,17 @@ const toIdPart = (value: string) => value.replace(/[^\w-]/g, '_')
 /**
  * Rola só a lista (nunca a página) até a aba ficar inteira na área visível. O
  * `focus()` do Chromium não rola uma aba que já está parcialmente visível, e a
- * aba focada/selecionada ficava cortada na borda da lista.
+ * aba focada/selecionada ficava cortada na borda da lista. *
+ * Os deslocamentos arredondam para longe de zero: o WebKit rola em pixels inteiros, e uma
+ * rolagem fracionária deixava o item cortado por menos de 1px.
  */
 function revealTab(list: HTMLElement, tab: HTMLElement) {
   const box = list.getBoundingClientRect()
   const rect = tab.getBoundingClientRect()
-  if (rect.left < box.left) list.scrollLeft -= box.left - rect.left
-  else if (rect.right > box.right) list.scrollLeft += rect.right - box.right
-  if (rect.top < box.top) list.scrollTop -= box.top - rect.top
-  else if (rect.bottom > box.bottom) list.scrollTop += rect.bottom - box.bottom
+  if (rect.left < box.left) list.scrollLeft -= Math.ceil(box.left - rect.left)
+  else if (rect.right > box.right) list.scrollLeft += Math.ceil(rect.right - box.right)
+  if (rect.top < box.top) list.scrollTop -= Math.ceil(box.top - rect.top)
+  else if (rect.bottom > box.bottom) list.scrollTop += Math.ceil(rect.bottom - box.bottom)
 }
 
 export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {

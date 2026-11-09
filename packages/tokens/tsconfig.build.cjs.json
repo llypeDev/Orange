@@ -2,7 +2,11 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "module": "CommonJS",
+    // CommonJS pelo tsc precisa da resolução Node10, depreciada no TypeScript 6 e removida no 7.
+    // O silêncio vale só para a 6.x; para o 7, o build CJS dos tokens precisa sair de outra
+    // ferramenta (ex.: esbuild) — a saída tem de continuar igual (scripts/check-dist.mjs confere).
     "moduleResolution": "Node10",
+    "ignoreDeprecations": "6.0",
     "outDir": "dist/cjs"
   }
 }

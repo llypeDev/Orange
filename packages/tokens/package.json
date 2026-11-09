@@ -101,6 +101,6 @@
     "figma:sync": "tsx scripts/figma-sync.ts"
   },
   "devDependencies": {
-    "vitest": "^3.2.4"
+    "vitest": "^5.1.0"
   }
 }

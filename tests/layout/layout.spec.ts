@@ -66,12 +66,30 @@ async function activeIsVisible(page: Page) {
 }
 
 /**
+ * Repete `measure` até `ok` ou o tempo acabar e devolve a última medição — para a mensagem de
+ * falha trazer as posições (e não só "false"), útil quando o motor que falha não está à mão.
+ */
+async function measureUntil<T extends { ok: boolean }>(measure: () => Promise<T>, timeout = 5000) {
+  const end = Date.now() + timeout
+  let last = await measure()
+  while (!last.ok && Date.now() < end) {
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    last = await measure()
+  }
+  return last
+}
+
+/**
  * Espera a lista assentar e confere que o ativo está à vista. Logo depois da tecla, antes do
  * posicionamento (e do quadro extra do movimento reduzido), a lista ainda não tem a altura e a
  * posição finais e qualquer opção "cabe" — medir nesse instante passaria até no código com defeito.
  */
 async function expectActiveVisible(page: Page) {
-  await expect.poll(async () => (await activeIsVisible(page)).visible).toBe(true)
+  const first = await measureUntil(async () => {
+    const r = await activeIsVisible(page)
+    return { ...r, ok: r.visible }
+  })
+  expect(first.ok, `ativo fora de vista: ${JSON.stringify(first)}`).toBe(true)
   await page.evaluate(
     () =>
       new Promise<void>((resolve) => {
@@ -80,7 +98,11 @@ async function expectActiveVisible(page: Page) {
         requestAnimationFrame(tick)
       }),
   )
-  expect(await activeIsVisible(page)).toMatchObject({ visible: true })
+  const settled = await activeIsVisible(page)
+  expect(
+    settled.visible,
+    `ativo fora de vista depois de assentar: ${JSON.stringify(settled)}`,
+  ).toBe(true)
 }
 
 test.describe('TableOfContents', () => {
@@ -230,14 +252,26 @@ test.describe('Fim da faixa em navegação e tabelas', () => {
         const tab = document.activeElement as HTMLElement
         const l = list.getBoundingClientRect()
         const t = tab.getBoundingClientRect()
-        return t.left >= l.left - 0.5 && t.right <= l.right + 0.5
+        return {
+          ok:
+            tab.getAttribute('role') === 'tab' &&
+            t.left >= l.left - 0.5 &&
+            t.right <= l.right + 0.5,
+          ativo: `${tab.tagName}[role=${tab.getAttribute('role')}] ${tab.textContent?.trim().slice(0, 20)}`,
+          aba: [Math.round(t.left), Math.round(t.right)],
+          lista: [Math.round(l.left), Math.round(l.right)],
+          scrollLeft: Math.round(list.scrollLeft),
+          larguras: [list.clientWidth, list.scrollWidth],
+        }
       })
     await page.locator('[role="tab"][aria-selected="true"]').first().focus()
     await page.keyboard.press('End')
-    await expect.poll(inside).toBe(true)
+    const afterEnd = await measureUntil(inside)
+    expect(afterEnd.ok, `End: ${JSON.stringify(afterEnd)}`).toBe(true)
     await page.keyboard.press('Home')
     await page.keyboard.press('ArrowLeft') // volta para a última
-    await expect.poll(inside).toBe(true)
+    const afterWrap = await measureUntil(inside)
+    expect(afterWrap.ok, `volta das setas: ${JSON.stringify(afterWrap)}`).toBe(true)
     // Só a lista rola, nunca a página.
     expect(await page.evaluate(() => scrollY)).toBe(0)
   })
@@ -252,13 +286,25 @@ test.describe('Fim da faixa em navegação e tabelas', () => {
     const boxes = page.locator('tbody input[type="checkbox"]')
     await boxes.last().focus()
     for (let step = 0; step < 12; step++) {
-      const covered = await page.evaluate(() => {
+      const state = await page.evaluate(() => {
         const el = document.activeElement as HTMLElement
-        const head = el.closest('.or-table-container')?.querySelector('thead th')
-        if (!head || el.closest('thead')) return false
-        return el.getBoundingClientRect().top < head.getBoundingClientRect().bottom - 0.5
+        const container = el.closest('.or-table-container') as HTMLElement | null
+        const head = container?.querySelector('thead th')
+        if (!head || !container || el.closest('thead')) return { covered: false }
+        const top = el.getBoundingClientRect().top
+        const headBottom = head.getBoundingClientRect().bottom
+        return {
+          covered: top < headBottom - 0.5,
+          foco: el.getAttribute('aria-label') ?? el.tagName,
+          top: Math.round(top),
+          headBottom: Math.round(headBottom),
+          scrollTop: Math.round(container.scrollTop),
+          scrollPaddingTop: getComputedStyle(container).scrollPaddingTop,
+        }
       })
-      expect(covered, `passo ${step}: foco sob o cabeçalho`).toBe(false)
+      expect(state.covered, `passo ${step}: foco sob o cabeçalho ${JSON.stringify(state)}`).toBe(
+        false,
+      )
       await page.keyboard.press('Shift+Tab')
     }
   })

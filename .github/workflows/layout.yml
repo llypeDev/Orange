@@ -1,13 +1,14 @@
 name: Layout no navegador
 
 # Comportamentos que dependem de layout real — fim da rolagem, overflow, posição de listas e
-# menus, foco sob cabeçalho fixo, movimento reduzido — medidos num Chromium de verdade sobre as
-# stories do Storybook (tests/layout). O jsdom dos testes unitários não tem layout.
+# menus, foco sob cabeçalho fixo, movimento reduzido — medidos em Chromium, Firefox e WebKit sobre
+# as stories do Storybook (tests/layout). O jsdom dos testes unitários não tem layout.
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,11 +19,15 @@ concurrency:
 
 jobs:
   layout:
-    name: Testes de layout (Chromium)
+    name: Testes de layout (Chromium, Firefox, WebKit)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+    # O Firefox não abre se o $HOME não pertencer ao usuário do contêiner (limitação conhecida do
+    # Firefox em contêineres no GitHub Actions).
+    env:
+      HOME: /root
     defaults:
       run:
         shell: bash

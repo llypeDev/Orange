@@ -60,7 +60,9 @@ function getTextValue(item: HTMLElement) {
 /**
  * Rola só o menu (nunca a página) até o item. No primeiro item, volta ao topo;
  * logo depois de um título (`DropdownLabel` ou o título de um grupo), mostra
- * o título também.
+ * o título também. *
+ * Os deslocamentos arredondam para longe de zero: o WebKit rola em pixels inteiros, e uma
+ * rolagem fracionária deixava o item cortado por menos de 1px.
  */
 function revealItem(menu: HTMLElement, item: HTMLElement) {
   if (getItems(menu)[0] === item) {
@@ -73,8 +75,8 @@ function revealItem(menu: HTMLElement, item: HTMLElement) {
   const bottom = top + menu.clientHeight
   const headTop = head.getBoundingClientRect().top
   const itemBottom = item.getBoundingClientRect().bottom
-  if (headTop < top) menu.scrollTop -= top - headTop
-  else if (itemBottom > bottom) menu.scrollTop += itemBottom - bottom
+  if (headTop < top) menu.scrollTop -= Math.ceil(top - headTop)
+  else if (itemBottom > bottom) menu.scrollTop += Math.ceil(itemBottom - bottom)
 }
 
 /* -------------------------------------------------------------------------- */

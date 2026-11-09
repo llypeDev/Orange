@@ -19,7 +19,8 @@ scripts/
   gen-index.mjs   gera packages/ui/src/components/index.ts automaticamente
 ```
 
-Comandos:
+Comandos (desenvolvimento pede Node ≥ 22.12, por causa do Vite 8 e do jest-dom 7; os pacotes publicados
+continuam rodando em Node ≥ 18):
 
 ```bash
 pnpm install
@@ -199,7 +200,7 @@ ficam em `SKIP_TITLES`, com o motivo (`tests/visual/visual.spec.ts`). Além diss
   a interação que abre e o que precisa estar visível; a captura é da tela inteira, porque as
   sobreposições ficam fora do `#storybook-root` (baselines em `__screenshots__/<tema>/open/`).
 
-- **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.63.0-noble` (mesma versão do
+- **Como o CI compara:** no contêiner `mcr.microsoft.com/playwright:v1.65.0-noble` (mesma versão do
   `@playwright/test`), com data fixa, movimento reduzido e animações desligadas. Diferença acima da
   tolerância falha o job e publica o artefato **relatorio-visual** (relatório HTML do Playwright com
   expected/actual/diff). Se o branch ainda não tem baselines, a comparação é pulada com um aviso.
@@ -237,9 +238,11 @@ pnpm size
 
 Comportamentos que dependem de layout real — fim da rolagem, abas com overflow, posição de listas e
 menus em telas baixas, foco sob cabeçalho fixo, movimento reduzido — não aparecem no jsdom dos testes
-unitários. A suíte `tests/layout/` abre as stories do Storybook construído num Chromium de verdade,
-usa teclado e rolagem como uma pessoa e **mede posições** (não compara imagens, então roda igual em
-qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layout** traz o relatório.
+unitários. A suíte `tests/layout/` abre as stories do Storybook construído em **Chromium, Firefox e
+WebKit** (o motor do Safari), usa teclado e rolagem como uma pessoa e **mede posições** (não compara
+imagens, então vale em qualquer máquina). Workflow `layout.yml` (também roda sob demanda num branch:
+Actions → "Layout no navegador" → Run workflow); em falha, o artefato **relatorio-layout** traz o
+relatório e a mensagem traz a última medição (posições, rolagem, elemento ativo).
 
 - Cada teste reproduz um defeito já corrigido e falharia no código antigo. Ao corrigir um defeito
   desse tipo, acrescente o teste aqui (de preferência sobre uma story existente).
@@ -248,8 +251,31 @@ qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layo
 
 ```bash
 pnpm build:storybook
-pnpm test:layout
+pnpm test:layout                      # os três motores (precisa dos três navegadores do Playwright)
+pnpm test:layout --project=chromium   # só o que tiver instalado
 ```
+
+## Dependências
+
+O Dependabot (`.github/dependabot.yml`) abre PRs toda segunda, agrupados: Storybook, Vite e Vitest,
+lint, testes, React, um grupo com as versões menores e outro com as GitHub Actions. Cada PR passa
+pela CI inteira (testes, layout, regressão visual, `pnpm size`) antes do merge.
+
+Ficam de fora, de propósito:
+
+- **`@playwright/test`** — atualize à mão, junto com a imagem `mcr.microsoft.com/playwright:v<versão>-noble`
+  nos workflows `visual.yml`, `visual-update.yml` e `layout.yml`, e regenere as baselines
+  ("Atualizar baselines visuais").
+- **`@types/node` (major)** — acompanha o Node do CI (22).
+- **Bloqueados hoje** (reavalie quando o motivo cair):
+  - **TypeScript 7** — o `typescript-eslint` aceita até o TS 6.0. No 7, o build CommonJS dos tokens
+    (`moduleResolution: Node10`) também precisa sair de outra ferramenta.
+  - **ESLint 10** — o `eslint-plugin-jsx-a11y` declara suporte até o ESLint 9.
+  - **jsdom 31** — muda o ambiente de teste (CSS calculado com `var()`/`em`, objetos de estilo
+    estritos, `AnimationEvent` nativo, nomes acessíveis com texto oculto) e quebra 37 testes de
+    ambiente: migração própria.
+- **Regras do React Compiler** (`eslint-plugin-react-hooks` 7) — desligadas; ver o comentário em
+  `eslint.config.mjs`.
 
 ## Commits
 

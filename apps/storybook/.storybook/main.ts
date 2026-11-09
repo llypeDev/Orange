@@ -30,6 +30,15 @@ const config: StorybookConfig = {
   },
   typescript: {
     reactDocgen: 'react-docgen-typescript',
+    // O plugin de docgen do Storybook 10 (vite-plugin-react-docgen-typescript 0.7) só documenta
+    // arquivos do tsconfig indicado que casem com `include` (relativo a apps/storybook). Sem isso
+    // ele lia o tsconfig deste app e a tabela de props dos componentes de packages/ui ficava vazia
+    // (só os args das stories). Padrões com ../ também no exclude: `**` não atravessa `..`.
+    reactDocgenTypescriptOptions: {
+      tsconfigPath: '../../packages/ui/tsconfig.json',
+      include: ['../../packages/ui/src/**/*.tsx'],
+      exclude: ['../../packages/ui/src/**/*.stories.tsx', '../../packages/ui/src/**/*.test.tsx'],
+    },
   },
 }
 
