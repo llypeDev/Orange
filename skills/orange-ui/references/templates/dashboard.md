@@ -494,10 +494,6 @@ export function gerarPedidos(agora = Date.now()): Pedido[] {
   gap: var(--or-space-2) var(--or-space-4);
 }
 
-.aurora-dash__section-head .or-text {
-  margin: 0;
-}
-
 /* Respiro para o contador de notificações, que sai do canto do botão. */
 .aurora-dash__avatar {
   margin-left: var(--or-space-2);

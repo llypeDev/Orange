@@ -120,10 +120,10 @@ outro.
   tema; as primitivas `--or-palette-*` não (não use direto). Lista completa: `references/tokens.md`.
 - Personalize sobrescrevendo **tokens públicos** num escopo (`.compacto { --or-control-md: 2rem }`),
   nunca as classes internas (`.or-button__label`) nem variáveis privadas (`--_bg`).
-- Os exemplos da referência montam a demonstração com `style` inline em px (`gap: 16`,
-  `maxWidth: 520`) e o CSS dos modelos às vezes mira classes internas para compor a página. Copie
-  os componentes e as props, não esse CSS: no seu código, espace com `Stack`/`Grid` (`gap` na
-  escala) e escreva estilos com `var(--or-*)` em classes suas.
+- Os exemplos espaçam com `Stack` (`gap` na escala), e o CSS dos modelos usa classes próprias com
+  tokens — os dois seguem estas regras. O `style` inline que sobra nos exemplos só enquadra a
+  demonstração (largura máxima, uma margem pontual); no seu código, prefira classes suas com
+  `var(--or-*)`.
 - Identidade: cantos retos (sem `border-radius` arredondado), bordas de 1px, um só acento laranja
   (`--or-color-accent`) — não introduza outras cores de destaque. Ícones: `<Icon name="…" />`
   (nomes em `references/icons.md`), não SVGs avulsos.

@@ -34,7 +34,7 @@ Empilha elementos na vertical ou na horizontal com espaçamento da escala — e 
 Stacks aninhadas montam a seção inteira: título, lista de preferências com separadores e ações alinhadas à direita — sem nenhuma linha de CSS.
 
 ```tsx
-import { Button, Heading, Stack, Switch, Text } from '@orangesys/ui'
+import { Button, Checkbox, Heading, Stack, Text } from '@orangesys/ui'
 
 const preferencias = [
   {
@@ -73,8 +73,7 @@ export default function Configuracoes() {
       <Stack as="ul" separator gap={4} aria-label="Preferências de notificação">
         {preferencias.map((p) => (
           <li key={p.id}>
-            <Switch
-              labelPosition="start"
+            <Checkbox
               label={p.label}
               description={p.description}
               defaultChecked={p.ligado}

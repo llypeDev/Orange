@@ -3,6 +3,7 @@ import {
   AppShell,
   AppShellNavToggle,
   Button,
+  Checkbox,
   ConfirmDialog,
   Fieldset,
   FileUploader,
@@ -20,7 +21,6 @@ import {
   SideNavItem,
   SideNavSection,
   Stack,
-  Switch,
   Tag,
   Text,
   TextField,
@@ -112,7 +112,7 @@ function SettingsScreen() {
     base.current = retrato(formRef.current, logoRef.current)
   }, [versao, salvo])
 
-  // Espera o React aplicar a mudança (inputs ocultos do Switch e do Listbox) antes de comparar.
+  // Espera o React aplicar a mudança (input oculto do Listbox) antes de comparar.
   const conferir = () => {
     window.setTimeout(() => setAlterado(retrato(formRef.current, logoRef.current) !== base.current), 0)
   }
@@ -234,8 +234,9 @@ function SettingsScreen() {
             {({ errors }) => (
               <>
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Identidade da loja
                     </Heading>
                   }
@@ -301,8 +302,9 @@ function SettingsScreen() {
                 </Fieldset>
 
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Vendas e estoque
                     </Heading>
                   }
@@ -352,8 +354,9 @@ function SettingsScreen() {
                 </Fieldset>
 
                 <Fieldset
+                  className="aurora-settings__section"
                   legend={
-                    <Heading level={2} size="lg">
+                    <Heading level={2} size="lg" className="aurora-settings__legend-title">
                       Avisos por e-mail
                     </Heading>
                   }
@@ -370,28 +373,26 @@ function SettingsScreen() {
                     required
                     error={errors.emailAvisos}
                   />
+                  {/* Checkbox, não Switch: as escolhas só valem ao clicar em "Salvar alterações". */}
                   <Stack gap={4} separator>
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="novo-pedido"
                       label="Novo pedido recebido"
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('novo-pedido')}
                     />
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="estoque-baixo"
                       label="Estoque abaixo do mínimo"
                       description="Um e-mail por produto, no máximo uma vez por dia."
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('estoque-baixo')}
                     />
-                    <Switch
+                    <Checkbox
                       name="avisos"
                       value="resumo-semanal"
                       label="Resumo semanal de vendas"
                       description="Toda segunda-feira, às 8h."
-                      labelPosition="start"
                       defaultChecked={salvo.avisos.includes('resumo-semanal')}
                     />
                   </Stack>

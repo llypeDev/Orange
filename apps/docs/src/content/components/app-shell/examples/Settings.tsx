@@ -2,12 +2,12 @@ import {
   AppShell,
   AppShellNavToggle,
   Button,
+  Checkbox,
   Footer,
   PageHeader,
   SideNav,
   SideNavItem,
   SideNavSection,
-  Switch,
   useAppShell,
 } from '@orangesys/ui'
 
@@ -57,9 +57,9 @@ export default function Settings() {
           actions={<Button>Salvar</Button>}
         />
         <div style={{ display: 'grid', gap: 16, marginTop: 24 }}>
-          <Switch label="Novo pedido recebido" defaultChecked />
-          <Switch label="Estoque abaixo do mínimo" defaultChecked />
-          <Switch label="Resumo semanal de vendas" />
+          <Checkbox label="Novo pedido recebido" defaultChecked />
+          <Checkbox label="Estoque abaixo do mínimo" defaultChecked />
+          <Checkbox label="Resumo semanal de vendas" />
         </div>
       </AppShell>
     </div>

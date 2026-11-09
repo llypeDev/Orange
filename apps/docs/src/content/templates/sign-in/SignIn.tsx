@@ -63,7 +63,7 @@ export default function SignIn() {
       <div className="aurora-signin__main">
         <div className="aurora-signin__card">
           <p className="aurora-signin__logo">
-            <Icon name="layers" /> Aurora
+            <Icon name="layers" className="aurora-signin__logo-icon" /> Aurora
           </p>
 
           <div className="aurora-signin__intro">
@@ -106,6 +106,7 @@ export default function SignIn() {
                 />
                 <div className="aurora-signin__row">
                   <Checkbox
+                    className="aurora-signin__remember"
                     name="manterConectado"
                     label="Manter conectado"
                     description="Por 30 dias neste navegador. Não marque em computadores compartilhados."
