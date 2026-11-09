@@ -238,9 +238,11 @@ pnpm size
 
 Comportamentos que dependem de layout real — fim da rolagem, abas com overflow, posição de listas e
 menus em telas baixas, foco sob cabeçalho fixo, movimento reduzido — não aparecem no jsdom dos testes
-unitários. A suíte `tests/layout/` abre as stories do Storybook construído num Chromium de verdade,
-usa teclado e rolagem como uma pessoa e **mede posições** (não compara imagens, então roda igual em
-qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layout** traz o relatório.
+unitários. A suíte `tests/layout/` abre as stories do Storybook construído em **Chromium, Firefox e
+WebKit** (o motor do Safari), usa teclado e rolagem como uma pessoa e **mede posições** (não compara
+imagens, então vale em qualquer máquina). Workflow `layout.yml` (também roda sob demanda num branch:
+Actions → "Layout no navegador" → Run workflow); em falha, o artefato **relatorio-layout** traz o
+relatório e a mensagem traz a última medição (posições, rolagem, elemento ativo).
 
 - Cada teste reproduz um defeito já corrigido e falharia no código antigo. Ao corrigir um defeito
   desse tipo, acrescente o teste aqui (de preferência sobre uma story existente).
@@ -249,7 +251,8 @@ qualquer máquina). Workflow `layout.yml`; em falha, o artefato **relatorio-layo
 
 ```bash
 pnpm build:storybook
-pnpm test:layout
+pnpm test:layout                      # os três motores (precisa dos três navegadores do Playwright)
+pnpm test:layout --project=chromium   # só o que tiver instalado
 ```
 
 ## Dependências
