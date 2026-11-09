@@ -25,6 +25,25 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-09',
+    version: 'v1.3.3',
+    title: {
+      pt: 'Pacote com metade do tamanho, testado em três navegadores',
+      en: 'Half the package size, tested in three browsers',
+    },
+    summary: {
+      pt: 'O pacote npm baixa menos, os menus e abas revelam o item ativo por inteiro também no Safari, e o relatório de conformidade foi reavaliado.',
+      en: 'The npm package downloads less, menus and tabs reveal the active item in full on Safari too, and the conformance report was reassessed.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'Pacote @orangesys/ui de 6,4 para 3,0 MB (330 arquivos, antes 654): sem sourcemaps e com o JS legível, nomes originais. O que entra no seu app depois do bundler não muda.', en: '@orangesys/ui package from 6.4 to 3.0 MB (330 files, previously 654): no sourcemaps and readable JS with original names. What ends up in your app after bundling is unchanged.' } },
+      { kind: 'fixed', text: { pt: 'Dropdown, SplitButton, Picker e Tabs: no Safari, o item ativo revelado na borda podia ficar cortado em menos de 1px; a rolagem agora arredonda para longe de zero.', en: 'Dropdown, SplitButton, Picker and Tabs: on Safari the active item revealed at the edge could be clipped by under 1px; scrolling now rounds away from zero.' } },
+      { kind: 'improved', text: { pt: 'Testes de layout (rolagem, foco visível, sobreposições) rodam no Chromium, no Firefox e no WebKit a cada PR.', en: 'Layout tests (scrolling, visible focus, overlays) run on Chromium, Firefox and WebKit on every PR.' } },
+      { kind: 'improved', text: { pt: 'Relatório de conformidade reavaliado na 1.3.3: 117 componentes, 651 stories em quatro temas, 2.604 execuções do axe sem violações.', en: 'Conformance report reassessed on 1.3.3: 117 components, 651 stories in four themes, 2,604 axe runs with no violations.' } },
+      { kind: 'improved', text: { pt: 'Ferramentas atualizadas (TypeScript 6, Vite 8, Vitest 5, Storybook 10, Playwright 1.65) e Dependabot com atualizações agrupadas toda semana.', en: 'Tooling updated (TypeScript 6, Vite 8, Vitest 5, Storybook 10, Playwright 1.65) and Dependabot with grouped weekly updates.' } },
+    ],
+  },
+  {
     date: '2026-11-06',
     version: 'v1.3.2',
     title: {
