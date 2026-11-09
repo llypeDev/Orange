@@ -93,12 +93,30 @@ export function App() {
 | `pnpm test:visual` | Regressão visual dos dois temas (baselines geradas no CI)  |
 | `pnpm test:layout` | Layout no navegador: rolagem, overflow, listas e foco (Chromium, Firefox, WebKit) |
 | `pnpm size`       | Orçamento de tamanho do `@orangesys/ui` (gzip, com tree-shaking) |
+| `pnpm gen:ai`     | Regenera a referência para IAs (`skills/orange-ui/references`) |
 | `pnpm changeset` | Registra uma mudança para o próximo release no npm         |
+
+## Uso com IA
+
+O Orange tem uma referência feita para assistentes de IA (Claude, ChatGPT, Copilot, Cursor, Gemini…),
+gerada do código: props de cada componente, boas práticas, acessibilidade e exemplos que funcionam.
+Detalhes em [Usando → Uso com IA](https://orange.llypedev.com.br/pt/usage/ai).
+
+- **Skill `orange-ui`** ([`skills/orange-ui`](./skills/orange-ui/SKILL.md), formato Agent Skills): para
+  construir telas com a biblioteca. No Claude Code, descompacte o
+  [orange-ui.zip](https://orange.llypedev.com.br/llms/orange-ui.zip) em `.claude/skills/`.
+- **[llms.txt](https://orange.llypedev.com.br/llms.txt)** e
+  **[llms-full.txt](https://orange.llypedev.com.br/llms-full.txt)**: para qualquer IA com acesso à web.
+- **[AGENTS.md](./AGENTS.md)**: para IAs que trabalham neste repositório.
+
+A referência (`skills/orange-ui/references`) é regenerada com `pnpm gen:ai`; a CI falha se ela ficar
+desatualizada.
 
 ## Contribuindo
 
 Leia o [CONTRIBUTING.md](./CONTRIBUTING.md): estrutura de um componente, regras de acessibilidade,
-testes, stories e páginas de documentação.
+testes, stories e páginas de documentação. Trabalhando com uma IA? Ela deve ler o
+[AGENTS.md](./AGENTS.md).
 
 ## Licença
 

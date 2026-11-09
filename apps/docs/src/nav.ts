@@ -28,6 +28,7 @@ export const usagePages: StaticPage[] = [
   { path: '/usage/figma', label: { pt: 'Figma', en: 'Figma' }, component: page(() => import('./content/pages/usage/Figma')) },
   { path: '/usage/i18n', label: { pt: 'Internacionalização', en: 'Internationalization' }, component: page(() => import('./content/pages/usage/I18n')) },
   { path: '/usage/hooks', label: { pt: 'Hooks', en: 'Hooks' }, component: page(() => import('./content/pages/usage/Hooks')) },
+  { path: '/usage/ai', label: { pt: 'Uso com IA', en: 'Using with AI' }, component: page(() => import('./content/pages/usage/Ai')) },
   { path: '/usage/versioning', label: { pt: 'Versionamento e depreciação', en: 'Versioning and deprecation' }, component: page(() => import('./content/pages/usage/Versioning')) },
 ]
 
