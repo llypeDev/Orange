@@ -1,5 +1,15 @@
 # @orangesys/ui
 
+## 1.3.3
+
+### Patch Changes
+
+- [#36](https://github.com/llypeDev/Orange/pull/36) [`4506d41`](https://github.com/llypeDev/Orange/commit/4506d416e19444704d01229a4b31727860903b74) Thanks [@llypeDev](https://github.com/llypeDev)! - Pacote menor no npm: 2,96 MB e 330 arquivos descompactados (antes 6,4 MB e 654). Os sourcemaps, que eram 64% do pacote, saem; em troca, o JavaScript publicado deixa de ter os nomes encurtados — quem depura lê o código com os nomes originais, sem precisar de mapas. Nada muda para o seu projeto: mesmos exports, tipos e `styles.css` (que continua minificado), e o custo final no navegador é o mesmo, porque o seu build minifica.
+
+- [#36](https://github.com/llypeDev/Orange/pull/36) [`4506d41`](https://github.com/llypeDev/Orange/commit/4506d416e19444704d01229a4b31727860903b74) Thanks [@llypeDev](https://github.com/llypeDev)! - `Tabs`, `Picker`, `SplitButton`, `Dropdown` e `ContextMenu`: ao revelar a aba ou o item ativo na ponta da lista, a rolagem arredonda para longe de zero. No Safari (WebKit), que rola em pixels inteiros, o último item ficava cortado por menos de 1px. Encontrado pelos testes de layout, agora rodando também no WebKit e no Firefox.
+- Updated dependencies []:
+  - @orangesys/tokens@1.3.3
+
 ## 1.3.2
 
 ### Patch Changes
