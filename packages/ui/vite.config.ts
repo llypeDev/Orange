@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(import.meta.dirname, 'src/index.ts'),
       formats: ['es', 'cjs'],
       // Um arquivo por módulo (preserveModules): com `sideEffects: ["*.css"]`, o bundler de quem
       // usa descarta os módulos que não são importados. Num arquivo único, chamadas de topo como

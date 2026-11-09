@@ -19,7 +19,8 @@ scripts/
   gen-index.mjs   gera packages/ui/src/components/index.ts automaticamente
 ```
 
-Comandos:
+Comandos (desenvolvimento pede Node ≥ 22.12, por causa do Vite 8 e do jest-dom 7; os pacotes publicados
+continuam rodando em Node ≥ 18):
 
 ```bash
 pnpm install

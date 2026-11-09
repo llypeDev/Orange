@@ -27,18 +27,26 @@ function mockIntersectionObserver() {
   }
 }
 
-/** Página de 3000px numa janela de 800px, rolada até `scrollY`. */
-function page(scrollY = 0) {
+/** Página de 3000px numa janela de 800px. Devolve como rolar (cada getter é espionado uma vez só). */
+function page() {
+  let scrollY = 0
   const html = document.documentElement
   vi.spyOn(html, 'scrollHeight', 'get').mockReturnValue(3000)
   vi.spyOn(html, 'clientHeight', 'get').mockReturnValue(800)
-  vi.spyOn(window, 'scrollY', 'get').mockReturnValue(scrollY)
+  vi.spyOn(window, 'scrollY', 'get').mockImplementation(() => scrollY)
+  return (y: number) => {
+    scrollY = y
+  }
 }
 
-/** Posiciona o elemento abaixo da dobra (`top` px do topo da janela) para o Reveal esconder até o scroll. */
+/**
+ * Posiciona o elemento abaixo da dobra (`top` px do topo da janela) para o Reveal esconder até o
+ * scroll. Devolve a rolagem e o espião do retângulo, para o teste mudar a posição sem espionar de
+ * novo (espionar o mesmo método duas vezes deixa o falso no lugar depois do restore).
+ */
 function belowTheFold(top = 2000) {
-  page()
-  vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+  const scrollTo = page()
+  const rect = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
     top,
     bottom: top + 200,
     left: 0,
@@ -49,6 +57,7 @@ function belowTheFold(top = 2000) {
     y: top,
     toJSON: () => ({}),
   } as DOMRect)
+  return { scrollTo, rect }
 }
 
 afterEach(() => {
@@ -76,13 +85,13 @@ describe('Reveal', () => {
 
   it('no fim da rolagem revela o que ficou nos últimos pixels da página (aquém da margem de -60px)', async () => {
     mockIntersectionObserver() // o observer nunca vê a entrada: o elemento não alcança a faixa
-    belowTheFold()
+    const { scrollTo, rect } = belowTheFold()
     render(<Reveal>Rodapé</Reveal>)
     const el = screen.getByText('Rodapé')
     expect(el).toHaveAttribute('data-reveal', 'hidden')
     // Rola até o fim (3000 - 800): o elemento está a 40px da base da janela.
-    page(2200)
-    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 760, 100, 20))
+    scrollTo(2200)
+    rect.mockReturnValue(new DOMRect(0, 760, 100, 20))
     act(() => {
       window.dispatchEvent(new Event('scroll'))
     })
