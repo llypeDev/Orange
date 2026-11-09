@@ -293,22 +293,28 @@ test.describe('Fim da faixa em navegação e tabelas', () => {
     const boxes = page.locator('tbody input[type="checkbox"]')
     await boxes.last().focus()
     for (let step = 0; step < 12; step++) {
-      const state = await page.evaluate(() => {
-        const el = document.activeElement as HTMLElement
-        const container = el.closest('.or-table-container') as HTMLElement | null
-        const head = container?.querySelector('thead th')
-        if (!head || !container || el.closest('thead')) return { covered: false }
-        const top = el.getBoundingClientRect().top
-        const headBottom = head.getBoundingClientRect().bottom
-        return {
-          covered: top < headBottom - 0.5,
-          foco: el.getAttribute('aria-label') ?? el.tagName,
-          top: Math.round(top),
-          headBottom: Math.round(headBottom),
-          scrollTop: Math.round(container.scrollTop),
-          scrollPaddingTop: getComputedStyle(container).scrollPaddingTop,
-        }
-      })
+      // O WebKit rola até o foco num quadro seguinte: medido logo após o Shift+Tab, o foco ainda
+      // está onde a linha estava. Espera assentar; sem o scroll-padding, nunca assenta e falha.
+      const state = await measureUntil(() =>
+        page.evaluate(() => {
+          const el = document.activeElement as HTMLElement
+          const container = el.closest('.or-table-container') as HTMLElement | null
+          const head = container?.querySelector('thead th')
+          if (!head || !container || el.closest('thead')) return { ok: true, covered: false }
+          const top = el.getBoundingClientRect().top
+          const headBottom = head.getBoundingClientRect().bottom
+          const covered = top < headBottom - 0.5
+          return {
+            ok: !covered,
+            covered,
+            foco: el.getAttribute('aria-label') ?? el.tagName,
+            top: Math.round(top),
+            headBottom: Math.round(headBottom),
+            scrollTop: Math.round(container.scrollTop),
+            scrollPaddingTop: getComputedStyle(container).scrollPaddingTop,
+          }
+        }),
+      )
       expect(state.covered, `passo ${step}: foco sob o cabeçalho ${JSON.stringify(state)}`).toBe(
         false,
       )
