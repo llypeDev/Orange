@@ -16,7 +16,13 @@ export default defineConfig({
       cssFileName: 'styles',
     },
     cssCodeSplit: false,
-    sourcemap: true,
+    // Sem sourcemaps e sem encurtar nomes: o dist sai legível (nomes originais), quem depura lê o
+    // código direto, e o pacote no npm encolhe (os mapas eram 4,1 dos 6,4 MB). O projeto de quem
+    // usa minifica no próprio build — o custo final no navegador não muda (`pnpm size`).
+    sourcemap: false,
+    minify: false,
+    // O CSS continua minificado: o styles.css é importado direto e não passa por esta etapa de novo.
+    cssMinify: true,
     rollupOptions: {
       // Dependências declaradas ficam de fora (o @orangesys/tokens sai na mesma versão do ui).
       external: [
