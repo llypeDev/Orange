@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { createRef } from 'react'
 import { describe, expect, it } from 'vitest'
+import { expectNoA11yViolations } from '../../test/axe'
 import { Field, useFieldControlProps } from './Field'
 
 function Control() {
@@ -42,5 +43,14 @@ describe('Field', () => {
     )
     expect(ref.current).toBeInstanceOf(HTMLDivElement)
     expect(ref.current).toBe(container.querySelector('.or-field'))
+  })
+
+  it('não possui violações de acessibilidade (rótulo, descrição, erro e obrigatório)', async () => {
+    const { container } = render(
+      <Field label="E-mail" description="Usado para o login." error="Informe um e-mail" required>
+        <Control />
+      </Field>,
+    )
+    await expectNoA11yViolations(container)
   })
 })
