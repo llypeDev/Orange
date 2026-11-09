@@ -32,9 +32,9 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -59,7 +59,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           git commit -m 'Atualiza baselines visuais'
           git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: relatorio-visual-update
