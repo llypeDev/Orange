@@ -24,6 +24,9 @@ jobs:
     timeout-minutes: 20
     container:
       image: mcr.microsoft.com/playwright:v1.65.0-noble
+      # Memória compartilhada do host: o /dev/shm padrão do Docker (64 MB) não basta para três
+      # navegadores em paralelo — o Firefox caía com "Target crashed" (recomendação do Playwright).
+      options: --ipc=host
     # O Firefox não abre se o $HOME não pertencer ao usuário do contêiner (limitação conhecida do
     # Firefox em contêineres no GitHub Actions).
     env:
