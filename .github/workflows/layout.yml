@@ -24,6 +24,10 @@ jobs:
     timeout-minutes: 20
     container:
       image: mcr.microsoft.com/playwright:v1.65.0-noble
+    # O Firefox não abre se o $HOME não pertencer ao usuário do contêiner (limitação conhecida do
+    # Firefox em contêineres no GitHub Actions).
+    env:
+      HOME: /root
     defaults:
       run:
         shell: bash
