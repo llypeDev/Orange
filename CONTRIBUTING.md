@@ -14,9 +14,13 @@ packages/
   ui/       @orangesys/ui     — componentes React, hooks, ícones, providers
 apps/
   docs/       site de documentação (Vite + React Router), PT/EN
-  storybook/  Storybook 9 (stories ficam junto dos componentes em packages/ui)
+  storybook/  Storybook 10 (stories ficam junto dos componentes em packages/ui)
+skills/
+  orange-ui/  skill para IAs que usam a biblioteca (references/ é gerado por pnpm gen:ai)
 scripts/
   gen-index.mjs   gera packages/ui/src/components/index.ts automaticamente
+  gen-ai.mjs      gera skills/orange-ui/references a partir do código e da documentação
+  size-check.mjs  orçamento de tamanho do pacote (pnpm size)
 ```
 
 Comandos (desenvolvimento pede Node ≥ 22.12, por causa do Vite 8 e do jest-dom 7; os pacotes publicados
@@ -25,6 +29,7 @@ continuam rodando em Node ≥ 18):
 ```bash
 pnpm install
 pnpm gen          # regenera o índice de componentes (rode após criar uma pasta nova)
+pnpm gen:ai       # regenera a referência para IAs (props, docs ou exemplos mudaram)
 pnpm dev          # docs em http://localhost:5173
 pnpm storybook    # storybook em http://localhost:6006
 pnpm test         # vitest (tokens + ui)
@@ -51,7 +56,9 @@ apps/docs/src/content/components/foo/
 ```
 
 Depois de criar a pasta, rode `pnpm gen` — o índice e o menu da documentação são **descobertos
-automaticamente**. Não edite `packages/ui/src/components/index.ts` à mão.
+automaticamente**. Não edite `packages/ui/src/components/index.ts` à mão. Rode também `pnpm gen:ai`:
+a referência para IAs (`skills/orange-ui/references`) sai das props, do JSDoc, da página e dos
+exemplos, e a CI falha (`pnpm gen:ai --check`) se ela ficar para trás.
 
 ## Regras de implementação
 
@@ -182,6 +189,7 @@ Os exemplos devem ser curtos, realistas e em português (conteúdo de produto, n
 
 ```bash
 pnpm gen
+pnpm gen:ai
 pnpm --filter @orangesys/ui exec vitest run src/components/Foo
 pnpm --filter @orangesys/ui typecheck
 pnpm --filter @orangesys/docs typecheck

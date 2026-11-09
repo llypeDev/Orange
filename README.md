@@ -11,14 +11,14 @@ bordas de 1px e grade explícita.
 | `@orangesys/tokens`    | Tokens de design (cores, tipografia, espaço, movimento) → CSS     |
 | `@orangesys/ui`        | Componentes React acessíveis, hooks, ícones e providers          |
 | `apps/docs`         | Site de documentação (PT/EN) com guidelines e páginas de componentes |
-| `apps/storybook`    | Storybook 9 com painel de acessibilidade, temas e idiomas        |
+| `apps/storybook`    | Storybook 10 com painel de acessibilidade, temas e idiomas       |
 
 ## Componentes
 
 117 componentes documentados, cada um com testes automatizados (incluindo axe-core), stories no
 Storybook e página bilíngue com boas práticas, exemplos ao vivo, props e acessibilidade (teclado e
 critérios WCAG). Além deles, a base inclui `Field`, `Portal`, tipografia
-(`Heading`, `Text`, `Eyebrow`), 21 hooks, 92 ícones e o `OrangeProvider` (tema + idioma).
+(`Heading`, `Text`, `Eyebrow`), 29 hooks, 92 ícones e o `OrangeProvider` (tema + idioma).
 
 | Categoria | Componentes |
 | --- | --- |
