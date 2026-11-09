@@ -152,7 +152,7 @@ toque, mantém o foco e o cursor no campo.
 | `startIcon` | `ReactNode` | — | Ícone decorativo no início do campo (ex.: cadeado). |
 | `visible` | `boolean` | — | Senha visível (controlado). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

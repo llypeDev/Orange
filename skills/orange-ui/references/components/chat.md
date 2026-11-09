@@ -536,7 +536,7 @@ nativas vão para o `<textarea>`; `className` e `formProps`, para o `<form>`.
 | `showCount` | `boolean` | `false` | Mostra o contador "x de y caracteres". Requer `maxLength`. |
 | `value` | `string` | — | Texto do campo (controlado). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TextareaHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ### `ChatMessage`
 

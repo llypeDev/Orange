@@ -205,7 +205,7 @@ configuração). Indica etapas concluídas, a atual e as próximas.
 | `orientation` | `"horizontal" \| "vertical"` | `horizontal` | Orientação. A horizontal vira compacta em contêineres estreitos. |
 | `step` | `number` | `0` | Índice (a partir de 0) da etapa atual. Etapas anteriores ficam concluídas. Padrão: `0`. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`OlHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

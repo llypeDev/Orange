@@ -81,20 +81,43 @@ for (const doc of componentDocs) {
 
 const fromNodeModules = (decl) => /node_modules/.test(decl.fileName)
 
+/**
+ * A interface de atributos nativos que o componente repassa. Primeiro pelo `extends` da
+ * declaração `<Nome>Props` no código (o docgen, num programa com todos os arquivos, às vezes
+ * atribui as props nativas a outra interface do @types/react); senão, pela mais frequente.
+ */
 function inheritedFrom(doc) {
-  const parents = new Set()
+  const source = readFileSync(doc.filePath, 'utf8')
+  const decl = source.match(
+    new RegExp(`(?:interface|type)\\s+${doc.displayName}Props\\b[\\s\\S]{0,600}?(?:\\{|;\\n)`),
+  )
+  if (decl) {
+    const attrs = decl[0].match(/\b([A-Z]\w*HTMLAttributes)\b/)
+    if (attrs) return attrs[1]
+    const tag = decl[0].match(/ComponentProps(?:WithoutRef|WithRef)?<\s*'([a-z]+)'\s*>/)
+    if (tag) return `<${tag[1]}>`
+  }
+  const counts = new Map()
   for (const prop of Object.values(doc.props)) {
     const decls = prop.declarations?.length ? prop.declarations : prop.parent ? [prop.parent] : []
     if (decls.length && decls.every(fromNodeModules)) {
-      for (const d of decls) parents.add(d.name)
+      for (const name of new Set(decls.map((d) => d.name))) {
+        counts.set(name, (counts.get(name) ?? 0) + 1)
+      }
     }
   }
-  const names = [...parents]
-  const specific = names.filter((n) => /HTMLAttributes$/.test(n) && n !== 'HTMLAttributes').sort()
-  if (specific.length) return specific[0]
-  if (names.includes('HTMLAttributes')) return 'HTMLAttributes'
-  if (names.includes('SVGAttributes')) return 'SVGAttributes'
-  return names.length ? names.sort()[0] : null
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  const generic = new Set([
+    'HTMLAttributes',
+    'AllHTMLAttributes',
+    'AriaAttributes',
+    'DOMAttributes',
+  ])
+  const specific = ranked.find(([n]) => /HTMLAttributes$/.test(n) && !generic.has(n))
+  if (specific) return specific[0]
+  if (counts.has('HTMLAttributes')) return 'HTMLAttributes'
+  if (counts.has('SVGAttributes')) return 'SVGAttributes'
+  return ranked[0]?.[0] ?? null
 }
 
 const cell = (text) =>
@@ -104,10 +127,18 @@ const cell = (text) =>
     .trim()
 
 function typeText(type) {
-  if (type.name === 'enum' && Array.isArray(type.value)) {
-    return type.value.map((v) => v.value).join(' | ')
-  }
-  return type.name
+  const expanded =
+    type.name === 'enum' && Array.isArray(type.value)
+      ? type.value.map((v) => v.value).join(' | ')
+      : type.name
+  // Uniões gigantes (ex.: `as` genérico expandido em ~180 tags de ElementType): o nome declarado
+  // diz mais; sem ele, `("a" & ElementType) | …` vira `ElementType`.
+  const huge = expanded.length > 160 || /\.\.\. \d+ more \.\.\./.test(expanded)
+  if (!huge) return expanded
+  if (type.raw && type.raw.length <= 160) return type.raw
+  const intersected = expanded.match(/^\("[^"]+" & (\w+)\)/)
+  if (intersected) return intersected[1]
+  return `${expanded.split(' | ').slice(0, 4).join(' | ')} | …`
 }
 
 function propsMarkdown(doc) {
@@ -169,6 +200,16 @@ const tagName = (node) =>
 function unwrap(node) {
   while (node && (ts.isParenthesizedExpression(node) || ts.isAsExpression(node))) {
     node = node.expression
+  }
+  return node
+}
+
+/** O nó em português de `{ pt, en }` (para conteúdo em blocos, como um <p>). */
+function ptNode(node) {
+  node = unwrap(node)
+  if (node && ts.isObjectLiteralExpression(node)) {
+    return node.properties.find((p) => ts.isPropertyAssignment(p) && p.name.getText() === 'pt')
+      ?.initializer
   }
   return node
 }
@@ -268,9 +309,9 @@ function exampleCodeMap(sourceFile, file) {
     if (!ts.isImportDeclaration(stmt) || !stmt.importClause?.name) continue
     const spec = stmt.moduleSpecifier.text
     if (!spec.endsWith('?raw')) continue
-    let target = resolve(dirname(file), spec.slice(0, -4))
-    if (!existsSync(target)) target += '.tsx'
-    if (existsSync(target)) map.set(stmt.importClause.name.text, target)
+    const base = resolve(dirname(file), spec.slice(0, -4))
+    const target = [base, `${base}.tsx`, `${base}.ts`].find((p) => existsSync(p))
+    if (target) map.set(stmt.importClause.name.text, target)
   }
   return map
 }
@@ -447,6 +488,36 @@ function pageToMarkdown(file, { headingLevel = 2, onProps } = {}) {
         }
         if (heading) out.push(`${h(level)} ${heading}`, '')
         children.forEach((c) => block(c, level + 1))
+        return
+      }
+      case 'TemplateDocPage': {
+        // Modelo de página: visão geral, componentes usados, acessibilidade e o código completo.
+        const t = attr(node, 'title')
+        if (t && t !== true) title = clean(localized(t))
+        const lead = attr(node, 'lead')
+        if (lead && lead !== true) out.push(clean(localized(lead)), '')
+        block(ptNode(attr(node, 'overview')), level)
+        out.push(`${h(level)} Componentes usados`, '')
+        list(attr(node, 'components'), (el) => {
+          const slug = inline(prop(el, 'slug'))
+          return `**${slug}** (\`components/${slug}.md\`) — ${clean(localized(prop(el, 'why')))}`
+        })
+        out.push(`${h(level)} Acessibilidade`, '')
+        list(attr(node, 'a11y'), (el) => {
+          const topic = clean(localized(prop(el, 'topic')))
+          const crit = inline(prop(el, 'criteria'))
+          return `**${topic}**${crit ? ` (${crit})` : ''} — ${clean(localized(prop(el, 'description')))}`
+        })
+        const filesNode = unwrap(attr(node, 'files'))
+        if (filesNode && ts.isArrayLiteralExpression(filesNode)) {
+          out.push(`${h(level)} Código`, '')
+          for (const f of filesNode.elements.map(unwrap)) {
+            const name = inline(prop(f, 'name'))
+            const language = inline(prop(f, 'language')) || 'tsx'
+            out.push(`\`${name}\`:`, '')
+            fence(codeOf(prop(f, 'code')), language)
+          }
+        }
         return
       }
       case 'Bullets':
@@ -718,7 +789,7 @@ for (const meta of metas) {
     '',
     `${metas.length} componentes documentados, por categoria. Cada um tem um arquivo em \`components/<slug>.md\` com boas práticas, props (geradas do código), acessibilidade (teclado e WCAG) e exemplos que funcionam. Leia o arquivo antes de usar o componente.`,
     '',
-    'Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`, utilitários): `foundations.md`. Hooks: `hooks.md`. Tokens: `tokens.md`. Ícones: `icons.md`.',
+    'Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`, utilitários): `foundations.md`. Hooks: `hooks.md`. Tokens: `tokens.md`. Ícones: `icons.md`. Telas inteiras prontas: `templates/` (sign-in, dashboard, settings). Tema, estilos, i18n e diretrizes de design: `guides/`.',
     '',
   ]
   for (const [category, label] of Object.entries(categoryLabels)) {
@@ -973,6 +1044,18 @@ for (const [slug, file] of guides) {
   const page = pageToMarkdown(join(docsContent, file))
   const title = page.title ?? slug
   files.set(`guides/${slug}.md`, `# ${title}\n\n${page.body}\n`)
+}
+
+// Modelos: páginas inteiras (entrar, painel, configurações) com o código completo.
+const templatesDir = join(docsContent, 'templates')
+for (const slug of readdirSync(templatesDir).sort()) {
+  const page = join(templatesDir, slug, 'index.tsx')
+  if (slug.startsWith('_') || !existsSync(page)) continue
+  const { title, body } = pageToMarkdown(page)
+  files.set(
+    `templates/${slug}.md`,
+    `# Modelo: ${title ?? slug}\n\n- Ao vivo: ${SITE}/pt/templates/${slug}\n\n${body}\n`,
+  )
 }
 
 // ---------------------------------------------------------------------------------------------

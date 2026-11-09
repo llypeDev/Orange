@@ -183,7 +183,7 @@ substituto acessível. A `ref` e os demais atributos vão para a `<img>`;
 | `position` | `string` | — | Ponto focal do recorte (`object-position`), ex.: `'top'`, `'50% 30%'`. |
 | `ratio` | `ImageRatio` | — | Proporção reservada antes do carregamento (`aspect-ratio`), evitando deslocamento de layout. Sem `ratio`, usa `width`/`height` numéricos se houver. |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`ImgHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

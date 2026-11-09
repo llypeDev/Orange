@@ -60,12 +60,12 @@ quando o ícone transmitir significado sozinho.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `name` (obrigatória) | `"type" \| "search" \| "send" \| "grid" \| "link" \| "list" \| "menu" \| "copy" \| "info" \| "filter" \| "accessibility" \| "alert-circle" \| "alert-triangle" \| "align-center" \| "align-left" \| "align-right" \| "arrow-down" \| "arrow-down-to-line" \| "arrow-left" \| "arrow-right" \| "arrow-up" \| "arrow-up-right" \| "arrow-up-to-line" \| "arrows-up-down" \| "bell" \| "bold" \| "book" \| "calendar" \| "chart-bar" \| "check" \| "check-circle" \| "chevron-down" \| "chevron-left" \| "chevron-right" \| "chevron-up" \| "chevrons-left" \| "chevrons-right" \| "chevrons-up-down" \| "circle" \| "clock" \| "close" \| "code" \| "command" \| "download" \| "droplet" \| "edit" \| "external-link" \| "eye" \| "eye-off" \| "file" \| "folder" \| "folder-open" \| "globe" \| "grip" \| "heart" \| "help-circle" \| "home" \| "image" \| "inbox" \| "italic" \| "keyboard" \| "layers" \| "layout" \| "lock" \| "log-out" \| "mail" \| "minus" \| "monitor" \| "moon" \| "more-horizontal" \| "more-vertical" \| "pause" \| "play" \| "plus" \| "redo" \| "refresh" \| "rocket" \| "sliders" \| "sparkle" \| "square" \| "star" \| "sun" \| "tag" \| "terminal" \| "trash" \| "underline" \| "undo" \| "upload" \| "user" \| "users" \| "x-circle" \| "zap"` | — | Nome do ícone na biblioteca do Orange. |
+| `name` (obrigatória) | `"type" \| "search" \| "send" \| "grid" \| …` | — | Nome do ícone na biblioteca do Orange. |
 | `label` | `string` | — | Texto alternativo. Quando informado, o ícone é anunciado por leitores de tela (`role="img"`). Sem `label`, o ícone é decorativo (`aria-hidden`). |
 | `size` | `IconSize` | `md` | Tamanho: token (`xs`=12, `sm`=16, `md`=20, `lg`=24, `xl`=32) ou pixels. |
 | `strokeWidth` | `number` | `1.75` | Espessura do traço. Padrão 1.75. |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 Código: `packages/ui/src/icons/Icon.tsx`
 

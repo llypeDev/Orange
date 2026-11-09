@@ -297,7 +297,7 @@ opcional e status em texto + tag.
 | `onClick` | `((event: MouseEvent<HTMLElement, MouseEvent>) => void)` | — | Sem `href`, torna a linha um botão (ex.: abrir um diálogo). Com `href`, é repassado ao link. |
 | `statusLabel` | `ReactNode` | — | Substitui o texto padrão do status (ex.: "Disponível após o frete"). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

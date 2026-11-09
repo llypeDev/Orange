@@ -637,7 +637,7 @@ export default function VisibleColumns() {
 | `sort` | `TableSort \| null` | — | Ordenação controlada. |
 | `striped` | `boolean` | — | Alterna a cor de fundo das linhas. |
 
-Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`TableHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

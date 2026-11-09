@@ -184,7 +184,7 @@ variante `ghost` por padrão e integração com ButtonGroup e Toolbar.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `icon` (obrigatória) | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| "send" \| "grid" \| "link" \| "list" \| "menu" \| "copy" \| "info" \| ... 82 more ... \| "zap"` | — | Nome de um ícone do Orange ou um elemento SVG próprio. |
+| `icon` (obrigatória) | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Nome de um ícone do Orange ou um elemento SVG próprio. |
 | `label` (obrigatória) | `string` | — | Nome acessível do botão (vira `aria-label`). Obrigatório: descreva a ação, não o ícone — "Excluir arquivo", não "Lixeira". |
 | `loading` | `boolean` | — | Mostra um indicador de carregamento e bloqueia novos cliques. |
 | `loadingText` | `string` | — | Texto anunciado a leitores de tela durante o carregamento. |

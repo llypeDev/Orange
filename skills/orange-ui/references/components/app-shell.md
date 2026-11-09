@@ -365,7 +365,7 @@ na marca do `AppHeader`. Não renderiza nada sem `navigation`.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| "send" \| "grid" \| "link" \| "list" \| "menu" \| "copy" \| "info" \| ... 83 more ...` | — | Ícone. Padrão: menu (telas estreitas) ou chevrons que giram (telas largas). |
+| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Ícone. Padrão: menu (telas estreitas) ou chevrons que giram (telas largas). |
 | `label` | `string` | — | Nome acessível. Padrão: "Abrir navegação" (telas estreitas) ou "Recolher/Expandir menu lateral" (telas largas). |
 | `loading` | `boolean` | — | Mostra um indicador de carregamento e bloqueia novos cliques. |
 | `loadingText` | `string` | — | Texto anunciado a leitores de tela durante o carregamento. |

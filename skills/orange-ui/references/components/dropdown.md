@@ -293,7 +293,7 @@ Item de ação do menu (`role="menuitem"`).
 | --- | --- | --- | --- |
 | `closeOnSelect` | `boolean` | `true` | Fecha o menu ao ativar. Padrão: `true`. |
 | `disabled` | `boolean` | — | Visível e focável, mas não pode ser ativado. |
-| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| "send" \| "grid" \| "link" \| "list" \| "menu" \| "copy" \| "info" \| ... 83 more ...` | — | Ícone à esquerda: nome da biblioteca do Orange ou um elemento. |
+| `icon` | `"type" \| ReactElement<unknown, string \| JSXElementConstructor<any>> \| "search" \| …` | — | Ícone à esquerda: nome da biblioteca do Orange ou um elemento. |
 | `onSelect` | `((event: SyntheticEvent<HTMLDivElement, Event>) => void)` | — | Executado ao ativar o item (clique, Enter ou Espaço). |
 | `shortcut` | `string` | — | Atalho de teclado exibido à direita (apenas visual — implemente o atalho à parte). |
 | `textValue` | `string` | — | Texto usado pelo typeahead quando o conteúdo não é texto simples. |

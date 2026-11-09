@@ -188,7 +188,7 @@ etapas de um processo. Renderiza um `<ol>` com datas em `<time>`.
 | `dateFormat` | `DateTimeFormatOptions` | — | Formato das datas dos itens (`Intl.DateTimeFormat`). Padrão: `{ dateStyle: 'medium' }`. |
 | `variant` | `"default" \| "alternate"` | `default` | `default`: linha à esquerda. `alternate`: eventos alternam dos dois lados da linha (vira `default` em contêineres estreitos). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`OlHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ### `TimelineItem`
 
@@ -207,7 +207,7 @@ Evento de uma `Timeline`.
 | `titleAs` | `ElementType` | `p` | Elemento do título. Padrão: `p`. Use `h3`/`h4` se os eventos forem seções. |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "accent"` | `neutral` | Cor do marcador quadrado. Padrão: `neutral` (contorno). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

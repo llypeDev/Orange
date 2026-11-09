@@ -440,7 +440,7 @@ erros chegam aos campos pelo render-prop `children` ou por `useForm()`.
 | `onSubmit` | `((values: FormValues, event: FormEvent<HTMLFormElement>) => unknown)` | — | Chamado só quando não há erros de validação. Se retornar uma promessa, o formulário fica `aria-busy` e bloqueia novos envios até ela terminar. Sem `onSubmit`, um envio válido segue o caminho nativo (`action`/`method`). |
 | `validate` | `((values: FormValues) => FormErrors)` | — | Validação síncrona, chamada no envio com os valores do formulário. Retorne uma mensagem por `name` inválido. Depois de um envio com erros, roda de novo a cada alteração para tirar os erros já corrigidos. |
 
-Repassa também os atributos nativos (`AnchorHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`FormHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ### `FormActions`
 

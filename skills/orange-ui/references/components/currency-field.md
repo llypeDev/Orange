@@ -179,7 +179,7 @@ moeda no campo e formatação com `Intl.NumberFormat` ao sair. Entrega um
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `number \| null` | — | Valor numérico (controlado). `null` = vazio. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

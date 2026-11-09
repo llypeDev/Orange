@@ -166,7 +166,7 @@ Um nível da trilha. Use dentro de `Breadcrumb`.
 | `href` | `string` | — | Destino do nível. Sem `href`, o item é renderizado como texto. |
 | `icon` | `ReactNode` | — | Ícone decorativo antes do rótulo. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`LiHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

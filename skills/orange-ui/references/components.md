@@ -2,7 +2,7 @@
 
 117 componentes documentados, por categoria. Cada um tem um arquivo em `components/<slug>.md` com boas práticas, props (geradas do código), acessibilidade (teclado e WCAG) e exemplos que funcionam. Leia o arquivo antes de usar o componente.
 
-Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`, utilitários): `foundations.md`. Hooks: `hooks.md`. Tokens: `tokens.md`. Ícones: `icons.md`.
+Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`, utilitários): `foundations.md`. Hooks: `hooks.md`. Tokens: `tokens.md`. Ícones: `icons.md`. Telas inteiras prontas: `templates/` (sign-in, dashboard, settings). Tema, estilos, i18n e diretrizes de design: `guides/`.
 
 ## Ações (9)
 

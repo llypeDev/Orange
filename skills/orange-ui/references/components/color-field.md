@@ -152,7 +152,7 @@ campo hexadecimal validado e, opcionalmente, uma paleta de cores sugeridas.
 | `swatches` | `(string \| ColorSwatch)[]` | — | Cores sugeridas, exibidas como grupo de opções (radiogroup). |
 | `value` | `string` | — | Cor no formato `#rrggbb` (controlado). `''` = sem cor. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

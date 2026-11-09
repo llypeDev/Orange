@@ -147,7 +147,7 @@ vírgulas cria várias tags de uma vez.
 | `validate` | `((tag: string, tags: string[]) => string \| boolean \| null)` | — | Valida cada tag antes de adicioná-la. Retorne uma mensagem de erro para recusar, ou `true`/`undefined` para aceitar. |
 | `value` | `string[]` | — | Tags (controlado). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

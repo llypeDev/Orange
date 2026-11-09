@@ -187,7 +187,7 @@ poucas (até ~15). Para listas longas com busca, use `Combobox`.
 | `placeholder` | `string` | — | Texto exibido enquanto nada foi escolhido (opção de valor vazio). Se o campo for `required`, a opção fica desabilitada e não pode ser escolhida de volta. |
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`SelectHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

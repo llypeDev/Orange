@@ -165,7 +165,7 @@ Polimórfico: `as` aceita o link do seu roteador.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `as` | `("symbol" & ElementType) \| ("object" & ElementType) \| ("slot" & ElementType) \| ("style" & ElementType) \| ("title" & ElementType) \| ... 175 more ...` | — | Componente renderizado no lugar do `<a>` — use para integrar com roteadores: `<Link as={RouterLink} to="/conta">`. |
+| `as` | `ElementType` | — | Componente renderizado no lugar do `<a>` — use para integrar com roteadores: `<Link as={RouterLink} to="/conta">`. |
 | `className` | `string` | — | — |
 | `external` | `boolean` | — | Link para outro site: abre em nova aba (`target="_blank"`, `rel="noopener noreferrer"`), mostra o ícone ↗ e avisa leitores de tela. |
 | `ref` | `Ref<HTMLAnchorElement>` | — | — |

@@ -222,7 +222,7 @@ de um `CheckboxGroup`. A `ref` e as props nativas vão para o `<input>`;
 | `label` | `ReactNode` | — | Rótulo clicável ao lado da caixa. Sem rótulo visível, informe `aria-label`. |
 | `onCheckedChange` | `((checked: boolean) => void)` | — | Chamado com o novo estado marcado (atalho para `onChange`). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ### `CheckboxGroup`
 
@@ -248,7 +248,7 @@ A variante `card` mostra cada opção em um cartão clicável, como no RadioGrou
 | `value` | `string[]` | — | Valores marcados (controlado). |
 | `variant` | `"default" \| "card"` | `default` | `card` mostra cada opção em um cartão com borda (laranja quando marcado). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`FieldsetHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

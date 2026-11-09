@@ -166,7 +166,7 @@ sistema e do seletor nativo — com teclado e leitores de tela completos.
 | `step` | `number` | — | Intervalo em segundos entre horários válidos. Ex.: `900` = 15 minutos. Padrão: 60. |
 | `value` | `string` | — | Horário no formato `HH:mm` (ou `HH:mm:ss` com `step` < 60). Controlado. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Acessibilidade
 

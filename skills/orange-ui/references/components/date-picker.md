@@ -248,7 +248,7 @@ mm/dd/yyyy em en-US) e um calendário em diálogo, seguindo o padrão
 | `value` | `Date \| null` | — | Data selecionada (controlado). `null` = vazio. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana no calendário: 0 = domingo (padrão), 1 = segunda… |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ### `Calendar`
 

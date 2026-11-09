@@ -176,7 +176,7 @@ e contador de caracteres. A `ref` e as props nativas vão para o `<input>`;
 | `suffix` | `ReactNode` | — | Texto fixo depois do valor (ex.: `kg`, `.com.br`). É lido junto com a descrição. |
 | `type` | `"search" \| "text" \| "tel" \| "url" \| "email"` | `text` | Tipo do campo. Para senhas use `PasswordField`; para números, `NumberField`. |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

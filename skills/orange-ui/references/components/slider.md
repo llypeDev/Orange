@@ -177,7 +177,7 @@ dois polegares definem um intervalo.
 | `thumbLabels` | `[string, string]` | — | Nomes acessíveis dos polegares. Padrão: "mínimo" e "máximo". |
 | `value` | `number \| [number, number]` | — | — |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 

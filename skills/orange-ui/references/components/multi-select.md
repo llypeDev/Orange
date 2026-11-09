@@ -205,7 +205,7 @@ e os itens escolhidos aparecem como chips removíveis.
 | `size` | `"sm" \| "md" \| "lg"` | — | Altura mínima do controle: `sm` 32px, `md` 40px, `lg` 48px. |
 | `value` | `string[]` | — | Valores selecionados (controlado). |
 
-Repassa também os atributos nativos (`ButtonHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
+Repassa também os atributos nativos (`InputHTMLAttributes`: `className`, `style`, `aria-*`, `data-*`, eventos…) ao elemento raiz.
 
 ## Movimento
 
