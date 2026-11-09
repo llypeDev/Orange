@@ -13,9 +13,9 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -27,7 +27,7 @@ jobs:
       - run: pnpm build
       # Orçamento de tamanho do @orangesys/ui (size-limits.json): falha se um import passar do limite.
       - run: pnpm size
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: docs-site
           path: apps/docs/dist
@@ -38,11 +38,11 @@ jobs:
     if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm

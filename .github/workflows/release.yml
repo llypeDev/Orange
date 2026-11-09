@@ -38,11 +38,11 @@ jobs:
     outputs:
       mode: ${{ steps.select-mode.outputs.mode }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           package-manager-cache: false
@@ -60,13 +60,13 @@ jobs:
       contents: write # commit das versões no branch do PR
       pull-requests: write # abrir/atualizar o PR "Versionar pacotes"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           # Histórico completo: o changelog liga cada entrada ao commit e ao PR de origem.
           fetch-depth: 0
           persist-credentials: false
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           package-manager-cache: false
@@ -90,11 +90,11 @@ jobs:
       contents: write # tags e GitHub Releases
       id-token: write # trusted publishing (OIDC) e provenance
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
