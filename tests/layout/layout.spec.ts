@@ -21,6 +21,13 @@ async function openStory(
   const globals = `theme:light;motion:${motion};locale:pt-BR`
   await page.goto(`/iframe.html?${query}&globals=${globals}${args ? `&args=${args}` : ''}`)
   await expect(page.locator('#storybook-root > *').first()).toBeVisible()
+  // As fontes da web (display=swap) mudam a largura do texto quando chegam. Medir ou rolar
+  // antes disso deixa o teste à mercê da rede: na CI, o End revelou a aba com a fonte reserva
+  // (mais estreita no contêiner) e a Inter, ao chegar, empurrou a aba para fora da lista.
+  await page.evaluate(async () => {
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    await document.fonts.ready
+  })
 }
 
 /**
