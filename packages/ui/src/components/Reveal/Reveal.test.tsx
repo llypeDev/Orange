@@ -182,10 +182,10 @@ describe('Reveal appear', () => {
     render(<Reveal appear>Hero</Reveal>)
     const el = screen.getByText('Hero')
     expect(el).toHaveAttribute('data-reveal', 'hidden')
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 10))
-    })
-    expect(el).toHaveAttribute('data-reveal', 'shown')
+    // Espera o estado final, não um tempo fixo: os dois quadros simulados são setTimeout(0)
+    // encadeados, e com a máquina carregada (a suíte inteira em paralelo) um atraso de 10ms
+    // vencia antes do segundo quadro.
+    await waitFor(() => expect(el).toHaveAttribute('data-reveal', 'shown'))
     raf.mockRestore()
   })
 })
