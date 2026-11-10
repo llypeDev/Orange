@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  * DateTimePicker — data (com máscara e calendário em diálogo, como o
- * DatePicker) e hora (input nativo, como o TimeField) num só controle.
+ * DatePicker) e hora (input nativo) num só controle.
  *
  * Layout: duas "células" num .or-control-frame que quebra linha. Com espaço,
  * ficam lado a lado — [data | calendário | relógio hora]; sem espaço (≈ 320px),
@@ -89,7 +89,7 @@
   color: var(--or-color-accent-text);
 }
 
-/* Relógio (como no TimeField): acende no hover, avança um "tique" com o foco
+/* Relógio: acende no hover, avança um "tique" com o foco
    na hora e afunda no clique. */
 .or-date-time-picker__clock {
   cursor: pointer;

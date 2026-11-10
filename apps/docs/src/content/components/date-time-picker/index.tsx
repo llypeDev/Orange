@@ -169,8 +169,8 @@ export default function DateTimePickerPage() {
             {
               term: { pt: 'Hora', en: 'Time' },
               description: {
-                pt: 'O <input type="time"> nativo, como no TimeField, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".',
-                en: 'The native <input type="time">, as in TimeField, with the clock on the left (with a mouse, it opens the browser picker). Accessible name "Time".',
+                pt: 'O <input type="time"> nativo, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".',
+                en: 'The native <input type="time">, with the clock on the left (with a mouse, it opens the browser picker). Accessible name "Time".',
               },
             },
             {
@@ -260,8 +260,8 @@ export default function DateTimePickerPage() {
             {
               term: { pt: 'Relógio', en: 'Clock' },
               description: {
-                pt: 'Como no TimeField: com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.',
-                en: 'As in TimeField: with focus on the time, the clock turns orange and advances a 30° "tick" · medium, ease-spring.',
+                pt: 'Com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.',
+                en: 'With focus on the time, the clock turns orange and advances a 30° "tick" · medium, ease-spring.',
               },
             },
             {

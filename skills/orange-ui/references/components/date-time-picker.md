@@ -24,7 +24,7 @@ Data e hora num só campo: a data com máscara e calendário em diálogo, a hora
 - **Grupo** — Um só controle com role="group", nomeado pelo rótulo. O clique no rótulo leva ao campo de data.
 - **Data** — Campo de texto com a máscara do idioma, igual ao do DatePicker ("5/3" vira "05/03"). Nome acessível "Data".
 - **Botão de calendário** — Logo depois da data. Abre o diálogo; com um dia preenchido, o nome inclui a data: "Alterar data, sexta-feira, 13 de novembro de 2026".
-- **Hora** — O <input type="time"> nativo, como no TimeField, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".
+- **Hora** — O <input type="time"> nativo, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".
 - **Telas estreitas** — Sem espaço para os dois lado a lado (≈ 320px), a hora desce para uma segunda linha dentro da mesma moldura, separada por um divisor.
 
 ## Exemplos
@@ -196,7 +196,7 @@ export default function States() {
 
 - **Abrir e fechar o calendário** — Igual ao DatePicker: o diálogo entra com opacidade, 4px vindos do lado do campo e escala 0,98 → 1 · medium (250ms), ease-out; sai mais rápido e inerte · fast (160ms), ease-in-out.
 - **Calendário** — O mesmo Calendar: a grade desliza ao trocar de mês e o dia escolhido faz pop · medium.
-- **Relógio** — Como no TimeField: com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.
+- **Relógio** — Com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.
 - **Erro de validação** — O controle treme uma vez quando a mensagem surge (or-shake) · slow (400ms).
 - **Hover, foco e pressionar** — Borda e foco do frame · fast; o ícone do calendário e o relógio afundam 1px · press (90ms).
 - **Movimento reduzido** — Os tokens viram 0: tudo muda na hora — borda, cor e texto continuam indicando o estado.
@@ -206,8 +206,8 @@ export default function States() {
 ### `DateTimePicker`
 
 Campo de data e hora: a data com máscara conforme o idioma (como no
-`DatePicker`) e a hora no `<input type="time">` nativo (como no `TimeField`)
-dentro de um só controle, com o calendário em diálogo para escolher o dia.
+`DatePicker`) e a hora no `<input type="time">` nativo, dentro de um só
+controle, com o calendário em diálogo para escolher o dia.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |

@@ -1,102 +1,259 @@
 /* ---------------------------------------------------------------------------
- * TimeField — campo de horário nativo
+ * TimeField — campo de horário em segmentos, com lista de horários
  *
- * Movimento: borda/foco do frame vêm do Field (--or-duration-fast); o relógio
- * acende no hover, gira um "tique" ao receber foco e afunda no clique; o
- * segmento em edição troca de cor com transição.
+ * Cada segmento (hora, minuto, segundo, AM/PM) recebe o foco e fica laranja
+ * enquanto é editado — igual em todos os navegadores. O valor mora num
+ * `<input type="time">` invisível que cobre o campo.
+ *
+ * Movimento: borda/foco do frame vêm de controls.css (--or-duration-fast); o
+ * segmento troca de cor com transição; o relógio avança um "tique" (30°)
+ * enquanto a lista está aberta e afunda no clique; a lista entra e sai com a
+ * base das sobreposições ancoradas (.or-floating).
  * ------------------------------------------------------------------------- */
 
 .or-time-field__frame {
+  position: relative;
   max-width: 12rem;
-}
-
-.or-time-field__icon {
-  cursor: pointer;
-}
-
-.or-time-field__icon .or-icon {
-  transition:
-    color var(--or-duration-fast) var(--or-ease-out),
-    transform var(--or-duration-medium) var(--or-ease-spring);
-}
-
-.or-time-field__frame:hover:not([data-disabled], [data-readonly]) .or-time-field__icon {
-  color: var(--or-color-text);
-}
-
-/* Foco: o relógio fica laranja e avança um "tique" (30°). */
-.or-time-field__frame:focus-within:not([data-readonly]) .or-time-field__icon .or-icon {
-  transform: rotate(30deg);
-}
-
-.or-time-field__frame:not([data-disabled], [data-readonly]) .or-time-field__icon:active .or-icon {
-  transform: rotate(30deg) translateY(1px) scale(0.985);
-  transition-duration: var(--or-duration-press);
-}
-
-.or-time-field__frame[data-disabled] .or-time-field__icon,
-.or-time-field__frame[data-readonly] .or-time-field__icon {
-  cursor: default;
-}
-
-.or-time-field__icon {
-  transition: color var(--or-duration-fast) var(--or-ease-out);
-}
-
-.or-time-field__frame:focus-within .or-time-field__icon {
-  color: var(--or-color-accent-text);
+  cursor: text;
 }
 
 .or-time-field__frame[data-readonly] {
   background: var(--or-color-bg-subtle);
+  cursor: default;
 }
 
-.or-time-field__input {
+.or-time-field__frame[data-disabled] {
+  cursor: not-allowed;
+}
+
+/* Segmentos ------------------------------------------------------------------ */
+
+.or-time-field__segments {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  padding: 0 var(--or-space-3);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
-  cursor: text;
+  /* O espaço antes do AM/PM é um literal: não pode sumir. */
+  white-space: pre;
 }
 
-/* O ícone de relógio à esquerda substitui o indicador nativo (WebKit/Blink). */
-.or-time-field__input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.or-time-field__input::-webkit-datetime-edit {
-  padding: 0;
-}
-
-/* Segmento em edição (hora, minuto, AM/PM) destacado em laranja. */
-.or-time-field__input::-webkit-datetime-edit-hour-field,
-.or-time-field__input::-webkit-datetime-edit-minute-field,
-.or-time-field__input::-webkit-datetime-edit-second-field,
-.or-time-field__input::-webkit-datetime-edit-ampm-field {
+.or-time-field__segment {
+  box-sizing: content-box;
+  /* "--" e "09" ocupam o mesmo lugar: o campo não dança enquanto é preenchido. */
+  min-width: 2ch;
+  padding: 1px 2px;
+  border-radius: var(--or-radius-none);
+  outline: none;
+  /* Não há cursor de texto: o segmento inteiro é a seleção. */
+  caret-color: transparent;
+  text-align: center;
+  cursor: inherit;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     color var(--or-duration-fast) var(--or-ease-out);
 }
 
-.or-time-field__input::-webkit-datetime-edit-hour-field:focus,
-.or-time-field__input::-webkit-datetime-edit-minute-field:focus,
-.or-time-field__input::-webkit-datetime-edit-second-field:focus,
-.or-time-field__input::-webkit-datetime-edit-ampm-field:focus {
-  background: var(--or-color-accent);
-  color: var(--or-color-text-on-accent);
-  outline: none;
+.or-time-field__segment[data-kind='period'] {
+  min-width: 0;
 }
 
-.or-time-field__input:disabled::-webkit-datetime-edit {
+.or-time-field__segment[data-placeholder],
+.or-time-field__literal {
+  color: var(--or-color-text-subtle);
+}
+
+.or-time-field__segment:focus {
+  background: var(--or-color-accent);
+  color: var(--or-color-text-on-accent);
+}
+
+/* Clique duplo não pinta a seleção do sistema por cima do laranja. */
+.or-time-field__segment::selection {
+  background: transparent;
+  color: inherit;
+}
+
+.or-time-field__frame[data-disabled] .or-time-field__segment,
+.or-time-field__frame[data-disabled] .or-time-field__literal {
   color: var(--or-color-text-disabled);
 }
 
-/* Alto contraste: o segmento focado (hora, minuto…) era só um fundo de acento
-   com `outline: none` — vira Highlight/HighlightText. */
+/* O valor de verdade: invisível, cobre o campo (é onde o navegador ancora o
+   balão de validação) e não recebe cliques. */
+.or-time-field__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Botão do relógio ----------------------------------------------------------- */
+
+.or-time-field__button .or-icon {
+  transition:
+    transform var(--or-duration-medium) var(--or-ease-spring),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+.or-time-field__button:active:not(:disabled) {
+  background: var(--or-color-surface-active);
+}
+
+.or-time-field__button:active:not(:disabled) .or-icon {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--or-duration-press);
+}
+
+/* Lista aberta: o relógio fica laranja e avança um "tique". */
+.or-time-field__button[aria-expanded='true'] {
+  background: var(--or-color-surface-active);
+  color: var(--or-color-accent-text);
+}
+
+.or-time-field__button[aria-expanded='true'] .or-icon {
+  transform: rotate(30deg);
+}
+
+/* Lista de horários ---------------------------------------------------------- */
+
+.or-time-field__popup {
+  z-index: var(--or-z-popover);
+  display: flex;
+  flex-direction: column;
+  min-width: max(var(--or-floating-reference-width, 8rem), 8rem);
+  max-height: min(20rem, var(--or-floating-available-height, 20rem));
+  overflow: hidden;
+  border: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-radius: var(--or-radius-none);
+  background: var(--or-color-surface-raised);
+  box-shadow: var(--or-shadow-overlay);
+  color: var(--or-color-text);
+  font-size: var(--or-text-sm);
+  line-height: var(--or-leading-tight);
+}
+
+/* Lista longa: rola por dentro, sem levar a página junto. */
+.or-time-field__listbox {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: var(--or-space-1) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.or-time-field__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--or-space-3);
+  min-height: 2.25rem;
+  padding: var(--or-space-2) var(--or-space-3);
+  outline: none;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--or-duration-fast) var(--or-ease-out),
+    color var(--or-duration-fast) var(--or-ease-out);
+}
+
+/* Barra lateral laranja na opção com foco ou sob o mouse: cresce do centro. */
+.or-time-field__option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--or-border-accent);
+  background: var(--or-color-accent);
+  transform: scaleY(0);
+  transition: transform var(--or-duration-medium) var(--or-ease-spring);
+}
+
+.or-time-field__option:hover,
+.or-time-field__option:focus {
+  background: var(--or-color-surface-hover);
+}
+
+.or-time-field__option:hover::before,
+.or-time-field__option:focus::before {
+  transform: scaleY(1);
+}
+
+.or-time-field__option:focus-visible {
+  outline: 2px solid var(--or-color-focus);
+  outline-offset: -2px;
+}
+
+.or-time-field__option:active {
+  background: var(--or-color-surface-active);
+  transition-duration: var(--or-duration-press);
+}
+
+.or-time-field__option[aria-selected='true'] .or-time-field__option-label {
+  font-weight: var(--or-weight-semibold);
+}
+
+/* Check da escolhida: sempre no DOM (a largura não pula). */
+.or-time-field__option-check {
+  flex-shrink: 0;
+  color: var(--or-color-accent);
+  opacity: 0;
+}
+
+.or-time-field__option[aria-selected='true'] .or-time-field__option-check {
+  opacity: 1;
+}
+
+/* Alto contraste -------------------------------------------------------------
+ * O segmento em edição e a opção com foco eram só um fundo: viram as cores de
+ * seleção do sistema. */
 @media (forced-colors: active) {
-  .or-time-field__input::-webkit-datetime-edit-hour-field:focus,
-  .or-time-field__input::-webkit-datetime-edit-minute-field:focus,
-  .or-time-field__input::-webkit-datetime-edit-second-field:focus,
-  .or-time-field__input::-webkit-datetime-edit-ampm-field:focus {
+  /* Texto sobre Highlight: sem `none` o Chromium pinta a placa de leitura (Canvas) atrás dos
+     números e eles somem. Fundo e texto são cores do sistema explícitas. */
+  .or-time-field__segment:focus {
     background: Highlight;
     color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .or-time-field__segment[data-placeholder],
+  .or-time-field__literal {
+    color: CanvasText;
+  }
+
+  .or-time-field__frame[data-disabled] .or-time-field__segment,
+  .or-time-field__frame[data-disabled] .or-time-field__literal {
+    color: GrayText;
+  }
+
+  .or-time-field__popup {
+    border-color: CanvasText;
+  }
+
+  .or-time-field__option:focus {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .or-time-field__option:hover::before,
+  .or-time-field__option:focus::before {
+    background: Highlight;
+  }
+
+  /* O check é um SVG (preserva a cor do autor): força o texto do sistema. */
+  .or-time-field__option-check {
+    color: CanvasText;
   }
 }

@@ -127,8 +127,8 @@ function FieldControl({
 
 /**
  * Campo de data e hora: a data com máscara conforme o idioma (como no
- * `DatePicker`) e a hora no `<input type="time">` nativo (como no `TimeField`)
- * dentro de um só controle, com o calendário em diálogo para escolher o dia.
+ * `DatePicker`) e a hora no `<input type="time">` nativo, dentro de um só
+ * controle, com o calendário em diálogo para escolher o dia.
  */
 export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
   function DateTimePicker(

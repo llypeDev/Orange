@@ -667,3 +667,109 @@ test.describe('Table para dados grandes', () => {
     await expect(page.locator('tbody .or-table__row').first()).toBeVisible()
   })
 })
+
+/*
+ * TimeField em segmentos (1.5): o campo deixou de ser o `<input type="time">` do navegador para
+ * ficar igual nos três motores — segmento em edição laranja, setas que param em `min`/`max` e
+ * uma lista de horários no lugar do seletor nativo (que no Firefox nem abria).
+ */
+test.describe('TimeField em segmentos', () => {
+  const timeValue = (page: Page) => page.locator('input[type="time"]').first().inputValue()
+
+  test('o segmento em edição fica laranja, a digitação avança e as setas param no limite', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-timefield--business-hours')
+    const hour = page.getByRole('spinbutton', { name: /^hora/ })
+    await hour.click()
+    await expect(hour).toBeFocused()
+    const colors = await measureUntil(async () => {
+      const c = await hour.evaluate((el) => {
+        const probe = document.createElement('i')
+        probe.style.color = 'var(--or-color-accent)'
+        document.body.append(probe)
+        const accent = getComputedStyle(probe).color
+        probe.remove()
+        return { background: getComputedStyle(el).backgroundColor, accent }
+      })
+      return { ...c, ok: c.background === c.accent }
+    })
+    expect(colors.ok, `segmento com foco sem o laranja: ${JSON.stringify(colors)}`).toBe(true)
+
+    await page.keyboard.type('0945')
+    await expect(page.getByRole('spinbutton', { name: /^minuto/ })).toBeFocused()
+    await expect.poll(() => timeValue(page)).toBe('09:45')
+    // 08:00–18:00: doze vezes ↑ na hora param em 18:00, em vez de dar a volta.
+    await page.keyboard.press('ArrowLeft')
+    for (let i = 0; i < 12; i++) await page.keyboard.press('ArrowUp')
+    await expect.poll(() => timeValue(page)).toBe('18:00')
+    // O texto dos segmentos é só o do campo: o navegador não escreveu nada neles.
+    await expect(page.locator('.or-time-field__segments')).toHaveText('18:00')
+  })
+
+  test('texto que chega sem keydown (teclado virtual) preenche os segmentos, sem sobras', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-timefield--default')
+    await page.getByRole('spinbutton', { name: /^hora/ }).click()
+    for (const digit of '0930') await page.keyboard.insertText(digit)
+    await expect(page.locator('.or-time-field__segments')).toHaveText('09:30')
+    await expect.poll(() => timeValue(page)).toBe('09:30')
+  })
+
+  test('a lista abre no horário escolhido e, em tela baixa, o último fica inteiro à vista', async ({
+    page,
+  }) => {
+    const height = 320
+    await openStory(page, 'componentes-timefield--with-value', { viewport: { width: 700, height } })
+    await page.getByRole('button', { name: 'Alterar horário, 09:30' }).click()
+    await expect(page.getByRole('listbox')).toBeVisible()
+    await expect(page.getByRole('option', { name: '09:30' })).toBeFocused()
+    await expectActiveVisible(page)
+    await page.keyboard.press('End')
+    await expect(page.getByRole('option', { name: '23:30' })).toBeFocused()
+    await expectActiveVisible(page)
+    const fit = await measureUntil(async () => {
+      const box = await page.locator('.or-time-field__popup').boundingBox()
+      return { box, ok: !!box && box.y >= 0 && box.y + box.height <= height + 0.5 }
+    })
+    expect(fit.ok, `lista fora da janela: ${JSON.stringify(fit)}`).toBe(true)
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('listbox')).toHaveCount(0)
+    await expect.poll(() => timeValue(page)).toBe('23:30')
+    await expect(page.getByRole('button', { name: 'Alterar horário, 23:30' })).toBeFocused()
+  })
+
+  test('dentro de um Modal: a lista fica por cima, Escape fecha só a lista e escolher mantém o diálogo', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-timefield--inside-modal', {
+      viewport: { width: 900, height: 700 },
+    })
+    await page.getByRole('button', { name: 'Agendar reunião' }).click()
+    const dialog = page.getByRole('dialog', { name: 'Agendar reunião' })
+    await expect(dialog).toBeVisible()
+    const clock = dialog.getByRole('button', { name: /Alterar horário/ })
+    await clock.click()
+    const option = page.getByRole('option', { name: '09:30' })
+    await expect(option).toBeFocused()
+    // Por cima do diálogo: o ponto no meio da opção é a própria opção.
+    const onTop = await measureUntil(() =>
+      option.evaluate((el) => {
+        const r = el.getBoundingClientRect()
+        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+        return { ok: !!hit && el.contains(hit), hit: hit?.className ?? null }
+      }),
+    )
+    expect(onTop.ok, `opção coberta: ${JSON.stringify(onTop)}`).toBe(true)
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('listbox')).toHaveCount(0)
+    await expect(dialog).toBeVisible()
+    await expect(clock).toBeFocused()
+    await clock.click()
+    await page.getByRole('option', { name: '10:00' }).click()
+    await expect(page.getByRole('listbox')).toHaveCount(0)
+    await expect(dialog).toBeVisible()
+    await expect.poll(() => timeValue(page)).toBe('10:00')
+  })
+})

@@ -1041,8 +1041,12 @@ export default function ConformancePage() {
               en: 'Reflow (1.4.10) has partial coverage: visual regression at 390px of 12 layout-changing components and a horizontal-scroll check of the docs pages at 390 and 320px. 200% text zoom and text spacing (1.4.4, 1.4.12) have not had a systematic sweep.',
             },
             {
-              pt: 'TimeField e o seletor de cor usam controles nativos do navegador: o comportamento com leitores de tela varia por navegador.',
-              en: 'TimeField and the color picker use native browser controls: their screen-reader behavior varies by browser.',
+              pt: 'A hora do DateTimePicker e o seletor de cor usam controles nativos do navegador: o comportamento com leitores de tela varia por navegador.',
+              en: 'The DateTimePicker time and the color picker use native browser controls: their screen-reader behavior varies by browser.',
+            },
+            {
+              pt: 'O TimeField usa segmentos próprios (spinbutton) e uma lista de horários (listbox) desde a 1.5. A digitação por teclado virtual foi verificada só por emulação de toque no Chromium, não em aparelhos; os anúncios, só por testes automáticos.',
+              en: 'TimeField uses its own segments (spinbutton) and a list of times (listbox) since 1.5. Virtual-keyboard typing was verified only through touch emulation in Chromium, not on devices; announcements, only through automated tests.',
             },
             {
               pt: 'Elementos fixos (AppHeader, BackToTop, Toast) podem cobrir o foco se a aplicação não reservar espaço (2.4.11).',

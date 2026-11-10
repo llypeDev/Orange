@@ -45,7 +45,7 @@ Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`
 - **TagInput** — Campo que transforma o texto digitado em tags removíveis — palavras-chave, e-mails, códigos. → `components/tag-input.md`
 - **TextArea** — Campo de texto multilinha para comentários, descrições e mensagens, com crescimento automático e contador. → `components/text-area.md`
 - **TextField** — Campo de texto de uma linha com rótulo, ajuda, erro, ícones, prefixo/sufixo e contador de caracteres. → `components/text-field.md`
-- **TimeField** — Campo de horário nativo com a aparência do Orange, limites e intervalos configuráveis. → `components/time-field.md`
+- **TimeField** — Campo de horário em segmentos, igual em todos os navegadores, com relógio de 12 ou 24 horas pelo idioma, limites, intervalos e lista de horários. → `components/time-field.md`
 
 ## Feedback (12)
 
