@@ -25,6 +25,21 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-10',
+    version: 'v1.4.1',
+    title: {
+      pt: 'Calendários e menus no tema da área de onde abrem',
+      en: 'Calendars and menus in the theme of the area they open from',
+    },
+    summary: {
+      pt: 'Numa área com tema próprio (themeTarget="scoped" ou um data-theme no meio da página), o que abre em portal segue o tema da área, e não o da página.',
+      en: 'In an area with its own theme (themeTarget="scoped" or a data-theme in the middle of the page), whatever opens in a portal follows the theme of the area, not of the page.',
+    },
+    items: [
+      { kind: 'fixed', text: { pt: 'DatePicker, DateRangePicker, DateTimePicker e SplitButton: o calendário e o menu de ações levam o tema do campo ou do botão de onde abrem. Antes, numa área clara dentro de uma página escura, saíam escuros.', en: 'DatePicker, DateRangePicker, DateTimePicker and SplitButton: the calendar and the actions menu take the theme of the field or button they open from. Before, in a light area inside a dark page, they came out dark.' } },
+    ],
+  },
+  {
     date: '2026-11-09',
     version: 'v1.4.0',
     title: {

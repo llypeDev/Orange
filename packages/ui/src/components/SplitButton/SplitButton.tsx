@@ -21,6 +21,7 @@ import { useLocale } from '../../providers'
 import { cx, devWarning, mergeRefs } from '../../utils'
 import { Button, type ButtonProps } from '../Button'
 import { rovingItemProps, useActionGroup } from '../ButtonGroup/context'
+import { getThemeScope } from '../Modal/overlay'
 import { Portal } from '../Portal'
 import './SplitButton.css'
 
@@ -130,7 +131,7 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
     floatingStyles,
     isPositioned,
     placement: resolvedPlacement,
-  } = useFloating({
+  } = useFloating<HTMLDivElement>({
     open: present,
     placement,
     transform: false,
@@ -309,6 +310,8 @@ export const SplitButton = forwardRef<HTMLButtonElement, SplitButtonProps>(funct
             tabIndex={-1}
             aria-labelledby={triggerId}
             className="or-split-button__menu"
+            // Em portal, o menu sai da área com [data-theme]: leva o tema do botão.
+            data-theme={getThemeScope(elements.reference)}
             // A entrada só começa depois do posicionamento (sem "piscar" no canto).
             data-state={isPositioned ? state : undefined}
             data-side={resolvedPlacement.split('-')[0]}

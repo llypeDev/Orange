@@ -32,6 +32,7 @@ import {
   toISODate,
 } from '../DatePicker/dateUtils'
 import { Field, useField, useFieldControlProps, type FieldControlProps } from '../Field'
+import { getThemeScope } from '../Modal/overlay'
 import { Portal } from '../Portal'
 import { RangeCalendar } from './RangeCalendar'
 import {
@@ -220,7 +221,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
     // Saída animada: o diálogo continua montado (data-state="closed") até a animação acabar.
     const presence = usePresence<HTMLDivElement>(isOpen)
-    const { refs, floatingStyles, placement } = useFloating({
+    const { refs, floatingStyles, placement, elements } = useFloating<HTMLDivElement>({
       open: presence.present,
       placement: 'bottom-start',
       // top/left em vez de transform: o transform fica livre para a animação.
@@ -538,6 +539,8 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               aria-modal="true"
               aria-label={t('dateRangeChoose')}
               className="or-date-range-picker__dialog"
+              // Em portal, o diálogo sai da área com [data-theme]: leva o tema do campo.
+              data-theme={getThemeScope(elements.reference)}
               data-state={presence.state}
               data-side={side}
               inert={presence.state === 'closed' || undefined}

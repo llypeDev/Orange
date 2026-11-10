@@ -310,6 +310,20 @@ describe('SplitButton', () => {
     expect(screen.getByRole('button', { name: 'Mais ações' })).toBeDisabled()
   })
 
+  it('o menu leva o tema da área em escopo de onde foi aberto', async () => {
+    const user = userEvent.setup()
+    render(
+      <OrangeProvider theme="light" themeTarget="scoped">
+        <SplitButton actions={[{ label: 'Duplicar', onSelect: () => {} }]}>Salvar</SplitButton>
+      </OrangeProvider>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Mais ações' }))
+    const menu = await screen.findByRole('menu')
+    // O portal vai para o <body>, fora da área com data-theme: o tema vem no próprio menu.
+    expect(menu.closest('.or-theme-scope')).toBeNull()
+    expect(menu).toHaveAttribute('data-theme', 'light')
+  })
+
   it('anima a saída: o menu fica montado e inerte até animationend', async () => {
     const original = window.getComputedStyle
     const spy = vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudo) => {

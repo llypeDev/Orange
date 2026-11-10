@@ -28,6 +28,7 @@ import { Calendar, type CalendarWeekDay } from '../DatePicker'
 import { formatDateInput, getDateFormatPattern, isOutOfRange } from '../DatePicker/dateUtils'
 import { applyDateMask, readDateInput } from '../DateRangePicker/rangeUtils'
 import { Field, useField, useFieldControlProps, type FieldControlProps } from '../Field'
+import { getThemeScope } from '../Modal/overlay'
 import { Portal } from '../Portal'
 import {
   combineDateTime,
@@ -224,7 +225,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
 
     // Saída animada: o diálogo continua montado (data-state="closed") até a animação acabar.
     const presence = usePresence<HTMLDivElement>(isOpen)
-    const { refs, floatingStyles, placement } = useFloating({
+    const { refs, floatingStyles, placement, elements } = useFloating<HTMLDivElement>({
       open: presence.present,
       placement: 'bottom-start',
       // top/left em vez de transform: o transform fica livre para a animação.
@@ -566,6 +567,8 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
               aria-modal="true"
               aria-labelledby={headingId}
               className="or-date-time-picker__dialog"
+              // Em portal, o diálogo sai da área com [data-theme]: leva o tema do campo.
+              data-theme={getThemeScope(elements.reference)}
               data-state={presence.state}
               data-side={side}
               inert={presence.state === 'closed' || undefined}

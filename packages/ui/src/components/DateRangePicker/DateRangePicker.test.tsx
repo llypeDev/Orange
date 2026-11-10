@@ -440,6 +440,29 @@ describe('DateRangePicker', () => {
     spy.mockRestore()
   })
 
+  it('o calendário leva o tema da área em escopo de onde foi aberto', async () => {
+    const user = userEvent.setup()
+    render(
+      <OrangeProvider theme="light" themeTarget="scoped">
+        <DateRangePicker label="Período" />
+      </OrangeProvider>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Escolher período' }))
+    const dialog = await screen.findByRole('dialog')
+    // O portal vai para o <body>, fora da área com data-theme: o tema vem no próprio diálogo.
+    expect(dialog.closest('.or-theme-scope')).toBeNull()
+    expect(dialog).toHaveAttribute('data-theme', 'light')
+  })
+
+  it('aberto desde o início (defaultOpen), o calendário também leva o tema do escopo', async () => {
+    render(
+      <OrangeProvider theme="light" themeTarget="scoped">
+        <DateRangePicker label="Período" defaultOpen />
+      </OrangeProvider>,
+    )
+    expect(await screen.findByRole('dialog')).toHaveAttribute('data-theme', 'light')
+  })
+
   it('não possui violações de acessibilidade (fechado e aberto)', async () => {
     const user = userEvent.setup()
     const { container } = render(
