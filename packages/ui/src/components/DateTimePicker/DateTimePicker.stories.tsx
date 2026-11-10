@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Campo de data e hora num só controle (grupo rotulado pelo label): a data com máscara conforme o idioma e calendário em diálogo, como no `DatePicker`, e a hora no `<input type="time">` nativo, como no `TimeField`. Valor `Date | null` em hora local; escolher um dia mantém a hora (ou usa `defaultTime`) e editar a hora mantém o dia. `min`/`max` valem para data e hora. Com `name`, envia `aaaa-mm-ddTHH:mm`.',
+          'Campo de data e hora num só controle (grupo rotulado pelo label): a data com máscara conforme o idioma e calendário em diálogo, como no `DatePicker`, e a hora em segmentos (hora, minuto, segundo, AM/PM), como no `TimeField` — igual em todos os navegadores, no relógio de 12 ou 24 horas do idioma do `OrangeProvider`. Valor `Date | null` em hora local; escolher um dia mantém a hora (ou usa `defaultTime`) e editar a hora mantém o dia. `min`/`max` valem para data e hora, e as setas da hora respeitam `step` e param no limite do dia. Com `name`, envia `aaaa-mm-ddTHH:mm`.',
       },
     },
   },
@@ -43,6 +43,7 @@ export const Empty: Story = {
   args: { label: 'Agendar publicação', description: 'Digite a data e a hora ou use o calendário.' },
 }
 
+/** `step` de 15 minutos: as setas da hora andam de 15 em 15, a partir da meia-noite. */
 export const DefaultTime: Story = {
   args: {
     label: 'Agendar publicação',
@@ -60,6 +61,17 @@ export const MinMaxAndDisabledDates: Story = {
     max: new Date(2026, 11, 11, 18, 0),
     isDateDisabled: (date: Date) => date.getDay() === 0 || date.getDay() === 6,
     weekStartsOn: 1,
+  },
+}
+
+/** No dia de `min` (16/11) e no de `max` (11/12), as setas da hora param no horário-limite. */
+export const TimeLimits: Story = {
+  args: {
+    label: 'Entrega agendada',
+    description: 'A partir de 16/11 às 08:00 e até 11/12 às 18:00.',
+    min: new Date(2026, 10, 16, 8, 0),
+    max: new Date(2026, 11, 11, 18, 0),
+    defaultValue: new Date(2026, 10, 16, 9, 30),
   },
 }
 
@@ -109,19 +121,20 @@ export const States: Story = {
 export const WithSeconds: Story = {
   args: {
     label: 'Largada da prova',
-    description: 'Com step abaixo de 60, a hora mostra os segundos.',
+    description: 'Com step abaixo de 60, a hora ganha o segmento dos segundos.',
     step: 1,
     defaultValue: new Date(2026, 10, 15, 7, 30, 15),
   },
 }
 
+/** O relógio segue o idioma do provider, como a data: 12 horas com AM/PM em inglês americano. */
 export const EnglishLocale: Story = {
   render: (args) => (
     <OrangeProvider locale="en-US" themeTarget="scoped">
       <DateTimePicker
         {...args}
         label="Meeting date and time"
-        description="Format mm/dd/yyyy"
+        description="Format mm/dd/yyyy, 12-hour clock."
         defaultValue={reuniao}
       />
     </OrangeProvider>

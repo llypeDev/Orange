@@ -26,6 +26,24 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-10',
+    version: 'v1.6.0',
+    title: {
+      pt: 'A hora do DateTimePicker em segmentos, como no TimeField',
+      en: 'DateTimePicker time in segments, like TimeField',
+    },
+    summary: {
+      pt: 'A hora do DateTimePicker deixa de ser o input do navegador e passa a usar os segmentos do TimeField: destaque laranja igual em todo navegador, relógio de 12 ou 24 horas pelo idioma do provider e setas que respeitam passo e limites. As props e o valor (Date) são os mesmos. Nos dois campos, o que foi digitado pela metade é descartado quando o valor muda por fora.',
+      en: 'The DateTimePicker time is no longer the browser input and now uses the TimeField segments: the same orange highlight in every browser, a 12 or 24-hour clock from the provider locale and arrow keys that respect step and limits. The props and the value (Date) are the same. In both fields, half-typed input is discarded when the value changes from outside.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'DateTimePicker: a hora usa os mesmos segmentos do TimeField, no lugar do input do navegador. O segmento em edição fica laranja em todo navegador e o relógio de 12 ou 24 horas vem do idioma do OrangeProvider, como o formato da data. O valor continua sendo um Date.', en: 'DateTimePicker: the time uses the same segments as TimeField, replacing the browser input. The editing segment is orange in every browser and the 12 or 24-hour clock comes from the OrangeProvider locale, like the date format. The value is still a Date.' } },
+      { kind: 'fixed', text: { pt: 'DateTimePicker: as setas da hora andam no step (contado da meia-noite) e, no dia de min ou de max, param no horário-limite em vez de passar dele. O aviso de horário mínimo mostra o primeiro minuto que vale quando min tem segundos.', en: 'DateTimePicker: the arrow keys on the time move by step (counted from midnight) and, on the min or max day, stop at the limit time instead of going past it. The minimum-time warning shows the first valid minute when min has seconds.' } },
+      { kind: 'fixed', text: { pt: 'DateTimePicker: clicar no relógio leva o foco à hora. Antes ele pedia o seletor do navegador, que no Firefox não abria.', en: 'DateTimePicker: clicking the clock moves focus to the time. It used to ask for the browser picker, which did not open on Firefox.' } },
+      { kind: 'fixed', text: { pt: 'TimeField e DateTimePicker: quando o valor muda por fora (a aplicação define outro horário ou limpa o formulário depois de enviar), os segmentos descartam o que estava digitado pela metade. O campo mostra o valor novo e, se ele ficar vazio de novo, volta a --:-- em vez de trazer de volta o que tinha sido digitado.', en: 'TimeField and DateTimePicker: when the value changes from outside (the application sets another time or clears the form after submitting), the segments discard what was half-typed. The field shows the new value and, if it becomes empty again, goes back to --:-- instead of bringing back what had been typed.' } },
+    ],
+  },
+  {
+    date: '2026-11-10',
     version: 'v1.5.0',
     title: {
       pt: 'TimeField em segmentos, igual em todo navegador',

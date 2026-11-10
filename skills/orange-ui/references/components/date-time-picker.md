@@ -1,6 +1,6 @@
 # DateTimePicker
 
-Data e hora num só campo: a data com máscara e calendário em diálogo, a hora no campo nativo — para agendar publicações, reuniões e entregas.
+Data e hora num só campo: a data com máscara e calendário em diálogo, a hora em segmentos como no TimeField — para agendar publicações, reuniões e entregas.
 
 - Categoria: Formulários · Status: novo
 - Importação: `import { DateTimePicker } from '@orangesys/ui'`
@@ -13,8 +13,9 @@ Data e hora num só campo: a data com máscara e calendário em diálogo, a hora
 - Use quando o horário faz parte da decisão: agendar uma publicação, marcar uma reunião, programar uma manutenção. Só a data? Use o DatePicker. Só a hora? Use o TimeField.
 - O valor é um `Date` em hora local. Ele só existe com data e hora completas: enquanto um dos campos estiver vazio, incompleto ou fora das regras, o `onChange` recebe `null`. Diga o fuso na `description` quando ele importar ("Horário de Brasília").
 - Escolher um dia no calendário mantém a hora digitada. Com a hora vazia, passe `defaultTime` (ex.: `'09:00'`) quando houver um horário típico; sem ele, a hora fica vazia para a pessoa preencher.
-- `min` e `max` valem para data *e* hora: dias fora ficam desabilitados no calendário e, no dia-limite, um horário antes do mínimo mostra "Escolha um horário a partir de 14:00". Regras por dia (horário comercial) vão em `error`.
-- Como no TimeField, `step` é em segundos (`900` = 15 minutos) e a hora aparece em 12h ou 24h conforme o sistema da pessoa.
+- `min` e `max` valem para data *e* hora: dias fora ficam desabilitados no calendário e, no dia-limite, as setas da hora param no horário mínimo ou máximo; um horário digitado antes do mínimo mostra "Escolha um horário a partir de 14:00". Regras por dia (horário comercial) vão em `error`.
+- A hora usa os mesmos segmentos do TimeField e fica igual em todos os navegadores. O relógio de 12 horas (com AM/PM) ou de 24 vem do idioma do `OrangeProvider`, como o formato da data — não do navegador da pessoa. O valor é sempre um `Date`.
+- `step` é em segundos (`900` = 15 minutos): as setas da hora andam nesse passo, contado a partir da meia-noite. Um horário digitado fora do passo continua valendo; se só alguns horários servem, use `error` para validar.
 
 - Faça: Um rótulo para o par data e hora, com o fuso e a regra explicados.
 - Evite: Campo sem rótulo visível — ou um DatePicker e um TimeField soltos, com dois rótulos para um só valor.
@@ -24,14 +25,14 @@ Data e hora num só campo: a data com máscara e calendário em diálogo, a hora
 - **Grupo** — Um só controle com role="group", nomeado pelo rótulo. O clique no rótulo leva ao campo de data.
 - **Data** — Campo de texto com a máscara do idioma, igual ao do DatePicker ("5/3" vira "05/03"). Nome acessível "Data".
 - **Botão de calendário** — Logo depois da data. Abre o diálogo; com um dia preenchido, o nome inclui a data: "Alterar data, sexta-feira, 13 de novembro de 2026".
-- **Hora** — O <input type="time"> nativo, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".
+- **Hora** — Segmentos de hora e minuto (mais segundo e AM/PM, quando há), os mesmos do TimeField, com o relógio à esquerda; clicar no relógio ou na área livre leva o foco à hora. Formam um grupo com o nome acessível "Hora".
 - **Telas estreitas** — Sem espaço para os dois lado a lado (≈ 320px), a hora desce para uma segunda linha dentro da mesma moldura, separada por um divisor.
 
 ## Exemplos
 
 ### Básico
 
-Digite a data e a hora, ou escolha o dia no calendário pelo botão (ou Alt + ↓ no campo de data).
+Digite a data e a hora, ou escolha o dia no calendário pelo botão (ou Alt + ↓ no campo de data). Na hora, os números avançam sozinhos de um segmento para o outro e as setas ↑ e ↓ mudam o valor.
 
 ```tsx
 import { DateTimePicker } from '@orangesys/ui'
@@ -45,7 +46,7 @@ export default function Basic() {
 
 ### Agendar publicação
 
-min em agora e max em 30 dias; step de 15 minutos; ao escolher um dia sem hora, defaultTime preenche 09:00. Escolha hoje para ver o aviso de horário mínimo.
+min em agora e max em 30 dias; step de 15 minutos (as setas da hora andam de 15 em 15); ao escolher um dia sem hora, defaultTime preenche 09:00. Escolha hoje: as setas param no horário mínimo e digitar um horário anterior mostra o aviso.
 
 ```tsx
 import { DateTimePicker, Stack, Text, useLocale } from '@orangesys/ui'
@@ -196,18 +197,19 @@ export default function States() {
 
 - **Abrir e fechar o calendário** — Igual ao DatePicker: o diálogo entra com opacidade, 4px vindos do lado do campo e escala 0,98 → 1 · medium (250ms), ease-out; sai mais rápido e inerte · fast (160ms), ease-in-out.
 - **Calendário** — O mesmo Calendar: a grade desliza ao trocar de mês e o dia escolhido faz pop · medium.
-- **Relógio** — Com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.
+- **Relógio** — Com o foco num segmento da hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.
+- **Segmento em edição** — O segmento com o foco troca para o fundo laranja · fast (160ms), ease-out.
 - **Erro de validação** — O controle treme uma vez quando a mensagem surge (or-shake) · slow (400ms).
-- **Hover, foco e pressionar** — Borda e foco do frame · fast; o ícone do calendário e o relógio afundam 1px · press (90ms).
+- **Hover, foco e pressionar** — Borda e foco do frame · fast; o relógio acende ao passar o mouse pela hora · fast; o ícone do calendário afunda 1px · press (90ms).
 - **Movimento reduzido** — Os tokens viram 0: tudo muda na hora — borda, cor e texto continuam indicando o estado.
 
 ## Props
 
 ### `DateTimePicker`
 
-Campo de data e hora: a data com máscara conforme o idioma (como no
-`DatePicker`) e a hora no `<input type="time">` nativo, dentro de um só
-controle, com o calendário em diálogo para escolher o dia.
+Campo de data e hora num só controle: a data com máscara conforme o idioma (como no
+`DatePicker`), o calendário em diálogo para escolher o dia e a hora em segmentos (como no
+`TimeField`), no relógio de 12 ou 24 horas do idioma do provider.
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
@@ -215,24 +217,24 @@ controle, com o calendário em diálogo para escolher o dia.
 | `defaultTime` | `string` | — | Horário (`HH:mm`) aplicado quando um dia é escolhido no calendário e a hora está vazia (ex.: `'09:00'`). Sem ele, a hora continua vazia até ser digitada. |
 | `defaultValue` | `Date \| null` | `null` | Data e hora iniciais (não controlado). |
 | `description` | `ReactNode` | — | Texto de ajuda abaixo do rótulo. |
-| `disabled` | `boolean` | — | Desabilita os dois campos e o botão do calendário. |
+| `disabled` | `boolean` | — | Desabilita a data, a hora e o botão do calendário. |
 | `error` | `ReactNode` | — | Mensagem de erro. Substitui a validação interna. |
 | `hideLabel` | `boolean` | — | Oculta o rótulo visualmente (continua acessível). |
 | `invalid` | `boolean` | `false` | Força o estado inválido sem exibir mensagem (ex.: erro mostrado em um ErrorSummary). |
 | `isDateDisabled` | `((date: Date) => boolean)` | — | Desabilita datas específicas (feriados, fins de semana…). |
 | `label` | `ReactNode` | — | Rótulo visível do campo (também nomeia o grupo dos dois campos). |
-| `max` | `Date` | — | Último instante permitido (data e hora). Dias posteriores ficam desabilitados no calendário. |
-| `min` | `Date` | — | Primeiro instante permitido (data e hora). Dias anteriores ficam desabilitados no calendário. |
+| `max` | `Date` | — | Último instante permitido (data e hora). Dias posteriores ficam desabilitados no calendário e, no dia de `max`, as setas da hora param nesse horário. |
+| `min` | `Date` | — | Primeiro instante permitido (data e hora). Dias anteriores ficam desabilitados no calendário e, no dia de `min`, as setas da hora param nesse horário. |
 | `name` | `string` | — | Envia o valor no formulário em um input oculto, em hora local no formato `aaaa-mm-ddTHH:mm` (com `:ss` quando o `step` pede segundos) — o mesmo do `<input type="datetime-local">`. Vazio enquanto o valor for `null`. |
 | `onChange` | `((date: Date \| null) => void)` | — | Chamado com a nova data e hora — ou `null` quando a data ou a hora fica vazia/incompleta, ou quando a combinação é inválida ou indisponível. |
 | `onOpenChange` | `((open: boolean) => void)` | — | — |
 | `open` | `boolean` | — | Calendário aberto (controlado). |
 | `optional` | `boolean` | — | Mostra "(opcional)" ao lado do rótulo. |
 | `placeholder` | `string` | — | Placeholder do campo de data. Padrão: o formato do idioma (`dd/mm/aaaa`). |
-| `readOnly` | `boolean` | — | Somente leitura: os campos não editam e o calendário não abre. |
+| `readOnly` | `boolean` | — | Somente leitura: a data e a hora não editam e o calendário não abre. |
 | `required` | `boolean` | — | Marca a data e a hora como obrigatórias. |
 | `size` | `"sm" \| "md" \| "lg"` | `md` | Altura do campo: `sm` 32px, `md` 40px, `lg` 48px. |
-| `step` | `number` | — | Intervalo em segundos entre horários válidos, como no `TimeField` (ex.: `900` = 15 minutos). Fora de múltiplos de 60, o campo mostra os segundos. |
+| `step` | `number` | — | Intervalo em segundos em que as setas andam na hora, contado a partir da meia-noite (ex.: `900` = 15 minutos). Fora de múltiplos de 60, o campo mostra os segundos. |
 | `value` | `Date \| null` | — | Data e hora (controlado), no fuso local. `null` = vazio. |
 | `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana no calendário: 0 = domingo (padrão), 1 = segunda… |
 
@@ -248,21 +250,29 @@ export type DateTimePickerSize = 'sm' | 'md' | 'lg'
 
 ## Acessibilidade
 
-Os dois campos ficam num `role="group"` nomeado pelo rótulo, cada um com nome próprio ("Data", "Hora"); a descrição e o erro valem para os dois, e o formato da data é anunciado como descrição do campo de data. O calendário abre num diálogo modal (padrão **Date Picker Dialog** do WAI-ARIA APG), com a mesma grade do DatePicker. A hora usa o `<input type="time">` nativo: cada segmento é anunciado e editável pelo teclado. O campo com problema recebe `aria-invalid` (a data, quando ela é inválida ou indisponível; a hora, quando falta ou sai de min/max).
+A data e a hora ficam num `role="group"` nomeado pelo rótulo. A data é um campo de texto com nome próprio ("Data"), e o formato dela é anunciado como descrição. A hora é um grupo ("Hora") com os mesmos segmentos do TimeField: cada um é um `spinbutton` com nome próprio ("hora", "minuto", "segundo", "AM ou PM"), valor atual, mínimo e máximo; vazio, anuncia "vazio". A descrição e o erro são lidos na data e no primeiro segmento da hora. O calendário abre num diálogo modal (padrão **Date Picker Dialog** do WAI-ARIA APG), com a mesma grade do DatePicker. A parte com problema recebe `aria-invalid` (a data, quando ela é inválida ou indisponível; a hora, quando falta ou sai de min/max).
+
+No celular, cada segmento da hora abre o teclado numérico. Essa digitação foi verificada por emulação de toque, não em aparelhos; os anúncios, por testes automáticos, não com leitores de tela.
 
 | Teclas | Ação |
 | --- | --- |
-| `Tab` | Data → botão do calendário → hora (e entre os segmentos da hora). |
+| `Tab` | Data → botão do calendário → hora → minuto (e os demais segmentos da hora). |
 | `Alt` + `↓` | No campo de data: abre o calendário. |
-| `↑` + `↓` | Na hora: aumenta / diminui o segmento respeitando o step. |
-| `Enter` | No botão: abre o calendário. No dia: seleciona mantendo a hora, fecha e devolve o foco ao botão. |
+| `← / →` | Na hora: segmento anterior / próximo. |
+| `↑ / ↓` | Na hora: aumenta / diminui o segmento no step, dando a volta, sem passar do horário-limite no dia de min ou de max. |
+| `PageUp / PageDown` | Na hora: anda mais (2 horas, 15 minutos ou 15 segundos). Home e End vão ao primeiro e ao último valor do segmento. |
+| `0–9` | Na hora: digita o valor; completo, o foco passa para o próximo segmento. No relógio de 12 horas, A e P escolhem AM ou PM. |
+| `Backspace / Delete` | Na hora: apaga o segmento (o valor fica vazio até a hora estar completa); Backspace num segmento vazio volta ao anterior. |
+| `Ctrl` + `V` | Na hora: cola um horário escrito de vários jeitos (14:30, 14h30, 2:30 pm). |
+| `Enter` | No botão: abre o calendário. No dia: seleciona mantendo a hora, fecha e devolve o foco ao botão. Na data e na hora: envia o formulário. |
 | `←` + `→` + `↑` + `↓` | Na grade: dia anterior / próximo / semana anterior / seguinte. |
 | `PageUp` + `PageDown` | Na grade: mês anterior / próximo (com Shift, ano). |
-| `Escape` | Fecha sem alterar e devolve o foco ao botão. |
+| `Escape` | Fecha o calendário sem alterar e devolve o foco ao botão. |
 
-- **1.3.1** — Grupo rotulado com dois campos nomeados; descrição e erro ligados por aria-describedby.
+- **1.3.1** — Grupo rotulado com a data e a hora nomeadas; descrição e erro ligados por aria-describedby.
 - **1.4.10** — Em 320px a hora desce para uma segunda linha: sem rolagem horizontal.
 - **2.1.1** — Tudo funciona pelo teclado, inclusive digitando a data e a hora.
 - **2.4.3** — A ordem de foco segue a ordem visual nos dois layouts; o foco volta ao botão ao fechar o calendário.
+- **2.4.7** — Foco visível na borda laranja e no segmento ativo da hora; em alto contraste, com as cores de seleção do sistema.
 - **3.3.1** — Data inválida ou indisponível, hora fora do intervalo e campo deixado vazio geram mensagem vinculada.
-- **3.3.2** — O formato da data é anunciado; a hora usa o formato do sistema.
+- **3.3.2** — O formato da data é anunciado; cada segmento da hora diz o que é ("hora", "minuto") e os limites que aceita.

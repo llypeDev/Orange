@@ -773,3 +773,117 @@ test.describe('TimeField em segmentos', () => {
     await expect.poll(() => timeValue(page)).toBe('10:00')
   })
 })
+
+/*
+ * DateTimePicker com a hora em segmentos (1.6): a hora deixou de ser o `<input type="time">` do
+ * navegador e usa os mesmos segmentos do TimeField — segmento em edição laranja, relógio do idioma
+ * do provider (e não do navegador) e setas que param no horário-limite do dia de `min` e de `max`.
+ */
+test.describe('DateTimePicker: hora em segmentos', () => {
+  const time = (page: Page, name = 'Hora') => page.getByRole('group', { name, exact: true })
+
+  test('o segmento em edição fica laranja e as setas param no limite do dia de min e de max', async ({
+    page,
+  }) => {
+    // min 16/11/2026 08:00, max 11/12/2026 18:00, valor 16/11 09:30.
+    await openStory(page, 'componentes-datetimepicker--time-limits')
+    const hour = page.getByRole('spinbutton', { name: /^hora/ })
+    await hour.click()
+    await expect(hour).toBeFocused()
+    const colors = await measureUntil(async () => {
+      const c = await hour.evaluate((el) => {
+        const probe = document.createElement('i')
+        probe.style.color = 'var(--or-color-accent)'
+        document.body.append(probe)
+        const accent = getComputedStyle(probe).color
+        probe.remove()
+        return { background: getComputedStyle(el).backgroundColor, accent }
+      })
+      return { ...c, ok: c.background === c.accent }
+    })
+    expect(colors.ok, `segmento com foco sem o laranja: ${JSON.stringify(colors)}`).toBe(true)
+
+    // No dia de min: 09:30 → 08:30 → 08:00 e fica, em vez de passar para 07:30.
+    for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowDown')
+    await expect(time(page)).toHaveText('08:00')
+    await page.keyboard.type('1745')
+    await expect(page.getByRole('spinbutton', { name: /^minuto/ })).toBeFocused()
+    // O texto dos segmentos é só o do campo: o navegador não escreveu nada neles.
+    await expect(time(page)).toHaveText('17:45')
+
+    // No dia de max: 17:45 → 18:00 e fica.
+    await page.getByRole('textbox', { name: 'Data' }).fill('11/12/2026')
+    await hour.click()
+    for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowUp')
+    await expect(time(page)).toHaveText('18:00')
+    await expect(page.getByRole('alert')).toHaveCount(0)
+  })
+
+  test('o relógio segue o idioma do provider e texto sem keydown (teclado virtual) preenche os segmentos', async ({
+    page,
+  }) => {
+    // A story fixa o provider em en-US; o navegador do teste está em pt-BR. Com step=1 a hora
+    // fica no formato mais largo ("02:30:00 PM").
+    await openStory(page, 'componentes-datetimepicker--english-locale', { args: 'step:1' })
+    await expect(time(page, 'Time')).toHaveText('02:30:00 PM')
+    const fit = await measureUntil(() =>
+      page.evaluate(() => {
+        const cell = document.querySelector('.or-date-time-picker__time')!.getBoundingClientRect()
+        const date = document.querySelector('.or-date-time-picker__date')!.getBoundingClientRect()
+        const last = document
+          .querySelector('.or-time-field__segments')!
+          .lastElementChild!.getBoundingClientRect()
+        return {
+          ok: last.right <= cell.right && Math.abs(cell.top - date.top) <= 1.5,
+          lastRight: last.right,
+          cellRight: cell.right,
+          cellTop: cell.top,
+          dateTop: date.top,
+        }
+      }),
+    )
+    expect(fit.ok, `hora cortada ou fora da linha da data: ${JSON.stringify(fit)}`).toBe(true)
+
+    await page.getByRole('spinbutton', { name: /^hour/ }).click()
+    for (const char of '094510a') await page.keyboard.insertText(char)
+    await expect(time(page, 'Time')).toHaveText('09:45:10 AM')
+  })
+
+  test('em 320px a hora desce para a segunda linha, sem rolagem horizontal, e o relógio leva o foco à hora', async ({
+    page,
+  }) => {
+    await openStory(page, 'componentes-datetimepicker--default', {
+      viewport: { width: 320, height: 600 },
+    })
+    const layout = await measureUntil(() =>
+      page.evaluate(() => {
+        const rect = (selector: string) => document.querySelector(selector)!.getBoundingClientRect()
+        const frame = rect('.or-date-time-picker__frame')
+        const date = rect('.or-date-time-picker__date')
+        const cell = rect('.or-date-time-picker__time')
+        const last = document
+          .querySelector('.or-time-field__segments')!
+          .lastElementChild!.getBoundingClientRect()
+        const root = document.documentElement
+        return {
+          ok:
+            cell.top >= date.bottom - 1.5 &&
+            last.right <= frame.right &&
+            root.scrollWidth <= root.clientWidth,
+          dateBottom: date.bottom,
+          cellTop: cell.top,
+          lastRight: last.right,
+          frameRight: frame.right,
+          scrollWidth: root.scrollWidth,
+          clientWidth: root.clientWidth,
+        }
+      }),
+    )
+    expect(layout.ok, `hora fora do lugar em 320px: ${JSON.stringify(layout)}`).toBe(true)
+
+    // O relógio não abre mais o seletor do navegador: clicar nele foca o primeiro segmento.
+    const clock = await page.locator('.or-date-time-picker__clock').boundingBox()
+    await page.mouse.click(clock!.x + clock!.width / 2, clock!.y + clock!.height / 2)
+    await expect(page.getByRole('spinbutton', { name: /^hora/ })).toBeFocused()
+  })
+})
