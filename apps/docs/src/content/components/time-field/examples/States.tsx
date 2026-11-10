@@ -9,7 +9,7 @@ export default function States() {
         readOnly
         description="Definido pela franquia."
       />
-      <TimeField label="Fechamento" defaultValue="23:30" error="A loja fecha no máximo às 22:00." />
+      <TimeField label="Fechamento" defaultValue="23:30" max="22:00" />
       <TimeField label="Intervalo" defaultValue="12:00" disabled />
     </Stack>
   )

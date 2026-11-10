@@ -25,6 +25,26 @@ const kindLabel: Record<Kind, Localized<string>> = {
 /** Histórico real do projeto (ver `git log`). */
 const entries: Entry[] = [
   {
+    date: '2026-11-10',
+    version: 'v1.5.0',
+    title: {
+      pt: 'TimeField em segmentos, igual em todo navegador',
+      en: 'Segmented TimeField, the same in every browser',
+    },
+    summary: {
+      pt: 'O campo de horário deixa de ser o do navegador: segmentos do Orange com o destaque laranja, relógio de 12 ou 24 horas pelo idioma do provider, setas que respeitam passo e limites, avisos próprios e uma lista de horários. As props são as mesmas.',
+      en: 'The time field is no longer the browser one: Orange segments with the orange highlight, a 12 or 24-hour clock from the provider locale, arrow keys that respect step and limits, built-in warnings and a list of times. The props are the same.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'TimeField: hora, minuto, segundo e AM/PM são segmentos próprios, com o segmento em edição laranja no Chrome, no Firefox e no Safari. O valor continua sendo HH:mm.', en: 'TimeField: hour, minute, second and AM/PM are its own segments, with the editing segment in orange on Chrome, Firefox and Safari. The value is still HH:mm.' } },
+      { kind: 'improved', text: { pt: 'TimeField: o relógio de 12 ou 24 horas vem do idioma do OrangeProvider, não do navegador de cada pessoa. A prop nova hourCycle força um dos dois.', en: "TimeField: the 12 or 24-hour clock comes from the OrangeProvider locale, not from each person's browser. The new hourCycle prop forces one of them." } },
+      { kind: 'fixed', text: { pt: 'TimeField: as setas andam no step e param em min e max, em vez de passar do limite sem aviso.', en: 'TimeField: arrow keys move by step and stop at min and max, instead of going past the limit without warning.' } },
+      { kind: 'new', text: { pt: 'TimeField: com min, max ou step, um horário fora da regra mostra o aviso do próprio campo ("Escolha um horário até 18:00."); horário pela metade também. A prop error substitui esses avisos.', en: 'TimeField: with min, max or step, a time outside the rule shows the field\'s own warning ("Choose a time at or before 06:00 PM."); so does a half-typed time. The error prop replaces these warnings.' } },
+      { kind: 'new', text: { pt: 'TimeField: o relógio é um botão que abre uma lista de horários (prop listStep; false tira o botão), no lugar do seletor do navegador, que no Firefox não abria.', en: 'TimeField: the clock is a button that opens a list of times (listStep prop; false removes the button), replacing the browser picker, which did not open on Firefox.' } },
+      { kind: 'improved', text: { pt: 'TimeField: colar um horário (14h30, 2:30 pm), PageUp/PageDown e Home/End nos segmentos. ref, name e validação nativa continuam, por um input oculto.', en: 'TimeField: paste a time (14h30, 2:30 pm), PageUp/PageDown and Home/End on segments. ref, name and native validation still work, through a hidden input.' } },
+    ],
+  },
+  {
     date: '2026-11-09',
     version: 'v1.4.0',
     title: {
