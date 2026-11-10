@@ -1045,8 +1045,8 @@ export default function ConformancePage() {
               en: 'The color picker uses a native browser control: its screen-reader behavior varies by browser.',
             },
             {
-              pt: 'O TimeField e a hora do DateTimePicker usam segmentos próprios (spinbutton) desde a 1.5; o TimeField tem também uma lista de horários (listbox). A digitação por teclado virtual foi verificada só por emulação de toque no Chromium, não em aparelhos; os anúncios, só por testes automáticos.',
-              en: 'TimeField and the DateTimePicker time use their own segments (spinbutton) since 1.5; TimeField also has a list of times (listbox). Virtual-keyboard typing was verified only through touch emulation in Chromium, not on devices; announcements, only through automated tests.',
+              pt: 'O TimeField usa segmentos próprios (spinbutton) e uma lista de horários (listbox) desde a 1.5; a hora do DateTimePicker usa os mesmos segmentos desde a 1.6. A digitação por teclado virtual foi verificada só por emulação de toque no Chromium, não em aparelhos; os anúncios, só por testes automáticos.',
+              en: 'TimeField uses its own segments (spinbutton) and a list of times (listbox) since 1.5; the DateTimePicker time uses the same segments since 1.6. Virtual-keyboard typing was verified only through touch emulation in Chromium, not on devices; announcements, only through automated tests.',
             },
             {
               pt: 'Elementos fixos (AppHeader, BackToTop, Toast) podem cobrir o foco se a aplicação não reservar espaço (2.4.11).',

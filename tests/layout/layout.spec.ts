@@ -775,7 +775,7 @@ test.describe('TimeField em segmentos', () => {
 })
 
 /*
- * DateTimePicker com a hora em segmentos (1.5): a hora deixou de ser o `<input type="time">` do
+ * DateTimePicker com a hora em segmentos (1.6): a hora deixou de ser o `<input type="time">` do
  * navegador e usa os mesmos segmentos do TimeField — segmento em edição laranja, relógio do idioma
  * do provider (e não do navegador) e setas que param no horário-limite do dia de `min` e de `max`.
  */

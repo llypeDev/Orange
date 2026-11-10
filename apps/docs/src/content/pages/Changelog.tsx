@@ -26,14 +26,32 @@ const kindLabel: Record<Kind, Localized<string>> = {
 const entries: Entry[] = [
   {
     date: '2026-11-10',
-    version: 'v1.5.0',
+    version: 'v1.6.0',
     title: {
-      pt: 'TimeField e a hora do DateTimePicker em segmentos, iguais em todo navegador',
-      en: 'Segmented TimeField and DateTimePicker time, the same in every browser',
+      pt: 'A hora do DateTimePicker em segmentos, como no TimeField',
+      en: 'DateTimePicker time in segments, like TimeField',
     },
     summary: {
-      pt: 'O campo de horário deixa de ser o do navegador: segmentos do Orange com o destaque laranja, relógio de 12 ou 24 horas pelo idioma do provider, setas que respeitam passo e limites, avisos próprios e uma lista de horários. A hora do DateTimePicker usa os mesmos segmentos. As props dos dois são as mesmas.',
-      en: 'The time field is no longer the browser one: Orange segments with the orange highlight, a 12 or 24-hour clock from the provider locale, arrow keys that respect step and limits, built-in warnings and a list of times. The DateTimePicker time uses the same segments. The props of both are the same.',
+      pt: 'A hora do DateTimePicker deixa de ser o input do navegador e passa a usar os segmentos do TimeField: destaque laranja igual em todo navegador, relógio de 12 ou 24 horas pelo idioma do provider e setas que respeitam passo e limites. As props e o valor (Date) são os mesmos. Nos dois campos, o que foi digitado pela metade é descartado quando o valor muda por fora.',
+      en: 'The DateTimePicker time is no longer the browser input and now uses the TimeField segments: the same orange highlight in every browser, a 12 or 24-hour clock from the provider locale and arrow keys that respect step and limits. The props and the value (Date) are the same. In both fields, half-typed input is discarded when the value changes from outside.',
+    },
+    items: [
+      { kind: 'improved', text: { pt: 'DateTimePicker: a hora usa os mesmos segmentos do TimeField, no lugar do input do navegador. O segmento em edição fica laranja em todo navegador e o relógio de 12 ou 24 horas vem do idioma do OrangeProvider, como o formato da data. O valor continua sendo um Date.', en: 'DateTimePicker: the time uses the same segments as TimeField, replacing the browser input. The editing segment is orange in every browser and the 12 or 24-hour clock comes from the OrangeProvider locale, like the date format. The value is still a Date.' } },
+      { kind: 'fixed', text: { pt: 'DateTimePicker: as setas da hora andam no step (contado da meia-noite) e, no dia de min ou de max, param no horário-limite em vez de passar dele. O aviso de horário mínimo mostra o primeiro minuto que vale quando min tem segundos.', en: 'DateTimePicker: the arrow keys on the time move by step (counted from midnight) and, on the min or max day, stop at the limit time instead of going past it. The minimum-time warning shows the first valid minute when min has seconds.' } },
+      { kind: 'fixed', text: { pt: 'DateTimePicker: clicar no relógio leva o foco à hora. Antes ele pedia o seletor do navegador, que no Firefox não abria.', en: 'DateTimePicker: clicking the clock moves focus to the time. It used to ask for the browser picker, which did not open on Firefox.' } },
+      { kind: 'fixed', text: { pt: 'TimeField e DateTimePicker: quando o valor muda por fora (a aplicação define outro horário ou limpa o formulário depois de enviar), os segmentos descartam o que estava digitado pela metade. O campo mostra o valor novo e, se ele ficar vazio de novo, volta a --:-- em vez de trazer de volta o que tinha sido digitado.', en: 'TimeField and DateTimePicker: when the value changes from outside (the application sets another time or clears the form after submitting), the segments discard what was half-typed. The field shows the new value and, if it becomes empty again, goes back to --:-- instead of bringing back what had been typed.' } },
+    ],
+  },
+  {
+    date: '2026-11-10',
+    version: 'v1.5.0',
+    title: {
+      pt: 'TimeField em segmentos, igual em todo navegador',
+      en: 'Segmented TimeField, the same in every browser',
+    },
+    summary: {
+      pt: 'O campo de horário deixa de ser o do navegador: segmentos do Orange com o destaque laranja, relógio de 12 ou 24 horas pelo idioma do provider, setas que respeitam passo e limites, avisos próprios e uma lista de horários. As props são as mesmas.',
+      en: 'The time field is no longer the browser one: Orange segments with the orange highlight, a 12 or 24-hour clock from the provider locale, arrow keys that respect step and limits, built-in warnings and a list of times. The props are the same.',
     },
     items: [
       { kind: 'improved', text: { pt: 'TimeField: hora, minuto, segundo e AM/PM são segmentos próprios, com o segmento em edição laranja no Chrome, no Firefox e no Safari. O valor continua sendo HH:mm.', en: 'TimeField: hour, minute, second and AM/PM are its own segments, with the editing segment in orange on Chrome, Firefox and Safari. The value is still HH:mm.' } },
@@ -42,10 +60,6 @@ const entries: Entry[] = [
       { kind: 'new', text: { pt: 'TimeField: com min, max ou step, um horário fora da regra mostra o aviso do próprio campo ("Escolha um horário até 18:00."); horário pela metade também. A prop error substitui esses avisos.', en: 'TimeField: with min, max or step, a time outside the rule shows the field\'s own warning ("Choose a time at or before 06:00 PM."); so does a half-typed time. The error prop replaces these warnings.' } },
       { kind: 'new', text: { pt: 'TimeField: o relógio é um botão que abre uma lista de horários (prop listStep; false tira o botão), no lugar do seletor do navegador, que no Firefox não abria.', en: 'TimeField: the clock is a button that opens a list of times (listStep prop; false removes the button), replacing the browser picker, which did not open on Firefox.' } },
       { kind: 'improved', text: { pt: 'TimeField: colar um horário (14h30, 2:30 pm), PageUp/PageDown e Home/End nos segmentos. ref, name e validação nativa continuam, por um input oculto.', en: 'TimeField: paste a time (14h30, 2:30 pm), PageUp/PageDown and Home/End on segments. ref, name and native validation still work, through a hidden input.' } },
-      { kind: 'improved', text: { pt: 'DateTimePicker: a hora usa os mesmos segmentos do TimeField, no lugar do input do navegador. O segmento em edição fica laranja em todo navegador e o relógio de 12 ou 24 horas vem do idioma do OrangeProvider, como o formato da data. O valor continua sendo um Date.', en: 'DateTimePicker: the time uses the same segments as TimeField, replacing the browser input. The editing segment is orange in every browser and the 12 or 24-hour clock comes from the OrangeProvider locale, like the date format. The value is still a Date.' } },
-      { kind: 'fixed', text: { pt: 'DateTimePicker: as setas da hora andam no step (contado da meia-noite) e, no dia de min ou de max, param no horário-limite em vez de passar dele. O aviso de horário mínimo mostra o primeiro minuto que vale quando min tem segundos.', en: 'DateTimePicker: the arrow keys on the time move by step (counted from midnight) and, on the min or max day, stop at the limit time instead of going past it. The minimum-time warning shows the first valid minute when min has seconds.' } },
-      { kind: 'fixed', text: { pt: 'DateTimePicker: clicar no relógio leva o foco à hora. Antes ele pedia o seletor do navegador, que no Firefox não abria.', en: 'DateTimePicker: clicking the clock moves focus to the time. It used to ask for the browser picker, which did not open on Firefox.' } },
-      { kind: 'fixed', text: { pt: 'TimeField e DateTimePicker: quando o valor muda por fora (a aplicação define outro horário ou limpa o formulário depois de enviar), os segmentos descartam o que estava digitado pela metade. O campo mostra o valor novo e, se ele ficar vazio de novo, volta a --:-- em vez de trazer de volta o que tinha sido digitado.', en: 'TimeField and DateTimePicker: when the value changes from outside (the application sets another time or clears the form after submitting), the segments discard what was half-typed. The field shows the new value and, if it becomes empty again, goes back to --:-- instead of bringing back what had been typed.' } },
     ],
   },
   {
