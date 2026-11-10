@@ -8,8 +8,6 @@ import { STORYBOOK_STATIC } from '../visual/paths'
 // Fora do contêiner do CI, rode só o que tiver instalado: `pnpm test:layout --project=chromium`.
 
 const CI = !!process.env.CI
-// DIAGNÓSTICO TEMPORÁRIO: saída de erro dos navegadores no log (sai no commit da correção).
-if (CI) process.env.DEBUG = [process.env.DEBUG, 'pw:browser'].filter(Boolean).join(',')
 const PORT = Number(process.env.LAYOUT_PORT ?? 6008)
 
 export default defineConfig({

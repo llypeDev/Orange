@@ -19,6 +19,6 @@ O que muda para quem já usa:
 - O valor mora num `<input type="time">` oculto, que recebe a `ref`, o `name` e o restante das props: envio de formulário, `FormData` e validação nativa (`required`, `min`, `max`, `step`) continuam funcionando, e `onChange(value, event)` recebe um evento desse input. Focá-lo (rótulo, `ref.current.focus()`) leva o foco ao primeiro segmento. `onFocus`, `onBlur` e `onKeyDown` passam a valer para o campo inteiro.
 - Um horário pela metade agora conta como inválido para o formulário (como o `badInput` do input nativo).
 - CSS próprio que mirava `.or-time-field__input` ou `.or-time-field__icon` deixa de ter efeito: os segmentos são `.or-time-field__segment` e o relógio, `.or-time-field__button`.
-- Em testes, `getByLabelText` passa a encontrar também o grupo e os segmentos. Para digitar, use `getByRole('spinbutton', { name: /hora/ })`; `fireEvent.change` no `input[type="time"]` continua funcionando.
+- Em testes, `getByLabelText` passa a encontrar também o grupo dos segmentos, além do input. Para digitar, use `getByRole('spinbutton', { name: 'hora' })` (ou `'minuto'`); `fireEvent.change` no `input[type="time"]` continua funcionando.
 
 A digitação por teclado virtual (celular) foi verificada por emulação de toque no Chromium, não em aparelhos; os anúncios, por testes automáticos, não com leitores de tela. O `DateTimePicker` continua com o campo de hora nativo.

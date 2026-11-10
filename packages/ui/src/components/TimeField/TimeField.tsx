@@ -312,6 +312,14 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
   const presence = usePresence<HTMLDivElement>(open)
   const [frameElement, setFrameElement] = useState<HTMLDivElement | null>(null)
   const [popupElement, setPopupElement] = useState<HTMLDivElement | null>(null)
+  // Refs estáveis: uma função nova a cada render faria o React desligar e religar a ref — e, com
+  // ela, o estado do elemento — em todo commit.
+  const frameRefs = useMemo(() => mergeRefs<HTMLDivElement>(frameRef, setFrameElement), [])
+  const popupRefs = useMemo(
+    () => mergeRefs<HTMLDivElement>(popupRef, presence.nodeRef, setPopupElement),
+    [presence.nodeRef],
+  )
+  const inputRefs = useMemo(() => mergeRefs<HTMLInputElement>(inputRef, ref), [ref])
   const floating = useFloatingPanel({
     open: presence.present,
     reference: frameElement,
@@ -669,11 +677,12 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
       <WithField id={id}>
         {(field, fieldProps) => {
           const invalid = field?.invalid ?? invalidProp
-          // O nome do campo: o rótulo visível ou, sem ele, o `aria-labelledby`/`aria-label` recebido.
+          // O nome do campo fica no grupo: o rótulo visível ou, sem ele, o `aria-labelledby` ou
+          // o `aria-label` recebido.
           const labelId = (label && field ? field.labelId : undefined) ?? ariaLabelledBy
           return (
             <div
-              ref={mergeRefs(frameRef, setFrameElement)}
+              ref={frameRefs}
               className={cx('or-control-frame', `or-control-frame--${size}`, 'or-time-field__frame')}
               data-invalid={invalid || undefined}
               data-disabled={disabled || undefined}
@@ -697,7 +706,6 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
                       : kind === 'period'
                         ? periods[current as DayPeriod]
                         : pad(current as number)
-                  const segmentId = `${baseId}-${kind}`
                   const name = t(SEGMENT_LABEL[kind])
                   const [low, high] = kind === 'period' ? [0, 1] : rangeOf(kind)
                   const now =
@@ -720,7 +728,6 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
                         ref={(element) => {
                           segmentRefs.current[kind] = element
                         }}
-                        id={segmentId}
                         role="spinbutton"
                         tabIndex={disabled ? -1 : 0}
                         // Editável para o teclado virtual do celular abrir; o texto é sempre o nosso.
@@ -735,9 +742,10 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
                         data-kind={kind}
                         data-text={text}
                         data-placeholder={current === null || undefined}
-                        // "hora" + o nome do campo: "hora Início".
-                        aria-label={labelId || !ariaLabel ? name : `${name}, ${ariaLabel}`}
-                        aria-labelledby={labelId ? `${segmentId} ${labelId}` : undefined}
+                        // Só o nome do segmento ("hora"): o nome do campo vem do grupo em volta. Sem
+                        // `id` + `aria-labelledby` aqui: com eles, o Firefox dos testes (Playwright
+                        // e o axe do Storybook na mesma página) derrubava o processo da página.
+                        aria-label={name}
                         // Descrição e erro uma vez só, no primeiro segmento.
                         aria-describedby={index === 0 ? fieldProps['aria-describedby'] : undefined}
                         aria-valuenow={now}
@@ -765,7 +773,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
               <input
                 {...rest}
                 {...fieldProps}
-                ref={mergeRefs(inputRef, ref)}
+                ref={inputRefs}
                 type="time"
                 className="or-time-field__input"
                 tabIndex={-1}
@@ -803,7 +811,7 @@ export const TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(function T
       {hasList && presence.present && (
         <Portal>
           <div
-            ref={mergeRefs(popupRef, presence.nodeRef, setPopupElement)}
+            ref={popupRefs}
             className="or-floating or-time-field__popup"
             // O portal sai da árvore de `[data-theme]`: a lista leva o tema do campo.
             data-theme={getThemeScope(frameElement)}

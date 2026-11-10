@@ -31,8 +31,10 @@ describe('TimeField: estrutura', () => {
     )
     expect(screen.getByRole('group', { name: 'Horário de início' })).toBeInTheDocument()
     const [hour, minute] = segments()
-    expect(hour).toHaveAccessibleName('hora Horário de início')
-    expect(minute).toHaveAccessibleName('minuto Horário de início')
+    // O nome do campo fica no grupo; cada segmento diz só o que é.
+    expect(hour).toHaveAccessibleName('hora')
+    expect(minute).toHaveAccessibleName('minuto')
+    expect(hour).not.toHaveAttribute('aria-labelledby')
     // A descrição é lida uma vez, no primeiro segmento.
     expect(hour).toHaveAccessibleDescription('Horário de Brasília')
     expect(minute).not.toHaveAttribute('aria-describedby')
@@ -66,11 +68,18 @@ describe('TimeField: estrutura', () => {
     expect(segment(/^minuto/)).toHaveAttribute('aria-valuenow', '5')
   })
 
-  it('sem rótulo visível, usa o aria-label no grupo e em cada segmento', () => {
-    render(<TimeField aria-label="Início" />)
+  it('sem rótulo visível, o grupo usa o aria-label ou o aria-labelledby recebido', () => {
+    const { unmount } = render(<TimeField aria-label="Início" />)
     expect(screen.getByRole('group', { name: 'Início' })).toBeInTheDocument()
-    expect(segments()[0]).toHaveAccessibleName('hora, Início')
-    expect(segments()[1]).toHaveAccessibleName('minuto, Início')
+    expect(segments()[0]).toHaveAccessibleName('hora')
+    unmount()
+    render(
+      <>
+        <h2 id="titulo">Fim do plantão</h2>
+        <TimeField aria-labelledby="titulo" />
+      </>,
+    )
+    expect(screen.getByRole('group', { name: 'Fim do plantão' })).toBeInTheDocument()
   })
 
   it('aplica a classe do tamanho e repassa className', () => {
