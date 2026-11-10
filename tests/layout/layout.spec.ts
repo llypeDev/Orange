@@ -775,122 +775,128 @@ test.describe('TimeField em segmentos', () => {
 })
 
 /*
- * DIAGNÓSTICO TEMPORÁRIO (sai no próximo commit): no Firefox da CI, clicar num segmento do
- * TimeField derruba a página. Cada variação muda uma coisa só antes do clique, para achar a causa.
+ * DIAGNÓSTICO TEMPORÁRIO, 2ª rodada (sai no commit da correção): no Firefox da CI a página do
+ * TimeField cai de forma intermitente. Na 1ª rodada o clique por coordenadas quase sempre
+ * passou, e os testes que usam `locator.click()` no segmento caíram 8 de 8 vezes. Cada cenário
+ * abaixo roda três vezes, só no Firefox.
  */
-test.describe('DIAG TimeField Firefox', () => {
-  const variants: Record<string, (page: Page) => Promise<void>> = {
-    'd00 como está': async () => {},
-    'd01 input oculto com display none': (page) =>
-      page.addStyleTag({ content: '.or-time-field__input { display: none !important }' }).then(() => {}),
-    'd02 input oculto 1x1 no canto': (page) =>
-      page
-        .addStyleTag({
-          content:
-            '.or-time-field__input { inset: auto auto 0 0 !important; width: 1px !important; height: 1px !important }',
-        })
-        .then(() => {}),
-    'd03 caret-color auto': (page) =>
-      page.addStyleTag({ content: '.or-time-field__segment { caret-color: auto !important }' }).then(() => {}),
-    'd04 sem contenteditable': (page) =>
-      page.evaluate(() =>
-        document.querySelectorAll('.or-time-field__segment').forEach((el) => el.removeAttribute('contenteditable')),
-      ),
-    'd05 segmentos sem flex': (page) =>
-      page.addStyleTag({ content: '.or-time-field__segments { display: block !important }' }).then(() => {}),
-    'd06 white-space normal': (page) =>
-      page.addStyleTag({ content: '.or-time-field__segments { white-space: normal !important }' }).then(() => {}),
-    'd07 sem atributos de teclado virtual': (page) =>
-      page.evaluate(() =>
-        document.querySelectorAll('.or-time-field__segment').forEach((el) => {
-          for (const name of ['inputmode', 'enterkeyhint', 'autocorrect', 'autocapitalize', 'spellcheck'])
-            el.removeAttribute(name)
-        }),
-      ),
-    'd08 sem role nem aria': (page) =>
-      page.evaluate(() =>
-        document.querySelectorAll('.or-time-field__segment').forEach((el) => {
-          for (const name of el.getAttributeNames())
-            if (name === 'role' || name.startsWith('aria-')) el.removeAttribute(name)
-        }),
-      ),
-    'd09 sem min-width, padding e text-align': (page) =>
-      page
-        .addStyleTag({
-          content:
-            '.or-time-field__segment { min-width: 0 !important; padding: 0 !important; text-align: start !important; transition: none !important }',
-        })
-        .then(() => {}),
-    'd10 selecao padrao': (page) =>
-      page
-        .addStyleTag({
-          content: '.or-time-field__segment::selection { background: Highlight !important; color: HighlightText !important }',
-        })
-        .then(() => {}),
-    'd11 frame sem position relative': (page) =>
-      page.addStyleTag({ content: '.or-time-field__frame { position: static !important }' }).then(() => {}),
+test.describe('DIAG2 TimeField Firefox', () => {
+  test.describe.configure({ retries: 0 })
+  test.skip(({ browserName }) => browserName !== 'firefox', 'diagnóstico só no Firefox')
+
+  const hour = (page: Page) => page.getByRole('spinbutton', { name: /^hora/ })
+  const css = (page: Page) => page.locator('.or-time-field__segment').first()
+  const style = (page: Page, content: string) => page.addStyleTag({ content }).then(() => {})
+  const alive = async (page: Page) => {
+    await page.waitForTimeout(600)
+    expect(await page.evaluate(() => 1)).toBe(1)
+  }
+  const clickAt = async (page: Page) => {
+    const box = await css(page).boundingBox()
+    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
   }
 
-  for (const [name, apply] of Object.entries(variants)) {
-    test(`${name}: clique no segmento`, async ({ page }) => {
-      await openStory(page, 'componentes-timefield--default')
-      await apply(page)
-      const box = await page.locator('.or-time-field__segment').first().boundingBox()
-      await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
-      await page.waitForTimeout(400)
-      const active = await page.evaluate(() => document.activeElement?.getAttribute('data-kind') ?? null)
-      expect(active).toBe('hour')
-    })
+  const scenarios: Record<string, { story?: string; run: (page: Page) => Promise<void> }> = {
+    'e00 getByRole.click': { run: (page) => hour(page).click() },
+    'e01 locator css .click': { run: (page) => css(page).click() },
+    'e02 getByRole.click force': { run: (page) => hour(page).click({ force: true }) },
+    'e03 getByRole.boundingBox + mouse.click': {
+      run: async (page) => {
+        const box = await hour(page).boundingBox()
+        await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
+      },
+    },
+    'e04 getByRole.click, input oculto display none': {
+      run: async (page) => {
+        await style(page, '.or-time-field__input { display: none !important }')
+        await hour(page).click()
+      },
+    },
+    'e05 getByRole.click, sem contenteditable': {
+      run: async (page) => {
+        await page.evaluate(() =>
+          document
+            .querySelectorAll('.or-time-field__segment')
+            .forEach((el) => el.removeAttribute('contenteditable')),
+        )
+        await hour(page).click()
+      },
+    },
+    'e07 getByRole.click depois de 2,5 s parado': {
+      run: async (page) => {
+        await page.waitForTimeout(2500)
+        await hour(page).click()
+      },
+    },
+    'e08 getByRole.hover': { run: (page) => hour(page).hover() },
+    'e09 nada: 3 s parado': { run: (page) => page.waitForTimeout(3000) },
+    'e11 getByRole.click, input oculto removido': {
+      run: async (page) => {
+        await page.evaluate(() => document.querySelector('.or-time-field__input')?.remove())
+        await hour(page).click()
+      },
+    },
+    'e12 getByRole.click, input oculto type text': {
+      run: async (page) => {
+        await page.evaluate(() => document.querySelector('.or-time-field__input')?.setAttribute('type', 'text'))
+        await hour(page).click()
+      },
+    },
+    'e13 getByRole.click, sem transicao nem estilo de foco': {
+      run: async (page) => {
+        await style(
+          page,
+          '.or-time-field__segment, .or-control-frame { transition: none !important } .or-time-field__segment:focus { background: transparent !important; color: inherit !important }',
+        )
+        await hour(page).click()
+      },
+    },
+    'e14 scrollIntoViewIfNeeded + mouse.click': {
+      run: async (page) => {
+        await css(page).scrollIntoViewIfNeeded()
+        await clickAt(page)
+      },
+    },
+    'e15 getByRole.click trial (só as checagens)': { run: (page) => hour(page).click({ trial: true }) },
+    'e17 getByRole.click na story com valor': {
+      story: 'componentes-timefield--with-value',
+      run: (page) => hour(page).click(),
+    },
+    'e18 getByRole.click na story com limites': {
+      story: 'componentes-timefield--business-hours',
+      run: (page) => hour(page).click(),
+    },
+    'e19 getByRole.click no botao do relogio': {
+      run: (page) => page.getByRole('button', { name: 'Escolher horário' }).click(),
+    },
+    'e20 Tab e digitar': {
+      run: async (page) => {
+        await page.keyboard.press('Tab')
+        await page.keyboard.type('0930')
+      },
+    },
+    'e21 mouse.click por coordenadas': { run: (page) => clickAt(page) },
+    'e22 getByRole.focus': { run: (page) => hour(page).focus() },
+    'e23 getByRole.click e insertText': {
+      run: async (page) => {
+        await hour(page).click()
+        for (const digit of '0930') await page.keyboard.insertText(digit)
+      },
+    },
   }
 
-  test('d20 só passar o mouse por cima', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    const box = await page.locator('.or-time-field__segment').first().boundingBox()
-    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
-    await page.waitForTimeout(400)
-    expect(await page.evaluate(() => 1)).toBe(1)
-  })
-
-  test('d21 só teclado: Tab e digitar', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    await page.keyboard.press('Tab')
-    await page.keyboard.type('0930')
-    await page.waitForTimeout(300)
-    expect(await page.locator('input[type="time"]').inputValue()).toBe('09:30')
-  })
-
-  test('d22 foco por script e depois clique', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    await page.locator('.or-time-field__segment').first().focus()
-    await page.waitForTimeout(200)
-    const box = await page.locator('.or-time-field__segment').first().boundingBox()
-    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
-    await page.waitForTimeout(400)
-    expect(await page.evaluate(() => document.activeElement?.getAttribute('data-kind') ?? null)).toBe('hour')
-  })
-
-  test('d23 mousedown sem mouseup', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    const box = await page.locator('.or-time-field__segment').first().boundingBox()
-    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
-    await page.mouse.down()
-    await page.waitForTimeout(400)
-    expect(await page.evaluate(() => 1)).toBe(1)
-  })
-
-  test('d24 clique no minuto (segundo segmento)', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    const box = await page.locator('.or-time-field__segment').nth(1).boundingBox()
-    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
-    await page.waitForTimeout(400)
-    expect(await page.evaluate(() => document.activeElement?.getAttribute('data-kind') ?? null)).toBe('minute')
-  })
-
-  test('d25 clique na área livre do campo', async ({ page }) => {
-    await openStory(page, 'componentes-timefield--default')
-    const box = await page.locator('.or-time-field__segments').boundingBox()
-    await page.mouse.click(box!.x + box!.width - 8, box!.y + box!.height / 2)
-    await page.waitForTimeout(400)
-    expect(await page.evaluate(() => document.activeElement?.getAttribute('data-kind') ?? null)).toBe('hour')
-  })
+  for (const [name, { story, run }] of Object.entries(scenarios)) {
+    for (const round of [1, 2, 3]) {
+      test(`${name} (${round})`, async ({ page, browser }) => {
+        if (round === 1 && name.startsWith('e00')) console.log(`DIAG2 Firefox ${browser.version()}`)
+        page.on('console', (message) => {
+          if (message.type() === 'error') console.log(`DIAG2 console.error em ${name}: ${message.text()}`)
+        })
+        page.on('pageerror', (error) => console.log(`DIAG2 pageerror em ${name}: ${error.message}`))
+        await openStory(page, story ?? 'componentes-timefield--default')
+        await run(page)
+        await alive(page)
+      })
+    }
+  }
 })
