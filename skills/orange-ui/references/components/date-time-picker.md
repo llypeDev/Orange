@@ -15,7 +15,7 @@ Data e hora num só campo: a data com máscara e calendário em diálogo, a hora
 - Escolher um dia no calendário mantém a hora digitada. Com a hora vazia, passe `defaultTime` (ex.: `'09:00'`) quando houver um horário típico; sem ele, a hora fica vazia para a pessoa preencher.
 - `min` e `max` valem para data *e* hora: dias fora ficam desabilitados no calendário e, no dia-limite, as setas da hora param no horário mínimo ou máximo; um horário digitado antes do mínimo mostra "Escolha um horário a partir de 14:00". Regras por dia (horário comercial) vão em `error`.
 - A hora usa os mesmos segmentos do TimeField e fica igual em todos os navegadores. O relógio de 12 horas (com AM/PM) ou de 24 vem do idioma do `OrangeProvider`, como o formato da data — não do navegador da pessoa. O valor é sempre um `Date`.
-- `step` é em segundos (`900` = 15 minutos): as setas da hora andam nesse passo, contado a partir da meia-noite. Um horário digitado fora do passo continua valendo; se só alguns horários servem, valide em `error`.
+- `step` é em segundos (`900` = 15 minutos): as setas da hora andam nesse passo, contado a partir da meia-noite. Um horário digitado fora do passo continua valendo; se só alguns horários servem, use `error` para validar.
 
 - Faça: Um rótulo para o par data e hora, com o fuso e a regra explicados.
 - Evite: Campo sem rótulo visível — ou um DatePicker e um TimeField soltos, com dois rótulos para um só valor.

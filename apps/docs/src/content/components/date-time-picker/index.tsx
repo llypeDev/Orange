@@ -128,16 +128,15 @@ export default function DateTimePickerPage() {
                 <>
                   <Code>step</Code> é em segundos (<Code>900</Code> = 15 minutos): as setas da hora
                   andam nesse passo, contado a partir da meia-noite. Um horário digitado fora do
-                  passo continua valendo; se só alguns horários servem, valide em{' '}
-                  <Code>error</Code>.
+                  passo continua valendo; se só alguns horários servem, use <Code>error</Code> para
+                  validar.
                 </>
               ),
               en: (
                 <>
                   <Code>step</Code> is in seconds (<Code>900</Code> = 15 minutes): the arrow keys on
                   the time move by that step, counted from midnight. A time typed off the step is
-                  still accepted; if only some times are valid, validate through{' '}
-                  <Code>error</Code>.
+                  still accepted; if only some times are valid, use <Code>error</Code> to validate.
                 </>
               ),
             },
@@ -517,12 +516,11 @@ export default function DateTimePickerPage() {
                 campo de texto com nome próprio ("Data"), e o formato dela é anunciado como
                 descrição. A hora é um grupo ("Hora") com os mesmos segmentos do TimeField: cada um
                 é um <Code>spinbutton</Code> com nome próprio ("hora", "minuto", "segundo", "AM ou
-                PM"), valor atual, mínimo e máximo; vazio, anuncia "vazio". A descrição e o erro
-                são lidos na data e no primeiro segmento da hora. O calendário
-                abre num diálogo modal (padrão <strong>Date Picker Dialog</strong> do WAI-ARIA APG),
-                com a mesma grade do DatePicker. A parte com problema recebe{' '}
-                <Code>aria-invalid</Code> (a data, quando ela é inválida ou indisponível; a hora,
-                quando falta ou sai de min/max).
+                PM"), valor atual, mínimo e máximo; vazio, anuncia "vazio". A descrição e o erro são
+                lidos na data e no primeiro segmento da hora. O calendário abre num diálogo modal
+                (padrão <strong>Date Picker Dialog</strong> do WAI-ARIA APG), com a mesma grade do
+                DatePicker. A parte com problema recebe <Code>aria-invalid</Code> (a data, quando
+                ela é inválida ou indisponível; a hora, quando falta ou sai de min/max).
               </>
             }
             en={
@@ -533,10 +531,10 @@ export default function DateTimePickerPage() {
                 one is a <Code>spinbutton</Code> with its own name ("hour", "minute", "second", "AM
                 or PM"), current, minimum and maximum values; when empty it announces "empty". The
                 description and the error are read on the date and on the first time segment. The
-                calendar opens in a modal dialog (WAI-ARIA APG{' '}
-                <strong>Date Picker Dialog</strong> pattern) with the same grid as DatePicker. The
-                part at fault gets <Code>aria-invalid</Code> (the date when it is invalid or
-                unavailable; the time when it is missing or outside min/max).
+                calendar opens in a modal dialog (WAI-ARIA APG <strong>Date Picker Dialog</strong>{' '}
+                pattern) with the same grid as DatePicker. The part at fault gets{' '}
+                <Code>aria-invalid</Code> (the date when it is invalid or unavailable; the time when
+                it is missing or outside min/max).
               </>
             }
           />
