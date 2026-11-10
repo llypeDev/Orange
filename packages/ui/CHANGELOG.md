@@ -1,5 +1,51 @@
 # @orangesys/ui
 
+## 1.4.0
+
+### Minor Changes
+
+- [#43](https://github.com/llypeDev/Orange/pull/43) [`3085b9f`](https://github.com/llypeDev/Orange/commit/3085b9f23cfb22b502359d1a8a7ce6372aab153c) Thanks [@llypeDev](https://github.com/llypeDev)! - Nova entrada `@orangesys/ui/with-css`: os mesmos exports da entrada principal, mas cada componente traz o próprio CSS. Importando dela — e sem importar o `styles.css` — o bundler leva para a página só o CSS dos componentes usados, mais a base (tokens, reset e movimento):
+
+  ```tsx
+  import { Button, Table } from '@orangesys/ui/with-css'
+  import './app.css' // o seu CSS, depois dos componentes
+  ```
+
+  CSS em gzip, medido com o Vite: só o `Button`, 6,9 KB; só a `Table`, 8,5 KB; uma tela com 45 componentes, 25,6 KB — contra 65,3 KB do `styles.css` inteiro.
+
+  O `@orangesys/ui/styles.css` não muda e continua sendo o caminho mais simples. A entrada nova depende de um bundler que processe `import './x.css'` dentro das dependências e descarte módulos não usados (verificada com o Vite; com o esbuild sozinho o resultado é o CSS inteiro), só existe em ESM e não serve para código que roda no Node sem bundler. O pacote publicado cresce de 3,0 para 3,5 MB, porque passa a levar também o CSS de cada módulo em `dist/css`.
+
+- [#43](https://github.com/llypeDev/Orange/pull/43) [`3085b9f`](https://github.com/llypeDev/Orange/commit/3085b9f23cfb22b502359d1a8a7ce6372aab153c) Thanks [@llypeDev](https://github.com/llypeDev)! - Idioma espanhol: o dicionário `esES` (espanhol da Espanha) traz traduzidos todos os textos internos dos componentes.
+
+  ```tsx
+  import { esES, OrangeProvider } from '@orangesys/ui'
+
+  createRoot(root).render(
+    <OrangeProvider locale="es-ES" messages={esES}>
+      <App />
+    </OrangeProvider>,
+  )
+  ```
+
+  O `locale` cuida de datas, números e ordenação; o `messages` troca os textos. O `esES` não vem embutido no provider, para não pesar no bundle de quem não usa — só entra na aplicação que o importa.
+
+  Em desenvolvimento, o `OrangeProvider` passa a avisar no console quando recebe um `locale` sem textos embutidos (qualquer um que não seja português ou inglês) e nenhum `messages`: nesse caso os componentes ficam em português.
+
+- [#43](https://github.com/llypeDev/Orange/pull/43) [`3085b9f`](https://github.com/llypeDev/Orange/commit/3085b9f23cfb22b502359d1a8a7ce6372aab153c) Thanks [@llypeDev](https://github.com/llypeDev)! - `Table` para dados grandes. Tudo é opcional e aditivo — tabelas existentes não mudam.
+
+  - **Filtros por coluna:** `filter: 'text' | 'select'` na coluna (com `filterOptions` e `filterValue`) mostra um campo sob o cabeçalho. A tabela anuncia quantas linhas sobraram, "Selecionar todos" vale só para elas e, sem resultado, aparece "Limpar filtros". Controle com `filters`/`defaultFilters`/`onFiltersChange`; `manualFilter` deixa o filtro com o servidor.
+  - **Colunas ocultas:** prop `hiddenColumns` e o componente novo `TableColumnsMenu`, um menu com um item marcável por coluna (`hideable: false` tira uma coluna do menu).
+  - **Virtualização:** `virtualized` com `maxHeight` renderiza só as linhas à vista — milhares de linhas sem pesar. Informa o total e a posição ao leitor de tela (`aria-rowcount`, `aria-rowindex`) e mantém no DOM a linha que está com o foco. `rowHeight` e `overscan` ajustam a janela.
+  - **Colunas fixas:** `pinned: 'start' | 'end'` prende a coluna à borda durante a rolagem horizontal; o foco nunca para escondido sob elas.
+  - **Colunas redimensionáveis:** `resizable` (com `minWidth` e `maxWidth`) põe um separador na borda do cabeçalho: arraste, use as setas, Home e End, ou dê um clique duplo (ou Enter) para ajustar ao conteúdo. Controle com `columnWidths`/`defaultColumnWidths`/`onColumnWidthsChange`.
+
+  Mensagens novas em `ptBR` e `enUS`: `tableFilterBy`, `tableFilterAll`, `tableClearFilters`, `tableColumns` e `tableResizeColumn`.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @orangesys/tokens@1.4.0
+
 ## 1.3.3
 
 ### Patch Changes
