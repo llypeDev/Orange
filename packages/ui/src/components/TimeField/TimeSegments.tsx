@@ -153,7 +153,7 @@ export interface TimeSegmentsState {
 /**
  * O que está escrito nos segmentos e como eles respondem ao teclado. Enquanto a pessoa digita, o
  * valor é `''` (como no input nativo) e o que já foi escrito mora num rascunho; se o `value` mudar
- * por fora, o rascunho é refeito a partir dele.
+ * por fora para algo que o rascunho não descreve, o rascunho é refeito a partir dele.
  */
 export function useTimeSegments({
   value,
@@ -183,6 +183,16 @@ export function useTimeSegments({
     draft.cycle === hourCycle &&
     (draftParts ? formatTime(draftParts, withSeconds) : '') === normalized
   const view = inSync ? draft : draftFromTime(time, hourCycle)
+  // O valor mudou para algo que o rascunho não descreve: veio de fora (a aplicação definiu outro
+  // horário, limpou o formulário). O rascunho é refeito a partir dele; se ficasse guardado, um
+  // horário pela metade voltaria a aparecer quando o valor voltasse a ser `''`. Só na mudança do
+  // valor: fora de sincronia com o valor parado (o pai atualiza com atraso, ou não atualiza), o
+  // rascunho espera, para "--:30" continuar no campo quando o `''` de um segmento apagado chegar.
+  const [lastValue, setLastValue] = useState(normalized)
+  if (lastValue !== normalized) {
+    setLastValue(normalized)
+    if (!inSync) setDraft(view)
+  }
   const partial = !isEmptyDraft(view, withSeconds) && !draftTime(view, withSeconds)
   const [typing, setTyping] = useState(false)
 

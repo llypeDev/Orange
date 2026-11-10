@@ -394,6 +394,38 @@ describe('DateTimePicker', () => {
     expect(shownTime()).toBe('--:--')
   })
 
+  it('controlado: a hora pela metade é descartada quando o value muda por fora e não volta ao limpar', async () => {
+    const user = userEvent.setup()
+    function Controlled() {
+      const [value, setValue] = useState<Date | null>(null)
+      return (
+        <>
+          <DateTimePicker label="Início" value={value} onChange={setValue} />
+          <button type="button" onClick={() => setValue(new Date(2026, 4, 1, 9, 0))}>
+            Primeiro horário
+          </button>
+          <button type="button" onClick={() => setValue(null)}>
+            Limpar
+          </button>
+        </>
+      )
+    }
+    render(<Controlled />)
+    await typeTime(user, '14')
+    // pela metade: a hora mostra o que foi digitado, o valor continua null
+    expect(shownTime()).toBe('14:--')
+
+    await user.click(screen.getByRole('button', { name: 'Primeiro horário' }))
+    expect(dateInput()).toHaveValue('01/05/2026')
+    expect(shownTime()).toBe('09:00')
+
+    // o formulário é limpo (depois de enviar, por exemplo): a hora fica vazia, sem o "14" de antes
+    await user.click(screen.getByRole('button', { name: 'Limpar' }))
+    expect(dateInput()).toHaveValue('')
+    expect(shownTime()).toBe('--:--')
+    expect((dateInput() as HTMLInputElement).validity.valid).toBe(true)
+  })
+
   it('não controlado: defaultValue preenche a data e a hora', () => {
     render(<DateTimePicker label="Reunião" defaultValue={reuniao} name="reuniao" />)
     expect(dateInput()).toHaveValue('15/03/2026')

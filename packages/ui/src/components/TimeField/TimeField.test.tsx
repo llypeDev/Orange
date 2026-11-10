@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createRef, useState, type ReactElement } from 'react'
+import { createRef, startTransition, useState, type ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { OrangeProvider, type Locale } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
@@ -794,6 +794,67 @@ describe('TimeField: controlado e estados', () => {
     expect(onChange).toHaveBeenLastCalledWith('11:00', expect.anything())
     expect(shown(container)).toBe('10:00')
     expect(getInput(container)).toHaveValue('10:00')
+  })
+
+  it('controlado: o horário pela metade é descartado quando o value muda por fora e não volta depois', async () => {
+    const user = userEvent.setup()
+    function Controlled() {
+      const [value, setValue] = useState('')
+      return (
+        <>
+          <TimeField label="Horário" value={value} onChange={setValue} />
+          <button type="button" onClick={() => setValue('09:00')}>
+            Início do dia
+          </button>
+          <button type="button" onClick={() => setValue('')}>
+            Limpar
+          </button>
+        </>
+      )
+    }
+    const { container } = render(<Controlled />)
+    await user.click(segment(/^hora/))
+    await user.keyboard('14')
+    // pela metade: o campo mostra o que foi digitado, o valor continua vazio
+    expect(shown(container)).toBe('14:--')
+    expect(getInput(container)).toHaveValue('')
+
+    await user.click(screen.getByRole('button', { name: 'Início do dia' }))
+    expect(shown(container)).toBe('09:00')
+
+    // o value volta a ficar vazio: o campo fica vazio, sem o "14" de antes nem o aviso dele
+    await user.click(screen.getByRole('button', { name: 'Limpar' }))
+    expect(shown(container)).toBe('--:--')
+    expect(screen.queryByText('Horário incompleto.')).not.toBeInTheDocument()
+    expect(getInput(container).validity.valid).toBe(true)
+  })
+
+  it('controlado com atraso (startTransition): apagar um segmento mantém os outros quando o value chega', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    function Deferred() {
+      const [value, setValue] = useState('09:30')
+      return (
+        <TimeField
+          label="Horário"
+          value={value}
+          onChange={(next) => {
+            onChange(next)
+            startTransition(() => setValue(next))
+          }}
+        />
+      )
+    }
+    const { container } = render(<Deferred />)
+    await user.click(segment(/^hora/))
+    await user.keyboard('{Backspace}')
+    expect(onChange).toHaveBeenLastCalledWith('')
+    expect(getInput(container)).toHaveValue('')
+    expect(shown(container)).toBe('--:30')
+    // e a digitação continua de onde parou
+    await user.keyboard('14')
+    expect(shown(container)).toBe('14:30')
+    expect(getInput(container)).toHaveValue('14:30')
   })
 
   it('desabilitado: segmentos fora do Tab, botão e input desabilitados', async () => {
