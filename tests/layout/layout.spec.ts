@@ -775,126 +775,155 @@ test.describe('TimeField em segmentos', () => {
 })
 
 /*
- * DIAGNÓSTICO TEMPORÁRIO, 2ª rodada (sai no commit da correção): no Firefox da CI a página do
- * TimeField cai de forma intermitente. Na 1ª rodada o clique por coordenadas quase sempre
- * passou, e os testes que usam `locator.click()` no segmento caíram 8 de 8 vezes. Cada cenário
- * abaixo roda três vezes, só no Firefox.
+ * DIAGNÓSTICO TEMPORÁRIO, 3ª rodada (sai no commit da correção). Na 2ª rodada, no Firefox da CI,
+ * tudo o que resolve `getByRole('spinbutton', { name })` sobre os segmentos derrubou a página
+ * (processo de conteúdo com sinal 11), mesmo sem clicar; clique por coordenadas e página parada
+ * passaram. Esta rodada procura a marcação que dispara isso — inclusive fora do componente.
  */
-test.describe('DIAG2 TimeField Firefox', () => {
+test.describe('DIAG3 TimeField Firefox', () => {
   test.describe.configure({ retries: 0 })
   test.skip(({ browserName }) => browserName !== 'firefox', 'diagnóstico só no Firefox')
 
-  const hour = (page: Page) => page.getByRole('spinbutton', { name: /^hora/ })
-  const css = (page: Page) => page.locator('.or-time-field__segment').first()
-  const style = (page: Page, content: string) => page.addStyleTag({ content }).then(() => {})
+  const STORY = 'componentes-timefield--default'
+  const segments = (page: Page, change: string) =>
+    page.evaluate((code) => {
+      const run = new Function('el', 'label', code)
+      const label = document.querySelector('.or-field__label')
+      document.querySelectorAll('.or-time-field__segment').forEach((el) => run(el, label))
+    }, change)
   const alive = async (page: Page) => {
-    await page.waitForTimeout(600)
+    await page.waitForTimeout(500)
     expect(await page.evaluate(() => 1)).toBe(1)
   }
-  const clickAt = async (page: Page) => {
-    const box = await css(page).boundingBox()
-    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
+  const SPIN = { name: /^hora/ }
+
+  const onStory: Record<string, (page: Page) => Promise<unknown>> = {
+    'h00 spinbutton com nome (regex)': (page) => page.getByRole('spinbutton', SPIN).count(),
+    'h01 spinbutton sem nome': (page) => page.getByRole('spinbutton').count(),
+    'h02 spinbutton com nome (texto)': (page) => page.getByRole('spinbutton', { name: 'hora' }).count(),
+    'h03 sem aria-labelledby nos segmentos': async (page) => {
+      await segments(page, "el.removeAttribute('aria-labelledby')")
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h04 aria-labelledby só com o rótulo': async (page) => {
+      await segments(page, "el.setAttribute('aria-labelledby', label.id)")
+      return page.getByRole('spinbutton', { name: /Horário/ }).count()
+    },
+    'h05 aria-labelledby só com o próprio segmento': async (page) => {
+      await segments(page, "el.setAttribute('aria-labelledby', el.id)")
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h06 sem aria-describedby': async (page) => {
+      await segments(page, "el.removeAttribute('aria-describedby')")
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h07 sem aria-value*': async (page) => {
+      await segments(
+        page,
+        "for (const n of ['aria-valuenow','aria-valuemin','aria-valuemax','aria-valuetext']) el.removeAttribute(n)",
+      )
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h08 grupo pelo nome': (page) => page.getByRole('group', { name: 'Horário de início' }).count(),
+    'h09 getByLabel': (page) => page.getByLabel('Horário de início').count(),
+    'h10 spinbutton com nome, includeHidden': (page) =>
+      page.getByRole('spinbutton', { ...SPIN, includeHidden: true }).count(),
+    'h11 segmentos sem classe (sem CSS)': async (page) => {
+      await segments(page, "el.removeAttribute('class')")
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h12 role trocado para textbox': async (page) => {
+      await segments(page, "el.setAttribute('role', 'textbox')")
+      return page.getByRole('textbox', SPIN).count()
+    },
+    'h13 textbox (o input oculto)': (page) => page.getByRole('textbox').count(),
+    'h14 segmentos sem id (aria-labelledby aponta para nada + rótulo)': async (page) => {
+      await segments(page, "el.removeAttribute('id')")
+      return page.getByRole('spinbutton', { name: /Horário/ }).count()
+    },
+    'h15 só os atributos mínimos no segmento': async (page) => {
+      await segments(
+        page,
+        "for (const n of el.getAttributeNames()) if (!['id','role','aria-label','aria-labelledby'].includes(n)) el.removeAttribute(n)",
+      )
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    'h16 sem o addon de a11y (axe bloqueado)': (page) => page.getByRole('spinbutton', SPIN).count(),
+    'h17 rótulo sem for': async (page) => {
+      await page.evaluate(() => document.querySelector('.or-field__label')?.removeAttribute('for'))
+      return page.getByRole('spinbutton', SPIN).count()
+    },
+    // As mesmas chamadas de DOM que o cálculo de nome faz, direto na página.
+    'j01 getComputedStyle com pseudo-elementos': (page) =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('.or-time-field__segment, .or-field__label')].map(
+          (el) => getComputedStyle(el, '::before').content + getComputedStyle(el, '::after').content,
+        ),
+      ),
+    'j02 checkVisibility': (page) =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('.or-time-field *')].map((el) => el.checkVisibility()),
+      ),
+    'j03 reflexão ARIA (ariaLabelledByElements)': (page) =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('.or-time-field__segment')].map((el) => {
+          const refs = (el as unknown as { ariaLabelledByElements?: Element[] }).ariaLabelledByElements
+          return refs ? refs.length : 'sem suporte'
+        }),
+      ),
+    'j04 parado 6 s': (page) => page.waitForTimeout(6000),
   }
 
-  const scenarios: Record<string, { story?: string; run: (page: Page) => Promise<void> }> = {
-    'e00 getByRole.click': { run: (page) => hour(page).click() },
-    'e01 locator css .click': { run: (page) => css(page).click() },
-    'e02 getByRole.click force': { run: (page) => hour(page).click({ force: true }) },
-    'e03 getByRole.boundingBox + mouse.click': {
-      run: async (page) => {
-        const box = await hour(page).boundingBox()
-        await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
-      },
+  for (const [name, run] of Object.entries(onStory)) {
+    for (const round of [1, 2]) {
+      test(`${name} (${round})`, async ({ page }) => {
+        if (name.startsWith('h16')) await page.route('**/assets/axe-*.js', (route) => route.abort())
+        await openStory(page, STORY)
+        console.log(`DIAG3 ${name} (${round}) => ${JSON.stringify(await run(page))}`)
+        await alive(page)
+      })
+    }
+  }
+
+  // Fora do componente: páginas mínimas, sem Storybook nem React.
+  const pages: Record<string, { html: string; role: 'spinbutton' | 'button' | 'textbox'; name: RegExp }> = {
+    'k00 span spinbutton, aria-label + aria-labelledby (próprio + rótulo)': {
+      html: '<label id="l">Nome do campo</label><span id="s" role="spinbutton" tabindex="0" aria-label="hora" aria-labelledby="s l">--</span>',
+      role: 'spinbutton',
+      name: /^hora/,
     },
-    'e04 getByRole.click, input oculto display none': {
-      run: async (page) => {
-        await style(page, '.or-time-field__input { display: none !important }')
-        await hour(page).click()
-      },
+    'k01 o mesmo, sem a referência a si mesmo': {
+      html: '<label id="l">Nome do campo</label><span id="s" role="spinbutton" tabindex="0" aria-label="hora" aria-labelledby="l">--</span>',
+      role: 'spinbutton',
+      name: /Nome/,
     },
-    'e05 getByRole.click, sem contenteditable': {
-      run: async (page) => {
-        await page.evaluate(() =>
-          document
-            .querySelectorAll('.or-time-field__segment')
-            .forEach((el) => el.removeAttribute('contenteditable')),
-        )
-        await hour(page).click()
-      },
+    'k02 o mesmo, só a referência a si mesmo': {
+      html: '<span id="s" role="spinbutton" tabindex="0" aria-label="hora" aria-labelledby="s">--</span>',
+      role: 'spinbutton',
+      name: /^hora/,
     },
-    'e07 getByRole.click depois de 2,5 s parado': {
-      run: async (page) => {
-        await page.waitForTimeout(2500)
-        await hour(page).click()
-      },
+    'k03 referência a si mesmo num botão': {
+      html: '<span id="t">Título</span><button id="b" aria-label="abrir" aria-labelledby="b t">x</button>',
+      role: 'button',
+      name: /^abrir/,
     },
-    'e08 getByRole.hover': { run: (page) => hour(page).hover() },
-    'e09 nada: 3 s parado': { run: (page) => page.waitForTimeout(3000) },
-    'e11 getByRole.click, input oculto removido': {
-      run: async (page) => {
-        await page.evaluate(() => document.querySelector('.or-time-field__input')?.remove())
-        await hour(page).click()
-      },
+    'k04 spinbutton com aria-valuetext e referência a si mesmo': {
+      html: '<label id="l">Nome do campo</label><span id="s" role="spinbutton" tabindex="0" aria-label="hora" aria-labelledby="s l" aria-valuenow="9" aria-valuetext="09" aria-valuemin="0" aria-valuemax="23">09</span>',
+      role: 'spinbutton',
+      name: /^hora/,
     },
-    'e12 getByRole.click, input oculto type text': {
-      run: async (page) => {
-        await page.evaluate(() => document.querySelector('.or-time-field__input')?.setAttribute('type', 'text'))
-        await hour(page).click()
-      },
-    },
-    'e13 getByRole.click, sem transicao nem estilo de foco': {
-      run: async (page) => {
-        await style(
-          page,
-          '.or-time-field__segment, .or-control-frame { transition: none !important } .or-time-field__segment:focus { background: transparent !important; color: inherit !important }',
-        )
-        await hour(page).click()
-      },
-    },
-    'e14 scrollIntoViewIfNeeded + mouse.click': {
-      run: async (page) => {
-        await css(page).scrollIntoViewIfNeeded()
-        await clickAt(page)
-      },
-    },
-    'e15 getByRole.click trial (só as checagens)': { run: (page) => hour(page).click({ trial: true }) },
-    'e17 getByRole.click na story com valor': {
-      story: 'componentes-timefield--with-value',
-      run: (page) => hour(page).click(),
-    },
-    'e18 getByRole.click na story com limites': {
-      story: 'componentes-timefield--business-hours',
-      run: (page) => hour(page).click(),
-    },
-    'e19 getByRole.click no botao do relogio': {
-      run: (page) => page.getByRole('button', { name: 'Escolher horário' }).click(),
-    },
-    'e20 Tab e digitar': {
-      run: async (page) => {
-        await page.keyboard.press('Tab')
-        await page.keyboard.type('0930')
-      },
-    },
-    'e21 mouse.click por coordenadas': { run: (page) => clickAt(page) },
-    'e22 getByRole.focus': { run: (page) => hour(page).focus() },
-    'e23 getByRole.click e insertText': {
-      run: async (page) => {
-        await hour(page).click()
-        for (const digit of '0930') await page.keyboard.insertText(digit)
-      },
+    'k05 dois spinbuttons com o mesmo rótulo, como no campo': {
+      html: '<label id="l" for="i">Nome do campo</label><div role="group" aria-labelledby="l"><span id="a" role="spinbutton" tabindex="0" contenteditable="true" aria-label="hora" aria-labelledby="a l" aria-valuetext="vazio" aria-valuemin="0" aria-valuemax="23">--</span>:<span id="b" role="spinbutton" tabindex="0" contenteditable="true" aria-label="minuto" aria-labelledby="b l" aria-valuetext="vazio" aria-valuemin="0" aria-valuemax="59">--</span></div><input id="i" type="time" tabindex="-1" aria-hidden="true">',
+      role: 'spinbutton',
+      name: /^hora/,
     },
   }
 
-  for (const [name, { story, run }] of Object.entries(scenarios)) {
-    for (const round of [1, 2, 3]) {
-      test(`${name} (${round})`, async ({ page, browser }) => {
-        if (round === 1 && name.startsWith('e00')) console.log(`DIAG2 Firefox ${browser.version()}`)
-        page.on('console', (message) => {
-          if (message.type() === 'error') console.log(`DIAG2 console.error em ${name}: ${message.text()}`)
-        })
-        page.on('pageerror', (error) => console.log(`DIAG2 pageerror em ${name}: ${error.message}`))
-        await openStory(page, story ?? 'componentes-timefield--default')
-        await run(page)
+  for (const [name, { html, role, name: pattern }] of Object.entries(pages)) {
+    for (const round of [1, 2]) {
+      test(`${name} (${round})`, async ({ page }) => {
+        await page.setContent(`<!doctype html><meta charset="utf-8"><body>${html}</body>`)
+        console.log(`DIAG3 ${name} (${round}) => ${await page.getByRole(role, { name: pattern }).count()}`)
         await alive(page)
       })
     }
