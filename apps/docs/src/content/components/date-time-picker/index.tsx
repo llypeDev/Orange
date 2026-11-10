@@ -89,31 +89,55 @@ export default function DateTimePickerPage() {
               pt: (
                 <>
                   <Code>min</Code> e <Code>max</Code> valem para data <em>e</em> hora: dias fora
-                  ficam desabilitados no calendário e, no dia-limite, um horário antes do mínimo
-                  mostra "Escolha um horário a partir de 14:00". Regras por dia (horário comercial)
-                  vão em <Code>error</Code>.
+                  ficam desabilitados no calendário e, no dia-limite, as setas da hora param no
+                  horário mínimo ou máximo; um horário digitado antes do mínimo mostra "Escolha um
+                  horário a partir de 14:00". Regras por dia (horário comercial) vão em{' '}
+                  <Code>error</Code>.
                 </>
               ),
               en: (
                 <>
                   <Code>min</Code> and <Code>max</Code> apply to date <em>and</em> time: days
-                  outside are disabled in the calendar and, on the boundary day, a time before the
-                  minimum shows "Choose a time at or after 2:00 PM". Per-day rules (business hours)
-                  go in <Code>error</Code>.
+                  outside are disabled in the calendar and, on the boundary day, the arrow keys on
+                  the time stop at the minimum or maximum time; a time typed before the minimum
+                  shows "Choose a time at or after 02:00 PM". Per-day rules (business hours) go in{' '}
+                  <Code>error</Code>.
                 </>
               ),
             },
             {
               pt: (
                 <>
-                  Como no {timeField}, <Code>step</Code> é em segundos (<Code>900</Code> = 15
-                  minutos) e a hora aparece em 12h ou 24h conforme o sistema da pessoa.
+                  A hora usa os mesmos segmentos do {timeField} e fica igual em todos os
+                  navegadores. O relógio de 12 horas (com AM/PM) ou de 24 vem do idioma do{' '}
+                  <Code>OrangeProvider</Code>, como o formato da data — não do navegador da pessoa.
+                  O valor é sempre um <Code>Date</Code>.
                 </>
               ),
               en: (
                 <>
-                  As in {timeField}, <Code>step</Code> is in seconds (<Code>900</Code> = 15 minutes)
-                  and the time shows in 12h or 24h following the person's system.
+                  The time uses the same segments as {timeField} and looks the same in every
+                  browser. The 12-hour (with AM/PM) or 24-hour clock comes from the{' '}
+                  <Code>OrangeProvider</Code> locale, like the date format — not from the person's
+                  browser. The value is always a <Code>Date</Code>.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  <Code>step</Code> é em segundos (<Code>900</Code> = 15 minutos): as setas da hora
+                  andam nesse passo, contado a partir da meia-noite. Um horário digitado fora do
+                  passo continua valendo; se só alguns horários servem, valide em{' '}
+                  <Code>error</Code>.
+                </>
+              ),
+              en: (
+                <>
+                  <Code>step</Code> is in seconds (<Code>900</Code> = 15 minutes): the arrow keys on
+                  the time move by that step, counted from midnight. A time typed off the step is
+                  still accepted; if only some times are valid, validate through{' '}
+                  <Code>error</Code>.
                 </>
               ),
             },
@@ -169,8 +193,8 @@ export default function DateTimePickerPage() {
             {
               term: { pt: 'Hora', en: 'Time' },
               description: {
-                pt: 'O <input type="time"> nativo, com o relógio à esquerda (no mouse, abre o seletor do navegador). Nome acessível "Hora".',
-                en: 'The native <input type="time">, with the clock on the left (with a mouse, it opens the browser picker). Accessible name "Time".',
+                pt: 'Segmentos de hora e minuto (mais segundo e AM/PM, quando há), os mesmos do TimeField, com o relógio à esquerda; clicar no relógio ou na área livre leva o foco à hora. Formam um grupo com o nome acessível "Hora".',
+                en: 'Hour and minute segments (plus second and AM/PM, when present), the same as TimeField, with the clock on the left; clicking the clock or the free area moves focus to the hour. They form a group with the accessible name "Time".',
               },
             },
             {
@@ -188,8 +212,8 @@ export default function DateTimePickerPage() {
         <Example
           title={{ pt: 'Básico', en: 'Basic' }}
           description={{
-            pt: 'Digite a data e a hora, ou escolha o dia no calendário pelo botão (ou Alt + ↓ no campo de data).',
-            en: 'Type the date and time, or choose the day in the calendar with the button (or Alt + ↓ in the date field).',
+            pt: 'Digite a data e a hora, ou escolha o dia no calendário pelo botão (ou Alt + ↓ no campo de data). Na hora, os números avançam sozinhos de um segmento para o outro e as setas ↑ e ↓ mudam o valor.',
+            en: 'Type the date and time, or choose the day in the calendar with the button (or Alt + ↓ in the date field). In the time, digits advance on their own from one segment to the next and the ↑ and ↓ arrows change the value.',
           }}
           code={BasicCode}
           minHeight={140}
@@ -199,8 +223,8 @@ export default function DateTimePickerPage() {
         <Example
           title={{ pt: 'Agendar publicação', en: 'Scheduling a post' }}
           description={{
-            pt: 'min em agora e max em 30 dias; step de 15 minutos; ao escolher um dia sem hora, defaultTime preenche 09:00. Escolha hoje para ver o aviso de horário mínimo.',
-            en: 'min set to now and max to 30 days ahead; 15-minute step; choosing a day with no time fills 09:00 from defaultTime. Choose today to see the minimum-time message.',
+            pt: 'min em agora e max em 30 dias; step de 15 minutos (as setas da hora andam de 15 em 15); ao escolher um dia sem hora, defaultTime preenche 09:00. Escolha hoje: as setas param no horário mínimo e digitar um horário anterior mostra o aviso.',
+            en: 'min set to now and max to 30 days ahead; 15-minute step (the arrow keys on the time move 15 by 15); choosing a day with no time fills 09:00 from defaultTime. Choose today: the arrows stop at the minimum time and typing an earlier one shows the message.',
           }}
           code={PublicationCode}
           minHeight={160}
@@ -260,8 +284,15 @@ export default function DateTimePickerPage() {
             {
               term: { pt: 'Relógio', en: 'Clock' },
               description: {
-                pt: 'Com o foco na hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.',
-                en: 'With focus on the time, the clock turns orange and advances a 30° "tick" · medium, ease-spring.',
+                pt: 'Com o foco num segmento da hora, o relógio fica laranja e avança um "tique" de 30° · medium, ease-spring.',
+                en: 'With focus on a time segment, the clock turns orange and advances a 30° "tick" · medium, ease-spring.',
+              },
+            },
+            {
+              term: { pt: 'Segmento em edição', en: 'Segment being edited' },
+              description: {
+                pt: 'O segmento com o foco troca para o fundo laranja · fast (160ms), ease-out.',
+                en: 'The focused segment switches to the orange background · fast (160ms), ease-out.',
               },
             },
             {
@@ -274,8 +305,8 @@ export default function DateTimePickerPage() {
             {
               term: { pt: 'Hover, foco e pressionar', en: 'Hover, focus and press' },
               description: {
-                pt: 'Borda e foco do frame · fast; o ícone do calendário e o relógio afundam 1px · press (90ms).',
-                en: 'Frame border and focus · fast; the calendar icon and the clock sink 1px · press (90ms).',
+                pt: 'Borda e foco do frame · fast; o relógio acende ao passar o mouse pela hora · fast; o ícone do calendário afunda 1px · press (90ms).',
+                en: 'Frame border and focus · fast; the clock lights up when hovering the time · fast; the calendar icon sinks 1px · press (90ms).',
               },
             },
             {
@@ -330,8 +361,8 @@ export default function DateTimePickerPage() {
               name: 'min / max',
               type: 'Date',
               description: {
-                pt: 'Primeiro / último instante permitido (data e hora).',
-                en: 'First / last allowed instant (date and time).',
+                pt: 'Primeiro / último instante permitido (data e hora). No dia do limite, as setas da hora param nele.',
+                en: 'First / last allowed instant (date and time). On the boundary day, the arrow keys on the time stop at it.',
               },
             },
             {
@@ -344,8 +375,8 @@ export default function DateTimePickerPage() {
               type: 'number',
               default: '60',
               description: {
-                pt: 'Intervalo em segundos entre horários, como no TimeField. Fora de múltiplos de 60, mostra os segundos.',
-                en: 'Interval in seconds between times, as in TimeField. Outside multiples of 60, seconds are shown.',
+                pt: 'Intervalo em segundos em que as setas andam na hora, contado a partir da meia-noite. Fora de múltiplos de 60, aparece o segmento dos segundos.',
+                en: 'Interval in seconds by which the arrow keys move the time, counted from midnight. Outside multiples of 60, the seconds segment is shown.',
               },
             },
             {
@@ -402,8 +433,8 @@ export default function DateTimePickerPage() {
               type: 'boolean',
               default: 'false',
               description: {
-                pt: 'Marca os dois campos como obrigatórios / mostra "(opcional)".',
-                en: 'Marks both fields as required / shows "(optional)".',
+                pt: 'Marca a data e a hora como obrigatórias / mostra "(opcional)".',
+                en: 'Marks the date and the time as required / shows "(optional)".',
               },
             },
             {
@@ -411,8 +442,8 @@ export default function DateTimePickerPage() {
               type: 'boolean',
               default: 'false',
               description: {
-                pt: 'Desabilita os campos e o botão.',
-                en: 'Disables the fields and the button.',
+                pt: 'Desabilita a data, a hora e o botão.',
+                en: 'Disables the date, the time and the button.',
               },
             },
             {
@@ -420,8 +451,8 @@ export default function DateTimePickerPage() {
               type: 'boolean',
               default: 'false',
               description: {
-                pt: 'Somente leitura; o calendário não abre.',
-                en: 'Read-only; the calendar does not open.',
+                pt: 'Somente leitura: dá para focar e ler, mas nada muda e o calendário não abre.',
+                en: 'Read-only: it can be focused and read, but nothing changes and the calendar does not open.',
               },
             },
             {
@@ -482,28 +513,38 @@ export default function DateTimePickerPage() {
           <T
             pt={
               <>
-                Os dois campos ficam num <Code>role="group"</Code> nomeado pelo rótulo, cada um com
-                nome próprio ("Data", "Hora"); a descrição e o erro valem para os dois, e o formato
-                da data é anunciado como descrição do campo de data. O calendário abre num diálogo
-                modal (padrão <strong>Date Picker Dialog</strong> do WAI-ARIA APG), com a mesma
-                grade do DatePicker. A hora usa o <Code>&lt;input type="time"&gt;</Code> nativo:
-                cada segmento é anunciado e editável pelo teclado. O campo com problema recebe{' '}
+                A data e a hora ficam num <Code>role="group"</Code> nomeado pelo rótulo. A data é um
+                campo de texto com nome próprio ("Data"), e o formato dela é anunciado como
+                descrição. A hora é um grupo ("Hora") com os mesmos segmentos do TimeField: cada um
+                é um <Code>spinbutton</Code> com nome próprio ("hora", "minuto", "segundo", "AM ou
+                PM"), valor atual, mínimo e máximo; vazio, anuncia "vazio". A descrição e o erro
+                são lidos na data e no primeiro segmento da hora. O calendário
+                abre num diálogo modal (padrão <strong>Date Picker Dialog</strong> do WAI-ARIA APG),
+                com a mesma grade do DatePicker. A parte com problema recebe{' '}
                 <Code>aria-invalid</Code> (a data, quando ela é inválida ou indisponível; a hora,
                 quando falta ou sai de min/max).
               </>
             }
             en={
               <>
-                Both fields sit in a <Code>role="group"</Code> named by the label, each with its own
-                name ("Date", "Time"); the description and the error apply to both, and the date
-                format is announced as the date field description. The calendar opens in a modal
-                dialog (WAI-ARIA APG <strong>Date Picker Dialog</strong> pattern) with the same grid
-                as DatePicker. The time uses the native <Code>&lt;input type="time"&gt;</Code>: each
-                segment is announced and keyboard-editable. The field at fault gets{' '}
-                <Code>aria-invalid</Code> (the date when it is invalid or unavailable; the time when
-                it is missing or outside min/max).
+                The date and the time sit in a <Code>role="group"</Code> named by the label. The
+                date is a text field with its own name ("Date"), and its format is announced as the
+                description. The time is a group ("Time") with the same segments as TimeField: each
+                one is a <Code>spinbutton</Code> with its own name ("hour", "minute", "second", "AM
+                or PM"), current, minimum and maximum values; when empty it announces "empty". The
+                description and the error are read on the date and on the first time segment. The
+                calendar opens in a modal dialog (WAI-ARIA APG{' '}
+                <strong>Date Picker Dialog</strong> pattern) with the same grid as DatePicker. The
+                part at fault gets <Code>aria-invalid</Code> (the date when it is invalid or
+                unavailable; the time when it is missing or outside min/max).
               </>
             }
+          />
+        </p>
+        <p>
+          <T
+            pt="No celular, cada segmento da hora abre o teclado numérico. Essa digitação foi verificada por emulação de toque, não em aparelhos; os anúncios, por testes automáticos, não com leitores de tela."
+            en="On phones, each time segment opens the numeric keyboard. That typing was verified through touch emulation, not on devices; announcements, through automated tests, not with screen readers."
           />
         </p>
         <KeyboardTable
@@ -511,8 +552,8 @@ export default function DateTimePickerPage() {
             {
               keys: ['Tab'],
               description: {
-                pt: 'Data → botão do calendário → hora (e entre os segmentos da hora).',
-                en: 'Date → calendar button → time (and between the time segments).',
+                pt: 'Data → botão do calendário → hora → minuto (e os demais segmentos da hora).',
+                en: 'Date → calendar button → hour → minute (and the other time segments).',
               },
             },
             {
@@ -523,17 +564,52 @@ export default function DateTimePickerPage() {
               },
             },
             {
-              keys: ['↑', '↓'],
+              keys: ['← / →'],
               description: {
-                pt: 'Na hora: aumenta / diminui o segmento respeitando o step.',
-                en: 'In the time: increments / decrements the segment respecting step.',
+                pt: 'Na hora: segmento anterior / próximo.',
+                en: 'In the time: previous / next segment.',
+              },
+            },
+            {
+              keys: ['↑ / ↓'],
+              description: {
+                pt: 'Na hora: aumenta / diminui o segmento no step, dando a volta, sem passar do horário-limite no dia de min ou de max.',
+                en: 'In the time: increments / decrements the segment by the step, wrapping around, without going past the limit time on the min or max day.',
+              },
+            },
+            {
+              keys: ['PageUp / PageDown'],
+              description: {
+                pt: 'Na hora: anda mais (2 horas, 15 minutos ou 15 segundos). Home e End vão ao primeiro e ao último valor do segmento.',
+                en: 'In the time: moves further (2 hours, 15 minutes or 15 seconds). Home and End go to the first and last value of the segment.',
+              },
+            },
+            {
+              keys: ['0–9'],
+              description: {
+                pt: 'Na hora: digita o valor; completo, o foco passa para o próximo segmento. No relógio de 12 horas, A e P escolhem AM ou PM.',
+                en: 'In the time: types the value; once complete, focus moves to the next segment. On the 12-hour clock, A and P pick AM or PM.',
+              },
+            },
+            {
+              keys: ['Backspace / Delete'],
+              description: {
+                pt: 'Na hora: apaga o segmento (o valor fica vazio até a hora estar completa); Backspace num segmento vazio volta ao anterior.',
+                en: 'In the time: clears the segment (the value stays empty until the time is complete); Backspace on an empty segment goes back to the previous one.',
+              },
+            },
+            {
+              keys: ['Ctrl', 'V'],
+              description: {
+                pt: 'Na hora: cola um horário escrito de vários jeitos (14:30, 14h30, 2:30 pm).',
+                en: 'In the time: pastes a time written in several ways (14:30, 14h30, 2:30 pm).',
               },
             },
             {
               keys: ['Enter'],
               description: {
-                pt: 'No botão: abre o calendário. No dia: seleciona mantendo a hora, fecha e devolve o foco ao botão.',
-                en: 'On the button: opens the calendar. On a day: selects it keeping the time, closes and returns focus to the button.',
+                pt: 'No botão: abre o calendário. No dia: seleciona mantendo a hora, fecha e devolve o foco ao botão. Na data e na hora: envia o formulário.',
+                en: 'On the button: opens the calendar. On a day: selects it keeping the time, closes and returns focus to the button. In the date and the time: submits the form.',
               },
             },
             {
@@ -553,8 +629,8 @@ export default function DateTimePickerPage() {
             {
               keys: ['Escape'],
               description: {
-                pt: 'Fecha sem alterar e devolve o foco ao botão.',
-                en: 'Closes without changes and returns focus to the button.',
+                pt: 'Fecha o calendário sem alterar e devolve o foco ao botão.',
+                en: 'Closes the calendar without changes and returns focus to the button.',
               },
             },
           ]}
@@ -564,8 +640,8 @@ export default function DateTimePickerPage() {
             {
               criterion: '1.3.1',
               description: {
-                pt: 'Grupo rotulado com dois campos nomeados; descrição e erro ligados por aria-describedby.',
-                en: 'Labelled group with two named fields; description and error linked via aria-describedby.',
+                pt: 'Grupo rotulado com a data e a hora nomeadas; descrição e erro ligados por aria-describedby.',
+                en: 'Labelled group with the date and the time named; description and error linked via aria-describedby.',
               },
             },
             {
@@ -590,6 +666,13 @@ export default function DateTimePickerPage() {
               },
             },
             {
+              criterion: '2.4.7',
+              description: {
+                pt: 'Foco visível na borda laranja e no segmento ativo da hora; em alto contraste, com as cores de seleção do sistema.',
+                en: 'Visible focus on the orange border and the active time segment; in high contrast, with the system selection colors.',
+              },
+            },
+            {
               criterion: '3.3.1',
               description: {
                 pt: 'Data inválida ou indisponível, hora fora do intervalo e campo deixado vazio geram mensagem vinculada.',
@@ -599,8 +682,8 @@ export default function DateTimePickerPage() {
             {
               criterion: '3.3.2',
               description: {
-                pt: 'O formato da data é anunciado; a hora usa o formato do sistema.',
-                en: 'The date format is announced; the time uses the system format.',
+                pt: 'O formato da data é anunciado; cada segmento da hora diz o que é ("hora", "minuto") e os limites que aceita.',
+                en: 'The date format is announced; each time segment says what it is ("hour", "minute") and the limits it accepts.',
               },
             },
           ]}
