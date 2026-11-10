@@ -63,7 +63,7 @@ const forcedColorAdjustNone: Record<string, string> = {
   'Sparkline/Sparkline.css': 'SVG da série única, pintado com cores do sistema.',
   'Stepper/Stepper.css': TEXT_ON_HIGHLIGHT,
   'Tag/Tag.css': 'Marcador de tom ao lado do texto da etiqueta (decorativo).',
-  'TimeField/TimeField.css': TEXT_ON_HIGHLIGHT,
+  'TimeField/TimeSegments.css': TEXT_ON_HIGHLIGHT,
   'ToggleButton/ToggleButton.css': TEXT_ON_HIGHLIGHT,
   'TreeView/TreeView.css': TEXT_ON_HIGHLIGHT,
 }
