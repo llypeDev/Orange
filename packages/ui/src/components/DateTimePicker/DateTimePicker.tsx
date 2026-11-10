@@ -9,6 +9,7 @@ import {
   type FocusEvent,
   type HTMLAttributes,
   type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from 'react'
 import {
@@ -29,13 +30,9 @@ import { formatDateInput, getDateFormatPattern, isOutOfRange } from '../DatePick
 import { applyDateMask, readDateInput } from '../DateRangePicker/rangeUtils'
 import { Field, useField, useFieldControlProps, type FieldControlProps } from '../Field'
 import { Portal } from '../Portal'
-import {
-  combineDateTime,
-  formatTimeValue,
-  parseTimeValue,
-  toISODateTime,
-  usesSeconds,
-} from './timeUtils'
+import { displayTime, formatTime, parseTime } from '../TimeField/time'
+import { TimeSegments, useTimeSegments } from '../TimeField/TimeSegments'
+import { combineDateTime, timeLimitOn, timeOfDate, toISODateTime, usesSeconds } from './timeUtils'
 import './DateTimePicker.css'
 
 export type DateTimePickerSize = 'sm' | 'md' | 'lg'
@@ -53,14 +50,20 @@ export interface DateTimePickerProps extends Omit<
    * vazia/incompleta, ou quando a combinação é inválida ou indisponível.
    */
   onChange?: (date: Date | null) => void
-  /** Primeiro instante permitido (data e hora). Dias anteriores ficam desabilitados no calendário. */
+  /**
+   * Primeiro instante permitido (data e hora). Dias anteriores ficam desabilitados no calendário
+   * e, no dia de `min`, as setas da hora param nesse horário.
+   */
   min?: Date
-  /** Último instante permitido (data e hora). Dias posteriores ficam desabilitados no calendário. */
+  /**
+   * Último instante permitido (data e hora). Dias posteriores ficam desabilitados no calendário
+   * e, no dia de `max`, as setas da hora param nesse horário.
+   */
   max?: Date
   /** Desabilita datas específicas (feriados, fins de semana…). */
   isDateDisabled?: (date: Date) => boolean
   /**
-   * Intervalo em segundos entre horários válidos, como no `TimeField`
+   * Intervalo em segundos em que as setas andam na hora, contado a partir da meia-noite
    * (ex.: `900` = 15 minutos). Fora de múltiplos de 60, o campo mostra os segundos.
    */
   step?: number
@@ -85,9 +88,9 @@ export interface DateTimePickerProps extends Omit<
   required?: boolean
   /** Mostra "(opcional)" ao lado do rótulo. */
   optional?: boolean
-  /** Desabilita os dois campos e o botão do calendário. */
+  /** Desabilita a data, a hora e o botão do calendário. */
   disabled?: boolean
-  /** Somente leitura: os campos não editam e o calendário não abre. */
+  /** Somente leitura: a data e a hora não editam e o calendário não abre. */
   readOnly?: boolean
   /** Altura do campo: `sm` 32px, `md` 40px, `lg` 48px. */
   size?: DateTimePickerSize
@@ -126,9 +129,9 @@ function FieldControl({
 }
 
 /**
- * Campo de data e hora: a data com máscara conforme o idioma (como no
- * `DatePicker`) e a hora no `<input type="time">` nativo, dentro de um só
- * controle, com o calendário em diálogo para escolher o dia.
+ * Campo de data e hora num só controle: a data com máscara conforme o idioma (como no
+ * `DatePicker`), o calendário em diálogo para escolher o dia e a hora em segmentos (como no
+ * `TimeField`), no relógio de 12 ou 24 horas do idioma do provider.
  */
 export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
   function DateTimePicker(
@@ -176,23 +179,19 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
       return pattern.order.map((segment) => letters[segment]).join(pattern.separator)
     }, [pattern, t])
     const withSeconds = usesSeconds(step)
-    const formatters = useMemo(() => {
-      const make = (options: Intl.DateTimeFormatOptions) => {
-        try {
-          return new Intl.DateTimeFormat(locale, options)
-        } catch {
-          return new Intl.DateTimeFormat('pt-BR', options)
-        }
+    const longDate = useMemo(() => {
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
       }
-      return {
-        long: make({ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
-        time: make({
-          hour: '2-digit',
-          minute: '2-digit',
-          second: withSeconds ? '2-digit' : undefined,
-        }),
+      try {
+        return new Intl.DateTimeFormat(locale, options)
+      } catch {
+        return new Intl.DateTimeFormat('pt-BR', options)
       }
-    }, [locale, withSeconds])
+    }, [locale])
 
     const baseId = useId('or-date-time-picker')
     const hintId = `${baseId}-hint`
@@ -207,7 +206,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
     const { isOpen, setOpen, close } = useDisclosure({ open: openProp, defaultOpen, onOpenChange })
     const [texts, setTexts] = useState<Texts>(() => ({
       date: value ? formatDateInput(value, pattern) : '',
-      time: value ? formatTimeValue(value, withSeconds) : '',
+      time: value ? formatTime(timeOfDate(value), withSeconds) : '',
     }))
     // Data deixada incompleta (o erro só aparece depois de sair do campo).
     const [dateBlurred, setDateBlurred] = useState(false)
@@ -215,7 +214,6 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
     const [groupBlurred, setGroupBlurred] = useState(false)
 
     const dateInputRef = useRef<HTMLInputElement>(null)
-    const timeInputRef = useRef<HTMLInputElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const frameRef = useRef<HTMLDivElement>(null)
     const dialogRef = useRef<HTMLDivElement>(null)
@@ -241,7 +239,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
     /** Data e hora descritas pelos textos — `null` se faltar algo ou sair de min/max. */
     const valueFromTexts = (next: Texts): Date | null => {
       const date = readDate(next.date)
-      const time = parseTimeValue(next.time)
+      const time = parseTime(next.time)
       if (date.status !== 'valid' || !date.date || !time) return null
       const combined = combineDateTime(date.date, time)
       if ((min && combined < min) || (max && combined > max)) return null
@@ -265,7 +263,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
       const date = valueKey === null ? null : new Date(valueKey)
       const next = {
         date: date ? formatDateInput(date, pattern) : '',
-        time: date ? formatTimeValue(date, withSeconds) : '',
+        time: date ? formatTime(timeOfDate(date), withSeconds) : '',
       }
       setTexts((prev) => (prev.date === next.date && prev.time === next.time ? prev : next))
       setDateBlurred(false)
@@ -286,16 +284,31 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
       emit(valueFromTexts(next))
     }
 
+    // Hora em segmentos ------------------------------------------------------------
+    // Os mesmos do TimeField. Aqui o texto da hora (`HH:mm`) fica vazio enquanto ela está pela
+    // metade; o limite de horário só existe no dia de `min` e no de `max`, e o passo é contado a
+    // partir da meia-noite (o `min` é um instante, não um horário que se repete todo dia).
+    const dateInput = readDate(texts.date)
+    const day = dateInput.status === 'valid' ? dateInput.date : null
+    const timeLimits = {
+      min: timeLimitOn(day, min, 'min', withSeconds),
+      max: timeLimitOn(day, max, 'max', withSeconds),
+      step: step !== undefined && step > 0 ? step : 60,
+    }
+    const segments = useTimeSegments({
+      value: texts.time,
+      onChange: (time) => update({ ...texts, time }),
+      limits: timeLimits,
+      disabled,
+      readOnly,
+    })
+
     const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
       const raw = event.target.value
       const masked = applyDateMask(raw, event.target.selectionStart ?? raw.length, pattern)
       caretRef.current = masked.caret
       setDateBlurred(false)
       update({ ...texts, date: masked.text })
-    }
-
-    const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-      update({ ...texts, time: event.target.value })
     }
 
     const handleDateBlur = (event: FocusEvent<HTMLInputElement>) => {
@@ -317,15 +330,16 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
       }
     }
 
-    const openTimePicker = () => {
-      const input = timeInputRef.current
-      if (!input || disabled || readOnly) return
-      input.focus()
-      try {
-        input.showPicker?.()
-      } catch {
-        // showPicker pode falhar sem gesto do usuário ou em navegadores antigos.
-      }
+    /** Clique na área livre da hora (ou no relógio): o foco vai para o primeiro segmento. */
+    const handleTimePointerDown = (event: ReactPointerEvent<HTMLSpanElement>) => {
+      if (disabled || (event.target as Element).closest('.or-time-field__segment')) return
+      event.preventDefault()
+      segments.focusFirst()
+    }
+
+    /** O foco saiu da hora: um número pela metade ("1" à espera do "5") para de segurar os avisos. */
+    const handleTimeBlur = (event: FocusEvent<HTMLSpanElement>) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) segments.resetTyping()
     }
 
     const closeAndFocusButton = () => {
@@ -335,8 +349,8 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
 
     /** Dia escolhido no calendário: mantém a hora digitada (ou usa `defaultTime`). */
     const handleSelect = (day: Date) => {
-      const fallback = parseTimeValue(texts.time) ? null : parseTimeValue(defaultTime)
-      const time = fallback ? formatTimeValue(fallback, withSeconds) : texts.time
+      const fallback = parseTime(texts.time) ? null : parseTime(defaultTime)
+      const time = fallback ? formatTime(fallback, withSeconds) : texts.time
       setDateBlurred(false)
       update({ date: formatDateInput(day, pattern), time })
       closeAndFocusButton()
@@ -396,14 +410,12 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
     )
 
     // Validação derivada dos textos ------------------------------------------------
-    const dateInput = readDate(texts.date)
-    const time = parseTimeValue(texts.time)
-    const combined =
-      dateInput.status === 'valid' && dateInput.date && time
-        ? combineDateTime(dateInput.date, time)
-        : null
-    const rangeError =
-      combined && min && combined < min
+    const time = parseTime(texts.time)
+    const combined = day && time ? combineDateTime(day, time) : null
+    // No meio de um número ("1" à espera do "5" de "15"), o aviso espera a pessoa terminar.
+    const rangeError = segments.typing
+      ? null
+      : combined && min && combined < min
         ? 'early'
         : combined && max && combined > max
           ? 'late'
@@ -415,11 +427,12 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
         : dateInput.status === 'unavailable'
           ? t('dateUnavailable')
           : null
+    // O horário do aviso é escrito como o dos segmentos: no relógio do idioma do provider.
     const rangeMessage =
-      rangeError === 'early' && min
-        ? t('dateTimeTooEarly', { time: formatters.time.format(min) })
-        : rangeError === 'late' && max
-          ? t('dateTimeTooLate', { time: formatters.time.format(max) })
+      rangeError === 'early' && timeLimits.min
+        ? t('dateTimeTooEarly', { time: displayTime(timeLimits.min, segments.display) })
+        : rangeError === 'late' && timeLimits.max
+          ? t('dateTimeTooLate', { time: displayTime(timeLimits.max, segments.display) })
           : null
     const missingTime = groupBlurred && dateInput.status === 'valid' && !time
     const missingDate = groupBlurred && dateInput.status === 'empty' && texts.time !== ''
@@ -440,11 +453,19 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
       typeof errorMessage === 'string' ? errorMessage : !!errorMessage || invalidProp,
     )
 
+    // Para a validação nativa do formulário, a hora pela metade (ou faltando, num campo
+    // obrigatório) invalida o campo de data — o controle do grupo que o navegador consegue focar.
+    const timeValidity = segments.partial
+      ? t('timeIncomplete')
+      : required && texts.date !== '' && !time
+        ? t('dateTimeMissingTime')
+        : ''
+    useEffect(() => {
+      dateInputRef.current?.setCustomValidity(timeValidity)
+    }, [timeValidity])
+
     // O botão fala do dia (digitado ou escolhido), mesmo antes de a hora ser preenchida.
-    const calendarDate = dateInput.status === 'valid' ? dateInput.date : null
-    const buttonLabel = calendarDate
-      ? t('changeDate', { date: formatters.long.format(calendarDate) })
-      : t('chooseDate')
+    const buttonLabel = day ? t('changeDate', { date: longDate.format(day) }) : t('chooseDate')
 
     return (
       <Field
@@ -516,31 +537,23 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
                   <Icon name="calendar" size="sm" />
                 </button>
               </span>
-              <span className="or-date-time-picker__time">
-                {/* Atalho só para ponteiro: pelo teclado a hora é editada direto no campo. */}
-                <span
-                  className="or-control-frame__addon or-control-frame__addon--start or-date-time-picker__clock"
-                  onPointerDown={(event) => {
-                    event.preventDefault()
-                    openTimePicker()
-                  }}
-                >
+              <span
+                className="or-date-time-picker__time"
+                onPointerDown={handleTimePointerDown}
+                onBlur={handleTimeBlur}
+              >
+                <span className="or-control-frame__addon or-control-frame__addon--start or-date-time-picker__clock">
                   <Icon name="clock" size="sm" />
                 </span>
-                <input
-                  ref={timeInputRef}
-                  id={`${fieldProps.id}-time`}
-                  type="time"
-                  className="or-control-frame__input or-date-time-picker__time-input"
-                  value={texts.time}
-                  step={step}
-                  readOnly={readOnly}
-                  disabled={disabled}
+                <TimeSegments
+                  segments={segments}
+                  // O grupo em volta já leva o nome do campo; este é a "Hora" dentro dele.
+                  label={t('dateTimeTime')}
+                  describedBy={fieldProps['aria-describedby']}
+                  invalid={invalid.time}
                   required={fieldProps.required}
-                  aria-label={t('dateTimeTime')}
-                  aria-describedby={fieldProps['aria-describedby']}
-                  aria-invalid={invalid.time || undefined}
-                  onChange={handleTimeChange}
+                  // Como na data: Enter envia o formulário em volta.
+                  onEnter={(event) => event.currentTarget.closest('form')?.requestSubmit?.()}
                 />
               </span>
               <span id={hintId} className="or-visually-hidden">
@@ -573,7 +586,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
             >
               <Calendar
                 headingId={headingId}
-                value={calendarDate}
+                value={day}
                 onChange={handleSelect}
                 min={min}
                 max={max}

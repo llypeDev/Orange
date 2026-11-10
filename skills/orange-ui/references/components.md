@@ -24,7 +24,7 @@ Base que não está nesta lista (provider, `Field`, tipografia, `Icon`, `Portal`
 - **CurrencyField** — Campo de valor monetário com símbolo da moeda, digitação natural e formatação pelo locale. → `components/currency-field.md`
 - **DatePicker** — Campo de data com máscara conforme o idioma e calendário em diálogo, navegável por teclado. → `components/date-picker.md`
 - **DateRangePicker** — Campo de período com duas datas mascaradas, calendário de período em diálogo e atalhos como "Últimos 7 dias". → `components/date-range-picker.md`
-- **DateTimePicker** _(novo)_ — Data e hora num só campo: a data com máscara e calendário em diálogo, a hora no campo nativo — para agendar publicações, reuniões e entregas. → `components/date-time-picker.md`
+- **DateTimePicker** _(novo)_ — Data e hora num só campo: a data com máscara e calendário em diálogo, a hora em segmentos como no TimeField — para agendar publicações, reuniões e entregas. → `components/date-time-picker.md`
 - **ErrorSummary** — Resumo dos erros de um formulário, com links que levam a cada campo e foco automático para ser anunciado. → `components/error-summary.md`
 - **Fieldset** — Agrupa campos relacionados com fieldset e legend nativos, com descrição, erro do grupo e desabilitação em bloco. → `components/fieldset.md`
 - **FileUploader** — Envio de arquivos com arrastar e soltar, validação de tipo e tamanho e lista com progresso. → `components/file-uploader.md`

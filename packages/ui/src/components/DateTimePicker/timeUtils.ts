@@ -1,45 +1,18 @@
 /*
  * Utilitários internos do DateTimePicker (não exportados pela biblioteca).
- * Complementam `../DatePicker/dateUtils`: todas as datas no fuso local.
+ * Complementam `../DatePicker/dateUtils` (datas no fuso local) e `../TimeField/time` (horários).
  */
-import { toISODate } from '../DatePicker/dateUtils'
+import { isSameDay, toISODate } from '../DatePicker/dateUtils'
+import { formatTime, fromSeconds, toSeconds, type TimeParts } from '../TimeField/time'
 
-/** Horário lido do `<input type="time">` (ou de `defaultTime`). */
-export interface TimeParts {
-  hours: number
-  minutes: number
-  seconds: number
-}
-
-/**
- * Lê `HH:mm`, `HH:mm:ss` ou `HH:mm:ss.sss` — o valor do `<input type="time">`.
- * Retorna `null` para texto vazio ou fora do formato.
- */
-export function parseTimeValue(text: string | null | undefined): TimeParts | null {
-  const match = /^\s*(\d{1,2}):(\d{2})(?::(\d{2})(?:\.\d{1,3})?)?\s*$/.exec(text ?? '')
-  if (!match) return null
-  const hours = Number(match[1])
-  const minutes = Number(match[2])
-  const seconds = Number(match[3] ?? 0)
-  if (hours > 23 || minutes > 59 || seconds > 59) return null
-  return { hours, minutes, seconds }
-}
-
-/** O `step` (em segundos, como no `<input type="time">`) pede segundos? */
+/** O `step` (em segundos, como no `TimeField`) pede o segmento de segundos? */
 export function usesSeconds(step: number | undefined): boolean {
   return typeof step === 'number' && step > 0 && step % 60 !== 0
 }
 
-const pad = (value: number) => String(value).padStart(2, '0')
-
-/** `HH:mm` (ou `HH:mm:ss`) — o valor que o `<input type="time">` aceita. */
-export function formatTimeValue(time: Date | TimeParts, withSeconds: boolean): string {
-  const parts =
-    time instanceof Date
-      ? { hours: time.getHours(), minutes: time.getMinutes(), seconds: time.getSeconds() }
-      : time
-  const base = `${pad(parts.hours)}:${pad(parts.minutes)}`
-  return withSeconds ? `${base}:${pad(parts.seconds)}` : base
+/** O horário de uma data (fuso local). */
+export function timeOfDate(date: Date): TimeParts {
+  return { hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds() }
 }
 
 /** O dia de `day` no horário de `time` (fuso local). */
@@ -48,10 +21,30 @@ export function combineDateTime(day: Date, time: TimeParts): Date {
     day.getFullYear(),
     day.getMonth(),
     day.getDate(),
-    time.hours,
-    time.minutes,
-    time.seconds,
+    time.hour,
+    time.minute,
+    time.second,
   )
+}
+
+/**
+ * O limite de horário que `limit` (o `min` ou o `max` do campo) impõe no dia `day`: só existe
+ * quando os dois caem no mesmo dia — nos outros, qualquer horário vale. O limite é o primeiro
+ * (`min`) ou o último (`max`) horário que o campo consegue escrever sem sair dele: um `min` às
+ * 14:23:37 vira 14:24 sem o segmento de segundos, e 14:23:37 com ele.
+ */
+export function timeLimitOn(
+  day: Date | null | undefined,
+  limit: Date | null | undefined,
+  side: 'min' | 'max',
+  withSeconds: boolean,
+): TimeParts | null {
+  if (!day || !limit || !isSameDay(day, limit)) return null
+  const unit = withSeconds ? 1 : 60
+  const exact = toSeconds(timeOfDate(limit)) + limit.getMilliseconds() / 1000
+  const rounded = (side === 'min' ? Math.ceil(exact / unit) : Math.floor(exact / unit)) * unit
+  // Um `min` no último minuto do dia não tem horário seguinte: fica no último que existe.
+  return fromSeconds(Math.min(rounded, 86400 - unit))
 }
 
 /**
@@ -59,5 +52,5 @@ export function combineDateTime(day: Date, time: TimeParts): Date {
  * `<input type="datetime-local">`, usado no input oculto de formulário.
  */
 export function toISODateTime(date: Date, withSeconds: boolean): string {
-  return `${toISODate(date)}T${formatTimeValue(date, withSeconds)}`
+  return `${toISODate(date)}T${formatTime(timeOfDate(date), withSeconds)}`
 }

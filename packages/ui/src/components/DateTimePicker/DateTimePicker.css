@@ -1,11 +1,14 @@
 /* ---------------------------------------------------------------------------
  * DateTimePicker — data (com máscara e calendário em diálogo, como o
- * DatePicker) e hora (input nativo) num só controle.
+ * DatePicker) e hora (em segmentos, como o TimeField) num só controle.
  *
  * Layout: duas "células" num .or-control-frame que quebra linha. Com espaço,
  * ficam lado a lado — [data | calendário | relógio hora]; sem espaço (≈ 320px),
  * a hora desce para uma segunda linha dentro da mesma moldura. A ordem no DOM
  * (data → botão → hora) é a mesma nos dois casos.
+ *
+ * Os segmentos da hora e o laranja de quem está em edição vêm de
+ * TimeField/TimeSegments.css; aqui ficam a célula em volta e o relógio.
  * ------------------------------------------------------------------------- */
 
 .or-date-time-picker {
@@ -36,7 +39,7 @@
   /* A largura preferida só vale para a medida intrínseca (o flex-basis manda no
      layout): num pai que encolhe ao conteúdo (linha flex, grid com
      justify-items: start), o frame ainda nasce largo o bastante para data e
-     hora lado a lado. Os inputs têm width: 0 para não somar a deles. */
+     hora lado a lado. O input da data tem width: 0 para não somar a dele. */
   width: var(--_basis);
   flex: 1 1 var(--_basis);
 }
@@ -61,8 +64,12 @@
   border-left: var(--or-border-thin) solid var(--or-color-border);
 }
 
-.or-date-time-picker__date-input,
-.or-date-time-picker__time-input {
+/* Clicar na área livre da hora (ou no relógio) foca o primeiro segmento, como num input. */
+.or-date-time-picker__frame:not([data-disabled], [data-readonly]) .or-date-time-picker__time {
+  cursor: text;
+}
+
+.or-date-time-picker__date-input {
   width: 0;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
@@ -89,10 +96,9 @@
   color: var(--or-color-accent-text);
 }
 
-/* Relógio: acende no hover, avança um "tique" com o foco
-   na hora e afunda no clique. */
+/* Relógio: marca onde começa a hora. Acende no hover e, com o foco num
+   segmento, fica laranja e avança um "tique". */
 .or-date-time-picker__clock {
-  cursor: pointer;
   transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
@@ -114,53 +120,9 @@
   transform: rotate(30deg);
 }
 
-.or-date-time-picker__frame:not([data-disabled], [data-readonly])
-  .or-date-time-picker__clock:active
-  .or-icon {
-  transform: rotate(30deg) translateY(1px) scale(0.985);
-  transition-duration: var(--or-duration-press);
-}
-
 .or-date-time-picker__frame[data-disabled] .or-date-time-picker__clock,
 .or-date-time-picker__frame[data-readonly] .or-date-time-picker__clock {
   color: var(--or-color-text-subtle);
-  cursor: default;
-}
-
-.or-date-time-picker__time-input {
-  cursor: text;
-}
-
-/* O relógio à esquerda substitui o indicador nativo (WebKit/Blink). */
-.or-date-time-picker__time-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.or-date-time-picker__time-input::-webkit-datetime-edit {
-  padding: 0;
-}
-
-/* Segmento em edição (hora, minuto, AM/PM) destacado em laranja. */
-.or-date-time-picker__time-input::-webkit-datetime-edit-hour-field,
-.or-date-time-picker__time-input::-webkit-datetime-edit-minute-field,
-.or-date-time-picker__time-input::-webkit-datetime-edit-second-field,
-.or-date-time-picker__time-input::-webkit-datetime-edit-ampm-field {
-  transition:
-    background-color var(--or-duration-fast) var(--or-ease-out),
-    color var(--or-duration-fast) var(--or-ease-out);
-}
-
-.or-date-time-picker__time-input::-webkit-datetime-edit-hour-field:focus,
-.or-date-time-picker__time-input::-webkit-datetime-edit-minute-field:focus,
-.or-date-time-picker__time-input::-webkit-datetime-edit-second-field:focus,
-.or-date-time-picker__time-input::-webkit-datetime-edit-ampm-field:focus {
-  background: var(--or-color-accent);
-  color: var(--or-color-text-on-accent);
-  outline: none;
-}
-
-.or-date-time-picker__time-input:disabled::-webkit-datetime-edit {
-  color: var(--or-color-text-disabled);
 }
 
 .or-control-frame[data-disabled] .or-date-time-picker__time {
@@ -233,18 +195,9 @@
   }
 }
 
-/* Alto contraste: o segmento focado da hora era só um fundo de acento com
-   `outline: none` — vira Highlight/HighlightText; o botão com o calendário
-   aberto (fundo + cor) ganha o ícone em Highlight. */
+/* Alto contraste: o botão com o calendário aberto (fundo + cor) ganha o ícone
+   em Highlight. O segmento em edição da hora é tratado em TimeSegments.css. */
 @media (forced-colors: active) {
-  .or-date-time-picker__time-input::-webkit-datetime-edit-hour-field:focus,
-  .or-date-time-picker__time-input::-webkit-datetime-edit-minute-field:focus,
-  .or-date-time-picker__time-input::-webkit-datetime-edit-second-field:focus,
-  .or-date-time-picker__time-input::-webkit-datetime-edit-ampm-field:focus {
-    background: Highlight;
-    color: HighlightText;
-  }
-
   .or-date-time-picker__button[aria-expanded='true'] {
     color: Highlight;
   }

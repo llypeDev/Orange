@@ -21,4 +21,4 @@ O que muda para quem já usa:
 - CSS próprio que mirava `.or-time-field__input` ou `.or-time-field__icon` deixa de ter efeito: os segmentos são `.or-time-field__segment` e o relógio, `.or-time-field__button`.
 - Em testes, `getByLabelText` passa a encontrar também o grupo dos segmentos, além do input. Para digitar, use `getByRole('spinbutton', { name: 'hora' })` (ou `'minuto'`); `fireEvent.change` no `input[type="time"]` continua funcionando.
 
-A digitação por teclado virtual (celular) foi verificada por emulação de toque no Chromium, não em aparelhos; os anúncios, por testes automáticos, não com leitores de tela. O `DateTimePicker` continua com o campo de hora nativo.
+A digitação por teclado virtual (celular) foi verificada por emulação de toque no Chromium, não em aparelhos; os anúncios, por testes automáticos, não com leitores de tela.
