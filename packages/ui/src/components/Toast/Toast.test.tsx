@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useState } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { OrangeProvider } from '../../providers'
 import { expectNoA11yViolations } from '../../test/axe'
@@ -404,6 +405,52 @@ describe('ToastProvider / useToast', () => {
     })
     expect(screen.getByRole('region', { name: 'Notifications' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+  })
+
+  it('a pilha leva o tema da área em escopo onde o provider foi declarado', () => {
+    render(
+      <OrangeProvider theme="light" themeTarget="scoped">
+        <ToastProvider>
+          <Trigger options={{ title: 'x' }} />
+        </ToastProvider>
+      </OrangeProvider>,
+    )
+    act(() => {
+      api.toast({ title: 'Salvo' })
+    })
+    // O portal vai para o <body>, fora da área com data-theme: o tema vem na própria região.
+    expect(region().closest('.or-theme-scope')).toBeNull()
+    expect(region()).toHaveAttribute('data-theme', 'light')
+  })
+
+  it('não repete o tema quando ele já alcança a pilha (no <html> ou em volta do container)', () => {
+    document.documentElement.setAttribute('data-theme', 'light')
+    const { unmount } = setup({ title: 'x' })
+    act(() => {
+      api.toast({ title: 'Salvo' })
+    })
+    // Sem atributo próprio, a pilha acompanha na hora uma troca de tema da página.
+    expect(region()).not.toHaveAttribute('data-theme')
+    unmount()
+    document.documentElement.removeAttribute('data-theme')
+
+    function Page() {
+      const [container, setContainer] = useState<HTMLElement | null>(null)
+      return (
+        <div data-theme="light">
+          <ToastProvider container={container}>
+            <Trigger options={{ title: 'x' }} />
+          </ToastProvider>
+          <div ref={setContainer} data-testid="destino" />
+        </div>
+      )
+    }
+    render(<Page />)
+    act(() => {
+      api.toast({ title: 'Salvo' })
+    })
+    expect(screen.getByTestId('destino')).toContainElement(region())
+    expect(region()).not.toHaveAttribute('data-theme')
   })
 
   it('não possui violações de acessibilidade', async () => {

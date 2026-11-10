@@ -28,8 +28,8 @@ const entries: Entry[] = [
     date: '2026-11-10',
     version: 'v1.4.1',
     title: {
-      pt: 'Calendários e menus no tema da área de onde abrem',
-      en: 'Calendars and menus in the theme of the area they open from',
+      pt: 'Calendários, menus e toasts no tema da área de onde saem',
+      en: 'Calendars, menus and toasts in the theme of the area they come from',
     },
     summary: {
       pt: 'Numa área com tema próprio (themeTarget="scoped" ou um data-theme no meio da página), o que abre em portal segue o tema da área, e não o da página.',
@@ -37,6 +37,7 @@ const entries: Entry[] = [
     },
     items: [
       { kind: 'fixed', text: { pt: 'DatePicker, DateRangePicker, DateTimePicker e SplitButton: o calendário e o menu de ações levam o tema do campo ou do botão de onde abrem. Antes, numa área clara dentro de uma página escura, saíam escuros.', en: 'DatePicker, DateRangePicker, DateTimePicker and SplitButton: the calendar and the actions menu take the theme of the field or button they open from. Before, in a light area inside a dark page, they came out dark.' } },
+      { kind: 'fixed', text: { pt: 'ToastProvider: a pilha de toasts leva o tema da área onde o provider foi declarado. Com o tema no <html>, nada muda.', en: 'ToastProvider: the toast stack takes the theme of the area where the provider is declared. With the theme on <html>, nothing changes.' } },
     ],
   },
   {

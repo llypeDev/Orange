@@ -117,6 +117,19 @@ function createToastStore() {
 const ToastContext = createContext<UseToastReturn | null>(null)
 
 /**
+ * Tema da área onde o provider foi declarado, quando ele não alcança o destino
+ * do portal (ex.: `themeTarget="scoped"` numa página com outro tema). Tema no
+ * `<html>`, ou em volta do `container`, já vale para a pilha: sem atributo
+ * próprio, ela acompanha na hora uma troca de tema da página.
+ */
+function scopedTheme(anchor: Element | null, container: Element | null | undefined) {
+  if (!anchor) return undefined
+  const scope = anchor.closest('[data-theme]')
+  if (!scope || scope.contains(container ?? document.body)) return undefined
+  return scope.getAttribute('data-theme') ?? undefined
+}
+
+/**
  * Hook para disparar toasts. Precisa estar dentro de um `ToastProvider`.
  * @example const { toast } = useToast(); toast({ title: 'Link copiado' })
  */
@@ -153,6 +166,8 @@ export function ToastProvider({
   const [documentHidden, setDocumentHidden] = useState(false)
 
   const regionRef = useRef<HTMLElement>(null)
+  // Marca o lugar onde o provider foi declarado: é de lá que a pilha, em portal, tira o tema.
+  const [anchorEl, setAnchorEl] = useState<HTMLSpanElement | null>(null)
   const lastFocusOutside = useRef<HTMLElement | null>(null)
   const timeouts = useRef(new Set<ReturnType<typeof setTimeout>>())
 
@@ -313,12 +328,14 @@ export function ToastProvider({
   return (
     <ToastContext.Provider value={api}>
       {children}
+      <span ref={setAnchorEl} hidden />
       <Portal container={container}>
         {hasVisible && (
           <section
             ref={regionRef}
             aria-label={regionLabel}
             className={cx('or-toast-region', `or-toast-region--${position}`)}
+            data-theme={scopedTheme(anchorEl, container)}
             data-paused={paused || undefined}
             data-position={position}
             onPointerEnter={() => setHovered(true)}
