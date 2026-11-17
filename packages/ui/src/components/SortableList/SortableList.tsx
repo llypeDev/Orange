@@ -17,7 +17,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect, useReducedMotion } from '../../hooks'
 import { Icon, type IconName } from '../../icons'
 import { useLocale, type MessageKey } from '../../providers'
-import { clamp, cx, devWarning, mergeRefs } from '../../utils'
+import { clamp, cx, devWarning, logicalArrowKey, mergeRefs } from '../../utils'
 import { Dropdown, DropdownItem } from '../Dropdown'
 import { IconButton } from '../IconButton'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -552,8 +552,9 @@ function SortableListInner<T>(
     }
     if (d.mode !== 'keyboard' || d.key !== latest.current.keys[index]) return
     const V = latest.current.vertical
-    if (key === (V ? 'ArrowUp' : 'ArrowLeft')) moveLifted('prev')
-    else if (key === (V ? 'ArrowDown' : 'ArrowRight')) moveLifted('next')
+    const arrow = V ? key : logicalArrowKey(key, event.currentTarget)
+    if (arrow === (V ? 'ArrowUp' : 'ArrowLeft')) moveLifted('prev')
+    else if (arrow === (V ? 'ArrowDown' : 'ArrowRight')) moveLifted('next')
     else if (key === 'Home') moveLifted('first')
     else if (key === 'End') moveLifted('last')
     else if (key === ' ' || key === 'Enter') {

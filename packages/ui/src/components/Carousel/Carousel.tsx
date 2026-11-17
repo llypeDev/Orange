@@ -26,7 +26,7 @@ import {
 } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { clamp, cx, devWarning } from '../../utils'
+import { clamp, cx, devWarning, isRtl, logicalArrowKey } from '../../utils'
 import { IconButton } from '../IconButton'
 import { useSlidingIndicator } from '../Tabs/useSlidingIndicator'
 import './Carousel.css'
@@ -308,7 +308,7 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(function Carousel
     const els = getSlideElements()
     const first = els[0]
     if (!first) return null
-    const rtl = getComputedStyle(track).direction === 'rtl'
+    const rtl = isRtl(track)
     const max = Math.max(0, track.scrollWidth - track.clientWidth)
     const offsets = els.map((el) =>
       Math.min(
@@ -458,8 +458,9 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(function Carousel
 
   const handlePickerKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     let next: number
-    if (event.key === 'ArrowRight') next = index >= maxIndex ? 0 : index + 1
-    else if (event.key === 'ArrowLeft') next = index === 0 ? maxIndex : index - 1
+    const key = logicalArrowKey(event.key, event.currentTarget)
+    if (key === 'ArrowRight') next = index >= maxIndex ? 0 : index + 1
+    else if (key === 'ArrowLeft') next = index === 0 ? maxIndex : index - 1
     else if (event.key === 'Home') next = 0
     else if (event.key === 'End') next = maxIndex
     else return

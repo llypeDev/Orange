@@ -16,7 +16,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx, devWarning, mergeRefs } from '../../utils'
+import { cx, devWarning, isRtl, mergeRefs } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './ListView.css'
 
@@ -488,7 +488,7 @@ export const ListView = forwardRef<HTMLDivElement, ListViewProps>(function ListV
       // → / ←: percorrem linha → caixa de seleção/ações → linha (como no GridList do React Aria).
       const items = rowFocusables(rowEl)
       if (items.length === 0) return
-      const rtl = getComputedStyle(grid).direction === 'rtl'
+      const rtl = isRtl(grid)
       const forward = (key === 'ArrowRight') !== rtl
       const pos = onRow ? -1 : items.findIndex((el) => el === target || el.contains(target))
       let next: HTMLElement

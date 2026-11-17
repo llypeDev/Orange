@@ -40,8 +40,8 @@
   --_gutter: var(--or-space-4);
 
   position: fixed;
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   /* Camada do cabeçalho, um acima: o portal fica no início do <body> e
      perderia o empate para cabeçalhos e barras declarados depois dele. */
   z-index: calc(var(--or-z-header) + 1);
@@ -104,7 +104,7 @@
   min-width: 0;
   padding: var(--or-space-6);
   border: var(--or-border-thin) solid var(--or-color-border-strong);
-  border-left: var(--or-border-accent) solid var(--or-color-accent);
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface-raised);
   box-shadow: var(--or-shadow-overlay);
@@ -126,7 +126,7 @@
   --_exit: translateY(calc(var(--or-distance-sm) * -1));
 
   border-color: var(--or-color-border);
-  border-left-color: var(--or-color-accent);
+  border-inline-start-color: var(--or-color-accent);
   background: var(--or-color-surface);
   box-shadow: none;
 }
@@ -212,7 +212,7 @@
  * legível: cores explícitas vencem o tom desabilitado herdado do Checkbox. */
 
 .or-consent-preferences__label {
-  margin-right: var(--or-space-2);
+  margin-inline-end: var(--or-space-2);
   color: var(--or-color-text);
 }
 
@@ -239,6 +239,6 @@
   .or-consent-banner,
   .or-consent-banner--inline {
     border-color: CanvasText;
-    border-left-color: Highlight;
+    border-inline-start-color: Highlight;
   }
 }

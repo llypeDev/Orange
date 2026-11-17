@@ -162,6 +162,38 @@ describe('OrangeProvider + useTheme', () => {
     expect(screen.getByTestId('state').closest('[data-theme]')).toHaveAttribute('data-theme', 'light-hc')
   })
 
+  it('themeTarget="none" fornece o tema sem escrever data-theme nem envolver os filhos', async () => {
+    mockMedia()
+    const user = userEvent.setup()
+    // O app já escreveu o tema dele antes da pintura; o Orange não pode sobrescrever.
+    document.documentElement.setAttribute('data-theme', 'light')
+    const { container } = render(
+      <OrangeProvider defaultTheme="dark" themeTarget="none">
+        <ThemeProbe />
+      </OrangeProvider>,
+    )
+    expect(htmlTheme()).toBe('light')
+    expect(state()).toBe('dark|dark|dark|false')
+    expect(container.querySelector('[data-theme]')).toBeNull()
+    expect(container.firstElementChild).toBe(screen.getByTestId('state').parentElement)
+    await user.click(screen.getByRole('button', { name: 'light-hc' }))
+    expect(state()).toBe('light-hc|light-hc|light|true')
+    expect(htmlTheme()).toBe('light')
+  })
+
+  it('themeTarget="none" num provider aninhado herda o tema e também não toca no DOM', () => {
+    mockMedia()
+    render(
+      <OrangeProvider theme="light" themeTarget="none">
+        <OrangeProvider locale="en-US" themeTarget="none">
+          <ThemeProbe />
+        </OrangeProvider>
+      </OrangeProvider>,
+    )
+    expect(state()).toBe('light|light|light|false')
+    expect(htmlTheme()).toBeNull()
+  })
+
   it('setTheme troca para os temas de alto contraste (não controlado)', async () => {
     mockMedia()
     const user = userEvent.setup()

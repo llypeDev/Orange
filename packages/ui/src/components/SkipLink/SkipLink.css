@@ -1,7 +1,7 @@
 .or-skip-link {
   position: fixed;
   top: var(--or-space-3);
-  left: var(--or-space-3);
+  inset-inline-start: var(--or-space-3);
   z-index: var(--or-z-tooltip);
   display: inline-flex;
   align-items: center;

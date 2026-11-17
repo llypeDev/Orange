@@ -142,10 +142,11 @@
 /* Cada célula desenha as bordas superior e esquerda e se desloca 1px; o
    overflow do contêiner esconde as que coincidem com a borda externa. */
 .or-stat-group__list > .or-stat {
-  margin: -1px 0 0 -1px;
+  margin-block: -1px 0;
+  margin-inline: -1px 0;
   padding: var(--or-space-7) var(--or-space-6);
   border-top: var(--or-border-thin) solid var(--or-color-border);
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
 }
 
 .or-stat-group__list > .or-stat--sm {

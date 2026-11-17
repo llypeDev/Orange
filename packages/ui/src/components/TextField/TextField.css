@@ -90,11 +90,11 @@
 }
 
 .or-input-frame__affix--prefix {
-  border-right: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-end: var(--or-border-thin) solid var(--or-color-border);
 }
 
 .or-input-frame__affix--suffix {
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
 }
 
 .or-input-frame[data-disabled] .or-input-frame__affix {

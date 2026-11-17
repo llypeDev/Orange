@@ -29,7 +29,7 @@
   background: transparent;
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
 }
 
 button.or-stepper__trigger {
@@ -43,6 +43,10 @@ button.or-stepper__trigger .or-stepper__label {
   background-repeat: no-repeat;
   background-size: 0% 2px;
   transition: background-size var(--or-duration-medium) var(--or-ease-out);
+}
+
+[dir='rtl'] button.or-stepper__trigger .or-stepper__label {
+  background-position: 100% 100%;
 }
 
 button.or-stepper__trigger:is(:hover, :focus-visible) .or-stepper__label {
@@ -192,6 +196,10 @@ button.or-stepper__trigger:focus-visible {
   transition: transform var(--or-duration-slow) var(--or-ease-out);
 }
 
+[dir='rtl'] .or-stepper__step:not(:last-child)::before {
+  transform-origin: 100% 50%;
+}
+
 .or-stepper__step[data-status='complete']:not(:last-child)::before {
   transform: scaleX(1);
 }
@@ -204,12 +212,12 @@ button.or-stepper__trigger:focus-visible {
 
 .or-stepper--horizontal > .or-stepper__step {
   flex: 1 1 0;
-  padding-right: var(--or-space-3);
+  padding-inline-end: var(--or-space-3);
 }
 
 .or-stepper--horizontal > .or-stepper__step:last-child {
   flex: 0 1 auto;
-  padding-right: 0;
+  padding-inline-end: 0;
 }
 
 .or-stepper--horizontal .or-stepper__trigger {
@@ -220,14 +228,14 @@ button.or-stepper__trigger:focus-visible {
 .or-stepper--horizontal .or-stepper__step:not(:last-child)::after,
 .or-stepper--horizontal .or-stepper__step:not(:last-child)::before {
   top: calc(var(--_marker) / 2 - 1px);
-  right: var(--or-space-3);
-  left: calc(var(--_marker) + var(--or-space-3));
+  inset-inline-end: var(--or-space-3);
+  inset-inline-start: calc(var(--_marker) + var(--or-space-3));
   height: 2px;
 }
 
 .or-stepper--horizontal .or-stepper__text {
   padding-top: 0;
-  padding-right: var(--or-space-2);
+  padding-inline-end: var(--or-space-2);
 }
 
 /* Contêiner estreito: só o rótulo da etapa atual fica visível. Com o fluxo concluído
@@ -279,13 +287,13 @@ button.or-stepper__trigger:focus-visible {
 .or-stepper--vertical .or-stepper__step:not(:last-child)::before {
   top: calc(var(--_marker) + var(--or-space-1));
   bottom: var(--or-space-1);
-  left: calc(var(--_marker) / 2 - 1px);
+  inset-inline-start: calc(var(--_marker) / 2 - 1px);
   width: 2px;
 }
 
 .or-stepper__content {
   margin-top: var(--or-space-3);
-  padding-left: calc(var(--_marker) + var(--_gap));
+  padding-inline-start: calc(var(--_marker) + var(--_gap));
 }
 
 /* Alto contraste: marcador atual em Highlight (também no hover/foco, que tem

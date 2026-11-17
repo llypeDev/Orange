@@ -44,7 +44,7 @@
   max-width: 100%;
   height: var(--_chip-h);
   border: var(--or-border-thin) solid var(--or-color-border-strong);
-  border-left: var(--or-border-accent) solid var(--or-color-accent);
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
   background: var(--or-color-bg-subtle);
   color: var(--or-color-text);
   font-family: var(--or-font-display);
@@ -106,7 +106,7 @@
   width: max(1.5rem, calc(var(--_chip-h) - 2px));
   padding: 0;
   border: 0;
-  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
   border-radius: var(--or-radius-none);
   background: transparent;
   color: var(--or-color-text-muted);

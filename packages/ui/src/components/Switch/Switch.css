@@ -113,6 +113,12 @@
   transform: translateX(calc(var(--_w) - var(--_thumb) - 2 * var(--_pad) - 2px));
 }
 
+[dir='rtl'] .or-switch__control[aria-checked='true'] .or-switch__thumb,
+[dir='rtl'] .or-switch__control[aria-checked='true']:hover:not(:disabled) .or-switch__thumb,
+[dir='rtl'] .or-switch__control[aria-checked='true']:focus-visible .or-switch__thumb {
+  transform: translateX(calc((var(--_w) - var(--_thumb) - 2 * var(--_pad) - 2px) * -1));
+}
+
 .or-switch__control:disabled {
   border-color: var(--or-color-border);
   background: var(--or-color-bg-subtle);
@@ -147,15 +153,15 @@
 
 .or-switch__description {
   margin: 0;
-  padding-left: calc(var(--_w) + var(--_gap));
+  padding-inline-start: calc(var(--_w) + var(--_gap));
   font-size: var(--or-text-sm);
   color: var(--or-color-text-subtle);
   transition: color var(--or-duration-fast) var(--or-ease-out);
 }
 
 .or-switch--label-start .or-switch__description {
-  padding-left: 0;
-  padding-right: calc(var(--_w) + var(--_gap));
+  padding-inline-start: 0;
+  padding-inline-end: calc(var(--_w) + var(--_gap));
 }
 
 .or-switch[data-disabled] .or-switch__label,

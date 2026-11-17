@@ -25,7 +25,7 @@
   width: 0;
   min-height: 1em;
   margin-inline: var(--_space);
-  border-left: var(--_size) solid var(--_color);
+  border-inline-start: var(--_size) solid var(--_color);
   vertical-align: middle;
 }
 

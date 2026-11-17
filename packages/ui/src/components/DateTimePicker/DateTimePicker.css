@@ -59,9 +59,10 @@
 .or-date-time-picker__time {
   --_basis: calc(6em + var(--or-space-3) * 3 + 1rem);
   min-height: calc(var(--_height) - var(--or-border-thin));
-  margin: calc(var(--or-border-thin) * -1) 0 0 calc(var(--or-border-thin) * -1);
+  margin-block: calc(var(--or-border-thin) * -1) 0;
+  margin-inline: calc(var(--or-border-thin) * -1) 0;
   border-top: var(--or-border-thin) solid var(--or-color-border);
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
 }
 
 /* Clicar na área livre da hora (ou no relógio) foca o primeiro segmento, como num input. */

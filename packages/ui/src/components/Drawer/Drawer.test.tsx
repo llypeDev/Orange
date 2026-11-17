@@ -41,6 +41,17 @@ describe('Drawer', () => {
     expect(dialog).toHaveClass('or-drawer', 'or-drawer--left', 'or-drawer--lg')
   })
 
+  it.each(['start', 'end'] as const)(
+    'placement="%s" segue o sentido da leitura',
+    async (placement) => {
+      const user = userEvent.setup()
+      render(<Example placement={placement} />)
+      await user.click(screen.getByRole('button', { name: 'Filtros' }))
+      const dialog = screen.getByRole('dialog', { name: 'Filtrar pedidos' })
+      expect(dialog).toHaveClass('or-drawer', `or-drawer--${placement}`)
+    },
+  )
+
   it('foca o primeiro campo, prende o foco e bloqueia o scroll', async () => {
     const user = userEvent.setup()
     render(<Example />)

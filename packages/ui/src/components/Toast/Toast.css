@@ -9,9 +9,10 @@
   align-items: start;
   gap: var(--or-space-3);
   width: 100%;
-  padding: var(--or-space-4) var(--or-space-5) var(--or-space-4) var(--or-space-4);
+  padding-block: var(--or-space-4);
+  padding-inline: var(--or-space-4) var(--or-space-5);
   border: var(--or-border-thin) solid var(--or-color-border-strong);
-  border-left: var(--or-border-accent) solid var(--_tone);
+  border-inline-start: var(--or-border-accent) solid var(--_tone);
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface-raised);
   box-shadow: var(--or-shadow-overlay);
@@ -26,7 +27,7 @@
 }
 
 .or-toast--closable {
-  padding-right: var(--or-space-2);
+  padding-inline-end: var(--or-space-2);
 }
 
 .or-toast__icon {
@@ -247,13 +248,17 @@
   --_timer-color: var(--or-color-border-control);
 
   position: absolute;
-  right: var(--or-border-thin);
+  inset-inline-end: var(--or-border-thin);
   bottom: var(--or-border-thin);
-  left: var(--or-border-accent);
+  inset-inline-start: var(--or-border-accent);
   height: 2px;
   background: var(--_timer-color);
   transform-origin: left center;
   animation: or-fill-x var(--_timer-duration) linear reverse both;
+}
+
+[dir='rtl'] .or-toast-region__timer {
+  transform-origin: right center;
 }
 
 .or-toast-region[data-paused] .or-toast-region__timer {

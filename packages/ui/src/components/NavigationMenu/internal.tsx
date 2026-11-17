@@ -25,7 +25,7 @@ import {
 } from 'react'
 import { useId, usePresence } from '../../hooks'
 import { Icon, iconPaths, type IconName } from '../../icons'
-import { cx, getFocusableElements, mergeRefs } from '../../utils'
+import { cx, getFocusableElements, logicalArrowKey, mergeRefs } from '../../utils'
 import type { RenderLink, RenderLinkProps } from '../Link'
 import { useLayer } from '../Modal/overlay'
 import { useFloatingPanel } from '../Popover/floating'
@@ -446,9 +446,11 @@ export function useNavigationMenuController({
         .filter((el): el is HTMLElement => Boolean(el))
       const index = tops.indexOf(target)
       let next: HTMLElement | undefined
+      // Em dir="rtl", ← e → seguem o sentido da leitura.
+      const key = logicalArrowKey(event.key, list)
       if (index >= 0) {
         // Primeiro nível: botões e links.
-        switch (event.key) {
+        switch (key) {
           case 'ArrowRight':
             next = tops[index + 1]
             break
@@ -478,7 +480,7 @@ export function useNavigationMenuController({
         const links = linksIn(panel)
         const position = links.indexOf(target)
         if (position < 0) return
-        switch (event.key) {
+        switch (key) {
           case 'ArrowDown':
           case 'ArrowRight':
             next = links[position + 1]

@@ -300,9 +300,35 @@ describe('Slider', () => {
         render(<Slider label="Opacidade" min={0} max={max} step={step} defaultValue={0} marks />)
         const ticks = document.querySelectorAll<HTMLElement>('.or-slider__tick')
         expect(ticks).toHaveLength(count)
-        expect(ticks[ticks.length - 1].style.left).toBe('100%')
+        expect(ticks[ticks.length - 1].style.insetInlineStart).toBe('100%')
       },
     )
+  })
+
+  it('modo range em dir="rtl": o clique no trilho mede a partir da direita', () => {
+    const onChange = vi.fn()
+    const { container } = render(
+      <div dir="rtl">
+        <Slider
+          range
+          label="Faixa de preço"
+          min={0}
+          max={100}
+          defaultValue={[20, 80]}
+          onChange={onChange}
+        />
+      </div>,
+    )
+    const rail = container.querySelector<HTMLElement>('.or-slider__rail')!
+    rail.getBoundingClientRect = () =>
+      ({ left: 0, right: 200, top: 0, bottom: 8, width: 200, height: 8, x: 0, y: 0 }) as DOMRect
+    // 10% a partir da direita: 90 no LTR, 10 em RTL — o polegar mínimo vai até lá.
+    // jsdom não tem PointerEvent: um MouseEvent do tipo pointerdown carrega button e clientX.
+    fireEvent(
+      rail,
+      new MouseEvent('pointerdown', { bubbles: true, cancelable: true, button: 0, clientX: 180 }),
+    )
+    expect(onChange).toHaveBeenLastCalledWith([10, 80])
   })
 
   it('não possui violações de acessibilidade', async () => {

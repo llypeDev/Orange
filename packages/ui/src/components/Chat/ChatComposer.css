@@ -81,17 +81,17 @@
   flex: 0 100 auto;
   min-width: 0;
   margin-top: 0;
-  margin-left: auto;
+  margin-inline-start: auto;
   text-align: end;
 }
 
 .or-chat-composer__send {
   flex-shrink: 0;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .or-chat-composer__toolbar .or-character-count + .or-chat-composer__send {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 /* Campo vazio ou "Parar" sem onStop: focável, mas visualmente inativo. */

@@ -99,7 +99,7 @@ header.or-app-shell__header {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-right: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-end: var(--or-border-thin) solid var(--or-color-border);
   background: var(--or-color-bg);
   scrollbar-width: thin;
 }
@@ -128,7 +128,7 @@ header.or-app-shell__header {
   flex: 1 1 auto;
   width: 100%;
   min-height: 0;
-  border-right: 0;
+  border-inline-end: 0;
 }
 
 /* Conteúdo: main + aside + rodapé ------------------------------------------ */
@@ -188,14 +188,14 @@ header.or-app-shell__header {
 .or-app-shell__aside::before {
   top: 0;
   bottom: 0;
-  left: calc(var(--or-border-thin) * -1);
+  inset-inline-start: calc(var(--or-border-thin) * -1);
   width: var(--or-border-thin);
 }
 
 .or-app-shell__aside::after {
   top: calc(var(--or-border-thin) * -1);
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   height: var(--or-border-thin);
 }
 
@@ -224,8 +224,8 @@ footer.or-app-shell__footer {
 
 /* Na marca do AppHeader, o botão encosta no início da barra e respira antes do logo. */
 .or-app-header__brand > .or-app-shell__toggle {
-  margin-right: var(--or-space-3);
-  margin-left: calc(var(--or-space-2) * -1);
+  margin-inline-end: var(--or-space-3);
+  margin-inline-start: calc(var(--or-space-2) * -1);
 }
 
 /* Telas largas: os chevrons giram 180° quando a barra está recolhida. */
@@ -257,7 +257,7 @@ footer.or-app-shell__footer {
   flex: 1 1 auto;
   width: 100%;
   height: auto;
-  border-right: 0;
+  border-inline-end: 0;
 }
 
 /*
@@ -286,7 +286,7 @@ footer.or-app-shell__footer {
 
 @media (forced-colors: active) {
   .or-app-shell__nav {
-    border-right-color: CanvasText;
+    border-inline-end-color: CanvasText;
   }
 
   .or-app-shell__aside::before,

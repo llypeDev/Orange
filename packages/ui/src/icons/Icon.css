@@ -7,3 +7,23 @@
   max-width: none;
   vertical-align: middle;
 }
+
+/* Ícones de direção (setas e chevrons para os lados) espelham da direita para a
+   esquerda: "próximo" aponta para onde a leitura segue. O traço é espelhado no
+   próprio SVG (não no <svg>), então transform/rotate/translate aplicados ao
+   ícone pelos componentes continuam valendo — e precisam do próprio [dir='rtl']
+   quando apontam para um lado. */
+[dir='rtl']
+  .or-icon:is(
+    [data-icon='arrow-left'],
+    [data-icon='arrow-right'],
+    [data-icon='chevron-left'],
+    [data-icon='chevron-right'],
+    [data-icon='chevrons-left'],
+    [data-icon='chevrons-right']
+  )
+  > * {
+  transform: scaleX(-1);
+  transform-box: view-box;
+  transform-origin: center;
+}

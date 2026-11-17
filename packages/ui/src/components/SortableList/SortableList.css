@@ -37,7 +37,8 @@
   gap: var(--or-space-2);
   min-width: 0;
   min-height: var(--or-control-lg);
-  padding: var(--or-space-2) var(--or-space-2) var(--or-space-2) var(--or-space-1);
+  padding-block: var(--or-space-2);
+  padding-inline: var(--or-space-1) var(--or-space-2);
   border: var(--or-border-thin) solid var(--or-color-border);
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface);
@@ -56,7 +57,7 @@
 }
 
 .or-sortable--horizontal > .or-sortable__item + .or-sortable__item {
-  margin-left: calc(var(--or-border-thin) * -1);
+  margin-inline-start: calc(var(--or-border-thin) * -1);
 }
 
 /* Barra de acento de 4px que desce pela borda esquerda do item levantado. */
@@ -65,7 +66,7 @@
   position: absolute;
   top: calc(var(--or-border-thin) * -1);
   bottom: calc(var(--or-border-thin) * -1);
-  left: calc(var(--or-border-thin) * -1);
+  inset-inline-start: calc(var(--or-border-thin) * -1);
   width: var(--or-space-1);
   background: var(--or-color-accent);
   transform: scaleY(0);
@@ -113,6 +114,7 @@
 .or-sortable__placeholder {
   position: absolute;
   top: 0;
+  /* físico: a posição vem de offsetLeft/offsetTop (medidos), também em RTL. */
   left: 0;
   box-sizing: border-box;
   border: var(--or-border-thin) dashed var(--or-color-accent-border);

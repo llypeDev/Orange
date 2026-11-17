@@ -80,7 +80,7 @@
 .or-badge--overlay {
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   z-index: 1;
   box-shadow: 0 0 0 2px var(--_ring);
   transform: translate(40%, -40%);
@@ -93,7 +93,7 @@
 
 .or-badge--overlap-circle {
   top: 14%;
-  right: 14%;
+  inset-inline-end: 14%;
 }
 
 /* Movimento ---------------------------------------------------------------- */

@@ -13,7 +13,7 @@ import {
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, logicalArrowKey } from '../../utils'
 import {
   Field,
   useField,
@@ -188,10 +188,9 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>(function
   const handleSwatchKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const last = options.length - 1
     let next = -1
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown')
-      next = index === last ? 0 : index + 1
-    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp')
-      next = index === 0 ? last : index - 1
+    const key = logicalArrowKey(event.key, event.currentTarget)
+    if (key === 'ArrowRight' || key === 'ArrowDown') next = index === last ? 0 : index + 1
+    else if (key === 'ArrowLeft' || key === 'ArrowUp') next = index === 0 ? last : index - 1
     else if (event.key === 'Home') next = 0
     else if (event.key === 'End') next = last
     else return

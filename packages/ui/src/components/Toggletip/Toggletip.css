@@ -64,7 +64,7 @@
   box-shadow: var(--or-shadow-overlay);
   font-size: var(--or-text-sm);
   line-height: var(--or-leading-body);
-  text-align: left;
+  text-align: start;
 }
 
 .or-toggletip strong {

@@ -26,8 +26,20 @@
   transform: translateX(2px);
 }
 
+[dir='rtl']
+  .or-currency-field__frame:focus-within
+  .or-currency-field__symbol.or-control-frame__addon--start {
+  transform: translateX(-2px);
+}
+
 .or-currency-field__frame:focus-within .or-currency-field__symbol.or-control-frame__addon--end {
   transform: translateX(-2px);
+}
+
+[dir='rtl']
+  .or-currency-field__frame:focus-within
+  .or-currency-field__symbol.or-control-frame__addon--end {
+  transform: translateX(2px);
 }
 
 .or-currency-field__frame[data-invalid] .or-currency-field__symbol {
@@ -44,11 +56,11 @@
 }
 
 .or-currency-field__symbol.or-control-frame__addon--start {
-  padding-right: 0;
+  padding-inline-end: 0;
 }
 
 .or-currency-field__symbol.or-control-frame__addon--end {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .or-currency-field__input {
@@ -56,10 +68,10 @@
 }
 
 .or-currency-field__frame:has(.or-control-frame__addon--start) .or-currency-field__input {
-  padding-left: var(--or-space-2);
+  padding-inline-start: var(--or-space-2);
 }
 
 .or-currency-field__frame:has(.or-control-frame__addon--end) .or-currency-field__input {
-  padding-right: var(--or-space-2);
-  text-align: right;
+  padding-inline-end: var(--or-space-2);
+  text-align: end;
 }

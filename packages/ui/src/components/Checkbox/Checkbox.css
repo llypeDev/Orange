@@ -148,14 +148,14 @@
 }
 
 .or-checkbox__required {
-  margin-left: 0.2em;
+  margin-inline-start: 0.2em;
   color: var(--or-color-accent-text);
 }
 
 .or-checkbox__description,
 .or-checkbox__error {
   margin: 0;
-  padding-left: calc(var(--_control) + var(--or-space-3));
+  padding-inline-start: calc(var(--_control) + var(--or-space-3));
   font-size: var(--or-text-sm);
 }
 
@@ -251,12 +251,12 @@
 
 .or-checkbox--card .or-checkbox__description {
   margin: 0;
-  padding-left: 0;
+  padding-inline-start: 0;
   line-height: var(--or-leading-tight);
 }
 
 .or-checkbox--card .or-checkbox__error {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .or-checkbox--card:hover:not([data-disabled], [data-checked]),

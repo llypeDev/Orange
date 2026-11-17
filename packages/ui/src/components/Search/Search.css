@@ -48,7 +48,7 @@
   width: 0.875rem;
   height: 0.875rem;
   border: 2px solid currentColor;
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--or-radius-full);
   opacity: 0;
   scale: 0.6;
@@ -85,7 +85,7 @@
 }
 
 .or-search__clear {
-  border-left-color: transparent;
+  border-inline-start-color: transparent;
   transition:
     background-color var(--or-duration-fast) var(--or-ease-out),
     color var(--or-duration-fast) var(--or-ease-out),
@@ -116,13 +116,13 @@
 }
 
 .or-search__frame:focus-within .or-search__clear {
-  border-left-color: var(--or-color-border);
+  border-inline-start-color: var(--or-color-border);
 }
 
 /* Alto contraste: a "falha" do anel de carregamento é `transparent`, que
    viraria texto (anel completo, parado) — usa Canvas. */
 @media (forced-colors: active) {
   .or-search__spinner {
-    border-right-color: Canvas;
+    border-inline-end-color: Canvas;
   }
 }

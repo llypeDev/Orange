@@ -11,7 +11,7 @@
 .or-select__control {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: calc(var(--or-space-3) + 1.5rem);
+  padding-inline-end: calc(var(--or-space-3) + 1.5rem);
   text-overflow: ellipsis;
   cursor: pointer;
   /* Borda, anel de foco, fundo e cor do texto mudam com transição (nada "pisca"). */
@@ -54,7 +54,7 @@
 .or-select__chevron {
   position: absolute;
   top: 0;
-  right: var(--or-space-3);
+  inset-inline-end: var(--or-space-3);
   bottom: 0;
   display: inline-flex;
   align-items: center;
@@ -84,7 +84,7 @@
 }
 
 .or-select--lg .or-select__control {
-  padding-right: calc(var(--or-space-3) + 1.75rem);
+  padding-inline-end: calc(var(--or-space-3) + 1.75rem);
 }
 
 /* Navegadores com :open em <select> (Chromium recente): o chevron gira 180° com a lista aberta.

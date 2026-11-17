@@ -45,7 +45,7 @@
   display: inline-block;
   width: 0.95em;
   height: 0.95em;
-  margin-left: 0.15em;
+  margin-inline-start: 0.15em;
   vertical-align: -0.1em;
   flex-shrink: 0;
   transition: transform var(--or-duration-medium) var(--or-ease-out);
@@ -90,12 +90,16 @@
   transition: background-size var(--or-duration-medium) var(--or-ease-out);
 }
 
+[dir='rtl'] .or-link--standalone .or-link__label {
+  background-position: 100% 100%;
+}
+
 .or-link--standalone:is(:hover, :focus-visible) .or-link__label {
   background-size: 100% 2px;
 }
 
 .or-link--standalone .or-link__icon {
-  margin-left: 0;
+  margin-inline-start: 0;
   width: 1.1em;
   height: 1.1em;
 }
@@ -103,6 +107,10 @@
 /* → empurra 4px no hover/foco. */
 .or-link--standalone:is(:hover, :focus-visible) .or-link__icon--arrow {
   transform: translateX(4px);
+}
+
+[dir='rtl'] .or-link--standalone:is(:hover, :focus-visible) .or-link__icon--arrow {
+  transform: translateX(-4px);
 }
 
 @media (forced-colors: active) {

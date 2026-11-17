@@ -49,9 +49,17 @@
     opacity var(--or-duration-fast) var(--or-ease-out);
 }
 
+[dir='rtl'] .or-range-calendar__day::before {
+  transform-origin: right center;
+}
+
 /* Prévia para trás (fim antes do início): a faixa cresce da direita. */
 .or-range-calendar[data-preview='backward'] .or-range-calendar__day::before {
   transform-origin: right center;
+}
+
+[dir='rtl'] .or-range-calendar[data-preview='backward'] .or-range-calendar__day::before {
+  transform-origin: left center;
 }
 
 .or-range-calendar__day--in-range::before {
@@ -105,16 +113,24 @@
 
 .or-range-calendar__day--start .or-range-calendar__mark::before {
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   border-width: 7px 7px 0 0;
   border-color: var(--or-color-text-on-accent) transparent transparent transparent;
 }
 
+[dir='rtl'] .or-range-calendar__day--start .or-range-calendar__mark::before {
+  border-width: 7px 0 0 7px;
+}
+
 .or-range-calendar__day--end .or-range-calendar__mark::after {
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   border-width: 0 0 7px 7px;
   border-color: transparent transparent var(--or-color-text-on-accent) transparent;
+}
+
+[dir='rtl'] .or-range-calendar__day--end .or-range-calendar__mark::after {
+  border-width: 0 7px 7px 0;
 }
 
 /* Ponta provisória da prévia: só contorno. */

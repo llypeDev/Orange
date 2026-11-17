@@ -36,8 +36,8 @@
   position: absolute;
   top: calc(var(--_first-line) / 2 + var(--_size) / 2 + var(--_line-gap));
   bottom: calc(var(--_first-line) / -2 + var(--_next-size) / 2 + var(--_line-gap));
-  left: calc(var(--_marker-col) / 2 - 0.5px);
-  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+  inset-inline-start: calc(var(--_marker-col) / 2 - 0.5px);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
 }
 
 .or-timeline__item:has(+ .or-timeline__item--current) {
@@ -186,11 +186,11 @@
   }
 
   .or-timeline--alternate > .or-timeline__item::before {
-    left: calc(50% - 0.5px);
+    inset-inline-start: calc(50% - 0.5px);
   }
 
   .or-timeline--alternate > .or-timeline__item > .or-timeline__date {
-    text-align: right;
+    text-align: end;
   }
 
   .or-timeline--alternate > .or-timeline__item:nth-child(even) {
@@ -198,11 +198,11 @@
   }
 
   .or-timeline--alternate > .or-timeline__item:nth-child(even) > .or-timeline__date {
-    text-align: left;
+    text-align: start;
   }
 
   .or-timeline--alternate > .or-timeline__item:nth-child(even) > .or-timeline__body {
-    text-align: right;
+    text-align: end;
   }
 }
 

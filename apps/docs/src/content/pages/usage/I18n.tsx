@@ -658,6 +658,101 @@ export function Preco({ valor }: { valor: number }) {
         />
       </Section>
 
+      <Section
+        title={{ pt: 'Da direita para a esquerda (RTL)', en: 'Right to left (RTL)' }}
+        id="rtl"
+      >
+        <Prose>
+          <p>
+            <T
+              pt={
+                <>
+                  Para árabe, persa, urdu ou hebraico, ponha <Code>dir="rtl"</Code> no{' '}
+                  <Code>&lt;html&gt;</Code> junto com o <Code>lang</Code> (ou num contêiner, para só
+                  um trecho). Não há prop: os componentes leem o atributo. O CSS usa propriedades
+                  lógicas, então margens, bordas, barras de acento e posições espelham sozinhas;
+                  setas e chevrons apontam para onde a leitura segue; e sobreposições com{' '}
+                  <Code>-start</Code>/<Code>-end</Code> alinham pelo início da linha.
+                </>
+              }
+              en={
+                <>
+                  For Arabic, Persian, Urdu or Hebrew, put <Code>dir="rtl"</Code> on{' '}
+                  <Code>&lt;html&gt;</Code> along with <Code>lang</Code> (or on a container, for one
+                  section only). There is no prop: components read the attribute. The CSS uses
+                  logical properties, so margins, borders, accent bars and positions mirror on their
+                  own; arrows and chevrons point where reading goes; and overlays with{' '}
+                  <Code>-start</Code>/<Code>-end</Code> align to the start of the line.
+                </>
+              }
+            />
+          </p>
+        </Prose>
+        <CodeBlock
+          language="tsx"
+          title="main.tsx"
+          code={`import { OrangeProvider } from '@orangesys/ui'
+import { arSA } from './i18n/ar-SA' // seu dicionário (veja "Adicionando um idioma")
+
+document.documentElement.lang = 'ar-SA'
+document.documentElement.dir = 'rtl'
+
+createRoot(root).render(
+  <OrangeProvider locale="ar-SA" messages={arSA}>
+    <App />
+  </OrangeProvider>,
+)`}
+        />
+        <Bullets
+          items={[
+            {
+              pt: 'Teclado: em Tabs, Toolbar, calendários, TreeView, Listbox horizontal, NavigationMenu, Carousel, SortableList, PinInput, Splitter, ListView e no redimensionamento de colunas da Table, ← e → seguem o sentido da leitura (→ volta). A direção é lida na hora da tecla: trocar o dir não pede remontar nada.',
+              en: 'Keyboard: in Tabs, Toolbar, calendars, TreeView, horizontal Listbox, NavigationMenu, Carousel, SortableList, PinInput, Splitter, ListView and Table column resizing, ← and → follow the reading direction (→ goes back). Direction is read on each key press: changing dir needs no remount.',
+            },
+            {
+              pt: 'Slider, RadioGroup, SegmentedControl e Rating usam os controles nativos do navegador, que já tratam a direção; o Slider espelha o trilho junto com o input.',
+              en: 'Slider, RadioGroup, SegmentedControl and Rating use native browser controls, which already handle direction; Slider mirrors its track along with the input.',
+            },
+            {
+              pt: (
+                <>
+                  Ficam físicos de propósito: <Code>placement</Code> <Code>left</Code>/
+                  <Code>right</Code> do Drawer (use <Code>start</Code>/<Code>end</Code> para
+                  espelhar), os lados <Code>left</Code>/<Code>right</Code> de Tooltip, Popover e
+                  Tour, as posições do Toast, os gráficos e os campos de hora, que sempre mostram{' '}
+                  <Code>14:30</Code>.
+                </>
+              ),
+              en: (
+                <>
+                  Physical on purpose: Drawer <Code>placement</Code> <Code>left</Code>/
+                  <Code>right</Code> (use <Code>start</Code>/<Code>end</Code> to mirror), the{' '}
+                  <Code>left</Code>/<Code>right</Code> sides of Tooltip, Popover and Tour, Toast
+                  positions, charts, and time fields, which always show <Code>14:30</Code>.
+                </>
+              ),
+            },
+            {
+              pt: (
+                <>
+                  O CSS espelha pelo atributo <Code>dir</Code> (<Code>[dir='rtl']</Code>), não só
+                  pela propriedade <Code>direction</Code>. Um trecho em LTR dentro de uma página RTL
+                  (código, por exemplo) segue o teclado LTR, mas as animações e ícones continuam
+                  espelhados.
+                </>
+              ),
+              en: (
+                <>
+                  The CSS mirrors on the <Code>dir</Code> attribute (<Code>[dir='rtl']</Code>), not
+                  only the <Code>direction</Code> property. An LTR section inside an RTL page (code,
+                  for example) gets LTR keyboard behaviour, but animations and icons stay mirrored.
+                </>
+              ),
+            },
+          ]}
+        />
+      </Section>
+
       <Section title={{ pt: 'Boas práticas', en: 'Best practices' }}>
         <Bullets
           items={[

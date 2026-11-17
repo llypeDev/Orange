@@ -21,7 +21,8 @@
   flex-shrink: 0;
   align-items: center;
   gap: var(--or-space-3);
-  padding: var(--or-space-3) var(--or-space-3) 0 var(--or-space-4);
+  padding-block: var(--or-space-3) 0;
+  padding-inline: var(--or-space-4) var(--or-space-3);
   min-height: 2.75rem;
 }
 
@@ -39,7 +40,7 @@
 
 .or-popover__close {
   flex-shrink: 0;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .or-popover__body {

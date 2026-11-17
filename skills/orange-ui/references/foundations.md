@@ -81,7 +81,7 @@ contraste) e fornece as mensagens internas traduzidas para os componentes.
 | `messages` | `Partial<Messages>` | — | Sobrescreve mensagens internas específicas. |
 | `onThemeChange` | `((theme: ThemeSetting) => void)` | — | — |
 | `theme` | `"system" \| "dark" \| "light" \| "dark-hc" \| "light-hc"` | — | Tema controlado: `dark`, `light`, `dark-hc`, `light-hc` ou `system`. |
-| `themeTarget` | `"document" \| "scoped"` | `document` | Onde aplicar o atributo `data-theme`. `document` (padrão) aplica em `<html>`; `scoped` envolve os filhos em um `<div data-theme>`. |
+| `themeTarget` | `"none" \| "document" \| "scoped"` | `document` | Onde aplicar o atributo `data-theme`. `document` (padrão) aplica em `<html>`; `scoped` envolve os filhos em um `<div data-theme>`; `none` não escreve o atributo em lugar nenhum nem envolve os filhos — para apps que já cuidam de `data-theme` sozinhos (ex.: com um script antes da pintura). O contexto de tema (`useTheme`) continua disponível. |
 
 Código: `packages/ui/src/providers/OrangeProvider.tsx`
 

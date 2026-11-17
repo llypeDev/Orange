@@ -58,7 +58,7 @@
   grid-column: 1;
   /* espaço entre colunas como padding, para a linha de 1px ser contínua */
   padding-block: var(--_row-pad);
-  padding-right: var(--or-space-6);
+  padding-inline-end: var(--or-space-6);
 }
 
 .or-dl--horizontal.or-dl--term-eyebrow .or-dl__term {
@@ -93,7 +93,7 @@
     grid-column: 1;
   }
   .or-dl--horizontal .or-dl__term {
-    padding-right: 0;
+    padding-inline-end: 0;
     padding-bottom: 0;
   }
   .or-dl--horizontal .or-dl__term + .or-dl__details {
@@ -142,14 +142,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(max(10rem, calc(100% / var(--_cols) - 0.5px)), 1fr));
   border-top: var(--or-border-thin) solid var(--or-color-border);
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
 }
 
 .or-dl--grid > .or-dl__group,
 .or-dl--grid > .or-dl__term,
 .or-dl--grid > .or-dl__details {
   padding: var(--or-space-4) var(--or-space-5);
-  border-right: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-end: var(--or-border-thin) solid var(--or-color-border);
   border-bottom: var(--or-border-thin) solid var(--or-color-border);
 }
 

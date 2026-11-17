@@ -93,7 +93,7 @@ export default function Filters() {
 
 ### Posições
 
-left, right e bottom — cada uma com sua animação de deslizar.
+left, right e bottom — cada uma com sua animação de deslizar. Em interfaces que também rodam da direita para a esquerda, prefira start e end.
 
 ```tsx
 import { Button, Drawer, type DrawerPlacement } from '@orangesys/ui'
@@ -255,8 +255,8 @@ filtros e detalhes que não exigem sair do contexto atual.
 | `initialFocus` | `RefObject<HTMLElement \| null>` | — | Elemento que recebe o foco ao abrir. Padrão: primeiro focável do conteúdo. |
 | `onOpenChange` | `((open: boolean) => void)` | — | Chamado quando o painel pede para abrir ou fechar. |
 | `open` | `boolean` | — | Aberto (controlado). Use com `onOpenChange`. |
-| `placement` | `"bottom" \| "left" \| "right"` | `right` | Borda de onde o painel desliza. |
-| `size` | `"sm" \| "md" \| "lg" \| "full"` | `md` | Largura (left/right): `sm` 360px, `md` 480px, `lg` 640px, `full` 100%. Altura máxima (bottom): `sm` 40%, `md` 60%, `lg` 85%, `full` 100%. |
+| `placement` | `"bottom" \| "start" \| "end" \| "left" \| "right"` | `right` | Borda de onde o painel desliza: `left`/`right` (físicas), `start`/`end` (seguem o sentido da leitura: em `dir="rtl"`, `start` é a direita) ou `bottom`. |
+| `size` | `"sm" \| "md" \| "lg" \| "full"` | `md` | Largura (left/right/start/end): `sm` 360px, `md` 480px, `lg` 640px, `full` 100%. Altura máxima (bottom): `sm` 40%, `md` 60%, `lg` 85%, `full` 100%. |
 | `trigger` | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | — | Elemento que abre o painel (modo não controlado). |
 
 Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `aria-*`, `data-*` e eventos.
@@ -266,7 +266,11 @@ Repassa também os atributos nativos (`HTMLAttributes`): `className`, `style`, `
 `DrawerPlacement`:
 
 ```ts
-export type DrawerPlacement = 'left' | 'right' | 'bottom'
+/**
+ * Borda de onde o painel desliza. `left`/`right` são físicas; `start`/`end`
+ * seguem o sentido da leitura (em `dir="rtl"`, `start` é a direita).
+ */
+export type DrawerPlacement = 'left' | 'right' | 'start' | 'end' | 'bottom'
 ```
 
 `DrawerSize`:

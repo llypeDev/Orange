@@ -19,7 +19,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { canUseDOM, clamp, composeEventHandlers, cx, devWarning, getFocusableElements, mergeRefs } from '../../utils'
+import { canUseDOM, clamp, composeEventHandlers, cx, devWarning, getFocusableElements, isRtl, mergeRefs } from '../../utils'
 import './Splitter.css'
 
 export type SplitterOrientation = 'horizontal' | 'vertical'
@@ -453,8 +453,7 @@ export const Splitter = forwardRef<HTMLDivElement, SplitterProps>(function Split
     return resizePair(start, a, b, targetA)
   }
 
-  const isRtl = () =>
-    horizontal && !!rootRef.current && canUseDOM && getComputedStyle(rootRef.current).direction === 'rtl'
+  const isRtlHorizontal = () => horizontal && isRtl(rootRef.current)
 
   const handleKeyDown = (index: number, event: ReactKeyboardEvent<HTMLDivElement>) => {
     const pair = handlePairs[index]
@@ -468,7 +467,7 @@ export const Splitter = forwardRef<HTMLDivElement, SplitterProps>(function Split
     let direction = 0
     if (horizontal && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
       direction = event.key === 'ArrowRight' ? 1 : -1
-      if (isRtl()) direction = -direction
+      if (isRtlHorizontal()) direction = -direction
     } else if (!horizontal && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
       direction = event.key === 'ArrowDown' ? 1 : -1
     }
@@ -538,7 +537,7 @@ export const Splitter = forwardRef<HTMLDivElement, SplitterProps>(function Split
       pointerId: event.pointerId,
       origin: horizontal ? event.clientX : event.clientY,
       available,
-      sign: isRtl() ? -1 : 1,
+      sign: isRtlHorizontal() ? -1 : 1,
       startSizes: sizesRef.current,
       changed: false,
     }

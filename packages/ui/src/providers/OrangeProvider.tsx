@@ -55,9 +55,12 @@ export interface OrangeProviderProps {
   onThemeChange?: (theme: ThemeSetting) => void
   /**
    * Onde aplicar o atributo `data-theme`. `document` (padrão) aplica em `<html>`;
-   * `scoped` envolve os filhos em um `<div data-theme>`.
+   * `scoped` envolve os filhos em um `<div data-theme>`; `none` não escreve o
+   * atributo em lugar nenhum nem envolve os filhos — para apps que já cuidam de
+   * `data-theme` sozinhos (ex.: com um script antes da pintura). O contexto de
+   * tema (`useTheme`) continua disponível.
    */
-  themeTarget?: 'document' | 'scoped'
+  themeTarget?: 'document' | 'scoped' | 'none'
   /** Idioma das mensagens internas. Padrão: `pt-BR`. */
   locale?: Locale
   /** Sobrescreve mensagens internas específicas. */

@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { useControllableState, useId, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
-import { cx, devWarning, mergeRefs } from '../../utils'
+import { cx, devWarning, logicalArrowKey, mergeRefs } from '../../utils'
 import './TreeView.css'
 
 export interface TreeViewItem {
@@ -283,7 +283,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
     const multi = selectionMode === 'multiple'
     const open = expandedSet.has(currentId)
 
-    switch (event.key) {
+    switch (logicalArrowKey(event.key, event.currentTarget)) {
       case 'ArrowDown': {
         const next = visible[index + 1]
         if (next) {
@@ -300,6 +300,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
         }
         break
       }
+      // Em dir="rtl" o nível seguinte fica à esquerda: ← abre e → fecha (logicalArrowKey).
       case 'ArrowRight':
         if (isParent(info.item) && !info.item.disabled) {
           if (!open) setItemExpanded(currentId, true)

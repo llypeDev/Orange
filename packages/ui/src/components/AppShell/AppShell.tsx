@@ -317,7 +317,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
         open={navOpen}
         onOpenChange={setNavOpen}
         title={navTitle ?? t('menu')}
-        placement="left"
+        placement="start"
         size="sm"
         className="or-app-shell__drawer"
       >

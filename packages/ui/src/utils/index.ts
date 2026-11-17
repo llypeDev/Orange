@@ -93,6 +93,34 @@ export function normalizeText(text: string): string {
 /** Verdadeiro quando o código roda no navegador. */
 export const canUseDOM = typeof window !== 'undefined' && typeof document !== 'undefined'
 
+/**
+ * Verdadeiro quando `element` está num contexto da direita para a esquerda
+ * (`dir="rtl"` nele ou num ancestral, ou `direction: rtl` no CSS). Lido na hora
+ * do evento — não em render —, então acompanha uma troca de idioma sem
+ * re-render. No navegador vale o `direction` calculado; onde ele não existe
+ * (jsdom), cai em `:dir(rtl)` e, por fim, no atributo `dir` mais próximo.
+ */
+export function isRtl(element: Element | null | undefined): boolean {
+  if (!element || !canUseDOM) return false
+  const computed = element.ownerDocument.defaultView?.getComputedStyle(element).direction
+  if (computed === 'rtl' || computed === 'ltr') return computed === 'rtl'
+  try {
+    return element.matches(':dir(rtl)')
+  } catch {
+    return element.closest('[dir]')?.getAttribute('dir')?.toLowerCase() === 'rtl'
+  }
+}
+
+/**
+ * Troca ← e → em contexto RTL, para a navegação por setas seguir o sentido da
+ * leitura: em `dir="rtl"`, → leva ao item anterior. Outras teclas passam iguais.
+ */
+export function logicalArrowKey(key: string, element: Element | null | undefined): string {
+  if (key !== 'ArrowLeft' && key !== 'ArrowRight') return key
+  if (!isRtl(element)) return key
+  return key === 'ArrowLeft' ? 'ArrowRight' : 'ArrowLeft'
+}
+
 /** Gera um array [start, ..., end]. */
 export function range(start: number, end: number): number[] {
   const length = end - start + 1

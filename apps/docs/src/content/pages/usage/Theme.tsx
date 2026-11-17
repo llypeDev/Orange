@@ -443,7 +443,8 @@ export default function ThemePage() {
                   <Code>prefers-color-scheme</Code> e <Code>prefers-contrast</Code> e aplica{' '}
                   <Code>data-theme</Code> no{' '}
                   <Code>&lt;html&gt;</Code> (ou em um <Code>&lt;div&gt;</Code>, com{' '}
-                  <Code>themeTarget="scoped"</Code>).
+                  <Code>themeTarget="scoped"</Code>; com <Code>themeTarget="none"</Code>, em lugar
+                  nenhum).
                 </>
               }
               en={
@@ -452,7 +453,8 @@ export default function ThemePage() {
                   <Code>prefers-color-scheme</Code> and <Code>prefers-contrast</Code> and sets{' '}
                   <Code>data-theme</Code> on{' '}
                   <Code>&lt;html&gt;</Code> (or on a <Code>&lt;div&gt;</Code>, with{' '}
-                  <Code>themeTarget="scoped"</Code>).
+                  <Code>themeTarget="scoped"</Code>; with <Code>themeTarget="none"</Code>,
+                  nowhere).
                 </>
               }
             />
@@ -487,19 +489,25 @@ export default function ThemePage() {
             },
             {
               name: 'themeTarget',
-              type: "'document' | 'scoped'",
+              type: "'document' | 'scoped' | 'none'",
               default: "'document'",
               description: {
                 pt: (
                   <>
                     <Code>document</Code> aplica no <Code>&lt;html&gt;</Code>; <Code>scoped</Code>{' '}
-                    envolve os filhos em <Code>&lt;div data-theme class="or-theme-scope"&gt;</Code>.
+                    envolve os filhos em <Code>&lt;div data-theme class="or-theme-scope"&gt;</Code>;{' '}
+                    <Code>none</Code> não escreve o atributo nem envolve os filhos — para apps que já
+                    aplicam <Code>data-theme</Code> sozinhos (ex.: com um script antes da pintura).{' '}
+                    <Code>useTheme()</Code> continua funcionando.
                   </>
                 ),
                 en: (
                   <>
                     <Code>document</Code> sets it on <Code>&lt;html&gt;</Code>; <Code>scoped</Code>{' '}
-                    wraps children in <Code>&lt;div data-theme class="or-theme-scope"&gt;</Code>.
+                    wraps children in <Code>&lt;div data-theme class="or-theme-scope"&gt;</Code>;{' '}
+                    <Code>none</Code> neither writes the attribute nor wraps the children — for apps
+                    that already set <Code>data-theme</Code> themselves (e.g. from a script before
+                    first paint). <Code>useTheme()</Code> keeps working.
                   </>
                 ),
               },

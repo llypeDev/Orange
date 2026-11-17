@@ -23,7 +23,7 @@
 }
 
 .or-number-field__frame[data-disabled] .or-number-field__step {
-  border-left-color: var(--or-color-border);
+  border-inline-start-color: var(--or-color-border);
 }
 
 .or-number-field__frame[data-readonly] .or-number-field__step {

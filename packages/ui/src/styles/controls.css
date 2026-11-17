@@ -123,11 +123,11 @@ textarea.or-control {
 }
 
 .or-control-frame__addon--start {
-  padding-right: 0;
+  padding-inline-end: 0;
 }
 
 .or-control-frame__addon--end {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 /* Botão interno de um controle (mostrar senha, limpar, abrir calendário). */
@@ -138,7 +138,7 @@ textarea.or-control {
   justify-content: center;
   width: calc(var(--_height) - 2px);
   border: 0;
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
   background: transparent;
   color: var(--or-color-text-muted);
   cursor: pointer;

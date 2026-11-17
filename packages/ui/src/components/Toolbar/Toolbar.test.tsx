@@ -92,6 +92,25 @@ describe('Toolbar', () => {
     expect(link).toHaveFocus()
   })
 
+  it('em dir="rtl", ← vai ao próximo item e → ao anterior', async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <Editor />
+      </div>,
+    )
+    const undo = screen.getByRole('button', { name: 'Desfazer' })
+    const bold = screen.getByRole('button', { name: 'Negrito' })
+    const link = screen.getByRole('button', { name: 'Inserir link' })
+    undo.focus()
+    await user.keyboard('{ArrowLeft}')
+    expect(bold).toHaveFocus()
+    await user.keyboard('{ArrowRight}')
+    expect(undo).toHaveFocus()
+    await user.keyboard('{ArrowRight}')
+    expect(link).toHaveFocus()
+  })
+
   it('lembra o último item focado ao sair e voltar com Tab', async () => {
     const user = userEvent.setup()
     render(<Editor />)

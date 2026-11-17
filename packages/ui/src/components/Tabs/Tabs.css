@@ -131,6 +131,7 @@
   z-index: 1;
   top: auto;
   bottom: 0;
+  /* físico: o indicador é posicionado por offsetLeft (useSlidingIndicator), também em RTL. */
   left: 0;
   width: 1px;
   height: 2px;
@@ -166,10 +167,14 @@
   transition: transform var(--or-duration-medium) var(--or-ease-out);
 }
 
+[dir='rtl'] .or-tabs--line .or-tabs__tab::after {
+  transform-origin: 100% 0;
+}
+
 .or-tabs--line.or-tabs--horizontal .or-tabs__tab::after {
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   height: 2px;
   transform: scaleX(0);
 }
@@ -203,7 +208,7 @@
 }
 
 .or-tabs--enclosed.or-tabs--horizontal .or-tabs__tab {
-  margin-right: -1px;
+  margin-inline-end: -1px;
   border-color: var(--or-color-border);
   border-bottom-color: transparent;
 }
@@ -286,15 +291,19 @@
   box-shadow: inset -1px 0 0 var(--or-color-border);
 }
 
+[dir='rtl'] .or-tabs--vertical > .or-tabs__list {
+  box-shadow: inset 1px 0 0 var(--or-color-border);
+}
+
 .or-tabs--vertical .or-tabs__tab {
   justify-content: flex-start;
-  text-align: left;
+  text-align: start;
 }
 
 .or-tabs--line.or-tabs--vertical .or-tabs__tab::after {
   top: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 2px;
   transform: scaleY(0);
 }
@@ -310,7 +319,7 @@
 .or-tabs--vertical > .or-tabs__panel {
   flex: 1;
   padding-top: 0;
-  padding-left: var(--or-space-6);
+  padding-inline-start: var(--or-space-6);
 }
 
 .or-tabs--enclosed.or-tabs--vertical > .or-tabs__list {
@@ -320,18 +329,22 @@
 .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab {
   margin-bottom: -1px;
   border-color: var(--or-color-border);
-  border-right-color: var(--or-color-border-strong);
+  border-inline-end-color: var(--or-color-border-strong);
 }
 
 .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true'] {
   border-color: var(--or-color-border-strong);
-  border-right-color: var(--or-color-surface);
+  border-inline-end-color: var(--or-color-surface);
   box-shadow: inset 2px 0 0 var(--or-color-accent);
 }
 
+[dir='rtl'] .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true'] {
+  box-shadow: inset -2px 0 0 var(--or-color-accent);
+}
+
 .or-tabs--enclosed.or-tabs--vertical > .or-tabs__panel {
-  margin-left: -1px;
-  padding-left: var(--or-space-5);
+  margin-inline-start: -1px;
+  padding-inline-start: var(--or-space-5);
 }
 
 /* Telas estreitas: a lista vertical fica acima do painel (setas ↑/↓ mantidas). */
@@ -345,13 +358,13 @@
   }
 
   .or-tabs--vertical > .or-tabs__panel {
-    margin-left: 0;
+    margin-inline-start: 0;
     padding-top: var(--or-space-5);
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab {
-    border-right-color: var(--or-color-border);
+    border-inline-end-color: var(--or-color-border);
   }
 
   .or-tabs--enclosed.or-tabs--vertical > .or-tabs__panel {
@@ -380,14 +393,14 @@
     content: '';
     position: absolute;
     top: -1px;
-    right: -1px;
-    left: -1px;
+    inset-inline-end: -1px;
+    inset-inline-start: -1px;
     height: 2px;
     background: Highlight;
   }
 
   .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true']::after {
-    right: auto;
+    inset-inline-end: auto;
     bottom: -1px;
     width: 2px;
     height: auto;
@@ -399,7 +412,7 @@
   }
 
   .or-tabs--enclosed.or-tabs--vertical .or-tabs__tab[aria-selected='true'] {
-    border-right-color: Canvas;
+    border-inline-end-color: Canvas;
   }
 
   .or-tabs__tab:disabled {

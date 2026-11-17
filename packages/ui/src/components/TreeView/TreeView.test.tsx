@@ -120,6 +120,24 @@ describe('TreeView', () => {
     expect(onExpandedChange).toHaveBeenLastCalledWith([])
   })
 
+  it('em dir="rtl", ← expande e entra no filho; → recolhe e volta ao pai', async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <TreeView aria-label="Arquivos do projeto" items={items} />
+      </div>,
+    )
+    await user.tab()
+    await user.keyboard('{ArrowLeft}')
+    expect(item('src')).toHaveAttribute('aria-expanded', 'true')
+    await user.keyboard('{ArrowLeft}')
+    expect(item('components')).toHaveFocus()
+    await user.keyboard('{ArrowRight}')
+    expect(item('src')).toHaveFocus()
+    await user.keyboard('{ArrowRight}')
+    expect(item('src')).toHaveAttribute('aria-expanded', 'false')
+  })
+
   it('grupos animam ao expandir (não na montagem) e saem do DOM ao recolher', async () => {
     const user = userEvent.setup()
     renderTree({ defaultExpanded: ['src'] })

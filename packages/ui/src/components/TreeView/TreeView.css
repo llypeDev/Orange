@@ -72,7 +72,8 @@
   align-items: center;
   gap: 0.375rem;
   min-height: var(--_row);
-  padding: 0 var(--or-space-3) 0 calc(var(--_pad) + (var(--_level, 1) - 1) * var(--_indent));
+  padding-block: 0;
+  padding-inline: calc(var(--_pad) + (var(--_level, 1) - 1) * var(--_indent)) var(--or-space-3);
   color: var(--or-color-text-muted);
   cursor: pointer;
   user-select: none;
@@ -97,7 +98,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--_pad);
+  inset-inline-start: var(--_pad);
   width: calc((var(--_level, 1) - 1) * var(--_indent));
   background: repeating-linear-gradient(
     to right,
@@ -135,6 +136,10 @@
   transform: rotate(90deg);
 }
 
+[dir='rtl'] .or-tree__item[aria-expanded='true'] .or-tree__toggle svg {
+  transform: rotate(-90deg);
+}
+
 .or-tree__toggle,
 .or-tree__icon {
   transition: color var(--or-duration-fast) var(--or-ease-out);
@@ -165,6 +170,10 @@
 .or-tree__item[aria-selected='true'] {
   background: var(--or-color-accent-subtle);
   box-shadow: inset var(--or-border-thick) 0 0 var(--or-color-accent);
+}
+
+[dir='rtl'] .or-tree__item[aria-selected='true'] {
+  box-shadow: inset calc(var(--or-border-thick) * -1) 0 0 var(--or-color-accent);
 }
 
 .or-tree__item[aria-selected='true'] .or-tree__label {

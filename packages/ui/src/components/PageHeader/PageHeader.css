@@ -73,6 +73,10 @@
   transform: translateX(calc(var(--or-distance-sm) * -1));
 }
 
+[dir='rtl'] .or-page-header__back:is(:hover, :focus-visible) .or-page-header__back-icon {
+  transform: translateX(var(--or-distance-sm));
+}
+
 /* Título, descrição e ações -------------------------------------------------- */
 
 /* Ações ao lado do título; sem espaço (≈ 20rem para o título), quebram para baixo. */

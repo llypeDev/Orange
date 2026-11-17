@@ -18,6 +18,10 @@
   font-family: var(--or-font-body);
 }
 
+[dir='rtl'] .or-calendar {
+  --_slide: calc(var(--or-distance-md) * -2);
+}
+
 .or-calendar__header {
   display: flex;
   align-items: center;
@@ -199,11 +203,11 @@
 .or-calendar__day--today::after {
   content: '';
   position: absolute;
-  left: 50%;
+  inset-inline-start: 50%;
   bottom: 5px;
   width: 4px;
   height: 4px;
-  margin-left: -2px;
+  margin-inline-start: -2px;
   background: var(--or-color-accent);
   transition: background-color var(--or-duration-fast) var(--or-ease-out);
   animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) both;
