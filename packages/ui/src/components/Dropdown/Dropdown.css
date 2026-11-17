@@ -43,7 +43,8 @@
 .or-menu__item::before {
   content: '';
   position: absolute;
-  inset: 0 auto 0 0;
+  inset-block: 0;
+  inset-inline-start: 0;
   width: var(--or-border-thick);
   background: var(--or-color-accent);
   transform: scaleY(0);
@@ -145,7 +146,7 @@
 
 .or-menu__shortcut {
   flex-shrink: 0;
-  margin-left: var(--or-space-4);
+  margin-inline-start: var(--or-space-4);
   font-family: var(--or-font-mono);
   font-size: var(--or-text-2xs);
   letter-spacing: 0.04em;

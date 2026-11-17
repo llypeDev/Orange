@@ -80,6 +80,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
+  /* físico: a posição vem de offsetLeft (medido), também em RTL. */
   left: 0;
   background: var(--or-color-surface-active);
   box-shadow: inset 0 calc(var(--or-border-thick) * -1) 0 var(--or-color-accent);

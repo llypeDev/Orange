@@ -129,7 +129,7 @@
   --_status-color: var(--or-color-text-subtle);
 
   position: absolute;
-  right: calc(var(--_status) * -0.25);
+  inset-inline-end: calc(var(--_status) * -0.25);
   bottom: calc(var(--_status) * -0.25);
   width: var(--_status);
   height: var(--_status);
@@ -141,7 +141,7 @@
 }
 
 .or-avatar--circle .or-avatar__status {
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   border-radius: var(--or-radius-full);
 }
@@ -163,8 +163,8 @@
   content: '';
   position: absolute;
   top: 50%;
-  left: 22%;
-  right: 22%;
+  inset-inline-start: 22%;
+  inset-inline-end: 22%;
   height: 0;
   border-top: max(1px, calc(var(--_status) * 0.18)) solid var(--_ring);
   transform: translateY(-50%);

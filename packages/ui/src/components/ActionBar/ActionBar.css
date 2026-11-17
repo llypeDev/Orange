@@ -26,8 +26,8 @@
   --_gutter: var(--or-space-4);
 
   position: fixed;
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   z-index: var(--or-z-header);
   display: flex;
   justify-content: center;
@@ -52,8 +52,8 @@
 
   position: absolute;
   z-index: var(--or-z-sticky);
-  padding-right: var(--_gutter);
-  padding-left: var(--_gutter);
+  padding-inline-end: var(--_gutter);
+  padding-inline-start: var(--_gutter);
 }
 
 .or-action-bar-region--inline.or-action-bar-region--bottom {
@@ -84,7 +84,7 @@
   max-width: 100%;
   padding: var(--or-space-2);
   border: var(--or-border-thin) solid var(--or-color-border-strong);
-  border-left: var(--or-border-accent) solid var(--or-color-accent);
+  border-inline-start: var(--or-border-accent) solid var(--or-color-accent);
   border-radius: var(--or-radius-none);
   background: var(--or-color-surface-raised);
   box-shadow: var(--or-shadow-overlay);
@@ -150,8 +150,8 @@
 }
 
 .or-action-bar__selection + .or-action-bar__actions {
-  padding-left: var(--or-space-2);
-  border-left: var(--or-border-thin) solid var(--or-color-border);
+  padding-inline-start: var(--or-space-2);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border);
 }
 
 /* Faixa estreita: largura toda, contagem em cima e ações embaixo. */
@@ -175,7 +175,7 @@
   .or-action-bar__selection + .or-action-bar__actions {
     padding: var(--or-space-2) 0 0;
     border-top: var(--or-border-thin) solid var(--or-color-border);
-    border-left: 0;
+    border-inline-start: 0;
   }
 }
 
@@ -191,7 +191,7 @@
 @media (forced-colors: active) {
   .or-action-bar {
     border-color: CanvasText;
-    border-left-color: Highlight;
+    border-inline-start-color: Highlight;
   }
 
   .or-action-bar__selection + .or-action-bar__actions {

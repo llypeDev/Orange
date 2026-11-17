@@ -22,11 +22,11 @@
 }
 
 .or-date-range-picker__input--start {
-  padding-right: var(--or-space-1);
+  padding-inline-end: var(--or-space-1);
 }
 
 .or-date-range-picker__input--end {
-  padding-left: var(--or-space-1);
+  padding-inline-start: var(--or-space-1);
 }
 
 .or-date-range-picker__separator {
@@ -203,8 +203,9 @@
     flex-wrap: nowrap;
     width: auto;
     min-width: 10rem;
-    padding: 0 var(--or-space-4) 0 0;
-    border-right: var(--or-border-thin) solid var(--or-color-border);
+    padding-block: 0;
+    padding-inline: 0 var(--or-space-4);
+    border-inline-end: var(--or-border-thin) solid var(--or-color-border);
     border-bottom: 0;
   }
 

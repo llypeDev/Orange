@@ -12,6 +12,10 @@
   background: var(--or-color-surface);
 }
 
+[dir='rtl'] .or-month-paginator {
+  --_dir: -1;
+}
+
 .or-month-paginator--sm {
   --_height: var(--or-control-sm);
   --_font-size: var(--or-text-sm);
@@ -97,6 +101,12 @@
   transform: translateX(calc(var(--or-distance-sm) / 2));
 }
 
+[dir='rtl']
+  .or-month-paginator__button--next:is(:hover, :focus-visible):not([aria-disabled='true'])
+  .or-icon {
+  transform: translateX(calc(var(--or-distance-sm) / -2));
+}
+
 /* Pressionar: fundo ativo e o ícone "afunda" 1px. */
 .or-month-paginator__button:active:not([aria-disabled='true']) {
   background: var(--or-color-surface-active);
@@ -130,28 +140,28 @@
 @keyframes or-month-paginator-in-next {
   from {
     opacity: 0;
-    transform: translateX(var(--or-distance-md));
+    transform: translateX(calc(var(--or-distance-md) * var(--_dir, 1)));
   }
 }
 
 @keyframes or-month-paginator-in-prev {
   from {
     opacity: 0;
-    transform: translateX(calc(var(--or-distance-md) * -1));
+    transform: translateX(calc(var(--or-distance-md) * -1 * var(--_dir, 1)));
   }
 }
 
 @keyframes or-month-paginator-out-next {
   to {
     opacity: 0;
-    transform: translateX(calc(var(--or-distance-md) * -1));
+    transform: translateX(calc(var(--or-distance-md) * -1 * var(--_dir, 1)));
   }
 }
 
 @keyframes or-month-paginator-out-prev {
   to {
     opacity: 0;
-    transform: translateX(var(--or-distance-md));
+    transform: translateX(calc(var(--or-distance-md) * var(--_dir, 1)));
   }
 }
 

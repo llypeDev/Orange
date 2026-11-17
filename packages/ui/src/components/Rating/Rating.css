@@ -121,7 +121,8 @@ label.or-rating__star {
 /* Fração (somente leitura): metade/parte da estrela sobreposta. */
 .or-rating__partial {
   position: absolute;
-  inset: 1px auto 1px 1px;
+  inset-block: 1px;
+  inset-inline-start: 1px;
   overflow: hidden;
   color: var(--or-color-accent);
 }

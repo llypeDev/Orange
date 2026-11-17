@@ -111,6 +111,42 @@ describe('Tabs', () => {
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Preferências de e-mail')
   })
 
+  it('em dir="rtl", ← e → seguem o sentido da leitura', async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <Example />
+      </div>,
+    )
+    await user.tab()
+    expect(screen.getByRole('tab', { name: 'Perfil' })).toHaveFocus()
+    // A próxima aba fica à esquerda.
+    await user.keyboard('{ArrowLeft}')
+    expect(screen.getByRole('tab', { name: 'Segurança' })).toHaveFocus()
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Senha e 2FA')
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('tab', { name: 'Perfil' })).toHaveFocus()
+    // Volta pela outra ponta, pulando a desabilitada.
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('tab', { name: /Notificações/ })).toHaveFocus()
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('tab', { name: 'Perfil' })).toHaveFocus()
+  })
+
+  it('em dir="rtl", a orientação vertical continua com ↑/↓', async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <Example orientation="vertical" />
+      </div>,
+    )
+    await user.tab()
+    await user.keyboard('{ArrowLeft}')
+    expect(screen.getByRole('tab', { name: 'Perfil' })).toHaveFocus()
+    await user.keyboard('{ArrowDown}')
+    expect(screen.getByRole('tab', { name: 'Segurança' })).toHaveFocus()
+  })
+
   it('orientação vertical usa ↑/↓ e expõe aria-orientation', async () => {
     const user = userEvent.setup()
     render(<Example orientation="vertical" />)

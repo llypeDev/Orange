@@ -108,7 +108,7 @@
   width: max(1.5rem, calc(var(--_chip-h) - 2px));
   padding: 0;
   border: 0;
-  border-left: var(--or-border-thin) solid var(--or-color-border-strong);
+  border-inline-start: var(--or-border-thin) solid var(--or-color-border-strong);
   border-radius: var(--or-radius-none);
   background: transparent;
   color: var(--or-color-text-muted);
@@ -141,9 +141,9 @@
   align-self: center;
   width: 0.875rem;
   height: 0.875rem;
-  margin-right: var(--or-space-2);
+  margin-inline-end: var(--or-space-2);
   border: 2px solid var(--or-color-text-subtle);
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--or-radius-full);
   animation:
     or-spin 0.7s linear infinite,
@@ -158,7 +158,7 @@
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  margin-right: var(--or-space-1);
+  margin-inline-end: var(--or-space-1);
   padding: 0;
   border: 0;
   border-radius: var(--or-radius-none);
@@ -231,6 +231,6 @@
 
   /* `transparent` viraria texto: a falha do anel de carregamento usa Canvas. */
   .or-multi-select__spinner {
-    border-right-color: Canvas;
+    border-inline-end-color: Canvas;
   }
 }

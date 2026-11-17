@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { useControllableState } from '../../hooks'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, isRtl } from '../../utils'
 import { useShake } from '../Combobox/motion'
 import { Field, useField } from '../Field'
 import './PinInput.css'
@@ -225,13 +225,14 @@ function PinInputControl({
         }
         break
       }
+      // Em dir="rtl" as casas correm da direita para a esquerda: ← avança.
       case 'ArrowLeft':
         event.preventDefault()
-        focusAt(index - 1)
+        focusAt(isRtl(event.currentTarget) ? index + 1 : index - 1)
         break
       case 'ArrowRight':
         event.preventDefault()
-        focusAt(index + 1)
+        focusAt(isRtl(event.currentTarget) ? index - 1 : index + 1)
         break
       case 'Home':
         event.preventDefault()

@@ -410,19 +410,21 @@ export default function GettingStarted() {
             },
             {
               name: 'themeTarget',
-              type: "'document' | 'scoped'",
+              type: "'document' | 'scoped' | 'none'",
               default: "'document'",
               description: {
                 pt: (
                   <>
-                    Onde aplicar <Code>data-theme</Code>: no <Code>&lt;html&gt;</Code> ou em um{' '}
-                    <Code>&lt;div&gt;</Code> que envolve os filhos.
+                    Onde aplicar <Code>data-theme</Code>: no <Code>&lt;html&gt;</Code>, em um{' '}
+                    <Code>&lt;div&gt;</Code> que envolve os filhos ou em lugar nenhum (
+                    <Code>none</Code>, quando o app já cuida do atributo).
                   </>
                 ),
                 en: (
                   <>
-                    Where to set <Code>data-theme</Code>: on <Code>&lt;html&gt;</Code> or on a{' '}
-                    <Code>&lt;div&gt;</Code> wrapping the children.
+                    Where to set <Code>data-theme</Code>: on <Code>&lt;html&gt;</Code>, on a{' '}
+                    <Code>&lt;div&gt;</Code> wrapping the children, or nowhere (<Code>none</Code>,
+                    when the app already manages the attribute).
                   </>
                 ),
               },

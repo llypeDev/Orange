@@ -146,6 +146,11 @@
   transform: translateX(4px);
 }
 
+[dir='rtl'] .or-button:hover:not(:disabled) .or-button__icon--end,
+[dir='rtl'] .or-button:focus-visible .or-button__icon--end {
+  transform: translateX(-4px);
+}
+
 /* Estados ------------------------------------------------------------------ */
 
 .or-button:disabled {
@@ -169,7 +174,7 @@
   width: 1em;
   height: 1em;
   border: 2px solid currentColor;
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--or-radius-full);
   animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
 }
@@ -188,6 +193,6 @@
   }
 
   .or-button__spinner {
-    border-right-color: ButtonFace;
+    border-inline-end-color: ButtonFace;
   }
 }

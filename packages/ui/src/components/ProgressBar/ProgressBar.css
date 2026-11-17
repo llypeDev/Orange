@@ -10,6 +10,10 @@
   font-family: var(--or-font-body);
 }
 
+[dir='rtl'] .or-progress-bar {
+  --_dir: -1;
+}
+
 .or-progress-bar__header {
   display: flex;
   align-items: baseline;
@@ -27,7 +31,7 @@
 
 .or-progress-bar__value {
   /* sem rótulo, o valor fica alinhado à direita */
-  margin-left: auto;
+  margin-inline-start: auto;
   flex-shrink: 0;
   font-family: var(--or-font-display);
   font-size: var(--or-text-sm);
@@ -86,10 +90,10 @@
 
 @keyframes or-progress-bar-slide {
   from {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% * var(--_dir, 1)));
   }
   to {
-    transform: translateX(250%);
+    transform: translateX(calc(250% * var(--_dir, 1)));
   }
 }
 

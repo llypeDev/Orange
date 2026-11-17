@@ -82,7 +82,7 @@
   width: 0.875rem;
   height: 0.875rem;
   border: 2px solid currentColor;
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--or-radius-full);
   animation: or-spin calc(var(--or-duration-loop) * 0.3) linear infinite;
 }
@@ -122,7 +122,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: var(--or-border-accent);
   background: var(--or-color-accent);
   transform: scaleY(0);
@@ -257,6 +257,6 @@
 
   /* `transparent` viraria texto: a falha do anel de carregamento usa Canvas. */
   .or-combobox-popup__spinner {
-    border-right-color: Canvas;
+    border-inline-end-color: Canvas;
   }
 }

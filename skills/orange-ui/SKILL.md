@@ -59,10 +59,14 @@ createRoot(document.getElementById('root')!).render(
   exports; o CSS da aplicação é importado depois dos componentes. Não use em código que roda no
   Node sem bundler (testes, SSR direto).
 - `OrangeProvider`: `theme`/`defaultTheme` (`dark` padrão, `light`, `dark-hc`, `light-hc`,
-  `system`), `onThemeChange`, `themeTarget` (`document` | `scoped`), `locale` (`pt-BR` padrão,
+  `system`), `onThemeChange`, `themeTarget` (`document` | `scoped` | `none`, quando o app já aplica `data-theme`), `locale` (`pt-BR` padrão,
   `en-US`) e `messages` (sobrescreve textos internos). Espanhol: `locale="es-ES"` com
   `messages={esES}` (o dicionário é importado de `@orangesys/ui`; não vem embutido). `useTheme()`
   lê e troca o tema.
+- Da direita para a esquerda (árabe, persa, urdu, hebraico): `dir="rtl"` no `<html>` com o `lang`;
+  não há prop. Os componentes espelham sozinhos (CSS lógico, ícones de seta, teclado). No CSS da
+  aplicação, use propriedades lógicas (`margin-inline-start`, `inset-inline-end`). Drawer lateral que
+  deve espelhar: `placement="start"`/`"end"` (`left`/`right` são físicos).
 - `ToastProvider`, uma vez, na raiz (dentro do `OrangeProvider`), se a aplicação usar `useToast()`.
   O hook só funciona num componente **descendente** do provider (fora dele, lança erro) — nunca
   no mesmo componente que renderiza o `ToastProvider`.

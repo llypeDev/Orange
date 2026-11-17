@@ -82,7 +82,7 @@ describe('Meter', () => {
     )
     const marks = container.querySelectorAll<HTMLElement>('.or-meter__threshold')
     expect(marks).toHaveLength(2)
-    expect(marks[0].style.left).toBe('70%')
+    expect(marks[0].style.insetInlineStart).toBe('70%')
     rerender(
       <Meter label="Disco" value={10} low={70} high={90} optimum={0} showThresholds={false} />,
     )

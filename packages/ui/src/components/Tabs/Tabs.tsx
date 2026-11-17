@@ -13,7 +13,7 @@ import {
   type ReactNode,
 } from 'react'
 import { useId, useIsomorphicLayoutEffect } from '../../hooks'
-import { composeEventHandlers, cx, devWarning, mergeRefs } from '../../utils'
+import { composeEventHandlers, cx, devWarning, logicalArrowKey, mergeRefs } from '../../utils'
 import { useSlidingIndicator } from './useSlidingIndicator'
 import './Tabs.css'
 
@@ -229,11 +229,13 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
     if (index === -1 || tabs.length === 0) return
     const prevKey = orientation === 'vertical' ? 'ArrowUp' : 'ArrowLeft'
     const nextKey = orientation === 'vertical' ? 'ArrowDown' : 'ArrowRight'
+    // Em dir="rtl", ← vai para a próxima aba (a que está à esquerda).
+    const key = logicalArrowKey(event.key, event.currentTarget)
     let next = -1
-    if (event.key === nextKey) next = (index + 1) % tabs.length
-    else if (event.key === prevKey) next = (index - 1 + tabs.length) % tabs.length
-    else if (event.key === 'Home') next = 0
-    else if (event.key === 'End') next = tabs.length - 1
+    if (key === nextKey) next = (index + 1) % tabs.length
+    else if (key === prevKey) next = (index - 1 + tabs.length) % tabs.length
+    else if (key === 'Home') next = 0
+    else if (key === 'End') next = tabs.length - 1
     else return
     event.preventDefault()
     const tab = tabs[next]

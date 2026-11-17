@@ -19,6 +19,10 @@
   letter-spacing: 0.02em;
   /* O espaço antes do AM/PM é um literal: não pode sumir. */
   white-space: pre;
+  /* Hora sempre como 14:30, também em páginas da direita para a esquerda (como os
+     relógios em árabe, persa e urdu); as setas ← → seguem a ordem visual. */
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .or-time-field__segment {

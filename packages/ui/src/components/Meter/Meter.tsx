@@ -176,7 +176,7 @@ export const Meter = forwardRef<HTMLDivElement, MeterProps>(function Meter(
           <span
             key={threshold}
             className="or-meter__threshold"
-            style={{ left: `${toPercent(threshold)}%` }}
+            style={{ insetInlineStart: `${toPercent(threshold)}%` }}
             aria-hidden="true"
           />
         ))}

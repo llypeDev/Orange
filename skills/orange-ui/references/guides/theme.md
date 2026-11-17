@@ -29,7 +29,7 @@ Mesmos componentes, mesmos tokens, valores diferentes. O tema escuro usa a palet
 
 ## OrangeProvider
 
-O provider guarda a preferência de tema, resolve `system` com `prefers-color-scheme` e `prefers-contrast` e aplica `data-theme` no `<html>` (ou em um `<div>`, com `themeTarget="scoped"`).
+O provider guarda a preferência de tema, resolve `system` com `prefers-color-scheme` e `prefers-contrast` e aplica `data-theme` no `<html>` (ou em um `<div>`, com `themeTarget="scoped"`; com `themeTarget="none"`, em lugar nenhum).
 
 `App.tsx`:
 

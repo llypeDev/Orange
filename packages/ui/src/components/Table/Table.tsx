@@ -21,7 +21,7 @@ import {
 import { useControllableState, useId, usePresence } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { clamp, cx, devWarning, normalizeText } from '../../utils'
+import { clamp, cx, devWarning, isRtl, logicalArrowKey, normalizeText } from '../../utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 import { useVirtualRows } from './useVirtualRows'
 import './Table.css'
@@ -608,7 +608,9 @@ function TableInner<T>(
     const base = snapshotWidths()
     const startX = event.clientX
     const startWidth = base[column.key]
-    const move = (moveEvent: PointerEvent) => resizeTo(column, startWidth + moveEvent.clientX - startX, base)
+    // Em dir="rtl" o separador fica à esquerda da coluna: arrastar para a esquerda alarga.
+    const sign = isRtl(event.currentTarget) ? -1 : 1
+    const move = (moveEvent: PointerEvent) => resizeTo(column, startWidth + (moveEvent.clientX - startX) * sign, base)
     const stop = () => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', stop)
@@ -651,8 +653,9 @@ function TableInner<T>(
     const base = snapshotWidths()
     const step = event.shiftKey ? 64 : 16
     let next: number
-    if (event.key === 'ArrowRight') next = base[column.key] + step
-    else if (event.key === 'ArrowLeft') next = base[column.key] - step
+    const key = logicalArrowKey(event.key, event.currentTarget)
+    if (key === 'ArrowRight') next = base[column.key] + step
+    else if (key === 'ArrowLeft') next = base[column.key] - step
     else if (event.key === 'Home') next = min
     else if (event.key === 'End') next = max
     else return

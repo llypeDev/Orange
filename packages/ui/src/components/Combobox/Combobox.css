@@ -24,7 +24,7 @@
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  margin-right: var(--or-space-1);
+  margin-inline-end: var(--or-space-1);
   padding: 0;
   border: 0;
   border-radius: var(--or-radius-none);
@@ -91,9 +91,9 @@
   align-self: center;
   width: 0.875rem;
   height: 0.875rem;
-  margin-right: var(--or-space-2);
+  margin-inline-end: var(--or-space-2);
   border: 2px solid var(--or-color-text-subtle);
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: var(--or-radius-full);
 }
 
@@ -113,6 +113,6 @@
    viraria texto (anel completo, parado) — usa Canvas. */
 @media (forced-colors: active) {
   .or-combobox__spinner {
-    border-right-color: Canvas;
+    border-inline-end-color: Canvas;
   }
 }

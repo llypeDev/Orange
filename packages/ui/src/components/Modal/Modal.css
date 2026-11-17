@@ -61,7 +61,8 @@
 
 .or-modal__close {
   flex-shrink: 0;
-  margin: calc(var(--or-space-1) * -1) calc(var(--or-space-2) * -1) 0 0;
+  margin-block: calc(var(--or-space-1) * -1) 0;
+  margin-inline: 0 calc(var(--or-space-2) * -1);
 }
 
 /* Corpo e rodapé ----------------------------------------------------------- */

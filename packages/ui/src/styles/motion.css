@@ -209,7 +209,7 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 2;
   width: 4px;
   height: 100%;
@@ -266,6 +266,11 @@
   transform: translateX(4px);
 }
 
+[dir='rtl'] .or-nudge:hover .or-nudge__icon,
+[dir='rtl'] .or-nudge:focus-visible .or-nudge__icon {
+  transform: translateX(-4px);
+}
+
 /* Sublinhado que cresce da esquerda (funciona em texto de várias linhas). */
 .or-underline {
   background-image: linear-gradient(currentColor, currentColor);
@@ -274,6 +279,10 @@
   background-size: 0% 1px;
   text-decoration: none;
   transition: background-size var(--or-duration-medium) var(--or-ease-out);
+}
+
+[dir='rtl'] .or-underline {
+  background-position: 100% 100%;
 }
 
 .or-underline:hover,

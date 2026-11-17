@@ -9,7 +9,7 @@ import {
   type RefCallback,
   type RefObject,
 } from 'react'
-import { canUseDOM, getFocusableElements } from '../utils'
+import { canUseDOM, getFocusableElements, logicalArrowKey } from '../utils'
 
 /** `useLayoutEffect` no navegador, `useEffect` no servidor (SSR seguro). */
 export const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect
@@ -235,7 +235,8 @@ export type RovingOrientation = 'horizontal' | 'vertical' | 'both'
 /**
  * Navegação por setas entre itens (padrão "roving tabindex" do WAI-ARIA).
  * Retorna um handler de `onKeyDown` para o contêiner. Os itens devem ter o
- * atributo `data-roving-item` e não estar desabilitados.
+ * atributo `data-roving-item` e não estar desabilitados. Em `dir="rtl"`, ← e →
+ * seguem o sentido da leitura (→ volta ao item anterior).
  */
 export function useRovingFocus(
   containerRef: RefObject<HTMLElement | null>,
@@ -249,13 +250,14 @@ export function useRovingFocus(
       const items = Array.from(container.querySelectorAll<HTMLElement>(selector))
       if (items.length === 0) return
       const index = items.indexOf(document.activeElement as HTMLElement)
+      const key = logicalArrowKey(event.key, container)
       const prevKeys = orientation === 'vertical' ? ['ArrowUp'] : orientation === 'horizontal' ? ['ArrowLeft'] : ['ArrowUp', 'ArrowLeft']
       const nextKeys = orientation === 'vertical' ? ['ArrowDown'] : orientation === 'horizontal' ? ['ArrowRight'] : ['ArrowDown', 'ArrowRight']
       let next = -1
-      if (nextKeys.includes(event.key)) next = index + 1 >= items.length ? (loop ? 0 : index) : index + 1
-      else if (prevKeys.includes(event.key)) next = index - 1 < 0 ? (loop ? items.length - 1 : 0) : index - 1
-      else if (event.key === 'Home') next = 0
-      else if (event.key === 'End') next = items.length - 1
+      if (nextKeys.includes(key)) next = index + 1 >= items.length ? (loop ? 0 : index) : index + 1
+      else if (prevKeys.includes(key)) next = index - 1 < 0 ? (loop ? items.length - 1 : 0) : index - 1
+      else if (key === 'Home') next = 0
+      else if (key === 'End') next = items.length - 1
       else return
       event.preventDefault()
       items.forEach((el, i) => el.setAttribute('tabindex', i === next ? '0' : '-1'))

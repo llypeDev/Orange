@@ -26,7 +26,7 @@
 }
 
 .or-meter__value {
-  margin-left: auto;
+  margin-inline-start: auto;
   transition: color var(--or-duration-medium) var(--or-ease-out);
   flex-shrink: 0;
   font-family: var(--or-font-display);
@@ -77,7 +77,7 @@
   top: -0.1875rem;
   bottom: -0.1875rem;
   width: 2px;
-  margin-left: -1px;
+  margin-inline-start: -1px;
   background: var(--or-color-text-subtle);
   /* as marcas aparecem depois que o preenchimento cresce */
   animation: or-scale-in var(--or-duration-medium) var(--or-ease-bounce) var(--or-duration-slow)

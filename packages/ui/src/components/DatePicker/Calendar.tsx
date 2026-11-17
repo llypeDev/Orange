@@ -11,7 +11,7 @@ import {
 import { useControllableState, useId } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx } from '../../utils'
+import { cx, logicalArrowKey } from '../../utils'
 import {
   addDays,
   addMonths,
@@ -246,7 +246,8 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps & CalendarInter
 
     const onDayKeyDown = (event: KeyboardEvent<HTMLTableCellElement>) => {
       let next: Date | null = null
-      switch (event.key) {
+      // Em dir="rtl" a semana corre da direita para a esquerda: ← é o dia seguinte.
+      switch (logicalArrowKey(event.key, event.currentTarget)) {
         case 'ArrowLeft':
           next = addDays(focusedDate, -1)
           break

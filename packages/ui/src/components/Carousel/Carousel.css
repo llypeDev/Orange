@@ -111,8 +111,16 @@
   transform: translateX(calc(var(--or-distance-sm) * 0.5));
 }
 
-[dir='rtl'] .or-carousel__nav svg {
-  transform: scaleX(-1);
+[dir='rtl']
+  .or-carousel__prev:is(:hover, :focus-visible):not([aria-disabled='true'])
+  .or-button__icon {
+  transform: translateX(calc(var(--or-distance-sm) * 0.5));
+}
+
+[dir='rtl']
+  .or-carousel__next:is(:hover, :focus-visible):not([aria-disabled='true'])
+  .or-button__icon {
+  transform: translateX(calc(var(--or-distance-sm) * -0.5));
 }
 
 /* Ícone de pausar/iniciar entra com um pequeno pop a cada troca. */
@@ -183,6 +191,7 @@
 .or-carousel__dot-indicator {
   position: absolute;
   top: 50%;
+  /* físico: o indicador é posicionado por offsetLeft (useSlidingIndicator). */
   left: 0;
   width: 1px;
   height: 0.5rem;
@@ -225,8 +234,8 @@
 /* Barra de 2px sobre a linha da barra de controles; pausa junto com a rotação. */
 .or-carousel__progress {
   position: absolute;
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   height: 2px;
   background: var(--or-color-accent);
   pointer-events: none;

@@ -8,7 +8,7 @@
   gap: var(--or-space-3);
   padding: var(--or-space-5) var(--or-space-6);
   border: var(--or-border-thin) solid var(--or-color-border);
-  border-left: var(--or-border-accent) solid var(--or-color-danger);
+  border-inline-start: var(--or-border-accent) solid var(--or-color-danger);
   border-radius: var(--or-radius-none);
   background: var(--or-color-danger-subtle);
   color: var(--or-color-text);
@@ -71,7 +71,8 @@
   flex-direction: column;
   gap: var(--or-space-2);
   margin: 0;
-  padding: 0 0 0 calc(1.25rem + var(--or-space-2));
+  padding-block: 0;
+  padding-inline: calc(1.25rem + var(--or-space-2)) 0;
   list-style: none;
 }
 
@@ -84,7 +85,7 @@
   content: '';
   position: absolute;
   top: 0.6em;
-  left: calc((1.25rem + var(--or-space-2)) * -1 + 0.4rem);
+  inset-inline-start: calc((1.25rem + var(--or-space-2)) * -1 + 0.4rem);
   width: 0.375rem;
   height: 0.375rem;
   background: var(--or-color-danger);
@@ -114,7 +115,7 @@
 
 @media (forced-colors: active) {
   .or-error-summary {
-    border-left-color: CanvasText;
+    border-inline-start-color: CanvasText;
   }
 
   /* Marcador dos itens: fundo de perigo. */

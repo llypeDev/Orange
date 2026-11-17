@@ -129,7 +129,8 @@
   > .or-disclosure__content-clip
   > .or-disclosure__content-inner {
   margin-top: var(--or-space-2);
-  padding: var(--or-space-1) var(--or-space-1) var(--or-space-1) var(--_indent);
+  padding-block: var(--or-space-1);
+  padding-inline: var(--_indent) var(--or-space-1);
   border-inline-start: var(--or-border-thick) solid var(--or-color-border-strong);
 }
 

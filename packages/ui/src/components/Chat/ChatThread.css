@@ -112,9 +112,9 @@
 .or-chat-thread > .or-chat-thread__jump {
   position: absolute;
   z-index: var(--or-z-raised);
-  right: 0;
+  inset-inline-end: 0;
   bottom: var(--or-space-3);
-  left: 0;
+  inset-inline-start: 0;
   width: max-content;
   max-width: calc(100% - 2 * var(--or-space-3));
   margin-inline: auto;

@@ -86,6 +86,22 @@ describe('Calendar', () => {
     expect(onChange).toHaveBeenLastCalledWith(new Date(2026, 2, 22))
   })
 
+  it('em dir="rtl", ← é o dia seguinte e → o anterior', async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <Calendar defaultValue={new Date(2026, 2, 18)} />
+      </div>,
+    )
+    cell(/18 de março/).focus()
+    await user.keyboard('{ArrowLeft}')
+    expect(cell(/19 de março/)).toHaveFocus()
+    await user.keyboard('{ArrowRight}{ArrowRight}')
+    expect(cell(/17 de março/)).toHaveFocus()
+    await user.keyboard('{ArrowDown}')
+    expect(cell(/24 de março/)).toHaveFocus()
+  })
+
   it('setas atravessam os limites do mês', async () => {
     const user = userEvent.setup()
     render(<Calendar defaultValue={new Date(2026, 2, 31)} />)

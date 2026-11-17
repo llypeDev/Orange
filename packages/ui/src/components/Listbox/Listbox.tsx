@@ -16,7 +16,7 @@ import {
 import { useControllableState, useId, useIsomorphicLayoutEffect } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx, devWarning, mergeRefs } from '../../utils'
+import { cx, devWarning, logicalArrowKey, mergeRefs } from '../../utils'
 import { Field, useField, useFieldControlProps } from '../Field'
 import { useErrorShake } from '../TextField/useErrorShake'
 import { VisuallyHidden } from '../VisuallyHidden'
@@ -461,7 +461,8 @@ function ListboxControl({
     const index = items.findIndex((item) => item.value === activeRef.current)
     const last = items.length - 1
     const mod = event.ctrlKey || event.metaKey
-    const { key, shiftKey: shift, altKey: alt } = event
+    const { shiftKey: shift, altKey: alt } = event
+    const key = horizontal ? logicalArrowKey(event.key, event.currentTarget) : event.key
     const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp'
     const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown'
 

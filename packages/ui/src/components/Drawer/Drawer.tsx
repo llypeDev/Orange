@@ -15,7 +15,11 @@ import { Button } from '../Button'
 import { DialogShell } from '../Modal/DialogShell'
 import './Drawer.css'
 
-export type DrawerPlacement = 'left' | 'right' | 'bottom'
+/**
+ * Borda de onde o painel desliza. `left`/`right` são físicas; `start`/`end`
+ * seguem o sentido da leitura (em `dir="rtl"`, `start` é a direita).
+ */
+export type DrawerPlacement = 'left' | 'right' | 'start' | 'end' | 'bottom'
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'full'
 
 /** Funções entregues ao conteúdo/rodapé quando eles são funções. */
@@ -35,10 +39,13 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
   title: ReactNode
   /** Texto de apoio sob o título (`aria-describedby`). */
   description?: ReactNode
-  /** Borda de onde o painel desliza. */
+  /**
+   * Borda de onde o painel desliza: `left`/`right` (físicas), `start`/`end`
+   * (seguem o sentido da leitura: em `dir="rtl"`, `start` é a direita) ou `bottom`.
+   */
   placement?: DrawerPlacement
   /**
-   * Largura (left/right): `sm` 360px, `md` 480px, `lg` 640px, `full` 100%.
+   * Largura (left/right/start/end): `sm` 360px, `md` 480px, `lg` 640px, `full` 100%.
    * Altura máxima (bottom): `sm` 40%, `md` 60%, `lg` 85%, `full` 100%.
    */
   size?: DrawerSize

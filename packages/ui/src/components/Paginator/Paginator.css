@@ -37,7 +37,7 @@
 .or-paginator__select {
   width: auto;
   min-width: 4.5rem;
-  padding-right: var(--or-space-2);
+  padding-inline-end: var(--or-space-2);
   cursor: pointer;
   font-variant-numeric: tabular-nums;
 }
@@ -96,9 +96,19 @@
   transform: translateX(2px);
 }
 
+[dir='rtl'] .or-paginator__button--next:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+[dir='rtl'] .or-paginator__button--last:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(-2px);
+}
+
 .or-paginator__button--prev:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
 .or-paginator__button--first:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
   transform: translateX(-2px);
+}
+
+[dir='rtl'] .or-paginator__button--prev:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg,
+[dir='rtl'] .or-paginator__button--first:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) svg {
+  transform: translateX(2px);
 }
 
 .or-paginator__button:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true'], [aria-current='page']) {
@@ -143,9 +153,9 @@
 .or-paginator__button--page::after {
   content: '';
   position: absolute;
-  right: -1px;
+  inset-inline-end: -1px;
   bottom: -1px;
-  left: -1px;
+  inset-inline-start: -1px;
   height: 2px;
   background: var(--or-color-accent);
   transform: scaleX(0);

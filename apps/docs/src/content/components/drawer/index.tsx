@@ -77,7 +77,7 @@ export default function DrawerPage() {
         </Example>
         <Example
           title={{ pt: 'Posições', en: 'Placements' }}
-          description={{ pt: 'left, right e bottom — cada uma com sua animação de deslizar.', en: 'left, right and bottom — each with its own slide animation.' }}
+          description={{ pt: 'left, right e bottom — cada uma com sua animação de deslizar. Em interfaces que também rodam da direita para a esquerda, prefira start e end.', en: 'left, right and bottom — each with its own slide animation. In interfaces that also run right to left, prefer start and end.' }}
           code={PlacementsCode}
         >
           <Placements />
@@ -120,7 +120,7 @@ export default function DrawerPage() {
           rows={[
             { name: 'title', type: 'ReactNode', required: true, description: { pt: 'Título visível; nomeia o painel.', en: 'Visible title; names the panel.' } },
             { name: 'description', type: 'ReactNode', description: { pt: 'Texto de apoio sob o título (aria-describedby).', en: 'Supporting text under the title (aria-describedby).' } },
-            { name: 'placement', type: "'left' | 'right' | 'bottom'", default: "'right'", description: { pt: 'Borda de onde o painel desliza.', en: 'Edge the panel slides from.' } },
+            { name: 'placement', type: "'left' | 'right' | 'start' | 'end' | 'bottom'", default: "'right'", description: { pt: 'Borda de onde o painel desliza. left e right são físicas; start e end seguem o sentido da leitura (em dir="rtl", start é a direita).', en: 'Edge the panel slides from. left and right are physical; start and end follow the reading direction (with dir="rtl", start is the right side).' } },
             { name: 'size', type: "'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: { pt: 'Largura (laterais) ou altura máxima (inferior).', en: 'Width (sides) or max height (bottom).' } },
             { name: 'footer', type: 'ReactNode | ({ close }) => ReactNode', description: { pt: 'Rodapé fixo com ações.', en: 'Fixed footer with actions.' } },
             { name: 'children', type: 'ReactNode | ({ close }) => ReactNode', description: { pt: 'Conteúdo rolável.', en: 'Scrollable content.' } },

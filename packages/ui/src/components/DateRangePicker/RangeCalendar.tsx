@@ -11,7 +11,7 @@ import {
 import { useControllableState, useId, useMediaQuery } from '../../hooks'
 import { Icon } from '../../icons'
 import { useLocale } from '../../providers'
-import { cx, mergeRefs } from '../../utils'
+import { cx, logicalArrowKey, mergeRefs } from '../../utils'
 import type { CalendarWeekDay } from '../DatePicker'
 import {
   addMonths,
@@ -347,7 +347,12 @@ export const RangeCalendar = forwardRef<HTMLDivElement, RangeCalendarProps>(
         setAnnouncement('')
         return
       }
-      const next = getKeyboardTarget(event.key, event.shiftKey, focusedDate, weekStartsOn)
+      const next = getKeyboardTarget(
+        logicalArrowKey(event.key, event.currentTarget),
+        event.shiftKey,
+        focusedDate,
+        weekStartsOn,
+      )
       if (!next) return
       event.preventDefault()
       setHovered(null)

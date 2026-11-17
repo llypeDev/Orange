@@ -95,7 +95,8 @@
   flex-shrink: 0;
   align-items: center;
   gap: var(--or-space-1);
-  margin: calc(var(--or-space-2) * -1) calc(var(--or-space-2) * -1) 0 0;
+  margin-block: calc(var(--or-space-2) * -1) 0;
+  margin-inline: 0 calc(var(--or-space-2) * -1);
 }
 
 .or-card__body {
@@ -182,7 +183,7 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 2;
   width: 4px;
   height: 100%;
@@ -269,6 +270,12 @@
 .or-card--interactive:is(:hover, :has(:focus-visible)) .or-card__link-arrow {
   transform: translateX(var(--or-distance-sm));
   color: var(--or-color-text);
+}
+
+[dir='rtl'] .or-card__link:hover .or-card__link-arrow,
+[dir='rtl'] .or-card__link:focus-visible .or-card__link-arrow,
+[dir='rtl'] .or-card--interactive:is(:hover, :has(:focus-visible)) .or-card__link-arrow {
+  transform: translateX(calc(var(--or-distance-sm) * -1));
 }
 
 /* Outros elementos interativos ficam acima do link esticado. */

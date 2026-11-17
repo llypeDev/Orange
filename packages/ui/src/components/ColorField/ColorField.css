@@ -18,7 +18,7 @@
   flex-shrink: 0;
   width: calc(var(--_height) - 2px);
   padding: var(--or-space-1);
-  border-right: var(--or-border-thin) solid var(--or-color-border);
+  border-inline-end: var(--or-border-thin) solid var(--or-color-border);
 }
 
 .or-color-field__native {

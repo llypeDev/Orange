@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useControllableState, useId } from '../../hooks'
 import { useLocale } from '../../providers'
-import { clamp, cx, decimalsOf, devWarning, mergeRefs, roundTo } from '../../utils'
+import { clamp, cx, decimalsOf, devWarning, isRtl, mergeRefs, roundTo } from '../../utils'
 import { Field, useField, useFieldControlProps } from '../Field'
 import { VisuallyHidden } from '../VisuallyHidden'
 import './Slider.css'
@@ -203,8 +203,11 @@ function SliderControl({
   }
 
   const valueAt = (clientX: number) => {
-    const rect = railRef.current!.getBoundingClientRect()
-    const ratio = rect.width ? clamp((clientX - rect.left) / rect.width, 0, 1) : 0
+    const rail = railRef.current!
+    const rect = rail.getBoundingClientRect()
+    // Em RTL o mínimo fica à direita (como no input nativo).
+    const offset = isRtl(rail) ? rect.right - clientX : clientX - rect.left
+    const ratio = rect.width ? clamp(offset / rect.width, 0, 1) : 0
     return snap(min + ratio * (max - min), min, max, step)
   }
 
@@ -276,7 +279,7 @@ function SliderControl({
                 key={mark.value}
                 className="or-slider__tick"
                 data-active={active || undefined}
-                style={{ left: `${p}%` }}
+                style={{ insetInlineStart: `${p}%` }}
                 aria-hidden="true"
               />
             )
@@ -370,7 +373,7 @@ function SliderControl({
                 key={mark.value}
                 className="or-slider__mark-label"
                 data-edge={p <= 0 ? 'start' : p >= 100 ? 'end' : undefined}
-                style={{ left: `${p}%` }}
+                style={{ insetInlineStart: `${p}%` }}
                 onClick={() => {
                   if (isDisabled) return
                   const index = nearestIndex(mark.value)

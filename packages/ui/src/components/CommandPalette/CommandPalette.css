@@ -87,8 +87,8 @@
 .or-command-palette__highlight {
   position: absolute;
   top: 0;
-  right: var(--or-space-2);
-  left: var(--or-space-2);
+  inset-inline-end: var(--or-space-2);
+  inset-inline-start: var(--or-space-2);
   height: var(--_h, 0px);
   background: var(--or-color-surface-hover);
   opacity: 0;
@@ -99,7 +99,8 @@
 .or-command-palette__highlight::before {
   content: '';
   position: absolute;
-  inset: 0 auto 0 0;
+  inset-block: 0;
+  inset-inline-start: 0;
   width: var(--or-border-thick);
   background: var(--or-color-accent);
 }
@@ -242,7 +243,7 @@
 }
 
 .or-command-palette__footer kbd:last-of-type {
-  margin-right: var(--or-space-1);
+  margin-inline-end: var(--or-space-1);
 }
 
 @keyframes or-command-palette-in {
