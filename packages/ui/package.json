@@ -96,22 +96,22 @@
     "@orangesys/tokens": "workspace:*"
   },
   "devDependencies": {
-    "@storybook/react-vite": "^10.6.6",
+    "@storybook/react-vite": "^10.6.8",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/user-event": "^14.6.13",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^6.3.0",
-    "axe-core": "^4.10.3",
+    "axe-core": "^4.14.1",
     "jsdom": "^26.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "rollup": "^4.68.1",
+    "rollup": "^4.68.7",
     "rollup-plugin-dts": "^6.5.1",
-    "storybook": "^10.6.6",
-    "vite": "^8.3.7",
-    "vitest": "^5.1.0"
+    "storybook": "^10.6.8",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
   }
 }
